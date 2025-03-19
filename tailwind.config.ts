@@ -48,6 +48,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        cap: {
+          dark: "#222F36",
+          teal: "#21B6A8",
+          coral: "#F65A3B",
+          light: "#FFFFFF",
+        },
       },
       fontFamily: {
         sans: ["Roboto", "Open Sans", "sans-serif"],
