@@ -23,7 +23,7 @@ const Index = () => {
         {/* Content */}
         <div className="container mx-auto px-4 z-10 text-center max-w-4xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 uppercase tracking-wide">
-            Central Application Process
+            EduEasy
           </h1>
           
           <div className="w-full max-w-xl mx-auto h-px bg-white my-5"></div>
@@ -51,10 +51,10 @@ const Index = () => {
       <section id="learn-more" className="py-20 px-4 bg-white text-cap-dark">
         <div className="container mx-auto text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-8">
-            About the Central Application Process
+            About EduEasy
           </h2>
           <p className="text-xl mb-12 max-w-3xl mx-auto">
-            The Central Application Process (CAP) is your gateway to higher education in South Africa.
+            EduEasy is your gateway to higher education in South Africa.
             We simplify the application process, making it easier for students to apply to multiple institutions.
           </p>
           
@@ -127,7 +127,7 @@ const Index = () => {
                 </svg>
               </a>
             </div>
-            <p className="text-gray-400">© CENTRAL APPLICATION PROCESS</p>
+            <p className="text-gray-400">© EDUEASY</p>
           </div>
         </div>
       </footer>

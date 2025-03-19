@@ -11,7 +11,7 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0 font-heading font-bold text-2xl">
-            CAP
+            EduEasy
           </div>
 
           {/* Desktop Menu */}
