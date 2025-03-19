@@ -2,11 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Navbar } from "@/components/Navbar";
-import { BookOpen, Users, Globe, Shield } from "lucide-react";
+import { BookOpen, Users, Globe, GraduationCap, Mountain } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-secondary/30 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
       <Navbar />
       
       {/* Hero Section */}
@@ -19,10 +19,10 @@ const Index = () => {
             EduEasy makes education technology accessible and effective for everyone. Join thousands of satisfied learners today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg">
+            <Button size="lg" className="text-lg bg-primary hover:bg-primary/90">
               Get Started Free
             </Button>
-            <Button size="lg" variant="outline" className="text-lg">
+            <Button size="lg" variant="outline" className="text-lg border-primary text-primary hover:bg-primary hover:text-white">
               Watch Demo
             </Button>
           </div>
@@ -38,7 +38,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: BookOpen,
+                icon: GraduationCap,
                 title: "Interactive Learning",
                 description: "Engage with dynamic content that adapts to your learning style"
               },
@@ -53,13 +53,13 @@ const Index = () => {
                 description: "Learn anytime, anywhere with our cloud-based platform"
               },
               {
-                icon: Shield,
-                title: "Secure Environment",
-                description: "Your data is protected with enterprise-grade security"
+                icon: Mountain,
+                title: "South African Focus",
+                description: "Content tailored to the South African educational context"
               }
             ].map((feature, index) => (
-              <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                <feature.icon className="h-12 w-12 text-primary mb-4" />
+              <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-t-4 border-t-secondary">
+                <feature.icon className="h-12 w-12 text-secondary mb-4" />
                 <h3 className="font-heading text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
               </Card>
@@ -77,7 +77,7 @@ const Index = () => {
           <p className="text-xl mb-8 opacity-90">
             Join thousands of students already learning with EduEasy
           </p>
-          <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-100">
+          <Button size="lg" variant="secondary" className="bg-secondary text-white hover:bg-secondary/90">
             Get Started Now
           </Button>
         </div>

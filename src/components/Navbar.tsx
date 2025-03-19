@@ -19,8 +19,8 @@ export const Navbar = () => {
             <a href="#features" className="text-gray-600 hover:text-primary">Features</a>
             <a href="#how-it-works" className="text-gray-600 hover:text-primary">How it Works</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary">Pricing</a>
-            <Button variant="outline" className="mr-2">Log In</Button>
-            <Button>Get Started</Button>
+            <Button variant="outline" className="mr-2 border-primary text-primary hover:bg-primary hover:text-white">Log In</Button>
+            <Button className="bg-secondary hover:bg-secondary/90">Get Started</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -39,8 +39,8 @@ export const Navbar = () => {
               <a href="#how-it-works" className="text-gray-600 hover:text-primary px-4 py-2">How it Works</a>
               <a href="#pricing" className="text-gray-600 hover:text-primary px-4 py-2">Pricing</a>
               <div className="flex flex-col space-y-2 px-4">
-                <Button variant="outline" className="w-full">Log In</Button>
-                <Button className="w-full">Get Started</Button>
+                <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white">Log In</Button>
+                <Button className="w-full bg-secondary hover:bg-secondary/90">Get Started</Button>
               </div>
             </div>
           </div>

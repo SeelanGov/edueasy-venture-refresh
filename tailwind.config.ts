@@ -21,15 +21,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#8B5CF6",
+          DEFAULT: "#1E90FF",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#E5DEFF",
-          foreground: "#1A1F2C",
+          DEFAULT: "#FF8C00",
+          foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#0EA5E9",
+          DEFAULT: "#FF8C00",
           foreground: "#FFFFFF",
         },
         destructive: {
@@ -50,8 +50,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        heading: ["Outfit", "sans-serif"],
+        sans: ["Roboto", "Open Sans", "sans-serif"],
+        heading: ["Roboto", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
