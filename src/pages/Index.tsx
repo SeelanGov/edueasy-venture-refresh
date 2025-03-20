@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { ChevronDown } from "lucide-react";
 import { PatternBorder } from "@/components/PatternBorder";
 import { Logo } from "@/components/Logo";
+import { ImageDisplay } from "@/components/ImageDisplay";
 
 const Index = () => {
   return (
@@ -100,51 +101,59 @@ const Index = () => {
 
       {/* Learn More Section */}
       <section id="learn-more" className="py-20 px-4 bg-white text-cap-dark">
-        <div className="container mx-auto text-center">
+        <div className="container mx-auto">
           <div className="mb-6 flex justify-center">
             <div className="w-16 h-1 bg-cap-teal rounded"></div>
           </div>
           
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-8">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-center">
             About EduEasy
           </h2>
-          <p className="text-xl mb-12 max-w-3xl mx-auto">
-            EduEasy is your gateway to higher education in South Africa.
-            We simplify the application process, making it easier for students to apply to multiple institutions.
-          </p>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+            <div>
+              <p className="text-xl mb-8">
+                EduEasy is your gateway to higher education in South Africa.
+                We simplify the application process, making it easier for students to apply to multiple institutions.
+              </p>
+              
+              <div className="grid md:grid-cols-1 gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-cap-teal flex items-center justify-center shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-xl font-semibold mb-2">One Application</h3>
+                    <p className="text-gray-600">Apply once for multiple institutions and programs</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-cap-teal flex items-center justify-center shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-xl font-semibold mb-2">Track Progress</h3>
+                    <p className="text-gray-600">Monitor your application status in real-time</p>
+                  </div>
+                </div>
               </div>
-              <h3 className="font-heading text-xl font-semibold mb-4">One Application</h3>
-              <p className="text-gray-600">Apply once for multiple institutions and programs</p>
             </div>
-            <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-              </div>
-              <h3 className="font-heading text-xl font-semibold mb-4">Track Progress</h3>
-              <p className="text-gray-600">Monitor your application status in real-time</p>
-            </div>
-            <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                </svg>
-              </div>
-              <h3 className="font-heading text-xl font-semibold mb-4">Get Support</h3>
-              <p className="text-gray-600">Access guidance throughout your application journey</p>
-            </div>
+            
+            <ImageDisplay 
+              src="/lovable-uploads/ff94423b-eb6f-4168-8c59-c20117e3c378.png" 
+              alt="South African university students"
+              aspectRatio={3/4}
+              className="shadow-xl"
+            />
           </div>
         </div>
       </section>
-
+      
       {/* CTA Section */}
       <section className="py-20 px-4 bg-cap-dark text-white">
         <div className="relative overflow-hidden">
