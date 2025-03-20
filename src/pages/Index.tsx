@@ -144,11 +144,14 @@ const Index = () => {
               </div>
             </div>
             
+            {/* Replace with the new image */}
             <ImageDisplay 
-              src="/lovable-uploads/ff94423b-eb6f-4168-8c59-c20117e3c378.png" 
-              alt="South African university students"
-              aspectRatio={3/4}
+              src="/lovable-uploads/d966e319-1ad9-47ae-95da-20799b9dbd7f.png" 
+              alt="EduEasy branding materials with African patterns"
+              aspectRatio={4/3}
               className="shadow-xl"
+              objectFit="contain"
+              borderRadius="rounded-xl"
             />
           </div>
         </div>
