@@ -54,18 +54,10 @@ export default {
           coral: "#F65A3B",
           light: "#FFFFFF",
         },
-        ube: {
-          green: "#3c702f",
-          orange: "#f5a623",
-          brown: "#7c4a1e",
-          offwhite: "#f7f5f0",
-          dark: "#333333",
-          text: "#444444",
-        },
       },
       fontFamily: {
-        sans: ["Segoe UI", "Tahoma", "Geneva", "Verdana", "sans-serif"],
-        heading: ["Segoe UI", "Tahoma", "Geneva", "Verdana", "sans-serif"],
+        sans: ["Roboto", "Open Sans", "sans-serif"],
+        heading: ["Roboto", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
