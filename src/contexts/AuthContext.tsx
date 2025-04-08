@@ -25,12 +25,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log("Setting up auth state listener");
     
+    // First check for existing session
+    const checkSession = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        console.log("Initial session check:", !!data.session);
+        setSession(data.session);
+        setUser(data.session?.user ?? null);
+      } catch (error) {
+        console.error("Error checking session:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log("Auth state changed:", event, !!session);
-        setSession(session);
-        setUser(session?.user ?? null);
+      (event, currentSession) => {
+        console.log("Auth state changed:", event, !!currentSession);
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
 
         if (event === 'SIGNED_IN') {
           toast({
@@ -47,13 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Initial session check:", !!session);
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    checkSession();
 
     return () => {
       subscription.unsubscribe();
@@ -146,6 +154,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signOut
   };
+
+  console.log("AuthContext state:", { loading, isAuthenticated: !!user });
 
   return (
     <AuthContext.Provider value={value}>
