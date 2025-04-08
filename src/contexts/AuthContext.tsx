@@ -28,13 +28,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // First check for existing session
     const checkSession = async () => {
       try {
-        const { data } = await supabase.auth.getSession();
-        console.log("Initial session check:", !!data.session);
+        console.log("Checking for existing session...");
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("Session check error:", error);
+          setLoading(false);
+          return;
+        }
+        
+        console.log("Initial session check:", !!data.session, data.session?.user?.id);
         setSession(data.session);
         setUser(data.session?.user ?? null);
+        setLoading(false);
       } catch (error) {
         console.error("Error checking session:", error);
-      } finally {
         setLoading(false);
       }
     };
@@ -42,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
-        console.log("Auth state changed:", event, !!currentSession);
+        console.log("Auth state changed:", event, !!currentSession, currentSession?.user?.id);
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
 
@@ -64,6 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkSession();
 
     return () => {
+      console.log("Cleaning up auth state listener");
       subscription.unsubscribe();
     };
   }, [navigate]);
@@ -73,7 +82,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log("Attempting signup for:", email);
       const { data, error } = await supabase.auth.signUp({ email, password });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Signup error:", error);
+        throw error;
+      }
       
       if (data.user) {
         console.log("User created successfully:", data.user.id);
@@ -96,7 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         toast({
           title: "Account created",
-          description: "Your account has been created successfully."
+          description: "Your account has been created successfully. Please log in."
         });
         
         // Navigate to login page after successful registration
@@ -117,8 +129,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       console.log("Attempting signin for:", email);
       const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      console.log("Signin successful:", !!data?.user);
+      
+      if (error) {
+        console.error("Signin error:", error);
+        throw error;
+      }
+      
+      console.log("Signin successful:", !!data?.user, data?.user?.id);
       navigate('/dashboard');
     } catch (error: any) {
       console.error("Signin error:", error);
@@ -134,7 +151,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     try {
       console.log("Attempting signout");
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Signout error:", error);
+        throw error;
+      }
+      
       console.log("Signout successful");
     } catch (error: any) {
       console.error("Signout error:", error);
@@ -155,7 +178,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signOut
   };
 
-  console.log("AuthContext state:", { loading, isAuthenticated: !!user });
+  console.log("AuthContext state:", { loading, isAuthenticated: !!user, userId: user?.id });
 
   return (
     <AuthContext.Provider value={value}>

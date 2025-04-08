@@ -28,7 +28,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
     }
   }, [isOnline]);
 
-  console.log("AuthGuard state:", { loading, user: !!user, path: location.pathname });
+  console.log("AuthGuard rendering:", { loading, user: !!user, userID: user?.id, path: location.pathname });
 
   // If authentication is still loading, show spinner
   if (loading) {
@@ -44,8 +44,8 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
 
   // If user is not authenticated, redirect to login
   if (!user) {
-    console.log("User not authenticated, redirecting to login");
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    console.log("User not authenticated, redirecting to login from:", location.pathname);
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
   // Show offline warning if applicable
@@ -79,5 +79,6 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
     );
   }
 
+  console.log("AuthGuard passing through - user authenticated:", user?.id);
   return <>{children}</>;
 };
