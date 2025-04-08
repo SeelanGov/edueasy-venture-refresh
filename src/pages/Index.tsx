@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { ChevronDown } from "lucide-react";
 import { PatternBorder } from "@/components/PatternBorder";
 import { Logo } from "@/components/Logo";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -78,9 +79,11 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-              <Button size="lg" className="text-lg bg-cap-coral hover:bg-cap-coral/90 text-white px-10 py-6">
-                START APPLICATION
-              </Button>
+              <Link to="/apply">
+                <Button size="lg" className="text-lg bg-cap-coral hover:bg-cap-coral/90 text-white px-10 py-6">
+                  START APPLICATION
+                </Button>
+              </Link>
             </div>
           </div>
           
@@ -159,12 +162,16 @@ const Index = () => {
               Join thousands of students already on their path to success
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-cap-coral text-white hover:bg-cap-coral/90">
-                Register Now
-              </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-cap-dark">
-                View Progress
-              </Button>
+              <Link to="/register">
+                <Button size="lg" className="bg-cap-coral text-white hover:bg-cap-coral/90">
+                  Register Now
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-cap-dark">
+                  View Progress
+                </Button>
+              </Link>
             </div>
           </div>
           
