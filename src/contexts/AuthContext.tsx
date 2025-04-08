@@ -23,9 +23,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Setting up auth state listener");
+    
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log("Auth state changed:", event, !!session);
         setSession(session);
         setUser(session?.user ?? null);
 
@@ -46,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Initial session check:", !!session);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -58,11 +62,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signUp = async (email: string, password: string, fullName: string, idNumber: string) => {
     try {
+      console.log("Attempting signup for:", email);
       const { data, error } = await supabase.auth.signUp({ email, password });
       
       if (error) throw error;
       
       if (data.user) {
+        console.log("User created successfully:", data.user.id);
         // Insert user data into users table
         const { error: profileError } = await supabase
           .from('users')
@@ -84,8 +90,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           title: "Account created",
           description: "Your account has been created successfully."
         });
+        
+        // Navigate to login page after successful registration
+        navigate('/login');
       }
     } catch (error: any) {
+      console.error("Signup error:", error);
       toast({
         title: "Error signing up",
         description: error.message,
@@ -97,10 +107,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log("Attempting signin for:", email);
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      console.log("Signin successful:", !!data?.user);
       navigate('/dashboard');
     } catch (error: any) {
+      console.error("Signin error:", error);
       toast({
         title: "Error signing in",
         description: error.message,
@@ -112,8 +125,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     try {
+      console.log("Attempting signout");
       await supabase.auth.signOut();
+      console.log("Signout successful");
     } catch (error: any) {
+      console.error("Signout error:", error);
       toast({
         title: "Error signing out",
         description: error.message,

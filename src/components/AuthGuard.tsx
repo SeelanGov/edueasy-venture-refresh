@@ -1,6 +1,6 @@
 
 import { ReactNode, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Spinner } from '@/components/Spinner';
 import { useNetwork } from '@/hooks/useNetwork';
@@ -16,6 +16,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   const { user, loading } = useAuth();
   const { isOnline } = useNetwork();
   const [showOfflineWarning, setShowOfflineWarning] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Show offline warning after a delay to avoid flashing during quick connectivity changes
@@ -26,6 +27,8 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       setShowOfflineWarning(false);
     }
   }, [isOnline]);
+
+  console.log("AuthGuard state:", { loading, user: !!user, path: location.pathname });
 
   // If authentication is still loading, show spinner
   if (loading) {
@@ -41,7 +44,8 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
 
   // If user is not authenticated, redirect to login
   if (!user) {
-    return <Navigate to="/login" />;
+    console.log("User not authenticated, redirecting to login");
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Show offline warning if applicable
