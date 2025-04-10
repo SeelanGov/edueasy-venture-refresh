@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { X, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -10,6 +10,9 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log("Navbar rendering with user:", !!user);
 
   const handleSignOut = async () => {
     await signOut();

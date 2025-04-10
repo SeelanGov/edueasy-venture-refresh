@@ -25,7 +25,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log("Setting up auth state listener");
     
-    // First check for existing session
+    // First set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, currentSession) => {
+        console.log("Auth state changed:", event, !!currentSession, currentSession?.user?.id);
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        setLoading(false);
+
+        if (event === 'SIGNED_IN') {
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in."
+          });
+        } else if (event === 'SIGNED_OUT') {
+          toast({
+            title: "Signed out",
+            description: "You have been signed out."
+          });
+          navigate('/login');
+        }
+      }
+    );
+
+    // Then check for existing session
     const checkSession = async () => {
       try {
         console.log("Checking for existing session...");
@@ -46,28 +69,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
       }
     };
-
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
-        console.log("Auth state changed:", event, !!currentSession, currentSession?.user?.id);
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-
-        if (event === 'SIGNED_IN') {
-          toast({
-            title: "Welcome back!",
-            description: "You have successfully signed in."
-          });
-        } else if (event === 'SIGNED_OUT') {
-          toast({
-            title: "Signed out",
-            description: "You have been signed out."
-          });
-          navigate('/login');
-        }
-      }
-    );
 
     checkSession();
 
@@ -159,6 +160,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       console.log("Signout successful");
+      navigate('/');
     } catch (error: any) {
       console.error("Signout error:", error);
       toast({
