@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +29,9 @@ const Login = () => {
   const { signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const from = location.state?.from || "/dashboard";
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -43,7 +45,8 @@ const Login = () => {
     setIsLoading(true);
     try {
       await signIn(data.email, data.password);
-      // Navigation is handled in the auth context
+      console.log("Login successful, navigating to:", from);
+      navigate(from);
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -53,7 +56,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-cap-dark text-white">
-      {/* Header with Pattern */}
       <div className="relative w-full">
         <div
           className="absolute inset-0 z-0"
@@ -153,7 +155,6 @@ const Login = () => {
         </div>
       </div>
       
-      {/* Bottom Pattern */}
       <div className="absolute bottom-0 left-0 right-0">
         <PatternBorder position="bottom" />
       </div>

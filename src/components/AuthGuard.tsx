@@ -42,7 +42,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
     );
   }
 
-  // If user is not authenticated, redirect to login
+  // If user is not authenticated, redirect to login with the current path as the redirect destination
   if (!user) {
     console.log("User not authenticated, redirecting to login from:", location.pathname);
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;

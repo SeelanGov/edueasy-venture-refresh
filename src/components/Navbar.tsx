@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/components/ui/use-toast";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,20 @@ export const Navbar = () => {
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
+  };
+
+  const handleStartApplication = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to start your application.",
+        variant: "destructive",
+      });
+      navigate('/login', { state: { from: '/apply' } });
+      return;
+    }
+    
+    navigate('/apply');
   };
 
   return (
