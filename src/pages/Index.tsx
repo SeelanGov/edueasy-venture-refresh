@@ -14,6 +14,7 @@ const Index = () => {
   const navigate = useNavigate();
   
   const handleStartApplication = () => {
+    console.log("Start application clicked, user:", !!user);
     if (!user) {
       toast({
         title: "Authentication Required",
@@ -45,7 +46,7 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Hero Section - Full height with background image */}
+      {/* Hero Section */}
       <section 
         id="home"
         className="min-h-screen flex flex-col items-center justify-center relative pt-16 overflow-hidden"

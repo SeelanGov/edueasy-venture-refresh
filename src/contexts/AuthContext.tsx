@@ -38,12 +38,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             title: "Welcome back!",
             description: "You have successfully signed in."
           });
+          // Let Login component handle navigation with location state
         } else if (event === 'SIGNED_OUT') {
           toast({
             title: "Signed out",
             description: "You have been signed out."
           });
-          navigate('/login');
+          navigate('/');
         }
       }
     );
@@ -137,7 +138,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       console.log("Signin successful:", !!data?.user, data?.user?.id);
-      navigate('/dashboard');
+      // Navigation is now handled in Login component
+      return data;
     } catch (error: any) {
       console.error("Signin error:", error);
       toast({
@@ -160,7 +162,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       console.log("Signout successful");
-      navigate('/');
+      // Navigation is handled in the onAuthStateChange handler
     } catch (error: any) {
       console.error("Signout error:", error);
       toast({

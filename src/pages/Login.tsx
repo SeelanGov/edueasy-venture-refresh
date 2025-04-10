@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -26,12 +27,20 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const Login = () => {
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   
   const from = location.state?.from || "/dashboard";
+  
+  useEffect(() => {
+    // If user is already logged in, redirect them
+    if (user) {
+      console.log("User already logged in, redirecting to:", from);
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -46,7 +55,7 @@ const Login = () => {
     try {
       await signIn(data.email, data.password);
       console.log("Login successful, navigating to:", from);
-      navigate(from);
+      // Navigation will happen in the useEffect when user state updates
     } catch (error) {
       console.error("Login error:", error);
     } finally {
