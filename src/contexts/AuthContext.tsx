@@ -10,7 +10,7 @@ type AuthContextType = {
   session: Session | null;
   loading: boolean;
   signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<any>; // Updated return type to match what the function returns
   signOut: () => Promise<void>;
 };
 
