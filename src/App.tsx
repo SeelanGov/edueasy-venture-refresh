@@ -12,6 +12,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ApplicationForm from "./pages/ApplicationForm";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import UserProfile from "./pages/UserProfile";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -35,6 +38,8 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route 
                 path="/dashboard" 
                 element={
@@ -48,6 +53,14 @@ const App = () => {
                 element={
                   <AuthGuard>
                     <ApplicationForm />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <AuthGuard>
+                    <UserProfile />
                   </AuthGuard>
                 } 
               />

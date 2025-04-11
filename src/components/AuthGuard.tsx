@@ -10,9 +10,10 @@ import { Button } from './ui/button';
 
 interface AuthGuardProps {
   children: ReactNode;
+  requiresAuth?: boolean;
 }
 
-export const AuthGuard = ({ children }: AuthGuardProps) => {
+export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => {
   const { user, loading } = useAuth();
   const { isOnline } = useNetwork();
   const [showOfflineWarning, setShowOfflineWarning] = useState(false);
@@ -36,16 +37,23 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <Spinner size="lg" />
-          <p className="mt-4 text-gray-600">Loading your profile...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading your profile...</p>
         </div>
       </div>
     );
   }
 
-  // If user is not authenticated, redirect to login with the current path as the redirect destination
-  if (!user) {
+  // Handle authentication rules
+  if (requiresAuth && !user) {
+    // If this route requires authentication and user is not logged in, redirect to login
     console.log("User not authenticated, redirecting to login from:", location.pathname);
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  // If user is logged in but accesses auth pages (login, register, etc.), redirect to dashboard
+  if (!requiresAuth && user && (location.pathname === '/login' || location.pathname === '/register')) {
+    console.log("User already authenticated, redirecting to dashboard");
+    return <Navigate to="/dashboard" replace />;
   }
 
   // Show offline warning if applicable

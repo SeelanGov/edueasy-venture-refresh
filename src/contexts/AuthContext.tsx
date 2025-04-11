@@ -1,5 +1,5 @@
 
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useSession } from '@/hooks/useSession';
 import { useAuthOperations } from '@/hooks/useAuthOperations';
@@ -9,15 +9,17 @@ type AuthContextType = {
   session: Session | null;
   loading: boolean;
   signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<any>; // Updated return type to match what the function returns
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<any>; 
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<boolean>;
+  updatePassword: (newPassword: string) => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { user, session, loading } = useSession();
-  const { signUp, signIn, signOut } = useAuthOperations();
+  const { signUp, signIn, signOut, resetPassword, updatePassword } = useAuthOperations();
 
   const value = {
     user,
@@ -25,7 +27,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loading,
     signUp,
     signIn,
-    signOut
+    signOut,
+    resetPassword,
+    updatePassword
   };
 
   console.log("AuthContext state:", { loading, isAuthenticated: !!user, userId: user?.id });

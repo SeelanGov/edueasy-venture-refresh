@@ -56,10 +56,18 @@ export const useAuthOperations = () => {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
     try {
       console.log("Attempting signin for:", email);
-      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password,
+        options: {
+          // Set auth cookie expiry based on remember me option
+          // Default: 3600 seconds = 1 hour, Extended: 604800 seconds = 7 days
+          expiresIn: rememberMe ? 604800 : 3600
+        }
+      });
       
       if (error) {
         console.error("Signin error:", error);
@@ -102,9 +110,68 @@ export const useAuthOperations = () => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      
+      if (error) {
+        console.error("Reset password error:", error);
+        throw error;
+      }
+      
+      toast({
+        title: "Password reset email sent",
+        description: "Check your email for a link to reset your password."
+      });
+      
+      return true;
+    } catch (error: any) {
+      console.error("Reset password error:", error);
+      toast({
+        title: "Error resetting password",
+        description: error.message,
+        variant: "destructive"
+      });
+      throw error;
+    }
+  };
+  
+  const updatePassword = async (newPassword: string) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+      
+      if (error) {
+        console.error("Update password error:", error);
+        throw error;
+      }
+      
+      toast({
+        title: "Password updated",
+        description: "Your password has been updated successfully."
+      });
+      
+      navigate('/dashboard');
+      return true;
+    } catch (error: any) {
+      console.error("Update password error:", error);
+      toast({
+        title: "Error updating password",
+        description: error.message,
+        variant: "destructive"
+      });
+      throw error;
+    }
+  };
+
   return {
     signUp,
     signIn,
-    signOut
+    signOut,
+    resetPassword,
+    updatePassword
   };
 };

@@ -18,10 +18,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PatternBorder } from "@/components/PatternBorder";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const loginFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  rememberMe: z.boolean().default(false),
 });
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
@@ -29,6 +33,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const Login = () => {
   const { signIn, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -47,17 +52,20 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
+    setError(null);
     try {
-      await signIn(data.email, data.password);
+      await signIn(data.email, data.password, data.rememberMe);
       console.log("Login successful, navigating to:", from);
       // Navigation will happen in the useEffect when user state updates
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
+      setError(error.message || "Failed to sign in. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }
@@ -92,6 +100,14 @@ const Login = () => {
           <div className="p-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+              
                 <FormField
                   control={form.control}
                   name="email"
@@ -128,6 +144,33 @@ const Login = () => {
                         />
                       </FormControl>
                       <FormMessage />
+                      <div className="text-right">
+                        <Link 
+                          to="/forgot-password" 
+                          className="text-sm text-cap-teal hover:underline"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="rememberMe"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-1">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormLabel className="text-gray-700 font-normal cursor-pointer">
+                        Remember me for 7 days
+                      </FormLabel>
                     </FormItem>
                   )}
                 />
