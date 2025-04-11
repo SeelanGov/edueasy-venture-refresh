@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { z } from "zod";
@@ -61,6 +60,16 @@ const Login = () => {
     setError(null);
     try {
       await signIn(data.email, data.password, data.rememberMe);
+      
+      // Store rememberMe preference in localStorage if the user wants to be remembered
+      if (data.rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+        localStorage.setItem('rememberedEmail', data.email);
+      } else {
+        localStorage.removeItem('rememberMe');
+        localStorage.removeItem('rememberedEmail');
+      }
+      
       console.log("Login successful, navigating to:", from);
       // Navigation will happen in the useEffect when user state updates
     } catch (error: any) {
@@ -70,6 +79,17 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  // Load remembered email if available
+  useEffect(() => {
+    const rememberMe = localStorage.getItem('rememberMe');
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    
+    if (rememberMe && rememberedEmail) {
+      form.setValue('email', rememberedEmail);
+      form.setValue('rememberMe', true);
+    }
+  }, [form]);
 
   return (
     <div className="min-h-screen bg-cap-dark text-white">
