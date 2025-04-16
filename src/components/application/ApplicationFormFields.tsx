@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 
-interface ApplicationFormValues {
+export interface ApplicationFormValues {
   fullName: string;
   idNumber: string;
   grade12Results: string;

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -9,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNetwork } from "@/hooks/useNetwork";
 import { toast } from "@/components/ui/use-toast";
+import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 
 // Local storage keys
 const LOCAL_STORAGE_FORM_KEY = "edueasy-application-form";
@@ -38,8 +38,6 @@ const formSchema = z.object({
     ),
 });
 
-type FormValues = z.infer<typeof formSchema>;
-
 export const useApplicationForm = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -48,7 +46,7 @@ export const useApplicationForm = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
 
-  const form = useForm<FormValues>({
+  const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
@@ -109,7 +107,7 @@ export const useApplicationForm = () => {
     setDocumentFile(file);
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: ApplicationFormValues) => {
     // Save form data to local storage
     localStorage.setItem(
       LOCAL_STORAGE_FORM_KEY,
