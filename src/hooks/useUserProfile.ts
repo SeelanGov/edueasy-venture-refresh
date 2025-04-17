@@ -1,0 +1,51 @@
+
+import { useState, useEffect } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/use-toast";
+import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+
+export interface UserProfile {
+  id: string;
+  full_name: string;
+  id_number: string;
+  email: string;
+}
+
+export const useUserProfile = (
+  userId: string | undefined,
+  form: UseFormReturn<ApplicationFormValues>
+) => {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!userId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("id, full_name, id_number, email")
+          .eq("id", userId)
+          .single();
+
+        if (error) throw error;
+
+        setUserProfile(data);
+        form.setValue("fullName", data.full_name);
+        form.setValue("idNumber", data.id_number);
+      } catch (error: any) {
+        console.error("Error fetching user profile:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load your profile information",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchUserProfile();
+  }, [userId, form]);
+
+  return { userProfile };
+};
