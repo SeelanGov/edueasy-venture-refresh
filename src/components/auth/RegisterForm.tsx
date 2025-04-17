@@ -59,9 +59,9 @@ export const RegisterForm = () => {
     setIsLoading(true);
     setRegistrationError(null);
     try {
-      const result = await signUp(data.email, data.password, data.fullName, data.idNumber);
-      if (!result) {
-        // If signUp returns null, it means there was a handled error (like rate limit)
+      const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
+      // Check if response is null or undefined (signUp can return null on handled errors)
+      if (!response) {
         setRegistrationError("Registration is currently unavailable. Please try again later.");
       }
     } catch (error: any) {

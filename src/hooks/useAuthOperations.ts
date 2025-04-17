@@ -57,6 +57,8 @@ export const useAuthOperations = () => {
         navigate('/login');
         return data;
       }
+      
+      return null;
     } catch (error: any) {
       console.error("Signup error:", error);
       toast({
