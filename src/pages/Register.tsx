@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { Logo } from "@/components/Logo";
+import { Eye, EyeOff } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -38,6 +39,8 @@ type RegisterFormValues = z.infer<typeof registerFormSchema>;
 const Register = () => {
   const { signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
@@ -156,13 +159,22 @@ const Register = () => {
                     <FormItem>
                       <FormLabel className="text-gray-700">Password</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="******"
-                          type="password"
-                          {...field}
-                          disabled={isLoading}
-                          className="text-gray-900"
-                        />
+                        <div className="relative">
+                          <Input
+                            placeholder="******"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                            disabled={isLoading}
+                            className="text-gray-900 pr-10"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                          >
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -176,13 +188,22 @@ const Register = () => {
                     <FormItem>
                       <FormLabel className="text-gray-700">Confirm Password</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="******"
-                          type="password"
-                          {...field}
-                          disabled={isLoading}
-                          className="text-gray-900"
-                        />
+                        <div className="relative">
+                          <Input
+                            placeholder="******"
+                            type={showConfirmPassword ? "text" : "password"}
+                            {...field}
+                            disabled={isLoading}
+                            className="text-gray-900 pr-10"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                          >
+                            {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
