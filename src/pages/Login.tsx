@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { z } from "zod";
@@ -36,10 +37,11 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // Get the intended destination from location state, or default to dashboard
   const from = location.state?.from || "/dashboard";
   
   useEffect(() => {
-    // If user is already logged in, redirect them
+    // If user is already logged in, redirect them to the intended destination
     if (user) {
       console.log("User already logged in, redirecting to:", from);
       navigate(from, { replace: true });

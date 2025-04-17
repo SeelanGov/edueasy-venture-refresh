@@ -53,7 +53,9 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
   // If user is logged in but accesses auth pages (login, register, etc.), redirect to dashboard
   if (!requiresAuth && user && (location.pathname === '/login' || location.pathname === '/register')) {
     console.log("User already authenticated, redirecting to dashboard");
-    return <Navigate to="/dashboard" replace />;
+    // Check if there's a specific "from" location to navigate to
+    const targetPath = location.state?.from || "/dashboard";
+    return <Navigate to={targetPath} replace />;
   }
 
   // Show offline warning if applicable

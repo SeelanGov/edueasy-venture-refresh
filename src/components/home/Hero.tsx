@@ -2,13 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { PatternBorder } from "@/components/PatternBorder";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
 
 export const Hero = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const handleStartApplication = () => {
     console.log("Start application clicked, user:", !!user);
@@ -18,10 +19,12 @@ export const Hero = () => {
         description: "Please log in to start your application.",
         variant: "destructive",
       });
+      // Pass the current location to preserve the intended destination
       navigate('/login', { state: { from: '/apply' } });
       return;
     }
     
+    // If user is authenticated, proceed to the application page
     navigate('/apply');
   };
 
