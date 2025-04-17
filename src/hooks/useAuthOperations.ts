@@ -15,7 +15,18 @@ export const useAuthOperations = () => {
       
       if (error) {
         console.error("Signup error:", error);
-        throw error;
+        
+        // Handle rate limit error with clearer message
+        if (error.message === 'email rate limit exceeded' || error.code === 'over_email_send_rate_limit') {
+          toast({
+            title: "Too many attempts",
+            description: "Please try again later or contact support for assistance.",
+            variant: "destructive"
+          });
+        } else {
+          throw error;
+        }
+        return null;
       }
       
       if (data.user) {
@@ -39,11 +50,12 @@ export const useAuthOperations = () => {
         
         toast({
           title: "Account created",
-          description: "Your account has been created successfully. Please log in."
+          description: "Your account has been created successfully. Please check your email for verification."
         });
         
         // Navigate to login page after successful registration
         navigate('/login');
+        return data;
       }
     } catch (error: any) {
       console.error("Signup error:", error);

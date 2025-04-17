@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Spinner } from "@/components/Spinner";
 import { useAuth } from "@/contexts/AuthContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Schema definition moved to the form component
 const registerFormSchema = z.object({
@@ -41,6 +42,7 @@ export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [registrationError, setRegistrationError] = useState<string | null>(null);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
@@ -55,10 +57,16 @@ export const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
+    setRegistrationError(null);
     try {
-      await signUp(data.email, data.password, data.fullName, data.idNumber);
-    } catch (error) {
+      const result = await signUp(data.email, data.password, data.fullName, data.idNumber);
+      if (!result) {
+        // If signUp returns null, it means there was a handled error (like rate limit)
+        setRegistrationError("Registration is currently unavailable. Please try again later.");
+      }
+    } catch (error: any) {
       console.error("Registration error:", error);
+      setRegistrationError(error.message || "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +80,13 @@ export const RegisterForm = () => {
       </div>
 
       <div className="p-6">
+        {registrationError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{registrationError}</AlertDescription>
+          </Alert>
+        )}
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
