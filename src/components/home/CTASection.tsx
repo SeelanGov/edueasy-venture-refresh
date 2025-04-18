@@ -2,8 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { PatternBorder } from "@/components/PatternBorder";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const CTASection = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleStartApplication = () => {
+    if (!user) {
+      navigate('/register', { state: { from: '/apply' } });
+      return;
+    }
+    
+    navigate('/apply');
+  };
+
   return (
     <section className="py-20 px-4 bg-cap-dark text-white">
       <div className="relative overflow-hidden">
@@ -18,16 +32,30 @@ export const CTASection = () => {
             Join thousands of students already on their path to success
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/register">
-              <Button size="lg" className="bg-cap-coral text-white hover:bg-cap-coral/90">
-                Register Now
+            {user ? (
+              <Button 
+                size="lg" 
+                className="bg-cap-coral text-white hover:bg-cap-coral/90"
+                onClick={() => navigate('/apply')}
+              >
+                Start Application
               </Button>
-            </Link>
-            <Link to="/login">
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-cap-dark">
-                View Progress
-              </Button>
-            </Link>
+            ) : (
+              <>
+                <Button 
+                  size="lg" 
+                  className="bg-cap-coral text-white hover:bg-cap-coral/90"
+                  onClick={handleStartApplication}
+                >
+                  Register & Apply
+                </Button>
+                <Link to="/login">
+                  <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-cap-dark">
+                    Already Have Account? Login
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         

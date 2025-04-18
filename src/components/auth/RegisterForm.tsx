@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,10 @@ export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
+  const location = useLocation();
+
+  // Get the intended destination from location state, or default to dashboard
+  const from = location.state?.from || "/dashboard";
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
@@ -60,10 +64,13 @@ export const RegisterForm = () => {
     setRegistrationError(null);
     try {
       const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
-      // Check if response is null or undefined (signUp can return null on handled errors)
+      
+      // Check if response is null (signUp can return null on handled errors)
       if (!response) {
         setRegistrationError("Registration is currently unavailable. Please try again later.");
       }
+      // Note: Navigation to login after successful registration is handled in useAuthOperations
+      // The "from" parameter will be handled by the Login component when they sign in
     } catch (error: any) {
       console.error("Registration error:", error);
       setRegistrationError(error.message || "An unexpected error occurred. Please try again.");

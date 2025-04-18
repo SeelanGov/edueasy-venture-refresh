@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import { User, Session } from '@supabase/supabase-js';
 
 export const useAuthOperations = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const signUp = async (email: string, password: string, fullName: string, idNumber: string) => {
     try {
@@ -52,9 +53,12 @@ export const useAuthOperations = () => {
           title: "Account created",
           description: "Your account has been created successfully. Please check your email for verification."
         });
+
+        // Get the intended destination from parent component's location state
+        const from = location.state?.from || "/dashboard";
         
-        // Navigate to login page after successful registration
-        navigate('/login');
+        // Navigate to login page after successful registration and pass along the original "from" destination
+        navigate('/login', { state: { from: from } });
         return data;
       }
       

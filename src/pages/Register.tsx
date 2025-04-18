@@ -1,9 +1,11 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { RegisterHeader } from "@/components/auth/RegisterHeader";
 
 const Register = () => {
+  const location = useLocation();
+  
   return (
     <div className="min-h-screen bg-cap-dark text-white">
       {/* Header with Pattern */}
