@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          address_type: string
+          city: string
+          created_at: string
+          id: string
+          postal_code: string
+          province: string
+          street_address: string
+          suburb: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address_type: string
+          city: string
+          created_at?: string
+          id?: string
+          postal_code: string
+          province: string
+          street_address: string
+          suburb: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address_type?: string
+          city?: string
+          created_at?: string
+          id?: string
+          postal_code?: string
+          province?: string
+          street_address?: string
+          suburb?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           created_at: string | null
@@ -51,20 +90,29 @@ export type Database = {
         Row: {
           application_id: string
           created_at: string | null
+          document_type: string | null
           file_path: string
           id: string
+          user_id: string | null
+          verification_status: string | null
         }
         Insert: {
           application_id: string
           created_at?: string | null
+          document_type?: string | null
           file_path: string
           id?: string
+          user_id?: string | null
+          verification_status?: string | null
         }
         Update: {
           application_id?: string
           created_at?: string | null
+          document_type?: string | null
           file_path?: string
           id?: string
+          user_id?: string | null
+          verification_status?: string | null
         }
         Relationships: [
           {
@@ -76,27 +124,110 @@ export type Database = {
           },
         ]
       }
-      users: {
+      education_records: {
+        Row: {
+          completion_year: number
+          created_at: string
+          id: string
+          province: string
+          school_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completion_year: number
+          created_at?: string
+          id?: string
+          province: string
+          school_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completion_year?: number
+          created_at?: string
+          id?: string
+          province?: string
+          school_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subject_marks: {
         Row: {
           created_at: string
-          email: string | null
-          full_name: string | null
+          education_record_id: string
+          grade_level: string
           id: string
-          id_number: string | null
+          mark: number
+          subject_name: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
-          email?: string | null
-          full_name?: string | null
+          education_record_id: string
+          grade_level: string
           id?: string
-          id_number?: string | null
+          mark: number
+          subject_name: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
+          education_record_id?: string
+          grade_level?: string
+          id?: string
+          mark?: number
+          subject_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subject_marks_education_record_id_fkey"
+            columns: ["education_record_id"]
+            isOneToOne: false
+            referencedRelation: "education_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          contact_email: string | null
+          created_at: string
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          full_name: string | null
+          id: string
+          id_number: string | null
+          phone_number: string | null
+          profile_status: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          created_at?: string
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           full_name?: string | null
           id?: string
           id_number?: string | null
+          phone_number?: string | null
+          profile_status?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          created_at?: string
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          full_name?: string | null
+          id?: string
+          id_number?: string | null
+          phone_number?: string | null
+          profile_status?: string | null
         }
         Relationships: []
       }

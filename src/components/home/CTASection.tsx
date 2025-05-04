@@ -11,11 +11,11 @@ export const CTASection = () => {
   
   const handleStartApplication = () => {
     if (!user) {
-      navigate('/register', { state: { from: '/apply' } });
+      navigate('/register', { state: { from: '/profile-completion' } });
       return;
     }
     
-    navigate('/apply');
+    navigate('/profile-completion');
   };
 
   return (
@@ -36,9 +36,9 @@ export const CTASection = () => {
               <Button 
                 size="lg" 
                 className="bg-cap-coral text-white hover:bg-cap-coral/90"
-                onClick={() => navigate('/apply')}
+                onClick={() => navigate('/profile-completion')}
               >
-                Start Application
+                Complete Your Profile
               </Button>
             ) : (
               <>
@@ -47,7 +47,7 @@ export const CTASection = () => {
                   className="bg-cap-coral text-white hover:bg-cap-coral/90"
                   onClick={handleStartApplication}
                 >
-                  Register & Apply
+                  Register & Complete Profile
                 </Button>
                 <Link to="/login">
                   <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-cap-dark">

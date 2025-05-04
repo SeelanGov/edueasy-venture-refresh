@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,8 +44,8 @@ export const RegisterForm = () => {
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const location = useLocation();
 
-  // Get the intended destination from location state, or default to dashboard
-  const from = location.state?.from || "/dashboard";
+  // Get the intended destination from location state, or default to profile completion
+  const from = location.state?.from || "/profile-completion";
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
