@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +26,9 @@ import { compressImage } from "@/utils/imageCompression";
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
-// Validate file size and type
-const validateFile = (file: File | undefined) => {
-  if (!file) return false;
+// Validate file size and type - fixed to return proper object structure
+const validateFile = (file: File | undefined): { valid: boolean; message: string } => {
+  if (!file) return { valid: false, message: "No file selected" };
   
   if (file.size > MAX_FILE_SIZE) {
     return { valid: false, message: "File size should be less than 1MB" };
@@ -235,15 +234,15 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
         // Update form state
         form.setValue(documentType, fileToUpload);
         
-        // Update store
-        setDocuments(prev => ({
-          ...prev,
+        // Update store - Fixed: Using object literal instead of function for setDocuments
+        setDocuments({
+          ...documents,
           [documentType]: {
             file: fileToUpload,
             path: data.path,
             documentId: documentData.id,
           }
-        }));
+        });
       }
     } catch (error: any) {
       console.error(`Error uploading ${documentType}:`, error);
@@ -254,7 +253,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
         error: error.message || "Upload failed" 
       }));
     }
-  }, [user, documents.applicationId, form, setDocuments]);
+  }, [user, documents, form, setDocuments]);
 
   const handleRetry = (
     documentType: "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results",

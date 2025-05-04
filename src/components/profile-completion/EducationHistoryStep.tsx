@@ -93,6 +93,13 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   const { educationInfo, setEducationInfo } = useProfileCompletionStore();
   const [activeTab, setActiveTab] = useState("grade11");
   
+  // Initialize default subject values with required properties - Fixed missing required properties
+  const defaultSubjects = Array(7).fill(0).map(() => ({ 
+    id: uuidv4(), 
+    subject: "", 
+    mark: 0 
+  }));
+  
   const form = useForm<EducationFormValues>({
     resolver: zodResolver(educationSchema),
     defaultValues: {
@@ -101,10 +108,10 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
       completionYear: educationInfo.completionYear || new Date().getFullYear(),
       grade11Subjects: educationInfo.grade11Subjects?.length > 0 
         ? educationInfo.grade11Subjects 
-        : Array(7).fill(0).map(() => ({ id: uuidv4(), subject: "", mark: 0 })),
+        : defaultSubjects,
       grade12Subjects: educationInfo.grade12Subjects?.length > 0
         ? educationInfo.grade12Subjects
-        : Array(7).fill(0).map(() => ({ id: uuidv4(), subject: "", mark: 0 })),
+        : defaultSubjects,
     },
   });
   

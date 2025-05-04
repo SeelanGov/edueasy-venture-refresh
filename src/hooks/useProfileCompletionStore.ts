@@ -24,10 +24,11 @@ interface AddressInfo {
   postalCode: string;
 }
 
+// Fixed SubjectMark interface to make properties non-optional
 interface SubjectMark {
   id?: string;
-  subject: string;
-  mark: number;
+  subject: string;  // Required
+  mark: number;     // Required
 }
 
 interface EducationInfo {
