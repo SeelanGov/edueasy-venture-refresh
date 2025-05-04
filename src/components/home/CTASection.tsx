@@ -57,6 +57,13 @@ export const CTASection = () => {
               </>
             )}
           </div>
+          <div className="mt-6">
+            <Link to="/profile-demo">
+              <Button variant="link" className="text-white underline">
+                View Profile Demo
+              </Button>
+            </Link>
+          </div>
         </div>
         
         {/* African Pattern Bottom Border */}

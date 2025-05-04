@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
+import ProfileDemo from "./pages/ProfileDemo"; // Import our new page
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/profile-demo" element={<ProfileDemo />} /> {/* Add new route */}
               <Route 
                 path="/dashboard" 
                 element={
