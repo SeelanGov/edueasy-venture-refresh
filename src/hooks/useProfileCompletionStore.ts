@@ -24,8 +24,8 @@ interface AddressInfo {
   postalCode: string;
 }
 
-// Fixed SubjectMark interface to make properties non-optional
-interface SubjectMark {
+// Fixed SubjectMark interface to make properties non-optional and export it
+export interface SubjectMark {
   id?: string;
   subject: string;  // Required
   mark: number;     // Required
