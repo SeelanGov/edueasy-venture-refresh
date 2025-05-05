@@ -82,6 +82,13 @@ const educationSchema = z.object({
 
 type EducationFormValues = z.infer<typeof educationSchema>;
 
+// Define a proper type for SubjectMark matching the schema
+type SubjectMark = {
+  id?: string;
+  subject: string;  // Required
+  mark: number;     // Required
+};
+
 interface EducationHistoryStepProps {
   onComplete: () => void;
   onBack: () => void;
@@ -93,13 +100,18 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   const { educationInfo, setEducationInfo } = useProfileCompletionStore();
   const [activeTab, setActiveTab] = useState("grade11");
   
-  // Create default subject entries with proper typing for the SubjectMark interface
-  const createDefaultSubjects = () => {
-    return Array(7).fill(0).map(() => ({ 
-      id: uuidv4(), 
-      subject: "", // Required property with default empty string
-      mark: 0      // Required property with default 0
-    }));
+  // Helper function to create a properly typed SubjectMark object
+  const createSubject = (subject: string = "", mark: number = 0): SubjectMark => {
+    return {
+      id: uuidv4(),
+      subject,
+      mark
+    };
+  };
+  
+  // Create default subject entries with guaranteed typing
+  const createDefaultSubjects = (): SubjectMark[] => {
+    return Array(7).fill(0).map(() => createSubject());
   };
   
   const form = useForm<EducationFormValues>({
@@ -109,18 +121,10 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
       province: educationInfo.province || "",
       completionYear: educationInfo.completionYear || new Date().getFullYear(),
       grade11Subjects: educationInfo.grade11Subjects && educationInfo.grade11Subjects.length > 0 
-        ? educationInfo.grade11Subjects.map(subject => ({
-            id: subject.id || uuidv4(),
-            subject: subject.subject,
-            mark: subject.mark
-          }))
+        ? educationInfo.grade11Subjects.map(subject => createSubject(subject.subject, subject.mark))
         : createDefaultSubjects(),
       grade12Subjects: educationInfo.grade12Subjects && educationInfo.grade12Subjects.length > 0
-        ? educationInfo.grade12Subjects.map(subject => ({
-            id: subject.id || uuidv4(),
-            subject: subject.subject,
-            mark: subject.mark
-          }))
+        ? educationInfo.grade12Subjects.map(subject => createSubject(subject.subject, subject.mark))
         : createDefaultSubjects(),
     },
   });
@@ -357,7 +361,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => appendGrade11({ id: uuidv4(), subject: "", mark: 0 })}
+                      onClick={() => appendGrade11(createSubject())}
                       className="mt-2 text-cap-teal border-cap-teal hover:bg-cap-teal/10"
                     >
                       <PlusCircle className="mr-2 h-4 w-4" />
@@ -442,7 +446,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => appendGrade12({ id: uuidv4(), subject: "", mark: 0 })}
+                      onClick={() => appendGrade12(createSubject())}
                       className="mt-2 text-cap-teal border-cap-teal hover:bg-cap-teal/10"
                     >
                       <PlusCircle className="mr-2 h-4 w-4" />
