@@ -93,12 +93,14 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   const { educationInfo, setEducationInfo } = useProfileCompletionStore();
   const [activeTab, setActiveTab] = useState("grade11");
   
-  // Initialize default subject values with required properties - Fixed missing required properties
-  const defaultSubjects = Array(7).fill(0).map(() => ({ 
-    id: uuidv4(), 
-    subject: "", 
-    mark: 0 
-  }));
+  // Create default subject entries with proper typing for the SubjectMark interface
+  const createDefaultSubjects = () => {
+    return Array(7).fill(0).map(() => ({ 
+      id: uuidv4(), 
+      subject: "", // Required property with default empty string
+      mark: 0      // Required property with default 0
+    }));
+  };
   
   const form = useForm<EducationFormValues>({
     resolver: zodResolver(educationSchema),
@@ -106,12 +108,20 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
       schoolName: educationInfo.schoolName || "",
       province: educationInfo.province || "",
       completionYear: educationInfo.completionYear || new Date().getFullYear(),
-      grade11Subjects: educationInfo.grade11Subjects?.length > 0 
-        ? educationInfo.grade11Subjects 
-        : defaultSubjects,
-      grade12Subjects: educationInfo.grade12Subjects?.length > 0
-        ? educationInfo.grade12Subjects
-        : defaultSubjects,
+      grade11Subjects: educationInfo.grade11Subjects && educationInfo.grade11Subjects.length > 0 
+        ? educationInfo.grade11Subjects.map(subject => ({
+            id: subject.id || uuidv4(),
+            subject: subject.subject,
+            mark: subject.mark
+          }))
+        : createDefaultSubjects(),
+      grade12Subjects: educationInfo.grade12Subjects && educationInfo.grade12Subjects.length > 0
+        ? educationInfo.grade12Subjects.map(subject => ({
+            id: subject.id || uuidv4(),
+            subject: subject.subject,
+            mark: subject.mark
+          }))
+        : createDefaultSubjects(),
     },
   });
   
