@@ -105,7 +105,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
         if (grade12Error) throw grade12Error;
       }
       
-      // Save to store
+      // Save to store - ensuring we pass properly typed SubjectMark arrays
       setEducationInfo({
         schoolName: data.schoolName,
         province: data.province,

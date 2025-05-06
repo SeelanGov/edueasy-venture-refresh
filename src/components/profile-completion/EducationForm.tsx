@@ -1,3 +1,4 @@
+
 import React from "react";
 import { z } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -27,7 +28,7 @@ const provinces = [
 
 // Ensure Zod schema matches the SubjectMark interface
 const subjectMarkSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1, "ID is required"),
   subject: z.string().min(1, "Subject is required"),
   mark: z.coerce
     .number()
