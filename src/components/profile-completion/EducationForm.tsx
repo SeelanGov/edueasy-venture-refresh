@@ -1,4 +1,3 @@
-
 import React from "react";
 import { z } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -27,7 +26,7 @@ const provinces = [
 ];
 
 const subjectMarkSchema = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   subject: z.string().min(1, "Subject is required"),
   mark: z.coerce
     .number()
@@ -66,11 +65,11 @@ export const EducationForm: React.FC<EducationFormProps> = ({
   const [activeTab, setActiveTab] = React.useState("grade11");
   
   // Helper function to create a properly typed SubjectMark object
-  const createSubject = (subject: string = "", mark: number = 0): SubjectMark => {
+  const createSubject = (): SubjectMark => {
     return {
       id: uuidv4(),
-      subject,
-      mark
+      subject: "",
+      mark: 0
     };
   };
   

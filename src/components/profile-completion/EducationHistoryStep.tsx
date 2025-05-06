@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { EducationForm, EducationFormValues } from "./EducationForm";
+import { SubjectMark } from "@/hooks/useProfileCompletionStore";
 
 interface EducationHistoryStepProps {
   onComplete: () => void;
@@ -17,7 +18,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   const { educationInfo, setEducationInfo } = useProfileCompletionStore();
   
   // Helper function to create a properly typed SubjectMark object
-  const createSubject = (subject: string = "", mark: number = 0) => {
+  const createSubject = (subject: string = "", mark: number = 0): SubjectMark => {
     return {
       id: uuidv4(),
       subject,
@@ -26,20 +27,20 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   };
   
   // Create default subject entries with guaranteed typing
-  const createDefaultSubjects = () => {
+  const createDefaultSubjects = (): SubjectMark[] => {
     return Array(7).fill(0).map(() => createSubject());
   };
   
-  // Prepare initial values for the form
+  // Prepare initial values for the form with explicit typing
   const initialValues: EducationFormValues = {
     schoolName: educationInfo.schoolName || "",
     province: educationInfo.province || "",
     completionYear: educationInfo.completionYear || new Date().getFullYear(),
     grade11Subjects: educationInfo.grade11Subjects && educationInfo.grade11Subjects.length > 0 
-      ? educationInfo.grade11Subjects.map(subject => createSubject(subject.subject, subject.mark))
+      ? educationInfo.grade11Subjects
       : createDefaultSubjects(),
     grade12Subjects: educationInfo.grade12Subjects && educationInfo.grade12Subjects.length > 0
-      ? educationInfo.grade12Subjects.map(subject => createSubject(subject.subject, subject.mark))
+      ? educationInfo.grade12Subjects
       : createDefaultSubjects(),
   };
 
