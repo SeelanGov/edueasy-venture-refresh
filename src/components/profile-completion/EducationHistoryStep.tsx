@@ -31,17 +31,29 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
     return Array(7).fill(0).map(() => createSubject());
   };
   
+  // Ensure stored subjects are properly typed
+  const ensureValidSubjects = (subjects: any[] | undefined): SubjectMark[] => {
+    if (!subjects || subjects.length === 0) {
+      return createDefaultSubjects();
+    }
+    
+    // Map each subject to ensure it has all required properties
+    return subjects.map(subject => {
+      return {
+        id: subject.id || uuidv4(),
+        subject: subject.subject || "",
+        mark: typeof subject.mark === 'number' ? subject.mark : 0
+      };
+    });
+  };
+  
   // Prepare initial values for the form with explicit typing
   const initialValues: EducationFormValues = {
     schoolName: educationInfo.schoolName || "",
     province: educationInfo.province || "",
     completionYear: educationInfo.completionYear || new Date().getFullYear(),
-    grade11Subjects: educationInfo.grade11Subjects && educationInfo.grade11Subjects.length > 0 
-      ? educationInfo.grade11Subjects
-      : createDefaultSubjects(),
-    grade12Subjects: educationInfo.grade12Subjects && educationInfo.grade12Subjects.length > 0
-      ? educationInfo.grade12Subjects
-      : createDefaultSubjects(),
+    grade11Subjects: ensureValidSubjects(educationInfo.grade11Subjects),
+    grade12Subjects: ensureValidSubjects(educationInfo.grade12Subjects),
   };
 
   const onSubmit = async (data: EducationFormValues) => {

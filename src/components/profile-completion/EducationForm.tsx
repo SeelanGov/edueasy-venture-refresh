@@ -25,6 +25,7 @@ const provinces = [
   "Western Cape",
 ];
 
+// Ensure Zod schema matches the SubjectMark interface
 const subjectMarkSchema = z.object({
   id: z.string(),
   subject: z.string().min(1, "Subject is required"),
