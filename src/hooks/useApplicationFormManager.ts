@@ -114,7 +114,11 @@ export const useApplicationFormManager = () => {
         
         // Handle potential missing personal_statement property by checking if it exists
         if ('personal_statement' in data) {
-          form.setValue("personalStatement", data.personal_statement || "");
+          // Fix: Properly type-cast personal_statement to ensure it's a string
+          const personalStatement = typeof data.personal_statement === 'string' 
+            ? data.personal_statement 
+            : '';
+          form.setValue("personalStatement", personalStatement);
         }
         
         // Fetch user data to fill name and ID number
