@@ -4,20 +4,73 @@ import React from "react";
 export const AboutSection = () => {
   return (
     <section id="learn-more" className="py-20 px-4 bg-white text-cap-dark">
-      <div className="container mx-auto text-center">
+      <div className="container mx-auto">
         <div className="mb-6 flex justify-center">
           <div className="w-16 h-1 bg-cap-teal rounded"></div>
         </div>
         
-        <h2 className="font-heading text-3xl md:text-4xl font-bold mb-8">
+        <h2 className="text-center font-heading text-3xl md:text-4xl font-bold mb-8">
           About EduEasy
         </h2>
-        <p className="text-xl mb-12 max-w-3xl mx-auto">
-          EduEasy is your gateway to higher education in South Africa.
-          We simplify the application process, making it easier for students to apply to multiple institutions.
-        </p>
         
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-12 items-center max-w-6xl mx-auto">
+          <div className="md:w-1/2">
+            <div className="relative">
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-cap-coral opacity-20 rounded-full"></div>
+              <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
+                <img 
+                  src="/lovable-uploads/ff94423b-eb6f-4168-8c59-c20117e3c378.png"
+                  alt="Students using EduEasy"
+                  className="w-full h-auto"
+                />
+              </div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-cap-teal opacity-20 rounded-full"></div>
+            </div>
+          </div>
+          
+          <div className="md:w-1/2">
+            <h3 className="text-2xl font-semibold mb-4 text-cap-teal">Simplifying Higher Education Access</h3>
+            <p className="text-lg mb-6">
+              EduEasy is your gateway to higher education in South Africa. 
+              We streamline the application process, making it easier for students to apply to multiple institutions 
+              with a single application form.
+            </p>
+            
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold">Simplified Applications</h4>
+                  <p className="text-gray-700">Apply to multiple institutions with one application, saving time and reducing stress.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-5 h-5 rounded-full bg-cap-coral"></div>
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold">Document Verification</h4>
+                  <p className="text-gray-700">Our system ensures your documents meet all requirements before submission.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold">Real-time Tracking</h4>
+                  <p className="text-gray-700">Monitor your application status and receive updates throughout the process.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16">
           <FeatureCard 
             icon={
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -63,8 +116,8 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
       <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
         {icon}
       </div>
-      <h3 className="font-heading text-xl font-semibold mb-4">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="font-heading text-xl font-semibold mb-4 text-center">{title}</h3>
+      <p className="text-gray-600 text-center">{description}</p>
     </div>
   );
 };

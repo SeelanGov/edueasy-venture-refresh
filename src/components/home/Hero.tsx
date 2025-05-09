@@ -77,11 +77,19 @@ export const Hero = () => {
           
           <div className="w-full max-w-xl mx-auto h-px bg-white my-5"></div>
           
-          <p className="text-xl mb-8 uppercase tracking-wide">
+          <p className="text-xl md:text-2xl mb-8 uppercase tracking-wide">
             Bridging Education to Employment
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+          <div className="bg-white/10 p-4 md:p-6 rounded-lg max-w-2xl mx-auto mb-8">
+            <h2 className="text-xl md:text-2xl font-semibold mb-3">One Application, Multiple Opportunities</h2>
+            <p className="text-lg mb-0">
+              Apply to multiple universities across South Africa with a single application.
+              Save time, track progress, and increase your chances of acceptance.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Button 
               size="lg" 
               className="text-lg bg-cap-coral hover:bg-cap-coral/90 text-white px-10 py-6"
@@ -89,6 +97,20 @@ export const Hero = () => {
             >
               START APPLICATION
             </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg border-white text-white hover:bg-white hover:text-cap-dark px-10 py-6"
+              onClick={() => navigate('#how-it-works')}
+            >
+              HOW IT WORKS
+            </Button>
+          </div>
+          
+          <div className="flex justify-center mt-6">
+            <div className="bg-cap-teal text-white rounded-full py-1 px-4 text-sm">
+              93% Success Rate
+            </div>
           </div>
         </div>
         

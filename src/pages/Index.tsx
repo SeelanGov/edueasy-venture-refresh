@@ -2,6 +2,9 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { AboutSection } from "@/components/home/AboutSection";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { PartnersSection } from "@/components/home/PartnersSection";
 import { CTASection } from "@/components/home/CTASection";
 import { Footer } from "@/components/home/Footer";
 
@@ -28,7 +31,10 @@ const Index = () => {
       
       {/* Main Content Sections */}
       <Hero />
+      <HowItWorks />
       <AboutSection />
+      <TestimonialsSection />
+      <PartnersSection />
       <CTASection />
       <Footer />
     </div>
