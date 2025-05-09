@@ -37,15 +37,15 @@ export const useApplicationSubmit = (
     setIsSubmitting(true);
 
     try {
-      // Step 1: Insert application record
+      // Step 1: Insert application record with institution and program IDs
       const applicationId = uuidv4();
       const { error: appError } = await supabase.from("applications").insert([
         {
           id: applicationId,
           user_id: userId,
           grade12_results: data.grade12Results,
-          university: data.university,
-          program: data.program,
+          institution_id: data.university, // Now this is the institution ID
+          program_id: data.program, // Now this is the program ID
           status: "Draft",
         },
       ]);

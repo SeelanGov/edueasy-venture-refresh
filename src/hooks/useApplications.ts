@@ -12,8 +12,8 @@ interface Document {
 
 interface Application {
   id: string;
-  university: string;
-  program: string;
+  institution_id: string;
+  program_id: string;
   status: string;
   created_at: string;
   documents: Document[];

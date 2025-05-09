@@ -3,6 +3,8 @@ import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessa
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
+import { useInstitutionsAndPrograms } from "@/hooks/useInstitutionsAndPrograms";
+import { Spinner } from "@/components/Spinner";
 
 export interface ApplicationFormValues {
   fullName: string;
@@ -20,6 +22,14 @@ interface ApplicationFormFieldsProps {
 }
 
 export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: ApplicationFormFieldsProps) => {
+  const { 
+    institutions, 
+    filteredPrograms, 
+    loading, 
+    selectedInstitutionId, 
+    setSelectedInstitutionId 
+  } = useInstitutionsAndPrograms();
+
   return (
     <>
       <FormField
@@ -92,9 +102,14 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
             <FormItem>
               <FormLabel>University</FormLabel>
               <Select
-                onValueChange={field.onChange}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setSelectedInstitutionId(value);
+                  // Reset program when university changes
+                  form.setValue("program", "");
+                }}
                 defaultValue={field.value}
-                disabled={isSubmitting}
+                disabled={isSubmitting || loading}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -102,9 +117,17 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="UCT">University of Cape Town (UCT)</SelectItem>
-                  <SelectItem value="Wits">University of Witwatersrand (Wits)</SelectItem>
-                  <SelectItem value="UP">University of Pretoria (UP)</SelectItem>
+                  {loading ? (
+                    <div className="flex justify-center p-2">
+                      <Spinner size="sm" />
+                    </div>
+                  ) : (
+                    institutions.map((institution) => (
+                      <SelectItem key={institution.id} value={institution.id}>
+                        {institution.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -121,7 +144,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                disabled={isSubmitting}
+                disabled={isSubmitting || !selectedInstitutionId}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -129,9 +152,22 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="BSc">Bachelor of Science (BSc)</SelectItem>
-                  <SelectItem value="BA">Bachelor of Arts (BA)</SelectItem>
-                  <SelectItem value="BCom">Bachelor of Commerce (BCom)</SelectItem>
+                  {filteredPrograms.length === 0 && selectedInstitutionId ? (
+                    <div className="p-2 text-center text-sm text-gray-500">
+                      No programs found
+                    </div>
+                  ) : (
+                    filteredPrograms.map((program) => (
+                      <SelectItem key={program.id} value={program.id}>
+                        {program.name}
+                      </SelectItem>
+                    ))
+                  )}
+                  {!selectedInstitutionId && (
+                    <div className="p-2 text-center text-sm text-gray-500">
+                      Select a university first
+                    </div>
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />

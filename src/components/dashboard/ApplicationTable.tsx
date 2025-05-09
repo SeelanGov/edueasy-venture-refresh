@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Spinner } from "@/components/Spinner";
@@ -15,13 +15,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+interface Institution {
+  id: string;
+  name: string;
+}
+
+interface Program {
+  id: string;
+  name: string;
+}
+
 interface Application {
   id: string;
-  university: string;
-  program: string;
+  institution_id: string;
+  program_id: string;
   status: string;
   created_at: string;
   documents: Document[];
+  institution?: Institution;
+  program?: Program;
 }
 
 interface Document {
@@ -36,6 +48,54 @@ interface ApplicationTableProps {
 }
 
 export const ApplicationTable = ({ applications, loading }: ApplicationTableProps) => {
+  const [enrichedApplications, setEnrichedApplications] = useState<Application[]>([]);
+
+  useEffect(() => {
+    // Fetch institution and program details for each application
+    const fetchDetails = async () => {
+      try {
+        const enriched = await Promise.all(
+          applications.map(async (app) => {
+            let institutionData = null;
+            let programData = null;
+            
+            if (app.institution_id) {
+              const { data: instData } = await supabase
+                .from("institutions")
+                .select("id, name")
+                .eq("id", app.institution_id)
+                .single();
+              institutionData = instData;
+            }
+            
+            if (app.program_id) {
+              const { data: progData } = await supabase
+                .from("programs")
+                .select("id, name")
+                .eq("id", app.program_id)
+                .single();
+              programData = progData;
+            }
+            
+            return {
+              ...app,
+              institution: institutionData,
+              program: programData
+            };
+          })
+        );
+        
+        setEnrichedApplications(enriched);
+      } catch (error) {
+        console.error("Error fetching application details:", error);
+      }
+    };
+    
+    if (applications.length > 0) {
+      fetchDetails();
+    }
+  }, [applications]);
+
   const getStatusBadgeClass = (status: string) => {
     switch (status.toLowerCase()) {
       case "draft":
@@ -100,10 +160,14 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
         </TableRow>
       </TableHeader>
       <TableBody>
-        {applications.map((app) => (
+        {enrichedApplications.map((app) => (
           <TableRow key={app.id}>
-            <TableCell className="font-medium">{app.university}</TableCell>
-            <TableCell>{app.program}</TableCell>
+            <TableCell className="font-medium">
+              {app.institution?.name || "Not specified"}
+            </TableCell>
+            <TableCell>
+              {app.program?.name || "Not specified"}
+            </TableCell>
             <TableCell>
               <span 
                 className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status)}`}

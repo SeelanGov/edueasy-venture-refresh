@@ -53,7 +53,9 @@ export type Database = {
           created_at: string | null
           grade12_results: string | null
           id: string
+          institution_id: string | null
           program: string | null
+          program_id: string | null
           status: string | null
           university: string | null
           user_id: string
@@ -62,7 +64,9 @@ export type Database = {
           created_at?: string | null
           grade12_results?: string | null
           id?: string
+          institution_id?: string | null
           program?: string | null
+          program_id?: string | null
           status?: string | null
           university?: string | null
           user_id: string
@@ -71,12 +75,28 @@ export type Database = {
           created_at?: string | null
           grade12_results?: string | null
           id?: string
+          institution_id?: string | null
           program?: string | null
+          program_id?: string | null
           status?: string | null
           university?: string | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "applications_user_id_fkey"
             columns: ["user_id"]
@@ -153,6 +173,98 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      institutions: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          email: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          phone: string | null
+          province: string | null
+          short_name: string | null
+          type: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          province?: string | null
+          short_name?: string | null
+          type: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          province?: string | null
+          short_name?: string | null
+          type?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      programs: {
+        Row: {
+          active: boolean | null
+          code: string | null
+          created_at: string | null
+          faculty: string | null
+          id: string
+          institution_id: string
+          name: string
+          qualification_type: string | null
+          study_mode: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          code?: string | null
+          created_at?: string | null
+          faculty?: string | null
+          id?: string
+          institution_id: string
+          name: string
+          qualification_type?: string | null
+          study_mode?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          code?: string | null
+          created_at?: string | null
+          faculty?: string | null
+          id?: string
+          institution_id?: string
+          name?: string
+          qualification_type?: string | null
+          study_mode?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subject_marks: {
         Row: {
