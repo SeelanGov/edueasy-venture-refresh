@@ -11,23 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useNotifications, Notification } from "@/hooks/useNotifications";
+import { useNotificationSystem, Notification } from "@/hooks/useNotificationSystem";
 
 export const NotificationsPanel = () => {
-  const { notifications, unreadCount, loading, markAsRead, markAllAsRead } = useNotifications();
+  const { notifications, unreadCount, loading, markAsRead, markAllAsRead, deleteNotification } = useNotificationSystem();
   const [open, setOpen] = useState(false);
-
-  const handleMarkAsRead = (id: string) => {
-    markAsRead(id);
-  };
-
-  const handleMarkAllAsRead = () => {
-    markAllAsRead();
-  };
 
   const renderNotificationContent = (notification: Notification) => {
     return (
-      <div className={`p-4 ${notification.is_read ? 'bg-white' : 'bg-blue-50'}`}>
+      <div className={`p-4 ${notification.is_read ? 'bg-white dark:bg-gray-800' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
         <div className="flex justify-between items-start">
           <h4 className="font-medium text-sm">{notification.title}</h4>
           <Button 
@@ -36,15 +28,15 @@ export const NotificationsPanel = () => {
             className="h-5 w-5"
             onClick={(e) => {
               e.stopPropagation();
-              handleMarkAsRead(notification.id);
+              deleteNotification(notification.id);
             }}
           >
-            <X className="h-3 w-3" />
+            <Trash2 className="h-3 w-3" />
           </Button>
         </div>
-        <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
+        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">{notification.message}</p>
         <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             {format(new Date(notification.created_at), 'MMM d, h:mm a')}
           </span>
           {!notification.is_read && (
@@ -54,7 +46,7 @@ export const NotificationsPanel = () => {
               className="h-6 text-xs px-2"
               onClick={(e) => {
                 e.stopPropagation();
-                handleMarkAsRead(notification.id);
+                markAsRead(notification.id);
               }}
             >
               <Check className="h-3 w-3 mr-1" /> Mark read
@@ -88,7 +80,7 @@ export const NotificationsPanel = () => {
               variant="ghost" 
               size="sm" 
               className="text-xs"
-              onClick={handleMarkAllAsRead}
+              onClick={markAllAsRead}
             >
               <Check className="h-3 w-3 mr-1" /> Mark all as read
             </Button>
@@ -108,7 +100,7 @@ export const NotificationsPanel = () => {
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
               <p>No notifications</p>
             </div>
           )}

@@ -1,13 +1,14 @@
 
+import { useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Form } from "@/components/ui/form";
-import { useApplicationForm } from "@/hooks/useApplicationForm";
 import { OfflineNotice } from "@/components/application/OfflineNotice";
 import { ApplicationFormFields } from "@/components/application/ApplicationFormFields";
 import { FormActions } from "@/components/application/FormActions";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
 import { ThandiAgent } from "@/components/ai/ThandiAgent";
+import { useApplicationFormManager } from "@/hooks/useApplicationFormManager";
 
 const ApplicationForm = () => {
   const {
@@ -19,8 +20,14 @@ const ApplicationForm = () => {
     saveDraft,
     handleSyncNow,
     isOnline,
-    hasSavedDraft
-  } = useApplicationForm();
+    hasSavedDraft,
+    initializeForm
+  } = useApplicationFormManager();
+
+  // Initialize form on component mount
+  useEffect(() => {
+    initializeForm();
+  }, [initializeForm]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">

@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import { DashboardLayout } from '@/components/DashboardLayout';
+import { MobileFriendlyDashboardLayout } from '@/components/MobileFriendlyDashboardLayout';
 import { ThandiAgent } from '@/components/ai/ThandiAgent';
 
 interface DashboardLayoutWithThandiProps {
@@ -10,7 +10,7 @@ interface DashboardLayoutWithThandiProps {
 export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThandiProps) => {
   return (
     <>
-      <DashboardLayout>{children}</DashboardLayout>
+      <MobileFriendlyDashboardLayout>{children}</MobileFriendlyDashboardLayout>
       <ThandiAgent />
     </>
   );
