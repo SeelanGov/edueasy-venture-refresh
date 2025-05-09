@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/Spinner";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Save, Send } from "lucide-react";
 
 interface FormActionsProps {
   isSubmitting: boolean;
@@ -34,6 +34,7 @@ export const FormActions = ({ isSubmitting }: FormActionsProps) => {
           </>
         ) : (
           <>
+            <Send size={16} className="mr-2" />
             Submit Application
           </>
         )}

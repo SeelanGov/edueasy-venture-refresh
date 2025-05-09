@@ -6,6 +6,7 @@ import { OfflineNotice } from "@/components/application/OfflineNotice";
 import { ApplicationFormFields } from "@/components/application/ApplicationFormFields";
 import { FormActions } from "@/components/application/FormActions";
 import { Separator } from "@/components/ui/separator";
+import { Toaster } from "@/components/ui/toaster";
 
 const ApplicationForm = () => {
   const {
@@ -22,10 +23,10 @@ const ApplicationForm = () => {
       <Navbar />
       
       <div className="container mx-auto px-4 py-8 pt-24">
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-cap-dark">Program Application</h1>
-            <p className="text-gray-600 mt-1">Apply to your desired educational institution and program</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-cap-dark">Program Application</h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">Apply to your desired educational institution and program</p>
             <Separator className="mt-4" />
           </div>
           
@@ -46,6 +47,7 @@ const ApplicationForm = () => {
           </Form>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
