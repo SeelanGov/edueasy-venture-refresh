@@ -107,10 +107,15 @@ export const useApplicationFormManager = () => {
       }
       
       if (data) {
+        // Make sure we're dealing with application data with proper typing
         form.setValue("grade12Results", data.grade12_results || "");
         form.setValue("university", data.institution_id || "");
         form.setValue("program", data.program_id || "");
-        form.setValue("personalStatement", data.personal_statement || "");
+        
+        // Handle potential missing personal_statement property by checking if it exists
+        if ('personal_statement' in data) {
+          form.setValue("personalStatement", data.personal_statement || "");
+        }
         
         // Fetch user data to fill name and ID number
         const { data: userData, error: userError } = await supabase

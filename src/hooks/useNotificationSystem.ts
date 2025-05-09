@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
-import { toast as sonnerToast } from "@/components/ui/sonner";
+import { toast as sonnerToast } from "sonner"; // Import directly from sonner package instead
 
 export interface Notification {
   id: string;
