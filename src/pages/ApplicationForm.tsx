@@ -41,7 +41,7 @@ const ApplicationForm = () => {
           <OfflineNotice isOnline={isOnline} onSyncNow={handleSyncNow} />
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6">
               <ApplicationFormFields 
                 form={form} 
                 isSubmitting={isSubmitting || isSavingDraft} 

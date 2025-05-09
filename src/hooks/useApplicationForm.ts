@@ -40,7 +40,7 @@ export const useApplicationForm = () => {
   );
 
   // Initialize application submission
-  const { isSubmitting, onSubmit: submitApplication, handleSyncNow: syncNow } = 
+  const { isSubmitting, onSubmit: submitFormData, handleSyncNow: syncNow } = 
     useApplicationSubmission(
       user?.id,
       isOnline,
@@ -51,9 +51,9 @@ export const useApplicationForm = () => {
     );
 
   // Create a submit wrapper that calls the form's handleSubmit
-  const onSubmit = form.handleSubmit(submitApplication);
+  const onSubmit = form.handleSubmit(submitFormData);
 
-  // Create a sync handler that uses the form's handleSubmit
+  // Create a sync handler
   const handleSyncNow = () => {
     if (isOnline) {
       onSubmit();

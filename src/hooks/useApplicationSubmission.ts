@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { SubmitHandler } from "react-hook-form";
 
 /**
  * Hook for managing application submission functionality
@@ -21,7 +22,7 @@ export const useApplicationSubmission = (
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Handle form submission
-  const onSubmit = async (data: ApplicationFormValues) => {
+  const onSubmit: SubmitHandler<ApplicationFormValues> = async (data) => {
     // Validate that we have a document file
     if (!documentFile && !hasSavedDraft) {
       toast({
@@ -126,8 +127,7 @@ export const useApplicationSubmission = (
   };
 
   const handleSyncNow = () => {
-    if (isOnline && onSubmit) {
-      // We'll need to call the parent form's submit handler here
+    if (isOnline) {
       // This will be connected in the main hook
     }
   };
