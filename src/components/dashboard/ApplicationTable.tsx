@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Spinner } from "@/components/Spinner";
-import { FileIcon, ExternalLinkIcon } from "lucide-react";
+import { FileIcon, ExternalLinkIcon, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -25,6 +26,14 @@ interface Program {
   name: string;
 }
 
+interface Document {
+  id: string;
+  file_path: string;
+  created_at: string;
+  verification_status: string | null;
+  document_type: string | null;
+}
+
 interface Application {
   id: string;
   institution_id: string;
@@ -34,12 +43,6 @@ interface Application {
   documents: Document[];
   institution?: Institution;
   program?: Program;
-}
-
-interface Document {
-  id: string;
-  file_path: string;
-  created_at: string;
 }
 
 interface ApplicationTableProps {
@@ -109,10 +112,44 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   };
 
+  const getVerificationBadge = (status: string | null) => {
+    if (!status) return null;
+    
+    switch (status.toLowerCase()) {
+      case "approved":
+        return (
+          <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+            <CheckCircle className="h-3 w-3 mr-1" />
+            Verified
+          </Badge>
+        );
+      case "rejected":
+        return (
+          <Badge variant="destructive">
+            <XCircle className="h-3 w-3 mr-1" />
+            Rejected
+          </Badge>
+        );
+      case "pending":
+        return (
+          <Badge variant="outline" className="border-amber-500 text-amber-500">
+            <AlertCircle className="h-3 w-3 mr-1" />
+            Pending
+          </Badge>
+        );
+      default:
+        return (
+          <Badge variant="outline">
+            Unknown
+          </Badge>
+        );
+    }
+  };
+
   const getDocumentUrl = async (filePath: string) => {
     try {
       const { data, error } = await supabase.storage
-        .from("application_docs")
+        .from("user_documents")
         .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 
       if (error) throw error;
@@ -179,17 +216,21 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
               {app.documents.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   {app.documents.map((doc) => (
-                    <Button
-                      key={doc.id}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs justify-start"
-                      onClick={() => handleDocumentClick(doc.file_path)}
-                    >
-                      <FileIcon className="h-3 w-3 mr-1" />
-                      <span className="truncate">View Document</span>
-                      <ExternalLinkIcon className="h-3 w-3 ml-1" />
-                    </Button>
+                    <div key={doc.id} className="flex items-center justify-between">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs justify-start"
+                        onClick={() => handleDocumentClick(doc.file_path)}
+                      >
+                        <FileIcon className="h-3 w-3 mr-1" />
+                        <span className="truncate">{doc.document_type || "Document"}</span>
+                        <ExternalLinkIcon className="h-3 w-3 ml-1" />
+                      </Button>
+                      <div className="ml-2">
+                        {getVerificationBadge(doc.verification_status)}
+                      </div>
+                    </div>
                   ))}
                 </div>
               ) : (

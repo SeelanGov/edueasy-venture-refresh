@@ -8,6 +8,8 @@ interface Document {
   id: string;
   file_path: string;
   created_at: string;
+  document_type: string | null;
+  verification_status: string | null;
 }
 
 interface Application {
@@ -67,6 +69,26 @@ export const useApplications = () => {
 
     if (user) {
       fetchApplications();
+      
+      // Set up subscription for real-time updates to documents
+      const documentsChannel = supabase
+        .channel('documents-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', 
+            schema: 'public',
+            table: 'documents'
+          },
+          (payload) => {
+            fetchApplications();
+          }
+        )
+        .subscribe();
+        
+      return () => {
+        supabase.removeChannel(documentsChannel);
+      };
     }
   }, [user]);
 

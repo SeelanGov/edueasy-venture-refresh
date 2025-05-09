@@ -17,6 +17,7 @@ import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
 import ProfileDemo from "./pages/ProfileDemo";
 import ProfileCompletion from "./pages/ProfileCompletion";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -72,6 +73,14 @@ const App = () => {
                 element={
                   <AuthGuard>
                     <UserProfile />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <AuthGuard>
+                    <AdminDashboard />
                   </AuthGuard>
                 } 
               />
