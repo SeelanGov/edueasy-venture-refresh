@@ -12,10 +12,13 @@ const ApplicationForm = () => {
   const {
     form,
     isSubmitting,
+    isSavingDraft,
     handleFileChange,
     onSubmit,
+    saveDraft,
     handleSyncNow,
-    isOnline
+    isOnline,
+    hasSavedDraft
   } = useApplicationForm();
 
   return (
@@ -27,6 +30,11 @@ const ApplicationForm = () => {
           <div className="mb-6">
             <h1 className="text-xl sm:text-2xl font-bold text-cap-dark">Program Application</h1>
             <p className="text-sm sm:text-base text-gray-600 mt-1">Apply to your desired educational institution and program</p>
+            {hasSavedDraft && (
+              <div className="mt-2 text-sm text-green-600 bg-green-50 p-2 rounded border border-green-200">
+                You have a saved draft application that has been loaded.
+              </div>
+            )}
             <Separator className="mt-4" />
           </div>
           
@@ -36,13 +44,17 @@ const ApplicationForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <ApplicationFormFields 
                 form={form} 
-                isSubmitting={isSubmitting} 
+                isSubmitting={isSubmitting || isSavingDraft} 
                 handleFileChange={handleFileChange} 
               />
               
               <Separator />
               
-              <FormActions isSubmitting={isSubmitting} />
+              <FormActions 
+                isSubmitting={isSubmitting}
+                isSaving={isSavingDraft}
+                onSaveDraft={saveDraft}
+              />
             </form>
           </Form>
         </div>

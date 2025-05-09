@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 
+// This hook is now simplified as most functionality has moved to useApplicationForm
 export const useApplicationSubmit = (
   userId: string | undefined,
   isOnline: boolean,
@@ -76,6 +77,7 @@ export const useApplicationSubmit = (
             user_id: userId,
             file_path: filePath,
             document_type: "Application Document",
+            verification_status: "pending",
           },
         ]);
 

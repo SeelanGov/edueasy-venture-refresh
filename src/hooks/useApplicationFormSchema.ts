@@ -42,8 +42,23 @@ export const useApplicationFormSchema = () => {
       .refine(
         (file) => !file || file.size <= 5 * 1024 * 1024,
         "File size must be less than 5MB"
+      )
+      .refine(
+        (file) => !file || ["application/pdf"].includes(file.type),
+        "Only PDF files are accepted"
       ),
   });
 
-  return { formSchema };
+  // Draft schema with more relaxed validation for saving drafts
+  const draftSchema = z.object({
+    fullName: z.string().optional(),
+    idNumber: z.string().optional(),
+    grade12Results: z.string().optional(),
+    university: z.string().optional(),
+    program: z.string().optional(),
+    personalStatement: z.string().optional(),
+    documentFile: z.any().optional(),
+  });
+
+  return { formSchema, draftSchema };
 };

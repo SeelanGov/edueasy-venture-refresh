@@ -6,9 +6,15 @@ import { AlertTriangle, Save, Send } from "lucide-react";
 
 interface FormActionsProps {
   isSubmitting: boolean;
+  isSaving?: boolean;
+  onSaveDraft?: () => void;
 }
 
-export const FormActions = ({ isSubmitting }: FormActionsProps) => {
+export const FormActions = ({ 
+  isSubmitting, 
+  isSaving = false,
+  onSaveDraft 
+}: FormActionsProps) => {
   const navigate = useNavigate();
   
   return (
@@ -17,15 +23,36 @@ export const FormActions = ({ isSubmitting }: FormActionsProps) => {
         type="button"
         variant="outline"
         onClick={() => navigate("/dashboard")}
-        disabled={isSubmitting}
+        disabled={isSubmitting || isSaving}
       >
         Cancel
       </Button>
       
+      {onSaveDraft && (
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={onSaveDraft}
+          disabled={isSubmitting || isSaving}
+        >
+          {isSaving ? (
+            <>
+              <Spinner size="sm" className="mr-2" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save size={16} className="mr-2" />
+              Save Draft
+            </>
+          )}
+        </Button>
+      )}
+      
       <Button
         type="submit"
         className="bg-cap-teal hover:bg-cap-teal/90"
-        disabled={isSubmitting}
+        disabled={isSubmitting || isSaving}
       >
         {isSubmitting ? (
           <>
@@ -40,10 +67,14 @@ export const FormActions = ({ isSubmitting }: FormActionsProps) => {
         )}
       </Button>
       
-      {isSubmitting && (
+      {(isSubmitting || isSaving) && (
         <div className="flex items-center mt-2 text-sm text-amber-700 sm:mt-0">
           <AlertTriangle size={16} className="mr-1" />
-          <span>Please wait while your application is being submitted</span>
+          <span>
+            {isSubmitting 
+              ? "Please wait while your application is being submitted" 
+              : "Saving your progress..."}
+          </span>
         </div>
       )}
     </div>
