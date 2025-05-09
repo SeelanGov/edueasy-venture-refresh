@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Spinner } from "@/components/Spinner";
-import { FileIcon, ExternalLinkIcon, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { FileIcon, ExternalLinkIcon, CheckCircle, XCircle, AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -135,6 +134,13 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
           <Badge variant="outline" className="border-amber-500 text-amber-500">
             <AlertCircle className="h-3 w-3 mr-1" />
             Pending
+          </Badge>
+        );
+      case "request_resubmission":
+        return (
+          <Badge variant="outline" className="border-orange-500 text-orange-500">
+            <RefreshCw className="h-3 w-3 mr-1" />
+            Resubmit
           </Badge>
         );
       default:

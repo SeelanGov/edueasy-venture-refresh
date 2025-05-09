@@ -1,4 +1,3 @@
-
 import { ReactNode, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ import {
   X,
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
+import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -219,6 +219,9 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Add NotificationsPanel */}
+              {user && <NotificationsPanel />}
+              
               <div className="md:hidden">
                 <Button 
                   variant="ghost" 

@@ -11,6 +11,7 @@ export interface Document {
   created_at: string;
   user_id: string | null;
   application_id: string;
+  rejection_reason: string | null;
 }
 
 export interface DocumentWithUserInfo extends Document {
@@ -22,12 +23,28 @@ export const useDocumentsManagement = () => {
   const [documents, setDocuments] = useState<DocumentWithUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const pageSize = 10;
 
   const fetchDocuments = async () => {
     setLoading(true);
     setError(null);
     
     try {
+      // First get the total count
+      const { count, error: countError } = await supabase
+        .from("documents")
+        .select("id", { count: "exact", head: true });
+        
+      if (countError) throw countError;
+      
+      setTotalCount(count || 0);
+
+      // Fetch documents with pagination
+      const from = (currentPage - 1) * pageSize;
+      const to = from + pageSize - 1;
+      
       // Fetch documents with user info
       const { data, error } = await supabase
         .from("documents")
@@ -38,7 +55,8 @@ export const useDocumentsManagement = () => {
             email
           )
         `)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(from, to);
 
       if (error) throw error;
 
@@ -63,11 +81,25 @@ export const useDocumentsManagement = () => {
     }
   };
 
-  const updateDocumentStatus = async (id: string, status: string) => {
+  const updateDocumentStatus = async (id: string, status: string, rejectionReason?: string) => {
     try {
+      const updateData: {
+        verification_status: string;
+        rejection_reason?: string | null;
+      } = {
+        verification_status: status
+      };
+      
+      // Add or clear rejection reason based on status
+      if (status === 'rejected' || status === 'request_resubmission') {
+        updateData.rejection_reason = rejectionReason || null;
+      } else if (status === 'approved') {
+        updateData.rejection_reason = null;
+      }
+
       const { error } = await supabase
         .from("documents")
-        .update({ verification_status: status })
+        .update(updateData)
         .eq("id", id);
 
       if (error) throw error;
@@ -110,7 +142,7 @@ export const useDocumentsManagement = () => {
 
   useEffect(() => {
     fetchDocuments();
-  }, []);
+  }, [currentPage]);
 
   return {
     documents,
@@ -119,5 +151,9 @@ export const useDocumentsManagement = () => {
     updateDocumentStatus,
     getDocumentUrl,
     refreshDocuments: fetchDocuments,
+    currentPage,
+    setCurrentPage,
+    totalCount,
+    pageSize
   };
 };

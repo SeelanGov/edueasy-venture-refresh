@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, XCircle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +12,7 @@ interface DocumentStatus {
   verification_status: string | null;
   file_path: string;
   created_at: string; // Using created_at instead of updated_at
+  rejection_reason: string | null;
 }
 
 export const DocumentVerificationNotice = () => {
@@ -25,13 +26,12 @@ export const DocumentVerificationNotice = () => {
       if (!user) return;
       
       try {
-        // Get documents that have been recently verified or rejected
-        // Changed to use created_at instead of updated_at
+        // Get documents that have been recently verified, rejected, or need resubmission
         const { data, error } = await supabase
           .from("documents")
-          .select("id, document_type, verification_status, file_path, created_at")
+          .select("id, document_type, verification_status, file_path, created_at, rejection_reason")
           .eq("user_id", user.id)
-          .in("verification_status", ["approved", "rejected"])
+          .in("verification_status", ["approved", "rejected", "request_resubmission"])
           .order("created_at", { ascending: false })
           .limit(5);
           
@@ -115,6 +115,8 @@ export const DocumentVerificationNotice = () => {
         if (dismissed[doc.id]) return null;
         
         const isApproved = doc.verification_status === 'approved';
+        const isRejected = doc.verification_status === 'rejected';
+        const isResubmission = doc.verification_status === 'request_resubmission';
         const isRecent = new Date(doc.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
         
         if (!isRecent) return null;
@@ -122,20 +124,34 @@ export const DocumentVerificationNotice = () => {
         return (
           <Alert 
             key={doc.id} 
-            variant={isApproved ? "default" : "destructive"}
-            className={isApproved ? "bg-green-50 text-green-900 border-green-200" : undefined}
+            variant={isApproved ? "default" : isRejected || isResubmission ? "destructive" : undefined}
+            className={isApproved ? "bg-green-50 text-green-900 border-green-200" : 
+                       isResubmission ? "bg-amber-50 text-amber-900 border-amber-200" : undefined}
           >
             {isApproved ? (
               <CheckCircle className="h-4 w-4 text-green-700" />
+            ) : isResubmission ? (
+              <RefreshCw className="h-4 w-4 text-amber-700" />
             ) : (
               <XCircle className="h-4 w-4" />
             )}
             <AlertTitle>
-              Document {isApproved ? "Verified" : "Rejected"}
+              {isApproved && "Document Verified"}
+              {isRejected && "Document Rejected"}
+              {isResubmission && "Document Requires Resubmission"}
             </AlertTitle>
             <AlertDescription className="flex flex-col space-y-2">
               <p>
-                Your {doc.document_type || "document"} has been {isApproved ? "verified" : "rejected"}.
+                Your {doc.document_type || "document"} has been {
+                  isApproved ? "verified" : 
+                  isRejected ? "rejected" : 
+                  "flagged for resubmission"
+                }.
+                {(isRejected || isResubmission) && doc.rejection_reason && (
+                  <span className="block mt-1 text-sm">
+                    Reason: {doc.rejection_reason}
+                  </span>
+                )}
               </p>
               <div className="flex space-x-2 mt-2">
                 <Button 
