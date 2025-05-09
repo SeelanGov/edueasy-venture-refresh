@@ -46,7 +46,8 @@ export const useApplicationSubmit = (
           grade12_results: data.grade12Results,
           institution_id: data.university, // Now this is the institution ID
           program_id: data.program, // Now this is the program ID
-          status: "Draft",
+          status: "Submitted", // Change from Draft to Submitted
+          personal_statement: data.personalStatement
         },
       ]);
 
@@ -72,7 +73,9 @@ export const useApplicationSubmit = (
           {
             id: documentId,
             application_id: applicationId,
+            user_id: userId,
             file_path: filePath,
+            document_type: "Application Document",
           },
         ]);
 

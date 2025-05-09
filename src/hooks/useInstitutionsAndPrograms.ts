@@ -27,11 +27,15 @@ export const useInstitutionsAndPrograms = () => {
   const [selectedInstitutionId, setSelectedInstitutionId] = useState<string | null>(null);
   const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
 
   // Fetch all institutions
   useEffect(() => {
     const fetchInstitutions = async () => {
       try {
+        setError(false);
+        setLoading(true);
+        
         const { data, error } = await supabase
           .from("institutions")
           .select("*")
@@ -42,6 +46,7 @@ export const useInstitutionsAndPrograms = () => {
         setInstitutions(data || []);
       } catch (error: any) {
         console.error("Error fetching institutions:", error);
+        setError(true);
         toast({
           title: "Error",
           description: "Failed to load institutions",
@@ -59,25 +64,42 @@ export const useInstitutionsAndPrograms = () => {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const { data, error } = await supabase
-          .from("programs")
-          .select("*")
-          .eq("active", true);
+        if (!selectedInstitutionId) {
+          // Fetch all programs initially to have them ready
+          const { data, error } = await supabase
+            .from("programs")
+            .select("*")
+            .eq("active", true);
 
-        if (error) throw error;
-        setPrograms(data || []);
+          if (error) throw error;
+          setPrograms(data || []);
+        } else {
+          // Fetch only programs for the selected institution for better performance
+          setLoading(true);
+          const { data, error } = await supabase
+            .from("programs")
+            .select("*")
+            .eq("active", true)
+            .eq("institution_id", selectedInstitutionId);
+
+          if (error) throw error;
+          setFilteredPrograms(data || []);
+        }
       } catch (error: any) {
         console.error("Error fetching programs:", error);
+        setError(true);
         toast({
           title: "Error",
           description: "Failed to load programs",
           variant: "destructive",
         });
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPrograms();
-  }, []);
+  }, [selectedInstitutionId]);
 
   // Filter programs based on selected institution
   useEffect(() => {
@@ -94,6 +116,7 @@ export const useInstitutionsAndPrograms = () => {
     institutions,
     programs,
     loading,
+    error,
     selectedInstitutionId,
     setSelectedInstitutionId,
     filteredPrograms

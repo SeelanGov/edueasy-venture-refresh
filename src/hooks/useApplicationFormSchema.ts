@@ -11,6 +11,7 @@ export const useApplicationFormSchema = () => {
     grade12Results: z.string().min(1, "Grade 12 results are required"),
     university: z.string().min(1, "University selection is required"),
     program: z.string().min(1, "Program selection is required"),
+    personalStatement: z.string().optional(),
     documentFile: z
       .any()
       .optional()

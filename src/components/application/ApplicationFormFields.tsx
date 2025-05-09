@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { useInstitutionsAndPrograms } from "@/hooks/useInstitutionsAndPrograms";
 import { Spinner } from "@/components/Spinner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 export interface ApplicationFormValues {
   fullName: string;
@@ -13,6 +16,7 @@ export interface ApplicationFormValues {
   university: string;
   program: string;
   documentFile?: File;
+  personalStatement?: string;
 }
 
 interface ApplicationFormFieldsProps {
@@ -26,6 +30,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
     institutions, 
     filteredPrograms, 
     loading, 
+    error,
     selectedInstitutionId, 
     setSelectedInstitutionId 
   } = useInstitutionsAndPrograms();
@@ -93,6 +98,15 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
           </FormItem>
         )}
       />
+
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Error loading institutions or programs. Please try again later.
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
@@ -175,6 +189,28 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
           )}
         />
       </div>
+
+      <FormField
+        control={form.control}
+        name="personalStatement"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Personal Statement</FormLabel>
+            <FormControl>
+              <Textarea
+                placeholder="Tell us why you're interested in this program..."
+                {...field}
+                disabled={isSubmitting}
+                className="min-h-[120px]"
+              />
+            </FormControl>
+            <FormDescription>
+              Briefly explain why you're applying for this program
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <FormField
         control={form.control}
