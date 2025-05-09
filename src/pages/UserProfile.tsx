@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Spinner } from "@/components/Spinner";
-import { DashboardLayout } from "@/components/DashboardLayout";
+import { DashboardLayoutWithThandi } from "@/components/DashboardLayoutWithThandi";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { ProfileForm } from "@/components/profile/ProfileForm";
@@ -54,7 +54,7 @@ const UserProfile = () => {
   }, [user]);
 
   return (
-    <DashboardLayout>
+    <DashboardLayoutWithThandi>
       <div className="container mx-auto max-w-3xl py-8 px-4">
         <h1 className="text-3xl font-bold mb-8">My Profile</h1>
         
@@ -63,12 +63,12 @@ const UserProfile = () => {
             <Spinner size="lg" />
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <ProfileForm user={user} initialData={profileData} />
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </DashboardLayoutWithThandi>
   );
 };
 

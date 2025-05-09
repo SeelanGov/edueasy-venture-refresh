@@ -7,6 +7,7 @@ import { ApplicationFormFields } from "@/components/application/ApplicationFormF
 import { FormActions } from "@/components/application/FormActions";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
+import { ThandiAgent } from "@/components/ai/ThandiAgent";
 
 const ApplicationForm = () => {
   const {
@@ -22,16 +23,16 @@ const ApplicationForm = () => {
   } = useApplicationForm();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
       <div className="container mx-auto px-4 py-8 pt-24">
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
           <div className="mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-cap-dark">Program Application</h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-1">Apply to your desired educational institution and program</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-cap-dark dark:text-white">Program Application</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-1">Apply to your desired educational institution and program</p>
             {hasSavedDraft && (
-              <div className="mt-2 text-sm text-green-600 bg-green-50 p-2 rounded border border-green-200">
+              <div className="mt-2 text-sm text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-800">
                 You have a saved draft application that has been loaded.
               </div>
             )}
@@ -60,6 +61,7 @@ const ApplicationForm = () => {
         </div>
       </div>
       <Toaster />
+      <ThandiAgent />
     </div>
   );
 };
