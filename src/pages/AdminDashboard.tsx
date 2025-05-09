@@ -34,11 +34,11 @@ const AdminDashboard = () => {
   const getStatusBadgeVariant = (status: string | null) => {
     switch (status) {
       case "approved":
-        return "success";
+        return "default"; // Changed from "success" to "default"
       case "rejected":
         return "destructive";
       case "pending":
-        return "warning";
+        return "secondary"; // Changed from "warning" to "secondary"
       default:
         return "secondary";
     }
@@ -49,10 +49,10 @@ const AdminDashboard = () => {
     const variant = getStatusBadgeVariant(status);
     
     return (
-      <Badge variant={variant === "success" ? "default" : variant}>
-        {variant === "success" && <CheckCircle className="h-3 w-3 mr-1" />}
+      <Badge variant={variant}>
+        {variant === "default" && <CheckCircle className="h-3 w-3 mr-1" />}
         {variant === "destructive" && <XCircle className="h-3 w-3 mr-1" />}
-        {variant === "warning" && <AlertCircle className="h-3 w-3 mr-1" />}
+        {variant === "secondary" && <AlertCircle className="h-3 w-3 mr-1" />}
         {statusText}
       </Badge>
     );

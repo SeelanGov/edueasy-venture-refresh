@@ -11,7 +11,7 @@ interface DocumentStatus {
   document_type: string | null;
   verification_status: string | null;
   file_path: string;
-  updated_at: string;
+  created_at: string; // Using created_at instead of updated_at
 }
 
 export const DocumentVerificationNotice = () => {
@@ -26,12 +26,13 @@ export const DocumentVerificationNotice = () => {
       
       try {
         // Get documents that have been recently verified or rejected
+        // Changed to use created_at instead of updated_at
         const { data, error } = await supabase
           .from("documents")
-          .select("id, document_type, verification_status, file_path, updated_at")
+          .select("id, document_type, verification_status, file_path, created_at")
           .eq("user_id", user.id)
           .in("verification_status", ["approved", "rejected"])
-          .order("updated_at", { ascending: false })
+          .order("created_at", { ascending: false })
           .limit(5);
           
         if (error) throw error;
@@ -114,7 +115,7 @@ export const DocumentVerificationNotice = () => {
         if (dismissed[doc.id]) return null;
         
         const isApproved = doc.verification_status === 'approved';
-        const isRecent = new Date(doc.updated_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
+        const isRecent = new Date(doc.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
         
         if (!isRecent) return null;
         
