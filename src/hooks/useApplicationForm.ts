@@ -63,7 +63,13 @@ export const useApplicationForm = () => {
           form.setValue("grade12Results", data[0].grade12_results || "");
           form.setValue("university", data[0].institution_id || "");
           form.setValue("program", data[0].program_id || "");
-          form.setValue("personalStatement", data[0].personal_statement || "");
+          
+          // Check if personal_statement exists before trying to access it
+          // This is a TypeScript safe way to handle potentially missing properties
+          const personalStatement = 'personal_statement' in data[0] ? 
+            (data[0] as any).personal_statement : '';
+          
+          form.setValue("personalStatement", personalStatement);
           setHasSavedDraft(true);
         }
 
