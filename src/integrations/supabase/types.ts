@@ -348,29 +348,121 @@ export type Database = {
           },
         ]
       }
-      thandi_interactions: {
+      thandi_intent_training: {
         Row: {
+          admin_id: string
+          confidence: number | null
           created_at: string
           id: string
-          is_user: boolean
-          message: string
-          user_id: string
+          intent_id: string | null
+          message_id: string
+        }
+        Insert: {
+          admin_id: string
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          intent_id?: string | null
+          message_id: string
+        }
+        Update: {
+          admin_id?: string
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          intent_id?: string | null
+          message_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thandi_intent_training_intent_id_fkey"
+            columns: ["intent_id"]
+            isOneToOne: false
+            referencedRelation: "thandi_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "thandi_intent_training_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "thandi_interactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      thandi_intents: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          intent_name: string
+          response_template: string | null
+          sample_queries: Json | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
-          is_user?: boolean
-          message: string
-          user_id: string
+          intent_name: string
+          response_template?: string | null
+          sample_queries?: Json | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
-          is_user?: boolean
-          message?: string
-          user_id?: string
+          intent_name?: string
+          response_template?: string | null
+          sample_queries?: Json | null
+          updated_at?: string
         }
         Relationships: []
+      }
+      thandi_interactions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          id: string
+          intent_id: string | null
+          is_user: boolean
+          low_confidence: boolean | null
+          message: string
+          response_type: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          intent_id?: string | null
+          is_user?: boolean
+          low_confidence?: boolean | null
+          message: string
+          response_type?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          id?: string
+          intent_id?: string | null
+          is_user?: boolean
+          low_confidence?: boolean | null
+          message?: string
+          response_type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thandi_interactions_intent_id_fkey"
+            columns: ["intent_id"]
+            isOneToOne: false
+            referencedRelation: "thandi_intents"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_preferences: {
         Row: {
