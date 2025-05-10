@@ -42,21 +42,21 @@ export const useAdminErrorNotifications = () => {
     setError(null);
     
     try {
-      // Directly query the system_error_logs table instead of using RPC
-      const { data, error } = await supabase
-        .from('system_error_logs')
-        .select('*')
-        .order('occurred_at', { ascending: false });
+      // Use RPC function instead of direct table access
+      const { data, error } = await supabase.rpc('get_error_logs', {
+        critical_only: false,
+        limit_count: 50
+      });
       
       if (error) {
         throw error;
       }
       
       if (data) {
-        const formattedNotifications = data.map((log: any) => ({
+        const formattedNotifications = (data as ErrorLogEntry[]).map((log: ErrorLogEntry) => ({
           id: log.id,
           message: log.message,
-          severity: log.severity,
+          severity: log.severity as ErrorSeverity,
           component: log.component || 'Unknown',
           action: log.action || 'Unknown',
           created_at: log.occurred_at,
@@ -77,15 +77,12 @@ export const useAdminErrorNotifications = () => {
   // Mark an error as resolved
   const markAsResolved = useCallback(async (errorId: string, resolutionNotes: string) => {
     try {
-      // Directly update the system_error_logs table instead of using RPC
-      const { error } = await supabase
-        .from('system_error_logs')
-        .update({ 
-          is_resolved: true,
-          resolution_notes: resolutionNotes,
-          resolved_at: new Date().toISOString()
-        })
-        .eq('id', errorId);
+      // Use RPC function instead of direct table access
+      const { error } = await supabase.rpc('resolve_error_log', {
+        error_id: errorId,
+        resolver_id: (await supabase.auth.getUser()).data.user?.id,
+        resolution_notes: resolutionNotes
+      });
       
       if (error) throw error;
       
@@ -109,26 +106,26 @@ export const useAdminErrorNotifications = () => {
   useEffect(() => {
     fetchErrorNotifications();
     
-    // Set up real-time subscription for new errors
-    const subscription = supabase
-      .channel('system_error_logs')
+    // Set up real-time subscription for new errors via postgres changes
+    // This will require enabling realtime for the system_error_logs table
+    const channel = supabase
+      .channel('system_error_logs_changes')
       .on('postgres_changes', {
         event: 'INSERT', 
         schema: 'public', 
         table: 'system_error_logs'
-      }, payload => {
+      }, () => {
         fetchErrorNotifications();
         
-        // Show notification for new critical errors
-        const severity = payload.new?.severity;
-        if (severity === ErrorSeverity.CRITICAL || severity === ErrorSeverity.ERROR) {
-          toast("New critical error detected in the system");
-        }
+        // Show notification for new errors
+        toast("New system error detected", {
+          description: "Check the admin dashboard for details"
+        });
       })
       .subscribe();
     
     return () => {
-      subscription.unsubscribe();
+      supabase.removeChannel(channel);
     };
   }, [fetchErrorNotifications]);
   

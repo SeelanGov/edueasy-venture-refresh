@@ -348,6 +348,54 @@ export type Database = {
           },
         ]
       }
+      system_error_logs: {
+        Row: {
+          action: string | null
+          category: string
+          component: string | null
+          details: Json | null
+          id: string
+          is_resolved: boolean
+          message: string
+          occurred_at: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          action?: string | null
+          category: string
+          component?: string | null
+          details?: Json | null
+          id?: string
+          is_resolved?: boolean
+          message: string
+          occurred_at?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string | null
+          category?: string
+          component?: string | null
+          details?: Json | null
+          id?: string
+          is_resolved?: boolean
+          message?: string
+          occurred_at?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       thandi_intent_training: {
         Row: {
           admin_id: string

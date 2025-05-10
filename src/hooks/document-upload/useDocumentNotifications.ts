@@ -1,6 +1,5 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { DocumentType } from "@/components/profile-completion/documents/types";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 import { toast } from "sonner";
 import { playNotificationSound } from "@/utils/notificationSound";

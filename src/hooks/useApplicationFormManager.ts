@@ -12,6 +12,14 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 
+// Define the form values type to match what's expected in ApplicationFormFields
+export type ApplicationFormValues = {
+  university: string;
+  program: string;
+  grade12Results: string;
+  personalStatement?: string;
+};
+
 /**
  * Main hook for managing application form state, validation and submission
  */
@@ -22,7 +30,7 @@ export const useApplicationFormManager = () => {
   const { formSchema } = useApplicationFormSchema();
   
   // Initialize form with schema validation
-  const form = useForm({
+  const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       university: '',
@@ -38,7 +46,7 @@ export const useApplicationFormManager = () => {
   // Local storage management for offline functionality
   const { getItem, setItem, removeItem } = useLocalStorage();
   
-  const saveFormToStorage = useCallback((data) => {
+  const saveFormToStorage = useCallback((data: ApplicationFormValues) => {
     setItem('applicationFormData', JSON.stringify(data));
   }, [setItem]);
   
@@ -122,7 +130,7 @@ export const useApplicationFormManager = () => {
   }, [user, isOnline, form, getItem]);
 
   // Document file change handler
-  const handleFileChange = useCallback((e) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setDocumentFile(file);
   }, []);

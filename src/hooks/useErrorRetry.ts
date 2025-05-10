@@ -1,6 +1,6 @@
 
 import { useState, useCallback } from "react";
-import { StandardError } from "@/utils/errorHandler";
+import { StandardError, parseError } from "@/utils/errorHandler";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 
 interface ErrorRetryOptions {
@@ -50,7 +50,14 @@ export const useErrorRetry = <T>(
     });
     
     setData(result.data);
-    setError(result.error);
+    
+    // Ensure we convert any Error to StandardError
+    if (result.error) {
+      setError(result.error instanceof Error ? parseError(result.error) : result.error as unknown as StandardError);
+    } else {
+      setError(null);
+    }
+    
     setLoading(false);
     
     return result;
