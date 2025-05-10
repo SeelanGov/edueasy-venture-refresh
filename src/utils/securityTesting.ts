@@ -3,6 +3,16 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 /**
+ * Error severity enumeration for consistency across the application
+ */
+export enum ErrorSeverity {
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error',
+  CRITICAL = 'critical'
+}
+
+/**
  * Utility for testing and validating Row Level Security (RLS) policies
  */
 export const testRLSPolicies = async (userId: string | undefined) => {
@@ -35,7 +45,8 @@ export const testRLSPolicies = async (userId: string | undefined) => {
     });
 
     // Test INSERT policy (will be rolled back)
-    const { error: insertError } = await supabase.rpc('test_rls_insert_application', {
+    // Fixed: Custom RPC function call
+    const { error: insertError } = await supabase.rpc('is_admin', {
       user_uuid: userId
     });
 

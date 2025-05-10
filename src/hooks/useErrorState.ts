@@ -63,9 +63,11 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
     
     // Show toast if configured
     if (errorConfig.showToasts) {
+      // Using Sonner toast which doesn't use 'variant' property
       toast(errorDetails.message, {
         description: `${component}: ${action}`,
-        variant: severity === ErrorSeverity.CRITICAL ? "destructive" : undefined,
+        // Fix: Use Sonner's API correctly without 'variant'
+        ...(severity === ErrorSeverity.CRITICAL ? { style: { backgroundColor: 'rgb(239, 68, 68)', color: 'white' } } : {})
       });
     }
     
