@@ -1,0 +1,36 @@
+
+import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+
+interface SidebarNavItemProps {
+  path: string;
+  icon: ReactNode;
+  name: string;
+  isActive: boolean;
+  sidebarOpen: boolean;
+  onClick?: () => void;
+}
+
+export const SidebarNavItem = ({ 
+  path, 
+  icon, 
+  name, 
+  isActive, 
+  sidebarOpen,
+  onClick 
+}: SidebarNavItemProps) => {
+  return (
+    <Link 
+      to={path}
+      className={`flex items-center px-3 py-3 rounded-lg transition-colors ${
+        isActive
+          ? 'bg-cap-teal/10 text-cap-teal dark:bg-cap-teal/20'
+          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+      } ${sidebarOpen ? '' : 'justify-center'}`}
+      onClick={onClick}
+    >
+      <span className="flex-shrink-0">{icon}</span>
+      {sidebarOpen && <span className="ml-3">{name}</span>}
+    </Link>
+  );
+};
