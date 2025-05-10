@@ -7,10 +7,11 @@ import { useApplicationFormSchema } from "@/hooks/useApplicationFormSchema";
 import { useApplicationSubmission } from "@/hooks/useApplicationSubmission";
 import { useDraftManagement } from "@/hooks/useDraftManagement";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useToast } from "@/hooks/use-toast";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
+import { supabase } from "@/integrations/supabase/client";
+import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 
 /**
  * Main hook for managing application form state, validation and submission
@@ -19,12 +20,12 @@ export const useApplicationFormManager = () => {
   const { user } = useAuth();
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
-  const { schema } = useApplicationFormSchema();
+  const { formSchema } = useApplicationFormSchema();
   const { toast } = useToast();
   
   // Initialize form with schema validation
   const form = useForm<ApplicationFormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       university: '',
       program: '',

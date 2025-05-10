@@ -1,6 +1,6 @@
 
 import React from "react";
-import { WifiOff, RefreshCw } from "lucide-react";
+import { WifiOff, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
@@ -9,6 +9,8 @@ interface OfflineErrorDisplayProps {
   onRetryConnection?: () => void;
   isRetrying?: boolean;
   className?: string;
+  timeSinceLastConnection?: number | null;
+  lastConnectedTime?: Date | null;
 }
 
 export const OfflineErrorDisplay = ({
@@ -16,13 +18,31 @@ export const OfflineErrorDisplay = ({
   onRetryConnection,
   isRetrying = false,
   className = "",
+  timeSinceLastConnection = null,
+  lastConnectedTime = null,
 }: OfflineErrorDisplayProps) => {
+  // Format the time since last connection
+  const formatTimeSince = (seconds: number) => {
+    if (seconds < 60) return `${seconds} seconds`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
+    return `${Math.floor(seconds / 3600)} hours`;
+  };
+
   return (
     <Alert className={`border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 ${className}`}>
       <WifiOff className="h-4 w-4 text-amber-500" />
       <AlertTitle>Connection Lost</AlertTitle>
       <AlertDescription>
         <p>{message}</p>
+        
+        {lastConnectedTime && timeSinceLastConnection && timeSinceLastConnection > 10 && (
+          <div className="flex items-center mt-2 text-xs text-amber-600 dark:text-amber-400">
+            <Clock className="h-3 w-3 mr-1" />
+            <span>
+              Last online {formatTimeSince(timeSinceLastConnection)} ago
+            </span>
+          </div>
+        )}
         
         {onRetryConnection && (
           <div className="mt-4">
