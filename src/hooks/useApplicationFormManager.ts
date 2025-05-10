@@ -65,6 +65,7 @@ export const useApplicationFormManager = () => {
   );
 
   // Submission functionality
+  // Fixed: Removed the incorrect argument passed to useApplicationSubmission
   const { isSubmitting, onSubmit, handleSyncNow } = useApplicationSubmission(
     user?.id,
     isOnline,

@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { StandardError } from './errorHandler';
@@ -114,17 +113,16 @@ export const safeAsyncWithLogging = async <T>(
  */
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
-    // Use direct query instead of RPC function
-    const { data, error } = await supabase
+    // Fixed: Use a separate count() call to get the count properly
+    const { count, error } = await supabase
       .from('system_error_logs')
-      .select('id')
+      .select('*', { count: 'exact', head: true })
       .eq('severity', 'critical')
       .eq('is_resolved', false)
-      .gt('occurred_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-      .count();
+      .gt('occurred_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
       
     if (error) throw error;
-    return (data || 0) as number;
+    return count || 0;
   } catch (err) {
     console.error("Failed to count critical errors:", err);
     return 0;
