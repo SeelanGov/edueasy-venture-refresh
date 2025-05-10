@@ -1,5 +1,5 @@
 
-import { CheckCircle, XCircle, AlertCircle, Loader2, FileWarning } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle, Loader2, FileWarning, Clock } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
@@ -37,7 +37,7 @@ export const VerificationResultDisplay = ({
   
   if (!result) return null;
   
-  const { status, confidence, validationResults, failureReason } = result;
+  const { status, confidence, validationResults, failureReason, processingTimeMs } = result;
   
   // Format document type for display
   const formatDocumentType = (type: string) => {
@@ -49,13 +49,36 @@ export const VerificationResultDisplay = ({
   
   const displayDocumentType = formatDocumentType(documentType);
   
+  // Helper function to get guidance based on failure reason
+  const getGuidanceForFailure = (reason: string | null | undefined): string => {
+    if (!reason) return "Make sure your document is clear and all information is visible.";
+    
+    if (reason.includes("ID number")) {
+      return "Make sure your ID number is clearly visible and not obscured.";
+    }
+    
+    if (reason.includes("outdated")) {
+      return "Please upload a more recent document (less than 3 months old).";
+    }
+    
+    if (reason.includes("address")) {
+      return "Ensure your address is clearly visible on the document.";
+    }
+    
+    if (reason.includes("clear")) {
+      return "Try uploading a clearer image with better lighting and focus.";
+    }
+    
+    return "Make sure all required information is visible and the document is properly oriented.";
+  };
+  
   if (status === 'approved') {
     return (
       <Alert className="bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300 mt-4">
         <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
         <AlertTitle className="flex items-center">
           Document Verified Successfully
-          {confidence && (
+          {confidence !== undefined && (
             <Badge variant="outline" className="ml-2 bg-green-100 text-green-800 border-green-300 dark:bg-green-900 dark:border-green-700 dark:text-green-300">
               {Math.round(confidence * 100)}% Confidence
             </Badge>
@@ -63,6 +86,14 @@ export const VerificationResultDisplay = ({
         </AlertTitle>
         <AlertDescription>
           <p className="mt-1">Your {displayDocumentType} has been verified and approved.</p>
+          
+          {processingTimeMs && (
+            <div className="mt-1 flex items-center text-xs text-green-700 dark:text-green-400">
+              <Clock className="h-3 w-3 mr-1" />
+              Processed in {(processingTimeMs / 1000).toFixed(1)} seconds
+            </div>
+          )}
+          
           {validationResults && Object.keys(validationResults).length > 0 && (
             <div className="mt-2">
               <Separator className="my-2" />
@@ -106,12 +137,18 @@ export const VerificationResultDisplay = ({
           {failureReason && (
             <p className="text-sm mt-1 font-medium">Reason: {failureReason}</p>
           )}
+          
+          <div className="bg-red-50 text-red-800 p-2 rounded mt-2 text-sm">
+            <p className="font-medium">Guidance:</p>
+            <p className="text-xs mt-1">{getGuidanceForFailure(failureReason)}</p>
+          </div>
+          
           {validationResults && Object.keys(validationResults).length > 0 && (
             <div className="mt-2">
               <Separator className="my-2" />
               <div className="text-xs space-y-1">
                 {Object.entries(validationResults).map(([key, value]) => (
-                  key !== 'documentType' && (
+                  key !== 'documentType' && key !== 'error' && (
                     <div key={key} className="flex items-center">
                       {typeof value === 'boolean' ? (
                         value ? (
@@ -134,12 +171,13 @@ export const VerificationResultDisplay = ({
               </div>
             </div>
           )}
+          
           {onResubmit && (
             <Button 
               onClick={onResubmit} 
               size="sm" 
               variant="outline" 
-              className="mt-2 border-red-200 bg-red-50 hover:bg-red-100 text-red-900"
+              className="mt-3 border-red-200 bg-red-50 hover:bg-red-100 text-red-900"
             >
               Upload New Document
             </Button>
@@ -159,12 +197,18 @@ export const VerificationResultDisplay = ({
           {failureReason && (
             <p className="text-sm mt-1 font-medium">Reason: {failureReason}</p>
           )}
+          
+          <div className="bg-amber-100 text-amber-800 p-2 rounded mt-2 text-sm">
+            <p className="font-medium">Guidance:</p>
+            <p className="text-xs mt-1">{getGuidanceForFailure(failureReason)}</p>
+          </div>
+          
           {onResubmit && (
             <Button 
               onClick={onResubmit} 
               size="sm" 
               variant="outline" 
-              className="mt-2 border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900"
+              className="mt-3 border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900"
             >
               Upload New Document
             </Button>
