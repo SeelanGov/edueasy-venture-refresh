@@ -3,3 +3,6 @@ project_id = "pensvamtfjtpsaoeflbx"
 
 [functions.thandi-openai]
 verify_jwt = true
+
+[functions.verify-document]
+verify_jwt = true

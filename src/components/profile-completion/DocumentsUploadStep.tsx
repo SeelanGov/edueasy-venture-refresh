@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+
+import { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,11 +23,16 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Upload, CheckCircle, XCircle, FileIcon, FileText } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { compressImage } from "@/utils/imageCompression";
+import { DocumentUploadStepper, Step } from "@/components/documents/DocumentUploadStepper";
+import { DocumentPreview } from "@/components/documents/DocumentPreview";
+import { VerificationResultDisplay } from "@/components/documents/VerificationResultDisplay";
+import { useDocumentVerification } from "@/hooks/useDocumentVerification";
+import { playNotificationSound } from "@/utils/notificationSound";
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
-// Validate file size and type - fixed to return proper object structure
+// Validate file size and type
 const validateFile = (file: File | undefined): { valid: boolean; message: string } => {
   if (!file) return { valid: false, message: "No file selected" };
   
@@ -98,13 +104,26 @@ interface DocumentUploadState {
   error: string | null;
   uploaded: boolean;
   documentId?: string;
+  filePath?: string;
+  verificationTriggered?: boolean;
 }
 
 export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { documents, setDocuments } = useProfileCompletionStore();
+  const { verifyDocument, isVerifying, verificationResult } = useDocumentVerification();
   
+  const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [uploadSteps, setUploadSteps] = useState<Step[]>([
+    { id: 1, label: 'Select', status: 'current' },
+    { id: 2, label: 'Upload', status: 'pending' },
+    { id: 3, label: 'Verify', status: 'pending' },
+    { id: 4, label: 'Complete', status: 'pending' },
+  ]);
+  
+  // Document upload states
   const [idDocumentState, setIdDocumentState] = useState<DocumentUploadState>({
     file: null,
     uploading: false,
@@ -141,6 +160,112 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     resolver: zodResolver(documentsSchema),
   });
 
+  // Update steps based on current document upload process
+  useEffect(() => {
+    if (!currentDocumentType) return;
+    
+    const documentState = getDocumentState(currentDocumentType);
+    
+    const newSteps: Step[] = [
+      { 
+        id: 1, 
+        label: 'Select', 
+        description: 'Choose file',
+        status: documentState.file ? 'complete' : 'current'
+      },
+      { 
+        id: 2, 
+        label: 'Upload', 
+        description: 'Upload to server',
+        status: documentState.uploaded 
+          ? 'complete' 
+          : documentState.uploading 
+            ? 'current' 
+            : documentState.file 
+              ? 'current' 
+              : 'pending'
+      },
+      { 
+        id: 3, 
+        label: 'Verify', 
+        description: 'AI verification',
+        status: documentState.verificationTriggered
+          ? isVerifying
+            ? 'current'
+            : verificationResult?.status === 'approved'
+              ? 'complete'
+              : verificationResult?.status === 'rejected' || verificationResult?.status === 'request_resubmission'
+                ? 'error'
+                : 'current'
+          : documentState.uploaded
+            ? 'current'
+            : 'pending'
+      },
+      { 
+        id: 4, 
+        label: 'Complete', 
+        description: 'Document ready',
+        status: documentState.uploaded && verificationResult?.status === 'approved'
+          ? 'complete'
+          : 'pending'
+      },
+    ];
+    
+    setUploadSteps(newSteps);
+    
+    // Calculate current step
+    let step = 1;
+    if (documentState.file) step = 2;
+    if (documentState.uploaded) step = 3;
+    if (documentState.uploaded && verificationResult?.status === 'approved') step = 4;
+    
+    setCurrentStep(step);
+    
+  }, [currentDocumentType, idDocumentState, proofOfResidenceState, grade11ResultsState, grade12ResultsState, isVerifying, verificationResult]);
+  
+  // Get document state based on type
+  const getDocumentState = (documentType: string): DocumentUploadState => {
+    switch (documentType) {
+      case "idDocument":
+        return idDocumentState;
+      case "proofOfResidence":
+        return proofOfResidenceState;
+      case "grade11Results":
+        return grade11ResultsState;
+      case "grade12Results":
+        return grade12ResultsState;
+      default:
+        return {
+          file: null,
+          uploading: false,
+          progress: 0,
+          error: null,
+          uploaded: false,
+        };
+    }
+  };
+  
+  // Set document state based on type
+  const setDocumentState = (
+    documentType: string, 
+    state: Partial<DocumentUploadState>
+  ) => {
+    switch (documentType) {
+      case "idDocument":
+        setIdDocumentState(prev => ({ ...prev, ...state }));
+        break;
+      case "proofOfResidence":
+        setProofOfResidenceState(prev => ({ ...prev, ...state }));
+        break;
+      case "grade11Results":
+        setGrade11ResultsState(prev => ({ ...prev, ...state }));
+        break;
+      case "grade12Results":
+        setGrade12ResultsState(prev => ({ ...prev, ...state }));
+        break;
+    }
+  };
+
   const handleFileChange = useCallback(async (
     e: React.ChangeEvent<HTMLInputElement>,
     documentType: "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results"
@@ -148,55 +273,43 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     const file = e.target.files?.[0];
     if (!file) return;
     
+    // Set current document type for stepper
+    setCurrentDocumentType(documentType);
+    
     const validation = validateFile(file);
     
-    let setState: React.Dispatch<React.SetStateAction<DocumentUploadState>>;
-    let compressionNeeded = false;
-    
-    switch (documentType) {
-      case "idDocument":
-        setState = setIdDocumentState;
-        break;
-      case "proofOfResidence":
-        setState = setProofOfResidenceState;
-        break;
-      case "grade11Results":
-        setState = setGrade11ResultsState;
-        break;
-      case "grade12Results":
-        setState = setGrade12ResultsState;
-        break;
-    }
-    
     if (!validation.valid) {
-      setState(prev => ({ ...prev, file: null, error: validation.message, uploaded: false }));
+      setDocumentState(documentType, { 
+        file: null, 
+        error: validation.message, 
+        uploaded: false 
+      });
       return;
     }
     
     // Check if file is an image and needs compression
-    compressionNeeded = file.type.startsWith('image/') && file.size > 500 * 1024; // Compress if > 500KB
+    const compressionNeeded = file.type.startsWith('image/') && file.size > 500 * 1024; // Compress if > 500KB
     
     // Start upload
-    setState(prev => ({ 
-      ...prev, 
+    setDocumentState(documentType, { 
       file,
       uploading: true, 
       progress: 0, 
       error: null, 
       uploaded: false 
-    }));
+    });
     
     try {
       // Process file (compress if needed)
       let fileToUpload = file;
       if (compressionNeeded) {
-        setState(prev => ({ ...prev, progress: 10 }));
+        setDocumentState(documentType, { progress: 10 });
         fileToUpload = await compressImage(file);
-        setState(prev => ({ ...prev, progress: 30 }));
+        setDocumentState(documentType, { progress: 30 });
       }
       
       // Simulate progress (real upload progress would be handled differently)
-      setState(prev => ({ ...prev, progress: 50 }));
+      setDocumentState(documentType, { progress: 50 });
       
       // Upload to Supabase
       if (user) {
@@ -207,7 +320,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
           
         if (uploadError) throw new Error(uploadError.message);
         
-        setState(prev => ({ ...prev, progress: 80 }));
+        setDocumentState(documentType, { progress: 80 });
         
         // Store document reference in documents table
         const { error: documentError, data: documentData } = await supabase
@@ -223,18 +336,20 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
         
         if (documentError) throw new Error(documentError.message);
         
-        setState(prev => ({ 
-          ...prev, 
+        // Update document state
+        setDocumentState(documentType, { 
           uploading: false, 
           progress: 100, 
           uploaded: true,
-          documentId: documentData.id 
-        }));
+          documentId: documentData.id,
+          filePath: data.path,
+          verificationTriggered: false
+        });
         
         // Update form state
         form.setValue(documentType, fileToUpload);
         
-        // Update store - Fixed: Using object literal instead of function for setDocuments
+        // Update store
         setDocuments({
           ...documents,
           [documentType]: {
@@ -243,49 +358,72 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
             documentId: documentData.id,
           }
         });
+        
+        // Auto-trigger verification
+        triggerVerification(documentData.id, user.id, documentType, data.path);
       }
     } catch (error: any) {
       console.error(`Error uploading ${documentType}:`, error);
-      setState(prev => ({ 
-        ...prev, 
+      setDocumentState(documentType, { 
         uploading: false, 
         progress: 0, 
         error: error.message || "Upload failed" 
-      }));
+      });
     }
   }, [user, documents, form, setDocuments]);
 
-  const handleRetry = (
+  const triggerVerification = useCallback(async (
+    documentId: string,
+    userId: string,
+    documentType: string,
+    filePath: string
+  ) => {
+    setDocumentState(documentType, { verificationTriggered: true });
+    
+    const result = await verifyDocument(documentId, userId, documentType, filePath);
+    
+    // Play notification sound for verification results
+    if (result && (result.status === 'rejected' || result.status === 'request_resubmission')) {
+      playNotificationSound();
+      
+      toast({
+        title: result.status === 'rejected' ? 'Document Rejected' : 'Resubmission Required',
+        description: result.failureReason || 'Please check your document and try again',
+        variant: "destructive",
+      });
+    } else if (result && result.status === 'approved') {
+      playNotificationSound();
+      
+      toast({
+        title: 'Document Verified',
+        description: 'Your document has been successfully verified',
+      });
+    }
+  }, [verifyDocument]);
+  
+  const handleManualVerify = useCallback((
+    documentType: "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results"
+  ) => {
+    const docState = getDocumentState(documentType);
+    
+    if (docState.documentId && user?.id && docState.filePath) {
+      triggerVerification(docState.documentId, user.id, documentType, docState.filePath);
+    }
+  }, [getDocumentState, user, triggerVerification]);
+  
+  const handleRetry = useCallback((
     documentType: "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results",
     currentState: DocumentUploadState
   ) => {
     if (!currentState.file) return;
     
-    let setState: React.Dispatch<React.SetStateAction<DocumentUploadState>>;
-    
-    switch (documentType) {
-      case "idDocument":
-        setState = setIdDocumentState;
-        break;
-      case "proofOfResidence":
-        setState = setProofOfResidenceState;
-        break;
-      case "grade11Results":
-        setState = setGrade11ResultsState;
-        break;
-      case "grade12Results":
-        setState = setGrade12ResultsState;
-        break;
-    }
-    
     // Reset state and try upload again with the same file
-    setState(prev => ({ 
-      ...prev, 
+    setDocumentState(documentType, { 
       uploading: false, 
       progress: 0, 
       error: null, 
       uploaded: false 
-    }));
+    });
     
     // Create a fake event object with the existing file
     const fakeEvent = {
@@ -295,7 +433,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     } as unknown as React.ChangeEvent<HTMLInputElement>;
     
     handleFileChange(fakeEvent, documentType);
-  };
+  }, [handleFileChange]);
 
   const onSubmit = async (data: DocumentsFormValues) => {
     setIsSubmitting(true);
@@ -341,15 +479,32 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
   ) => {
     const { file, uploading, progress, error, uploaded } = state;
     
+    const handleDocumentClick = () => {
+      setCurrentDocumentType(documentType);
+    };
+    
     return (
-      <div className="mb-6">
+      <div className="mb-6" onClick={handleDocumentClick}>
         <FormField
           control={form.control}
           name={documentType}
           render={() => (
             <FormItem>
-              <FormLabel>{label}</FormLabel>
-              <FormDescription>{description}</FormDescription>
+              <div className="flex flex-col md:flex-row justify-between">
+                <div>
+                  <FormLabel className="text-base">{label}</FormLabel>
+                  <FormDescription className="mt-1">{description}</FormDescription>
+                </div>
+                
+                {currentDocumentType === documentType && (
+                  <div className="mt-2 md:mt-0 md:ml-4">
+                    <DocumentUploadStepper 
+                      steps={uploadSteps}
+                      currentStep={currentStep}
+                    />
+                  </div>
+                )}
+              </div>
               
               {!file && !uploaded && (
                 <FormControl>
@@ -377,121 +532,132 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
                 </FormControl>
               )}
               
-              {file && (
+              {(file || uploaded) && (
                 <div className="bg-gray-50 border rounded-lg p-4">
-                  <div className="flex items-center">
-                    {file.type === 'application/pdf' ? (
-                      <FileText className="h-8 w-8 text-gray-500 mr-3" />
-                    ) : (
-                      <FileIcon className="h-8 w-8 text-gray-500 mr-3" />
-                    )}
+                  <div className="flex items-center flex-wrap md:flex-nowrap">
+                    <div className="mr-4 mb-4 md:mb-0">
+                      <DocumentPreview 
+                        filePath={state.filePath || ''}
+                        fileName={file?.name || label}
+                        fileType={file?.type}
+                        size="sm"
+                      />
+                    </div>
                     
                     <div className="flex-1">
                       <p className="text-sm font-medium truncate">
-                        {file.name}
+                        {file?.name || label}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {(file.size / 1024).toFixed(1)} KB
+                        {file && (file.size / 1024).toFixed(1)} KB
                       </p>
-                    </div>
-                    
-                    <div className="ml-2">
-                      {uploaded && (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      
+                      {uploading && (
+                        <div className="mt-2">
+                          <Progress value={progress} className="h-2" />
+                          <p className="text-xs text-gray-500 mt-1">
+                            Uploading... {progress}%
+                          </p>
+                        </div>
                       )}
                       
                       {error && (
-                        <XCircle className="h-5 w-5 text-red-500" />
+                        <div className="mt-2">
+                          <Alert variant="destructive" className="p-2">
+                            <div className="flex items-center">
+                              <AlertCircle className="h-4 w-4 mr-2" />
+                              <AlertDescription className="text-xs">{error}</AlertDescription>
+                            </div>
+                          </Alert>
+                          
+                          <div className="flex justify-between mt-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRetry(documentType, state)}
+                              className="text-xs"
+                            >
+                              Retry
+                            </Button>
+                            
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => {
+                                // Reset input
+                                const input = document.getElementById(`dropzone-file-${documentType}`) as HTMLInputElement;
+                                if (input) input.value = '';
+                                
+                                // Reset state
+                                setDocumentState(documentType, {
+                                  file: null,
+                                  uploading: false,
+                                  progress: 0,
+                                  error: null,
+                                  uploaded: false,
+                                });
+                                
+                                // Clear form value
+                                form.setValue(documentType, undefined);
+                              }}
+                              className="text-xs"
+                            >
+                              Change File
+                            </Button>
+                          </div>
+                        </div>
                       )}
                     </div>
-                  </div>
-                  
-                  {uploading && (
-                    <div className="mt-2">
-                      <Progress value={progress} className="h-2" />
-                      <p className="text-xs text-gray-500 mt-1">
-                        Uploading... {progress}%
-                      </p>
-                    </div>
-                  )}
-                  
-                  {error && (
-                    <div className="mt-2">
-                      <Alert variant="destructive" className="p-2">
-                        <div className="flex items-center">
-                          <AlertCircle className="h-4 w-4 mr-2" />
-                          <AlertDescription className="text-xs">{error}</AlertDescription>
-                        </div>
-                      </Alert>
-                      
-                      <div className="flex justify-between mt-2">
+                    
+                    <div className="ml-2 mt-2 md:mt-0">
+                      {uploaded && !state.verificationTriggered && (
                         <Button
                           type="button"
                           size="sm"
                           variant="outline"
-                          onClick={() => handleRetry(documentType, state)}
-                          className="text-xs"
+                          className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                          onClick={() => handleManualVerify(documentType)}
                         >
-                          Retry
+                          Verify Now
                         </Button>
-                        
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            // Reset input
-                            const input = document.getElementById(`dropzone-file-${documentType}`) as HTMLInputElement;
-                            if (input) input.value = '';
-                            
-                            // Reset state
-                            switch (documentType) {
-                              case "idDocument":
-                                setIdDocumentState({
-                                  file: null,
-                                  uploading: false,
-                                  progress: 0,
-                                  error: null,
-                                  uploaded: false,
-                                });
-                                break;
-                              case "proofOfResidence":
-                                setProofOfResidenceState({
-                                  file: null,
-                                  uploading: false,
-                                  progress: 0,
-                                  error: null,
-                                  uploaded: false,
-                                });
-                                break;
-                              case "grade11Results":
-                                setGrade11ResultsState({
-                                  file: null,
-                                  uploading: false,
-                                  progress: 0,
-                                  error: null,
-                                  uploaded: false,
-                                });
-                                break;
-                              case "grade12Results":
-                                setGrade12ResultsState({
-                                  file: null,
-                                  uploading: false,
-                                  progress: 0,
-                                  error: null,
-                                  uploaded: false,
-                                });
-                                break;
-                            }
-                            
-                            // Clear form value
-                            form.setValue(documentType, undefined);
-                          }}
-                          className="text-xs"
-                        >
-                          Change File
-                        </Button>
-                      </div>
+                      )}
+                      
+                      {uploaded && (
+                        <div className="mt-2 flex items-center">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                          <span className="text-xs text-green-600">Uploaded successfully</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {currentDocumentType === documentType && state.verificationTriggered && (
+                    <div className="mt-4">
+                      <VerificationResultDisplay 
+                        result={verificationResult}
+                        isVerifying={isVerifying}
+                        documentType={label}
+                        onResubmit={() => {
+                          // Reset input
+                          const input = document.getElementById(`dropzone-file-${documentType}`) as HTMLInputElement;
+                          if (input) input.value = '';
+                          
+                          // Reset state
+                          setDocumentState(documentType, {
+                            file: null,
+                            uploading: false,
+                            progress: 0,
+                            error: null,
+                            uploaded: false,
+                            verificationTriggered: false
+                          });
+                          
+                          // Clear form value
+                          form.setValue(documentType, undefined);
+                        }}
+                      />
                     </div>
                   )}
                 </div>
@@ -510,6 +676,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
       <h2 className="text-2xl font-bold mb-6">Upload Required Documents</h2>
       <p className="text-gray-600 mb-6">
         Please upload the following documents. All files must be in PDF, JPG, or PNG format and less than 1MB in size.
+        Each document will be automatically verified using AI technology.
       </p>
       
       <Form {...form}>
