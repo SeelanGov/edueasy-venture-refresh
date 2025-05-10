@@ -15,7 +15,6 @@ export const useDraftManagement = (
   isOnline: boolean,
   documentFile: File | null,
   saveFormToStorage: (data: ApplicationFormValues) => void,
-  form: any,
   setHasSavedDraft: (value: boolean) => void
 ) => {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
@@ -35,9 +34,27 @@ export const useDraftManagement = (
     try {
       setIsSavingDraft(true);
       
+      // Get the current form data
+      const formData = document.querySelector('form')?.elements;
+      if (!formData) {
+        throw new Error("Form not found");
+      }
+      
+      // Collect form data manually
+      const university = (document.getElementById('university') as HTMLInputElement)?.value || '';
+      const program = (document.getElementById('program') as HTMLInputElement)?.value || '';
+      const grade12Results = (document.getElementById('grade12Results') as HTMLInputElement)?.value || '';
+      const personalStatement = (document.getElementById('personalStatement') as HTMLTextAreaElement)?.value || '';
+      
+      const collectedFormData = {
+        university,
+        program,
+        grade12Results,
+        personalStatement
+      };
+      
       // Validate with the draft schema (less strict validation)
-      const formData = form.getValues();
-      const result = draftSchema.safeParse(formData);
+      const result = draftSchema.safeParse(collectedFormData);
       
       if (!result.success) {
         toast({
@@ -49,7 +66,7 @@ export const useDraftManagement = (
       }
       
       // Save to local storage in case of connectivity issues
-      saveFormToStorage(formData);
+      saveFormToStorage(collectedFormData);
       
       if (isOnline) {
         // Check if a draft already exists
@@ -67,11 +84,11 @@ export const useDraftManagement = (
           {
             id: applicationId,
             user_id: userId,
-            grade12_results: formData.grade12Results,
-            institution_id: formData.university || null,
-            program_id: formData.program || null,
+            grade12_results: collectedFormData.grade12Results,
+            institution_id: collectedFormData.university || null,
+            program_id: collectedFormData.program || null,
             status: "Draft",
-            personal_statement: formData.personalStatement,
+            personal_statement: collectedFormData.personalStatement,
             updated_at: new Date().toISOString(),
           },
         ]);
