@@ -42,18 +42,20 @@ export const useAdminErrorNotifications = () => {
     setError(null);
     
     try {
-      // Use RPC function instead of direct table access
-      const { data, error } = await supabase.rpc('get_error_logs', {
-        critical_only: false,
-        limit_count: 50
-      });
+      // Use direct query instead of RPC function
+      const { data, error } = await supabase
+        .from('system_error_logs')
+        .select('*')
+        .eq('is_resolved', false)
+        .order('occurred_at', { ascending: false })
+        .limit(50);
       
       if (error) {
         throw error;
       }
       
       if (data) {
-        const formattedNotifications = (data as ErrorLogEntry[]).map((log: ErrorLogEntry) => ({
+        const formattedNotifications = data.map((log) => ({
           id: log.id,
           message: log.message,
           severity: log.severity as ErrorSeverity,
@@ -77,12 +79,16 @@ export const useAdminErrorNotifications = () => {
   // Mark an error as resolved
   const markAsResolved = useCallback(async (errorId: string, resolutionNotes: string) => {
     try {
-      // Use RPC function instead of direct table access
-      const { error } = await supabase.rpc('resolve_error_log', {
-        error_id: errorId,
-        resolver_id: (await supabase.auth.getUser()).data.user?.id,
-        resolution_notes: resolutionNotes
-      });
+      // Use direct table access instead of RPC function
+      const { error } = await supabase
+        .from('system_error_logs')
+        .update({
+          is_resolved: true,
+          resolved_at: new Date().toISOString(),
+          resolved_by: (await supabase.auth.getUser()).data.user?.id,
+          resolution_notes: resolutionNotes
+        })
+        .eq('id', errorId);
       
       if (error) throw error;
       

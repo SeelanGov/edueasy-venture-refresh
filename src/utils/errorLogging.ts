@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { StandardError } from './errorHandler';
@@ -23,25 +24,29 @@ export const logError = async (
   userId?: string
 ): Promise<string | null> => {
   try {
-    // Use RPC function instead of direct table access
-    const { data, error: logError } = await supabase.rpc('log_system_error', {
-      p_message: error.message,
-      p_category: error.category,
-      p_severity: severity,
-      p_component: component,
-      p_action: action,
-      p_user_id: userId,
-      p_details: { 
-        originalError: error.originalError ? String(error.originalError) : undefined 
-      }
-    });
+    // Use direct table access instead of RPC function since types aren't defined
+    const { data, error: logError } = await supabase
+      .from('system_error_logs')
+      .insert({
+        message: error.message,
+        category: error.category,
+        severity: severity,
+        component: component,
+        action: action,
+        user_id: userId,
+        details: { 
+          originalError: error.originalError ? String(error.originalError) : undefined 
+        }
+      })
+      .select('id')
+      .single();
     
     if (logError) {
       console.error('Failed to log error:', logError);
       return null;
     }
     
-    return data as string;
+    return data?.id || null;
   } catch (err) {
     console.error('Error logging to system:', err);
     return null;
@@ -73,21 +78,23 @@ export const safeAsyncWithLogging = async <T>(
     
     // Log the error to our system
     try {
-      // Use RPC function instead of direct table access
-      await supabase.rpc('log_system_error', {
-        p_message: error.message || options.errorMessage || 'Unknown error',
-        p_category: error.category || options.errorCategory || 'UNKNOWN',
-        p_severity: options.severity || ErrorSeverity.ERROR,
-        p_component: options.component,
-        p_action: options.action,
-        p_user_id: options.userId,
-        p_details: JSON.stringify({
-          stack: error.stack,
-          originalError: error.originalError ? String(error.originalError) : undefined,
-          additionalData: options.additionalData,
-          retryCount: options.retryCount
-        })
-      });
+      // Use direct table access instead of RPC function
+      await supabase
+        .from('system_error_logs')
+        .insert({
+          message: error.message || options.errorMessage || 'Unknown error',
+          category: error.category || options.errorCategory || 'UNKNOWN',
+          severity: options.severity || ErrorSeverity.ERROR,
+          component: options.component,
+          action: options.action,
+          user_id: options.userId,
+          details: {
+            stack: error.stack,
+            originalError: error.originalError ? String(error.originalError) : undefined,
+            additionalData: options.additionalData,
+            retryCount: options.retryCount
+          }
+        });
     } catch (loggingError) {
       // If we can't log the error, at least log it to the console
       console.error('Failed to log error to backend:', loggingError);
@@ -107,11 +114,17 @@ export const safeAsyncWithLogging = async <T>(
  */
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
-    // Use RPC function instead of direct table access
-    const { data, error } = await supabase.rpc('count_critical_errors');
+    // Use direct query instead of RPC function
+    const { data, error } = await supabase
+      .from('system_error_logs')
+      .select('id')
+      .eq('severity', 'critical')
+      .eq('is_resolved', false)
+      .gt('occurred_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      .count();
       
     if (error) throw error;
-    return data || 0;
+    return (data || 0) as number;
   } catch (err) {
     console.error("Failed to count critical errors:", err);
     return 0;
@@ -126,12 +139,16 @@ export const resolveSystemError = async (
   resolutionNotes: string
 ): Promise<boolean> => {
   try {
-    // Use RPC function instead of direct table access
-    const { error } = await supabase.rpc('resolve_error_log', {
-      error_id: errorId,
-      resolver_id: supabase.auth.getUser().then(res => res.data.user?.id || null),
-      resolution_notes: resolutionNotes
-    });
+    // Use direct table access instead of RPC function
+    const { error } = await supabase
+      .from('system_error_logs')
+      .update({
+        is_resolved: true,
+        resolved_at: new Date().toISOString(),
+        resolved_by: (await supabase.auth.getUser()).data.user?.id,
+        resolution_notes: resolutionNotes
+      })
+      .eq('id', errorId);
       
     if (error) throw error;
     return true;
