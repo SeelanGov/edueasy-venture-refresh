@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Json } from "@/integrations/supabase/types";
 
 export interface Intent {
   id: string;
@@ -33,7 +34,16 @@ export const useIntentManagement = () => {
       
       if (error) throw error;
       
-      setIntents(data || []);
+      // Transform the data to ensure sample_queries is properly typed
+      const transformedData = data?.map(intent => ({
+        ...intent,
+        // Convert Json to string[] or null
+        sample_queries: intent.sample_queries ? 
+          (Array.isArray(intent.sample_queries) ? intent.sample_queries : null) : 
+          null
+      })) || [];
+      
+      setIntents(transformedData);
     } catch (error) {
       console.error("Error fetching intents:", error);
       toast.error("Failed to load intents");

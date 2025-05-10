@@ -1,9 +1,9 @@
 
-import { ChatMessage, TrainingEntry } from "@/hooks/useTrainingData";
-import { Intent } from "@/hooks/useIntentManagement";
 import { TrainingHeader } from "./training/TrainingHeader";
 import { MessageTable } from "./training/MessageTable";
 import { TrainingFooter } from "./training/TrainingFooter";
+import { type ChatMessage, type TrainingEntry } from "@/hooks/useTrainingData";
+import { type Intent } from "@/hooks/useIntentManagement";
 
 interface MessageTrainingProps {
   messages: ChatMessage[];
