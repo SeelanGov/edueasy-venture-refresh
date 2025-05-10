@@ -60,7 +60,6 @@ export const useApplicationFormManager = () => {
     isOnline,
     documentFile,
     saveFormToStorage,
-    form,
     setHasSavedDraft
   );
 
