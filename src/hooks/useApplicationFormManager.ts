@@ -106,7 +106,7 @@ export const useApplicationFormManager = () => {
             university: draftData.data.institution_id || '',
             program: draftData.data.program_id || '',
             grade12Results: draftData.data.grade12_results || '',
-            personalStatement: draftData.data.program || '' // Fallback to program field if personal_statement doesn't exist
+            personalStatement: draftData.data.personal_statement || '' // Fixed the field name
           });
           setHasSavedDraft(true);
         }

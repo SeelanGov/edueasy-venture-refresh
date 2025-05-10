@@ -10,3 +10,10 @@ export interface RLSTestResult {
   success: boolean;
   message: string;
 }
+
+export interface SecurityAuditResult {
+  success: boolean;
+  issues: string[];
+  results?: RLSTestResult[];
+  error?: string;
+}
