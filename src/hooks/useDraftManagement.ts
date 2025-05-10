@@ -7,6 +7,14 @@ import { toast } from "@/components/ui/use-toast";
 import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 import { useApplicationFormSchema } from "@/hooks/useApplicationFormSchema";
 
+// Define a simpler type for draft data that matches what we're collecting
+type DraftFormData = {
+  university: string;
+  program: string;
+  grade12Results: string;
+  personalStatement?: string;
+};
+
 /**
  * Hook for managing draft saving functionality
  */
@@ -14,7 +22,7 @@ export const useDraftManagement = (
   userId: string | undefined,
   isOnline: boolean,
   documentFile: File | null,
-  saveFormToStorage: (data: ApplicationFormValues) => void,
+  saveFormToStorage: (data: DraftFormData) => void,
   setHasSavedDraft: (value: boolean) => void
 ) => {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
@@ -46,7 +54,7 @@ export const useDraftManagement = (
       const grade12Results = (document.getElementById('grade12Results') as HTMLInputElement)?.value || '';
       const personalStatement = (document.getElementById('personalStatement') as HTMLTextAreaElement)?.value || '';
       
-      const collectedFormData = {
+      const collectedFormData: DraftFormData = {
         university,
         program,
         grade12Results,

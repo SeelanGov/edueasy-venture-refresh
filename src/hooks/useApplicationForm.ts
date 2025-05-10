@@ -35,7 +35,6 @@ export const useApplicationForm = () => {
     isOnline,
     documentFile,
     saveFormToStorage,
-    form,
     setHasSavedDraft
   );
 

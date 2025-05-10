@@ -49,15 +49,12 @@ export const useApplicationFormSchema = () => {
       ),
   });
 
-  // Draft schema with more relaxed validation for saving drafts
+  // Draft schema with more relaxed validation - using a custom type that matches the collected data
   const draftSchema = z.object({
-    fullName: z.string().optional(),
-    idNumber: z.string().optional(),
-    grade12Results: z.string().optional(),
     university: z.string().optional(),
     program: z.string().optional(),
-    personalStatement: z.string().optional(),
-    documentFile: z.any().optional(),
+    grade12Results: z.string().optional(),
+    personalStatement: z.string().optional()
   });
 
   return { formSchema, draftSchema };
