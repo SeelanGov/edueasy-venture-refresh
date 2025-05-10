@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { ErrorSeverity } from "@/utils/errorLogging";
+import { ErrorLogEntry } from "@/types/database.types";
 
 export interface ErrorNotification {
   id: string;
@@ -37,7 +38,7 @@ export const useAdminErrorNotifications = (
           
         if (error) throw error;
         setIsAdmin(!!data);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error checking admin status:", err);
         setIsAdmin(false);
       }
@@ -54,22 +55,27 @@ export const useAdminErrorNotifications = (
     setError(null);
     
     try {
-      let query = supabase
-        .from("system_error_logs")
-        .select("id, message, severity, component, action, created_at, is_resolved")
-        .eq("is_resolved", false)
-        .order("created_at", { ascending: false })
-        .limit(20);
-        
-      if (onlyCritical) {
-        query = query.eq("severity", ErrorSeverity.CRITICAL);
-      }
-      
-      const { data, error: fetchError } = await query;
+      // Using RPC instead of direct table access
+      let { data, error: fetchError } = await supabase
+        .rpc('get_error_logs', { 
+          critical_only: onlyCritical, 
+          limit_count: 20 
+        });
       
       if (fetchError) throw fetchError;
       
-      setNotifications(data || []);
+      // Map the error logs to the format we expect
+      const formattedNotifications: ErrorNotification[] = (data || []).map((log: ErrorLogEntry) => ({
+        id: log.id,
+        message: log.message,
+        severity: log.severity as ErrorSeverity,
+        component: log.component,
+        action: log.action,
+        created_at: log.occurred_at,
+        is_resolved: log.is_resolved
+      }));
+      
+      setNotifications(formattedNotifications);
     } catch (err: any) {
       console.error("Error fetching error notifications:", err);
       setError(err.message);
@@ -86,15 +92,13 @@ export const useAdminErrorNotifications = (
     if (!user || !isAdmin) return false;
     
     try {
+      // Use RPC to resolve error
       const { error: updateError } = await supabase
-        .from("system_error_logs")
-        .update({
-          is_resolved: true,
-          resolved_at: new Date().toISOString(),
-          resolved_by: user.id,
+        .rpc('resolve_error_log', {
+          error_id: id,
+          resolver_id: user.id,
           resolution_notes: resolution
-        })
-        .eq("id", id);
+        });
         
       if (updateError) throw updateError;
       
@@ -104,7 +108,9 @@ export const useAdminErrorNotifications = (
       return true;
     } catch (err: any) {
       console.error("Error resolving notification:", err);
-      toast.error("Failed to resolve notification");
+      toast({
+        description: "Failed to resolve notification"
+      });
       return false;
     }
   };
@@ -127,21 +133,9 @@ export const useAdminErrorNotifications = (
           table: 'system_error_logs',
           filter: onlyCritical ? `severity=eq.${ErrorSeverity.CRITICAL}` : undefined
         },
-        payload => {
-          const newError = payload.new as ErrorNotification;
-          
-          if (!newError.is_resolved) {
-            // Add to notifications list
-            setNotifications(prev => [newError, ...prev]);
-            
-            // Show toast for new critical errors
-            if (newError.severity === ErrorSeverity.CRITICAL) {
-              toast.error("Critical System Error", {
-                description: newError.message,
-                duration: 8000,
-              });
-            }
-          }
+        () => {
+          // Simply refresh the notifications when a new error is inserted
+          fetchNotifications();
         }
       )
       .subscribe();

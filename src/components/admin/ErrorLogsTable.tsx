@@ -1,36 +1,15 @@
-
-import { useState } from "react";
-import { 
-  AlertCircle, 
-  AlertTriangle, 
-  Info, 
-  AlertOctagon, 
-  Check, 
-  ChevronDown,
-  ChevronUp,
-  RefreshCw
-} from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertCircle, CheckCircle, Clock, XCircle, ExternalLink } from "lucide-react";
 import { ErrorSeverity } from "@/utils/errorLogging";
-import { ErrorCategory } from "@/utils/errorHandler";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { ErrorLogEntry } from "@/types/database.types";
 
 interface ErrorLogEntry {
   id: string;

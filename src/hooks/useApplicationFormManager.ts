@@ -8,7 +8,7 @@ import { useApplicationSubmission } from "@/hooks/useApplicationSubmission";
 import { useDraftManagement } from "@/hooks/useDraftManagement";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 import { supabase } from "@/integrations/supabase/client";
 import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
@@ -21,7 +21,6 @@ export const useApplicationFormManager = () => {
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
   const { formSchema } = useApplicationFormSchema();
-  const { toast } = useToast();
   
   // Initialize form with schema validation
   const form = useForm<ApplicationFormValues>({
@@ -119,14 +118,13 @@ export const useApplicationFormManager = () => {
         form.reset(parsedData);
         
         toast({
-          title: "Offline data loaded",
-          description: "Your previously saved form data has been restored",
+          description: "Your previously saved form data has been restored"
         });
       } catch (error) {
         console.error("Error parsing stored form data:", error);
       }
     }
-  }, [user, isOnline, form, getItem, toast]);
+  }, [user, isOnline, form, getItem]);
   
   // Document file change handler
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

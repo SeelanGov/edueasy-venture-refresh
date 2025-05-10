@@ -3,6 +3,11 @@ import { VerificationResult } from "@/hooks/useDocumentVerification";
 
 export type DocumentType = "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results";
 
+export interface RetryData {
+  file: File;
+  documentType: DocumentType;
+}
+
 export interface DocumentUploadState {
   file: File | null;
   uploading: boolean;
@@ -14,11 +19,7 @@ export interface DocumentUploadState {
   verificationTriggered?: boolean;
   previouslyRejected?: boolean;
   isResubmission?: boolean;
-}
-
-export interface DocumentFileValidation {
-  valid: boolean;
-  message: string;
+  retryData?: RetryData | null;
 }
 
 export interface DocumentUploadInputProps {
@@ -31,7 +32,7 @@ export interface DocumentUploadInputProps {
   onRetry: (documentType: DocumentType, state: DocumentUploadState) => void;
   onVerify: (documentType: DocumentType) => void;
   onResubmit: () => void;
-  verificationResult?: VerificationResult;
+  verificationResult: VerificationResult | null;
   isVerifying: boolean;
   setCurrentDocumentType: (type: string) => void;
   currentDocumentType: string | null;

@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { Spinner } from "@/components/Spinner";
 import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { DocumentType } from "./documents/types";
 import { DocumentUploadInput } from "./documents/DocumentUploadInput";
 import { useDocumentUploadState } from "@/hooks/useDocumentUploadState";
@@ -182,6 +182,16 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     }
   };
 
+  // Pass a wrapper function to onVerify that adapts the signature
+  const createVerifyHandler = (documentType: DocumentType) => {
+    return () => {
+      const state = getDocumentState(documentType);
+      if (state.documentId && user?.id && state.filePath) {
+        triggerVerification(state.documentId, user.id, documentType, state.filePath, state.isResubmission);
+      }
+    };
+  };
+
   return (
     <ErrorBoundary component="DocumentsUploadStep">
       <div>
@@ -211,7 +221,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
                   state={idDocumentState}
                   onFileChange={handleFileChange}
                   onRetry={handleRetry}
-                  onVerify={triggerVerification}
+                  onVerify={createVerifyHandler("idDocument")}
                   onResubmit={() => setDocumentState("idDocument", {
                     file: null,
                     uploading: false,
@@ -236,7 +246,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
                   state={proofOfResidenceState}
                   onFileChange={handleFileChange}
                   onRetry={handleRetry}
-                  onVerify={triggerVerification}
+                  onVerify={createVerifyHandler("proofOfResidence")}
                   onResubmit={() => setDocumentState("proofOfResidence", {
                     file: null,
                     uploading: false,
@@ -261,7 +271,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
                   state={grade11ResultsState}
                   onFileChange={handleFileChange}
                   onRetry={handleRetry}
-                  onVerify={triggerVerification}
+                  onVerify={createVerifyHandler("grade11Results")}
                   onResubmit={() => setDocumentState("grade11Results", {
                     file: null,
                     uploading: false,
@@ -286,7 +296,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
                   state={grade12ResultsState}
                   onFileChange={handleFileChange}
                   onRetry={handleRetry}
-                  onVerify={triggerVerification}
+                  onVerify={createVerifyHandler("grade12Results")}
                   onResubmit={() => setDocumentState("grade12Results", {
                     file: null,
                     uploading: false,

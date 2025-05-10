@@ -41,14 +41,14 @@ export class ErrorBoundary extends Component<Props, State> {
       
       // Add React component stack to error details
       const errorDetails = {
-        ...standardError.originalError,
-        componentStack: errorInfo.componentStack
+        componentStack: errorInfo.componentStack,
+        // Add any other relevant details here
       };
       
       // Create enhanced error for logging
       const enhancedError = {
         ...standardError,
-        originalError: errorDetails
+        originalError: { ...standardError.originalError, ...errorDetails }
       };
       
       // Log to our error system

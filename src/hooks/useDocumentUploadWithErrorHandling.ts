@@ -1,4 +1,3 @@
-
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
@@ -260,9 +259,7 @@ export const useDocumentUploadWithErrorHandling = (
         setDocumentState(documentType, { previouslyRejected: true });
         
         toast({
-          title: `${notificationType}Rejected`,
-          description: result.failureReason || 'Please check your document and try again',
-          variant: "destructive",
+          description: `${notificationType}Rejected: ${result.failureReason || 'Please check your document and try again'}`
         });
       } else if (result.status === 'request_resubmission') {
         playNotificationSound();
@@ -271,16 +268,13 @@ export const useDocumentUploadWithErrorHandling = (
         setDocumentState(documentType, { previouslyRejected: true });
         
         toast({
-          title: 'Resubmission Required',
-          description: result.failureReason || 'Please check your document and try again',
-          variant: "destructive",
+          description: `Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`
         });
       } else if (result.status === 'approved') {
         playNotificationSound();
         
         toast({
-          title: `${notificationType}Verified`,
-          description: 'Your document has been successfully verified',
+          description: `${notificationType}Verified: Your document has been successfully verified`
         });
       }
     }

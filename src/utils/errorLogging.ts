@@ -43,12 +43,17 @@ export const logError = async (
       occurred_at: new Date().toISOString(),
     };
 
-    // Insert into database
+    // Insert into database using RPC instead of direct table access
     const { data, error: insertError } = await supabase
-      .from("system_error_logs")
-      .insert(errorLog)
-      .select("id")
-      .single();
+      .rpc("log_system_error", {
+        p_message: errorLog.message,
+        p_category: errorLog.category,
+        p_severity: errorLog.severity,
+        p_component: errorLog.component || null,
+        p_action: errorLog.action || null,
+        p_user_id: errorLog.user_id || null,
+        p_details: errorLog.details || null
+      });
 
     if (insertError) {
       console.error("Failed to log error to database:", insertError);
@@ -56,7 +61,7 @@ export const logError = async (
     }
 
     // Return the error log ID
-    return data.id;
+    return data;
   } catch (loggingError) {
     // Fallback to console if database logging fails
     console.error("Error logging system failure:", loggingError);
@@ -127,10 +132,7 @@ export async function safeAsyncWithLogging<T>(
 export const checkCriticalErrors = async (userId?: string): Promise<boolean> => {
   try {
     const { count, error } = await supabase
-      .from("system_error_logs")
-      .select("id", { count: "exact", head: true })
-      .eq("severity", ErrorSeverity.CRITICAL)
-      .eq("is_resolved", false);
+      .rpc('count_critical_errors');
       
     if (error) throw error;
     return count ? count > 0 : false;
@@ -146,14 +148,11 @@ export const checkCriticalErrors = async (userId?: string): Promise<boolean> => 
 export const markErrorResolved = async (errorId: string, resolvedBy: string, resolution: string): Promise<boolean> => {
   try {
     const { error } = await supabase
-      .from("system_error_logs")
-      .update({
-        is_resolved: true,
-        resolved_at: new Date().toISOString(),
-        resolved_by: resolvedBy,
+      .rpc('resolve_error_log', {
+        error_id: errorId,
+        resolver_id: resolvedBy,
         resolution_notes: resolution
-      })
-      .eq("id", errorId);
+      });
       
     if (error) throw error;
     return true;
