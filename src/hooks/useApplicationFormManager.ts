@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,7 +73,7 @@ export const useApplicationFormManager = () => {
     hasSavedDraft
   );
 
-  // Initialize form with stored data if available
+  // Initialize form on component mount
   const initializeForm = useCallback(async () => {
     // Check for saved drafts in Supabase
     if (user?.id && isOnline) {

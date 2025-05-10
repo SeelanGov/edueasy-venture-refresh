@@ -10,11 +10,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RLSTestResult } from "@/utils/security";
 
 export const RLSPolicyTester = () => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [testResults, setTestResults] = useState<any[] | null>(null);
+  const [testResults, setTestResults] = useState<RLSTestResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [registeredPolicies, setRegisteredPolicies] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("test");
@@ -170,7 +171,7 @@ export const RLSPolicyTester = () => {
                     </div>
                     
                     {!result.success && (
-                      <p className="mt-2 text-sm text-destructive">{result.details}</p>
+                      <p className="mt-2 text-sm text-destructive">{result.message}</p>
                     )}
                   </div>
                 ))}

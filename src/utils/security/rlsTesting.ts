@@ -19,9 +19,17 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
     
     if (error) throw error;
     
+    // Transform the data to match the RLSTestResult type
+    const transformedResults: RLSTestResult[] = Array.isArray(data) ? data.map(result => ({
+      table_name: result.table_name,
+      operation: result.operation,
+      success: result.success,
+      message: result.details || '' // Use the details field as the message
+    })) : [];
+    
     return {
-      success: data.every((result: any) => result.success),
-      results: data || []
+      success: transformedResults.length > 0 && transformedResults.every(result => result.success),
+      results: transformedResults
     };
   } catch (error: any) {
     console.error("Error testing RLS policies:", error);
