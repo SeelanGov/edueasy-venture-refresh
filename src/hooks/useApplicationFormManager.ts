@@ -90,7 +90,7 @@ export const useApplicationFormManager = () => {
               .single();
               
             if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
-            return data;
+            return { data, error: null }; // Return object with data and error properties
           },
           {
             component: "ApplicationForm",
@@ -101,12 +101,12 @@ export const useApplicationFormManager = () => {
           }
         );
 
-        if (draftData) {
+        if (draftData?.data) { // Access data property from the returned object
           form.reset({
-            university: draftData.institution_id || '',
-            program: draftData.program_id || '',
-            grade12Results: draftData.grade12_results || '',
-            personalStatement: draftData.program || '' // Fallback to program field if personal_statement doesn't exist
+            university: draftData.data.institution_id || '',
+            program: draftData.data.program_id || '',
+            grade12Results: draftData.data.grade12_results || '',
+            personalStatement: draftData.data.program || '' // Fallback to program field if personal_statement doesn't exist
           });
           setHasSavedDraft(true);
         }
@@ -152,3 +152,4 @@ export const useApplicationFormManager = () => {
     initializeForm
   };
 };
+

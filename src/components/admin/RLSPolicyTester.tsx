@@ -72,11 +72,9 @@ export const RLSPolicyTester = () => {
       }
       
       // Run enhanced RLS policy tests
-      const { data, error } = await supabase.rpc('audit_rls_policies');
+      const { results, success } = await testRLSPolicies(user.id);
       
-      if (error) throw error;
-      
-      setTestResults(data || []);
+      setTestResults(results || []);
       toast.success("RLS policy tests completed");
     } catch (error: any) {
       console.error("Error running RLS tests:", error);

@@ -30,9 +30,7 @@ export const testRLSPolicies = async (userId: string | undefined) => {
 
   try {
     // Use the new enhanced audit_rls_policies function
-    const { data, error } = await supabase.rpc('audit_rls_policies', {
-      p_user_id: userId
-    });
+    const { data, error } = await supabase.rpc('audit_rls_policies');
     
     if (error) throw error;
     
@@ -179,12 +177,20 @@ export const performSecurityAudit = async (userId: string | undefined) => {
       issues.push(`RLS policy issues found: ${failedTests.length} policies failed testing`);
     }
     
-    // Check for critical errors
-    const { data: criticalErrors, error: criticalError } = await supabase.rpc('count_critical_errors');
+    // Instead of calling the count_critical_errors function directly,
+    // Let's query the critical errors directly from the system_error_logs table
+    const { data: criticalErrors, error: criticalError } = await supabase
+      .from('system_error_logs')
+      .select('id')
+      .eq('severity', 'critical')
+      .eq('is_resolved', false);
+    
     if (criticalError) throw criticalError;
     
-    if (criticalErrors > 0) {
-      issues.push(`${criticalErrors} critical errors detected in the system`);
+    // Now we have an array of critical errors, so we can check the length
+    const criticalErrorCount = criticalErrors?.length || 0;
+    if (criticalErrorCount > 0) {
+      issues.push(`${criticalErrorCount} critical errors detected in the system`);
     }
     
     // Return audit results
@@ -202,3 +208,4 @@ export const performSecurityAudit = async (userId: string | undefined) => {
     };
   }
 };
+
