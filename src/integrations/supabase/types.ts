@@ -106,36 +106,98 @@ export type Database = {
           },
         ]
       }
+      document_verification_logs: {
+        Row: {
+          completed_at: string | null
+          confidence_score: number | null
+          created_at: string
+          document_id: string
+          document_type: string
+          failure_reason: string | null
+          id: string
+          status: string
+          user_id: string
+          verification_details: Json | null
+          verification_method: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          document_id: string
+          document_type: string
+          failure_reason?: string | null
+          id?: string
+          status?: string
+          user_id: string
+          verification_details?: Json | null
+          verification_method?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          document_id?: string
+          document_type?: string
+          failure_reason?: string | null
+          id?: string
+          status?: string
+          user_id?: string
+          verification_details?: Json | null
+          verification_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_verification_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           application_id: string
           created_at: string | null
           document_type: string | null
+          extracted_text: string | null
           file_path: string
           id: string
           rejection_reason: string | null
           user_id: string | null
+          verification_confidence: number | null
+          verification_details: Json | null
           verification_status: string | null
+          verified_at: string | null
         }
         Insert: {
           application_id: string
           created_at?: string | null
           document_type?: string | null
+          extracted_text?: string | null
           file_path: string
           id?: string
           rejection_reason?: string | null
           user_id?: string | null
+          verification_confidence?: number | null
+          verification_details?: Json | null
           verification_status?: string | null
+          verified_at?: string | null
         }
         Update: {
           application_id?: string
           created_at?: string | null
           document_type?: string | null
+          extracted_text?: string | null
           file_path?: string
           id?: string
           rejection_reason?: string | null
           user_id?: string | null
+          verification_confidence?: number | null
+          verification_details?: Json | null
           verification_status?: string | null
+          verified_at?: string | null
         }
         Relationships: [
           {

@@ -2,10 +2,10 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
-import { handleError, ErrorCategory, VerificationError } from './errorHandler.ts';
-import { fetchWithRetry } from './networkUtils.ts';
+import { handleError, ErrorCategory, VerificationError, getUserFriendlyErrorMessage } from './errorHandler.ts';
+import { fetchWithRetry, withTimeout } from './networkUtils.ts';
 import { processDocument, verifyDocument } from './documentProcessor.ts';
-import { updateVerificationStatus, logVerificationAttempt } from './databaseUtils.ts';
+import { updateVerificationStatus, logVerificationAttempt, createVerificationNotification } from './databaseUtils.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,10 +91,10 @@ serve(async (req) => {
       // Continue processing even if logging fails
     }
     
-    // Process the document image
+    // Process the document image with timeout
     let imageData;
     try {
-      imageData = await processDocument(imageUrl);
+      imageData = await withTimeout(processDocument(imageUrl), 30000, 'Document processing timed out');
     } catch (error: any) {
       const verificationError: VerificationError = {
         category: ErrorCategory.NETWORK,
@@ -119,11 +119,24 @@ serve(async (req) => {
         userId
       );
       
+      await createVerificationNotification(
+        supabase,
+        userId,
+        documentId,
+        documentType,
+        'request_resubmission',
+        'Failed to process document: Network or download error'
+      );
+      
       throw new Error('Failed to process document image: ' + error.message);
     }
     
-    // Verify the document
-    const verificationResult = await verifyDocument(documentType, imageData);
+    // Verify the document with timeout
+    const verificationResult = await withTimeout(
+      verifyDocument(documentType, imageData),
+      60000,
+      'Document verification timed out'
+    );
     
     // Update document verification status and extracted data
     try {
@@ -138,6 +151,16 @@ serve(async (req) => {
         userId,
         verificationResult.extractedText,
         verificationResult.extractedFields
+      );
+      
+      // Create notification for the user
+      await createVerificationNotification(
+        supabase,
+        userId,
+        documentId,
+        documentType,
+        verificationResult.status,
+        verificationResult.failureReason
       );
     } catch (error: any) {
       const verificationError: VerificationError = {
@@ -198,11 +221,16 @@ serve(async (req) => {
       statusCode = 422;
     }
     
+    // Get user-friendly error message if available
+    const errorCategory = error.category || ErrorCategory.UNKNOWN;
+    const userMessage = getUserFriendlyErrorMessage(errorCategory);
+    
     // Return error response
     return new Response(
       JSON.stringify({
         success: false,
         error: error.message,
+        userMessage,
         errorDetails: error.category ? {
           category: error.category,
           timestamp: error.timestamp
