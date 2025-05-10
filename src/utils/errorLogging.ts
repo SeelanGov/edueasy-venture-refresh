@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { StandardError } from './errorHandler';
@@ -113,8 +114,8 @@ export const safeAsyncWithLogging = async <T>(
  */
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
-    // Fixed: Use a separate count() call to get the count properly
-    const { count, error } = await supabase
+    // Fixed: Use proper count method with Supabase
+    const { data, error, count } = await supabase
       .from('system_error_logs')
       .select('*', { count: 'exact', head: true })
       .eq('severity', 'critical')
