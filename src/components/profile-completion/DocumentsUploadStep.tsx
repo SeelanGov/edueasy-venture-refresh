@@ -1,103 +1,97 @@
-import { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { DocumentUploadInput } from "./documents/DocumentUploadInput";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
-import { Spinner } from "@/components/Spinner";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "sonner";
-import { DocumentType } from "./documents/types";
-import { DocumentUploadInput } from "./documents/DocumentUploadInput";
-import { useDocumentUploadState } from "@/hooks/useDocumentUploadState";
+import { DocumentType, DocumentUploadState } from "./documents/types";
 import { useDocumentUploadWithErrorHandling } from "@/hooks/useDocumentUploadWithErrorHandling";
 import { useStepperManager } from "@/hooks/useStepperManager";
-import { ACCEPTED_FILE_TYPES } from "./documents/documentUtils";
-import { ErrorBoundary } from "@/components/error-handling/ErrorBoundary";
-import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
-import { OfflineErrorDisplay } from "@/components/error-handling/OfflineErrorDisplay";
-import { useNetworkStatus } from "@/hooks/useNetworkStatus";
-
-const documentsSchema = z.object({
-  idDocument: z.any()
-    .refine((file) => file?.size > 0, "ID document is required")
-    .refine(
-      (file) => !file || file.size <= 1024 * 1024,
-      "File size should be less than 1MB"
-    )
-    .refine(
-      (file) => !file || ACCEPTED_FILE_TYPES.includes(file.type),
-      "File type should be PDF, JPG, or PNG"
-    ),
-  proofOfResidence: z.any()
-    .refine((file) => file?.size > 0, "Proof of residence is required")
-    .refine(
-      (file) => !file || file.size <= 1024 * 1024,
-      "File size should be less than 1MB"
-    )
-    .refine(
-      (file) => !file || ACCEPTED_FILE_TYPES.includes(file.type),
-      "File type should be PDF, JPG, or PNG"
-    ),
-  grade11Results: z.any()
-    .refine((file) => file?.size > 0, "Grade 11 results are required")
-    .refine(
-      (file) => !file || file.size <= 1024 * 1024,
-      "File size should be less than 1MB"
-    )
-    .refine(
-      (file) => !file || ACCEPTED_FILE_TYPES.includes(file.type),
-      "File type should be PDF, JPG, or PNG"
-    ),
-  grade12Results: z.any()
-    .refine((file) => file?.size > 0, "Grade 12 results are required")
-    .refine(
-      (file) => !file || file.size <= 1024 * 1024,
-      "File size should be less than 1MB"
-    )
-    .refine(
-      (file) => !file || ACCEPTED_FILE_TYPES.includes(file.type),
-      "File type should be PDF, JPG, or PNG"
-    ),
-});
-
-type DocumentsFormValues = z.infer<typeof documentsSchema>;
+import { toast } from "sonner";
+import { Stepper } from "../ui/stepper";
 
 interface DocumentsUploadStepProps {
   onComplete: () => void;
   onBack: () => void;
 }
 
+const schema = z.object({
+  idDocument: z.any().optional(),
+  proofOfResidence: z.any().optional(),
+  grade11Results: z.any().optional(),
+  grade12Results: z.any().optional(),
+});
+
+type DocumentsFormValues = z.infer<typeof schema>;
+
 export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepProps) => {
   const { user } = useAuth();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { isOnline } = useNetworkStatus();
-  const [isReconnecting, setIsReconnecting] = useState(false);
-  
-  // Initialize document upload state management
-  const {
-    currentDocumentType,
-    setCurrentDocumentType,
-    currentStep,
-    setCurrentStep,
-    uploadSteps,
-    setUploadSteps,
-    idDocumentState,
-    proofOfResidenceState,
-    grade11ResultsState,
-    grade12ResultsState,
-    getDocumentState,
-    setDocumentState
-  } = useDocumentUploadState();
-  
-  // Initialize the form
-  const form = useForm<DocumentsFormValues>({
-    resolver: zodResolver(documentsSchema),
+  const [uploadSteps, setUploadSteps] = useState<any[]>([]);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
+  const { documents } = useProfileCompletionStore();
+  const [documentStates, setDocumentStates] = useState<Record<string, DocumentUploadState>>({
+    idDocument: {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+    },
+    proofOfResidence: {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+    },
+    grade11Results: {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+    },
+    grade12Results: {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+    },
   });
-
-  // Initialize document upload handlers with error handling
+  
+  const form = useForm<DocumentsFormValues>({
+    resolver: zodResolver(schema),
+  });
+  
+  // Get document upload state
+  const getDocumentState = (documentType: string): DocumentUploadState => {
+    return documentStates[documentType as DocumentType] || {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+    };
+  };
+  
+  // Set document upload state
+  const setDocumentState = (documentType: string, state: Partial<DocumentUploadState>) => {
+    setDocumentStates(prev => ({
+      ...prev,
+      [documentType]: {
+        ...prev[documentType as DocumentType],
+        ...state,
+      },
+    }));
+  };
+  
+  // Document upload handler with error handling
   const {
     handleFileChange,
     handleRetry,
@@ -111,7 +105,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     form
   );
   
-  // Initialize stepper manager
+  // Use the stepper manager for updates
   useStepperManager(
     currentDocumentType,
     getDocumentState,
@@ -120,229 +114,215 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     isVerifying,
     verificationResult
   );
-
-  const checkConnection = async () => {
-    setIsReconnecting(true);
+  
+  // Initialize document states
+  useEffect(() => {
+    if (!documents) return;
     
-    // Wait a moment and then update the online status
-    setTimeout(() => {
-      setIsReconnecting(false);
-    }, 1500);
-  };
-
-  const onSubmit = async (data: DocumentsFormValues) => {
-    setIsSubmitting(true);
-    
-    try {
-      // Check if all documents are uploaded
-      const allUploaded = [
-        idDocumentState.uploaded,
-        proofOfResidenceState.uploaded,
-        grade11ResultsState.uploaded,
-        grade12ResultsState.uploaded,
-      ].every(Boolean);
-      
-      if (!allUploaded) {
-        toast({
-          title: "Missing documents",
-          description: "Please upload all required documents",
-          variant: "destructive",
+    // Set initial document states from store
+    Object.entries(documents).forEach(([key, doc]) => {
+      if (doc && doc.file && doc.path) {
+        setDocumentState(key, {
+          file: doc.file,
+          uploaded: true,
+          uploading: false,
+          progress: 100,
+          error: null,
+          documentId: doc.documentId,
+          filePath: doc.path,
         });
-        return;
+        
+        form.setValue(key as keyof DocumentsFormValues, doc.file);
       }
-      
-      // Use enhanced error handling
-      const { error } = await safeAsyncWithLogging(
-        async () => {
-          // Additional validation could happen here
-          return true;
-        },
-        {
-          component: "DocumentsUploadStep",
-          action: "ValidateAndSubmit",
-          userId: user?.id,
-          errorMessage: "Failed to process documents",
-          severity: ErrorSeverity.ERROR
-        }
-      );
-      
-      if (!error) {
-        // All documents are validated and uploaded, proceed to next step
-        onComplete();
-      }
-    } catch (error) {
-      console.error("Error in document submission:", error);
+    });
+  }, [documents, form]);
+  
+  // Complete step if all required documents are uploaded
+  const checkCompletion = () => {
+    const idDocumentState = getDocumentState('idDocument');
+    const grade12ResultsState = getDocumentState('grade12Results');
+    
+    if (idDocumentState.uploaded && grade12ResultsState.uploaded) {
       toast({
-        title: "Error",
-        description: "Failed to process documents. Please try again.",
-        variant: "destructive",
+        description: "All required documents uploaded successfully",
       });
-    } finally {
-      setIsSubmitting(false);
+      
+      return true;
+    }
+    
+    return false;
+  };
+  
+  // Handle verify button click
+  const handleVerify = (documentType: DocumentType) => {
+    const docState = getDocumentState(documentType);
+    
+    if (docState.documentId && user?.id && docState.filePath) {
+      const callVerify = async () => {
+        await triggerVerification(
+          docState.documentId as string, 
+          user.id, 
+          documentType, 
+          docState.filePath as string,
+          docState.isResubmission
+        );
+      };
+      
+      callVerify();
+    }
+  };
+  
+  // Handle form submission
+  const onSubmit = async (data: DocumentsFormValues) => {
+    const allUploaded = checkCompletion();
+    
+    if (!allUploaded) {
+      toast({
+        description: "Please upload all required documents (ID and Grade 12 Results)",
+      });
+      return;
+    }
+    
+    onComplete();
+  };
+  
+  // Handle document resubmission
+  const handleResubmit = () => {
+    if (!currentDocumentType) return;
+    
+    toast({
+      description: "Please select a new document to resubmit",
+    });
+    
+    // Mark this document as previously rejected to track resubmission
+    setDocumentState(currentDocumentType, {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+      previouslyRejected: true,
+      isResubmission: true,
+    });
+    
+    // Trigger the file input
+    const input = document.getElementById(`dropzone-file-${currentDocumentType}`) as HTMLInputElement;
+    if (input) {
+      input.value = '';
+      input.click();
     }
   };
 
-  // Pass a wrapper function to onVerify that adapts the signature
-  const createVerifyHandler = (documentType: DocumentType) => {
-    return () => {
-      const state = getDocumentState(documentType);
-      if (state.documentId && user?.id && state.filePath) {
-        triggerVerification(state.documentId, user.id, documentType, state.filePath, state.isResubmission);
-      }
-    };
-  };
-
   return (
-    <ErrorBoundary component="DocumentsUploadStep">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-6">Upload Required Documents</h2>
+        <h2 className="text-2xl font-bold mb-4">Document Upload</h2>
         <p className="text-gray-600 mb-6">
-          Please upload the following documents. All files must be in PDF, JPG, or PNG format and less than 1MB in size.
-          Each document will be automatically verified using AI technology.
+          Please upload the required documents. We need your ID document and Grade 12 results.
+          Grade 11 results and proof of residence are optional.
         </p>
-        
-        {!isOnline && (
-          <OfflineErrorDisplay 
-            message="You appear to be offline. Document uploads require an internet connection." 
-            onRetryConnection={checkConnection}
-            isRetrying={isReconnecting}
-            className="mb-6"
-          />
+      </div>
+      
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {currentDocumentType && (
+          <Card className="mb-6">
+            <CardContent className="pt-6">
+              <div className="mb-3">
+                <p className="font-semibold">
+                  Document: {currentDocumentType.replace(/([A-Z])/g, ' $1').trim()}
+                </p>
+              </div>
+              <Stepper
+                steps={uploadSteps}
+                currentStep={currentStep}
+              />
+            </CardContent>
+          </Card>
         )}
         
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <Card>
-              <CardContent className="pt-6">
-                <DocumentUploadInput
-                  documentType="idDocument"
-                  label="ID Document Copy"
-                  description="Upload a clear copy of your South African ID or passport"
-                  state={idDocumentState}
-                  onFileChange={handleFileChange}
-                  onRetry={handleRetry}
-                  onVerify={createVerifyHandler("idDocument")}
-                  onResubmit={() => setDocumentState("idDocument", {
-                    file: null,
-                    uploading: false,
-                    progress: 0,
-                    error: null,
-                    uploaded: false,
-                    previouslyRejected: true,
-                    isResubmission: true,
-                  })}
-                  verificationResult={verificationResult}
-                  isVerifying={isVerifying}
-                  setCurrentDocumentType={setCurrentDocumentType}
-                  currentDocumentType={currentDocumentType}
-                  uploadSteps={uploadSteps}
-                  currentStep={currentStep}
-                />
-                
-                <DocumentUploadInput
-                  documentType="proofOfResidence"
-                  label="Proof of Residence"
-                  description="A utility bill, bank statement or affidavit confirming your address (less than 3 months old)"
-                  state={proofOfResidenceState}
-                  onFileChange={handleFileChange}
-                  onRetry={handleRetry}
-                  onVerify={createVerifyHandler("proofOfResidence")}
-                  onResubmit={() => setDocumentState("proofOfResidence", {
-                    file: null,
-                    uploading: false,
-                    progress: 0,
-                    error: null,
-                    uploaded: false,
-                    previouslyRejected: true,
-                    isResubmission: true,
-                  })}
-                  verificationResult={verificationResult}
-                  isVerifying={isVerifying}
-                  setCurrentDocumentType={setCurrentDocumentType}
-                  currentDocumentType={currentDocumentType}
-                  uploadSteps={uploadSteps}
-                  currentStep={currentStep}
-                />
-                
-                <DocumentUploadInput
-                  documentType="grade11Results"
-                  label="Grade 11 Results"
-                  description="Upload your Grade 11 final report or certificate"
-                  state={grade11ResultsState}
-                  onFileChange={handleFileChange}
-                  onRetry={handleRetry}
-                  onVerify={createVerifyHandler("grade11Results")}
-                  onResubmit={() => setDocumentState("grade11Results", {
-                    file: null,
-                    uploading: false,
-                    progress: 0,
-                    error: null,
-                    uploaded: false,
-                    previouslyRejected: true,
-                    isResubmission: true,
-                  })}
-                  verificationResult={verificationResult}
-                  isVerifying={isVerifying}
-                  setCurrentDocumentType={setCurrentDocumentType}
-                  currentDocumentType={currentDocumentType}
-                  uploadSteps={uploadSteps}
-                  currentStep={currentStep}
-                />
-                
-                <DocumentUploadInput
-                  documentType="grade12Results"
-                  label="Grade 12 Results"
-                  description="Upload your Grade 12 certificate or results statement"
-                  state={grade12ResultsState}
-                  onFileChange={handleFileChange}
-                  onRetry={handleRetry}
-                  onVerify={createVerifyHandler("grade12Results")}
-                  onResubmit={() => setDocumentState("grade12Results", {
-                    file: null,
-                    uploading: false,
-                    progress: 0,
-                    error: null,
-                    uploaded: false,
-                    previouslyRejected: true,
-                    isResubmission: true,
-                  })}
-                  verificationResult={verificationResult}
-                  isVerifying={isVerifying}
-                  setCurrentDocumentType={setCurrentDocumentType}
-                  currentDocumentType={currentDocumentType}
-                  uploadSteps={uploadSteps}
-                  currentStep={currentStep}
-                />
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <DocumentUploadInput
+            documentType="idDocument"
+            label="ID Document"
+            description="Upload your South African ID or passport"
+            state={getDocumentState('idDocument')}
+            onFileChange={handleFileChange}
+            onRetry={handleRetry}
+            onVerify={handleVerify}
+            onResubmit={handleResubmit}
+            verificationResult={verificationResult}
+            isVerifying={isVerifying}
+            setCurrentDocumentType={setCurrentDocumentType}
+            currentDocumentType={currentDocumentType}
+            uploadSteps={uploadSteps}
+            currentStep={currentStep}
+            accept="image/*, application/pdf"
+          />
             
-            <div className="flex justify-between pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onBack}
-                className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-              >
-                Back
-              </Button>
-              
-              <Button 
-                type="submit" 
-                disabled={isSubmitting || 
-                  idDocumentState.uploading || 
-                  proofOfResidenceState.uploading || 
-                  grade11ResultsState.uploading || 
-                  grade12ResultsState.uploading ||
-                  !isOnline}
-                className="bg-cap-teal hover:bg-cap-teal/90"
-              >
-                {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
-                {isSubmitting ? "Processing..." : "Continue"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </ErrorBoundary>
+          <DocumentUploadInput
+            documentType="proofOfResidence"
+            label="Proof of Residence (Optional)"
+            description="Upload a utility bill or bank statement"
+            state={getDocumentState('proofOfResidence')}
+            onFileChange={handleFileChange}
+            onRetry={handleRetry}
+            onVerify={handleVerify}
+            onResubmit={handleResubmit}
+            verificationResult={verificationResult}
+            isVerifying={isVerifying}
+            setCurrentDocumentType={setCurrentDocumentType}
+            currentDocumentType={currentDocumentType}
+            uploadSteps={uploadSteps}
+            currentStep={currentStep}
+            accept="image/*, application/pdf"
+          />
+            
+          <DocumentUploadInput
+            documentType="grade11Results"
+            label="Grade 11 Results (Optional)"
+            description="Upload your Grade 11 final results"
+            state={getDocumentState('grade11Results')}
+            onFileChange={handleFileChange}
+            onRetry={handleRetry}
+            onVerify={handleVerify}
+            onResubmit={handleResubmit}
+            verificationResult={verificationResult}
+            isVerifying={isVerifying}
+            setCurrentDocumentType={setCurrentDocumentType}
+            currentDocumentType={currentDocumentType}
+            uploadSteps={uploadSteps}
+            currentStep={currentStep}
+            accept="image/*, application/pdf"
+          />
+            
+          <DocumentUploadInput
+            documentType="grade12Results"
+            label="Grade 12 Results"
+            description="Upload your Grade 12 final results or latest available results"
+            state={getDocumentState('grade12Results')}
+            onFileChange={handleFileChange}
+            onRetry={handleRetry}
+            onVerify={handleVerify}
+            onResubmit={handleResubmit}
+            verificationResult={verificationResult}
+            isVerifying={isVerifying}
+            setCurrentDocumentType={setCurrentDocumentType}
+            currentDocumentType={currentDocumentType}
+            uploadSteps={uploadSteps}
+            currentStep={currentStep}
+            accept="image/*, application/pdf"
+          />
+        </div>
+        
+        <div className="flex justify-between pt-6">
+          <Button type="button" variant="outline" onClick={onBack}>
+            Back
+          </Button>
+          <Button type="submit" disabled={!checkCompletion()}>
+            Next
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };

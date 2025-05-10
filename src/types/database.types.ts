@@ -1,3 +1,4 @@
+
 export interface ErrorLogEntry {
   id: string;
   message: string;
@@ -169,6 +170,20 @@ export interface Database {
           user_uuid: string;
         };
         Returns: boolean;
+      };
+      get_intents_with_stats: {
+        Args: Record<string, never>;
+        Returns: Array<{
+          id: string;
+          intent_name: string;
+          description: string;
+          response_template: string;
+          sample_queries: any;
+          created_at: string;
+          updated_at: string;
+          message_count: number;
+          avg_confidence: number;
+        }>;
       };
     };
   };

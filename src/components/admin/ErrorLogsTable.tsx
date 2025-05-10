@@ -4,12 +4,33 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { AlertCircle, CheckCircle, Clock, XCircle, ExternalLink } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue 
+} from "@/components/ui/select";
+import { 
+  AlertCircle, 
+  AlertOctagon, 
+  AlertTriangle,
+  Info,
+  CheckCircle, 
+  Clock, 
+  XCircle, 
+  ExternalLink,
+  RefreshCw,
+  ChevronUp,
+  ChevronDown,
+  Check
+} from "lucide-react";
 import { ErrorSeverity } from "@/utils/errorLogging";
-import { formatDistanceToNow } from "date-fns";
+import { ErrorCategory } from "@/utils/errorHandler";
+import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ErrorLogEntry } from "@/types/database.types";
 
 interface ErrorLogEntry {
   id: string;

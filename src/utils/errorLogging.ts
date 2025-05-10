@@ -1,6 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { handleError, ErrorCategory, StandardError } from "@/utils/errorHandler";
+import { toast } from "sonner";
 
 export enum ErrorSeverity {
   INFO = "info",
@@ -131,7 +132,7 @@ export async function safeAsyncWithLogging<T>(
  */
 export const checkCriticalErrors = async (userId?: string): Promise<boolean> => {
   try {
-    const { count, error } = await supabase
+    const { data: count, error } = await supabase
       .rpc('count_critical_errors');
       
     if (error) throw error;
@@ -147,7 +148,7 @@ export const checkCriticalErrors = async (userId?: string): Promise<boolean> => 
  */
 export const markErrorResolved = async (errorId: string, resolvedBy: string, resolution: string): Promise<boolean> => {
   try {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .rpc('resolve_error_log', {
         error_id: errorId,
         resolver_id: resolvedBy,

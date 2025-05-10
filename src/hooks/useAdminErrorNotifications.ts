@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { ErrorSeverity } from "@/utils/errorLogging";
+import { ErrorCategory } from "@/utils/errorHandler";
 import { ErrorLogEntry } from "@/types/database.types";
 
 export interface ErrorNotification {
@@ -55,8 +56,8 @@ export const useAdminErrorNotifications = (
     setError(null);
     
     try {
-      // Using RPC instead of direct table access
-      let { data, error: fetchError } = await supabase
+      // Using RPC function for fetching error logs
+      const { data: errorLogs, error: fetchError } = await supabase
         .rpc('get_error_logs', { 
           critical_only: onlyCritical, 
           limit_count: 20 
@@ -64,18 +65,23 @@ export const useAdminErrorNotifications = (
       
       if (fetchError) throw fetchError;
       
-      // Map the error logs to the format we expect
-      const formattedNotifications: ErrorNotification[] = (data || []).map((log: ErrorLogEntry) => ({
-        id: log.id,
-        message: log.message,
-        severity: log.severity as ErrorSeverity,
-        component: log.component,
-        action: log.action,
-        created_at: log.occurred_at,
-        is_resolved: log.is_resolved
-      }));
-      
-      setNotifications(formattedNotifications);
+      if (Array.isArray(errorLogs)) {
+        // Map the error logs to the format we expect
+        const formattedNotifications: ErrorNotification[] = errorLogs.map((log: ErrorLogEntry) => ({
+          id: log.id,
+          message: log.message,
+          severity: log.severity as ErrorSeverity,
+          component: log.component,
+          action: log.action,
+          created_at: log.occurred_at,
+          is_resolved: log.is_resolved
+        }));
+        
+        setNotifications(formattedNotifications);
+      } else {
+        console.error("Unexpected response format:", errorLogs);
+        setNotifications([]);
+      }
     } catch (err: any) {
       console.error("Error fetching error notifications:", err);
       setError(err.message);
@@ -93,7 +99,7 @@ export const useAdminErrorNotifications = (
     
     try {
       // Use RPC to resolve error
-      const { error: updateError } = await supabase
+      const { data, error: updateError } = await supabase
         .rpc('resolve_error_log', {
           error_id: id,
           resolver_id: user.id,
@@ -104,6 +110,10 @@ export const useAdminErrorNotifications = (
       
       // Update local state
       setNotifications(prev => prev.filter(notif => notif.id !== id));
+      
+      toast({
+        description: "Error log successfully resolved"
+      });
       
       return true;
     } catch (err: any) {

@@ -1,8 +1,9 @@
+
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { validateFile } from "@/components/profile-completion/documents/documentUtils";
-import { DocumentType, DocumentUploadState } from "@/components/profile-completion/documents/types";
+import { DocumentType, DocumentUploadState, RetryData } from "@/components/profile-completion/documents/types";
 import { compressImage } from "@/utils/imageCompression";
 import { toast } from "sonner";
 import { playNotificationSound } from "@/utils/notificationSound";
@@ -109,11 +110,12 @@ export const useDocumentUploadWithErrorHandling = (
         );
         
         if (uploadError) {
+          const retryData: RetryData = { file: fileToUpload, documentType };
           setDocumentState(documentType, { 
             uploading: false, 
             progress: 0, 
             error: uploadError.message,
-            retryData: { file: fileToUpload, documentType }
+            retryData: retryData
           });
           return;
         }
@@ -152,11 +154,12 @@ export const useDocumentUploadWithErrorHandling = (
             .from('user_documents')
             .remove([uploadData.path]);
             
+          const retryData: RetryData = { file: fileToUpload, documentType };
           setDocumentState(documentType, { 
             uploading: false, 
             progress: 0, 
             error: documentError.message,
-            retryData: { file: fileToUpload, documentType }
+            retryData: retryData
           });
           return;
         }
@@ -170,7 +173,8 @@ export const useDocumentUploadWithErrorHandling = (
           filePath: uploadData.path,
           verificationTriggered: false,
           isResubmission: isResubmission || false,
-          previouslyRejected: false // Reset this flag after successful resubmission
+          previouslyRejected: false, // Reset this flag after successful resubmission
+          retryData: null
         });
         
         // Update form state
@@ -210,8 +214,7 @@ export const useDocumentUploadWithErrorHandling = (
           );
           
           toast({
-            title: 'Document Resubmitted',
-            description: 'Your document has been resubmitted for verification',
+            description: 'Your document has been resubmitted for verification'
           });
         }
         
@@ -220,11 +223,12 @@ export const useDocumentUploadWithErrorHandling = (
       }
     } catch (error: any) {
       console.error(`Error uploading ${documentType}:`, error);
+      const retryData: RetryData = { file, documentType };
       setDocumentState(documentType, { 
         uploading: false, 
         progress: 0, 
         error: error.message || "Upload failed",
-        retryData: { file, documentType }
+        retryData: retryData
       });
     }
   }, [user, documents, form, setDocuments, setDocumentState, setCurrentDocumentType]);
@@ -286,9 +290,23 @@ export const useDocumentUploadWithErrorHandling = (
     documentType: DocumentType,
     currentState: DocumentUploadState
   ) => {
-    const { retryData } = currentState;
-    
-    if (!retryData || !retryData.file) {
+    if (currentState.retryData && currentState.retryData.file) {
+      // Create a fake event object with the existing file
+      const fakeEvent = {
+        target: {
+          files: [currentState.retryData.file]
+        }
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      
+      // Clear error state
+      setDocumentState(documentType, { 
+        error: null, 
+        retryData: null 
+      });
+      
+      // Retry upload
+      handleFileChange(fakeEvent, documentType);
+    } else {
       // If no retry data, reset state
       setDocumentState(documentType, { 
         uploading: false, 
@@ -296,24 +314,7 @@ export const useDocumentUploadWithErrorHandling = (
         error: null, 
         uploaded: false 
       });
-      return;
     }
-    
-    // Create a fake event object with the existing file
-    const fakeEvent = {
-      target: {
-        files: [retryData.file]
-      }
-    } as unknown as React.ChangeEvent<HTMLInputElement>;
-    
-    // Clear error state
-    setDocumentState(documentType, { 
-      error: null, 
-      retryData: null 
-    });
-    
-    // Retry upload
-    handleFileChange(fakeEvent, documentType);
   }, [handleFileChange, setDocumentState]);
 
   return {

@@ -1,3 +1,4 @@
+
 import React, { Component, ErrorInfo, ReactNode } from "react";
 import { logError, ErrorSeverity } from "@/utils/errorLogging";
 import { ErrorDisplay } from "./ErrorDisplay";
@@ -48,7 +49,10 @@ export class ErrorBoundary extends Component<Props, State> {
       // Create enhanced error for logging
       const enhancedError = {
         ...standardError,
-        originalError: { ...standardError.originalError, ...errorDetails }
+        originalError: { 
+          ...standardError.originalError as Record<string, unknown>, 
+          ...errorDetails 
+        }
       };
       
       // Log to our error system
