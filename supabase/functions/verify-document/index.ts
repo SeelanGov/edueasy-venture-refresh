@@ -2,7 +2,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
-import { pipeline } from 'https://esm.sh/@huggingface/transformers@2.6.2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -63,7 +62,7 @@ serve(async (req) => {
       throw new Error('Failed to process document image');
     }
     
-    // Perform OCR using Hugging Face (mock for development)
+    // Perform OCR using simplified approach (mock for development)
     let extractedText = '';
     let validationResults = {};
     let verificationStatus = 'pending';
@@ -71,12 +70,7 @@ serve(async (req) => {
     let failureReason = null;
     
     try {
-      console.log('Initializing OCR model...');
-      
-      // In production, uncomment these lines to use actual OCR
-      // const extractor = await pipeline('optical-character-recognition');
-      // const result = await extractor(imageData);
-      // extractedText = result.text || '';
+      console.log('Initializing OCR processing...');
       
       // For development testing, simulate OCR with sample text based on document type
       if (documentType === 'idDocument') {
@@ -139,6 +133,8 @@ serve(async (req) => {
         verificationStatus = 'request_resubmission';
         failureReason = 'Unable to verify document type';
       }
+      
+      console.log('OCR processing completed with status:', verificationStatus);
       
     } catch (error) {
       console.error('Error in OCR processing:', error);
