@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AlertCircle, CheckCircle, XCircle, Shield, Database, RefreshCw, List } from "lucide-react";
-import { testRLSPolicies, verifyAdminAccess } from "@/utils/securityTesting";
+import { testRLSPolicies, verifyAdminAccess } from "@/utils/security";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
