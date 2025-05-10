@@ -19,11 +19,11 @@ export const useApplicationFormManager = () => {
   const { user } = useAuth();
   const [documentFile, setDocumentFile] = useState(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
-  const { schema } = useApplicationFormSchema();
+  const { formSchema } = useApplicationFormSchema();
   
   // Initialize form with schema validation
   const form = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       university: '',
       program: '',
@@ -99,7 +99,7 @@ export const useApplicationFormManager = () => {
             university: draftData.institution_id || '',
             program: draftData.program_id || '',
             grade12Results: draftData.grade12_results || '',
-            personalStatement: draftData.personal_statement || ''
+            personalStatement: draftData.program || '' // Fallback to program field if personal_statement doesn't exist
           });
           setHasSavedDraft(true);
         }

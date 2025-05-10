@@ -42,15 +42,18 @@ export const useAdminErrorNotifications = () => {
     setError(null);
     
     try {
-      // Use RPC function to get error logs
-      const { data, error } = await supabase.rpc('get_error_logs');
+      // Directly query the system_error_logs table instead of using RPC
+      const { data, error } = await supabase
+        .from('system_error_logs')
+        .select('*')
+        .order('occurred_at', { ascending: false });
       
       if (error) {
         throw error;
       }
       
       if (data) {
-        const formattedNotifications = data.map((log: ErrorLogEntry) => ({
+        const formattedNotifications = data.map((log: any) => ({
           id: log.id,
           message: log.message,
           severity: log.severity,
@@ -74,13 +77,15 @@ export const useAdminErrorNotifications = () => {
   // Mark an error as resolved
   const markAsResolved = useCallback(async (errorId: string, resolutionNotes: string) => {
     try {
-      const { error } = await supabase.rpc(
-        'resolve_error_log',
-        {
-          error_id: errorId,
-          resolution_notes: resolutionNotes
-        }
-      );
+      // Directly update the system_error_logs table instead of using RPC
+      const { error } = await supabase
+        .from('system_error_logs')
+        .update({ 
+          is_resolved: true,
+          resolution_notes: resolutionNotes,
+          resolved_at: new Date().toISOString()
+        })
+        .eq('id', errorId);
       
       if (error) throw error;
       
