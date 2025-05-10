@@ -4,6 +4,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import type { VerificationResult } from "@/hooks/useDocumentVerification";
 import { DocumentGuidance } from "./DocumentGuidance";
+import { ValidationResultsList } from "./ValidationResultsList";
 
 interface ResubmissionDocumentProps {
   result: VerificationResult;
@@ -12,7 +13,7 @@ interface ResubmissionDocumentProps {
 }
 
 export const ResubmissionDocument = ({ result, documentType, onResubmit }: ResubmissionDocumentProps) => {
-  const { failureReason } = result;
+  const { failureReason, validationResults, extractedFields } = result;
   
   return (
     <Alert className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 mt-4">
@@ -25,6 +26,8 @@ export const ResubmissionDocument = ({ result, documentType, onResubmit }: Resub
         )}
         
         <DocumentGuidance failureReason={failureReason} />
+        
+        <ValidationResultsList validationResults={validationResults} extractedFields={extractedFields} />
         
         {onResubmit && (
           <Button 

@@ -26,7 +26,7 @@ export const VerificationResultDisplay = ({
   
   if (!result) return null;
   
-  const { status } = result;
+  const { status, extractedFields } = result;
   
   // Format document type for display
   const displayDocumentType = formatDocumentType(documentType);

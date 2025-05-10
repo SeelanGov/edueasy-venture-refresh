@@ -136,7 +136,8 @@ serve(async (req) => {
         verificationResult.validationResults,
         logId,
         userId,
-        verificationResult.extractedText
+        verificationResult.extractedText,
+        verificationResult.extractedFields
       );
     } catch (error: any) {
       const verificationError: VerificationError = {
@@ -174,6 +175,7 @@ serve(async (req) => {
         confidence: verificationResult.confidence,
         validationResults: verificationResult.validationResults,
         failureReason: verificationResult.failureReason,
+        extractedFields: verificationResult.extractedFields,
         processingTimeMs: processingTime
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

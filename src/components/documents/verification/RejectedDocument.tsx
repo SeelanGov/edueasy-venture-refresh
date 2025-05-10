@@ -14,7 +14,7 @@ interface RejectedDocumentProps {
 }
 
 export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedDocumentProps) => {
-  const { failureReason, validationResults } = result;
+  const { failureReason, validationResults, extractedFields } = result;
   
   return (
     <Alert variant="destructive" className="mt-4">
@@ -28,7 +28,7 @@ export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedD
         
         <DocumentGuidance failureReason={failureReason} />
         
-        <ValidationResultsList validationResults={validationResults} />
+        <ValidationResultsList validationResults={validationResults} extractedFields={extractedFields} />
         
         {onResubmit && (
           <Button 

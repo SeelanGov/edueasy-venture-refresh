@@ -11,6 +11,7 @@ export interface VerificationResult {
   failureReason?: string | null;
   errorCategory?: string;
   processingTimeMs?: number;
+  extractedFields?: Record<string, string>;
 }
 
 export const useDocumentVerification = () => {
@@ -94,7 +95,8 @@ export const useDocumentVerification = () => {
         confidence: data.confidence,
         validationResults: data.validationResults,
         failureReason: data.failureReason,
-        processingTimeMs: data.processingTimeMs
+        processingTimeMs: data.processingTimeMs,
+        extractedFields: data.extractedFields
       };
       
       setVerificationResult(result);
