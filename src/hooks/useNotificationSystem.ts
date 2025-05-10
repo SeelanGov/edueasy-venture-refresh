@@ -3,7 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
-import { toast as sonnerToast } from "sonner"; // Import directly from sonner package instead
+import { toast as sonnerToast } from "sonner";
+import { playNotificationSound } from "@/utils/notificationSound";
 
 export interface Notification {
   id: string;
@@ -14,6 +15,8 @@ export interface Notification {
   notification_type: string;
   related_document_id?: string;
 }
+
+export type NotificationType = "document_status" | "application_status" | "admin_feedback" | "system";
 
 export const useNotificationSystem = () => {
   const { user } = useAuth();
@@ -72,7 +75,7 @@ export const useNotificationSystem = () => {
 
   // Mark all notifications as read
   const markAllAsRead = useCallback(async () => {
-    if (!user?.id) return;
+    if (!user?.id || unreadCount === 0) return;
     
     try {
       const { error } = await supabase
@@ -89,19 +92,33 @@ export const useNotificationSystem = () => {
     } catch (error) {
       console.error("Error marking all notifications as read:", error);
     }
-  }, [user]);
+  }, [user, unreadCount]);
 
   // Show toast notifications for new unread notifications
   const showToastForNewNotification = useCallback((notification: Notification) => {
-    // Show toast notification for important notifications
+    // Determine the action label based on notification type
+    const actionLabel = notification.notification_type === 'document_status' 
+      ? 'View Document' 
+      : notification.notification_type === 'application_status'
+      ? 'View Application'
+      : 'View';
+    
+    // Play notification sound for all new notifications
+    playNotificationSound();
+    
+    // Show toast notification for all notifications
     sonnerToast(notification.title, {
       description: notification.message,
       action: {
-        label: "View",
+        label: actionLabel,
         onClick: () => {
-          // If this is a document-related notification, we could eventually
-          // navigate to a document detail view
           markAsRead(notification.id);
+          
+          // Navigate to relevant page based on notification type
+          if (notification.related_document_id) {
+            // If we had a document viewer, we could navigate there
+            console.log("Navigate to document:", notification.related_document_id);
+          }
         }
       }
     });
@@ -121,15 +138,38 @@ export const useNotificationSystem = () => {
       if (error) throw error;
       
       // Update local state
+      const notificationToDelete = notifications.find(n => n.id === id);
       setNotifications(prev => prev.filter(n => n.id !== id));
       
       // Update unread count if needed
-      const wasUnread = notifications.find(n => n.id === id)?.is_read === false;
-      if (wasUnread) {
+      if (notificationToDelete && !notificationToDelete.is_read) {
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (error) {
       console.error("Error deleting notification:", error);
+    }
+  }, [user, notifications]);
+
+  // Delete all read notifications
+  const deleteAllReadNotifications = useCallback(async () => {
+    if (!user?.id) return;
+    
+    const readNotifications = notifications.filter(n => n.is_read);
+    if (readNotifications.length === 0) return;
+    
+    try {
+      const { error } = await supabase
+        .from("notifications")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("is_read", true);
+        
+      if (error) throw error;
+      
+      // Update local state
+      setNotifications(prev => prev.filter(n => !n.is_read));
+    } catch (error) {
+      console.error("Error deleting read notifications:", error);
     }
   }, [user, notifications]);
 
@@ -177,6 +217,7 @@ export const useNotificationSystem = () => {
     markAsRead,
     markAllAsRead,
     deleteNotification,
+    deleteAllReadNotifications,
     refreshNotifications: fetchNotifications
   };
 };

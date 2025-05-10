@@ -5,6 +5,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthGuard } from "@/components/AuthGuard";
 import { AdminAuthGuard } from './components/AdminAuthGuard';
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
+import { Toaster as ShadcnToaster } from "@/components/ui/toaster";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -29,8 +31,6 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  console.log("App rendering with updated routing");
-  
   return (
     <QueryClientProvider client={queryClient}>
       {/* Fix: Wrap TooltipProvider in a React component */}
@@ -86,7 +86,9 @@ const App = () => {
               />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            {/* Remove duplicate toasters as they're already included in DashboardLayoutWithThandi */}
+            {/* Add both toast providers */}
+            <Toaster position="top-right" closeButton />
+            <ShadcnToaster />
           </AuthProvider>
         </Router>
       </TooltipProvider>
