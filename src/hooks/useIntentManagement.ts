@@ -38,9 +38,11 @@ export const useIntentManagement = () => {
       const transformedData = data?.map(intent => ({
         ...intent,
         // Convert Json to string[] or null
-        sample_queries: intent.sample_queries ? 
-          (Array.isArray(intent.sample_queries) ? intent.sample_queries : null) : 
-          null
+        sample_queries: intent.sample_queries 
+          ? (Array.isArray(intent.sample_queries) 
+              ? intent.sample_queries.map(q => String(q)) 
+              : null) 
+          : null
       })) || [];
       
       setIntents(transformedData);
