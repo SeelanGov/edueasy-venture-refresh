@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,7 +64,6 @@ export const useApplicationFormManager = () => {
   );
 
   // Submission functionality
-  // Fixed: Removed the incorrect argument passed to useApplicationSubmission
   const { isSubmitting, onSubmit, handleSyncNow } = useApplicationSubmission(
     user?.id,
     isOnline,
