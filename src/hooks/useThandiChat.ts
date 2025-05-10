@@ -1,9 +1,9 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import DOMPurify from "dompurify";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 
 interface ChatMessage {
   id: string;
@@ -18,23 +18,42 @@ export const useThandiChat = () => {
   const [inputValue, setInputValue] = useState("");
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const { user } = useAuth();
+  const [page, setPage] = useState(0);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const PAGE_SIZE = 20;
   
-  // Function to fetch chat history
-  const fetchChatHistory = useCallback(async () => {
+  // Function to fetch chat history with pagination
+  const fetchChatHistory = useCallback(async (pageNumber = 0) => {
     if (!user?.id) return;
     
     try {
-      const { data, error } = await supabase
+      setIsLoading(true);
+      const from = pageNumber * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      
+      const { data, error, count } = await supabase
         .from("thandi_interactions")
-        .select("*")
+        .select("*", { count: 'exact' })
         .eq("user_id", user.id)
-        .order("created_at", { ascending: true });
+        .order("created_at", { ascending: false })
+        .range(from, to);
       
       if (error) throw error;
       
+      // Determine if there are more messages to load
+      if (count !== null) {
+        setHasMoreMessages(count > (pageNumber + 1) * PAGE_SIZE);
+      }
+      
       if (data && data.length > 0) {
-        setMessages(data);
-      } else {
+        // If it's the first page, set the messages
+        // Otherwise, append to existing messages
+        if (pageNumber === 0) {
+          setMessages(data.reverse());
+        } else {
+          setMessages(prevMessages => [...data.reverse(), ...prevMessages]);
+        }
+      } else if (pageNumber === 0) {
         // Send a welcome message if no chat history exists
         const welcomeMessage = {
           id: uuidv4(),
@@ -58,8 +77,20 @@ export const useThandiChat = () => {
       }
     } catch (error) {
       console.error("Error fetching chat history:", error);
+      toast.error("Failed to load chat history. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   }, [user?.id]);
+  
+  // Load more messages function
+  const loadMoreMessages = useCallback(() => {
+    if (hasMoreMessages && !isLoading) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchChatHistory(nextPage);
+    }
+  }, [hasMoreMessages, isLoading, page, fetchChatHistory]);
   
   // Function to process user message and generate Thandi's response
   const processUserMessage = useCallback(async (userMessage: string) => {
@@ -178,6 +209,7 @@ export const useThandiChat = () => {
     
     if (userMessageError) {
       console.error("Error saving user message:", userMessageError);
+      toast.error("Failed to send your message. Please try again.");
     }
     
     // Add Thandi's response to the database
@@ -191,6 +223,7 @@ export const useThandiChat = () => {
     
     if (thandiMessageError) {
       console.error("Error saving Thandi response:", thandiMessageError);
+      toast.error("Failed to get a response. Please try again.");
     }
     
     setIsLoading(false);
@@ -199,12 +232,16 @@ export const useThandiChat = () => {
     return thandiResponse;
   }, [user?.id]);
   
-  // Function to send a new message
+  // Debounced send message function
+  const [isSending, setIsSending] = useState(false);
   const sendMessage = useCallback(async (message: string) => {
-    if (!user?.id) return;
+    if (!user?.id || isSending) return;
     
     // Sanitize user input
     const sanitizedMessage = DOMPurify.sanitize(message);
+    
+    // Prevent duplicate messages
+    setIsSending(true);
     
     // Add user message to local state immediately for better UX
     const userMessageObj = {
@@ -216,27 +253,37 @@ export const useThandiChat = () => {
     
     setMessages((prev) => [...prev, userMessageObj]);
     
-    // Process the message and get Thandi's response
-    const thandiResponse = await processUserMessage(sanitizedMessage);
-    
-    if (thandiResponse) {
-      const thandiMessageObj = {
-        id: uuidv4(),
-        message: thandiResponse,
-        is_user: false,
-        created_at: new Date().toISOString(),
-      };
+    try {
+      // Process the message and get Thandi's response
+      const thandiResponse = await processUserMessage(sanitizedMessage);
       
-      setMessages((prev) => [...prev, thandiMessageObj]);
+      if (thandiResponse) {
+        const thandiMessageObj = {
+          id: uuidv4(),
+          message: thandiResponse,
+          is_user: false,
+          created_at: new Date().toISOString(),
+        };
+        
+        setMessages((prev) => [...prev, thandiMessageObj]);
+      }
+      
+      // Reset the hasNewMessage flag when the user sends a new message
+      setHasNewMessage(false);
+    } catch (error) {
+      console.error("Error processing message:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSending(false);
     }
-  }, [user?.id, processUserMessage]);
+  }, [user?.id, processUserMessage, isSending]);
   
   // Subscribe to Supabase realtime for new messages
   useEffect(() => {
     if (!user?.id) return;
     
     // Fetch initial chat history
-    fetchChatHistory();
+    fetchChatHistory(0);
     
     // Set up realtime subscription
     const channel = supabase
@@ -262,6 +309,11 @@ export const useThandiChat = () => {
           if (messageExists) {
             return current;
           } else {
+            // Play notification sound for new messages
+            const audio = new Audio("/notification.mp3");
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Audio play prevented:", e));
+            
             setHasNewMessage(true);
             return [...current, newMessage];
           }
@@ -281,6 +333,9 @@ export const useThandiChat = () => {
     inputValue,
     setInputValue,
     hasNewMessage,
-    setHasNewMessage
+    setHasNewMessage,
+    loadMoreMessages,
+    hasMoreMessages,
+    isSending
   };
 };
