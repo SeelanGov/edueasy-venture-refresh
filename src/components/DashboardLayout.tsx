@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react';
+
+import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
@@ -16,9 +17,12 @@ import {
   Sun,
   User,
   X,
+  BarChart,
+  Settings,
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -26,13 +30,14 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { user, signOut, loading } = useAuth();
+  const { isAdmin, loading: roleLoading } = useAdminRole();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
 
-  if (loading) {
+  if (loading || roleLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Spinner size="lg" />
@@ -77,6 +82,20 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       icon: <User className="h-5 w-5" />,
     },
   ];
+  
+  // Admin-only navigation items
+  const adminNavItems = isAdmin ? [
+    {
+      name: 'Admin Dashboard',
+      path: '/admin',
+      icon: <Settings className="h-5 w-5" />,
+    },
+    {
+      name: 'Analytics',
+      path: '/admin/analytics',
+      icon: <BarChart className="h-5 w-5" />,
+    }
+  ] : [];
 
   return (
     <div className={`h-screen flex overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
@@ -114,6 +133,33 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   {sidebarOpen && <span className="ml-3">{item.name}</span>}
                 </Link>
               ))}
+              
+              {/* Show admin section only if user is admin */}
+              {isAdmin && adminNavItems.length > 0 && (
+                <>
+                  {sidebarOpen && (
+                    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                      <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Admin
+                      </h3>
+                    </div>
+                  )}
+                  {adminNavItems.map((item) => (
+                    <Link 
+                      key={item.path} 
+                      to={item.path}
+                      className={`flex items-center px-3 py-3 rounded-lg transition-colors ${
+                        isActive(item.path) || location.pathname.startsWith(item.path + '/')
+                          ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      } ${sidebarOpen ? '' : 'justify-center'}`}
+                    >
+                      <span className="flex-shrink-0">{item.icon}</span>
+                      {sidebarOpen && <span className="ml-3">{item.name}</span>}
+                    </Link>
+                  ))}
+                </>
+              )}
             </nav>
           </div>
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
@@ -174,6 +220,32 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                     <span className="ml-3">{item.name}</span>
                   </Link>
                 ))}
+                
+                {/* Admin section for mobile */}
+                {isAdmin && adminNavItems.length > 0 && (
+                  <>
+                    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                      <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Admin
+                      </h3>
+                    </div>
+                    {adminNavItems.map((item) => (
+                      <Link 
+                        key={item.path} 
+                        to={item.path}
+                        className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                          isActive(item.path) || location.pathname.startsWith(item.path + '/')
+                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                            : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <span className="flex-shrink-0">{item.icon}</span>
+                        <span className="ml-3">{item.name}</span>
+                      </Link>
+                    ))}
+                  </>
+                )}
               </nav>
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <Button 
@@ -215,7 +287,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             </div>
             <div className="flex items-center">
               <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                {navItems.find(item => isActive(item.path))?.name || 'Dashboard'}
+                {[...navItems, ...adminNavItems].find(item => isActive(item.path) || location.pathname.startsWith(item.path + '/'))?.name || 'Dashboard'}
               </h1>
             </div>
             <div className="flex items-center space-x-4">

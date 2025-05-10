@@ -11,7 +11,8 @@ import {
   CheckCircle, 
   XCircle, 
   AlertCircle,
-  RefreshCw 
+  RefreshCw,
+  BarChart
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -36,6 +37,8 @@ import { AdminAuthGuard } from "@/components/AdminAuthGuard";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -121,6 +124,25 @@ const AdminDashboard = () => {
     <AdminAuthGuard>
       <DashboardLayout>
         <div className="container mx-auto max-w-7xl py-8 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Link to="/admin/analytics">
+              <Card className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Analytics Dashboard</CardTitle>
+                  <CardDescription>View document verification analytics</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">View metrics and reports</span>
+                    <BarChart className="h-6 w-6 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            {/* Additional admin cards can be added here */}
+          </div>
+          
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Document Verification</h1>
             <Button onClick={refreshDocuments} variant="outline" size="sm">
