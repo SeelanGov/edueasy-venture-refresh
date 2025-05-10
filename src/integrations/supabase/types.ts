@@ -310,6 +310,39 @@ export type Database = {
           },
         ]
       }
+      rls_policy_registry: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          policy_name: string
+          policy_type: string
+          table_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          policy_name: string
+          policy_type: string
+          table_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          policy_name?: string
+          policy_type?: string
+          table_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       subject_marks: {
         Row: {
           created_at: string
@@ -636,6 +669,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      audit_rls_policies: {
+        Args: { p_user_id?: string }
+        Returns: {
+          table_name: string
+          policy_name: string
+          operation: string
+          success: boolean
+          details: string
+        }[]
+      }
+      belongs_to_user: {
+        Args: { table_name: string; record_id: string }
+        Returns: boolean
+      }
       get_intents_with_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -651,8 +698,17 @@ export type Database = {
         }[]
       }
       is_admin: {
-        Args: { user_uuid: string }
+        Args: { user_uuid?: string }
         Returns: boolean
+      }
+      register_rls_policy: {
+        Args: {
+          p_table_name: string
+          p_policy_name: string
+          p_policy_type: string
+          p_description: string
+        }
+        Returns: string
       }
     }
     Enums: {
