@@ -1,22 +1,26 @@
 
 import { DocumentFileValidation } from "./types";
 
-const MAX_FILE_SIZE = 1024 * 1024; // 1MB
-export const ACCEPTED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
-
-/**
- * Validate file size and type
- */
-export const validateFile = (file: File | undefined): DocumentFileValidation => {
-  if (!file) return { valid: false, message: "No file selected" };
+export const validateFile = (file: File): DocumentFileValidation => {
+  const maxSizeInBytes = 1024 * 1024; // 1MB
+  const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
   
-  if (file.size > MAX_FILE_SIZE) {
-    return { valid: false, message: "File size should be less than 1MB" };
+  if (!allowedFileTypes.includes(file.type)) {
+    return {
+      valid: false,
+      message: 'File type not supported. Please use JPEG, PNG or PDF.'
+    };
   }
   
-  if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-    return { valid: false, message: "File type should be PDF, JPG, or PNG" };
+  if (file.size > maxSizeInBytes) {
+    return {
+      valid: false,
+      message: 'File too large. Maximum size is 1MB.'
+    };
   }
   
-  return { valid: true, message: "" };
+  return {
+    valid: true,
+    message: ''
+  };
 };
