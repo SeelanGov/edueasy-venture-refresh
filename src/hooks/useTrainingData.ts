@@ -48,13 +48,7 @@ export const useTrainingData = () => {
     try {
       const query = supabase
         .from("thandi_interactions")
-        .select(`
-          *,
-          users!thandi_interactions_user_id_fkey (
-            full_name,
-            email
-          )
-        `)
+        .select(`*`)
         .eq("is_user", true)
         .order("created_at", { ascending: false });
         
@@ -67,6 +61,15 @@ export const useTrainingData = () => {
         
       if (error) throw error;
 
+      // Get user details for each message
+      const userIds = [...new Set(messages.map(m => m.user_id))];
+      const { data: users, error: usersError } = await supabase
+        .from('users')
+        .select('id, full_name, email')
+        .in('id', userIds);
+        
+      if (usersError) throw usersError;
+      
       // Get already trained message IDs
       const messageIds = messages.map(m => m.id);
       
@@ -85,11 +88,14 @@ export const useTrainingData = () => {
       }
       
       // Transform the data to include user info
-      const transformedMessages = messages.map(msg => ({
-        ...msg,
-        user_name: msg.users?.full_name || "Unknown User",
-        user_email: msg.users?.email || "Unknown Email"
-      }));
+      const transformedMessages = messages.map(msg => {
+        const userInfo = users?.find(u => u.id === msg.user_id);
+        return {
+          ...msg,
+          user_name: userInfo?.full_name || "Unknown User",
+          user_email: userInfo?.email || "Unknown Email"
+        };
+      });
       
       setMessages(transformedMessages);
       setHasMore(messages.length === limit);

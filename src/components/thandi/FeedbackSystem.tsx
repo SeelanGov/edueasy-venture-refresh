@@ -21,7 +21,8 @@ export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemPr
     setIsSubmitting(true);
     
     try {
-      // Store feedback in the database
+      // Store feedback in the database using the correct table name
+      // that exists in the Database (checking via Typescript types)
       await supabase
         .from('thandi_message_feedback')
         .insert({

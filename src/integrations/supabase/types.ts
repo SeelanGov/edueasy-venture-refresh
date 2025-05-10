@@ -464,6 +464,38 @@ export type Database = {
           },
         ]
       }
+      thandi_message_feedback: {
+        Row: {
+          created_at: string
+          feedback_type: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_type: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback_type?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thandi_message_feedback_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "thandi_interactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           created_at: string
@@ -556,6 +588,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_intents_with_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          intent_name: string
+          description: string
+          response_template: string
+          sample_queries: Json
+          created_at: string
+          updated_at: string
+          message_count: number
+          avg_confidence: number
+        }[]
+      }
       is_admin: {
         Args: { user_uuid: string }
         Returns: boolean
