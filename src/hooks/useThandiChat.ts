@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -94,6 +95,26 @@ export const useThandiChat = () => {
       fetchChatHistory(nextPage);
     }
   }, [hasMoreMessages, isLoading, page, fetchChatHistory]);
+  
+  // Function to submit feedback for a message
+  const submitFeedback = useCallback(async (messageId: string, feedbackType: 'helpful' | 'unhelpful') => {
+    if (!user?.id) return;
+    
+    try {
+      await supabase
+        .from("thandi_message_feedback")
+        .insert({
+          message_id: messageId,
+          user_id: user.id,
+          feedback_type: feedbackType
+        });
+      
+      toast.success("Thank you for your feedback!");
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      toast.error("Failed to submit feedback. Please try again.");
+    }
+  }, [user?.id]);
   
   // Function to process user message and generate Thandi's response using OpenAI
   const processUserMessage = useCallback(async (userMessage: string) => {
@@ -278,6 +299,7 @@ export const useThandiChat = () => {
     setHasNewMessage,
     loadMoreMessages,
     hasMoreMessages,
-    isSending
+    isSending,
+    submitFeedback
   };
 };

@@ -10,6 +10,7 @@ import {
   User,
   BarChart,
   Settings,
+  MessageSquare,
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useAdminRole } from '@/hooks/useAdminRole';
@@ -87,6 +88,11 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       name: 'Analytics',
       path: '/admin/analytics',
       icon: <BarChart className="h-5 w-5" />,
+    },
+    {
+      name: 'AI Training',
+      path: '/admin/ai-training',
+      icon: <MessageSquare className="h-5 w-5" />,
     }
   ] : [];
 

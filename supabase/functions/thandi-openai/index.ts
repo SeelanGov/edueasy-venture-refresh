@@ -29,8 +29,40 @@ serve(async (req) => {
     
     // Get the user's last 10 chat messages for context
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+    // Get training data to improve intent detection
+    const { data: trainingData, error: trainingError } = await supabase
+      .from('thandi_intent_training')
+      .select(`
+        message_id,
+        intent_id,
+        thandi_interactions!message_id (
+          message
+        ),
+        thandi_intents!intent_id (
+          intent_name
+        )
+      `)
+      .limit(100);
+    
+    if (trainingError) {
+      console.error('Error fetching training data:', trainingError);
+    }
+
+    // Format training examples for the prompt
+    let trainingExamples = "";
+    if (trainingData && trainingData.length > 0) {
+      trainingExamples = "Here are some examples of classified messages:\n";
+      trainingData.slice(0, 20).forEach((item: any) => {
+        if (item.thandi_interactions && item.thandi_intents) {
+          trainingExamples += `Message: "${item.thandi_interactions.message}"\nIntent: ${item.thandi_intents.intent_name}\n\n`;
+        }
+      });
+    }
     
     const intentPrompt = `
+      ${trainingExamples}
+      
       Analyze the following user message and identify which of these intents it matches best:
       1. document_status: User asking about document verification status
       2. program_selection: User asking about program selection or details

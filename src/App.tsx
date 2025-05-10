@@ -20,6 +20,7 @@ import ProfileDemo from "./pages/ProfileDemo";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminAiTraining from "./pages/AdminAiTraining";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -90,6 +91,14 @@ const App = () => {
                 element={
                   <AdminAuthGuard>
                     <AdminAnalytics />
+                  </AdminAuthGuard>
+                } 
+              />
+              <Route 
+                path="/admin/ai-training" 
+                element={
+                  <AdminAuthGuard>
+                    <AdminAiTraining />
                   </AdminAuthGuard>
                 } 
               />
