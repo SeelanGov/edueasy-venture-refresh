@@ -16,18 +16,25 @@ export const useStepperManager = (
     if (!currentDocumentType) return;
     
     const documentState = getDocumentState(currentDocumentType);
+    const isResubmission = documentState.isResubmission || false;
+    
+    const getStepLabel = (stepName: string) => {
+      if (isResubmission && stepName === 'Upload') return 'Resubmit';
+      if (isResubmission && stepName === 'Verify') return 'Re-verify';
+      return stepName;
+    };
     
     const newSteps = [
       { 
         id: 1, 
-        label: 'Select', 
-        description: 'Choose file',
+        label: getStepLabel('Select'), 
+        description: isResubmission ? 'Choose new file' : 'Choose file',
         status: documentState.file ? 'complete' : 'current'
       },
       { 
         id: 2, 
-        label: 'Upload', 
-        description: 'Upload to server',
+        label: getStepLabel('Upload'), 
+        description: isResubmission ? 'Resubmit document' : 'Upload to server',
         status: documentState.uploaded 
           ? 'complete' 
           : documentState.uploading 
@@ -38,8 +45,8 @@ export const useStepperManager = (
       },
       { 
         id: 3, 
-        label: 'Verify', 
-        description: 'AI verification',
+        label: getStepLabel('Verify'), 
+        description: isResubmission ? 'Re-verification' : 'AI verification',
         status: documentState.verificationTriggered
           ? isVerifying
             ? 'current'

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
-import { Upload, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle, AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
@@ -27,7 +27,7 @@ export const DocumentUploadInput = ({
   uploadSteps,
   currentStep
 }: DocumentUploadInputProps) => {
-  const { file, uploading, progress, error, uploaded } = state;
+  const { file, uploading, progress, error, uploaded, isResubmission } = state;
   
   const handleDocumentClick = () => {
     setCurrentDocumentType(documentType);
@@ -41,7 +41,14 @@ export const DocumentUploadInput = ({
           <FormItem>
             <div className="flex flex-col md:flex-row justify-between">
               <div>
-                <FormLabel className="text-base">{label}</FormLabel>
+                <div className="flex items-center">
+                  <FormLabel className="text-base">{label}</FormLabel>
+                  {isResubmission && (
+                    <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">
+                      Resubmission
+                    </span>
+                  )}
+                </div>
                 <FormDescription className="mt-1">{description}</FormDescription>
               </div>
               
@@ -60,14 +67,29 @@ export const DocumentUploadInput = ({
                 <div className="flex items-center justify-center w-full">
                   <label
                     htmlFor={`dropzone-file-${documentType}`}
-                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer 
+                    ${isResubmission 
+                      ? 'bg-amber-50 hover:bg-amber-100 border-amber-300' 
+                      : 'bg-gray-50 hover:bg-gray-100 border-gray-300'}`}
                   >
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="w-8 h-8 mb-3 text-gray-400" />
+                      {isResubmission ? (
+                        <RefreshCw className="w-8 h-8 mb-3 text-amber-500" />
+                      ) : (
+                        <Upload className="w-8 h-8 mb-3 text-gray-400" />
+                      )}
+                      
                       <p className="mb-2 text-sm text-gray-500">
-                        <span className="font-semibold">Click to upload</span> or drag and drop
+                        <span className="font-semibold">
+                          {isResubmission ? 'Click to resubmit' : 'Click to upload'}
+                        </span> or drag and drop
                       </p>
                       <p className="text-xs text-gray-500">PDF, JPG or PNG (Max. 1MB)</p>
+                      {isResubmission && (
+                        <p className="text-xs text-amber-600 mt-1">
+                          Please address previous issues before resubmitting
+                        </p>
+                      )}
                     </div>
                     <input
                       id={`dropzone-file-${documentType}`}
@@ -82,7 +104,7 @@ export const DocumentUploadInput = ({
             )}
             
             {(file || uploaded) && (
-              <div className="bg-gray-50 border rounded-lg p-4">
+              <div className={`border rounded-lg p-4 ${isResubmission ? 'bg-amber-50 border-amber-200' : 'bg-gray-50'}`}>
                 <div className="flex items-center flex-wrap md:flex-nowrap">
                   <div className="mr-4 mb-4 md:mb-0">
                     <DocumentPreview 
@@ -94,9 +116,17 @@ export const DocumentUploadInput = ({
                   </div>
                   
                   <div className="flex-1">
-                    <p className="text-sm font-medium truncate">
-                      {file?.name || label}
-                    </p>
+                    <div className="flex items-center">
+                      <p className="text-sm font-medium truncate">
+                        {file?.name || label}
+                      </p>
+                      {isResubmission && (
+                        <span className="ml-2 px-2 py-0.5 bg-amber-200 text-amber-800 text-xs rounded-full">
+                          Resubmitted
+                        </span>
+                      )}
+                    </div>
+                    
                     <p className="text-xs text-gray-500">
                       {file && (file.size / 1024).toFixed(1)} KB
                     </p>
@@ -105,7 +135,7 @@ export const DocumentUploadInput = ({
                       <div className="mt-2">
                         <Progress value={progress} className="h-2" />
                         <p className="text-xs text-gray-500 mt-1">
-                          Uploading... {progress}%
+                          {isResubmission ? 'Resubmitting' : 'Uploading'}... {progress}%
                         </p>
                       </div>
                     )}
@@ -167,7 +197,9 @@ export const DocumentUploadInput = ({
                     {uploaded && (
                       <div className="mt-2 flex items-center">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                        <span className="text-xs text-green-600">Uploaded successfully</span>
+                        <span className="text-xs text-green-600">
+                          {isResubmission ? 'Resubmitted successfully' : 'Uploaded successfully'}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -180,6 +212,7 @@ export const DocumentUploadInput = ({
                       isVerifying={isVerifying}
                       documentType={label}
                       onResubmit={onResubmit}
+                      isResubmission={isResubmission}
                     />
                   </div>
                 )}

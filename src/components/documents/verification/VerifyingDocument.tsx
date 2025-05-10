@@ -1,22 +1,31 @@
 
-import { Loader2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Loader } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface VerifyingDocumentProps {
   documentType: string;
+  isResubmission?: boolean;
 }
 
-export const VerifyingDocument = ({ documentType }: VerifyingDocumentProps) => {
+export const VerifyingDocument = ({ documentType, isResubmission = false }: VerifyingDocumentProps) => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 border rounded-lg p-4 mt-4">
-      <div className="flex items-center mb-2">
-        <Loader2 className="h-5 w-5 text-blue-500 animate-spin mr-2" />
-        <span className="font-medium text-sm">Verifying document...</span>
+    <Alert className="bg-blue-50 border-blue-200 text-blue-800 mt-4">
+      <div className="flex items-center">
+        <Loader className="h-5 w-5 mr-2 animate-spin text-blue-500" />
+        <AlertDescription>
+          <p className="font-medium">
+            {isResubmission 
+              ? `Verifying your resubmitted ${documentType.toLowerCase()}...` 
+              : `Verifying your ${documentType.toLowerCase()}...`
+            }
+          </p>
+          <p className="text-sm mt-1">
+            {isResubmission
+              ? "We're carefully reviewing your resubmitted document. This may take a moment."
+              : "This may take a moment. Please wait while our system verifies your document."}
+          </p>
+        </AlertDescription>
       </div>
-      <Progress value={50} className="h-2" />
-      <p className="text-xs text-gray-500 mt-2">
-        We're checking your {documentType} for accuracy and completeness.
-      </p>
-    </div>
+    </Alert>
   );
 };

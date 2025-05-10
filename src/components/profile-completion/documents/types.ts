@@ -12,6 +12,8 @@ export interface DocumentUploadState {
   documentId?: string;
   filePath?: string;
   verificationTriggered?: boolean;
+  previouslyRejected?: boolean;
+  isResubmission?: boolean;
 }
 
 export interface DocumentFileValidation {

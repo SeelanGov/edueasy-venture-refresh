@@ -12,16 +12,21 @@ interface VerificationResultDisplayProps {
   isVerifying: boolean;
   documentType: string;
   onResubmit?: () => void;
+  isResubmission?: boolean;
 }
 
 export const VerificationResultDisplay = ({
   result,
   isVerifying,
   documentType,
-  onResubmit
+  onResubmit,
+  isResubmission = false
 }: VerificationResultDisplayProps) => {
   if (isVerifying) {
-    return <VerifyingDocument documentType={formatDocumentType(documentType)} />;
+    return <VerifyingDocument 
+      documentType={formatDocumentType(documentType)} 
+      isResubmission={isResubmission} 
+    />;
   }
   
   if (!result) return null;
@@ -55,5 +60,5 @@ export const VerificationResultDisplay = ({
     );
   }
   
-  return <PendingDocument documentType={displayDocumentType} />;
+  return <PendingDocument documentType={displayDocumentType} isResubmission={isResubmission} />;
 };

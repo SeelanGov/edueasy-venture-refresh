@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -97,6 +96,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     handleFileChange,
     handleRetry,
     handleManualVerify,
+    handleResubmit,
     isVerifying,
     verificationResult,
   } = useDocumentUpload(
@@ -116,26 +116,6 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     isVerifying,
     verificationResult
   );
-
-  // Handle document resubmission
-  const handleResubmit = (documentType: DocumentType) => {
-    // Reset input
-    const input = document.getElementById(`dropzone-file-${documentType}`) as HTMLInputElement;
-    if (input) input.value = '';
-    
-    // Reset state
-    setDocumentState(documentType, {
-      file: null,
-      uploading: false,
-      progress: 0,
-      error: null,
-      uploaded: false,
-      verificationTriggered: false
-    });
-    
-    // Clear form value
-    form.setValue(documentType, undefined);
-  };
 
   const onSubmit = async (data: DocumentsFormValues) => {
     setIsSubmitting(true);

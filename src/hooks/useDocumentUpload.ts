@@ -40,6 +40,9 @@ export const useDocumentUpload = (
       return;
     }
     
+    // Track if this is a resubmission
+    const isResubmission = getDocumentState(documentType).previouslyRejected;
+    
     // Check if file is an image and needs compression
     const compressionNeeded = file.type.startsWith('image/') && file.size > 500 * 1024; // Compress if > 500KB
     
@@ -49,7 +52,8 @@ export const useDocumentUpload = (
       uploading: true, 
       progress: 0, 
       error: null, 
-      uploaded: false 
+      uploaded: false,
+      isResubmission: isResubmission || false
     });
     
     try {
@@ -83,6 +87,7 @@ export const useDocumentUpload = (
             user_id: user.id,
             document_type: documentType,
             file_path: data.path,
+            is_resubmission: isResubmission
           })
           .select('id')
           .single();
@@ -96,7 +101,9 @@ export const useDocumentUpload = (
           uploaded: true,
           documentId: documentData.id,
           filePath: data.path,
-          verificationTriggered: false
+          verificationTriggered: false,
+          isResubmission: isResubmission || false,
+          previouslyRejected: false // Reset this flag after successful resubmission
         });
         
         // Update form state
@@ -112,8 +119,24 @@ export const useDocumentUpload = (
           }
         });
         
+        // Create "document under review" notification for resubmissions
+        if (isResubmission) {
+          await supabase.from('notifications').insert({
+            user_id: user.id,
+            title: 'Document Resubmitted',
+            message: `Your resubmitted ${documentType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()} is now under review.`,
+            notification_type: 'document_under_review',
+            related_document_id: documentData.id
+          });
+          
+          toast({
+            title: 'Document Resubmitted',
+            description: 'Your document has been resubmitted for verification',
+          });
+        }
+        
         // Auto-trigger verification
-        triggerVerification(documentData.id, user.id, documentType, data.path);
+        triggerVerification(documentData.id, user.id, documentType, data.path, isResubmission);
       }
     } catch (error: any) {
       console.error(`Error uploading ${documentType}:`, error);
@@ -129,29 +152,50 @@ export const useDocumentUpload = (
     documentId: string,
     userId: string,
     documentType: string,
-    filePath: string
+    filePath: string,
+    isResubmission: boolean = false
   ) => {
     setDocumentState(documentType, { verificationTriggered: true });
     
     const result = await verifyDocument(documentId, userId, documentType, filePath);
     
     // Play notification sound for verification results
-    if (result && (result.status === 'rejected' || result.status === 'request_resubmission')) {
-      playNotificationSound();
+    if (result) {
+      const notificationType = isResubmission ? 'Resubmitted document ' : 'Document ';
       
-      toast({
-        title: result.status === 'rejected' ? 'Document Rejected' : 'Resubmission Required',
-        description: result.failureReason || 'Please check your document and try again',
-        variant: "destructive",
-      });
-    } else if (result && result.status === 'approved') {
-      playNotificationSound();
-      
-      toast({
-        title: 'Document Verified',
-        description: 'Your document has been successfully verified',
-      });
+      if (result.status === 'rejected') {
+        playNotificationSound();
+        
+        // Mark as previously rejected to track resubmission
+        setDocumentState(documentType, { previouslyRejected: true });
+        
+        toast({
+          title: `${notificationType}Rejected`,
+          description: result.failureReason || 'Please check your document and try again',
+          variant: "destructive",
+        });
+      } else if (result.status === 'request_resubmission') {
+        playNotificationSound();
+        
+        // Mark as previously rejected to track resubmission
+        setDocumentState(documentType, { previouslyRejected: true });
+        
+        toast({
+          title: 'Resubmission Required',
+          description: result.failureReason || 'Please check your document and try again',
+          variant: "destructive",
+        });
+      } else if (result.status === 'approved') {
+        playNotificationSound();
+        
+        toast({
+          title: `${notificationType}Verified`,
+          description: 'Your document has been successfully verified',
+        });
+      }
     }
+    
+    return result;
   }, [verifyDocument, setDocumentState]);
   
   const handleManualVerify = useCallback((
@@ -160,7 +204,7 @@ export const useDocumentUpload = (
     const docState = getDocumentState(documentType);
     
     if (docState.documentId && user?.id && docState.filePath) {
-      triggerVerification(docState.documentId, user.id, documentType, docState.filePath);
+      triggerVerification(docState.documentId, user.id, documentType, docState.filePath, docState.isResubmission);
     }
   }, [getDocumentState, user, triggerVerification]);
   
@@ -188,10 +232,37 @@ export const useDocumentUpload = (
     handleFileChange(fakeEvent, documentType);
   }, [handleFileChange, setDocumentState]);
 
+  // Handle document resubmission
+  const handleResubmit = useCallback((
+    documentType: DocumentType
+  ) => {
+    // Mark this document as previously rejected to track that it's a resubmission
+    setDocumentState(documentType, {
+      file: null,
+      uploading: false,
+      progress: 0,
+      error: null,
+      uploaded: false,
+      previouslyRejected: true,
+      isResubmission: true,
+    });
+    
+    // Focus the document type for the stepper
+    setCurrentDocumentType(documentType);
+    
+    // Trigger the file input
+    const input = document.getElementById(`dropzone-file-${documentType}`) as HTMLInputElement;
+    if (input) {
+      input.value = '';
+      input.click();
+    }
+  }, [setDocumentState, setCurrentDocumentType]);
+
   return {
     handleFileChange,
     handleRetry,
     handleManualVerify,
+    handleResubmit,
     isVerifying,
     verificationResult,
     triggerVerification

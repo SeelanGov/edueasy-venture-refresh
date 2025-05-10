@@ -1,19 +1,31 @@
 
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Clock } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface PendingDocumentProps {
   documentType: string;
+  isResubmission?: boolean;
 }
 
-export const PendingDocument = ({ documentType }: PendingDocumentProps) => {
+export const PendingDocument = ({ documentType, isResubmission = false }: PendingDocumentProps) => {
   return (
-    <Alert className="border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-900/20 dark:text-blue-300 mt-4">
-      <AlertCircle className="h-5 w-5 text-blue-500" />
-      <AlertTitle>Document Verification In Progress</AlertTitle>
-      <AlertDescription>
-        Your {documentType} is currently being processed.
-      </AlertDescription>
+    <Alert className="bg-blue-50 border-blue-200 text-blue-800 mt-4">
+      <div className="flex items-center">
+        <Clock className="h-5 w-5 mr-2 text-blue-500" />
+        <AlertDescription>
+          <p className="font-medium">
+            {isResubmission 
+              ? `Your resubmitted ${documentType.toLowerCase()} is pending verification` 
+              : `Your ${documentType.toLowerCase()} is pending verification`
+            }
+          </p>
+          <p className="text-sm mt-1">
+            {isResubmission
+              ? "We'll notify you when your resubmitted document has been processed."
+              : "We'll notify you when your document has been processed."}
+          </p>
+        </AlertDescription>
+      </div>
     </Alert>
   );
 };

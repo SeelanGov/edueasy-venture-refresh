@@ -19,26 +19,31 @@ export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedD
   return (
     <Alert variant="destructive" className="mt-4">
       <XCircle className="h-5 w-5" />
-      <AlertTitle>Document Verification Failed</AlertTitle>
+      <AlertTitle className="text-base">Document Verification Failed</AlertTitle>
       <AlertDescription>
-        <p>Your {documentType} could not be verified.</p>
+        <p className="mb-2">Your {documentType} could not be verified.</p>
         {failureReason && (
-          <p className="text-sm mt-1 font-medium">Reason: {failureReason}</p>
+          <p className="text-sm font-medium">Reason: {failureReason}</p>
         )}
         
-        <DocumentGuidance failureReason={failureReason} />
+        <DocumentGuidance failureReason={failureReason} documentType={documentType} />
         
         <ValidationResultsList validationResults={validationResults} extractedFields={extractedFields} />
         
         {onResubmit && (
-          <Button 
-            onClick={onResubmit} 
-            size="sm" 
-            variant="outline" 
-            className="mt-3 border-red-200 bg-red-50 hover:bg-red-100 text-red-900"
-          >
-            Upload New Document
-          </Button>
+          <div className="mt-4">
+            <Button 
+              onClick={onResubmit} 
+              size="sm" 
+              variant="outline" 
+              className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium"
+            >
+              Resubmit Document
+            </Button>
+            <p className="text-xs mt-2 text-red-600">
+              Please address the issues above before resubmitting your {documentType}.
+            </p>
+          </div>
         )}
       </AlertDescription>
     </Alert>
