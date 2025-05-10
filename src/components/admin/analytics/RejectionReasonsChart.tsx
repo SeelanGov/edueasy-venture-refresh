@@ -1,7 +1,7 @@
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import type { RejectionReason } from "@/hooks/useDocumentAnalytics";
+import type { RejectionReason } from "@/hooks/analytics";
 
 interface RejectionReasonsChartProps {
   data: RejectionReason[];

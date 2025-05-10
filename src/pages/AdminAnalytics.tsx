@@ -13,7 +13,7 @@ import { DocumentTimelineChart } from "@/components/admin/analytics/DocumentTime
 import { RejectionReasonsChart } from "@/components/admin/analytics/RejectionReasonsChart";
 import { DocumentTypePerformanceChart } from "@/components/admin/analytics/DocumentTypePerformanceChart";
 import { AnalyticsFilterBar } from "@/components/admin/analytics/AnalyticsFilters";
-import { useDocumentAnalytics } from "@/hooks/useDocumentAnalytics";
+import { useDocumentAnalytics } from "@/hooks/analytics";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Table,

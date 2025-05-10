@@ -1,4 +1,3 @@
-
 import {
   ChartContainer,
   ChartTooltip,
@@ -12,14 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-interface DocumentTypeData {
-  type: string;
-  approved: number;
-  rejected: number;
-  pending: number;
-  request_resubmission: number;
-}
+import { DocumentTypeData } from "@/hooks/analytics";
 
 interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AnalyticsFilters } from "@/hooks/useDocumentAnalytics";
+import { AnalyticsFilters } from "@/hooks/analytics";
 import { format } from "date-fns";
 
 interface AnalyticsFilterBarProps {
