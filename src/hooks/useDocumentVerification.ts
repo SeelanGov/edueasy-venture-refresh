@@ -116,7 +116,7 @@ export const useDocumentVerification = () => {
         toast({
           title: "Resubmission Required",
           description: result.failureReason || "Please resubmit your document",
-          variant: "warning",
+          variant: "destructive", // Changed from 'warning' to 'destructive' to fix TypeScript error
         });
       }
       
