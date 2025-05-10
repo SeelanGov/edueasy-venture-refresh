@@ -9,44 +9,43 @@ import { useDraftManagement } from "@/hooks/useDraftManagement";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { toast } from "sonner";
-import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 import { supabase } from "@/integrations/supabase/client";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 
 /**
  * Main hook for managing application form state, validation and submission
  */
 export const useApplicationFormManager = () => {
   const { user } = useAuth();
-  const [documentFile, setDocumentFile] = useState<File | null>(null);
+  const [documentFile, setDocumentFile] = useState(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
-  const { formSchema } = useApplicationFormSchema();
+  const { schema } = useApplicationFormSchema();
   
   // Initialize form with schema validation
-  const form = useForm<ApplicationFormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm({
+    resolver: zodResolver(schema),
     defaultValues: {
       university: '',
       program: '',
       grade12Results: '',
-      personalStatement: '',
+      personalStatement: ''
     }
   });
-  
+
   // Network status tracking
   const { isOnline } = useNetworkStatus();
   
   // Local storage management for offline functionality
   const { getItem, setItem, removeItem } = useLocalStorage();
   
-  const saveFormToStorage = useCallback((data: ApplicationFormValues) => {
+  const saveFormToStorage = useCallback((data) => {
     setItem('applicationFormData', JSON.stringify(data));
   }, [setItem]);
   
   const clearSavedForm = useCallback(() => {
     removeItem('applicationFormData');
   }, [removeItem]);
-  
+
   // Draft management functionality
   const { isSavingDraft, saveDraft } = useDraftManagement(
     user?.id,
@@ -56,7 +55,7 @@ export const useApplicationFormManager = () => {
     form,
     setHasSavedDraft
   );
-  
+
   // Submission functionality
   const { isSubmitting, onSubmit, handleSyncNow } = useApplicationSubmission(
     user?.id,
@@ -66,7 +65,7 @@ export const useApplicationFormManager = () => {
     clearSavedForm,
     hasSavedDraft
   );
-  
+
   // Initialize form with stored data if available
   const initializeForm = useCallback(async () => {
     // Check for saved drafts in Supabase
@@ -82,7 +81,7 @@ export const useApplicationFormManager = () => {
               .order("updated_at", { ascending: false })
               .limit(1)
               .single();
-            
+              
             if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
             return data;
           },
@@ -94,48 +93,44 @@ export const useApplicationFormManager = () => {
             showToast: false
           }
         );
-        
+
         if (draftData) {
           form.reset({
             university: draftData.institution_id || '',
             program: draftData.program_id || '',
             grade12Results: draftData.grade12_results || '',
-            personalStatement: draftData.personal_statement || '',
+            personalStatement: draftData.personal_statement || ''
           });
-          
           setHasSavedDraft(true);
         }
       } catch (error) {
         console.error("Error loading draft:", error);
       }
     }
-    
+
     // Check for locally saved form data (when offline)
     const storedData = getItem('applicationFormData');
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
         form.reset(parsedData);
-        
-        toast({
-          description: "Your previously saved form data has been restored"
-        });
+        toast("Offline data loaded: Your previously saved form data has been restored");
       } catch (error) {
         console.error("Error parsing stored form data:", error);
       }
     }
   }, [user, isOnline, form, getItem]);
-  
+
   // Document file change handler
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e) => {
     const file = e.target.files?.[0] || null;
     setDocumentFile(file);
   }, []);
-  
+
   useEffect(() => {
     initializeForm();
   }, [initializeForm]);
-  
+
   return {
     form,
     isSubmitting,

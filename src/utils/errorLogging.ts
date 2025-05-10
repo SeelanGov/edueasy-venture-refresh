@@ -44,7 +44,7 @@ export const logError = async (
       occurred_at: new Date().toISOString(),
     };
 
-    // Insert into database using RPC instead of direct table access
+    // Insert into database using RPC
     const { data, error: insertError } = await supabase
       .rpc("log_system_error", {
         p_message: errorLog.message,
@@ -62,7 +62,7 @@ export const logError = async (
     }
 
     // Return the error log ID
-    return data;
+    return data as string;
   } catch (loggingError) {
     // Fallback to console if database logging fails
     console.error("Error logging system failure:", loggingError);
@@ -132,11 +132,14 @@ export async function safeAsyncWithLogging<T>(
  */
 export const checkCriticalErrors = async (userId?: string): Promise<boolean> => {
   try {
-    const { data: count, error } = await supabase
+    const { data, error } = await supabase
       .rpc('count_critical_errors');
       
     if (error) throw error;
-    return count ? count > 0 : false;
+    
+    // Convert the count to a boolean - true if there are critical errors
+    const hasErrors = typeof data === 'number' ? data > 0 : false;
+    return hasErrors;
   } catch (error) {
     console.error("Failed to check for critical errors:", error);
     return false;
@@ -148,7 +151,7 @@ export const checkCriticalErrors = async (userId?: string): Promise<boolean> => 
  */
 export const markErrorResolved = async (errorId: string, resolvedBy: string, resolution: string): Promise<boolean> => {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .rpc('resolve_error_log', {
         error_id: errorId,
         resolver_id: resolvedBy,

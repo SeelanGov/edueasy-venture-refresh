@@ -213,9 +213,7 @@ export const useDocumentUploadWithErrorHandling = (
             }
           );
           
-          toast({
-            description: 'Your document has been resubmitted for verification'
-          });
+          toast("Your document has been resubmitted for verification");
         }
         
         // Auto-trigger verification
@@ -262,24 +260,18 @@ export const useDocumentUploadWithErrorHandling = (
         // Mark as previously rejected to track resubmission
         setDocumentState(documentType, { previouslyRejected: true });
         
-        toast({
-          description: `${notificationType}Rejected: ${result.failureReason || 'Please check your document and try again'}`
-        });
+        toast(`${notificationType}Rejected: ${result.failureReason || 'Please check your document and try again'}`);
       } else if (result.status === 'request_resubmission') {
         playNotificationSound();
         
         // Mark as previously rejected to track resubmission
         setDocumentState(documentType, { previouslyRejected: true });
         
-        toast({
-          description: `Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`
-        });
+        toast(`Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`);
       } else if (result.status === 'approved') {
         playNotificationSound();
         
-        toast({
-          description: `${notificationType}Verified: Your document has been successfully verified`
-        });
+        toast(`${notificationType}Verified: Your document has been successfully verified`);
       }
     }
     

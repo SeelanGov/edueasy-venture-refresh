@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { DocumentUploadInput } from "./documents/DocumentUploadInput";
@@ -12,7 +12,7 @@ import { DocumentType, DocumentUploadState } from "./documents/types";
 import { useDocumentUploadWithErrorHandling } from "@/hooks/useDocumentUploadWithErrorHandling";
 import { useStepperManager } from "@/hooks/useStepperManager";
 import { toast } from "sonner";
-import { Stepper } from "../ui/stepper";
+import { Stepper } from "@/components/ui/stepper";
 
 interface DocumentsUploadStepProps {
   onComplete: () => void;
@@ -143,10 +143,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     const grade12ResultsState = getDocumentState('grade12Results');
     
     if (idDocumentState.uploaded && grade12ResultsState.uploaded) {
-      toast({
-        description: "All required documents uploaded successfully",
-      });
-      
+      toast("All required documents uploaded successfully");
       return true;
     }
     
@@ -177,9 +174,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
     const allUploaded = checkCompletion();
     
     if (!allUploaded) {
-      toast({
-        description: "Please upload all required documents (ID and Grade 12 Results)",
-      });
+      toast("Please upload all required documents (ID and Grade 12 Results)");
       return;
     }
     
@@ -190,9 +185,7 @@ export const DocumentsUploadStep = ({ onComplete, onBack }: DocumentsUploadStepP
   const handleResubmit = () => {
     if (!currentDocumentType) return;
     
-    toast({
-      description: "Please select a new document to resubmit",
-    });
+    toast("Please select a new document to resubmit");
     
     // Mark this document as previously rejected to track resubmission
     setDocumentState(currentDocumentType, {
