@@ -2,20 +2,24 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import type { RejectionReason } from "@/hooks/analytics";
+import { CHART_COLORS } from "@/lib/chart-config";
+import { useMemo } from "react";
 
 interface RejectionReasonsChartProps {
   data: RejectionReason[];
 }
 
 export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
-  // Process data if needed (truncate long reasons)
-  const chartData = data.map(item => ({
-    ...item,
-    shortReason: item.reason.length > 20 ? `${item.reason.substring(0, 20)}...` : item.reason
-  }));
+  // Process data with memoization for better performance
+  const chartData = useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      shortReason: item.reason.length > 20 ? `${item.reason.substring(0, 20)}...` : item.reason
+    }));
+  }, [data]);
 
   const config = {
-    count: { label: "Count", color: "#7E69AB" },
+    count: { label: "Count", color: CHART_COLORS.count },
   };
 
   return (
@@ -36,7 +40,7 @@ export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
             />
           }
         />
-        <Bar dataKey="count" fill="#7E69AB" />
+        <Bar dataKey="count" fill={CHART_COLORS.count} />
       </BarChart>
     </ChartContainer>
   );

@@ -8,10 +8,11 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  ResponsiveContainer,
   XAxis,
   YAxis,
 } from "recharts";
+import { useMemo } from "react";
+import { STATUS_CONFIG, CHART_COLORS } from "@/lib/chart-config";
 
 interface TimelineChartProps {
   data: {
@@ -22,40 +23,33 @@ interface TimelineChartProps {
 }
 
 export const DocumentTimelineChart = ({ data }: TimelineChartProps) => {
-  // Process data for timeline chart
-  const processedData = data.reduce((acc: Record<string, any>[], item) => {
-    const existingEntry = acc.find(entry => entry.date === item.date);
+  // Process data for timeline chart with memoization
+  const processedData = useMemo(() => {
+    const dateMap: Record<string, Record<string, number>> = {};
     
-    if (existingEntry) {
-      existingEntry[item.status] = item.count;
-    } else {
-      const newEntry = { 
-        date: item.date, 
-        approved: 0, 
-        rejected: 0, 
-        pending: 0, 
-        request_resubmission: 0 
-      };
-      newEntry[item.status] = item.count;
-      acc.push(newEntry);
-    }
+    data.forEach(item => {
+      const date = item.date;
+      const status = item.status || 'pending';
+      
+      if (!dateMap[date]) {
+        dateMap[date] = { approved: 0, rejected: 0, pending: 0, request_resubmission: 0 };
+      }
+      
+      dateMap[date][status] = (dateMap[date][status] || 0) + item.count;
+    });
     
-    return acc;
-  }, []);
-
-  // Sort by date
-  processedData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  const config = {
-    approved: { label: "Approved", color: "#16A34A" },
-    rejected: { label: "Rejected", color: "#DC2626" },
-    pending: { label: "Pending", color: "#2563EB" },
-    request_resubmission: { label: "Resubmission", color: "#EAB308" },
-  };
+    // Convert to array format for charting and sort by date
+    const result = Object.entries(dateMap).map(([date, statuses]) => ({
+      date,
+      ...statuses
+    }));
+    
+    return result.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [data]);
 
   return (
     <ChartContainer 
-      config={config}
+      config={STATUS_CONFIG}
       className="aspect-auto h-[300px] w-full"
     >
       <AreaChart data={processedData}>
@@ -78,29 +72,29 @@ export const DocumentTimelineChart = ({ data }: TimelineChartProps) => {
           type="monotone"
           dataKey="approved"
           stackId="1"
-          stroke="#16A34A"
-          fill="#16A34A"
+          stroke={CHART_COLORS.approved}
+          fill={CHART_COLORS.approved}
         />
         <Area
           type="monotone"
           dataKey="rejected"
           stackId="1"
-          stroke="#DC2626"
-          fill="#DC2626"
+          stroke={CHART_COLORS.rejected}
+          fill={CHART_COLORS.rejected}
         />
         <Area
           type="monotone"
           dataKey="request_resubmission"
           stackId="1"
-          stroke="#EAB308"
-          fill="#EAB308"
+          stroke={CHART_COLORS.request_resubmission}
+          fill={CHART_COLORS.request_resubmission}
         />
         <Area
           type="monotone"
           dataKey="pending"
           stackId="1"
-          stroke="#2563EB"
-          fill="#2563EB"
+          stroke={CHART_COLORS.pending}
+          fill={CHART_COLORS.pending}
         />
       </AreaChart>
     </ChartContainer>

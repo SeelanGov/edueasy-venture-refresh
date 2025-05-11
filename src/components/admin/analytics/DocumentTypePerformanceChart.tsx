@@ -13,28 +13,25 @@ import {
   YAxis,
 } from "recharts";
 import { DocumentTypeData } from "@/hooks/analytics";
+import { formatDisplayName, STATUS_CONFIG } from "@/lib/chart-config";
+import { useMemo } from "react";
 
 interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];
 }
 
 export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps) => {
-  // Format type names for display
-  const chartData = data.map(item => ({
-    ...item,
-    displayType: item.type.replace(/([A-Z])/g, ' $1').trim()
-  }));
-
-  const config = {
-    approved: { label: "Approved", color: "#16A34A" },
-    rejected: { label: "Rejected", color: "#DC2626" },
-    pending: { label: "Pending", color: "#2563EB" },
-    request_resubmission: { label: "Resubmission", color: "#EAB308" },
-  };
+  // Format type names for display using the shared formatting utility
+  const chartData = useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      displayType: formatDisplayName(item.type)
+    }));
+  }, [data]);
 
   return (
     <ChartContainer 
-      config={config}
+      config={STATUS_CONFIG}
       className="aspect-auto h-[300px] w-full"
     >
       <BarChart data={chartData}>
@@ -51,10 +48,10 @@ export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceCh
         <ChartTooltip
           content={<ChartTooltipContent />}
         />
-        <Bar dataKey="approved" stackId="a" fill="#16A34A" />
-        <Bar dataKey="rejected" stackId="a" fill="#DC2626" />
-        <Bar dataKey="request_resubmission" stackId="a" fill="#EAB308" />
-        <Bar dataKey="pending" stackId="a" fill="#2563EB" />
+        <Bar dataKey="approved" stackId="a" fill={STATUS_CONFIG.approved.color} />
+        <Bar dataKey="rejected" stackId="a" fill={STATUS_CONFIG.rejected.color} />
+        <Bar dataKey="request_resubmission" stackId="a" fill={STATUS_CONFIG.request_resubmission.color} />
+        <Bar dataKey="pending" stackId="a" fill={STATUS_CONFIG.pending.color} />
         <Legend />
       </BarChart>
     </ChartContainer>

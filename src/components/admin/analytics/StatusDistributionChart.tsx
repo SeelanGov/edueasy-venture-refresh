@@ -7,6 +7,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Cell, Legend, Pie, PieChart } from "recharts";
+import { useMemo } from "react";
+import { CHART_COLORS } from "@/lib/chart-config";
 
 interface StatusDistributionChartProps {
   approved: number;
@@ -21,18 +23,20 @@ export const StatusDistributionChart = ({
   pending,
   resubmission,
 }: StatusDistributionChartProps) => {
-  const data = [
-    { name: "Approved", value: approved, color: "#16A34A" },
-    { name: "Rejected", value: rejected, color: "#DC2626" },
-    { name: "Pending", value: pending, color: "#2563EB" },
-    { name: "Resubmission", value: resubmission, color: "#EAB308" },
-  ].filter((item) => item.value > 0);
+  const data = useMemo(() => {
+    return [
+      { name: "Approved", value: approved, color: CHART_COLORS.approved },
+      { name: "Rejected", value: rejected, color: CHART_COLORS.rejected },
+      { name: "Pending", value: pending, color: CHART_COLORS.pending },
+      { name: "Resubmission", value: resubmission, color: CHART_COLORS.request_resubmission },
+    ].filter((item) => item.value > 0);
+  }, [approved, rejected, pending, resubmission]);
 
   const config = {
-    approved: { label: "Approved", color: "#16A34A" },
-    rejected: { label: "Rejected", color: "#DC2626" },
-    pending: { label: "Pending", color: "#2563EB" },
-    resubmission: { label: "Resubmission", color: "#EAB308" },
+    approved: { label: "Approved", color: CHART_COLORS.approved },
+    rejected: { label: "Rejected", color: CHART_COLORS.rejected },
+    pending: { label: "Pending", color: CHART_COLORS.pending },
+    resubmission: { label: "Resubmission", color: CHART_COLORS.request_resubmission },
   };
 
   return (
