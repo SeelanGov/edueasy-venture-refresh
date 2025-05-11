@@ -4,13 +4,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { AlertCircle, CheckCircle, XCircle, Shield, Database, RefreshCw, List } from "lucide-react";
-import { testRLSPolicies, verifyAdminAccess } from "@/utils/security";
+import { AlertCircle, CheckCircle, XCircle, Shield, Database, RefreshCw, List, Zap } from "lucide-react";
+import { 
+  testRLSPolicies, 
+  testRLSPoliciesWithRole, 
+  analyzeRLSPolicies,
+  getRegisteredPolicies 
+} from "@/utils/security";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RLSTestResult } from "@/utils/security";
+import { RLSTestResult, RLSPolicyAnalysis } from "@/utils/security";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { PolicyTestResults } from "./rls/PolicyTestResults";
+import { PolicyRegistry } from "./rls/PolicyRegistry";
+import { PolicyAnalysis } from "./rls/PolicyAnalysis";
 
 export const RLSPolicyTester = () => {
   const { user } = useAuth();
@@ -18,64 +34,72 @@ export const RLSPolicyTester = () => {
   const [testResults, setTestResults] = useState<RLSTestResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [registeredPolicies, setRegisteredPolicies] = useState<any[]>([]);
+  const [policyAnalysis, setPolicyAnalysis] = useState<RLSPolicyAnalysis[]>([]);
   const [activeTab, setActiveTab] = useState("test");
+  const [selectedRole, setSelectedRole] = useState<string>("user");
+  const [scenarioName, setScenarioName] = useState<string>("");
   
   // Fetch admin status and policy registry on component mount
   useEffect(() => {
     const checkAdminAndFetchPolicies = async () => {
       if (!user?.id) return;
       
-      // Check admin status
-      const adminStatus = await verifyAdminAccess(user.id);
-      setIsAdmin(adminStatus);
-      
-      if (adminStatus) {
-        // Fetch registered policies
-        fetchPolicyRegistry();
+      try {
+        // Check admin status
+        const { data: isAdminData, error: adminError } = await supabase.rpc('is_admin', {
+          user_uuid: user.id
+        });
+        
+        if (adminError) throw adminError;
+        setIsAdmin(!!isAdminData);
+        
+        if (isAdminData) {
+          // Fetch registered policies
+          const policies = await getRegisteredPolicies();
+          setRegisteredPolicies(policies);
+          
+          // Fetch policy analysis
+          const analysis = await analyzeRLSPolicies(user.id);
+          setPolicyAnalysis(analysis);
+        }
+      } catch (error: any) {
+        console.error("Error initializing RLS tester:", error);
+        toast.error(`Error initializing: ${error.message}`);
       }
     };
     
     checkAdminAndFetchPolicies();
   }, [user]);
   
-  // Fetch policies from the registry
-  const fetchPolicyRegistry = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('rls_policy_registry')
-        .select('*')
-        .order('table_name', { ascending: true });
-        
-      if (error) {
-        throw error;
-      }
-      
-      setRegisteredPolicies(data || []);
-    } catch (error: any) {
-      console.error("Error fetching policy registry:", error);
-      toast.error(`Failed to load policy registry: ${error.message}`);
-    }
-  };
-
   // Run enhanced RLS policy tests
-  const runTests = async () => {
+  const runTests = async (withRole: boolean = false) => {
     if (!user?.id) return;
     
     setIsLoading(true);
     
     try {
-      // First check if user is admin
-      const adminStatus = await verifyAdminAccess(user.id);
-      setIsAdmin(adminStatus);
+      let results;
       
-      if (!adminStatus) {
-        return;
+      if (withRole) {
+        // Run tests with specified role
+        const { results: roleResults } = await testRLSPoliciesWithRole(
+          user.id, 
+          selectedRole, 
+          scenarioName || undefined
+        );
+        results = roleResults;
+      } else {
+        // Run standard tests
+        const { results: stdResults } = await testRLSPolicies(user.id);
+        results = stdResults;
       }
       
-      // Run enhanced RLS policy tests
-      const { results, success } = await testRLSPolicies(user.id);
-      
       setTestResults(results || []);
+      
+      // Update the policy analysis after tests
+      const analysis = await analyzeRLSPolicies(user.id);
+      setPolicyAnalysis(analysis);
+      
       toast.success("RLS policy tests completed");
     } catch (error: any) {
       console.error("Error running RLS tests:", error);
@@ -85,16 +109,23 @@ export const RLSPolicyTester = () => {
     }
   };
 
-  // Register a new policy (simplified mock implementation)
-  const refreshPolicyRegistry = async () => {
+  // Refresh policy registry and analysis
+  const refreshData = async () => {
     if (!user?.id) return;
     
     try {
-      await fetchPolicyRegistry();
-      toast.success("Policy registry refreshed");
+      // Refresh policy registry
+      const policies = await getRegisteredPolicies();
+      setRegisteredPolicies(policies);
+      
+      // Refresh policy analysis
+      const analysis = await analyzeRLSPolicies(user.id);
+      setPolicyAnalysis(analysis);
+      
+      toast.success("Policy data refreshed");
     } catch (error: any) {
-      console.error("Error refreshing policy registry:", error);
-      toast.error(`Error refreshing registry: ${error.message}`);
+      console.error("Error refreshing policy data:", error);
+      toast.error(`Error refreshing data: ${error.message}`);
     }
   };
 
@@ -137,57 +168,71 @@ export const RLSPolicyTester = () => {
               <List size={16} />
               Policy Registry
             </TabsTrigger>
+            <TabsTrigger value="analysis" className="flex items-center gap-1">
+              <Zap size={16} />
+              Analysis
+            </TabsTrigger>
           </TabsList>
         </div>
         
         <TabsContent value="test">
           <CardContent>
-            {testResults ? (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Test Results</h3>
+            <div className="mb-6">
+              <h3 className="text-lg font-medium mb-4">Policy Test Configuration</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-muted-foreground mb-2 block">Test As Role</label>
+                  <Select 
+                    value={selectedRole} 
+                    onValueChange={setSelectedRole}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">Regular User</SelectItem>
+                      <SelectItem value="admin">Admin User</SelectItem>
+                      <SelectItem value="anon">Anonymous User</SelectItem>
+                      <SelectItem value="authenticated">Any Authenticated User</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 
-                {testResults.map((result, index) => (
-                  <div key={index} className="border rounded-md p-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="font-semibold">{result.table_name}</span>
-                        <span className="mx-2 text-gray-500">|</span>
-                        <span className="font-mono text-sm">{result.operation}</span>
-                      </div>
-                      
-                      <Badge variant={result.success ? "default" : "destructive"} className="flex items-center gap-1">
-                        {result.success ? (
-                          <>
-                            <CheckCircle size={14} />
-                            <span>Passed</span>
-                          </>
-                        ) : (
-                          <>
-                            <XCircle size={14} />
-                            <span>Failed</span>
-                          </>
-                        )}
-                      </Badge>
-                    </div>
-                    
-                    {!result.success && (
-                      <p className="mt-2 text-sm text-destructive">{result.message}</p>
-                    )}
-                  </div>
-                ))}
+                <div>
+                  <label className="text-sm text-muted-foreground mb-2 block">Scenario Name (Optional)</label>
+                  <Input 
+                    value={scenarioName}
+                    onChange={(e) => setScenarioName(e.target.value)}
+                    placeholder="Enter a test scenario name"
+                  />
+                </div>
               </div>
+            </div>
+            
+            {testResults ? (
+              <PolicyTestResults results={testResults} />
             ) : (
-              <p>Click the button below to test RLS policies</p>
+              <div className="py-4 text-center text-muted-foreground">
+                Configure test parameters and click "Run RLS Tests" to begin testing policies
+              </div>
             )}
           </CardContent>
           
-          <CardFooter>
+          <CardFooter className="flex flex-col sm:flex-row gap-4">
             <Button 
-              onClick={runTests} 
+              onClick={() => runTests()} 
               disabled={isLoading}
-              className="mr-2"
+              variant="outline"
             >
-              {isLoading ? "Running Tests..." : "Run RLS Tests"}
+              {isLoading ? "Running..." : "Run Standard Tests"}
+            </Button>
+            
+            <Button 
+              onClick={() => runTests(true)} 
+              disabled={isLoading || !selectedRole}
+              className="flex items-center gap-2"
+            >
+              {isLoading ? "Running..." : "Test with Role"} {!isLoading && <Shield size={16} />}
             </Button>
           </CardFooter>
         </TabsContent>
@@ -199,7 +244,7 @@ export const RLSPolicyTester = () => {
               <Button 
                 variant="outline" 
                 size="sm" 
-                onClick={refreshPolicyRegistry}
+                onClick={refreshData}
                 className="flex items-center gap-1"
               >
                 <RefreshCw size={14} />
@@ -207,37 +252,26 @@ export const RLSPolicyTester = () => {
               </Button>
             </div>
             
-            {registeredPolicies.length > 0 ? (
-              <div className="space-y-4">
-                {/* Group policies by table name */}
-                {Array.from(new Set(registeredPolicies.map(policy => policy.table_name))).map(tableName => (
-                  <div key={tableName as string} className="border rounded-md p-4">
-                    <h4 className="font-medium mb-2">{tableName}</h4>
-                    <Separator className="mb-3" />
-                    
-                    <div className="space-y-2">
-                      {registeredPolicies
-                        .filter(policy => policy.table_name === tableName)
-                        .map((policy, idx) => (
-                          <div key={idx} className="flex justify-between items-center px-2 py-1 hover:bg-muted rounded">
-                            <div>
-                              <span className="font-medium">{policy.policy_name}</span>
-                              <span className="text-xs text-muted-foreground ml-2">
-                                ({policy.policy_type})
-                              </span>
-                            </div>
-                            <div className="text-sm text-muted-foreground max-w-[60%] truncate">
-                              {policy.description || "No description"}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No registered policies found. Run tests to discover policies.</p>
-            )}
+            <PolicyRegistry policies={registeredPolicies} />
+          </CardContent>
+        </TabsContent>
+        
+        <TabsContent value="analysis">
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Policy Coverage Analysis</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={refreshData}
+                className="flex items-center gap-1"
+              >
+                <RefreshCw size={14} />
+                Refresh Analysis
+              </Button>
+            </div>
+            
+            <PolicyAnalysis analysis={policyAnalysis} />
           </CardContent>
         </TabsContent>
       </Tabs>

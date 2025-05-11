@@ -405,6 +405,45 @@ export type Database = {
         }
         Relationships: []
       }
+      rls_policy_test_results: {
+        Row: {
+          created_at: string | null
+          details: string | null
+          id: string
+          operation: string
+          policy_name: string
+          scenario: string | null
+          success: boolean
+          table_name: string
+          test_session_id: string
+          tested_as: string
+        }
+        Insert: {
+          created_at?: string | null
+          details?: string | null
+          id?: string
+          operation: string
+          policy_name: string
+          scenario?: string | null
+          success: boolean
+          table_name: string
+          test_session_id?: string
+          tested_as: string
+        }
+        Update: {
+          created_at?: string | null
+          details?: string | null
+          id?: string
+          operation?: string
+          policy_name?: string
+          scenario?: string | null
+          success?: boolean
+          table_name?: string
+          test_session_id?: string
+          tested_as?: string
+        }
+        Relationships: []
+      }
       subject_marks: {
         Row: {
           created_at: string
@@ -731,6 +770,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analyze_rls_policies: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          table_name: string
+          has_select_policy: boolean
+          has_insert_policy: boolean
+          has_update_policy: boolean
+          has_delete_policy: boolean
+          recommendation: string
+        }[]
+      }
       audit_rls_policies: {
         Args: { p_user_id?: string }
         Returns: {
@@ -771,6 +821,17 @@ export type Database = {
           p_description: string
         }
         Returns: string
+      }
+      test_rls_policies_with_role: {
+        Args: { p_role?: string; p_scenario?: string }
+        Returns: {
+          table_name: string
+          policy_name: string
+          operation: string
+          success: boolean
+          details: string
+          test_session_id: string
+        }[]
       }
     }
     Enums: {
