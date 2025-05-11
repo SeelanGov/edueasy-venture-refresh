@@ -1,15 +1,15 @@
 
 // Common chart configuration for consistent styling and colors across analytics
 export const CHART_COLORS = {
-  approved: "#16A34A",
-  rejected: "#DC2626",
-  pending: "#2563EB",
-  request_resubmission: "#EAB308",
-  count: "#7E69AB",
-  primary: "#9b87f5",
-  secondary: "#6E59A5",
-  neutral: "#8E9196",
-  lightGray: "#F1F0FB",
+  approved: "var(--chart-approved)",
+  rejected: "var(--chart-rejected)",
+  pending: "var(--chart-pending)",
+  request_resubmission: "var(--chart-request-resubmission)",
+  count: "var(--chart-count)",
+  primary: "var(--chart-primary)",
+  secondary: "var(--chart-secondary)",
+  neutral: "var(--chart-neutral)",
+  lightGray: "var(--chart-light-gray)",
 };
 
 export const STATUS_CONFIG = {
@@ -32,5 +32,7 @@ export interface StatusChartConfig {
   label: string;
   color: string;
 }
+
+export type ChartConfig = Record<string, StatusChartConfig>;
 
 export type StatusConfigType = Record<string, StatusChartConfig>;

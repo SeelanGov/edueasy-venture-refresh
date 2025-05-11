@@ -21,16 +21,16 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#1E90FF",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#FF8C00",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         accent: {
-          DEFAULT: "#FF8C00",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -49,11 +49,15 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         cap: {
-          dark: "#222F36",
-          teal: "#21B6A8",
-          coral: "#F65A3B",
-          light: "#FFFFFF",
+          dark: "hsl(var(--cap-dark-hue), var(--cap-dark-saturation), var(--cap-dark-lightness))",
+          teal: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), var(--cap-teal-lightness))",
+          coral: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), var(--cap-coral-lightness))",
+          light: "hsl(var(--cap-light-hue), var(--cap-light-saturation), var(--cap-light-lightness))",
         },
+        success: "var(--color-success)",
+        warning: "var(--color-warning)",
+        error: "var(--color-error)",
+        info: "var(--color-info)"
       },
       fontFamily: {
         sans: ["Roboto", "Open Sans", "sans-serif"],

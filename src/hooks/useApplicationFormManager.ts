@@ -78,6 +78,7 @@ export const useApplicationFormManager = () => {
     // Check for saved drafts in Supabase
     if (user?.id && isOnline) {
       try {
+        // Fixed the error: removed the object being passed to safeAsyncWithLogging
         const { data: draftData, error } = await safeAsyncWithLogging(
           async () => {
             const { data, error } = await supabase

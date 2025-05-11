@@ -51,7 +51,7 @@ export const FormActions = ({
       
       <Button
         type="submit"
-        className="bg-cap-teal hover:bg-cap-teal/90"
+        className="bg-primary hover:bg-primary/90 text-primary-foreground"
         disabled={isSubmitting || isSaving}
       >
         {isSubmitting ? (
@@ -68,7 +68,7 @@ export const FormActions = ({
       </Button>
       
       {(isSubmitting || isSaving) && (
-        <div className="flex items-center mt-2 text-sm text-amber-700 sm:mt-0">
+        <div className="flex items-center mt-2 text-sm text-warning sm:mt-0">
           <AlertTriangle size={16} className="mr-1" />
           <span>
             {isSubmitting 

@@ -1,9 +1,69 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* Base colors - HSL format */
+    --cap-teal-hue: 174;
+    --cap-teal-saturation: 68%;
+    --cap-teal-lightness: 41%;
+    
+    --cap-coral-hue: 12;
+    --cap-coral-saturation: 88%;
+    --cap-coral-lightness: 59%;
+    
+    --cap-dark-hue: 210;
+    --cap-dark-saturation: 23%;
+    --cap-dark-lightness: 18%;
+    
+    --cap-light-hue: 0;
+    --cap-light-saturation: 0%;
+    --cap-light-lightness: 100%;
+    
+    /* Grayscale palette */
+    --gray-50: 210deg 40% 98%;
+    --gray-100: 214.3deg 31.8% 91.4%;
+    --gray-200: 213.3deg 27.3% 84.4%;
+    --gray-300: 215.4deg 16.3% 66.9%;
+    --gray-400: 215.4deg 16.3% 56.9%;
+    --gray-500: 215.4deg 16.3% 46.9%;
+    --gray-600: 215.3deg 19.3% 34.5%;
+    --gray-700: 215.3deg 25% 26.7%;
+    --gray-800: 217.2deg 32.6% 17.5%;
+    --gray-900: 222.2deg 47.4% 11.2%;
+    --gray-950: 222.2deg 84% 4.9%;
+    
+    /* Status colors */
+    --success-hue: 142;
+    --success-saturation: 76%;
+    --success-lightness: 36%;
+    
+    --warning-hue: 43;
+    --warning-saturation: 96%;
+    --warning-lightness: 48%;
+    
+    --error-hue: 0;
+    --error-saturation: 84%;
+    --error-lightness: 60%;
+    
+    --info-hue: 217;
+    --info-saturation: 91%;
+    --info-lightness: 60%;
+    
+    /* Semantic color tokens */
+    --color-primary: hsl(var(--cap-teal-hue), var(--cap-teal-saturation), var(--cap-teal-lightness));
+    --color-secondary: hsl(var(--cap-coral-hue), var(--cap-coral-saturation), var(--cap-coral-lightness));
+    --color-background: hsl(var(--cap-light-hue), var(--cap-light-saturation), var(--cap-light-lightness));
+    --color-foreground: hsl(var(--cap-dark-hue), var(--cap-dark-saturation), var(--cap-dark-lightness));
+    
+    --color-success: hsl(var(--success-hue), var(--success-saturation), var(--success-lightness));
+    --color-warning: hsl(var(--warning-hue), var(--warning-saturation), var(--warning-lightness));
+    --color-error: hsl(var(--error-hue), var(--error-saturation), var(--error-lightness));
+    --color-info: hsl(var(--info-hue), var(--info-saturation), var(--info-lightness));
+    
+    /* UI Component specific tokens */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -13,19 +73,19 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: var(--cap-teal-hue) var(--cap-teal-saturation) var(--cap-teal-lightness);
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: var(--cap-coral-hue) var(--cap-coral-saturation) var(--cap-coral-lightness);
+    --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: var(--cap-coral-hue) var(--cap-coral-saturation) var(--cap-coral-lightness);
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: var(--error-hue) var(--error-saturation) var(--error-lightness);
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
@@ -35,23 +95,31 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Chart colors */
+    --chart-approved: var(--color-success);
+    --chart-rejected: var(--color-error);
+    --chart-pending: var(--color-info);
+    --chart-request-resubmission: var(--color-warning);
+    --chart-count: hsl(260, 36%, 54%);
+    --chart-primary: hsl(252, 82%, 74%);
+    --chart-secondary: hsl(260, 28%, 50%);
+    --chart-neutral: hsl(220, 4%, 57%);
+    --chart-light-gray: hsl(252, 67%, 97%);
   }
 
   .dark {
+    /* Dark mode overrides */
+    --cap-dark-lightness: 15%;
+    --cap-light-lightness: 90%;
+    
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -61,7 +129,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: var(--cap-teal-hue) var(--cap-teal-saturation) var(--cap-teal-lightness);
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -79,6 +147,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -87,6 +156,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Dark mode chart colors */
+    --chart-approved: hsl(var(--success-hue), calc(var(--success-saturation) - 10%), calc(var(--success-lightness) - 10%));
+    --chart-rejected: hsl(var(--error-hue), calc(var(--error-saturation) - 20%), calc(var(--error-lightness) - 15%));
+    --chart-pending: hsl(var(--info-hue), calc(var(--info-saturation) - 10%), calc(var(--info-lightness) - 10%));
+    --chart-request-resubmission: hsl(var(--warning-hue), calc(var(--warning-saturation) - 10%), calc(var(--warning-lightness) - 10%));
   }
 }
 

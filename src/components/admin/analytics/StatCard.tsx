@@ -26,7 +26,7 @@ export const StatCard = ({ title, value, icon, description, trend }: StatCardPro
           <p className="text-xs text-muted-foreground mt-1">
             {description}
             {trend && (
-              <span className={`inline-block ml-1 ${trend.positive ? 'text-green-500' : 'text-red-500'}`}>
+              <span className={`inline-block ml-1 ${trend.positive ? 'text-success' : 'text-error'}`}>
                 {trend.positive ? '+' : '-'}{Math.abs(trend.value)}%
               </span>
             )}
