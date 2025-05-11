@@ -1,42 +1,54 @@
 
-import { ReactNode } from "react";
-import { ChartContainer } from "@/components/ui/chart";
-import { StatusConfigType } from "@/lib/chart-config";
+import React from "react";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChartConfig } from "@/lib/chart-config";
 
 interface ChartWrapperProps {
-  children: ReactNode;
-  config: StatusConfigType;
-  height?: number | string;
-  className?: string;
   title?: string;
-  emptyMessage?: string;
-  isEmpty?: boolean;
+  children?: React.ReactNode;
+  isLoading?: boolean;
+  height?: string | number;
+  className?: string;
+  config?: ChartConfig;
 }
 
-export const ChartWrapper = ({ 
-  children, 
-  config, 
-  height = 300, 
-  className = "",
+interface ChartContainerProps {
+  children: React.ReactElement;
+  config?: ChartConfig;
+  className?: string;
+}
+
+const ChartContainer = ({ children, config, className }: ChartContainerProps) => {
+  return (
+    <div className={cn("relative", className)}>
+      {children}
+      {config?.showLegend && <div className="mt-2">Legend placeholder</div>}
+    </div>
+  );
+};
+
+export const ChartWrapper = ({
   title,
-  emptyMessage = "No data available",
-  isEmpty = false
+  children,
+  isLoading = false,
+  height = 300,
+  className = "",
+  config
 }: ChartWrapperProps) => {
   return (
-    <div className="w-full">
-      {title && <h3 className="text-sm font-medium text-center mb-2">{title}</h3>}
-      
-      {isEmpty ? (
-        <div className="flex items-center justify-center h-[300px] bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
-          <p className="text-muted-foreground">{emptyMessage}</p>
-        </div>
+    <div className="space-y-2">
+      {title && <h3 className="text-sm font-medium">{title}</h3>}
+      {isLoading ? (
+        <Skeleton className={`h-[${typeof height === 'number' ? height + 'px' : height}] w-full`} />
       ) : (
-        <ChartContainer 
+        <ChartContainer
           config={config}
           className={`aspect-auto h-[${typeof height === 'number' ? height + 'px' : height}] w-full ${className}`}
         >
-          {/* Force children to be ReactElement if used in ChartContainer */}
-          {typeof children === 'object' ? children : null}
+          {/* Make sure children is always a valid React element for ChartContainer */}
+          {React.isValidElement(children) ? children : <div />}
         </ChartContainer>
       )}
     </div>
