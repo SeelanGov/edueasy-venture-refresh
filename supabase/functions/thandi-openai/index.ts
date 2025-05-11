@@ -30,6 +30,14 @@ serve(async (req) => {
     // Get the user's last 10 chat messages for context
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+    // Get the latest training data
+    const { data: latestTraining, error: trainingLogError } = await supabase
+      .from('thandi_model_training_logs')
+      .select('examples, created_at')
+      .eq('success', true)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
     // Get training data to improve intent detection
     const { data: trainingData, error: trainingError } = await supabase
       .from('thandi_intent_training')
@@ -51,7 +59,21 @@ serve(async (req) => {
 
     // Format training examples for the prompt
     let trainingExamples = "";
-    if (trainingData && trainingData.length > 0) {
+    
+    // First use the formatted examples from the latest training if available
+    if (latestTraining && latestTraining.length > 0 && latestTraining[0].examples) {
+      trainingExamples = "Here are some examples of classified messages:\n";
+      
+      // Use the examples stored during the last training
+      const examples = latestTraining[0].examples;
+      examples.slice(0, 20).forEach((item) => {
+        trainingExamples += `Message: "${item.message}"\nIntent: ${item.intent}\n\n`;
+      });
+      
+      console.log(`Using ${examples.length} examples from training on ${latestTraining[0].created_at}`);
+    } 
+    // Fallback to direct database query training examples
+    else if (trainingData && trainingData.length > 0) {
       trainingExamples = "Here are some examples of classified messages:\n";
       trainingData.slice(0, 20).forEach((item: any) => {
         if (item.thandi_interactions && item.thandi_intents) {
@@ -60,16 +82,39 @@ serve(async (req) => {
       });
     }
     
-    const intentPrompt = `
-      ${trainingExamples}
+    // Get the available intents
+    const { data: intents, error: intentsError } = await supabase
+      .from('thandi_intents')
+      .select('intent_name, description')
+      .order('intent_name', { ascending: true });
       
-      Analyze the following user message and identify which of these intents it matches best:
+    if (intentsError) {
+      console.error('Error fetching intents:', intentsError);
+    }
+    
+    // Build the intent recognition prompt dynamically based on available intents
+    let intentsList = "";
+    if (intents && intents.length > 0) {
+      intents.forEach((intent, index) => {
+        intentsList += `${index + 1}. ${intent.intent_name}: ${intent.description || 'No description'}\n`;
+      });
+    } else {
+      // Fallback to default intents
+      intentsList = `
       1. document_status: User asking about document verification status
       2. program_selection: User asking about program selection or details
       3. application_deadline: User asking about application deadlines
       4. financial_aid: User asking about financial aid, scholarships, or funding
       5. general_greeting: User is greeting or starting a conversation
       6. general_question: Any other type of question
+      `;
+    }
+    
+    const intentPrompt = `
+      ${trainingExamples}
+      
+      Analyze the following user message and identify which of these intents it matches best:
+      ${intentsList}
       
       User message: "${userMessage}"
       
@@ -96,13 +141,13 @@ serve(async (req) => {
     console.log(`Detected intent: ${detectedIntent}`);
     
     // Get the matching intent from the database if available
-    const { data: intents } = await supabase
+    const { data: matchingIntents } = await supabase
       .from('thandi_intents')
       .select('*')
       .ilike('intent_name', detectedIntent)
       .limit(1);
     
-    const matchedIntent = intents && intents.length > 0 ? intents[0] : null;
+    const matchedIntent = matchingIntents && matchingIntents.length > 0 ? matchingIntents[0] : null;
     let intentId = matchedIntent?.id || null;
     
     // Calculate confidence score based on intent classification

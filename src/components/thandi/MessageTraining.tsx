@@ -4,6 +4,7 @@ import { MessageTable } from "./training/MessageTable";
 import { TrainingFooter } from "./training/TrainingFooter";
 import { type ChatMessage, type TrainingEntry } from "@/hooks/useTrainingData";
 import { type Intent } from "@/hooks/useIntentManagement";
+import { useModelTraining } from "@/hooks/useModelTraining";
 
 interface MessageTrainingProps {
   messages: ChatMessage[];
@@ -34,11 +35,24 @@ export const MessageTraining = ({
   onUpdateTraining,
   onDeleteTraining
 }: MessageTrainingProps) => {
+  const { 
+    trainingStats, 
+    lastTrainingDate, 
+    isLoading: statsLoading, 
+    isRetraining,
+    retrainModel
+  } = useModelTraining();
+
   return (
     <div className="space-y-4">
       <TrainingHeader 
         lowConfidenceOnly={lowConfidenceOnly} 
-        setLowConfidenceOnly={setLowConfidenceOnly} 
+        setLowConfidenceOnly={setLowConfidenceOnly}
+        trainingStats={trainingStats}
+        lastTrainingDate={lastTrainingDate}
+        isLoading={statsLoading}
+        isRetraining={isRetraining}
+        onRetrain={retrainModel}
       />
       
       <MessageTable 
