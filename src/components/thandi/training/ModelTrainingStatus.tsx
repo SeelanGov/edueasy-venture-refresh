@@ -107,7 +107,7 @@ export const ModelTrainingStatus = ({
         <div className="mt-3 text-sm flex items-center gap-2">
           <span className="font-medium">Model status:</span>
           {trainingStats.modelStatus === "healthy" ? (
-            <Badge variant="success" className="bg-green-100 text-green-800 hover:bg-green-200">
+            <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-200">
               <Check className="h-3 w-3 mr-1" /> Healthy
             </Badge>
           ) : (

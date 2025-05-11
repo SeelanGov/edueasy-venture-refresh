@@ -35,7 +35,8 @@ export const ChartWrapper = ({
           config={config}
           className={`aspect-auto h-[${typeof height === 'number' ? height + 'px' : height}] w-full ${className}`}
         >
-          {children}
+          {/* Force children to be ReactElement if used in ChartContainer */}
+          {typeof children === 'object' ? children : null}
         </ChartContainer>
       )}
     </div>

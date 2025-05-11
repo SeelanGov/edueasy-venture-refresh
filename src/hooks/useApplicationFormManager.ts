@@ -106,7 +106,7 @@ export const useApplicationFormManager = () => {
             university: draftData.data.institution_id || '',
             program: draftData.data.program_id || '',
             grade12Results: draftData.data.grade12_results || '',
-            personalStatement: draftData.data.personal_statement || '' // Fixed the field name
+            personalStatement: draftData.data.program || '' // Using program field for personal statement
           });
           setHasSavedDraft(true);
         }

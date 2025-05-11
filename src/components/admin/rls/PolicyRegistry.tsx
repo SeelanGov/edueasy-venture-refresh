@@ -3,8 +3,15 @@ import React, { useMemo } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
+interface PolicyRecord {
+  table_name: string;
+  policy_name: string;
+  policy_type: string;
+  description?: string;
+}
+
 interface PolicyRegistryProps {
-  policies: any[]; // Type from Supabase policy registry
+  policies: PolicyRecord[];
 }
 
 export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
@@ -16,7 +23,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
       }
       acc[policy.table_name].push(policy);
       return acc;
-    }, {} as Record<string, any[]>);
+    }, {} as Record<string, PolicyRecord[]>);
   }, [policies]);
 
   // Get policy type badge variant

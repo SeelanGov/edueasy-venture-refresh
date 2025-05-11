@@ -62,11 +62,6 @@ export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps) => {
               overallScore >= 70 ? "bg-yellow-100" : 
               "bg-red-100"
             }`}
-            indicatorClassName={
-              overallScore >= 90 ? "bg-green-600" : 
-              overallScore >= 70 ? "bg-yellow-600" : 
-              "bg-red-600"
-            }
           />
           
           <div className="mt-2 text-sm text-muted-foreground">

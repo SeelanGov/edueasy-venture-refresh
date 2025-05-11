@@ -62,11 +62,10 @@ export const useModelTraining = () => {
       const avgConfidence = avgData?.length ? 
         avgData.reduce((sum, item) => sum + (item.confidence_score || 0), 0) / avgData.length : 0;
       
-      // Get latest training log
+      // Get latest training log - using thandi_intent_training as a proxy since we don't have dedicated logs
       const { data: latestLog, error: logError } = await supabase
-        .from("thandi_model_training_logs")
-        .select("*")
-        .eq("success", true)
+        .from("thandi_intent_training")
+        .select("created_at")
         .order("created_at", { ascending: false })
         .limit(1);
       
