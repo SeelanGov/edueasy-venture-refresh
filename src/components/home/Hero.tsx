@@ -5,6 +5,7 @@ import { PatternBorder } from "@/components/PatternBorder";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
+import { Typography } from "@/components/ui/typography";
 
 export const Hero = () => {
   const { user } = useAuth();
@@ -71,22 +72,33 @@ export const Hero = () => {
             </div>
           </div>
         
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 uppercase tracking-wide">
+          <Typography 
+            variant="h1"
+            color="white"
+            className="uppercase tracking-wide mb-6"
+          >
             EduEasy
-          </h1>
+          </Typography>
           
           <div className="w-full max-w-xl mx-auto h-px bg-white my-5"></div>
           
-          <p className="text-xl md:text-2xl mb-8 uppercase tracking-wide">
+          <Typography 
+            variant="h3"
+            color="white"
+            className="uppercase tracking-wide mb-8"
+          >
             Bridging Education to Employment
-          </p>
+          </Typography>
           
           <div className="bg-white/10 p-4 md:p-6 rounded-lg max-w-2xl mx-auto mb-8">
-            <h2 className="text-xl md:text-2xl font-semibold mb-3">One Application, Multiple Opportunities</h2>
-            <p className="text-lg mb-0">
+            <Typography variant="h4" color="white" className="mb-3">
+              One Application, Multiple Opportunities
+            </Typography>
+            
+            <Typography variant="body" color="white">
               Apply to multiple universities across South Africa with a single application.
               Save time, track progress, and increase your chances of acceptance.
-            </p>
+            </Typography>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
@@ -116,7 +128,9 @@ export const Hero = () => {
         
         <div className="mt-24 animate-bounce">
           <a href="#learn-more" className="text-white flex flex-col items-center">
-            <span className="mb-2 uppercase text-sm tracking-wider">LEARN MORE</span>
+            <Typography variant="small" color="white" className="mb-2 uppercase tracking-wider">
+              LEARN MORE
+            </Typography>
             <ChevronDown className="h-8 w-8" />
           </a>
         </div>

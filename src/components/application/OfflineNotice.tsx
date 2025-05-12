@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/ui/typography";
 
 interface OfflineNoticeProps {
   isOnline: boolean;
@@ -18,14 +19,12 @@ export const OfflineNotice = ({ isOnline, onSyncNow }: OfflineNoticeProps) => {
           </svg>
         </div>
         <div className="ml-3">
-          <h3 className="text-sm font-medium text-warning">
+          <Typography variant="h5" color="warning" className="font-medium">
             You're currently offline
-          </h3>
-          <div className="mt-2 text-sm text-warning/80">
-            <p>
-              Your application will be saved locally. Click "Sync Now" when you're back online.
-            </p>
-          </div>
+          </Typography>
+          <Typography variant="body-sm" className="mt-2 text-warning/80">
+            Your application will be saved locally. Click "Sync Now" when you're back online.
+          </Typography>
           <div className="mt-4">
             <Button 
               variant="outline" 

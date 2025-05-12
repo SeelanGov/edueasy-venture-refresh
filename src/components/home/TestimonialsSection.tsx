@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/ui/typography";
 
 interface Testimonial {
   id: number;
@@ -57,12 +57,12 @@ export const TestimonialsSection = () => {
           <div className="mb-6 flex justify-center">
             <div className="w-16 h-1 bg-cap-coral rounded"></div>
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+          <Typography variant="h2" className="mb-4">
             Student Success Stories
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto text-gray-600">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600">
             Hear from students who found their path with EduEasy
-          </p>
+          </Typography>
         </div>
         
         <div className="max-w-4xl mx-auto">
@@ -83,11 +83,19 @@ export const TestimonialsSection = () => {
               </div>
               
               <div className="flex-grow">
-                <p className="text-lg italic mb-4">"{testimonials[activeIndex].quote}"</p>
+                <Typography variant="body-lg" className="italic mb-4">
+                  "{testimonials[activeIndex].quote}"
+                </Typography>
                 <div>
-                  <h3 className="font-semibold text-xl">{testimonials[activeIndex].name}</h3>
-                  <p className="text-cap-teal">{testimonials[activeIndex].program}</p>
-                  <p className="text-gray-600 text-sm">{testimonials[activeIndex].university}</p>
+                  <Typography variant="h4" className="font-semibold">
+                    {testimonials[activeIndex].name}
+                  </Typography>
+                  <Typography variant="body" color="primary">
+                    {testimonials[activeIndex].program}
+                  </Typography>
+                  <Typography variant="body-sm" className="text-gray-600">
+                    {testimonials[activeIndex].university}
+                  </Typography>
                 </div>
               </div>
             </div>

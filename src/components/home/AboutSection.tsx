@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Typography } from "@/components/ui/typography";
 
 export const AboutSection = () => {
   return (
@@ -9,9 +10,9 @@ export const AboutSection = () => {
           <div className="w-16 h-1 bg-cap-teal rounded"></div>
         </div>
         
-        <h2 className="text-center font-heading text-3xl md:text-4xl font-bold mb-8">
+        <Typography variant="h2" className="text-center font-heading mb-8">
           About EduEasy
-        </h2>
+        </Typography>
         
         <div className="flex flex-col md:flex-row gap-12 items-center max-w-6xl mx-auto">
           <div className="md:w-1/2">
@@ -29,12 +30,15 @@ export const AboutSection = () => {
           </div>
           
           <div className="md:w-1/2">
-            <h3 className="text-2xl font-semibold mb-4 text-cap-teal">Simplifying Higher Education Access</h3>
-            <p className="text-lg mb-6">
+            <Typography variant="h3" color="primary" className="mb-4">
+              Simplifying Higher Education Access
+            </Typography>
+            
+            <Typography variant="body-lg" className="mb-6">
               EduEasy is your gateway to higher education in South Africa. 
               We streamline the application process, making it easier for students to apply to multiple institutions 
               with a single application form.
-            </p>
+            </Typography>
             
             <div className="space-y-4">
               <div className="flex items-start">
@@ -42,8 +46,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Simplified Applications</h4>
-                  <p className="text-gray-700">Apply to multiple institutions with one application, saving time and reducing stress.</p>
+                  <Typography variant="h5">Simplified Applications</Typography>
+                  <Typography variant="body" className="text-gray-700">
+                    Apply to multiple institutions with one application, saving time and reducing stress.
+                  </Typography>
                 </div>
               </div>
               
@@ -52,8 +58,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-cap-coral"></div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Document Verification</h4>
-                  <p className="text-gray-700">Our system ensures your documents meet all requirements before submission.</p>
+                  <Typography variant="h5">Document Verification</Typography>
+                  <Typography variant="body" className="text-gray-700">
+                    Our system ensures your documents meet all requirements before submission.
+                  </Typography>
                 </div>
               </div>
               
@@ -62,8 +70,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Real-time Tracking</h4>
-                  <p className="text-gray-700">Monitor your application status and receive updates throughout the process.</p>
+                  <Typography variant="h5">Real-time Tracking</Typography>
+                  <Typography variant="body" className="text-gray-700">
+                    Monitor your application status and receive updates throughout the process.
+                  </Typography>
                 </div>
               </div>
             </div>
@@ -116,8 +126,8 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
       <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
         {icon}
       </div>
-      <h3 className="font-heading text-xl font-semibold mb-4 text-center">{title}</h3>
-      <p className="text-gray-600 text-center">{description}</p>
+      <Typography variant="h4" className="mb-4 text-center">{title}</Typography>
+      <Typography variant="body" className="text-gray-600 text-center">{description}</Typography>
     </div>
   );
 };

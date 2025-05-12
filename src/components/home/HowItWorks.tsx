@@ -1,5 +1,6 @@
 
 import { CheckCircle } from "lucide-react";
+import { Typography } from "@/components/ui/typography";
 
 interface StepProps {
   number: number;
@@ -15,8 +16,8 @@ const Step = ({ number, title, description, isActive = false }: StepProps) => {
         ${isActive ? 'bg-cap-teal text-white' : 'bg-gray-100 text-cap-dark'}`}>
         {number}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-center text-gray-600">{description}</p>
+      <Typography variant="h4" className="mb-2">{title}</Typography>
+      <Typography variant="body" className="text-center text-gray-600">{description}</Typography>
     </div>
   );
 };
@@ -29,12 +30,12 @@ export const HowItWorks = () => {
           <div className="mb-6 flex justify-center">
             <div className="w-16 h-1 bg-cap-teal rounded"></div>
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+          <Typography variant="h2" className="mb-4">
             How EduEasy Works
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto text-gray-600">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600">
             Your simplified journey to higher education in South Africa
-          </p>
+          </Typography>
         </div>
         
         <div className="grid md:grid-cols-4 gap-6 md:gap-12 max-w-5xl mx-auto">
@@ -71,12 +72,14 @@ export const HowItWorks = () => {
                 <CheckCircle className="h-6 w-6 text-green-500" />
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-medium">Students who use EduEasy are 3x more likely to secure university placement</h3>
-                <p className="mt-2 text-gray-600">
+                <Typography variant="h4" className="mb-2">
+                  Students who use EduEasy are 3x more likely to secure university placement
+                </Typography>
+                <Typography variant="body" className="text-gray-600">
                   Our streamlined application process helps students apply to multiple institutions efficiently,
                   increasing their chances of acceptance. The verification process ensures your documents meet
                   all requirements before submission.
-                </p>
+                </Typography>
               </div>
             </div>
           </div>

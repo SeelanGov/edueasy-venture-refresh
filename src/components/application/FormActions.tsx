@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/Spinner";
 import { AlertTriangle, Save, Send } from "lucide-react";
+import { Typography } from "@/components/ui/typography";
 
 interface FormActionsProps {
   isSubmitting: boolean;
@@ -70,11 +71,11 @@ export const FormActions = ({
       {(isSubmitting || isSaving) && (
         <div className="flex items-center mt-2 text-sm text-warning sm:mt-0">
           <AlertTriangle size={16} className="mr-1" />
-          <span>
+          <Typography variant="small" color="warning">
             {isSubmitting 
               ? "Please wait while your application is being submitted" 
               : "Saving your progress..."}
-          </span>
+          </Typography>
         </div>
       )}
     </div>

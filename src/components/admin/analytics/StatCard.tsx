@@ -1,6 +1,7 @@
 
 import { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Typography } from "@/components/ui/typography";
 
 interface StatCardProps {
   title: string;
@@ -17,20 +18,22 @@ export const StatCard = ({ title, value, icon, description, trend }: StatCardPro
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium">
+          <Typography variant="body-sm">{title}</Typography>
+        </CardTitle>
         {icon && <div className="h-4 w-4 text-muted-foreground">{icon}</div>}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <Typography variant="h3" className="font-bold">{value}</Typography>
         {(description || trend) && (
-          <p className="text-xs text-muted-foreground mt-1">
+          <Typography variant="caption" color="muted" className="mt-1">
             {description}
             {trend && (
               <span className={`inline-block ml-1 ${trend.positive ? 'text-success' : 'text-error'}`}>
                 {trend.positive ? '+' : '-'}{Math.abs(trend.value)}%
               </span>
             )}
-          </p>
+          </Typography>
         )}
       </CardContent>
     </Card>
