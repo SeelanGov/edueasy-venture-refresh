@@ -9,15 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
 import { ThandiAgent } from "@/components/ai/ThandiAgent";
 import { useApplicationFormManager } from "@/hooks/useApplicationFormManager";
-import { z } from "zod";
-
-// Define the form values type to match what's expected in ApplicationFormFields
-type ApplicationFormValues = {
-  university: string;
-  program: string;
-  grade12Results: string;
-  personalStatement: string;
-};
 
 const ApplicationForm = () => {
   const {
@@ -60,7 +51,7 @@ const ApplicationForm = () => {
           <Form {...form}>
             <form onSubmit={onSubmit} className="space-y-6">
               <ApplicationFormFields 
-                form={form as any} 
+                form={form} 
                 isSubmitting={isSubmitting || isSavingDraft} 
                 handleFileChange={handleFileChange} 
               />

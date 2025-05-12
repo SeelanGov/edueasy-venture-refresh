@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNetwork } from "@/hooks/useNetwork";
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({
@@ -23,9 +25,11 @@ export type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
 export const useApplicationFormManager = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { isOnline } = useNetwork();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [hasSavedDraft, setHasSavedDraft] = useState(false);
 
   // Initialize the form with react-hook-form
   const form = useForm<ApplicationFormValues>({
@@ -40,6 +44,20 @@ export const useApplicationFormManager = () => {
     },
   });
 
+  // Load any saved drafts
+  const initializeForm = () => {
+    const savedForm = localStorage.getItem('application-draft');
+    if (savedForm) {
+      try {
+        const parsedForm = JSON.parse(savedForm);
+        form.reset(parsedForm);
+        setHasSavedDraft(true);
+      } catch (e) {
+        console.error("Failed to load saved draft:", e);
+      }
+    }
+  };
+
   // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -47,7 +65,7 @@ export const useApplicationFormManager = () => {
   };
 
   // Save application as draft
-  const saveDraft = async (data: ApplicationFormValues) => {
+  const saveDraft = async () => {
     if (!user) {
       toast({
         title: "Authentication required",
@@ -57,9 +75,15 @@ export const useApplicationFormManager = () => {
       return;
     }
 
-    setIsSaving(true);
+    setIsSavingDraft(true);
 
     try {
+      // Get current form values
+      const formValues = form.getValues();
+      
+      // Save to local storage
+      localStorage.setItem('application-draft', JSON.stringify(formValues));
+
       // Upload document if selected
       let documentPath = null;
       if (selectedFile) {
@@ -72,23 +96,29 @@ export const useApplicationFormManager = () => {
         documentPath = fileName;
       }
 
-      // Save application to database
-      const { error } = await supabase.from("applications").insert({
-        user_id: user.id,
-        institution_id: data.university,
-        program_id: data.program,
-        grade12_results: data.grade12Results,
-        personal_statement: data.personalStatement,
-        status: "draft",
-        document_path: documentPath,
-      });
+      // Save application to database if online
+      if (isOnline) {
+        const { error } = await supabase.from("applications").insert({
+          user_id: user.id,
+          institution_id: formValues.university,
+          program_id: formValues.program,
+          grade12_results: formValues.grade12Results,
+          personal_statement: formValues.personalStatement,
+          status: "draft",
+          document_path: documentPath,
+        });
 
-      if (error) throw error;
+        if (error) throw error;
+      }
 
       toast({
         title: "Draft saved",
-        description: "Your application has been saved as a draft",
+        description: isOnline 
+          ? "Your application has been saved as a draft"
+          : "Draft saved locally. Will sync when you're back online",
       });
+      
+      setHasSavedDraft(true);
     } catch (error) {
       console.error("Error saving draft:", error);
       toast({
@@ -97,12 +127,12 @@ export const useApplicationFormManager = () => {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsSavingDraft(false);
     }
   };
 
   // Submit the application
-  const onSubmit = async (data: ApplicationFormValues) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     if (!user) {
       toast({
         title: "Authentication required",
@@ -156,6 +186,10 @@ export const useApplicationFormManager = () => {
         if (docError) throw docError;
       }
 
+      // Clear the saved draft
+      localStorage.removeItem('application-draft');
+      setHasSavedDraft(false);
+
       toast({
         title: "Application submitted",
         description: "Your application has been submitted successfully",
@@ -173,14 +207,26 @@ export const useApplicationFormManager = () => {
     } finally {
       setIsSubmitting(false);
     }
+  });
+
+  // Handle sync now functionality
+  const handleSyncNow = () => {
+    if (isOnline && hasSavedDraft) {
+      // Trigger the submission process
+      onSubmit();
+    }
   };
 
   return {
     form,
     isSubmitting,
-    isSaving,
+    isSavingDraft,
     handleFileChange,
     saveDraft,
     onSubmit,
+    handleSyncNow,
+    isOnline,
+    hasSavedDraft,
+    initializeForm
   };
 };

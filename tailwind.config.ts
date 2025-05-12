@@ -23,10 +23,30 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          50: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 90%)",
+          100: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 85%)",
+          200: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 75%)",
+          300: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 65%)",
+          400: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 55%)",
+          500: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 45%)",
+          600: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 35%)",
+          700: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 25%)",
+          800: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 15%)",
+          900: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 10%)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          50: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 90%)",
+          100: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 85%)",
+          200: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 75%)",
+          300: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 65%)",
+          400: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 55%)",
+          500: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 45%)",
+          600: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 35%)",
+          700: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 25%)",
+          800: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 15%)",
+          900: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), 10%)",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -57,11 +77,37 @@ export default {
         success: "var(--color-success)",
         warning: "var(--color-warning)",
         error: "var(--color-error)",
-        info: "var(--color-info)"
+        info: "var(--color-info)",
+        // Text color variants
+        text: {
+          primary: "var(--text-primary)",
+          secondary: "var(--text-secondary)",
+          muted: "var(--text-muted)",
+          "on-primary": "var(--text-on-primary)",
+          "on-secondary": "var(--text-on-secondary)",
+        },
+        // Background color variants
+        bg: {
+          subtle: "var(--bg-subtle)",
+          muted: "var(--bg-muted)",
+          emphasis: "var(--bg-emphasis)",
+        },
+        // Border color variants
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          subtle: "var(--border-subtle)",
+          focus: "var(--border-focus)",
+        },
       },
       fontFamily: {
         sans: ["Roboto", "Open Sans", "sans-serif"],
         heading: ["Roboto", "sans-serif"],
+      },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        DEFAULT: "var(--shadow-md)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
       },
       keyframes: {
         "accordion-down": {
@@ -76,6 +122,9 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      borderRadius: {
+        DEFAULT: "var(--radius)",
       },
     },
   },
