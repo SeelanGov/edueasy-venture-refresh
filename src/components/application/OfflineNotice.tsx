@@ -16,12 +16,13 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
     <div className={cn(
       "bg-warning/10 border border-warning/20 rounded-md p-4 mb-6",
       "dark:bg-warning/5 dark:border-warning/10",
+      "md:p-5 md:mb-8 md:flex md:items-center md:justify-between",
       className
     )}>
-      <div className="flex">
+      <div className="flex md:flex-1">
         <div className="flex-shrink-0">
           <svg 
-            className="h-5 w-5 text-warning" 
+            className="h-5 w-5 md:h-6 md:w-6 text-warning" 
             xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 20 20" 
             fill="currentColor"
@@ -33,21 +34,21 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
             />
           </svg>
         </div>
-        <div className="ml-3">
+        <div className="ml-3 md:ml-4">
           <Typography 
             variant="h5" 
             color="warning" 
-            className="font-medium"
+            className="font-medium md:text-lg"
           >
             You're currently offline
           </Typography>
           <Typography 
             variant="body-sm" 
-            className="mt-2 text-warning/80"
+            className="mt-2 text-warning/80 md:text-base"
           >
             Your application will be saved locally. Click "Sync Now" when you're back online.
           </Typography>
-          <div className="mt-4">
+          <div className="mt-4 md:hidden">
             <Button 
               variant="outline" 
               size="sm"
@@ -59,6 +60,16 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
             </Button>
           </div>
         </div>
+      </div>
+      <div className="hidden md:block md:ml-4">
+        <Button 
+          variant="outline" 
+          onClick={onSyncNow}
+          disabled={!isOnline}
+          className="border-warning/20 bg-warning/5 hover:bg-warning/10 text-warning-foreground"
+        >
+          Sync Now
+        </Button>
       </div>
     </div>
   );

@@ -33,30 +33,30 @@ const ApplicationForm = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-8 pt-24">
-        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
-          <div className="mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-cap-dark dark:text-white">Program Application</h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-1">Apply to your desired educational institution and program</p>
+      <div className="container mx-auto px-4 py-8 pt-24 md:pt-28">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 md:p-8">
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-cap-dark dark:text-white">Program Application</h1>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mt-1">Apply to your desired educational institution and program</p>
             {hasSavedDraft && (
-              <div className="mt-2 text-sm text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-800">
+              <div className="mt-2 text-sm md:text-base text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20 p-2 md:p-3 rounded border border-green-200 dark:border-green-800">
                 You have a saved draft application that has been loaded.
               </div>
             )}
-            <Separator className="mt-4" />
+            <Separator className="mt-4 md:mt-6" />
           </div>
           
           <OfflineNotice isOnline={isOnline} onSyncNow={handleSyncNow} />
 
           <Form {...form}>
-            <form onSubmit={onSubmit} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6 md:space-y-8">
               <ApplicationFormFields 
                 form={form} 
                 isSubmitting={isSubmitting || isSavingDraft} 
                 handleFileChange={handleFileChange} 
               />
               
-              <Separator />
+              <Separator className="md:mt-8" />
               
               <FormActions 
                 isSubmitting={isSubmitting}

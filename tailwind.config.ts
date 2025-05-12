@@ -13,6 +13,14 @@ export default {
         "2xl": "1400px",
       },
     },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'tablet': '768px', // Explicit tablet breakpoint
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -125,6 +133,14 @@ export default {
       },
       borderRadius: {
         DEFAULT: "var(--radius)",
+      },
+      spacing: {
+        'tablet': '2rem', // Tablet-specific spacing
+        'tablet-lg': '2.5rem',
+      },
+      maxWidth: {
+        'tablet': '640px',
+        'tablet-lg': '768px',
       },
     },
   },

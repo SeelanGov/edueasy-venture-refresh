@@ -27,17 +27,25 @@ export const StatCard = ({
   valueClassName 
 }: StatCardProps) => {
   return (
-    <Card className={cn("transition-all hover:shadow-md", className)}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">
-          <Typography variant="body-sm">{title}</Typography>
+    <Card className={cn(
+      "transition-all hover:shadow-md",
+      "md:min-h-[150px] md:flex md:flex-col md:justify-between",
+      className
+    )}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3">
+        <CardTitle className="text-sm font-medium md:text-base">
+          <Typography variant="body-sm" className="md:text-base">{title}</Typography>
         </CardTitle>
-        {icon && <div className="h-4 w-4 text-muted-foreground">{icon}</div>}
+        {icon && (
+          <div className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground">
+            {icon}
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <Typography 
           variant="h3" 
-          className={cn("font-bold", valueClassName)}
+          className={cn("font-bold md:text-4xl", valueClassName)}
         >
           {value}
         </Typography>
@@ -46,7 +54,7 @@ export const StatCard = ({
           <Typography 
             variant="caption" 
             color="muted" 
-            className="mt-1 flex items-center"
+            className="mt-1 md:mt-2 flex items-center md:text-sm"
           >
             {description}
             {trend && (

@@ -257,3 +257,25 @@
   }
 }
 
+/* Custom utility classes for tablet optimization */
+@layer utilities {
+  .tablet-container {
+    @apply px-4 md:px-8 lg:px-12;
+  }
+  
+  .tablet-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+  
+  .tablet-flex {
+    @apply flex flex-col md:flex-row;
+  }
+  
+  .tablet-text {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+  
+  .tablet-heading {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+}

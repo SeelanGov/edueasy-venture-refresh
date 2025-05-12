@@ -12,12 +12,12 @@ interface StepProps {
 const Step = ({ number, title, description, isActive = false }: StepProps) => {
   return (
     <div className={`flex flex-col items-center ${isActive ? 'scale-105' : ''}`}>
-      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mb-4 
+      <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-xl md:text-2xl font-bold mb-4 
         ${isActive ? 'bg-cap-teal text-white' : 'bg-gray-100 text-cap-dark'}`}>
         {number}
       </div>
-      <Typography variant="h4" className="mb-2">{title}</Typography>
-      <Typography variant="body" className="text-center text-gray-600">{description}</Typography>
+      <Typography variant="h4" className="mb-2 md:text-xl">{title}</Typography>
+      <Typography variant="body" className="text-center text-gray-600 md:text-lg">{description}</Typography>
     </div>
   );
 };
@@ -26,19 +26,19 @@ export const HowItWorks = () => {
   return (
     <section id="how-it-works" className="py-20 px-4 bg-gray-50">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 md:mb-16">
           <div className="mb-6 flex justify-center">
-            <div className="w-16 h-1 bg-cap-teal rounded"></div>
+            <div className="w-16 h-1 md:w-20 md:h-1.5 bg-cap-teal rounded"></div>
           </div>
-          <Typography variant="h2" className="mb-4">
+          <Typography variant="h2" className="mb-4 md:text-4xl">
             How EduEasy Works
           </Typography>
-          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600">
+          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
             Your simplified journey to higher education in South Africa
           </Typography>
         </div>
         
-        <div className="grid md:grid-cols-4 gap-6 md:gap-12 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12 max-w-5xl mx-auto">
           <Step
             number={1}
             title="Create Account"
@@ -65,17 +65,17 @@ export const HowItWorks = () => {
           />
         </div>
         
-        <div className="mt-16 flex justify-center">
-          <div className="max-w-3xl bg-white rounded-lg p-6 shadow-lg border border-gray-100">
+        <div className="mt-16 md:mt-20 flex justify-center">
+          <div className="max-w-3xl bg-white rounded-lg p-6 md:p-8 shadow-lg border border-gray-100">
             <div className="flex items-start">
               <div className="flex-shrink-0">
-                <CheckCircle className="h-6 w-6 text-green-500" />
+                <CheckCircle className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
               </div>
-              <div className="ml-3">
-                <Typography variant="h4" className="mb-2">
+              <div className="ml-3 md:ml-4">
+                <Typography variant="h4" className="mb-2 md:text-xl">
                   Students who use EduEasy are 3x more likely to secure university placement
                 </Typography>
-                <Typography variant="body" className="text-gray-600">
+                <Typography variant="body" className="text-gray-600 md:text-lg">
                   Our streamlined application process helps students apply to multiple institutions efficiently,
                   increasing their chances of acceptance. The verification process ensures your documents meet
                   all requirements before submission.
