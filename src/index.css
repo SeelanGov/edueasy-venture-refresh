@@ -241,7 +241,7 @@
   }
   
   .state-pending {
-    @apply bg-info/10 text-info border-info/30;
+    @apply text-info border-info/30;
   }
   
   .state-success {

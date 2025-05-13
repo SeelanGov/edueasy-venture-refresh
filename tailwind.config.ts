@@ -86,6 +86,11 @@ export default {
         warning: "var(--color-warning)",
         error: "var(--color-error)",
         info: "var(--color-info)",
+        // Add opacity variants for status colors
+        info: {
+          DEFAULT: "var(--color-info)",
+          foreground: "hsl(var(--info-hue), var(--info-saturation), 98%)"
+        },
         // Text color variants
         text: {
           primary: "var(--text-primary)",
