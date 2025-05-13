@@ -278,4 +278,17 @@
   .tablet-heading {
     @apply text-xl md:text-2xl lg:text-3xl;
   }
+  
+  /* Accessibility enhancements */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-primary dark:focus-visible:ring-offset-gray-900;
+  }
+  
+  .high-contrast-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary dark:focus-visible:ring-offset-gray-900 dark:focus-visible:ring-primary;
+  }
+  
+  .keyboard-focus-only {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
 }

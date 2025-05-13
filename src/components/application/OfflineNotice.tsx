@@ -13,12 +13,16 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
   if (isOnline) return null;
   
   return (
-    <div className={cn(
-      "bg-warning/10 border border-warning/20 rounded-md p-4 mb-6",
-      "dark:bg-warning/5 dark:border-warning/10",
-      "md:p-5 md:mb-8 md:flex md:items-center md:justify-between",
-      className
-    )}>
+    <div 
+      className={cn(
+        "bg-warning/10 border border-warning/20 rounded-md p-4 mb-6",
+        "dark:bg-warning/5 dark:border-warning/10",
+        "md:p-5 md:mb-8 md:flex md:items-center md:justify-between",
+        className
+      )}
+      role="alert"
+      aria-live="polite"
+    >
       <div className="flex md:flex-1">
         <div className="flex-shrink-0">
           <svg 
@@ -26,6 +30,7 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
             xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 20 20" 
             fill="currentColor"
+            aria-hidden="true"
           >
             <path 
               fillRule="evenodd" 
@@ -54,7 +59,8 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
               size="sm"
               onClick={onSyncNow}
               disabled={!isOnline}
-              className="border-warning/20 bg-warning/5 hover:bg-warning/10 text-warning-foreground"
+              className="border-warning/20 bg-warning/5 hover:bg-warning/10 text-warning-foreground focus-visible-ring"
+              aria-label="Synchronize application data"
             >
               Sync Now
             </Button>
@@ -66,7 +72,8 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
           variant="outline" 
           onClick={onSyncNow}
           disabled={!isOnline}
-          className="border-warning/20 bg-warning/5 hover:bg-warning/10 text-warning-foreground"
+          className="border-warning/20 bg-warning/5 hover:bg-warning/10 text-warning-foreground focus-visible-ring"
+          aria-label="Synchronize application data"
         >
           Sync Now
         </Button>
