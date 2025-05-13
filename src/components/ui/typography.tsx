@@ -9,6 +9,7 @@ export type TypographyVariant =
   | "h3" 
   | "h4" 
   | "h5" 
+  | "display" 
   | "body-lg" 
   | "body" 
   | "body-sm" 
@@ -26,6 +27,12 @@ export type TypographyColor =
   | "info"
   | "white";
 
+export type TypographyWeight = 
+  | "normal"
+  | "medium"
+  | "semibold"
+  | "bold";
+
 type ElementType = 
   | "h1" 
   | "h2" 
@@ -39,23 +46,29 @@ type ElementType =
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   variant?: TypographyVariant;
   color?: TypographyColor;
+  weight?: TypographyWeight;
   as?: ElementType;
   className?: string;
   children: React.ReactNode;
+  animate?: boolean;
 }
 
 /**
  * Typography component for consistent text styling
  * 
- * @param variant - The typography variant (h1, h2, h3, h4, h5, body-lg, body, body-sm, small, caption)
+ * @param variant - The typography variant (h1, h2, h3, h4, h5, display, body-lg, body, body-sm, small, caption)
  * @param color - Text color
+ * @param weight - Font weight
  * @param as - HTML element to render
+ * @param animate - Whether to animate the text
  * @param className - Additional CSS classes
  */
 export const Typography = ({
   variant = "body",
   color = "default",
+  weight,
   as,
+  animate = false,
   className,
   children,
   ...props
@@ -75,6 +88,8 @@ export const Typography = ({
         return "h4";
       case "h5":
         return "h5";
+      case "display":
+        return "h1";
       case "body-lg":
       case "body":
       case "body-sm":
@@ -89,6 +104,7 @@ export const Typography = ({
   
   // Map variants to Tailwind classes for consistent styling
   const variantStyles = {
+    display: "text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tighter",
     h1: "text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight",
     h2: "text-3xl md:text-4xl font-bold font-heading tracking-tight",
     h3: "text-2xl md:text-3xl font-semibold font-heading",
@@ -113,6 +129,16 @@ export const Typography = ({
     info: "text-info",
     white: "text-white",
   };
+
+  // Map weight options to Tailwind classes
+  const weightStyles = {
+    normal: "font-normal",
+    medium: "font-medium",
+    semibold: "font-semibold",
+    bold: "font-bold",
+  };
+
+  const animationStyle = animate ? "animate-fade-in" : "";
   
   const Element = getDefaultElement();
   
@@ -122,6 +148,8 @@ export const Typography = ({
       className: cn(
         variantStyles[variant],
         colorStyles[color],
+        weight && weightStyles[weight],
+        animationStyle,
         className
       ),
       ...props
