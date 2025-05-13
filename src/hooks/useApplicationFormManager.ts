@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNetwork } from "@/hooks/useNetwork";
+import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({
@@ -20,8 +20,6 @@ const applicationFormSchema = z.object({
   personalStatement: z.string().optional(),
 });
 
-export type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
-
 export const useApplicationFormManager = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -31,7 +29,7 @@ export const useApplicationFormManager = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
 
-  // Initialize the form with react-hook-form
+  // Initialize the form with react-hook-form ensuring correct typing
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationFormSchema),
     defaultValues: {

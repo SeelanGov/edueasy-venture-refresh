@@ -16,7 +16,6 @@ const Checkbox = React.forwardRef<
       className
     )}
     {...props}
-    aria-checked={props.checked}
   >
     <CheckboxPrimitive.Indicator
       className={cn("flex items-center justify-center text-current")}

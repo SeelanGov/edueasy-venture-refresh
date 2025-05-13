@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThandiAgent } from "@/components/ai/ThandiAgent";
 import { useApplicationFormManager } from "@/hooks/useApplicationFormManager";
 import { SkipToContent } from "@/components/ui/skip-to-content";
+import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
 
 const ApplicationForm = () => {
   const {

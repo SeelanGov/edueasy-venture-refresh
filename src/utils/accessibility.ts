@@ -1,4 +1,6 @@
 
+import * as React from "react";
+
 /**
  * Announces a message to screen readers using the aria-live region
  * @param message Message to announce

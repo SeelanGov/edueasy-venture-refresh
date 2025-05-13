@@ -16,7 +16,7 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({ control }) => {
       name="gender"
       render={({ field }) => (
         <FormItem>
-          <FormLabel required>Gender</FormLabel>
+          <FormLabel>Gender <span className="text-destructive">*</span></FormLabel>
           <Select 
             onValueChange={field.onChange} 
             defaultValue={field.value}
