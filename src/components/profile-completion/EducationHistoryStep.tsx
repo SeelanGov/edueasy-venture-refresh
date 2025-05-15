@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,7 +31,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   };
   
   // Ensure stored subjects are properly typed
-  const ensureValidSubjects = (subjects: any[] | undefined): SubjectMark[] => {
+  const ensureValidSubjects = (subjects: unknown[] | undefined): SubjectMark[] => {
     if (!subjects || subjects.length === 0) {
       return createDefaultSubjects();
     }
@@ -40,9 +39,9 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
     // Map each subject to ensure it has all required properties
     return subjects.map(subject => {
       return {
-        id: subject.id || uuidv4(),
-        subject: subject.subject || "",
-        mark: typeof subject.mark === 'number' ? subject.mark : 0
+        id: (subject as SubjectMark).id || uuidv4(),
+        subject: (subject as SubjectMark).subject || "",
+        mark: typeof (subject as SubjectMark).mark === 'number' ? (subject as SubjectMark).mark : 0
       };
     });
   };

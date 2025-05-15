@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -76,9 +75,9 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
         title: "Profile updated",
         description: "Your profile information has been updated successfully.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error updating profile:", error);
-      setError(error.message || "Failed to update profile. Please try again.");
+      setError((error as Error).message || "Failed to update profile. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

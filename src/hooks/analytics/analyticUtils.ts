@@ -1,8 +1,10 @@
-
 import { DocumentDateData, DocumentTypeData, RejectionReason } from "./types";
+import type { Database } from "@/integrations/supabase/types";
+
+type Document = Database["public"]["Tables"]["documents"]["Row"];
 
 // Process documents to get counts by date
-export const processDocumentsByDate = (documents: any[]): DocumentDateData[] => {
+export const processDocumentsByDate = (documents: Document[]): DocumentDateData[] => {
   const dateMap: Record<string, Record<string, number>> = {};
   
   documents.forEach(doc => {
@@ -29,7 +31,7 @@ export const processDocumentsByDate = (documents: any[]): DocumentDateData[] => 
 };
 
 // Process documents to get counts by type
-export const processDocumentsByType = (documents: any[]): DocumentTypeData[] => {
+export const processDocumentsByType = (documents: Document[]): DocumentTypeData[] => {
   const typeMap: Record<string, { approved: number, rejected: number, pending: number, request_resubmission: number }> = {};
   
   documents.forEach(doc => {
@@ -54,7 +56,7 @@ export const processDocumentsByType = (documents: any[]): DocumentTypeData[] => 
 };
 
 // Extract rejection reasons from documents
-export const extractRejectionReasons = (documents: any[]): RejectionReason[] => {
+export const extractRejectionReasons = (documents: Document[]): RejectionReason[] => {
   const rejectionReasons = documents
     .filter(doc => doc.rejection_reason && 
             (doc.verification_status === 'rejected' || doc.verification_status === 'request_resubmission'))
@@ -71,7 +73,7 @@ export const extractRejectionReasons = (documents: any[]): RejectionReason[] => 
 };
 
 // Calculate analytics metrics from documents
-export const calculateAnalytics = (filteredDocuments: any[]) => {
+export const calculateAnalytics = (filteredDocuments: Document[]) => {
   const totalDocuments = filteredDocuments.length;
   const approvedDocuments = filteredDocuments.filter(doc => doc.verification_status === 'approved').length;
   const rejectedDocuments = filteredDocuments.filter(doc => doc.verification_status === 'rejected').length;

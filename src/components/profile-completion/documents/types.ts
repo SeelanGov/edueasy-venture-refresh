@@ -1,4 +1,3 @@
-
 import { VerificationResult } from "@/hooks/useDocumentVerification";
 
 export type DocumentType = "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results";
@@ -41,6 +40,6 @@ export interface DocumentUploadInputProps {
   isVerifying: boolean;
   setCurrentDocumentType: (type: string) => void;
   currentDocumentType: string | null;
-  uploadSteps: any[];
+  uploadSteps: unknown[];
   currentStep: number;
 }

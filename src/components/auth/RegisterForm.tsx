@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,9 +79,10 @@ export const RegisterForm = () => {
       }
       // Note: Navigation to login after successful registration is handled in useAuthOperations
       // The "from" parameter will be handled by the Login component when they sign in
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       console.error("Registration error:", error);
-      setRegistrationError(error.message || "An unexpected error occurred. Please try again.");
+      setRegistrationError(message || "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

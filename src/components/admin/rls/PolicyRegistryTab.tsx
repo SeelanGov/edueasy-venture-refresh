@@ -1,12 +1,18 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import { PolicyRegistry } from "./PolicyRegistry";
 
+interface PolicyRecord {
+  table_name: string;
+  policy_name: string;
+  policy_type: string;
+  description?: string;
+}
+
 interface PolicyRegistryTabProps {
-  registeredPolicies: any[];
+  registeredPolicies: PolicyRecord[];
   onRefreshData: () => void;
 }
 

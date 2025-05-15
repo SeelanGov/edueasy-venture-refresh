@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -80,8 +79,9 @@ const ResetPassword = () => {
     try {
       await updatePassword(data.password);
       // Navigation will happen in the updatePassword function
-    } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      setError(message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

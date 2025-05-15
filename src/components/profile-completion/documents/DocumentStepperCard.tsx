@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Stepper } from "@/components/ui/stepper";
@@ -6,7 +5,7 @@ import { Stepper } from "@/components/ui/stepper";
 interface DocumentStepperCardProps {
   currentDocumentType: string | null;
   documentName: string;
-  uploadSteps: any[];
+  uploadSteps: unknown[];
   currentStep: number;
 }
 

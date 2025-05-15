@@ -1,3 +1,4 @@
+import type { Json } from '@/integrations/supabase/types';
 
 export interface ErrorLogEntry {
   id: string;
@@ -178,7 +179,7 @@ export interface Database {
           intent_name: string;
           description: string;
           response_template: string;
-          sample_queries: any;
+          sample_queries: Json;
           created_at: string;
           updated_at: string;
           message_count: number;

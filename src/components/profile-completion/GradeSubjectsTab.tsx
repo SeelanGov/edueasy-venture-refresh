@@ -1,4 +1,3 @@
-
 import React from "react";
 import { SubjectMark } from "@/hooks/useProfileCompletionStore";
 import { SubjectEntry } from "./SubjectEntry";
@@ -9,7 +8,7 @@ import { Control } from "react-hook-form";
 
 interface GradeSubjectsTabProps {
   gradeFields: Record<"id", string>[];
-  control: Control<any>;
+  control: Control<unknown>;
   fieldName: string;
   append: (value: SubjectMark) => void;
   remove: (index: number) => void;

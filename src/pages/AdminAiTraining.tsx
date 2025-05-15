@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { 
@@ -7,7 +6,7 @@ import {
   TabsList, 
   TabsTrigger 
 } from "@/components/ui/tabs";
-import { useIntentManagement } from "@/hooks/useIntentManagement";
+import { useIntentManagement, IntentWithStats } from "@/hooks/useIntentManagement";
 import { useTrainingData } from "@/hooks/useTrainingData";
 import { IntentList } from "@/components/thandi/IntentList";
 import { IntentForm } from "@/components/thandi/IntentForm";
@@ -47,13 +46,18 @@ const AdminAiTraining = () => {
   } = useTrainingData();
   
   // Handle intent edit
-  const handleEditIntent = (intent: any) => {
+  const handleEditIntent = (intent: IntentWithStats) => {
     setSelectedIntent(intent);
     setIsEditFormOpen(true);
   };
   
   // Handle intent update
-  const handleUpdateIntent = async (data: any) => {
+  const handleUpdateIntent = async (data: {
+    intent_name: string;
+    description?: string;
+    response_template?: string;
+    sample_queries?: string[];
+  }) => {
     if (selectedIntent) {
       await updateIntent(selectedIntent.id, data);
       setSelectedIntent(null);

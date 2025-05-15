@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { verifyAdminAccess } from './adminAccess';
 import { testRLSPolicies } from './rlsTesting';
@@ -50,12 +49,12 @@ export const performSecurityAudit = async (userId: string | undefined): Promise<
       issues,
       results
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error performing security audit:", error);
     return {
       success: false,
-      issues: [`Error during security audit: ${error.message}`],
-      error: error.message
+      issues: [`Error during security audit: ${(typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error)}`],
+      error: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error)
     };
   }
 };

@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { logSecurityEvent } from './logging';
 
@@ -27,14 +26,14 @@ export const verifyAdminAccess = async (userId: string | undefined): Promise<boo
     }
     
     return !!data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error checking admin status:", error);
     
     // Log the error
     await logSecurityEvent(
       userId,
       'ADMIN_ACCESS_CHECK',
-      { error: error.message },
+      { error: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error) },
       false
     );
     

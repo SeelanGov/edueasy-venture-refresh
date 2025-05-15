@@ -1,6 +1,6 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { ErrorSeverity } from '@/utils/errorLogging';
+import type { Json } from '@/integrations/supabase/types';
 
 /**
  * Create a standardized logging helper for security-related events
@@ -8,7 +8,7 @@ import { ErrorSeverity } from '@/utils/errorLogging';
 export const logSecurityEvent = async (
   userId: string | undefined,
   action: string,
-  details: Record<string, any>,
+  details: Json,
   success: boolean
 ) => {
   try {

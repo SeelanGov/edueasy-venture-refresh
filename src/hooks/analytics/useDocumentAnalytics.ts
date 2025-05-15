@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -76,9 +75,9 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
         documentsByDate,
         documentsByType
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching document analytics:", err);
-      setError(err.message || "Failed to fetch analytics data");
+      setError((err as Error).message || "Failed to fetch analytics data");
     } finally {
       setLoading(false);
     }

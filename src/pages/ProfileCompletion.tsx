@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -72,7 +71,8 @@ const ProfileCompletion = () => {
         description: "Your progress has been saved. You can continue later.",
       });
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       console.error("Error saving progress:", error);
       setError("Failed to save your progress. Please try again.");
     } finally {

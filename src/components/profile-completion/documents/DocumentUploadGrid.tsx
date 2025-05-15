@@ -1,4 +1,3 @@
-
 import React from "react";
 import { DocumentUploadInput } from "./DocumentUploadInput";
 import { DocumentType, DocumentUploadState } from "./types";
@@ -15,7 +14,7 @@ interface DocumentUploadGridProps {
   isVerifying: boolean;
   setCurrentDocumentType: (type: string) => void;
   currentDocumentType: string | null;
-  uploadSteps: any[];
+  uploadSteps: unknown[];
   currentStep: number;
 }
 

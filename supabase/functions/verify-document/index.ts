@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
@@ -37,11 +36,11 @@ serve(async (req) => {
         body: { ...requestBody, imageUrl: '[REDACTED]' },
         timestamp: new Date().toISOString()
       });
-    } catch (error) {
+    } catch (error: unknown) {
       const verificationError: VerificationError = {
         category: ErrorCategory.VALIDATION,
         message: 'Invalid JSON in request body',
-        details: error,
+        details: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error),
         timestamp: new Date().toISOString()
       };
       
@@ -84,8 +83,8 @@ serve(async (req) => {
         userId,
         documentType
       });
-    } catch (error) {
-      console.error('Unexpected error creating log entry:', error, {
+    } catch (error: unknown) {
+      console.error('Unexpected error creating log entry:', (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error), {
         timestamp: new Date().toISOString()
       });
       // Continue processing even if logging fails
@@ -95,12 +94,12 @@ serve(async (req) => {
     let imageData;
     try {
       imageData = await withTimeout(processDocument(imageUrl), 30000, 'Document processing timed out');
-    } catch (error: any) {
+    } catch (error: unknown) {
       const verificationError: VerificationError = {
         category: ErrorCategory.NETWORK,
         message: 'Failed to process document image',
         details: {
-          originalError: error.message,
+          originalError: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error),
           documentId,
           documentType
         },
@@ -128,7 +127,7 @@ serve(async (req) => {
         'Failed to process document: Network or download error'
       );
       
-      throw new Error('Failed to process document image: ' + error.message);
+      throw new Error('Failed to process document image: ' + (typeof error === 'object' && error && 'message' in error ? (error as { message: string }).message : String(error)));
     }
     
     // Verify the document with timeout
@@ -162,12 +161,12 @@ serve(async (req) => {
         verificationResult.status,
         verificationResult.failureReason
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       const verificationError: VerificationError = {
         category: ErrorCategory.DATABASE,
         message: 'Failed to update document status',
         details: {
-          originalError: error.message,
+          originalError: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error),
           documentId,
           documentType,
           verificationStatus: verificationResult.status
@@ -204,36 +203,36 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     const endTime = new Date();
     const processingTime = endTime.getTime() - startTime.getTime();
     
-    console.error('Error in document verification:', error, {
+    console.error('Error in document verification:', (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error), {
       timestamp: endTime.toISOString(),
       processingTimeMs: processingTime
     });
     
     // Determine appropriate status code
     let statusCode = 500;
-    if (error.message.includes('Missing required parameters')) {
+    if ((typeof error === 'object' && error && 'message' in error) && (error as { message: string }).message.includes('Missing required parameters')) {
       statusCode = 400;
-    } else if (error.message.includes('Failed to fetch image')) {
+    } else if ((typeof error === 'object' && error && 'message' in error) && (error as { message: string }).message.includes('Failed to fetch image')) {
       statusCode = 422;
     }
     
     // Get user-friendly error message if available
-    const errorCategory = error.category || ErrorCategory.UNKNOWN;
+    const errorCategory = (typeof error === 'object' && error && 'category' in error) ? (error as { category: ErrorCategory }).category : ErrorCategory.UNKNOWN;
     const userMessage = getUserFriendlyErrorMessage(errorCategory);
     
     // Return error response
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message,
+        error: (typeof error === 'object' && error && 'message' in error) ? (error as { message: string }).message : String(error),
         userMessage,
-        errorDetails: error.category ? {
-          category: error.category,
-          timestamp: error.timestamp
+        errorDetails: (typeof error === 'object' && error && 'category' in error) ? {
+          category: (error as { category: ErrorCategory }).category,
+          timestamp: (error as { timestamp: string }).timestamp
         } : undefined,
         processingTimeMs: processingTime
       }),

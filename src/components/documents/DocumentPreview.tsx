@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,9 +44,10 @@ export const DocumentPreview = ({
           
         if (error) throw error;
         setUrl(data.signedUrl);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching document URL:', err);
-        setError(err.message || 'Could not load document preview');
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message || 'Could not load document preview');
       } finally {
         setLoading(false);
       }

@@ -1,10 +1,9 @@
-
 import React from "react";
-import { DocumentUploadHeader } from "./documents/DocumentUploadHeader";
 import { DocumentStepperCard } from "./documents/DocumentStepperCard";
 import { DocumentUploadGrid } from "./documents/DocumentUploadGrid";
 import { DocumentFormActions } from "./documents/DocumentFormActions";
 import { useDocumentUploadManager } from "@/hooks/useDocumentUploadManager";
+import { DocumentUploadHeader } from "./documents/DocumentUploadHeader";
 
 interface DocumentsUploadStepProps {
   onComplete: () => void;
@@ -28,7 +27,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     checkCompletion
   } = useDocumentUploadManager();
 
-  const onSubmitForm = async (data: any) => {
+  const onSubmitForm = async (data: Record<string, unknown>) => {
     const success = await handleSubmit(data);
     if (success) {
       onComplete();
@@ -55,7 +54,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
         />
         
         <DocumentUploadGrid
-          documentStates={getDocumentState as any}
+          documentStates={getDocumentState()}
           getDocumentState={getDocumentState}
           handleFileChange={handleFileChange}
           handleRetry={handleRetry}

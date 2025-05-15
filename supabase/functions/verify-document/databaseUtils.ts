@@ -1,11 +1,10 @@
-
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
 
 /**
  * Log verification attempt in database
  */
 export async function logVerificationAttempt(
-  supabase: any, 
+  supabase: unknown, 
   { documentId, userId, documentType }: { documentId: string, userId: string, documentType: string }
 ): Promise<string | undefined> {
   try {
@@ -41,12 +40,12 @@ export async function logVerificationAttempt(
  * Update document verification status in database
  */
 export async function updateVerificationStatus(
-  supabase: any,
+  supabase: unknown,
   status: string, 
   documentId: string, 
   failureReason: string | null, 
   confidence: number,
-  validationResults: Record<string, any>,
+  validationResults: Record<string, unknown>,
   logId?: string,
   userId?: string,
   extractedText?: string,
@@ -118,7 +117,7 @@ export async function updateVerificationStatus(
  * Create notification for document verification result
  */
 export async function createVerificationNotification(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   documentId: string,
   documentType: string,

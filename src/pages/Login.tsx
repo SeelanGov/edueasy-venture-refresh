@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { z } from "zod";
@@ -74,9 +73,10 @@ const Login = () => {
       
       console.log("Login successful, navigating to:", from);
       // Navigation will happen in the useEffect when user state updates
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       console.error("Login error:", error);
-      setError(error.message || "Failed to sign in. Please check your credentials.");
+      setError(message || "Failed to sign in. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }

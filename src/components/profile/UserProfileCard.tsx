@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,7 @@ export const UserProfileCard = () => {
   const [error, setError] = useState<string | null>(null);
   
   // Reference for event listener (part of Bug #1)
-  const eventListenerRef = useRef<any>(null);
+  const eventListenerRef = useRef<unknown>(null);
   
   // Bug #1: Memory leak in useEffect - no cleanup function
   useEffect(() => {

@@ -1,9 +1,8 @@
-
 import { CheckCircle, XCircle, ClipboardList } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface ValidationResultsListProps {
-  validationResults: Record<string, any> | undefined;
+  validationResults: Record<string, unknown> | undefined;
   extractedFields?: Record<string, string>;
 }
 
@@ -62,11 +61,18 @@ export const ValidationResultsList = ({ validationResults, extractedFields }: Va
                       <div key={key} className="mt-1">
                         <div className="font-medium">Subjects:</div>
                         <div className="pl-2">
-                          {parsed.map((subject: any, index: number) => (
-                            <div key={index}>
-                              {subject.name}: {subject.mark}
-                            </div>
-                          ))}
+                          {parsed.map((subject: unknown, index: number) => {
+                            if (typeof subject === 'object' && subject !== null && 'name' in subject && 'mark' in subject) {
+                              // @ts-expect-error: subject is unknown, but we check keys
+                              return (
+                                <div key={index}>
+                                  {/* @ts-expect-error: subject is unknown, but we check keys */}
+                                  {subject.name}: {subject.mark}
+                                </div>
+                              );
+                            }
+                            return null;
+                          })}
                         </div>
                       </div>
                     );

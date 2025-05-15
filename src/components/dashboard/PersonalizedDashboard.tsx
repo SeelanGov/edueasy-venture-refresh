@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,8 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ChevronRight, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import type { Database } from "@/integrations/supabase/types";
+import type { Application } from "./ApplicationTable";
 
 interface UserStats {
   fullName: string;
@@ -19,7 +20,7 @@ interface UserStats {
   profileCompletion: number;
 }
 
-export const PersonalizedDashboard = ({ applications, loading }: { applications: any[]; loading: boolean }) => {
+export const PersonalizedDashboard = ({ applications, loading }: { applications: Application[]; loading: boolean }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [userStats, setUserStats] = useState<UserStats | null>(null);

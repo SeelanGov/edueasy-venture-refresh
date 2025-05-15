@@ -1,19 +1,18 @@
-
 import { useState } from "react";
 import { validateFile } from "@/components/profile-completion/documents/documentUtils";
-import { DocumentType, RetryData } from "@/components/profile-completion/documents/types";
+import { DocumentType, RetryData, DocumentUploadState } from "@/components/profile-completion/documents/types";
 import { compressImage } from "@/utils/imageCompression";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 
 export const useFileProcessing = (
-  setDocumentState: (documentType: string, state: any) => void,
-  user?: any
+  setDocumentState: (documentType: DocumentType, state: Partial<DocumentUploadState>) => void,
+  user?: { id?: string } | null
 ) => {
   const processFile = async (
     file: File,
     documentType: DocumentType,
     isResubmission: boolean = false
-  ) => {
+  ): Promise<{ valid: boolean; file: File | null; error?: unknown }> => {
     // Validate file
     const validation = validateFile(file);
     if (!validation.valid) {
@@ -67,12 +66,12 @@ export const useFileProcessing = (
       setDocumentState(documentType, { progress: 50 });
       
       return { valid: true, file: fileToUpload };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`Error processing file for ${documentType}:`, error);
       setDocumentState(documentType, { 
         uploading: false, 
         progress: 0, 
-        error: error.message || "File processing failed"
+        error: error instanceof Error ? error.message : "File processing failed"
       });
       return { valid: false, file: null, error };
     }
@@ -80,7 +79,7 @@ export const useFileProcessing = (
 
   const handleRetry = (
     documentType: DocumentType,
-    currentState: any,
+    currentState: DocumentUploadState,
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => void
   ) => {
     if (currentState.retryData && currentState.retryData.file) {

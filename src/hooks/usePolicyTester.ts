@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +15,7 @@ export const usePolicyTester = () => {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [testResults, setTestResults] = useState<RLSTestResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [registeredPolicies, setRegisteredPolicies] = useState<any[]>([]);
+  const [registeredPolicies, setRegisteredPolicies] = useState<unknown[]>([]);
   const [policyAnalysis, setPolicyAnalysis] = useState<RLSPolicyAnalysis[]>([]);
   const [activeTab, setActiveTab] = useState("test");
   const [selectedRole, setSelectedRole] = useState<string>("user");
@@ -43,9 +42,9 @@ export const usePolicyTester = () => {
       if (isAdminData) {
         await refreshData();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error initializing RLS tester:", error);
-      toast.error(`Error initializing: ${error.message}`);
+      toast.error(`Error initializing: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
   
@@ -64,9 +63,9 @@ export const usePolicyTester = () => {
       setPolicyAnalysis(analysis);
       
       toast.success("RLS policy tests completed");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error running RLS tests:", error);
-      toast.error(`Error running RLS tests: ${error.message}`);
+      toast.error(`Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsLoading(false);
     }
@@ -92,9 +91,9 @@ export const usePolicyTester = () => {
       setPolicyAnalysis(analysis);
       
       toast.success("RLS policy tests completed");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error running RLS tests:", error);
-      toast.error(`Error running RLS tests: ${error.message}`);
+      toast.error(`Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsLoading(false);
     }
@@ -114,9 +113,9 @@ export const usePolicyTester = () => {
       setPolicyAnalysis(analysis);
       
       toast.success("Policy data refreshed");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error refreshing policy data:", error);
-      toast.error(`Error refreshing data: ${error.message}`);
+      toast.error(`Error refreshing data: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 

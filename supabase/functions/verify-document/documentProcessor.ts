@@ -1,3 +1,4 @@
+/// <reference types="deno.ns" />
 
 // Import the fetch retry utility
 import { fetchWithRetry } from './networkUtils.ts';
@@ -47,7 +48,7 @@ export async function verifyDocument(
 ): Promise<{
   status: 'approved' | 'rejected' | 'request_resubmission',
   confidence: number,
-  validationResults: Record<string, any>,
+  validationResults: Record<string, unknown>,
   failureReason: string | null,
   extractedText: string | null,
   extractedFields: Record<string, string> | null
@@ -170,7 +171,14 @@ function estimateConfidence(text: string): number {
 /**
  * Validate ID document
  */
-function validateIdDocument(text: string, confidence: number): ReturnType<typeof verifyDocument> {
+function validateIdDocument(text: string, confidence: number): {
+  status: 'approved' | 'rejected' | 'request_resubmission',
+  confidence: number,
+  validationResults: Record<string, unknown>,
+  failureReason: string | null,
+  extractedText: string | null,
+  extractedFields: Record<string, string> | null
+} {
   // Enhanced extraction for ID documents
   const idNumberMatch = text.match(/\b\d{13}\b/);
   const nameMatch = text.match(/(?:surname|last\s*name|family\s*name)[\s:]+([A-Za-z\s]+)/i) || 
@@ -197,7 +205,7 @@ function validateIdDocument(text: string, confidence: number): ReturnType<typeof
     extractedFields.nationality = nationalityMatch[1].trim();
   }
   
-  const validationResults = {
+  const validationResults: Record<string, unknown> = {
     hasIdNumber: !!idNumberMatch,
     hasName: !!nameMatch,
     hasDateOfBirth: !!dobMatch,
@@ -242,7 +250,14 @@ function validateIdDocument(text: string, confidence: number): ReturnType<typeof
 /**
  * Validate Grade 12 Results document
  */
-function validateGrade12Results(text: string, confidence: number): ReturnType<typeof verifyDocument> {
+function validateGrade12Results(text: string, confidence: number): {
+  status: 'approved' | 'rejected' | 'request_resubmission',
+  confidence: number,
+  validationResults: Record<string, unknown>,
+  failureReason: string | null,
+  extractedText: string | null,
+  extractedFields: Record<string, string> | null
+} {
   // Enhanced extraction for grade results
   const subjectMatches = text.match(/(?:\b[A-Za-z\s]+\b[\s:]+(?:\d{1,3}%|\b[A-F]\b))/g);
   const hasGrade = text.match(/\b(?:grade|matric|nsc)\b/i);
@@ -250,7 +265,7 @@ function validateGrade12Results(text: string, confidence: number): ReturnType<ty
   const studentIdMatch = text.match(/(?:student\s*id|learner\s*id|candidate\s*number)[\s:]+([A-Z0-9\s]+)/i);
   const yearMatch = text.match(/(?:year|session|examination\s*date)[\s:]+(\d{4})/i);
   
-  const validationResults = {
+  const validationResults: Record<string, unknown> = {
     hasSubjects: subjectMatches ? subjectMatches.length > 0 : false,
     subjectsFound: subjectMatches?.length || 0,
     hasGradeIndicator: !!hasGrade,
@@ -312,7 +327,14 @@ function validateGrade12Results(text: string, confidence: number): ReturnType<ty
 /**
  * Validate Grade 11 Results document
  */
-function validateGrade11Results(text: string, confidence: number): ReturnType<typeof verifyDocument> {
+function validateGrade11Results(text: string, confidence: number): {
+  status: 'approved' | 'rejected' | 'request_resubmission',
+  confidence: number,
+  validationResults: Record<string, unknown>,
+  failureReason: string | null,
+  extractedText: string | null,
+  extractedFields: Record<string, string> | null
+} {
   // Use the same validation logic as Grade 12 but with different grade expectation
   const result = validateGrade12Results(text, confidence);
   
@@ -328,7 +350,14 @@ function validateGrade11Results(text: string, confidence: number): ReturnType<ty
 /**
  * Validate proof of residence document
  */
-function validateProofOfResidence(text: string, confidence: number): ReturnType<typeof verifyDocument> {
+function validateProofOfResidence(text: string, confidence: number): {
+  status: 'approved' | 'rejected' | 'request_resubmission',
+  confidence: number,
+  validationResults: Record<string, unknown>,
+  failureReason: string | null,
+  extractedText: string | null,
+  extractedFields: Record<string, string> | null
+} {
   // Enhanced extraction for proof of residence
   const hasAddress = text.match(/(?:\b(?:address|street|avenue|road|lane|drive|boulevard|crescent)\b)/i);
   const hasPostalCode = text.match(/\b\d{4,5}\b/); // Standard postal code format
@@ -336,7 +365,7 @@ function validateProofOfResidence(text: string, confidence: number): ReturnType<
   const hasDate = text.match(/(?:\b(?:date|issued|statement date)\b[\s:]+)(\d{1,2}[-./]\d{1,2}[-./]\d{2,4})/i);
   const hasUtilityProvider = text.match(/(?:\b(?:municipality|utility|provider|council|company)\b[\s:]+)([A-Za-z\s]+)/i);
   
-  const validationResults = {
+  const validationResults: Record<string, unknown> = {
     hasAddressIndicator: !!hasAddress,
     hasPostalCode: !!hasPostalCode,
     hasName: !!hasName,

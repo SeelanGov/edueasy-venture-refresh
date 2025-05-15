@@ -1,4 +1,3 @@
-
 import { ErrorCategory } from "@/utils/errorHandler";
 import { ErrorSeverity } from "@/utils/errorLogging";
 
@@ -54,7 +53,7 @@ export interface ErrorDetails {
   /**
    * Additional context about the error
    */
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
 }
 
 /**

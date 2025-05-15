@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,11 +33,11 @@ export const useUserProfile = (
         setUserProfile(data);
         form.setValue("fullName", data.full_name);
         form.setValue("idNumber", data.id_number);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error fetching user profile:", error);
         toast({
           title: "Error",
-          description: "Failed to load your profile information",
+          description: error instanceof Error ? error.message : String(error),
           variant: "destructive",
         });
       }

@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { StandardError } from './errorHandler';
@@ -66,14 +65,14 @@ export const safeAsyncWithLogging = async <T>(
     errorMessage?: string;
     errorCategory?: string;
     showToast?: boolean;
-    additionalData?: Record<string, any>;
+    additionalData?: Record<string, unknown>;
     retryCount?: number;
   }
 ): Promise<{ data: T | null; error: Error | null }> => {
   try {
     const data = await fn();
     return { data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Error in ${options.component}/${options.action}:`, error);
     
     // Log the error to our system
@@ -82,18 +81,15 @@ export const safeAsyncWithLogging = async <T>(
       await supabase
         .from('system_error_logs')
         .insert({
-          message: error.message || options.errorMessage || 'Unknown error',
-          category: error.category || options.errorCategory || 'UNKNOWN',
+          message: error instanceof Error ? error.message : options.errorMessage || 'Unknown error',
+          category: options.errorCategory || 'UNKNOWN',
           severity: options.severity || ErrorSeverity.ERROR,
           component: options.component,
           action: options.action,
           user_id: options.userId,
-          details: {
-            stack: error.stack,
-            originalError: error.originalError ? String(error.originalError) : undefined,
-            additionalData: options.additionalData,
-            retryCount: options.retryCount
-          }
+          stack: error instanceof Error ? error.stack : undefined,
+          additionalData: options.additionalData,
+          retryCount: options.retryCount
         });
     } catch (loggingError) {
       // If we can't log the error, at least log it to the console
@@ -102,10 +98,10 @@ export const safeAsyncWithLogging = async <T>(
     
     // If toast display is requested, show it
     if (options.showToast !== false) {
-      toast(error.message || options.errorMessage || "An error occurred");
+      toast(error instanceof Error ? error.message : options.errorMessage || "An error occurred");
     }
     
-    return { data: null, error: error as Error };
+    return { data: null, error: error instanceof Error ? error : new Error('Unknown error') };
   }
 };
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -46,8 +45,9 @@ const ForgotPassword = () => {
     try {
       await resetPassword(data.email);
       setIsSubmitted(true);
-    } catch (error: any) {
-      setError(error.message || "Something went wrong. Please try again.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      setError(message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

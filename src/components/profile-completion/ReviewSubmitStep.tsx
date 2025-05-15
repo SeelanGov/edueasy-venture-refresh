@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -63,9 +62,9 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
       
       // Redirect to dashboard
       navigate('/dashboard');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error submitting profile:", error);
-      setError(error.message || "Failed to submit your profile. Please try again.");
+      setError((error as Error).message || "Failed to submit your profile. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

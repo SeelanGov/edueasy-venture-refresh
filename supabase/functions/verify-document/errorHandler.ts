@@ -1,4 +1,3 @@
-
 // Define error categories for better error reporting
 export enum ErrorCategory {
   NETWORK = 'NETWORK',
@@ -16,7 +15,7 @@ export enum ErrorCategory {
 export interface VerificationError {
   category: ErrorCategory;
   message: string;
-  details?: any;
+  details?: Record<string, unknown>;
   timestamp: string;
 }
 
@@ -25,7 +24,7 @@ export interface VerificationError {
  */
 export async function handleError(
   error: VerificationError, 
-  supabase: any, 
+  supabase: unknown, 
   logId?: string, 
   documentId?: string
 ): Promise<void> {
@@ -36,7 +35,7 @@ export async function handleError(
   
   try {
     // Log error to system_error_logs table
-    const { data, error: logError } = await supabase
+    const { data, error: logError } = await (supabase as any)
       .from('system_error_logs')
       .insert({
         message: error.message,
@@ -59,7 +58,7 @@ export async function handleError(
     
     // Update verification log if we have a log ID
     if (logId) {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('document_verification_logs')
         .update({
           status: 'error',

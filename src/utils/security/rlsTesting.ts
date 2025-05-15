@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logSecurityEvent } from './logging';
@@ -31,15 +30,16 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
       success: transformedResults.length > 0 && transformedResults.every(result => result.success),
       results: transformedResults
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error testing RLS policies:", error);
-    toast.error(`Failed to test RLS policies: ${error.message}`);
+    toast.error(`Failed to test RLS policies: ${message}`);
     
     // Log the error for monitoring
     await logSecurityEvent(
       userId, 
       'TEST_RLS_POLICIES', 
-      { error: error.message }, 
+      { error: message }, 
       false
     );
     
@@ -49,7 +49,7 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
         table_name: 'general',
         operation: 'TEST',
         success: false,
-        message: `Error running tests: ${error.message}`
+        message: `Error running tests: ${message}`
       }]
     };
   }
@@ -97,15 +97,16 @@ export const testRLSPoliciesWithRole = async (
       success: transformedResults.length > 0 && transformedResults.every(result => result.success),
       results: transformedResults
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error testing RLS policies with role:", error);
-    toast.error(`Failed to test RLS policies as ${role}: ${error.message}`);
+    toast.error(`Failed to test RLS policies as ${role}: ${message}`);
     
     // Log the error for monitoring
     await logSecurityEvent(
       userId,
       'TEST_RLS_POLICIES_WITH_ROLE',
-      { error: error.message, role, scenario },
+      { error: message, role, scenario },
       false
     );
     
@@ -115,7 +116,7 @@ export const testRLSPoliciesWithRole = async (
         table_name: 'general',
         operation: 'TEST',
         success: false,
-        message: `Error running tests as ${role}: ${error.message}`
+        message: `Error running tests as ${role}: ${message}`
       }]
     };
   }
@@ -136,15 +137,16 @@ export const analyzeRLSPolicies = async (userId: string | undefined): Promise<RL
     if (error) throw error;
     
     return data || [];
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error analyzing RLS policies:", error);
-    toast.error(`Failed to analyze RLS policies: ${error.message}`);
+    toast.error(`Failed to analyze RLS policies: ${message}`);
     
     // Log the error for monitoring
     await logSecurityEvent(
       userId,
       'ANALYZE_RLS_POLICIES',
-      { error: error.message },
+      { error: message },
       false
     );
     
@@ -164,9 +166,10 @@ export const getRegisteredPolicies = async () => {
       
     if (error) throw error;
     return data || [];
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error fetching policy registry:", error);
-    toast.error(`Failed to load policy registry: ${error.message}`);
+    toast.error(`Failed to load policy registry: ${message}`);
     return [];
   }
 };

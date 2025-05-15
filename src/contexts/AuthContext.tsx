@@ -1,4 +1,3 @@
-
 import { createContext, useContext, ReactNode, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useSession } from '@/hooks/useSession';
@@ -8,8 +7,8 @@ type AuthContextType = {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<any>; // Updated return type
-  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<any>; 
+  signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ user: User | null; session: Session | null; error?: string | null }>; 
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;

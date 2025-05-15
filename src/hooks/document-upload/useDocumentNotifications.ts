@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 import { toast } from "sonner";
@@ -35,7 +34,7 @@ export const useDocumentNotifications = () => {
   };
 
   const showVerificationResultToast = (
-    result: any, 
+    result: unknown, 
     isResubmission: boolean = false
   ) => {
     if (!result) return;
@@ -57,6 +56,17 @@ export const useDocumentNotifications = () => {
     }
     
     return false;
+  };
+
+  const handleNotification = (event: unknown) => {
+    const result = event as { status?: string; failureReason?: string };
+    if (result.status === 'rejected') {
+      toast(`Rejected: ${result.failureReason || 'Please check your document and try again'}`);
+    } else if (result.status === 'request_resubmission') {
+      toast(`Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`);
+    } else if (result.status === 'approved') {
+      toast('Document approved!');
+    }
   };
   
   return {
