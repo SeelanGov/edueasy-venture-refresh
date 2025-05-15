@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -196,5 +195,24 @@ export default {
       }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities, theme, e }) {
+      // Add custom utilities for color opacity variants
+      const colorOpacityUtilities = {};
+      const colors = theme('colors');
+      
+      // Process info color specifically for borders
+      if (colors.info) {
+        const opacities = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+        opacities.forEach(opacity => {
+          colorOpacityUtilities[`.border-info\\/${opacity}`] = {
+            'border-color': `rgba(var(--color-info-rgb), ${opacity/100})`,
+          };
+        });
+      }
+      
+      addUtilities(colorOpacityUtilities, ['responsive']);
+    }
+  ],
 } satisfies Config;
