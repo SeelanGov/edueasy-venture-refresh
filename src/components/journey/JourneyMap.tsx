@@ -43,10 +43,10 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
       {/* Mobile version */}
       <div className="sm:hidden">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-cap-teal">
+          <span className="text-sm font-medium text-primary">
             Step {currentStep + 1} of {steps.length}
           </span>
-          <span className="text-sm font-medium text-cap-teal">
+          <span className="text-sm font-medium text-primary">
             {steps[currentStep]}
           </span>
         </div>
@@ -54,7 +54,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
         {/* Mobile progress bar */}
         <div className="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className="absolute top-0 left-0 h-full bg-cap-teal transition-all duration-500 ease-in-out"
+            className="absolute top-0 left-0 h-full bg-primary transition-all duration-500 ease-in-out"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
           

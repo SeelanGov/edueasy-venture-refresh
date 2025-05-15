@@ -68,6 +68,19 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
     }
   };
 
+  const getStatusColor = () => {
+    switch (status) {
+      case "completed":
+        return "text-green-600";
+      case "active":
+        return "text-primary";
+      case "error":
+        return "text-red-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
   return (
     <div
       className="absolute z-20 top-20 -left-32 w-64 animate-scale-in"
@@ -75,7 +88,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
       role="dialog"
       aria-labelledby="milestone-detail-title"
     >
-      <Card className="shadow-lg border-t-4 border-t-cap-teal">
+      <Card className="shadow-lg border-t-4 border-t-primary">
         <CardHeader className="pb-2 pt-4 px-4">
           <div className="flex justify-between items-start">
             <CardTitle id="milestone-detail-title" className="text-base font-medium">
@@ -83,7 +96,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
             </CardTitle>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-cap-teal focus:ring-offset-2 rounded-full"
+              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
               aria-label="Close details"
             >
               <X className="h-4 w-4" />
@@ -92,17 +105,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
           <div className="flex items-center mt-1">
             <span className="text-xs font-medium text-gray-500">Step {stepNumber}</span>
             <span className="mx-2 text-gray-300">•</span>
-            <span
-              className={`text-xs font-medium ${
-                status === "completed"
-                  ? "text-green-600"
-                  : status === "active"
-                  ? "text-cap-teal"
-                  : status === "error"
-                  ? "text-red-500"
-                  : "text-gray-500"
-              }`}
-            >
+            <span className={`text-xs font-medium ${getStatusColor()}`}>
               {getStatusText()}
             </span>
           </div>
@@ -115,7 +118,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
             <Button 
               variant="outline" 
               size="sm" 
-              className="w-full text-xs justify-between border-cap-teal text-cap-teal hover:bg-cap-teal/10"
+              className="w-full text-xs justify-between border-primary text-primary hover:bg-primary/10"
               onClick={onClose}
             >
               <span>{status === "active" ? "Continue" : "View Details"}</span>

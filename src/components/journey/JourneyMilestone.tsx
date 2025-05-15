@@ -48,6 +48,42 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
     onClick?.();
   };
 
+  // Define inline color styles to avoid CSS variable issues
+  const getStatusColors = () => {
+    switch (status) {
+      case "active":
+        return {
+          bg: "bg-primary",
+          border: "border-primary",
+          text: "text-white",
+          animation: "animate-pulse"
+        };
+      case "completed":
+        return {
+          bg: "bg-green-500",
+          border: "border-green-500",
+          text: "text-white",
+          animation: ""
+        };
+      case "error":
+        return {
+          bg: "bg-red-50",
+          border: "border-red-500",
+          text: "text-red-500",
+          animation: ""
+        };
+      default: // pending
+        return {
+          bg: "bg-gray-100",
+          border: "border-gray-300",
+          text: "text-gray-400",
+          animation: ""
+        };
+    }
+  };
+
+  const statusColors = getStatusColors();
+
   return (
     <div className="relative flex flex-col items-center">
       {/* Milestone icon */}
@@ -55,10 +91,10 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
         onClick={handleMilestoneClick}
         className={cn(
           "w-14 h-14 rounded-full flex items-center justify-center z-10 cursor-pointer transition-all duration-300 border-2",
-          status === "active" && "bg-cap-teal border-cap-teal text-white animate-pulse-gentle",
-          status === "completed" && "bg-green-500 border-green-500 text-white",
-          status === "pending" && "bg-gray-100 border-gray-300 text-gray-400",
-          status === "error" && "bg-red-50 border-red-500 text-red-500"
+          statusColors.bg,
+          statusColors.border,
+          statusColors.text,
+          statusColors.animation
         )}
         aria-label={`${title} - ${status}`}
         tabIndex={0}
@@ -76,7 +112,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
       <span
         className={cn(
           "mt-2 text-xs font-medium whitespace-nowrap max-w-28 text-center",
-          status === "active" && "text-cap-teal",
+          status === "active" && "text-primary",
           status === "completed" && "text-green-600",
           status === "pending" && "text-gray-500",
           status === "error" && "text-red-500"
@@ -90,7 +126,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
         <span
           className={cn(
             "absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs",
-            status === "active" && "bg-cap-teal text-white",
+            status === "active" && "bg-primary text-white",
             status === "pending" && "bg-gray-200 text-gray-600",
             status === "error" && "bg-red-100 text-red-600"
           )}
