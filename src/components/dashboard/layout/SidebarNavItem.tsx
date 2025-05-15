@@ -26,11 +26,14 @@ export const SidebarNavItem = ({
         isActive
           ? 'bg-cap-teal/10 text-cap-teal dark:bg-cap-teal/20'
           : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-      } ${sidebarOpen ? '' : 'justify-center'}`}
+      } ${sidebarOpen ? '' : 'justify-center'} focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900`}
       onClick={onClick}
+      aria-current={isActive ? 'page' : undefined}
+      role="menuitem"
     >
-      <span className="flex-shrink-0">{icon}</span>
+      <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
       {sidebarOpen && <span className="ml-3">{name}</span>}
+      {!sidebarOpen && <span className="sr-only">{name}</span>}
     </Link>
   );
 };

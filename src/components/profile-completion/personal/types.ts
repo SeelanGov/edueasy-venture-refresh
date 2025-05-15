@@ -2,5 +2,5 @@
 export interface PersonalInfoFormValues {
   fullName: string;
   idNumber: string;
-  gender: string;
+  gender: "male" | "female" | "non-binary" | "prefer-not-to-say" | string;
 }

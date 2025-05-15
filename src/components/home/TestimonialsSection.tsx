@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/ui/typography";
 
 interface Testimonial {
   id: number;
@@ -51,30 +52,30 @@ export const TestimonialsSection = () => {
   };
   
   return (
-    <section id="testimonials" className="py-20 px-4 bg-white">
+    <section id="testimonials" className="py-20 px-4 md:py-24 bg-white">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 md:mb-16">
           <div className="mb-6 flex justify-center">
-            <div className="w-16 h-1 bg-cap-coral rounded"></div>
+            <div className="w-16 h-1 md:w-20 md:h-1.5 bg-cap-coral rounded"></div>
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+          <Typography variant="h2" className="mb-4 md:text-4xl">
             Student Success Stories
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto text-gray-600">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
             Hear from students who found their path with EduEasy
-          </p>
+          </Typography>
         </div>
         
         <div className="max-w-4xl mx-auto">
-          <div className="relative bg-gray-50 rounded-lg p-6 shadow-lg">
+          <div className="relative bg-gray-50 rounded-lg p-6 md:p-8 shadow-lg">
             <div className="absolute top-0 right-0 transform -translate-y-1/2 translate-x-0">
-              <div className="w-16 h-16 rounded-full bg-cap-coral flex items-center justify-center">
-                <span className="text-white text-2xl">"</span>
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-cap-coral flex items-center justify-center">
+                <span className="text-white text-2xl md:text-3xl">"</span>
               </div>
             </div>
             
             <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
-              <div className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 border-4 border-cap-teal">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-cap-teal">
                 <img 
                   src={testimonials[activeIndex].image} 
                   alt={testimonials[activeIndex].name} 
@@ -83,11 +84,19 @@ export const TestimonialsSection = () => {
               </div>
               
               <div className="flex-grow">
-                <p className="text-lg italic mb-4">"{testimonials[activeIndex].quote}"</p>
+                <Typography variant="body-lg" className="italic mb-4 md:text-xl md:leading-relaxed">
+                  "{testimonials[activeIndex].quote}"
+                </Typography>
                 <div>
-                  <h3 className="font-semibold text-xl">{testimonials[activeIndex].name}</h3>
-                  <p className="text-cap-teal">{testimonials[activeIndex].program}</p>
-                  <p className="text-gray-600 text-sm">{testimonials[activeIndex].university}</p>
+                  <Typography variant="h4" className="font-semibold md:text-xl">
+                    {testimonials[activeIndex].name}
+                  </Typography>
+                  <Typography variant="body" color="primary" className="md:text-lg">
+                    {testimonials[activeIndex].program}
+                  </Typography>
+                  <Typography variant="body-sm" className="text-gray-600 md:text-base">
+                    {testimonials[activeIndex].university}
+                  </Typography>
                 </div>
               </div>
             </div>
@@ -97,25 +106,25 @@ export const TestimonialsSection = () => {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-cap-teal' : 'bg-gray-300'}`}
+                  className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${index === activeIndex ? 'bg-cap-teal' : 'bg-gray-300'}`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
             </div>
           </div>
           
-          <div className="flex justify-center mt-6 gap-4">
+          <div className="flex justify-center mt-6 md:mt-8 gap-4">
             <Button 
               variant="outline" 
               onClick={prevTestimonial}
-              className="border-cap-teal text-cap-teal"
+              className="border-cap-teal text-cap-teal md:py-6 md:px-8"
             >
               Previous
             </Button>
             <Button 
               variant="outline" 
               onClick={nextTestimonial}
-              className="border-cap-teal text-cap-teal"
+              className="border-cap-teal text-cap-teal md:py-6 md:px-8"
             >
               Next
             </Button>

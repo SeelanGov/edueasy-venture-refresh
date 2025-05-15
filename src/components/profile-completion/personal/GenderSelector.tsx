@@ -16,17 +16,21 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({ control }) => {
       name="gender"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Gender</FormLabel>
+          <FormLabel>Gender <span className="text-destructive">*</span></FormLabel>
           <Select 
             onValueChange={field.onChange} 
             defaultValue={field.value}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger
+                aria-required="true"
+                aria-invalid={field.value === "" ? "true" : "false"}
+                className="focus-visible-ring rounded-lg transition-all hover:border-primary/50"
+              >
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent position="popper" className="bg-background border rounded-lg shadow-soft">
               <SelectItem value="male">Male</SelectItem>
               <SelectItem value="female">Female</SelectItem>
               <SelectItem value="other">Other</SelectItem>

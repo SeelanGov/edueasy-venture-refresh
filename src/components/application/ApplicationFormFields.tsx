@@ -1,4 +1,3 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -49,9 +48,10 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 {...field}
                 readOnly
                 disabled
+                className="md:text-base"
               />
             </FormControl>
-            <FormDescription>
+            <FormDescription className="md:text-sm">
               Name as it appears in your ID document
             </FormDescription>
             <FormMessage />
@@ -71,6 +71,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 {...field}
                 readOnly
                 disabled
+                className="md:text-base"
               />
             </FormControl>
             <FormMessage />
@@ -89,9 +90,10 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 placeholder="e.g. 80%"
                 {...field}
                 disabled={isSubmitting}
+                className="md:text-base"
               />
             </FormControl>
-            <FormDescription>
+            <FormDescription className="md:text-sm">
               Your final overall percentage
             </FormDescription>
             <FormMessage />
@@ -108,7 +110,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
         </Alert>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <FormField
           control={form.control}
           name="university"
@@ -126,7 +128,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 disabled={isSubmitting || loading}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="md:h-11">
                     <SelectValue placeholder="Select a university" />
                   </SelectTrigger>
                 </FormControl>
@@ -161,7 +163,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 disabled={isSubmitting || !selectedInstitutionId}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="md:h-11">
                     <SelectValue placeholder="Select a program" />
                   </SelectTrigger>
                 </FormControl>
@@ -201,10 +203,10 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 placeholder="Tell us why you're interested in this program..."
                 {...field}
                 disabled={isSubmitting}
-                className="min-h-[120px]"
+                className="min-h-[120px] md:min-h-[150px] md:text-base"
               />
             </FormControl>
-            <FormDescription>
+            <FormDescription className="md:text-sm">
               Briefly explain why you're applying for this program
             </FormDescription>
             <FormMessage />
@@ -229,10 +231,11 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                     handleFileChange(e);
                     onChange(e.target.files?.[0] || null);
                   }}
+                  className="md:text-base md:py-2"
                 />
               </div>
             </FormControl>
-            <FormDescription>
+            <FormDescription className="md:text-sm">
               Upload your ID copy, transcript, or other supporting documents
             </FormDescription>
             <FormMessage />
