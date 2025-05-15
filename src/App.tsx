@@ -1,4 +1,3 @@
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -21,6 +20,9 @@ import ProfileCompletion from "./pages/ProfileCompletion";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminAiTraining from "./pages/AdminAiTraining";
+import PartnerRegister from "./pages/PartnerRegister";
+import PartnerLogin from "./pages/PartnerLogin";
+import PartnerDashboard from "./pages/PartnerDashboard";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -102,6 +104,9 @@ const App = () => {
                   </AdminAuthGuard>
                 } 
               />
+              <Route path="/partner/register" element={<PartnerRegister />} />
+              <Route path="/partner/login" element={<PartnerLogin />} />
+              <Route path="/partner/dashboard" element={<PartnerDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             {/* Add both toast providers */}

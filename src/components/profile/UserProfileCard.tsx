@@ -18,34 +18,27 @@ interface UserProfile {
   name: string;
   bio: string;
   avatar: string;
-  followers: string; // Bug #4: Should be number but using string
+  followers: number; // Fix: followers should be a number, not a string
   following: number;
   posts: Post[];
 }
 
 export const UserProfileCard = () => {
-  // Bug #3: Initial state should be false, but we set it inconsistently
   const [isFollowing, toggleFollowing] = useState(false);
-  // Bug #2: This state will cause infinite re-renders when updated in useEffect
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Reference for event listener (part of Bug #1)
-  const eventListenerRef = useRef<unknown>(null);
-  
-  // Bug #1: Memory leak in useEffect - no cleanup function
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        // Simulate API call
         setTimeout(() => {
           const mockUserData: UserProfile = {
             id: "user123",
             name: "Alex Johnson",
             bio: "Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.",
             avatar: "https://i.pravatar.cc/150?img=3",
-            followers: "1245", // Bug #4: String instead of number
+            followers: 1245, // Fix: number type
             following: 867,
             posts: [
               {
@@ -68,44 +61,33 @@ export const UserProfileCard = () => {
               }
             ]
           };
-          
+
           setProfileData(mockUserData);
           setLoading(false);
-          
-          // Bug #2: This will trigger an infinite re-render
-          if (mockUserData) {
-            setProfileData({...mockUserData});
-          }
         }, 1000);
       } catch (err) {
-        // Bug #6: Improper error handling - not setting a specific error message
-        setError("Error");
+        setError("Failed to load profile data"); // More descriptive error
         setLoading(false);
       }
     };
-    
+
     fetchProfileData();
-    
-    // Bug #1: Adding event listener without cleanup
-    eventListenerRef.current = () => console.log("Window resized");
-    window.addEventListener("resize", eventListenerRef.current);
-    
-    // Missing cleanup function that should be:
-    // return () => {
-    //   window.removeEventListener("resize", eventListenerRef.current);
-    // };
-  }, [profileData]); // Bug #2: This dependency should not include profileData
-  
+
+    // Fix: Add event listener with cleanup
+    const handleResize = () => {};
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Remove profileData from dependency array
+
   const handleFollowToggle = () => {
-    // Bug #3: Incorrect state management - not using prev state
-    toggleFollowing(!isFollowing);
-    toggleFollowing(!isFollowing); // This will cancel out the first toggle
+    toggleFollowing((prev) => !prev); // Use functional update
   };
-  
-  // Bug #8: CSS styling issues - using margin-top instead of mt in Tailwind
+
   return (
-    <Card className="max-w-md mx-auto shadow-lg" style={{ marginTop: "20px" }}>
-      {/* Bug #7: Incorrect conditional rendering - should check loading first */}
+    <Card className="max-w-md mx-auto shadow-lg mt-5"> {/* Use Tailwind mt-5 */}
+      {loading && <div className="p-8 text-center">Loading profile...</div>}
       {error && <div className="text-red-500 p-4 text-center">{error}</div>}
       {profileData && !loading && (
         <>
@@ -122,16 +104,13 @@ export const UserProfileCard = () => {
               </div>
             </div>
           </CardHeader>
-          
           <CardContent>
             <p className="text-gray-600 mb-4">{profileData.bio}</p>
-            
             <div>
               <h3 className="font-semibold text-lg mb-2">Recent Posts</h3>
               <div className="space-y-3">
-                {/* Bug #5: Missing key prop */}
                 {profileData.posts.map(post => (
-                  <div className="bg-gray-50 p-3 rounded-md">
+                  <div key={post.id} className="bg-gray-50 p-3 rounded-md"> {/* Add key prop */}
                     <div className="flex justify-between">
                       <h4 className="font-medium">{post.title}</h4>
                       <span className="text-xs text-gray-400">{post.date}</span>
@@ -142,7 +121,6 @@ export const UserProfileCard = () => {
               </div>
             </div>
           </CardContent>
-          
           <CardFooter>
             <Button 
               className="w-full"
@@ -164,8 +142,6 @@ export const UserProfileCard = () => {
           </CardFooter>
         </>
       )}
-      {/* Bug #7: Loading state should come first, but we're loading it after content */}
-      {loading && <div className="p-8 text-center">Loading profile...</div>}
     </Card>
   );
 };

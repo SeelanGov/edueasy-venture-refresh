@@ -307,7 +307,9 @@
   }
   
   .animate-scale-in {
-    @apply scale-95 opacity-0 animate-scale-in;
+    transform: scale(0.95);
+    opacity: 0;
+    animation: scale-in 0.15s ease-out;
   }
   
   .hover-scale {

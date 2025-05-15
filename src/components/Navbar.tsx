@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { X, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
@@ -6,6 +5,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
+import AdminButton from "./admin/AdminButton";
+import PartnerButton from "./ui/PartnerButton";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +51,9 @@ export const Navbar = () => {
             {user ? (
               <>
                 <Link to="/dashboard" className="text-white hover:text-cap-teal">Dashboard</Link>
+                {user?.role === "admin" && (
+                  <AdminButton onClick={() => navigate("/admin/dashboard")}>Admin Dashboard</AdminButton>
+                )}
                 <div className="flex items-center gap-2">
                   <Button 
                     variant="outline" 
@@ -71,6 +75,7 @@ export const Navbar = () => {
                 </Link>
               </>
             )}
+            <PartnerButton className="ml-4" onClick={() => navigate("/partner/register")}>Partner Registration</PartnerButton>
           </div>
 
           {/* Mobile Menu Button */}
@@ -99,6 +104,12 @@ export const Navbar = () => {
               {user ? (
                 <>
                   <Link to="/dashboard" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>DASHBOARD</Link>
+                  {user?.role === "admin" && (
+                    <AdminButton onClick={() => {
+                      navigate("/admin/dashboard");
+                      setIsOpen(false);
+                    }}>Admin Dashboard</AdminButton>
+                  )}
                   <Button 
                     className="bg-cap-coral hover:bg-cap-coral/90 text-white mt-4"
                     onClick={() => {

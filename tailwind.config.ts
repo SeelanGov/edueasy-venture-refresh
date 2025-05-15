@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -22,14 +23,24 @@ export default {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(220, 16%, 22%)", // subtle border
+          focus: "hsl(210, 90%, 60%)", // blue border for focus
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: {
+          DEFAULT: "hsl(220, 18%, 12%)", // very dark blue-gray for main bg
+          subtle: "hsl(220, 16%, 18%)", // slightly lighter for cards
+          emphasis: "hsl(220, 20%, 22%)", // for navs/footers
+        },
+        foreground: {
+          DEFAULT: "hsl(220, 20%, 98%)", // near white for text
+          muted: "hsl(220, 14%, 70%)", // muted text
+        },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(210, 90%, 60%)", // modern blue for CTAs
+          foreground: "hsl(220, 20%, 98%)",
           50: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 90%)",
           100: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 85%)",
           200: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 75%)",
@@ -79,7 +90,7 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         cap: {
-          dark: "hsl(var(--cap-dark-hue), var(--cap-dark-saturation), var(--cap-dark-lightness))",
+          dark: "hsl(220, 18%, 16%)", // deep blue-gray for trust
           teal: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), var(--cap-teal-lightness))",
           coral: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), var(--cap-coral-lightness))",
           light: "hsl(var(--cap-light-hue), var(--cap-light-saturation), var(--cap-light-lightness))",
@@ -108,6 +119,13 @@ export default {
           light: "hsl(var(--info-hue), calc(var(--info-saturation) - 30%), calc(var(--info-lightness) + 25%))",
           muted: "hsl(var(--info-hue), calc(var(--info-saturation) - 20%), calc(var(--info-lightness) + 10%))",
         },
+        // Add admin button color for modern trust theme
+        admin: {
+          DEFAULT: "hsl(220, 90%, 56%)", // strong blue for admin actions
+          hover: "hsl(220, 90%, 46%)", // darker on hover
+          active: "hsl(220, 90%, 36%)", // even darker on active
+          foreground: "hsl(220, 20%, 98%)", // white text
+        },
         // Text color variants
         text: {
           primary: "var(--text-primary)",
@@ -121,12 +139,6 @@ export default {
           subtle: "var(--bg-subtle)",
           muted: "var(--bg-muted)",
           emphasis: "var(--bg-emphasis)",
-        },
-        // Border color variants
-        border: {
-          DEFAULT: "hsl(var(--border))",
-          subtle: "var(--border-subtle)",
-          focus: "var(--border-focus)",
         },
       },
       fontFamily: {
@@ -196,12 +208,11 @@ export default {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    function({ addUtilities, theme, e }) {
+    tailwindcssAnimate,
+    function({ addUtilities, theme }) {
       // Add custom utilities for color opacity variants
-      const colorOpacityUtilities = {};
+      const colorOpacityUtilities: Record<string, Record<string, string>> = {};
       const colors = theme('colors');
-      
       // Process info color specifically for borders
       if (colors.info) {
         const opacities = [10, 20, 30, 40, 50, 60, 70, 80, 90];
@@ -211,7 +222,20 @@ export default {
           };
         });
       }
-      
+      // Add border-success opacity utilities
+      const successOpacities = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+      successOpacities.forEach(opacity => {
+        colorOpacityUtilities[`.border-success\\/${opacity}`] = {
+          'border-color': `hsl(var(--success-hue), var(--success-saturation), var(--success-lightness), ${opacity/100})`,
+        };
+      });
+      // Add border-warning opacity utilities
+      const warningOpacities = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+      warningOpacities.forEach(opacity => {
+        colorOpacityUtilities[`.border-warning\\/${opacity}`] = {
+          'border-color': `hsl(var(--warning-hue), var(--warning-saturation), var(--warning-lightness), ${opacity/100})`,
+        };
+      });
       addUtilities(colorOpacityUtilities, ['responsive']);
     }
   ],
