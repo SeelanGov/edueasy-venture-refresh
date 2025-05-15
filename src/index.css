@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -319,6 +320,23 @@
   
   .card-interactive {
     @apply transition-all duration-200 hover:shadow-hover hover:-translate-y-0.5;
+  }
+  
+  /* Journey map specific utilities */
+  .milestone-circle {
+    @apply w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300;
+  }
+  
+  .milestone-active {
+    @apply bg-cap-teal text-white shadow-md;
+  }
+  
+  .milestone-completed {
+    @apply bg-green-500 text-white;
+  }
+  
+  .milestone-pending {
+    @apply bg-gray-100 text-gray-500 border border-gray-300;
   }
   
   /* Link animations */
