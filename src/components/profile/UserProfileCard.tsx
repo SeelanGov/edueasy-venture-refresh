@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { UserCheck, UserPlus } from "lucide-react";
 
 // Mock data interfaces
@@ -18,7 +17,7 @@ interface UserProfile {
   name: string;
   bio: string;
   avatar: string;
-  followers: number; // Fix: followers should be a number, not a string
+  followers: number;
   following: number;
   posts: Post[];
 }
@@ -38,7 +37,7 @@ export const UserProfileCard = () => {
             name: "Alex Johnson",
             bio: "Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.",
             avatar: "https://i.pravatar.cc/150?img=3",
-            followers: 1245, // Fix: number type
+            followers: 1245,
             following: 867,
             posts: [
               {
@@ -66,27 +65,26 @@ export const UserProfileCard = () => {
           setLoading(false);
         }, 1000);
       } catch (err) {
-        setError("Failed to load profile data"); // More descriptive error
+        setError("Failed to load profile data");
         setLoading(false);
       }
     };
 
     fetchProfileData();
 
-    // Fix: Add event listener with cleanup
     const handleResize = () => {};
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []); // Remove profileData from dependency array
+  }, []);
 
   const handleFollowToggle = () => {
-    toggleFollowing((prev) => !prev); // Use functional update
+    toggleFollowing((prev) => !prev);
   };
 
   return (
-    <Card className="max-w-md mx-auto shadow-lg mt-5"> {/* Use Tailwind mt-5 */}
+    <Card className="max-w-md mx-auto shadow-lg mt-5">
       {loading && <div className="p-8 text-center">Loading profile...</div>}
       {error && <div className="text-red-500 p-4 text-center">{error}</div>}
       {profileData && !loading && (
@@ -110,7 +108,7 @@ export const UserProfileCard = () => {
               <h3 className="font-semibold text-lg mb-2">Recent Posts</h3>
               <div className="space-y-3">
                 {profileData.posts.map(post => (
-                  <div key={post.id} className="bg-gray-50 p-3 rounded-md"> {/* Add key prop */}
+                  <div key={post.id} className="bg-gray-50 p-3 rounded-md">
                     <div className="flex justify-between">
                       <h4 className="font-medium">{post.title}</h4>
                       <span className="text-xs text-gray-400">{post.date}</span>
@@ -122,7 +120,7 @@ export const UserProfileCard = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button 
+            <Button
               className="w-full"
               onClick={handleFollowToggle}
               variant={isFollowing ? "outline" : "default"}
