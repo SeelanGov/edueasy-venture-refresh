@@ -31,6 +31,7 @@ import { ErrorCategory } from "@/utils/errorHandler";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { SecurityBadge } from "@/components/ui/SecurityBadge";
 
 interface ErrorLogEntry {
   id: string;
@@ -299,7 +300,10 @@ export const ErrorLogsTable = ({
                 <TableHead style={{ width: '5%' }} className="text-center">Type</TableHead>
                 <TableHead style={{ width: '60%' }}>Message</TableHead>
                 <TableHead style={{ width: '15%' }}>Component</TableHead>
-                <TableHead style={{ width: '15%' }}>Time</TableHead>
+                <TableHead style={{ width: '15%' }} className="flex items-center gap-2">
+                  Severity
+                  <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                </TableHead>
                 <TableHead style={{ width: '5%' }} className="text-center">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -332,13 +336,24 @@ export const ErrorLogsTable = ({
                       </div>
                     </TableCell>
                     <TableCell>{error.component || 'Unknown'}</TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {format(new Date(error.occurred_at), 'dd MMM yyyy')}
+                    <TableCell className="flex items-center gap-2">
+                      <div>
+                        <div className="text-sm">
+                          {format(new Date(error.occurred_at), 'dd MMM yyyy')}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {format(new Date(error.occurred_at), 'HH:mm:ss')}
+                        </div>
                       </div>
-                      <div className="text-xs text-gray-500">
-                        {format(new Date(error.occurred_at), 'HH:mm:ss')}
-                      </div>
+                      {error.severity === ErrorSeverity.CRITICAL && (
+                        <SecurityBadge type="privacy" size="sm" showLabel={false} />
+                      )}
+                      {error.severity === ErrorSeverity.WARNING && (
+                        <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                      )}
+                      {error.severity === ErrorSeverity.INFO && (
+                        <SecurityBadge type="verification" size="sm" showLabel={false} />
+                      )}
                     </TableCell>
                     <TableCell className="text-center">
                       <Button

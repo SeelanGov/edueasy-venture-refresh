@@ -26,6 +26,12 @@ export interface DocumentUploadState {
   retryData?: RetryData | null;
 }
 
+export interface Step {
+  id: string;
+  label: string;
+  status: string;
+}
+
 export interface DocumentUploadInputProps {
   documentType: DocumentType;
   label: string;
@@ -40,6 +46,6 @@ export interface DocumentUploadInputProps {
   isVerifying: boolean;
   setCurrentDocumentType: (type: string) => void;
   currentDocumentType: string | null;
-  uploadSteps: unknown[];
+  uploadSteps: Step[];
   currentStep: number;
 }

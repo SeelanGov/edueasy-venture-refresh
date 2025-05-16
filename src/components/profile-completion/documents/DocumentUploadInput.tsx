@@ -1,4 +1,3 @@
-
 import React from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { Upload, CheckCircle, AlertCircle, RefreshCw } from "lucide-react";
@@ -9,6 +8,7 @@ import { DocumentUploadInputProps } from "./types";
 import { DocumentPreview } from "@/components/documents/DocumentPreview";
 import { DocumentUploadStepper } from "@/components/documents/DocumentUploadStepper";
 import { VerificationResultDisplay } from "@/components/documents/VerificationResultDisplay";
+import { SecurityBadge } from "@/components/ui/SecurityBadge";
 
 export const DocumentUploadInput = ({
   documentType,
@@ -42,7 +42,10 @@ export const DocumentUploadInput = ({
             <div className="flex flex-col md:flex-row justify-between">
               <div>
                 <div className="flex items-center">
-                  <FormLabel className="text-base">{label}</FormLabel>
+                  <FormLabel className="text-base flex items-center gap-2">
+                    {label}
+                    <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                  </FormLabel>
                   {isResubmission && (
                     <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">
                       Resubmission
@@ -195,11 +198,10 @@ export const DocumentUploadInput = ({
                     )}
                     
                     {uploaded && (
-                      <div className="mt-2 flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                        <span className="text-xs text-green-600">
-                          {isResubmission ? 'Resubmitted successfully' : 'Uploaded successfully'}
-                        </span>
+                      <div className="flex items-center gap-2 mt-2">
+                        <CheckCircle className="text-green-500 h-5 w-5" />
+                        <span className="text-green-700 text-xs font-medium">Uploaded successfully</span>
+                        <SecurityBadge type="verification" size="sm" showLabel={false} />
                       </div>
                     )}
                   </div>
