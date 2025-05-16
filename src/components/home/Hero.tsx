@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { PatternBorder } from "@/components/PatternBorder";
@@ -34,7 +33,7 @@ export const Hero = () => {
       id="home"
       className="min-h-screen flex flex-col items-center justify-center relative pt-16 overflow-hidden"
       style={{
-        backgroundImage: "url('/lovable-uploads/ff94423b-eb6f-4168-8c59-c20117e3c378.png')",
+        backgroundImage: "url('/images/african-pattern-1.png')",
         backgroundSize: "cover",
         backgroundPosition: "center"
       }}
