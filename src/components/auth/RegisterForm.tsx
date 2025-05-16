@@ -52,6 +52,8 @@ export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
+  const [consentPrivacy, setConsentPrivacy] = useState(false);
+  const [consentTerms, setConsentTerms] = useState(false);
   const location = useLocation();
 
   // Get the intended destination from location state, or default to profile completion
@@ -69,10 +71,18 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormValues) => {
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!consentPrivacy || !consentTerms) {
+      setRegistrationError("You must agree to the Privacy Policy and Terms of Service.");
+      return;
+    }
     setIsLoading(true);
     setRegistrationError(null);
     try {
+      // Log consent (stub)
+      // await logConsent(userId, { privacy: true, terms: true });
+      const data = form.getValues();
       const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
       
       // Check if response is null (signUp can return null on handled errors)
@@ -106,7 +116,7 @@ export const RegisterForm = () => {
         )}
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-4">
             <EnhancedFormField
               control={form.control}
               name="fullName"
@@ -225,6 +235,38 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
+            <div className="flex flex-col gap-2 my-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={consentPrivacy}
+                  onChange={(e) => setConsentPrivacy(e.target.checked)}
+                />
+                I agree to the{" "}
+                <a
+                  href="/privacy-policy.html"
+                  target="_blank"
+                  className="underline"
+                >
+                  Privacy Policy
+                </a>
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={consentTerms}
+                  onChange={(e) => setConsentTerms(e.target.checked)}
+                />
+                I agree to the{" "}
+                <a
+                  href="/terms-of-service.html"
+                  target="_blank"
+                  className="underline"
+                >
+                  Terms of Service
+                </a>
+              </label>
+            </div>
             <Button
               type="submit"
               className="w-full bg-cap-coral hover:bg-cap-coral/90"
