@@ -107,9 +107,15 @@ export const UserProfileCard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 mb-4">{profileData.bio}</p>
+            <p className="text-gray-600 mb-4 flex items-center gap-2">
+              {profileData.bio}
+              <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+            </p>
             <div>
-              <h3 className="font-semibold text-lg mb-2">Recent Posts</h3>
+              <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                Recent Posts
+                <SecurityBadge type="verification" size="sm" showLabel={false} />
+              </h3>
               <div className="space-y-3">
                 {profileData.posts.map(post => (
                   <div key={post.id} className="bg-gray-50 p-3 rounded-md">
