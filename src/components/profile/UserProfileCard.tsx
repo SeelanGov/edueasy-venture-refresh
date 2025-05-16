@@ -21,6 +21,7 @@ interface UserProfile {
   followers: number;
   following: number;
   posts: Post[];
+  verified?: boolean; // Add verified property
 }
 
 export const UserProfileCard = () => {
@@ -59,7 +60,8 @@ export const UserProfileCard = () => {
                 preview: "Making your React applications accessible to everyone...",
                 date: "2025-04-15"
               }
-            ]
+            ],
+            verified: true, // Set to true for demo; toggle as needed
           };
 
           setProfileData(mockUserData);
@@ -98,7 +100,10 @@ export const UserProfileCard = () => {
             <div>
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 {profileData.name}
-                <SecurityBadge type="privacy" size="sm" showLabel={false} />
+                {/* Show privacy badge only if verified */}
+                {profileData.verified ? (
+                  <SecurityBadge type="privacy" size="sm" showLabel={false} />
+                ) : null}
               </h2>
               <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
                 <span><strong>{profileData.followers}</strong> Followers</span>
@@ -114,7 +119,10 @@ export const UserProfileCard = () => {
             <div>
               <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
                 Recent Posts
-                <SecurityBadge type="verification" size="sm" showLabel={false} />
+                {/* Show verification badge only if verified */}
+                {profileData.verified ? (
+                  <SecurityBadge type="verification" size="sm" showLabel={false} />
+                ) : null}
               </h3>
               <div className="space-y-3">
                 {profileData.posts.map(post => (
