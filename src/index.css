@@ -395,6 +395,30 @@
     background-color: #1f2937 !important;
     color: #6b7280 !important;
   }
+  /* Fix for select placeholder text in dark mode */
+  .dark select option[value=""] {
+    color: #9ca3af !important;
+    background: #111827 !important;
+  }
+  /* Fix for select placeholder text in light mode */
+  select option[value=""] {
+    color: #6b7280 !important;
+    background: #fff !important;
+  }
+  /* Checkbox label and consent text high contrast */
+  label, .checkbox-label, .consent-label {
+    color: #1a202c !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .dark label, .dark .checkbox-label, .dark .consent-label {
+    color: #fff !important;
+  }
+  /* Checkbox input alignment and spacing */
+  input[type="checkbox"] {
+    accent-color: var(--color-primary, #14b8a6);
+    margin-right: 0.5em;
+  }
 }
 
 @keyframes scale-in {
