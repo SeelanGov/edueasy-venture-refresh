@@ -26,6 +26,7 @@ import { Spinner } from "@/components/Spinner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
+import { EnhancedFormField } from "@/components/ui/EnhancedFormField";
 
 // Schema definition moved to the form component
 const registerFormSchema = z.object({
@@ -106,44 +107,38 @@ export const RegisterForm = () => {
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+            <EnhancedFormField
               control={form.control}
               name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700">Full Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John Doe"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Full Name"
+              required
+              placeholder="John Doe"
+              tooltip="Enter your full legal name as it appears on your ID."
+              helperText="This will be used for your application documents."
+              disabled={isLoading}
             />
-
-            <FormField
+            <EnhancedFormField
               control={form.control}
               name="idNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700">ID Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="1234567890123"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="ID Number"
+              required
+              placeholder="1234567890123"
+              tooltip="South African 13-digit ID number. Digits only."
+              helperText="Used for identity verification."
+              disabled={isLoading}
             />
-
+            <EnhancedFormField
+              control={form.control}
+              name="email"
+              label="Email"
+              required
+              type="email"
+              placeholder="your.email@example.com"
+              tooltip="We'll send important updates to this address."
+              helperText="Use a personal email you check regularly."
+              disabled={isLoading}
+            />
+            {/* Gender and password fields remain as custom for now, can be migrated next */}
             <FormField
               control={form.control}
               name="gender"
@@ -171,27 +166,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="your.email@example.com"
-                      type="email"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="password"
@@ -223,7 +197,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -252,7 +225,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-
             <Button
               type="submit"
               className="w-full bg-cap-coral hover:bg-cap-coral/90"
@@ -261,7 +233,6 @@ export const RegisterForm = () => {
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
               {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
-
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}

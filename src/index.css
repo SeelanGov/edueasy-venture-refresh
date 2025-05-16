@@ -317,6 +317,10 @@
     animation: scale-in 0.15s ease-out;
   }
   
+  .animate-shake {
+    animation: shake 0.3s;
+  }
+  
   .hover-scale {
     @apply transition-transform duration-200 hover:scale-105;
   }
@@ -364,4 +368,13 @@
 @keyframes scale-in {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
 }

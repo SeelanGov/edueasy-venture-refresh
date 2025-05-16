@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
+import { EnhancedFormField } from "@/components/ui/EnhancedFormField";
 
 const loginFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -131,24 +132,16 @@ const Login = () => {
                   </Alert>
                 )}
               
-                <FormField
+                <EnhancedFormField
                   control={form.control}
                   name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700">Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="your.email@example.com"
-                          type="email"
-                          {...field}
-                          disabled={isLoading}
-                          className="text-gray-900"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Email"
+                  required
+                  type="email"
+                  placeholder="your.email@example.com"
+                  tooltip="Enter your registered email address."
+                  helperText="This is the email you used to sign up."
+                  disabled={isLoading}
                 />
 
                 <FormField
