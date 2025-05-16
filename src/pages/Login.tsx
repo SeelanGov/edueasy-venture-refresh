@@ -20,6 +20,7 @@ import { PatternBorder } from "@/components/PatternBorder";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { SecurityBadge } from "@/components/ui/SecurityBadge";
 
 const loginFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -155,7 +156,10 @@ const Login = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700">Password</FormLabel>
+                      <FormLabel className="text-gray-700 flex items-center gap-2">
+                        Password
+                        <SecurityBadge type="encryption" size="sm" showLabel={false} />
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="******"

@@ -25,6 +25,7 @@ import {
 import { Spinner } from "@/components/Spinner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { SecurityBadge } from "@/components/ui/SecurityBadge";
 
 // Schema definition moved to the form component
 const registerFormSchema = z.object({
@@ -196,7 +197,10 @@ export const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700">Password</FormLabel>
+                  <FormLabel className="text-gray-700 flex items-center gap-2">
+                    Password
+                    <SecurityBadge type="encryption" size="sm" showLabel={false} />
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
