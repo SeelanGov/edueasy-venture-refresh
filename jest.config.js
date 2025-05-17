@@ -1,6 +1,6 @@
 export default {
   preset: 'ts-jest/presets/default-esm',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom', // Use jsdom for React component tests
   transform: {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
@@ -10,6 +10,7 @@ export default {
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
     '^(\.{1,2}/.*)\\.js$': '$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
-// Cleaned up config: moved ts-jest options into transform, removed deprecated and unknown keys.
+// Set testEnvironment to jsdom for React, and map @/ to src/ for imports.

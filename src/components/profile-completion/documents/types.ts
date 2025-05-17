@@ -26,11 +26,12 @@ export interface DocumentUploadState {
   retryData?: RetryData | null;
 }
 
-export interface Step {
-  id: string;
+export type Step = {
+  id: number;
   label: string;
-  status: string;
-}
+  description?: string;
+  status: 'pending' | 'current' | 'complete' | 'error';
+};
 
 export interface DocumentUploadInputProps {
   documentType: DocumentType;

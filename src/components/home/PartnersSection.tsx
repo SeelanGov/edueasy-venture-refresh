@@ -1,14 +1,14 @@
-
 import { useState } from "react";
 import { PatternBorder } from "@/components/PatternBorder";
 
+// Update partnerLogos to use new image paths and formats
 const partnerLogos = [
-  { name: "University of Cape Town", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
-  { name: "University of Pretoria", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
-  { name: "University of Witwatersrand", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
-  { name: "Stellenbosch University", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
-  { name: "University of Johannesburg", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
-  { name: "Rhodes University", logo: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" },
+  { name: "University of Cape Town", logo: "/images/partner-logos/uct.webp" },
+  { name: "University of Pretoria", logo: "/images/partner-logos/pretoria.webp" },
+  { name: "University of Witwatersrand", logo: "/images/partner-logos/wits.webp" },
+  { name: "Stellenbosch University", logo: "/images/partner-logos/stellenbosch.webp" },
+  { name: "University of Johannesburg", logo: "/images/partner-logos/johannesburg.webp" },
+  { name: "Rhodes University", logo: "/images/partner-logos/rhodes.webp" },
 ];
 
 export const PartnersSection = () => {
