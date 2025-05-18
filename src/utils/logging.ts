@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 import type { StandardError } from "./errorHandler";
 
@@ -11,6 +12,8 @@ export function logError(error: StandardError, notifyUser = true) {
       title: "An error occurred",
       description: error.message,
       variant: "destructive",
+      duration: 5000,
+      className: "bg-white border-red-200 text-red-800"
     });
   }
 

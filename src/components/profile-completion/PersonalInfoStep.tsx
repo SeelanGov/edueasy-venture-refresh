@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,6 +7,7 @@ import { PersonalInfoForm } from "./personal/PersonalInfoForm";
 import { PersonalInfoFormValues } from "./personal/types";
 import { logError } from "@/utils/logging";
 import { parseError } from "@/utils/errorHandler";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface PersonalInfoStepProps {
   onComplete: () => void;
@@ -51,19 +53,36 @@ export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Personal Information</h2>
-      {error && (
-        <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>
-      )}
-      <PersonalInfoForm
-        initialValues={{
-          fullName: personalInfo.fullName || "",
-          idNumber: personalInfo.idNumber || "",
-          gender: personalInfo.gender || "",
-        }}
-        onSubmit={onSubmit}
-        isSubmitting={isSubmitting}
-      />
+      <div className="mb-6 text-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Personal Information</h2>
+        <p className="text-gray-600">Please provide your personal details to continue</p>
+      </div>
+      
+      <Card className="border border-gray-100 shadow-sm">
+        <CardContent className="p-6">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 p-3 mb-5 rounded-lg text-center" role="alert">
+              {error}
+            </div>
+          )}
+          
+          <PersonalInfoForm
+            initialValues={{
+              fullName: personalInfo.fullName || "",
+              idNumber: personalInfo.idNumber || "",
+              gender: personalInfo.gender || "",
+            }}
+            onSubmit={onSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </CardContent>
+      </Card>
+      
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-500">
+          Your information is secure and will only be shared with your selected institutions.
+        </p>
+      </div>
     </div>
   );
 };

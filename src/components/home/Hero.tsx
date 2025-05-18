@@ -1,7 +1,7 @@
+
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { PatternBorder } from "@/components/PatternBorder";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/ui/use-toast";
 import { Typography } from "@/components/ui/typography";
@@ -9,7 +9,6 @@ import { Typography } from "@/components/ui/typography";
 export const Hero = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   
   const handleStartApplication = () => {
     console.log("Start application clicked, user:", !!user);
@@ -31,113 +30,113 @@ export const Hero = () => {
   return (
     <section 
       id="home"
-      className="min-h-screen flex flex-col items-center justify-center relative pt-16 overflow-hidden"
-      style={{
-        backgroundImage: "url('/images/african-pattern-1.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center"
-      }}
+      className="py-16 md:py-24 bg-white relative overflow-hidden"
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-
-      {/* African Pattern Top Border */}
-      <div className="absolute top-16 left-0 right-0 z-10">
-        <PatternBorder position="top" />
+      {/* Background dot pattern */}
+      <div className="absolute inset-0 opacity-5 z-0 pointer-events-none">
+        <div className="absolute top-0 left-0 right-0 h-64 bg-repeat"
+             style={{
+               backgroundImage: "radial-gradient(circle, #2A9D8F 1px, transparent 1px)",
+               backgroundSize: "24px 24px",
+             }} 
+        />
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-repeat"
+             style={{
+               backgroundImage: "radial-gradient(circle, #2A9D8F 1px, transparent 1px)",
+               backgroundSize: "24px 24px",
+             }} 
+        />
       </div>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 z-10 text-center max-w-4xl">
-        <div className="bg-cap-dark bg-opacity-60 p-8 rounded-lg">
-          <div className="flex justify-center mb-6">
-            <div className="relative w-20 h-20">
-              {/* Circle background */}
-              <div className="absolute inset-0 rounded-full bg-cap-teal border-2 border-cap-coral"></div>
-              
-              {/* Sun/flower symbol */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="4" fill="white" />
-                  <path d="M12 2V6" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M12 18V22" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M4.93 4.93L7.76 7.76" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M16.24 16.24L19.07 19.07" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M2 12H6" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M18 12H22" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M4.93 19.07L7.76 16.24" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M16.24 7.76L19.07 4.93" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
+      
+      {/* Hero Content */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Text */}
+          <div className="text-left space-y-6">
+            <div className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
+              Education Made Simple
             </div>
-          </div>
-        
-          <Typography 
-            variant="h1"
-            color="white"
-            className="uppercase tracking-wide mb-6"
-          >
-            EduEasy
-          </Typography>
-          
-          <div className="w-full max-w-xl mx-auto h-px bg-white my-5"></div>
-          
-          <Typography 
-            variant="h3"
-            color="white"
-            className="uppercase tracking-wide mb-8"
-          >
-            Bridging Education to Employment
-          </Typography>
-          
-          <div className="bg-white/10 p-4 md:p-6 rounded-lg max-w-2xl mx-auto mb-8">
-            <Typography variant="h4" color="white" className="mb-3">
-              One Application, Multiple Opportunities
+            
+            <Typography 
+              variant="h1" 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight"
+            >
+              <span className="text-primary">EduEasy</span> <br />
+              Bridging Education to Employment
             </Typography>
             
-            <Typography variant="body" color="white">
+            <Typography 
+              variant="body-lg" 
+              className="text-gray-600 max-w-lg"
+            >
               Apply to multiple universities across South Africa with a single application.
               Save time, track progress, and increase your chances of acceptance.
             </Typography>
+            
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Button 
+                size="lg" 
+                className="text-white bg-primary hover:bg-primary/90 rounded-full px-8"
+                onClick={handleStartApplication}
+              >
+                Start Application
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100 rounded-full px-8"
+                onClick={() => navigate('#how-it-works')}
+              >
+                Learn More
+              </Button>
+            </div>
+            
+            <div className="flex gap-8 pt-4">
+              <div className="text-center">
+                <Typography variant="h3" className="text-primary font-bold">93%</Typography>
+                <Typography variant="small" className="text-gray-500">Success Rate</Typography>
+              </div>
+              <div className="text-center">
+                <Typography variant="h3" className="text-primary font-bold">50+</Typography>
+                <Typography variant="small" className="text-gray-500">Partner Schools</Typography>
+              </div>
+              <div className="text-center">
+                <Typography variant="h3" className="text-primary font-bold">24/7</Typography>
+                <Typography variant="small" className="text-gray-500">Support</Typography>
+              </div>
+            </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <Button 
-              size="lg" 
-              className="text-lg bg-cap-coral hover:bg-cap-coral/90 text-white px-10 py-6"
-              onClick={handleStartApplication}
-            >
-              START APPLICATION
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg border-white text-white hover:bg-white hover:text-cap-dark px-10 py-6"
-              onClick={() => navigate('#how-it-works')}
-            >
-              HOW IT WORKS
-            </Button>
-          </div>
-          
-          <div className="flex justify-center mt-6">
-            <div className="bg-cap-teal text-white rounded-full py-1 px-4 text-sm">
-              93% Success Rate
+          {/* Right Column - Image */}
+          <div className="hidden md:block relative h-full">
+            <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
+            <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
+            <div className="relative z-10 bg-white p-4 rounded-2xl shadow-lg border border-gray-100">
+              <img 
+                src="/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png" 
+                alt="Students using EduEasy" 
+                className="w-full h-auto rounded-xl object-cover"
+              />
+              <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
+                <div className="flex items-center gap-2 text-primary">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                  </svg>
+                  <span className="font-medium">Easy Application Process</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         
-        <div className="mt-24 animate-bounce">
-          <a href="#learn-more" className="text-white flex flex-col items-center">
-            <Typography variant="small" color="white" className="mb-2 uppercase tracking-wider">
-              LEARN MORE
+        <div className="mt-20 flex justify-center">
+          <a href="#how-it-works" className="flex flex-col items-center text-gray-500 animate-bounce hover:text-primary transition-colors">
+            <Typography variant="small" className="mb-2">
+              EXPLORE MORE
             </Typography>
-            <ChevronDown className="h-8 w-8" />
+            <ChevronDown className="h-5 w-5" />
           </a>
         </div>
-      </div>
-
-      {/* African Pattern Bottom Border */}
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <PatternBorder position="bottom" />
       </div>
     </section>
   );
