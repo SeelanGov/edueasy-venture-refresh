@@ -1,0 +1,19 @@
+import { toast } from "@/components/ui/use-toast";
+import type { StandardError } from "./errorHandler";
+
+export function logError(error: StandardError, notifyUser = true) {
+  // Always log to console for devs
+  console.error(`[${error.category}] ${error.message}`, error);
+
+  // Optionally show a toast to the user
+  if (notifyUser) {
+    toast({
+      title: "An error occurred",
+      description: error.message,
+      variant: "destructive",
+    });
+  }
+
+  // (Optional) Send to backend for persistent logging
+  // fetch("/api/log-error", { method: "POST", body: JSON.stringify(error) });
+}

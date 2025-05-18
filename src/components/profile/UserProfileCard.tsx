@@ -6,6 +6,8 @@ import { UserCheck, UserPlus, Info } from "lucide-react";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { SecurityInfoPanel } from "@/components/ui/SecurityInfoPanel";
+import { logError } from "@/utils/logging";
+import { parseError } from "@/utils/errorHandler";
 
 // Mock data interfaces
 interface Post {
@@ -33,49 +35,41 @@ export const UserProfileCard = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const fetchProfileData = async () => {
       try {
-        timeoutId = setTimeout(() => {
-          const mockUserData: UserProfile = {
-            id: "user123",
-            name: "Alex Johnson",
-            bio: "Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.",
-            // Use local, optimized image
-            avatar: "/images/user-photos/alex-johnson.webp",
-            followers: 1245,
-            following: 867,
-            posts: [
-              {
-                id: 1,
-                title: "Understanding React Hooks",
-                preview: "A deep dive into useState, useEffect, and custom hooks...",
-                date: "2024-06-01"
-              },
-              {
-                id: 2,
-                title: "TypeScript Tips",
-                preview: "How to write safer, cleaner code with TypeScript.",
-                date: "2024-05-28"
-              }
-            ],
-            verified: true,
-          };
-          setProfileData(mockUserData);
-          setLoading(false);
-        }, 1000);
+        const mockUserData: UserProfile = {
+          id: "user123",
+          name: "Alex Johnson",
+          bio: "Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.",
+          avatar: "/images/user-photos/alex-johnson.webp",
+          followers: 1245,
+          following: 867,
+          posts: [
+            {
+              id: 1,
+              title: "Understanding React Hooks",
+              preview: "A deep dive into useState, useEffect, and custom hooks...",
+              date: "2024-06-01"
+            },
+            {
+              id: 2,
+              title: "TypeScript Tips",
+              preview: "How to write safer, cleaner code with TypeScript.",
+              date: "2024-05-28"
+            }
+          ],
+          verified: true,
+        };
+        setProfileData(mockUserData);
+        setLoading(false);
       } catch (err) {
-        setError("Failed to load profile data");
+        const parsed = parseError(err);
+        logError(parsed);
+        setError(parsed.message);
         setLoading(false);
       }
     };
-
     fetchProfileData();
-
-    // Remove unused resize handler for clarity
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
   }, []);
 
   const handleFollowToggle = () => {
@@ -86,7 +80,7 @@ export const UserProfileCard = () => {
     <Card className="max-w-md mx-auto shadow-lg mt-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
       <SecurityInfoPanel badgeType="privacy" />
       {loading && <div className="p-8 text-center">Loading profile...</div>}
-      {error && <div className="text-red-500 p-4 text-center">{error}</div>}
+      {error && <div className="text-red-500 p-4 text-center" role="alert" aria-live="assertive">{error}</div>}
       {profileData && !loading && (
         <>
           <CardHeader className="flex flex-row items-center gap-4">
@@ -96,7 +90,7 @@ export const UserProfileCard = () => {
             </Avatar>
             <div className="min-w-0">
               <h2 className="text-2xl font-bold flex items-center gap-2">
-                {profileData.name}
+                <span data-testid="profile-name">{profileData.name}</span>
                 {profileData.verified ? (
                   <Tooltip>
                     <TooltipTrigger asChild>

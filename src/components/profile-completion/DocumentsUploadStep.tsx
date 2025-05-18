@@ -5,6 +5,8 @@ import { DocumentFormActions } from "./documents/DocumentFormActions";
 import { useDocumentUploadManager } from "@/hooks/useDocumentUploadManager";
 import { DocumentUploadHeader } from "./documents/DocumentUploadHeader";
 import type { Step } from "./documents/types";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/utils/logging";
 
 interface DocumentsUploadStepProps {
   onComplete: () => void;
@@ -29,10 +31,19 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     documentStates
   } = useDocumentUploadManager();
 
+  const [error, setError] = React.useState<string | null>(null);
+
   const onSubmitForm = async (data: Record<string, unknown>) => {
-    const success = await handleSubmit(data);
-    if (success) {
-      onComplete();
+    setError(null);
+    try {
+      const success = await handleSubmit(data);
+      if (success) {
+        onComplete();
+      }
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     }
   };
   
@@ -48,6 +59,9 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
       />
       
       <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-6">
+        {error && (
+          <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>
+        )}
         <DocumentStepperCard
           currentDocumentType={currentDocumentType}
           documentName={documentName}

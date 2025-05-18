@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/utils/logging";
 
 interface ReviewSubmitStepProps {
   onBack: () => void;
@@ -36,10 +38,8 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
 
   const handleSubmit = async () => {
     if (!user) return;
-    
     setIsSubmitting(true);
     setError(null);
-    
     try {
       // Update user profile status
       const { error: statusError } = await supabase
@@ -48,23 +48,20 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
           profile_status: 'complete',
         })
         .eq('id', user.id);
-        
       if (statusError) throw statusError;
-      
       // Success
       toast({
         title: "Profile completed",
         description: "Your profile has been submitted successfully!",
       });
-      
       // Reset form data
       resetFormData();
-      
       // Redirect to dashboard
       navigate('/dashboard');
-    } catch (error: unknown) {
-      console.error("Error submitting profile:", error);
-      setError((error as Error).message || "Failed to submit your profile. Please try again.");
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     } finally {
       setIsSubmitting(false);
     }
