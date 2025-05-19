@@ -39,7 +39,7 @@ export default {
           muted: "hsl(220, 14%, 70%)", // muted text
         },
         primary: {
-          DEFAULT: "hsl(210, 90%, 60%)", // modern blue for CTAs
+          DEFAULT: "hsl(173, 58%, 39%)", // Updated to match Relive's teal 
           foreground: "hsl(220, 20%, 98%)",
           50: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 90%)",
           100: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), 85%)",
@@ -91,7 +91,7 @@ export default {
         },
         cap: {
           dark: "hsl(220, 18%, 16%)", // deep blue-gray for trust
-          teal: "hsl(var(--cap-teal-hue), var(--cap-teal-saturation), var(--cap-teal-lightness))",
+          teal: "hsl(173, 58%, 39%)", // Updated to match Relive's teal
           coral: "hsl(var(--cap-coral-hue), var(--cap-coral-saturation), var(--cap-coral-lightness))",
           light: "hsl(var(--cap-light-hue), var(--cap-light-saturation), var(--cap-light-lightness))",
         },
@@ -142,8 +142,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Roboto", "Open Sans", "sans-serif"],
-        heading: ["Poppins", "Roboto", "sans-serif"],
+        sans: ["'Inter'", "Roboto", "sans-serif"],
+        heading: ["'Poppins'", "sans-serif"],
       },
       boxShadow: {
         sm: "var(--shadow-sm)",

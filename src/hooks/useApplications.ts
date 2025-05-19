@@ -3,23 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-
-interface Document {
-  id: string;
-  file_path: string;
-  created_at: string;
-  document_type: string | null;
-  verification_status: string | null;
-}
-
-interface Application {
-  id: string;
-  institution_id: string;
-  program_id: string;
-  status: string;
-  created_at: string;
-  documents: Document[];
-}
+import { Application, Document } from "@/types/ApplicationTypes";
 
 export const useApplications = () => {
   const { user } = useAuth();
@@ -50,7 +34,7 @@ export const useApplications = () => {
             return {
               ...app,
               documents: documents || [],
-            };
+            } as Application;
           })
         );
 

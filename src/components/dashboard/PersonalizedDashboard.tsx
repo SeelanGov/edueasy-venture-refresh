@@ -9,8 +9,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ChevronRight, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-import type { Database } from "@/integrations/supabase/types";
-import type { Application } from "./ApplicationTable";
+import { Application } from '@/types/ApplicationTypes';
 
 interface UserStats {
   fullName: string;
@@ -20,7 +19,12 @@ interface UserStats {
   profileCompletion: number;
 }
 
-export const PersonalizedDashboard = ({ applications, loading }: { applications: Application[]; loading: boolean }) => {
+interface PersonalizedDashboardProps {
+  applications: Application[];
+  loading: boolean;
+}
+
+export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDashboardProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [userStats, setUserStats] = useState<UserStats | null>(null);

@@ -4,6 +4,7 @@ import { DashboardLayoutWithThandi } from "@/components/DashboardLayoutWithThand
 import { useApplications } from "@/hooks/useApplications";
 import { DocumentVerificationNotice } from "@/components/dashboard/DocumentVerificationNotice";
 import { PersonalizedDashboard } from "@/components/dashboard/PersonalizedDashboard";
+import { Application } from "@/types/ApplicationTypes";
 
 const Dashboard = () => {
   const { user } = useAuth();

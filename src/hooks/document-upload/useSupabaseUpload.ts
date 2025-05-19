@@ -1,137 +1,113 @@
+
+import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { DocumentType, RetryData, DocumentUploadState } from "@/components/profile-completion/documents/types";
-import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
+import { v4 as uuidv4 } from 'uuid';
+import { DocumentType, DocumentUploadState } from "@/components/profile-completion/documents/types";
+
+// Define proper types for documents store
+interface DocumentData {
+  file: File;
+  path: string;
+  documentId: string;
+}
 
 export interface DocumentsStore {
-  [key: string]: {
-    file: File;
-    path: string;
-    documentId: string;
-  } | undefined;
-  applicationId?: string;
+  [key: string]: DocumentData;
+  applicationId?: string | undefined;
 }
 
 export const useSupabaseUpload = (
-  setDocumentState: (documentType: DocumentType, state: Partial<DocumentUploadState>) => void,
+  setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
   documents: DocumentsStore,
-  setDocuments: (docs: Partial<DocumentsStore>) => void,
-  form: { setValue: (field: string, value: File) => void }
+  setDocuments: (docs: DocumentsStore) => void,
+  form: any
 ) => {
-  const uploadToSupabase = async (
-    fileToUpload: File,
+  const uploadToSupabase = useCallback(async (
+    file: File,
     documentType: DocumentType,
     userId: string,
-    applicationId: string | null,
-    isResubmission: boolean
-  ): Promise<{ success: boolean; error?: unknown; documentId?: string; filePath?: string }> => {
+    applicationId: string | undefined,
+    isResubmission: boolean = false
+  ) => {
+    setDocumentState(documentType, { uploading: true, progress: 0, error: null });
+    
+    const documentId = uuidv4();
+    const filePath = `users/${userId}/applications/${applicationId}/${documentType}/${documentId}-${file.name}`;
+    
     try {
-      const filePath = `${userId}/${documentType}-${new Date().getTime()}`;
-      // Upload file
-      const { data: uploadData, error: uploadError } = await safeAsyncWithLogging(
-        async () => {
-          const { data, error } = await supabase.storage
-            .from('user_documents')
-            .upload(filePath, fileToUpload);
-          if (error) throw error;
-          return data;
-        },
-        {
-          component: "DocumentUpload",
-          action: "UploadFile",
-          userId: userId,
-          severity: ErrorSeverity.ERROR,
-        }
-      );
-      if (uploadError || !uploadData) {
-        const retryData: RetryData = { file: fileToUpload, documentType };
-        setDocumentState(documentType, { 
-          uploading: false, 
-          progress: 0, 
-          error: uploadError ? uploadError.message : "Upload failed",
-          retryData: retryData
+      const { data, error } = await supabase.storage
+        .from('documents')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
         });
-        return { success: false, error: uploadError };
+        
+      if (error) {
+        console.error("Supabase upload error:", error);
+        setDocumentState(documentType, { uploading: false, error: error.message, progress: 0 });
+        return { success: false };
       }
-      setDocumentState(documentType, { progress: 80 });
-      // Store document reference
-      const { data: documentData, error: documentError } = await safeAsyncWithLogging(
-        async () => {
-          const { data, error } = await supabase
-            .from('documents')
-            .insert({
-              application_id: applicationId || null,
-              user_id: userId,
-              document_type: documentType,
-              file_path: uploadData.path,
-              is_resubmission: isResubmission
-            })
-            .select('id')
-            .single();
-          if (error) throw error;
-          return data;
-        },
-        {
-          component: "DocumentUpload",
-          action: "CreateDocumentRecord",
-          userId: userId,
-          severity: ErrorSeverity.ERROR,
-        }
-      );
-      if (documentError || !documentData) {
-        // If document record creation fails, try to remove the uploaded file
-        await supabase.storage
-          .from('user_documents')
-          .remove([uploadData.path]);
-        const retryData: RetryData = { file: fileToUpload, documentType };
-        setDocumentState(documentType, { 
-          uploading: false, 
-          progress: 0, 
-          error: documentError ? documentError.message : "Document record creation failed",
-          retryData: retryData
+      
+      // Generate public URL using path
+      const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
+      
+      // Save document metadata to the database
+      const { error: dbError } = await supabase
+        .from('documents')
+        .insert({
+          id: documentId,
+          user_id: userId,
+          application_id: applicationId,
+          document_type: documentType,
+          file_path: filePath,
+          storage_url: publicURL,
+          verification_status: 'pending',
+          is_resubmission: isResubmission,
         });
-        return { success: false, error: documentError };
+        
+      if (dbError) {
+        console.error("Supabase database error:", dbError);
+        setDocumentState(documentType, { uploading: false, error: dbError.message, progress: 0 });
+        return { success: false };
       }
-      // Update document state
-      setDocumentState(documentType, { 
-        uploading: false, 
-        progress: 100, 
+      
+      // Update document state and store
+      setDocumentState(documentType, {
+        uploading: false,
         uploaded: true,
-        documentId: documentData.id,
-        filePath: uploadData.path,
-        verificationTriggered: false,
-        isResubmission: isResubmission,
-        previouslyRejected: false, // Reset this flag after successful resubmission
-        retryData: null
+        progress: 100,
+        file: file,
+        documentId: documentId,
+        filePath: filePath,
+        error: null,
       });
-      // Update form state
-      form.setValue(documentType, fileToUpload);
-      // Update store
-      setDocuments({
+      
+      // Update the documents store with the new document
+      const updatedDocuments: DocumentsStore = {
         ...documents,
         [documentType]: {
-          file: fileToUpload,
-          path: uploadData.path,
-          documentId: documentData.id,
+          file: file,
+          path: filePath,
+          documentId: documentId,
         }
-      });
-      return { 
-        success: true, 
-        documentId: documentData.id, 
-        filePath: uploadData.path 
       };
-    } catch (error: unknown) {
-      console.error(`Error uploading ${documentType} to Supabase:`, error);
-      const retryData: RetryData = { file: fileToUpload, documentType };
-      setDocumentState(documentType, { 
-        uploading: false, 
-        progress: 0, 
-        error: error instanceof Error ? error.message : "Upload failed",
-        retryData: retryData
-      });
-      return { success: false, error };
+      
+      if (applicationId) {
+        updatedDocuments.applicationId = applicationId;
+      }
+      
+      setDocuments(updatedDocuments);
+      
+      // Set the form value for react-hook-form
+      form.setValue(documentType, file);
+      
+      return { success: true, documentId: documentId, filePath: filePath };
+    } catch (err: any) {
+      console.error("Supabase general error:", err);
+      setDocumentState(documentType, { uploading: false, error: err.message, progress: 0 });
+      return { success: false };
     }
-  };
-  return {
-    uploadToSupabase
-  };
+  }, [setDocumentState, setDocuments, form, documents]);
+
+  return { uploadToSupabase };
 };

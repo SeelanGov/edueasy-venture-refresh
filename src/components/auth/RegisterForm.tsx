@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
 import { EnhancedFormField } from "@/components/ui/EnhancedFormField";
+import { SecurityInfoPanel } from "@/components/ui/SecurityInfoPanel";
 
 // Schema definition moved to the form component
 const registerFormSchema = z.object({
@@ -106,8 +107,8 @@ export const RegisterForm = () => {
         <h2 className="text-2xl font-bold">Create Your Account</h2>
         <p className="mt-2 text-sm opacity-90">Get started with EduEasy today</p>
       </div>
-
       <div className="p-6">
+        <SecurityInfoPanel badgeType="privacy" />
         {registrationError && (
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
@@ -126,6 +127,8 @@ export const RegisterForm = () => {
               tooltip="Enter your full legal name as it appears on your ID."
               helperText="This will be used for your application documents."
               disabled={isLoading}
+              securityBadgeType="privacy"
+              maxLength={50}
             />
             <EnhancedFormField
               control={form.control}
@@ -136,6 +139,9 @@ export const RegisterForm = () => {
               tooltip="South African 13-digit ID number. Digits only."
               helperText="Used for identity verification."
               disabled={isLoading}
+              securityBadgeType="verification"
+              maxLength={13}
+              patternExample="1234567890123"
             />
             <EnhancedFormField
               control={form.control}
@@ -147,6 +153,8 @@ export const RegisterForm = () => {
               tooltip="We'll send important updates to this address."
               helperText="Use a personal email you check regularly."
               disabled={isLoading}
+              securityBadgeType="data-protection"
+              maxLength={64}
             />
             {/* Gender and password fields remain as custom for now, can be migrated next */}
             <FormField
@@ -193,6 +201,8 @@ export const RegisterForm = () => {
                         {...field}
                         disabled={isLoading}
                         className="text-gray-900 pr-10"
+                        maxLength={32}
+                        aria-describedby="password-helper"
                       />
                       <button
                         type="button"
@@ -203,6 +213,9 @@ export const RegisterForm = () => {
                       </button>
                     </div>
                   </FormControl>
+                  <div id="password-helper" className="text-xs text-gray-500 mt-1 animate-fade-in">
+                    Must be at least 6 characters. Use a strong password for your security.
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

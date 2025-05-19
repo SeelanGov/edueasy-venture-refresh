@@ -405,14 +405,55 @@
     color: #6b7280 !important;
     background: #fff !important;
   }
+  .dark select,
+  .dark select option,
+  .dark select:focus,
+  .dark select:active {
+    background-color: #111827 !important;
+    color: #fff !important;
+    border-color: #374151;
+  }
+  select,
+  select option,
+  select:focus,
+  select:active {
+    background-color: #fff !important;
+    color: #1a202c !important;
+    border: 1px solid #d1d5db;
+  }
+  /* Placeholder for select (Radix/Headless UI) */
+  .dark .radix-select-trigger,
+  .dark .radix-select-content,
+  .dark .radix-select-item,
+  .dark .radix-select-value,
+  .dark .radix-select-placeholder {
+    color: #fff !important;
+    background: #111827 !important;
+  }
+  .radix-select-trigger,
+  .radix-select-content,
+  .radix-select-item,
+  .radix-select-value,
+  .radix-select-placeholder {
+    color: #1a202c !important;
+    background: #fff !important;
+  }
   /* Checkbox label and consent text high contrast */
   label, .checkbox-label, .consent-label {
     color: #1a202c !important;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     font-weight: 500;
+    line-height: 1.5;
   }
   .dark label, .dark .checkbox-label, .dark .consent-label {
     color: #fff !important;
+  }
+  /* Ensure all form descriptions and helper text are visible */
+  .form-description, .helper-text, .form-helper {
+    color: #4b5563 !important;
+  }
+  .dark .form-description, .dark .helper-text, .dark .form-helper {
+    color: #d1d5db !important;
   }
   /* Checkbox input alignment and spacing */
   input[type="checkbox"] {
@@ -426,6 +467,11 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes shake {
   0% { transform: translateX(0); }
   20% { transform: translateX(-4px); }
@@ -433,4 +479,23 @@
   60% { transform: translateX(-4px); }
   80% { transform: translateX(4px); }
   100% { transform: translateX(0); }
+}
+
+@keyframes pulseGentle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* --- Animation Utility Classes --- */
+.animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+.animate-shake { animation: shake 0.3s ease-in-out; }
+.animate-pulse-gentle { animation: pulseGentle 2s infinite; }
+
+/* --- Reduced Motion Support --- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .animate-shake, .animate-pulse-gentle {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

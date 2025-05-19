@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/utils/logging";
 
 const profileFormSchema = z.object({
   email: z.string().email("Please enter a valid email address").optional(),
@@ -54,30 +56,25 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
 
   const onSubmit = async (data: ProfileFormValues) => {
     if (!user) return;
-    
     setIsSubmitting(true);
     setError(null);
-    
     try {
-      const { error } = await supabase
+      const { error: dbError } = await supabase
         .from('users')
         .update({
           full_name: data.fullName,
           id_number: data.idNumber,
         })
         .eq('id', user.id);
-        
-      if (error) {
-        throw error;
-      }
-      
+      if (dbError) throw dbError;
       toast({
         title: "Profile updated",
         description: "Your profile information has been updated successfully.",
       });
-    } catch (error: unknown) {
-      console.error("Error updating profile:", error);
-      setError((error as Error).message || "Failed to update profile. Please try again.");
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     } finally {
       setIsSubmitting(false);
     }

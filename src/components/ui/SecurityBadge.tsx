@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, Lock, KeyRound, FileCheck2 } from "lucide-react";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 export type SecurityBadgeType = "encryption" | "data-protection" | "privacy" | "verification";
 
@@ -36,13 +36,18 @@ export const SecurityBadge: React.FC<SecurityBadgeProps> = ({ type, size = "md",
   const { icon, label, tooltip, color } = badgeConfig[type];
   const sizeClass = size === "sm" ? "px-2 py-0.5 text-xs" : size === "lg" ? "px-4 py-2 text-base" : "px-3 py-1 text-sm";
   return (
-    <Tooltip content={tooltip}>
-      <span>
-        <Badge className={`inline-flex items-center gap-1 ${color} ${sizeClass} ${className || ""} transition-transform duration-150 hover:scale-105`} aria-label={label} tabIndex={0}>
-          {icon}
-          {showLabel && <span>{label}</span>}
-        </Badge>
-      </span>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span data-testid={`security-badge-${type}`}>
+          <Badge className={`inline-flex items-center gap-1 ${color} ${sizeClass} ${className || ""} transition-transform duration-150 hover:scale-105`} aria-label={label} tabIndex={0}>
+            {icon}
+            {showLabel && <span>{label}</span>}
+          </Badge>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
     </Tooltip>
   );
 };
+
+export { badgeConfig };

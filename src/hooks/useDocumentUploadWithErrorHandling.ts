@@ -8,6 +8,15 @@ import { useFileProcessing } from "./document-upload/useFileProcessing";
 import { useSupabaseUpload } from "./document-upload/useSupabaseUpload";
 import { useDocumentNotifications } from "./document-upload/useDocumentNotifications";
 
+// Define proper type for DocumentsStore
+interface DocumentsStore {
+  [key: string]: {
+    file: File;
+    path: string;
+    documentId: string;
+  };
+}
+
 export const useDocumentUploadWithErrorHandling = (
   getDocumentState: (documentType: string) => DocumentUploadState,
   setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
@@ -20,7 +29,7 @@ export const useDocumentUploadWithErrorHandling = (
   
   // Use our specialized hooks
   const { processFile, handleRetry: processRetry } = useFileProcessing(setDocumentState, user);
-  const { uploadToSupabase } = useSupabaseUpload(setDocumentState, documents, setDocuments, form);
+  const { uploadToSupabase } = useSupabaseUpload(setDocumentState, documents as DocumentsStore, setDocuments, form);
   const { createResubmissionNotification, showVerificationResultToast } = useDocumentNotifications();
 
   const handleFileChange = useCallback(async (

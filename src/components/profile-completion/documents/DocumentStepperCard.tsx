@@ -1,11 +1,20 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Stepper } from "@/components/ui/stepper";
 
+// Define the step type to fix TypeScript error
+interface Step {
+  id: number;
+  label: string;
+  description?: string;
+  status: "current" | "error" | "pending" | "complete";
+}
+
 interface DocumentStepperCardProps {
   currentDocumentType: string | null;
   documentName: string;
-  uploadSteps: unknown[];
+  uploadSteps: Step[];
   currentStep: number;
 }
 

@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { ContactForm } from "./contact/ContactForm";
 import { ContactFormValues } from "./contact/types";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/utils/logging";
 
 interface ContactInfoStepProps {
   onComplete: () => void;
@@ -14,15 +16,16 @@ interface ContactInfoStepProps {
 export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { contactInfo, setContactInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: ContactFormValues) => {
     if (!user) return;
-    
     setIsSubmitting(true);
+    setError(null);
     try {
       // Save data to Supabase
-      const { error } = await supabase
+      const { error: dbError } = await supabase
         .from('users')
         .update({
           phone_number: data.phoneNumber,
@@ -31,9 +34,7 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
           emergency_contact_phone: data.emergencyContactPhone,
         })
         .eq('id', user.id);
-        
-      if (error) throw error;
-      
+      if (dbError) throw dbError;
       // Save to store
       setContactInfo({
         phoneNumber: data.phoneNumber,
@@ -41,10 +42,11 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
         emergencyContactName: data.emergencyContactName,
         emergencyContactPhone: data.emergencyContactPhone,
       });
-      
       onComplete();
-    } catch (error) {
-      console.error("Error saving contact info:", error);
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -55,16 +57,14 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
       <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
       
       <ContactForm
-        initialValues={{
-          phoneNumber: contactInfo.phoneNumber || "",
-          contactEmail: contactInfo.contactEmail || user?.email || "",
-          emergencyContactName: contactInfo.emergencyContactName || "",
-          emergencyContactPhone: contactInfo.emergencyContactPhone || "",
-        }}
+        initialValues={contactInfo}
         onSubmit={onSubmit}
-        onBack={onBack}
         isSubmitting={isSubmitting}
+        onBack={onBack}
       />
+      {error && (
+        <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { DocumentPreview } from "@/components/documents/DocumentPreview";
 import { DocumentUploadStepper } from "@/components/documents/DocumentUploadStepper";
 import { VerificationResultDisplay } from "@/components/documents/VerificationResultDisplay";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const DocumentUploadInput = ({
   documentType,
@@ -45,6 +46,14 @@ export const DocumentUploadInput = ({
                   <FormLabel className="text-base flex items-center gap-2">
                     {label}
                     <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span tabIndex={0} aria-label="Data protection info" className="ml-1 cursor-pointer">
+                          <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#60A5FA" strokeWidth="2" /><text x="12" y="16" textAnchor="middle" fontSize="12" fill="#60A5FA">i</text></svg>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>All uploaded documents are protected and stored securely.</TooltipContent>
+                    </Tooltip>
                   </FormLabel>
                   {isResubmission && (
                     <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">

@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { AddressForm } from "./address/AddressForm";
 import { AddressFormValues } from "./address/types";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/utils/logging";
 
 interface AddressInfoStepProps {
   onComplete: () => void;
@@ -14,15 +16,16 @@ interface AddressInfoStepProps {
 export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { addressInfo, setAddressInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: AddressFormValues) => {
     if (!user) return;
-    
     setIsSubmitting(true);
+    setError(null);
     try {
       // Save data to Supabase
-      const { error } = await supabase
+      const { error: dbError } = await supabase
         .from('addresses')
         .insert({
           user_id: user.id,
@@ -33,9 +36,7 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
           province: data.province,
           postal_code: data.postalCode,
         });
-        
-      if (error) throw error;
-      
+      if (dbError) throw dbError;
       // Save to store
       setAddressInfo({
         addressType: data.addressType,
@@ -45,10 +46,11 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
         province: data.province,
         postalCode: data.postalCode,
       });
-      
       onComplete();
-    } catch (error) {
-      console.error("Error saving address info:", error);
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -59,18 +61,14 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
       <h2 className="text-2xl font-bold mb-6">Address Information</h2>
       
       <AddressForm
-        initialValues={{
-          addressType: addressInfo.addressType || "residential",
-          streetAddress: addressInfo.streetAddress || "",
-          suburb: addressInfo.suburb || "",
-          city: addressInfo.city || "",
-          province: addressInfo.province || "",
-          postalCode: addressInfo.postalCode || "",
-        }}
+        initialValues={addressInfo}
         onSubmit={onSubmit}
-        onBack={onBack}
         isSubmitting={isSubmitting}
+        onBack={onBack}
       />
+      {error && (
+        <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>
+      )}
     </div>
   );
 };

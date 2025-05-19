@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ const testimonials: Testimonial[] = [
     name: "Thabo Molefe",
     university: "University of Cape Town",
     program: "Computer Science",
-    image: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png",
+    image: "/images/user-photos/thabo-molefe.webp",
     quote: "EduEasy simplified my application process, allowing me to apply to multiple universities with ease. The dashboard made tracking my applications straightforward."
   },
   {
@@ -27,15 +26,15 @@ const testimonials: Testimonial[] = [
     name: "Lerato Ndlovu",
     university: "University of Pretoria",
     program: "Medicine",
-    image: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png",
-    quote: "I was worried about meeting all application requirements, but EduEasy guided me through each step. I'm now enrolled in my dream program!"
+    image: "/images/user-photos/lerato-ndlovu.webp",
+    quote: "The support and guidance I received from EduEasy was invaluable. I felt confident every step of the way."
   },
   {
     id: 3,
     name: "Sipho Khumalo",
     university: "Stellenbosch University",
     program: "Business Administration",
-    image: "/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png",
+    image: "/images/user-photos/sipho-khumalo.webp",
     quote: "The document verification feature saved me so much stress. Knowing my application was complete before submission gave me confidence."
   }
 ];
