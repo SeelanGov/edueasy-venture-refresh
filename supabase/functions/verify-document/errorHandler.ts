@@ -1,83 +1,55 @@
-// Define error categories for better error reporting
+// Unified error categories for both frontend and backend
 export enum ErrorCategory {
-  NETWORK = 'NETWORK',
-  API = 'API',
-  VALIDATION = 'VALIDATION',
-  FILE = 'FILE',
-  DATABASE = 'DATABASE',
-  OCR = 'OCR',
-  AUTHENTICATION = 'AUTHENTICATION',
-  PERMISSION = 'PERMISSION',
-  UNKNOWN = 'UNKNOWN'
+  AUTHENTICATION = "AUTHENTICATION",
+  DATABASE = "DATABASE",
+  NETWORK = "NETWORK",
+  FILE = "FILE",
+  VALIDATION = "VALIDATION",
+  API = "API",
+  OCR = "OCR",
+  PERMISSION = "PERMISSION",
+  UNKNOWN = "UNKNOWN"
 }
 
-// Error interface for structured error reporting
-export interface VerificationError {
-  category: ErrorCategory;
+// Unified error interface
+export interface AppError {
   message: string;
+  category: ErrorCategory;
   details?: Record<string, unknown>;
-  timestamp: string;
+  originalError?: unknown;
+  timestamp?: string;
 }
 
 /**
- * Handle document verification errors systematically
+ * Handle document verification errors systematically (unified signature)
  */
 export async function handleError(
-  error: VerificationError, 
-  supabase: unknown, 
-  logId?: string, 
+  error: AppError,
+  supabase: any,
+  logId?: string,
   documentId?: string
 ): Promise<void> {
   console.error(`[${error.category}] ${error.message}`, {
     details: error.details,
     timestamp: error.timestamp
   });
-  
   try {
     // Log error to system_error_logs table
-    const { data, error: logError } = await (supabase as any)
+    const { data, error: logError } = await supabase
       .from('system_error_logs')
       .insert({
-        message: error.message,
-        category: 'DOCUMENT_VERIFICATION',
-        severity: getCategorySeverity(error.category),
-        component: 'verify-document',
-        action: 'OCR_PROCESSING',
-        details: {
-          errorCategory: error.category,
-          documentId: documentId,
-          timestamp: error.timestamp,
-          logId: logId,
-          errorDetails: error.details
-        }
+        log_id: logId,
+        document_id: documentId,
+        error_category: error.category,
+        error_message: error.message,
+        error_details: error.details,
+        timestamp: error.timestamp || new Date().toISOString(),
       });
-      
     if (logError) {
-      console.error('Failed to log error to system_error_logs:', logError);
+      console.error('Failed to log error to system_error_logs', logError);
     }
-    
-    // Update verification log if we have a log ID
-    if (logId) {
-      const { error: updateError } = await (supabase as any)
-        .from('document_verification_logs')
-        .update({
-          status: 'error',
-          failure_reason: error.message,
-          completed_at: new Date().toISOString(),
-          verification_details: {
-            error: true,
-            errorCategory: error.category,
-            timestamp: error.timestamp
-          }
-        })
-        .eq('id', logId);
-        
-      if (updateError) {
-        console.error('Failed to update verification log:', updateError);
-      }
-    }
-  } catch (err) {
-    console.error('Error in error handler:', err);
+  } catch (e) {
+    console.error('Error during error logging', e);
   }
 }
 

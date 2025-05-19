@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { EducationForm, EducationFormValues } from "./EducationForm";
 import { SubjectMark } from "@/hooks/useProfileCompletionStore";
+import { parseError } from "@/utils/errorHandler";
+import { logError } from "@/../edueasy-venture-refresh/src/utils/logging";
 
 interface EducationHistoryStepProps {
   onComplete: () => void;
@@ -14,6 +16,7 @@ interface EducationHistoryStepProps {
 export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistoryStepProps) => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { educationInfo, setEducationInfo } = useProfileCompletionStore();
   
   // Helper function to create a properly typed SubjectMark object
@@ -59,6 +62,7 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
     if (!user) return;
     
     setIsSubmitting(true);
+    setError(null);
     try {
       // Save education record to Supabase
       const { data: educationRecord, error: educationError } = await supabase
@@ -114,8 +118,10 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
       });
       
       onComplete();
-    } catch (error) {
-      console.error("Error saving education info:", error);
+    } catch (err) {
+      const parsed = parseError(err);
+      logError(parsed);
+      setError(parsed.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -124,6 +130,9 @@ export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistorySte
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Education History</h2>
+      {error && (
+        <div className="text-red-500 p-2 mb-2 text-center" role="alert" aria-live="assertive">{error}</div>
+      )}
       <EducationForm
         initialValues={initialValues}
         onSubmit={onSubmit}

@@ -1,4 +1,5 @@
 export default {
+  rootDir: './edueasy-venture-refresh',
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
   transform: {
@@ -9,7 +10,13 @@ export default {
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
     '^(\.{1,2}/.*)\\.js$': '$1',
   },
+  globals: {
+    'ts-jest': {
+      tsconfig: './tsconfig.app.json'
+    }
+  }
 };
-// Cleaned up config: moved ts-jest options into transform, removed deprecated and unknown keys.
+// Set rootDir to the nested edueasy-venture-refresh for correct alias resolution.

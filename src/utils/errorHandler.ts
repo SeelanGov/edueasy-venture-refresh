@@ -1,96 +1,78 @@
-
 import { toast } from "@/components/ui/use-toast";
-import { PostgrestError } from "@supabase/supabase-js";
 
 /**
- * Error categories for different types of errors
+ * Unified error categories for both frontend and backend
  */
 export enum ErrorCategory {
-  AUTHENTICATION = "authentication",
-  DATABASE = "database",
-  NETWORK = "network",
-  FILE = "file",
-  VALIDATION = "validation",
-  UNKNOWN = "unknown",
+  AUTHENTICATION = "AUTHENTICATION",
+  DATABASE = "DATABASE",
+  NETWORK = "NETWORK",
+  FILE = "FILE",
+  VALIDATION = "VALIDATION",
+  API = "API",
+  OCR = "OCR",
+  PERMISSION = "PERMISSION",
+  UNKNOWN = "UNKNOWN"
 }
 
 /**
- * Standardized error object
+ * Unified error interface
  */
-export interface StandardError {
+export interface AppError {
   message: string;
   category: ErrorCategory;
+  details?: Record<string, unknown>;
   originalError?: unknown;
+  timestamp?: string;
 }
 
 /**
- * Parse an error into a standardized format
+ * Parse an error into a standardized AppError format
  */
-export const parseError = (error: unknown): StandardError => {
+export const parseError = (error: unknown): AppError => {
+  const timestamp = new Date().toISOString();
   // Handle PostgreSQL/Supabase errors
   if (typeof error === "object" && error !== null && "code" in error) {
-    const pgError = error as PostgrestError;
-    
-    // Authentication errors
+    const pgError = error as { code?: string; message?: string };
     if (pgError.code === "PGRST301" || pgError.code === "42501") {
       return {
         message: "You don't have permission to perform this action",
         category: ErrorCategory.AUTHENTICATION,
         originalError: error,
+        timestamp,
       };
     }
-    
-    // Database errors
     return {
-      message: pgError.message || "Database error occurred",
+      message: pgError.message || "Database error",
       category: ErrorCategory.DATABASE,
       originalError: error,
+      timestamp,
     };
   }
-  
-  // Handle network errors
-  if (error instanceof Error && 
-     (error.message.includes("network") || error.message.includes("fetch"))) {
+  // Network errors
+  if (error instanceof TypeError && error.message.includes("Network")) {
     return {
-      message: "Network connection error. Please check your internet connection",
+      message: error.message,
       category: ErrorCategory.NETWORK,
       originalError: error,
+      timestamp,
     };
   }
-  
-  // Handle standard Error objects
+  // Fallback for Error objects
   if (error instanceof Error) {
-    // File errors
-    if (error.message.includes("file") || error.message.includes("upload")) {
-      return {
-        message: "Error processing file: " + error.message,
-        category: ErrorCategory.FILE,
-        originalError: error,
-      };
-    }
-    
-    // Validation errors
-    if (error.message.includes("validation")) {
-      return {
-        message: error.message,
-        category: ErrorCategory.VALIDATION,
-        originalError: error,
-      };
-    }
-    
-    // General error
     return {
       message: error.message,
       category: ErrorCategory.UNKNOWN,
       originalError: error,
+      timestamp,
     };
   }
-  
-  // Fallback
+  // Fallback for unknown
   return {
-    message: "An unexpected error occurred",
+    message: typeof error === "string" ? error : "Unknown error",
     category: ErrorCategory.UNKNOWN,
     originalError: error,
+    timestamp,
   };
 };
 
@@ -101,7 +83,7 @@ export const handleError = (
   error: unknown, 
   userMessage?: string,
   showToast: boolean = true
-): StandardError => {
+): AppError => {
   const standardError = parseError(error);
   
   // Always log to console
@@ -130,7 +112,7 @@ export async function safeAsync<T>(
   asyncFn: () => Promise<T>,
   errorMessage?: string,
   showToast: boolean = true
-): Promise<{ data: T | null; error: StandardError | null }> {
+): Promise<{ data: T | null; error: AppError | null }> {
   try {
     const result = await asyncFn();
     return { data: result, error: null };

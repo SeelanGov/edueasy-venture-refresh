@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -94,11 +93,12 @@ export const useApplicationSubmit = (
 
       // Navigate to dashboard
       navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Application submission error:", error);
+    } catch (error) {
+      const err = error instanceof Error ? error : new Error(String(error));
+      console.error("Application submission error:", err);
       toast({
         title: "Error",
-        description: `Failed to submit application: ${error.message}`,
+        description: `Failed to submit application: ${err.message}`,
         variant: "destructive",
       });
     } finally {
