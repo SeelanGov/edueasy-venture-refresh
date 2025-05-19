@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,6 +60,7 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
         initialValues={contactInfo}
         onSubmit={onSubmit}
         isSubmitting={isSubmitting}
+        onBack={onBack}
       />
       {error && (
         <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>

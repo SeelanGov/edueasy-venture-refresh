@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+
+import React from "react";
 import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,7 @@ const commonSubjects = [
 
 interface SubjectEntryProps {
   index: number;
-  control: Control<unknown>;
+  control: Control<any>; // Changed from unknown to any to fix type error
   fieldName: string;
   canDelete: boolean;
   onDelete: () => void;

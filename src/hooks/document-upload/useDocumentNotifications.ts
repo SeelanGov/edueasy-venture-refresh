@@ -1,74 +1,62 @@
+
+import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
 import { toast } from "sonner";
-import { playNotificationSound } from "@/utils/notificationSound";
+import { DocumentType } from "@/components/profile-completion/documents/types";
+
+// Define proper types for verification results
+interface VerificationResult {
+  status: string;
+  failureReason?: string;
+}
 
 export const useDocumentNotifications = () => {
-  const createResubmissionNotification = async (
+  // Create notification for document resubmission
+  const createResubmissionNotification = useCallback(async (
     userId: string,
     documentId: string,
     documentType: string
   ) => {
-    await safeAsyncWithLogging(
-      async () => {
-        const { error } = await supabase.from('notifications').insert({
-          user_id: userId,
-          title: 'Document Resubmitted',
-          message: `Your resubmitted ${documentType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()} is now under review.`,
-          notification_type: 'document_under_review',
-          related_document_id: documentId
-        });
-        
-        if (error) throw error;
-      },
-      {
-        component: "DocumentUpload",
-        action: "CreateResubmissionNotification",
-        userId: userId,
-        severity: ErrorSeverity.INFO,
-        showToast: false
-      }
-    );
-    
-    toast("Your document has been resubmitted for verification");
-  };
+    try {
+      await supabase.from('notifications').insert({
+        user_id: userId,
+        title: 'Document Resubmitted',
+        message: `You have resubmitted your ${documentType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}.`,
+        type: 'document_resubmission',
+        reference_id: documentId,
+        is_read: false,
+      });
+    } catch (error) {
+      console.error('Failed to create resubmission notification:', error);
+    }
+  }, []);
 
-  const showVerificationResultToast = (
-    result: unknown, 
+  // Show toast notification based on verification result
+  const showVerificationResultToast = useCallback((
+    result: VerificationResult,
     isResubmission: boolean = false
   ) => {
-    if (!result) return;
+    // Audio feedback for important notifications
+    const notificationSound = new Audio('/notification.mp3');
     
-    const notificationType = isResubmission ? 'Resubmitted document ' : 'Document ';
-    
-    if (result.status === 'rejected') {
-      playNotificationSound();
-      toast(`${notificationType}Rejected: ${result.failureReason || 'Please check your document and try again'}`);
-      return true;
-    } else if (result.status === 'request_resubmission') {
-      playNotificationSound();
-      toast(`Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`);
-      return true;
-    } else if (result.status === 'approved') {
-      playNotificationSound();
-      toast(`${notificationType}Verified: Your document has been successfully verified`);
-      return true;
+    if (result.status === 'approved') {
+      notificationSound.play();
+      toast.success(
+        isResubmission ? 'Resubmitted document approved!' : 'Document approved!',
+        { duration: 5000 }
+      );
+    } else if (result.status === 'rejected' || result.status === 'request_resubmission') {
+      notificationSound.play();
+      toast.error(`Document rejected: ${result.failureReason || 'Please try again with a clearer document'}`, {
+        duration: 8000
+      });
+    } else if (result.status === 'pending') {
+      toast.info('Document is being reviewed by our team', {
+        duration: 3000
+      });
     }
-    
-    return false;
-  };
+  }, []);
 
-  const handleNotification = (event: unknown) => {
-    const result = event as { status?: string; failureReason?: string };
-    if (result.status === 'rejected') {
-      toast(`Rejected: ${result.failureReason || 'Please check your document and try again'}`);
-    } else if (result.status === 'request_resubmission') {
-      toast(`Resubmission Required: ${result.failureReason || 'Please check your document and try again'}`);
-    } else if (result.status === 'approved') {
-      toast('Document approved!');
-    }
-  };
-  
   return {
     createResubmissionNotification,
     showVerificationResultToast

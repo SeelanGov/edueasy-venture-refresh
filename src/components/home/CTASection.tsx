@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { PatternBorder } from "@/components/PatternBorder";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +73,7 @@ export const CTASection = () => {
                   {user ? (
                     <Button 
                       size="lg" 
-                      className="w-full md:w-auto bg-cap-coral text-white hover:bg-cap-coral/90 text-lg py-6 md:py-7 md:px-10"
+                      className="w-full md:w-auto bg-cap-teal text-white hover:bg-cap-teal/90 text-lg py-6 md:py-7 md:px-10"
                       onClick={() => navigate('/profile-completion')}
                     >
                       Complete Your Profile
@@ -83,13 +82,13 @@ export const CTASection = () => {
                     <>
                       <Button 
                         size="lg" 
-                        className="w-full md:w-auto bg-cap-coral text-white hover:bg-cap-coral/90 text-lg py-6 md:py-7 md:px-10"
+                        className="w-full md:w-auto bg-cap-teal text-white hover:bg-cap-teal/90 text-lg py-6 md:py-7 md:px-10"
                         onClick={handleStartApplication}
                       >
                         Register & Complete Profile
                       </Button>
                       <Link to="/login" className="w-full md:w-auto">
-                        <Button size="lg" variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white text-lg py-6 md:py-7 md:px-10">
+                        <Button size="lg" variant="outline" className="w-full border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal text-lg py-6 md:py-7 md:px-10">
                           Already Have Account? Login
                         </Button>
                       </Link>
@@ -104,7 +103,7 @@ export const CTASection = () => {
               
               <div className="mt-10 text-center">
                 <Link to="/profile-demo">
-                  <Button variant="link" className="text-primary underline md:text-lg">
+                  <Button variant="link" className="text-cap-teal underline md:text-lg">
                     View Profile Demo
                   </Button>
                 </Link>

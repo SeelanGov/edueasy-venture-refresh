@@ -13,6 +13,13 @@ import { PolicyTestTab } from "./rls/PolicyTestTab";
 import { PolicyRegistryTab } from "./rls/PolicyRegistryTab";
 import { PolicyAnalysisTab } from "./rls/PolicyAnalysisTab";
 
+// Add type definition for PolicyRecord
+interface PolicyRecord {
+  table_name: string;
+  policy_name: string;
+  policy_type: string;
+}
+
 export const RLSPolicyTester = () => {
   const {
     isAdmin,
@@ -80,7 +87,7 @@ export const RLSPolicyTester = () => {
         
         <TabsContent value="registry">
           <PolicyRegistryTab 
-            registeredPolicies={registeredPolicies}
+            registeredPolicies={registeredPolicies as PolicyRecord[]}
             onRefreshData={refreshData}
           />
         </TabsContent>

@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo";
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-50 border-t border-gray-200 py-12">
+    <footer className="bg-white border-t border-gray-100 py-12 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center space-y-8">
           <Logo size="large" />
@@ -26,7 +26,7 @@ export const Footer = () => {
             } />
           </div>
           
-          <div className="w-24 h-1 bg-primary rounded my-6"></div>
+          <div className="w-24 h-1 bg-cap-teal rounded my-6"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl text-center md:text-left">
             <FooterColumn title="Contact">
@@ -35,14 +35,14 @@ export const Footer = () => {
               <li>Cape Town, South Africa</li>
             </FooterColumn>
             <FooterColumn title="Quick Links">
-              <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Universities</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Application Guide</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">About Us</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">Universities</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">Application Guide</a></li>
             </FooterColumn>
             <FooterColumn title="Legal">
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-cap-teal transition-colors">Cookie Policy</a></li>
             </FooterColumn>
           </div>
           
@@ -60,7 +60,7 @@ interface SocialLinkProps {
 
 const SocialLink = ({ href, icon }: SocialLinkProps) => {
   return (
-    <a href={href} className="text-gray-500 hover:text-primary transition-colors">
+    <a href={href} className="text-gray-500 hover:text-cap-teal transition-colors">
       {icon}
     </a>
   );

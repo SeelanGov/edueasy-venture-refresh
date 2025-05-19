@@ -44,21 +44,21 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-primary">Home</Link>
-            <Link to="/#about" className="text-gray-700 hover:text-primary">About</Link>
-            <Link to="/#services" className="text-gray-700 hover:text-primary">Services</Link>
-            <Link to="/#contact" className="text-gray-700 hover:text-primary">Contact</Link>
+            <Link to="/" className="text-gray-700 hover:text-cap-teal">Home</Link>
+            <Link to="/#about" className="text-gray-700 hover:text-cap-teal">About</Link>
+            <Link to="/#services" className="text-gray-700 hover:text-cap-teal">Services</Link>
+            <Link to="/#contact" className="text-gray-700 hover:text-cap-teal">Contact</Link>
             
             {user ? (
               <>
-                <Link to="/dashboard" className="text-gray-700 hover:text-primary">Dashboard</Link>
+                <Link to="/dashboard" className="text-gray-700 hover:text-cap-teal">Dashboard</Link>
                 {user?.role === "admin" && (
                   <AdminButton onClick={() => navigate("/admin/dashboard")}>Admin Dashboard</AdminButton>
                 )}
                 <div className="flex items-center gap-2">
                   <Button 
                     variant="outline" 
-                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                    className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
                     onClick={handleSignOut}
                   >
                     <LogOut className="h-4 w-4 mr-2" />
@@ -69,10 +69,10 @@ export const Navbar = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outline" className="mr-2 border-primary text-primary hover:bg-primary hover:text-white">Login</Button>
+                  <Button variant="outline" className="mr-2 border-cap-teal text-cap-teal hover:bg-cap-teal/10">Login</Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-cap-coral hover:bg-cap-coral/90 text-white">Register</Button>
+                  <Button className="bg-cap-teal hover:bg-cap-teal/90 text-white">Register</Button>
                 </Link>
               </>
             )}
@@ -97,14 +97,14 @@ export const Navbar = () => {
               </Button>
             </div>
             <div className="flex flex-col space-y-6 items-center justify-center h-full text-gray-800 text-xl">
-              <Link to="/" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>HOME</Link>
-              <Link to="/#about" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>ABOUT</Link>
-              <Link to="/#services" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>SERVICES</Link>
-              <Link to="/#contact" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>CONTACT</Link>
+              <Link to="/" className="text-gray-700 hover:text-cap-teal" onClick={() => setIsOpen(false)}>HOME</Link>
+              <Link to="/#about" className="text-gray-700 hover:text-cap-teal" onClick={() => setIsOpen(false)}>ABOUT</Link>
+              <Link to="/#services" className="text-gray-700 hover:text-cap-teal" onClick={() => setIsOpen(false)}>SERVICES</Link>
+              <Link to="/#contact" className="text-gray-700 hover:text-cap-teal" onClick={() => setIsOpen(false)}>CONTACT</Link>
               
               {user ? (
                 <>
-                  <Link to="/dashboard" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>DASHBOARD</Link>
+                  <Link to="/dashboard" className="text-gray-700 hover:text-cap-teal" onClick={() => setIsOpen(false)}>DASHBOARD</Link>
                   {user?.role === "admin" && (
                     <AdminButton onClick={() => {
                       navigate("/admin/dashboard");
@@ -112,7 +112,7 @@ export const Navbar = () => {
                     }}>Admin Dashboard</AdminButton>
                   )}
                   <Button 
-                    className="bg-cap-coral hover:bg-cap-coral/90 text-white mt-4"
+                    className="bg-cap-teal hover:bg-cap-teal/90 text-white mt-4"
                     onClick={() => {
                       handleSignOut();
                       setIsOpen(false);
@@ -126,7 +126,7 @@ export const Navbar = () => {
                 <>
                   <Link to="/register">
                     <Button 
-                      className="bg-cap-coral hover:bg-cap-coral/90 text-white mt-4" 
+                      className="bg-cap-teal hover:bg-cap-teal/90 text-white mt-4" 
                       onClick={() => setIsOpen(false)}
                     >
                       REGISTER
@@ -135,7 +135,7 @@ export const Navbar = () => {
                   <Link to="/login">
                     <Button 
                       variant="outline" 
-                      className="border-primary text-primary hover:bg-primary hover:text-white" 
+                      className="border-cap-teal text-cap-teal hover:bg-cap-teal/10" 
                       onClick={() => setIsOpen(false)}
                     >
                       LOGIN
