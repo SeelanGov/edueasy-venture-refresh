@@ -37,7 +37,7 @@ export const ValidationResultsList = ({ validationResults, extractedFields }: Va
                       .trim()}:
                     {typeof value === 'boolean' 
                       ? '' 
-                      : ` ${value}`}
+                      : ` ${String(value)}`}
                   </span>
                 </div>
               )

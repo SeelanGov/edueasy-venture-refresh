@@ -18,7 +18,7 @@ const Dashboard = () => {
         
         {/* Personalized Dashboard */}
         <PersonalizedDashboard 
-          applications={applications as Application[]} 
+          applications={applications} 
           loading={loading} 
         />
       </div>

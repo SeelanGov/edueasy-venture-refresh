@@ -19,7 +19,12 @@ interface UserStats {
   profileCompletion: number;
 }
 
-export const PersonalizedDashboard = ({ applications, loading }: { applications: Application[]; loading: boolean }) => {
+interface PersonalizedDashboardProps {
+  applications: Application[];
+  loading: boolean;
+}
+
+export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDashboardProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [userStats, setUserStats] = useState<UserStats | null>(null);

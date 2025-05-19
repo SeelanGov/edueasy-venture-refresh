@@ -21,6 +21,24 @@ const Index = () => {
         </div>
       </div>
       
+      {/* Featured Image Section - Added first */}
+      <div className="bg-gradient-to-b from-white to-gray-50 py-12">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800">Celebrating African Excellence</h2>
+          <div className="max-w-2xl mx-auto rounded-xl overflow-hidden shadow-xl">
+            <img 
+              src="/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png" 
+              alt="African student with traditional beaded jewelry"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto">
+            EduEasy connects talented students with educational opportunities across South Africa,
+            empowering the next generation of African leaders.
+          </p>
+        </div>
+      </div>
+      
       {/* Main Content Sections */}
       <Hero />
       <HowItWorks />

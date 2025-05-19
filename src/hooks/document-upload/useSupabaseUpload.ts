@@ -13,7 +13,7 @@ interface DocumentData {
 
 export interface DocumentsStore {
   [key: string]: DocumentData;
-  applicationId?: string;
+  applicationId?: string | undefined;
 }
 
 export const useSupabaseUpload = (
@@ -48,7 +48,7 @@ export const useSupabaseUpload = (
         return { success: false };
       }
       
-      // Generate public URL using path not Key
+      // Generate public URL using path
       const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
       
       // Save document metadata to the database
@@ -82,15 +82,21 @@ export const useSupabaseUpload = (
         error: null,
       });
       
-      // Use a properly typed updater function
-      setDocuments({
+      // Update the documents store with the new document
+      const updatedDocuments: DocumentsStore = {
         ...documents,
         [documentType]: {
           file: file,
           path: filePath,
           documentId: documentId,
-        },
-      });
+        }
+      };
+      
+      if (applicationId) {
+        updatedDocuments.applicationId = applicationId;
+      }
+      
+      setDocuments(updatedDocuments);
       
       // Set the form value for react-hook-form
       form.setValue(documentType, file);
@@ -101,7 +107,7 @@ export const useSupabaseUpload = (
       setDocumentState(documentType, { uploading: false, error: err.message, progress: 0 });
       return { success: false };
     }
-  }, [setDocumentState, setDocuments, form]);
+  }, [setDocumentState, setDocuments, form, documents]);
 
   return { uploadToSupabase };
 };
