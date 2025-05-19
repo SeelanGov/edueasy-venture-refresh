@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
@@ -10,17 +9,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ChevronRight, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-import type { Database } from "@/integrations/supabase/types";
-
-// Define the Application type locally
-interface Application {
-  id: string;
-  created_at: string;
-  status: string;
-  institution_name: string;
-  program_name: string;
-  user_id: string;
-}
+import { Application } from '@/types/ApplicationTypes';
 
 interface UserStats {
   fullName: string;

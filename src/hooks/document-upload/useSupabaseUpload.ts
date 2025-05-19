@@ -1,16 +1,19 @@
+
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { DocumentType, DocumentUploadState } from "@/components/profile-completion/documents/types";
 
 // Define proper types for documents store
-interface DocumentsStore {
-  [key: string]: {
-    file: File;
-    path: string;
-    documentId: string;
-  };
-  applicationId?: string; // Make applicationId optional to fix type error
+interface DocumentData {
+  file: File;
+  path: string;
+  documentId: string;
+}
+
+export interface DocumentsStore {
+  [key: string]: DocumentData;
+  applicationId?: string;
 }
 
 export const useSupabaseUpload = (
@@ -45,7 +48,8 @@ export const useSupabaseUpload = (
         return { success: false };
       }
       
-      const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.Key}`;
+      // Generate public URL using path not Key
+      const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
       
       // Save document metadata to the database
       const { error: dbError } = await supabase
@@ -55,10 +59,7 @@ export const useSupabaseUpload = (
           user_id: userId,
           application_id: applicationId,
           document_type: documentType,
-          file_name: file.name,
-          file_size: file.size,
-          mime_type: file.type,
-          path: filePath,
+          file_path: filePath,
           storage_url: publicURL,
           verification_status: 'pending',
           is_resubmission: isResubmission,
@@ -81,14 +82,15 @@ export const useSupabaseUpload = (
         error: null,
       });
       
-      setDocuments(prev => ({
-        ...prev,
+      // Use a properly typed updater function
+      setDocuments({
+        ...documents,
         [documentType]: {
           file: file,
           path: filePath,
           documentId: documentId,
         },
-      }));
+      });
       
       // Set the form value for react-hook-form
       form.setValue(documentType, file);
