@@ -20,19 +20,30 @@ export const CTASection = () => {
   };
 
   return (
-    <section className="py-20 px-4 md:py-24 bg-cap-dark text-white">
+    <section className="py-20 px-4 md:py-24 bg-gradient-to-r from-gray-50 to-blue-50">
       <div className="relative overflow-hidden">
-        {/* African Pattern Top Border */}
-        <PatternBorder position="top" />
+        {/* Background dot pattern */}
+        <div className="absolute right-0 top-0 h-64 w-1/3 opacity-10"
+            style={{
+              backgroundImage: "radial-gradient(circle, #2A9D8F 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }} 
+        />
+        <div className="absolute left-0 bottom-0 h-64 w-1/3 opacity-10"
+            style={{
+              backgroundImage: "radial-gradient(circle, #2A9D8F 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }} 
+        />
         
         <div className="container mx-auto py-10">
           <div className="max-w-5xl mx-auto">
-            <div className="bg-gradient-to-r from-cap-teal/20 via-cap-coral/20 to-cap-teal/20 rounded-lg p-8 md:p-12">
+            <div className="bg-white shadow-lg rounded-lg p-8 md:p-12 border border-gray-100">
               <div className="text-center mb-10 md:mb-12">
-                <Typography variant="h2" color="white" className="mb-6 md:text-4xl">
+                <Typography variant="h2" className="text-gray-800 mb-6 md:text-4xl">
                   Ready to Start Your Future?
                 </Typography>
-                <Typography variant="body-lg" color="white" className="mb-8 opacity-90 max-w-2xl mx-auto md:text-xl">
+                <Typography variant="body-lg" className="text-gray-600 mb-8 max-w-2xl mx-auto md:text-xl">
                   Join thousands of students already on their path to success through South Africa's leading educational institutions.
                 </Typography>
               </div>
@@ -40,22 +51,22 @@ export const CTASection = () => {
               <div className="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center">
                 <div className="text-center md:text-left md:w-1/2 space-y-6">
                   <div className="flex items-center justify-center md:justify-start">
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                      <Typography variant="body" color="white" className="font-bold md:text-lg">1</Typography>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                      <Typography variant="body" className="font-bold text-primary md:text-lg">1</Typography>
                     </div>
-                    <Typography variant="body-lg" color="white" className="md:text-xl">Create your student profile</Typography>
+                    <Typography variant="body-lg" className="text-gray-700 md:text-xl">Create your student profile</Typography>
                   </div>
                   <div className="flex items-center justify-center md:justify-start">
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                      <Typography variant="body" color="white" className="font-bold md:text-lg">2</Typography>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                      <Typography variant="body" className="font-bold text-primary md:text-lg">2</Typography>
                     </div>
-                    <Typography variant="body-lg" color="white" className="md:text-xl">Upload your documents once</Typography>
+                    <Typography variant="body-lg" className="text-gray-700 md:text-xl">Upload your documents once</Typography>
                   </div>
                   <div className="flex items-center justify-center md:justify-start">
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                      <Typography variant="body" color="white" className="font-bold md:text-lg">3</Typography>
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                      <Typography variant="body" className="font-bold text-primary md:text-lg">3</Typography>
                     </div>
-                    <Typography variant="body-lg" color="white" className="md:text-xl">Apply to multiple institutions</Typography>
+                    <Typography variant="body-lg" className="text-gray-700 md:text-xl">Apply to multiple institutions</Typography>
                   </div>
                 </div>
                 
@@ -78,14 +89,14 @@ export const CTASection = () => {
                         Register & Complete Profile
                       </Button>
                       <Link to="/login" className="w-full md:w-auto">
-                        <Button size="lg" variant="outline" className="w-full text-white border-white hover:bg-white hover:text-cap-dark text-lg py-6 md:py-7 md:px-10">
+                        <Button size="lg" variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white text-lg py-6 md:py-7 md:px-10">
                           Already Have Account? Login
                         </Button>
                       </Link>
                     </>
                   )}
                   
-                  <Typography variant="small" className="text-white/80 mt-2 md:text-base">
+                  <Typography variant="small" className="text-gray-500 mt-2 md:text-base">
                     No payment required to create an account and start your application
                   </Typography>
                 </div>
@@ -93,7 +104,7 @@ export const CTASection = () => {
               
               <div className="mt-10 text-center">
                 <Link to="/profile-demo">
-                  <Button variant="link" className="text-white underline md:text-lg">
+                  <Button variant="link" className="text-primary underline md:text-lg">
                     View Profile Demo
                   </Button>
                 </Link>
@@ -101,9 +112,6 @@ export const CTASection = () => {
             </div>
           </div>
         </div>
-        
-        {/* African Pattern Bottom Border */}
-        <PatternBorder position="bottom" />
       </div>
     </section>
   );

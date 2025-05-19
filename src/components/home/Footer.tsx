@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo";
 
 export const Footer = () => {
   return (
-    <footer className="bg-cap-dark border-t border-gray-800 py-12">
+    <footer className="bg-gray-50 border-t border-gray-200 py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center space-y-8">
           <Logo size="large" />
@@ -26,7 +26,7 @@ export const Footer = () => {
             } />
           </div>
           
-          <div className="w-24 h-1 bg-cap-teal rounded my-6"></div>
+          <div className="w-24 h-1 bg-primary rounded my-6"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl text-center md:text-left">
             <FooterColumn title="Contact">
@@ -35,18 +35,18 @@ export const Footer = () => {
               <li>Cape Town, South Africa</li>
             </FooterColumn>
             <FooterColumn title="Quick Links">
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Universities</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Application Guide</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Universities</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Application Guide</a></li>
             </FooterColumn>
             <FooterColumn title="Legal">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cookie Policy</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
             </FooterColumn>
           </div>
           
-          <p className="text-gray-400 mt-8">© {new Date().getFullYear()} EDUEASY | Bridging Education to Employment</p>
+          <p className="text-gray-500 mt-8">© {new Date().getFullYear()} EDUEASY | Bridging Education to Employment</p>
         </div>
       </div>
     </footer>
@@ -60,7 +60,7 @@ interface SocialLinkProps {
 
 const SocialLink = ({ href, icon }: SocialLinkProps) => {
   return (
-    <a href={href} className="text-gray-400 hover:text-white transition-colors">
+    <a href={href} className="text-gray-500 hover:text-primary transition-colors">
       {icon}
     </a>
   );
@@ -74,8 +74,8 @@ interface FooterColumnProps {
 const FooterColumn = ({ title, children }: FooterColumnProps) => {
   return (
     <div>
-      <h3 className="font-bold text-xl mb-4">{title}</h3>
-      <ul className="space-y-2 text-gray-400">
+      <h3 className="font-bold text-xl mb-4 text-gray-800">{title}</h3>
+      <ul className="space-y-2 text-gray-600">
         {children}
       </ul>
     </div>

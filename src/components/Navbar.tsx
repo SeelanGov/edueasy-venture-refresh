@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { X, Menu, LogOut, User } from "lucide-react";
 import { useState } from "react";
@@ -36,28 +37,28 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-cap-dark text-white">
+    <nav className="fixed top-0 w-full z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Logo />
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-white hover:text-cap-teal">Home</Link>
-            <Link to="/#about" className="text-white hover:text-cap-teal">About</Link>
-            <Link to="/#services" className="text-white hover:text-cap-teal">Services</Link>
-            <Link to="/#contact" className="text-white hover:text-cap-teal">Contact</Link>
+            <Link to="/" className="text-gray-700 hover:text-primary">Home</Link>
+            <Link to="/#about" className="text-gray-700 hover:text-primary">About</Link>
+            <Link to="/#services" className="text-gray-700 hover:text-primary">Services</Link>
+            <Link to="/#contact" className="text-gray-700 hover:text-primary">Contact</Link>
             
             {user ? (
               <>
-                <Link to="/dashboard" className="text-white hover:text-cap-teal">Dashboard</Link>
+                <Link to="/dashboard" className="text-gray-700 hover:text-primary">Dashboard</Link>
                 {user?.role === "admin" && (
                   <AdminButton onClick={() => navigate("/admin/dashboard")}>Admin Dashboard</AdminButton>
                 )}
                 <div className="flex items-center gap-2">
                   <Button 
                     variant="outline" 
-                    className="border-white text-white hover:bg-white hover:text-cap-dark"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
                     onClick={handleSignOut}
                   >
                     <LogOut className="h-4 w-4 mr-2" />
@@ -68,7 +69,7 @@ export const Navbar = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outline" className="mr-2 border-white text-white hover:bg-white hover:text-cap-dark">Login</Button>
+                  <Button variant="outline" className="mr-2 border-primary text-primary hover:bg-primary hover:text-white">Login</Button>
                 </Link>
                 <Link to="/register">
                   <Button className="bg-cap-coral hover:bg-cap-coral/90 text-white">Register</Button>
@@ -80,7 +81,7 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="text-white">
+            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="text-gray-700">
               <Menu className="h-6 w-6" />
             </Button>
           </div>
@@ -88,22 +89,22 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="fixed inset-0 bg-cap-teal z-50 flex flex-col p-5">
+          <div className="fixed inset-0 bg-white z-50 flex flex-col p-5">
             <div className="flex justify-between items-center">
               <Logo />
-              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-white">
+              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-gray-700">
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            <div className="flex flex-col space-y-6 items-center justify-center h-full text-white text-xl">
-              <Link to="/" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>HOME</Link>
-              <Link to="/#about" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>ABOUT</Link>
-              <Link to="/#services" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>SERVICES</Link>
-              <Link to="/#contact" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>CONTACT</Link>
+            <div className="flex flex-col space-y-6 items-center justify-center h-full text-gray-800 text-xl">
+              <Link to="/" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>HOME</Link>
+              <Link to="/#about" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>ABOUT</Link>
+              <Link to="/#services" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>SERVICES</Link>
+              <Link to="/#contact" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>CONTACT</Link>
               
               {user ? (
                 <>
-                  <Link to="/dashboard" className="text-white hover:text-gray-300" onClick={() => setIsOpen(false)}>DASHBOARD</Link>
+                  <Link to="/dashboard" className="text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)}>DASHBOARD</Link>
                   {user?.role === "admin" && (
                     <AdminButton onClick={() => {
                       navigate("/admin/dashboard");
@@ -134,7 +135,7 @@ export const Navbar = () => {
                   <Link to="/login">
                     <Button 
                       variant="outline" 
-                      className="border-white text-white hover:bg-white hover:text-cap-dark" 
+                      className="border-primary text-primary hover:bg-primary hover:text-white" 
                       onClick={() => setIsOpen(false)}
                     >
                       LOGIN
