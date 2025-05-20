@@ -10,9 +10,12 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     defaults:
       run:
         working-directory: .
+=======
+>>>>>>> 87d6195b6cadd5d2f2b6a2ebd12021af37f5ef01
     
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
