@@ -8,11 +8,11 @@ interface DocumentData {
   file: File;
   path: string;
   documentId: string;
-  applicationId: string; // Now required
 }
 
 export interface DocumentsStore {
   [key: string]: DocumentData;
+  applicationId?: string; // Separate property, not part of index signature
 }
 
 export const useSupabaseUpload = (
@@ -87,11 +87,12 @@ export const useSupabaseUpload = (
         [documentType]: {
           file: file,
           path: filePath,
-          documentId: documentId,
-          applicationId: applicationId || ""
+          documentId: documentId
         }
       };
-      
+      if (applicationId) {
+        updatedDocuments.applicationId = applicationId;
+      }
       setDocuments(updatedDocuments);
       
       // Set the form value for react-hook-form

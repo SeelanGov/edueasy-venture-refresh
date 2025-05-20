@@ -20,7 +20,7 @@ interface UserStats {
 }
 
 interface PersonalizedDashboardProps {
-  applications: Application[];
+  applications: Application[]; // institution_id and program_id are required (nullable)
   loading: boolean;
 }
 

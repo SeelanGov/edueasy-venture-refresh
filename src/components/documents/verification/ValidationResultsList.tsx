@@ -1,4 +1,3 @@
-
 import { CheckCircle, XCircle, ClipboardList } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Fragment, ReactNode } from "react";
@@ -37,7 +36,7 @@ export const ValidationResultsList = ({ validationResults, extractedFields }: Va
                       .trim()}:
                     {typeof value === 'boolean' 
                       ? '' 
-                      : ` ${String(value)}`}
+                      : ` ${typeof value === 'string' || typeof value === 'number' ? value : JSON.stringify(value)}`}
                   </span>
                 </div>
               )

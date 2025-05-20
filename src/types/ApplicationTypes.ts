@@ -7,8 +7,8 @@ export interface Application {
   institution_name?: string;
   program_name?: string;
   user_id: string;
-  institution_id?: string | null; // Optional and nullable to match DB
-  program_id?: string;
+  institution_id: string | null; // Required, but nullable
+  program_id: string | null;     // Required, but nullable
   documents?: Document[];
 }
 

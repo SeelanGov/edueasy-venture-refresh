@@ -32,6 +32,8 @@ export const useApplications = () => {
 
             return {
               ...app,
+              institution_id: app.institution_id ?? null,
+              program_id: app.program_id ?? null,
               documents: documents || [],
             };
           })
