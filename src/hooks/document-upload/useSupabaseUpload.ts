@@ -8,7 +8,7 @@ interface DocumentData {
   file: File;
   path: string;
   documentId: string;
-  applicationId?: string; // Make applicationId optional for compatibility
+  applicationId: string; // Now required
 }
 
 export interface DocumentsStore {
@@ -88,12 +88,9 @@ export const useSupabaseUpload = (
           file: file,
           path: filePath,
           documentId: documentId,
+          applicationId: applicationId || ""
         }
       };
-      
-      if (applicationId) {
-        updatedDocuments.applicationId = applicationId;
-      }
       
       setDocuments(updatedDocuments);
       
