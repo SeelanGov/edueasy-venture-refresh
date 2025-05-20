@@ -9,7 +9,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Progress } from '@/components/ui/progress';
 import { Plus, ChevronRight, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-import { Application } from '@/types/ApplicationTypes';
+import type { Application } from '@/types/ApplicationTypes';
 
 interface UserStats {
   fullName: string;

@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { Application, Document } from "@/types/ApplicationTypes";
+import type { Application, Document } from "@/types/ApplicationTypes";
 
 export const useApplications = () => {
   const { user } = useAuth();
@@ -22,8 +21,8 @@ export const useApplications = () => {
         if (error) throw error;
 
         // Fetch documents for each application
-        const appsWithDocs = await Promise.all(
-          (data || []).map(async (app) => {
+        const appsWithDocs: Application[] = await Promise.all(
+          (data || []).map(async (app: any) => {
             const { data: documents, error: docsError } = await supabase
               .from("documents")
               .select("*")
@@ -34,7 +33,7 @@ export const useApplications = () => {
             return {
               ...app,
               documents: documents || [],
-            } as Application;
+            };
           })
         );
 
