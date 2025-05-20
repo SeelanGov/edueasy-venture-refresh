@@ -6,7 +6,7 @@ import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
 import { EducationForm, EducationFormValues } from "./EducationForm";
 import { SubjectMark } from "@/hooks/useProfileCompletionStore";
 import { parseError } from "@/utils/errorHandler";
-import { logError } from "@/../edueasy-venture-refresh/src/utils/logging";
+import { logError } from "@/utils/logging";
 
 interface EducationHistoryStepProps {
   onComplete: () => void;

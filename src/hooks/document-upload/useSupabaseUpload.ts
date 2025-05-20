@@ -1,4 +1,3 @@
-
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
@@ -9,11 +8,11 @@ interface DocumentData {
   file: File;
   path: string;
   documentId: string;
+  applicationId?: string; // Make applicationId optional for compatibility
 }
 
 export interface DocumentsStore {
   [key: string]: DocumentData;
-  applicationId?: string | undefined;
 }
 
 export const useSupabaseUpload = (

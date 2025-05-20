@@ -1,4 +1,3 @@
-
 import { Database } from "@/integrations/supabase/types";
 
 export interface Application {
@@ -8,7 +7,7 @@ export interface Application {
   institution_name?: string;
   program_name?: string;
   user_id: string;
-  institution_id?: string;
+  institution_id: string; // Make required for type safety
   program_id?: string;
   documents?: Document[];
 }
