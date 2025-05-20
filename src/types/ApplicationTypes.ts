@@ -7,7 +7,7 @@ export interface Application {
   institution_name?: string;
   program_name?: string;
   user_id: string;
-  institution_id: string; // Make required for type safety
+  institution_id?: string | null; // Optional and nullable to match DB
   program_id?: string;
   documents?: Document[];
 }
