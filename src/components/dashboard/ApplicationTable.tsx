@@ -14,35 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-interface Institution {
-  id: string;
-  name: string;
-}
-
-interface Program {
-  id: string;
-  name: string;
-}
-
-interface Document {
-  id: string;
-  file_path: string;
-  created_at: string;
-  verification_status: string | null;
-  document_type: string | null;
-}
-
-interface Application {
-  id: string;
-  institution_id: string;
-  program_id: string;
-  status: string;
-  created_at: string;
-  documents: Document[];
-  institution?: Institution;
-  program?: Program;
-}
+import type { Application, Document } from "@/types/ApplicationTypes";
 
 interface ApplicationTableProps {
   applications: Application[];
