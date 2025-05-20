@@ -1,5 +1,7 @@
 # Welcome to your Lovable project
 
+[![CI/CD](https://github.com/SeelanGov/edueasy-venture-refresh/workflows/CI/CD/badge.svg)](https://github.com/SeelanGov/edueasy-venture-refresh/actions)
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/f1e7aa7c-0ce5-4a8a-9e5d-737a10658e28
