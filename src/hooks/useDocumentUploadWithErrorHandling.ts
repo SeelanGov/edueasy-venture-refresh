@@ -8,14 +8,8 @@ import { useFileProcessing } from "./document-upload/useFileProcessing";
 import { useSupabaseUpload } from "./document-upload/useSupabaseUpload";
 import { useDocumentNotifications } from "./document-upload/useDocumentNotifications";
 
-// Define proper type for DocumentsStore
-interface DocumentsStore {
-  [key: string]: {
-    file: File;
-    path: string;
-    documentId: string;
-  };
-}
+// Import the DocumentsStore interface from useSupabaseUpload
+import { DocumentsStore } from "./document-upload/useSupabaseUpload";
 
 export const useDocumentUploadWithErrorHandling = (
   getDocumentState: (documentType: string) => DocumentUploadState,

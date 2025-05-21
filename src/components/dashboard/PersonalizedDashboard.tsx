@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +21,7 @@ interface UserStats {
 }
 
 interface PersonalizedDashboardProps {
-  applications: Application[]; // institution_id and program_id are required (nullable)
+  applications: Application[];  // Using the updated Application type
   loading: boolean;
 }
 
