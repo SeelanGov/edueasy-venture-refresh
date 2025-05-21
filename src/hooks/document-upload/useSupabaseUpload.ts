@@ -10,9 +10,14 @@ interface DocumentData {
   documentId: string;
 }
 
-export interface DocumentsStore {
-  [key: string]: DocumentData;
-  applicationId?: string; // Separate property, not part of index signature
+// Base interface without index signature
+interface BaseDocumentsStore {
+  applicationId?: string;
+}
+
+// Extended interface with index signature
+export interface DocumentsStore extends BaseDocumentsStore {
+  [key: string]: DocumentData | string | undefined;
 }
 
 export const useSupabaseUpload = (

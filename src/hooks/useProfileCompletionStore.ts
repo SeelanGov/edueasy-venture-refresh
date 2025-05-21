@@ -45,8 +45,14 @@ interface DocumentInfo {
   documentId: string;
 }
 
-interface Documents {
+// Base interface for Documents
+interface BaseDocuments {
   applicationId?: string;
+}
+
+// Extended interface with document types
+interface Documents extends BaseDocuments {
+  [key: string]: DocumentInfo | string | undefined;
   idDocument?: DocumentInfo;
   proofOfResidence?: DocumentInfo;
   grade11Results?: DocumentInfo;
