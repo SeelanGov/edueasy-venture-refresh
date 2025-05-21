@@ -1,23 +1,14 @@
+
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { DocumentType, DocumentUploadState } from "@/components/profile-completion/documents/types";
-
-// Define proper types for documents store
-interface DocumentData {
-  file: File;
-  path: string;
-  documentId: string;
-}
-
-// Base interface without index signature
-interface BaseDocumentsStore {
-  applicationId?: string;
-}
+import { DocumentInfo } from "@/types/ApplicationTypes";
 
 // Extended interface with index signature
-export interface DocumentsStore extends BaseDocumentsStore {
-  [key: string]: DocumentData | string | undefined;
+export interface DocumentsStore {
+  applicationId?: string;
+  [key: string]: DocumentInfo | string | undefined;
 }
 
 export const useSupabaseUpload = (

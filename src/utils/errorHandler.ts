@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 
 /**
@@ -19,6 +20,17 @@ export enum ErrorCategory {
  * Unified error interface
  */
 export interface AppError {
+  message: string;
+  category: ErrorCategory;
+  details?: Record<string, unknown>;
+  originalError?: unknown;
+  timestamp?: string;
+}
+
+/**
+ * Standard Error type used across the application
+ */
+export interface StandardError {
   message: string;
   category: ErrorCategory;
   details?: Record<string, unknown>;

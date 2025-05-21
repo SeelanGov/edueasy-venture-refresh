@@ -1,5 +1,7 @@
+
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { DocumentInfo } from '@/types/ApplicationTypes';
 
 interface PersonalInfo {
   fullName: string;
@@ -38,24 +40,10 @@ interface EducationInfo {
   grade12Subjects?: SubjectMark[];
 }
 
-interface DocumentInfo {
-  file: File | null;
-  path: string;
-  documentId: string;
-}
-
-// Base interface for Documents
-interface BaseDocuments {
-  applicationId?: string;
-}
-
 // Extended interface with document types
-interface Documents extends BaseDocuments {
+interface Documents {
+  applicationId?: string;
   [key: string]: DocumentInfo | string | undefined;
-  idDocument?: DocumentInfo;
-  proofOfResidence?: DocumentInfo;
-  grade11Results?: DocumentInfo;
-  grade12Results?: DocumentInfo;
 }
 
 interface ProfileCompletionState {

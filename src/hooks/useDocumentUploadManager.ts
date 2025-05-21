@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { DocumentInfo } from "@/types/ApplicationTypes";
 
 const schema = z.object({
   idDocument: z.any().optional(),
@@ -112,7 +113,7 @@ export const useDocumentUploadManager = () => {
     if (!documents) return;
     
     Object.entries(documents).forEach(([key, doc]) => {
-      if (doc && doc.file && doc.path) {
+      if (doc && typeof doc !== 'string' && 'file' in doc && doc.file && doc.path) {
         setDocumentState(key, {
           file: doc.file,
           uploaded: true,
