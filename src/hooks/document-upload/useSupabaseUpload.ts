@@ -19,7 +19,9 @@ export const useSupabaseUpload = (
   setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
   documents: DocumentsStore,
   setDocuments: (docs: DocumentsStore) => void,
-  form: any
+  form: {
+    setValue: (field: string, value: any) => void;
+  }
 ) => {
   const uploadToSupabase = useCallback(async (
     file: File,

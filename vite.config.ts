@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
+    (mode === 'development' || process.env.LOVEABLE_PREVIEW === 'true') &&
     componentTagger(),
   ].filter(Boolean),
   resolve: {

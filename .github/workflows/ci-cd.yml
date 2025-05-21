@@ -17,6 +17,8 @@ jobs:
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      # Set preview flag for loveable.dev previews
+      LOVEABLE_PREVIEW: ${{ github.event_name == 'pull_request' || contains(github.ref, 'preview') }}
     
     steps:
       - name: Checkout code

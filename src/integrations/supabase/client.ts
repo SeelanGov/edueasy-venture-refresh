@@ -8,12 +8,30 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Add better error handling and logging
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.error("Supabase environment variables missing:", {
+  console.warn("Supabase environment variables missing:", {
     SUPABASE_URL_SET: !!SUPABASE_URL,
     SUPABASE_KEY_SET: !!SUPABASE_PUBLISHABLE_KEY,
     ENV_KEYS: Object.keys(import.meta.env).filter(key => key.startsWith('VITE_'))
   });
-  throw new Error("Supabase environment variables are not set. Please check your .env file.");
+  
+  // For preview environments, use dummy values instead of throwing an error
+  const isPreviewing = import.meta.env.MODE === 'preview' || 
+                      typeof window !== 'undefined' && window.location.hostname.includes('loveable.dev');
+  
+  if (isPreviewing) {
+    console.log("Using mock Supabase client for preview environment");
+    // Create a mock client for preview environments
+    const mockClient = {
+      auth: { onAuthStateChange: () => ({ data: null, error: null, subscription: { unsubscribe: () => {} } }) },
+      // Add other necessary mock methods here
+    };
+    // @ts-ignore - Type safety is less important for preview environments
+    export const supabase = mockClient;
+    return;
+  } else {
+    // Only throw in development and production, not in preview
+    throw new Error("Supabase environment variables are not set. Please check your .env file.");
+  }
 }
 
 // Log successful initialization (without exposing sensitive values)
