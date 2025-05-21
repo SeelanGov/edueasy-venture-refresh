@@ -1,3 +1,4 @@
+
 import { Database } from "@/integrations/supabase/types";
 
 export interface Application {
@@ -7,8 +8,8 @@ export interface Application {
   institution_name?: string;
   program_name?: string;
   user_id: string;
-  institution_id?: string | null; // Optional and nullable to match database schema
-  program_id?: string | null;     // Optional and nullable to match database schema
+  institution_id?: string | null; // Made optional and nullable to match database schema
+  program_id?: string | null;     // Made optional and nullable to match database schema
   documents?: Document[];
 }
 
