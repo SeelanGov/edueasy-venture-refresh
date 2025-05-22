@@ -1,0 +1,7 @@
+{
+  "name": "edueasy-scripts",
+  "version": "1.0.0",
+  "description": "Helper scripts for EduEasy",
+  "type": "commonjs",
+  "private": true
+}

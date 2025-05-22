@@ -2,9 +2,10 @@
 // This script is used to handle the known npm bug with optional dependencies
 // https://github.com/npm/cli/issues/4828
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+// Use CommonJS since this will be run directly with Node
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 console.log('🔧 Fixing Rollup dependencies for the current platform...');
 
