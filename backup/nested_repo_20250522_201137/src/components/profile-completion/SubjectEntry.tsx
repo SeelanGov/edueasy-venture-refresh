@@ -31,12 +31,7 @@ const commonSubjects = [
 
 interface SubjectEntryProps {
   index: number;
-  control: Control<{
-    [key: string]: Array<{
-      subject: string;
-      mark: number;
-    }>;
-  }>;
+  control: Control<any>; // Changed from unknown to any to fix type error
   fieldName: string;
   canDelete: boolean;
   onDelete: () => void;
