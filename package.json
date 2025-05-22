@@ -8,13 +8,15 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:safe": "vite build --emptyOutDir --minify=false",
+    "build:ci": "vite build --config vite.config.ci.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
     "check-env": "node scripts/check-env-vars.js",
     "verify-env": "node scripts/verify-env.js",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf node_modules && rm -f package-lock.json && npm install"
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "fix-rollup": "node scripts/fix-rollup-deps.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

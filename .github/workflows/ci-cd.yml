@@ -57,9 +57,5 @@ jobs:
       - name: Build with fallback
         run: |
           echo "Attempting build with standard configuration..."
-          npm run build || (
-            echo "Standard build failed, trying CI-specific build configuration..."
-            export NODE_OPTIONS="--max-old-space-size=4096"
-            node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); pkg.scripts['build:ci']='vite build --config vite.config.ci.ts'; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
-            npm run build:ci || npm run build:safe
-          )
+          export NODE_OPTIONS="--max-old-space-size=4096"
+          npm run build || npm run build:ci || npm run build:safe
