@@ -11,6 +11,8 @@ import {
   BarChart,
   Settings,
   MessageSquare,
+  CreditCard,
+  Users,
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useAdminRole } from '@/hooks/useAdminRole';
@@ -69,6 +71,16 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       name: 'Programs',
       path: '/programs',
       icon: <BookOpen className="h-5 w-5" />,
+    },
+    {
+      name: 'Subscription',
+      path: '/subscription',
+      icon: <CreditCard className="h-5 w-5" />,
+    },
+    {
+      name: 'Referrals',
+      path: '/referrals',
+      icon: <Users className="h-5 w-5" />,
     },
     {
       name: 'My Profile',
