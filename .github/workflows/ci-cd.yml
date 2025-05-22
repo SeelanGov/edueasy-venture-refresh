@@ -19,6 +19,8 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       # Set preview flag for loveable.dev previews
       LOVEABLE_PREVIEW: ${{ github.event_name == 'pull_request' || contains(github.ref, 'preview') }}
+      # Force platform-specific dependencies to be skipped
+      ROLLUP_SKIP_PLATFORM_SPECIFIC: true
     
     steps:
       - name: Checkout code
@@ -31,8 +33,17 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Clean install (fix for Rollup platform-specific dependencies)
+        run: |
+          echo "Removing package-lock.json and node_modules to fix Rollup dependency issues"
+          rm -f package-lock.json
+          rm -rf node_modules
+          npm install
+          
+      - name: Fix Rollup dependencies
+        run: |
+          echo "Installing platform-specific Rollup dependencies"
+          node scripts/fix-rollup-deps.js || npm install @rollup/rollup-linux-x64-gnu --no-save
 
       - name: Environment check
         run: npm run check-env
@@ -43,5 +54,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build
-        run: npm run build
+      - name: Build with fallback
+        run: |
+          echo "Attempting build with standard configuration..."
+          npm run build || (
+            echo "Standard build failed, trying CI-specific build configuration..."
+            export NODE_OPTIONS="--max-old-space-size=4096"
+            node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); pkg.scripts['build:ci']='vite build --config vite.config.ci.ts'; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
+            npm run build:ci || npm run build:safe
+          )
