@@ -6,6 +6,19 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Create a mock client for preview environments
+const createMockClient = () => {
+  return {
+    auth: { 
+      onAuthStateChange: () => ({ data: null, error: null, subscription: { unsubscribe: () => {} } }) 
+    },
+    // Add other necessary mock methods here
+  };
+};
+
+// Initialize supabase client
+let supabaseClient;
+
 // Add better error handling and logging
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   console.warn("Supabase environment variables missing:", {
@@ -20,24 +33,19 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   
   if (isPreviewing) {
     console.log("Using mock Supabase client for preview environment");
-    // Create a mock client for preview environments
-    const mockClient = {
-      auth: { onAuthStateChange: () => ({ data: null, error: null, subscription: { unsubscribe: () => {} } }) },
-      // Add other necessary mock methods here
-    };
-    // @ts-ignore - Type safety is less important for preview environments
-    export const supabase = mockClient;
-    return;
+    // @ts-expect-error - Type safety is less important for preview environments
+    supabaseClient = createMockClient();
   } else {
     // Only throw in development and production, not in preview
     throw new Error("Supabase environment variables are not set. Please check your .env file.");
   }
+} else {
+  // Log successful initialization (without exposing sensitive values)
+  console.log("Supabase client initialized successfully with URL:", SUPABASE_URL);
+  supabaseClient = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 }
-
-// Log successful initialization (without exposing sensitive values)
-console.log("Supabase client initialized successfully with URL:", SUPABASE_URL);
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+export const supabase = supabaseClient;
