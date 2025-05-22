@@ -23,6 +23,8 @@ import AdminAiTraining from "./pages/AdminAiTraining";
 import PartnerRegister from "./pages/PartnerRegister";
 import PartnerLogin from "./pages/PartnerLogin";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import ReferralsPage from "./pages/ReferralsPage";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -107,6 +109,22 @@ const App = () => {
               <Route path="/partner/register" element={<PartnerRegister />} />
               <Route path="/partner/login" element={<PartnerLogin />} />
               <Route path="/partner/dashboard" element={<PartnerDashboard />} />
+              <Route 
+                path="/subscription" 
+                element={
+                  <AuthGuard>
+                    <SubscriptionPage />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/referrals" 
+                element={
+                  <AuthGuard>
+                    <ReferralsPage />
+                  </AuthGuard>
+                } 
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
             {/* Add both toast providers */}
