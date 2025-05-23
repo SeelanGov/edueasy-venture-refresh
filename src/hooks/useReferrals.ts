@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   Referral,
   ReferralStatus,
@@ -24,7 +24,7 @@ export function useReferrals() {
   const [error, setError] = useState<string | null>(null);
 
   // Helper function to handle errors
-  const handleError = (error: any, message: string) => {
+  const handleError = (error: unknown, message: string) => {
     console.error(message, error);
     setError(message);
     toast({
@@ -35,7 +35,7 @@ export function useReferrals() {
   };
 
   // Fetch user's profile with referral code
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     if (!user?.id) {
       setUserProfile(null);
       return;
@@ -72,10 +72,10 @@ export function useReferrals() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, handleError]);
 
   // Fetch user's referrals
-  const fetchReferrals = async () => {
+  const fetchReferrals = useCallback(async () => {
     if (!user?.id) {
       setReferrals([]);
       return;
@@ -112,7 +112,7 @@ export function useReferrals() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, handleError]);
 
   // Generate a new referral code
   const generateReferralCode = async () => {
@@ -305,7 +305,7 @@ export function useReferrals() {
       fetchUserProfile();
       fetchReferrals();
     }
-  }, [user]);
+  }, [user, fetchUserProfile, fetchReferrals]);
 
   return {
     loading,
