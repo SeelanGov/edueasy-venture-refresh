@@ -1,0 +1,42 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 0'  # Run every Sunday at midnight
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --production
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+      - name: Check for sensitive information
+        run: |
+          echo "Checking for sensitive information in code..."
+          ! grep -r --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" --include="*.json" --exclude-dir="node_modules" -E "(password|token|key|secret).*['\"][a-zA-Z0-9_\-+=]{8,}['\"]" .

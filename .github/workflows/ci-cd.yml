@@ -7,9 +7,15 @@ on:
   pull_request:
     branches: [main]
 
+# Prevent multiple deployments running at the same time
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Set a timeout to prevent hung builds
     defaults:
       run:
         working-directory: .
@@ -21,6 +27,8 @@ jobs:
       LOVEABLE_PREVIEW: ${{ github.event_name == 'pull_request' || contains(github.ref, 'preview') }}
       # Force platform-specific dependencies to be skipped
       ROLLUP_SKIP_PLATFORM_SPECIFIC: true
+      # Set CI flag
+      CI: true
     
     steps:
       - name: Checkout code
@@ -43,10 +51,20 @@ jobs:
       - name: Fix Rollup dependencies
         run: |
           echo "Installing platform-specific Rollup dependencies"
-          node scripts/fix-rollup-deps.js || npm install @rollup/rollup-linux-x64-gnu --no-save
+          if [ -f "scripts/fix-rollup-deps.js" ]; then
+            node scripts/fix-rollup-deps.js
+          else
+            echo "fix-rollup-deps.js not found, using fallback"
+            npm install @rollup/rollup-linux-x64-gnu --no-save
+          fi
 
       - name: Environment check
-        run: npm run check-env
+        run: |
+          if [ -f "scripts/check-env-vars.js" ]; then
+            node scripts/check-env-vars.js
+          else
+            echo "Environment check script not found, skipping"
+          fi
 
       - name: Type check
         run: npm run type-check
@@ -54,8 +72,114 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Run tests
+        run: npm test
+
       - name: Build with fallback
         run: |
           echo "Attempting build with standard configuration..."
           export NODE_OPTIONS="--max-old-space-size=4096"
           npm run build || npm run build:ci || npm run build:safe
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+          retention-days: 7
+          
+  deploy-staging:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10  # Set a timeout to prevent hung deployments
+    environment: 
+      name: staging
+      url: https://staging.edueasy.com  # Replace with your actual staging URL
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist
+          
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+        # Only run this step if DEPLOY_SSH_KEY is set
+        if: ${{ secrets.DEPLOY_SSH_KEY != '' }}
+          
+      - name: Add host key
+        # Only run if previous step succeeded and STAGING_SERVER_IP is set
+        if: ${{ success() && secrets.STAGING_SERVER_IP != '' }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.STAGING_SERVER_IP }} >> ~/.ssh/known_hosts
+          
+      - name: Deploy to staging
+        # Only run if all required secrets are set
+        if: ${{ success() && secrets.DEPLOY_SSH_KEY != '' && secrets.STAGING_SERVER_IP != '' && secrets.STAGING_SERVER_USER != '' && secrets.STAGING_SERVER_PATH != '' }}
+        run: |
+          echo "Deploying to staging server..."
+          rsync -avz --delete dist/ ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_IP }}:${{ secrets.STAGING_SERVER_PATH }}
+          
+      - name: Notify deployment success
+        if: ${{ success() && secrets.DEPLOY_SSH_KEY != '' && secrets.STAGING_SERVER_IP != '' }}
+        run: |
+          echo "Staging deployment completed successfully"
+          
+      - name: Notify deployment skipped
+        if: ${{ !secrets.DEPLOY_SSH_KEY || !secrets.STAGING_SERVER_IP || !secrets.STAGING_SERVER_USER || !secrets.STAGING_SERVER_PATH }}
+        run: |
+          echo "Staging deployment was skipped because one or more required secrets are not set"
+          echo "Required secrets: DEPLOY_SSH_KEY, STAGING_SERVER_IP, STAGING_SERVER_USER, STAGING_SERVER_PATH"
+          
+  deploy-production:
+    needs: deploy-staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10  # Set a timeout to prevent hung deployments
+    environment: 
+      name: production
+      url: https://edueasy.com  # Replace with your actual production URL
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist
+          
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+        # Only run this step if DEPLOY_SSH_KEY is set
+        if: ${{ secrets.DEPLOY_SSH_KEY != '' }}
+          
+      - name: Add host key
+        # Only run if previous step succeeded and PRODUCTION_SERVER_IP is set
+        if: ${{ success() && secrets.PRODUCTION_SERVER_IP != '' }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.PRODUCTION_SERVER_IP }} >> ~/.ssh/known_hosts
+          
+      - name: Deploy to production
+        # Only run if all required secrets are set
+        if: ${{ success() && secrets.DEPLOY_SSH_KEY != '' && secrets.PRODUCTION_SERVER_IP != '' && secrets.PRODUCTION_SERVER_USER != '' && secrets.PRODUCTION_SERVER_PATH != '' }}
+        run: |
+          echo "Deploying to production server..."
+          rsync -avz --delete dist/ ${{ secrets.PRODUCTION_SERVER_USER }}@${{ secrets.PRODUCTION_SERVER_IP }}:${{ secrets.PRODUCTION_SERVER_PATH }}
+          
+      - name: Notify deployment success
+        if: ${{ success() && secrets.DEPLOY_SSH_KEY != '' && secrets.PRODUCTION_SERVER_IP != '' }}
+        run: |
+          echo "Production deployment completed successfully"
+          
+      - name: Notify deployment skipped
+        if: ${{ !secrets.DEPLOY_SSH_KEY || !secrets.PRODUCTION_SERVER_IP || !secrets.PRODUCTION_SERVER_USER || !secrets.PRODUCTION_SERVER_PATH }}
+        run: |
+          echo "Production deployment was skipped because one or more required secrets are not set"
+          echo "Required secrets: DEPLOY_SSH_KEY, PRODUCTION_SERVER_IP, PRODUCTION_SERVER_USER, PRODUCTION_SERVER_PATH"

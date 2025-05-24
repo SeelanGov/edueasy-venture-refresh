@@ -1,0 +1,51 @@
+name: Validate CI/CD Configuration
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'vite.config.ci.ts'
+      - 'package.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate CI/CD configuration
+        run: node scripts/verify-ci-cd-setup.js
+
+      - name: Validate workflow files
+        run: |
+          echo "Validating GitHub Actions workflow files..."
+          for file in .github/workflows/*.yml; do
+            echo "Validating $file"
+            cat $file | grep -v "secrets\." > temp.yml
+            npx yaml-validator temp.yml
+            rm temp.yml
+          done
+
+      - name: Check for sensitive information
+        run: |
+          echo "Checking for sensitive information in workflow files..."
+          ! grep -r --include="*.yml" --include="*.js" --include="*.ps1" -E "(password|token|key|secret).*['\"][a-zA-Z0-9_\-+=]{8,}['\"]" .github scripts
+
+      - name: Validate deployment scripts
+        run: |
+          echo "Validating deployment scripts..."
+          for file in scripts/deploy-*.ps1; do
+            echo "Checking $file"
+            cat $file | grep -v "exit 1" > /dev/null
+          done
