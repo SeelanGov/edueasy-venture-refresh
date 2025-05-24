@@ -16,7 +16,11 @@
     "verify-env": "node scripts/verify-env.js",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf node_modules && rm -f package-lock.json && npm install",
-    "fix-rollup": "node scripts/fix-rollup-deps.js"
+    "fix-rollup": "node scripts/fix-rollup-deps.js",
+    "deploy:staging": "powershell -File scripts/deploy-staging.ps1",
+    "deploy:production": "powershell -File scripts/deploy-production.ps1",
+    "ci:status": "powershell -File scripts/check-ci-status.ps1",
+    "ci:verify-setup": "node scripts/verify-ci-cd-setup.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

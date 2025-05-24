@@ -79,7 +79,7 @@ export function ReferralDashboard() {
   };
   
   // Get badge variant based on referral status
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
     switch (status) {
       case 'completed':
         return 'default';
@@ -233,7 +233,7 @@ export function ReferralDashboard() {
 interface ReferralTableProps {
   referrals: any[];
   formatDate: (date: string) => string;
-  getStatusBadgeVariant: (status: string) => string;
+  getStatusBadgeVariant: (status: string) => "default" | "secondary" | "destructive" | "outline";
 }
 
 function ReferralTable({ referrals, formatDate, getStatusBadgeVariant }: ReferralTableProps) {

@@ -17,6 +17,10 @@ import {
   Sun,
   User,
   X,
+  Briefcase,
+  Users,
+  Building,
+  Video,
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
@@ -81,6 +85,26 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
       name: 'Programs',
       path: '/programs',
       icon: <BookOpen className="h-5 w-5" />,
+    },
+    {
+      name: 'Career Guidance',
+      path: '/career-guidance',
+      icon: <Briefcase className="h-5 w-5" />,
+    },
+    {
+      name: 'Consultations',
+      path: '/consultations',
+      icon: <Video className="h-5 w-5" />,
+    },
+    {
+      name: 'Referrals',
+      path: '/referrals',
+      icon: <Users className="h-5 w-5" />,
+    },
+    {
+      name: 'Sponsorships',
+      path: '/sponsorships',
+      icon: <Building className="h-5 w-5" />,
     },
     {
       name: 'My Profile',
@@ -152,10 +176,10 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
         </div>
       </div>
 
-      {/* Mobile bottom navigation */}
+      {/* Mobile bottom navigation - showing only the most important items */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
         <div className="flex justify-around items-center h-16">
-          {navItems.map((item) => (
+          {navItems.slice(0, 5).map((item) => (
             <Link 
               key={item.path} 
               to={item.path}
@@ -178,7 +202,10 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)}></div>
           <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white dark:bg-gray-900 overflow-y-auto">
             <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-              <Logo />
+              <div className="flex items-center">
+                <Logo />
+                <h2 className="ml-3 text-lg font-semibold text-gray-900 dark:text-gray-100">EduEasy</h2>
+              </div>
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -189,27 +216,31 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
               </Button>
             </div>
             <div className="p-4">
-              <nav className="space-y-2">
-                {navItems.map((item) => (
-                  <Link 
-                    key={item.path} 
-                    to={item.path}
-                    className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-cap-teal/10 text-cap-teal dark:bg-cap-teal/20'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="flex-shrink-0">{item.icon}</span>
-                    <span className="ml-3">{item.name}</span>
-                  </Link>
-                ))}
-              </nav>
+              <div className="mb-4">
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">MAIN NAVIGATION</h3>
+                <nav className="space-y-1">
+                  {navItems.map((item) => (
+                    <Link 
+                      key={item.path} 
+                      to={item.path}
+                      className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                        isActive(item.path)
+                          ? 'bg-cap-teal/10 text-cap-teal dark:bg-cap-teal/20'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <span className="flex-shrink-0">{item.icon}</span>
+                      <span className="ml-3">{item.name}</span>
+                    </Link>
+                  ))}
+                </nav>
+              </div>
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">SETTINGS</h3>
                 <Button 
                   variant="ghost" 
-                  className="w-full justify-start text-gray-700 dark:text-gray-300 mb-3"
+                  className="w-full justify-start text-gray-700 dark:text-gray-300 mb-3 px-4 py-3"
                   onClick={toggleTheme}
                 >
                   {isDarkMode ? <Sun className="h-5 w-5 mr-3" /> : <Moon className="h-5 w-5 mr-3" />}
@@ -218,7 +249,7 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
                 <Button 
                   variant="ghost" 
                   onClick={handleSignOut}
-                  className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                  className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 px-4 py-3"
                 >
                   <LogOut className="h-5 w-5 mr-3" />
                   Sign Out
@@ -234,22 +265,22 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
         {/* Top header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm">
           <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div className="flex items-center md:hidden">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setMobileMenuOpen(true)}
-                className="text-gray-500 dark:text-gray-400"
-              >
-                <Menu />
-              </Button>
-            </div>
-            <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="md:hidden">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="text-gray-500 dark:text-gray-400"
+                >
+                  <Menu />
+                </Button>
+              </div>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 truncate max-w-[200px] sm:max-w-xs">
                 {navItems.find(item => isActive(item.path))?.name || 'Dashboard'}
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Add NotificationsPanel */}
               {user && <NotificationsPanel />}
               
@@ -263,16 +294,22 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
                   {isDarkMode ? <Sun /> : <Moon />}
                 </Button>
               </div>
-              <div className="hidden sm:block text-sm text-gray-600 dark:text-gray-300">
-                {user?.email}
+              
+              <div className="hidden sm:flex items-center gap-2 text-sm">
+                <div className="h-8 w-8 rounded-full bg-cap-teal/20 flex items-center justify-center text-cap-teal">
+                  {user?.email?.charAt(0).toUpperCase() || 'U'}
+                </div>
+                <span className="text-gray-600 dark:text-gray-300 hidden md:inline">
+                  {user?.email}
+                </span>
               </div>
             </div>
           </div>
         </header>
 
         {/* Main content area with bottom padding for mobile nav */}
-        <main className="flex-1 overflow-y-auto pb-16 md:pb-10">
-          <div className="bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100">
+        <main className="flex-1 overflow-y-auto pb-20 md:pb-10">
+          <div className="bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 min-h-[calc(100vh-4rem)]">
             {children}
           </div>
         </main>

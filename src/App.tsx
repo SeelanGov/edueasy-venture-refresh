@@ -25,6 +25,9 @@ import PartnerLogin from "./pages/PartnerLogin";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import ReferralsPage from "./pages/ReferralsPage";
+import CareerGuidancePage from "./pages/CareerGuidancePage";
+import ConsultationsPage from "./pages/ConsultationsPage";
+import SponsorshipsPage from "./pages/SponsorshipsPage";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -123,6 +126,28 @@ const App = () => {
                   <AuthGuard>
                     <ReferralsPage />
                   </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/career-guidance" 
+                element={
+                  <AuthGuard>
+                    <CareerGuidancePage />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/consultations" 
+                element={
+                  <AuthGuard>
+                    <ConsultationsPage />
+                  </AuthGuard>
+                } 
+              />
+              <Route 
+                path="/sponsorships" 
+                element={
+                  <SponsorshipsPage />
                 } 
               />
               <Route path="*" element={<NotFound />} />

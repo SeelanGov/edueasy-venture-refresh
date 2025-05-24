@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   SubscriptionTier, 
   UserSubscription, 
@@ -231,8 +231,8 @@ export function useSubscription() {
           user_id: user.id,
           subscription_id: userSubscription.id,
           amount: 0,
-          status: TransactionStatus.COMPLETED,
-          transaction_type: TransactionType.CANCELLED
+          status: TransactionStatus.CANCELLED,
+          transaction_type: TransactionType.SUBSCRIPTION
         });
       
       if (transactionError) throw transactionError;
