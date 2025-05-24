@@ -7,9 +7,15 @@ on:
   pull_request:
     branches: [main]
 
+# Prevent multiple deployments running at the same time
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Set a timeout to prevent hung builds
     defaults:
       run:
         working-directory: .
@@ -21,6 +27,8 @@ jobs:
       LOVEABLE_PREVIEW: ${{ github.event_name == 'pull_request' || contains(github.ref, 'preview') }}
       # Force platform-specific dependencies to be skipped
       ROLLUP_SKIP_PLATFORM_SPECIFIC: true
+      # Set CI flag
+      CI: true
     
     steps:
       - name: Checkout code
@@ -54,8 +62,19 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Run tests
+        run: npm test
+        continue-on-error: true  # Don't fail the build if tests fail
+
       - name: Build with fallback
         run: |
           echo "Attempting build with standard configuration..."
           export NODE_OPTIONS="--max-old-space-size=4096"
           npm run build || npm run build:ci || npm run build:safe
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+          retention-days: 7

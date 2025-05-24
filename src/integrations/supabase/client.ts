@@ -33,7 +33,6 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   
   if (isPreviewing) {
     console.log("Using mock Supabase client for preview environment");
-    // @ts-expect-error - Type safety is less important for preview environments
     supabaseClient = createMockClient();
   } else {
     // Only throw in development and production, not in preview

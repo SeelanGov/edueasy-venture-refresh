@@ -1,0 +1,16 @@
+# These owners will be the default owners for everything in the repo.
+# Unless a later match takes precedence, they will be requested for
+# review when someone opens a pull request.
+* @SeelanGov
+
+# CI/CD workflow files require approval from DevOps team
+.github/workflows/* @SeelanGov
+scripts/fix-rollup-deps.js @SeelanGov
+scripts/check-env-vars.js @SeelanGov
+scripts/deploy-*.ps1 @SeelanGov
+scripts/check-ci-status.ps1 @SeelanGov
+scripts/verify-ci-cd-setup.js @SeelanGov
+vite.config.ci.ts @SeelanGov
+
+# Documentation files
+docs/* @SeelanGov

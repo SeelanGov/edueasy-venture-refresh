@@ -8,7 +8,7 @@ const initAudio = () => {
   
   try {
     // Create audio element
-    notificationAudio = new Audio('/sounds/notification.mp3');
+    notificationAudio = new Audio('/notification.mp3');
     notificationAudio.volume = 0.5;
     
     // Preload audio

@@ -4,35 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { CheckCircle, XCircle, Info } from "lucide-react";
 import { SecurityBadge } from "@/components/ui/SecurityBadge";
+import { Control, FieldValues } from "react-hook-form";
 
 interface EnhancedFormFieldProps {
-  control: {
-    _formState: any;
-    _defaultValues: any;
-    _getWatch: any;
-    _formValues: any;
-    _getDirty: any;
-    _updateValid: any;
-    _updateFieldArray: any;
-    _subjects: any;
-    _proxyFormState: any;
-    _fields: any;
-    get: any;
-    register: any;
-    unregister: any;
-    _names: any;
-    _options: any;
-    _removeUnmounted: any;
-    _updateDisabledField: any;
-    _getFieldArray: any;
-    _reset: any;
-    _resetDefaultValues: any;
-    _updateFormState: any;
-    _disableForm: any;
-    _executeSchema: any;
-    _stateFlags: any;
-    _createValidationPromise: any;
-  };
+  control: Control<FieldValues>;
   name: string;
   label: string;
   required?: boolean;

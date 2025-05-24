@@ -1,4 +1,6 @@
 // Types for the EduEasy subscription system
+import { UserProfile } from "@/hooks/useUserProfile";
+import { Application } from "@/types/ApplicationTypes";
 
 export type SubscriptionTier = {
   id: string;
@@ -87,7 +89,7 @@ export enum SubscriptionTierName {
 }
 
 // Extended types for the existing database schema
-export interface ProfileWithSubscription extends Profile {
+export interface ProfileWithSubscription extends UserProfile {
   referral_code?: string;
   referred_by?: string;
   verifications_used?: number;

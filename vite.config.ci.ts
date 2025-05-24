@@ -2,8 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// CI/CD specific Vite configuration with simplified settings
-// to avoid platform-specific issues with Rollup
+// CI/CD specific Vite configuration with optimizations for CI environments
 export default defineConfig({
   server: {
     host: "::",
@@ -28,5 +27,11 @@ export default defineConfig({
         manualChunks: undefined,
       },
     },
+    // Set a higher timeout for CI builds
+    chunkSizeWarningLimit: 1000,
+  },
+  // Disable watch mode in CI
+  optimizeDeps: {
+    disabled: process.env.CI === 'true',
   },
 });

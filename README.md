@@ -1,14 +1,52 @@
-# Welcome to your Lovable project
+# EduEasy - Educational Platform
 
-[![CI/CD](https://github.com/SeelanGov/edueasy-venture-refresh/workflows/CI/CD/badge.svg)](https://github.com/SeelanGov/edueasy-venture-refresh/actions)
+[![CI/CD](https://github.com/SeelanGov/edueasy-venture-refresh/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/SeelanGov/edueasy-venture-refresh/actions/workflows/ci-cd.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4.1-purple.svg)](https://vitejs.dev/)
 
-## Project info
+## Project Info
 
-**URL**: https://lovable.dev/projects/f1e7aa7c-0ce5-4a8a-9e5d-737a10658e28
+EduEasy is a modern educational platform built with React, TypeScript, and Vite, designed to provide a seamless learning experience.
 
-## How can I edit this code?
+**Development URL**: https://lovable.dev/projects/f1e7aa7c-0ce5-4a8a-9e5d-737a10658e28
 
-There are several ways of editing your application.
+## Development
+
+### Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+```
+
+### CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment. The pipeline:
+
+1. Builds and tests the application on every push and pull request
+2. Deploys to staging and production environments (when configured)
+
+To check the status of the CI/CD pipeline:
+
+```bash
+npm run ci:status
+```
+
+To verify your CI/CD setup:
+
+```bash
+npm run ci:verify-setup
+```
 
 **Use Lovable**
 
