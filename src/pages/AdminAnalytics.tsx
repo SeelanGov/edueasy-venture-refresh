@@ -48,11 +48,11 @@ const AdminAnalytics = () => {
         .not('document_type', 'is', null);
       
       if (typeData) {
-        const validTypes = typeData
+        const validTypes: string[] = typeData
           .map(d => d.document_type)
           .filter((type): type is string => type !== null && typeof type === 'string');
-        const types = Array.from(new Set(validTypes)).sort();
-        setDocumentTypes(types);
+        const uniqueTypes: string[] = Array.from(new Set(validTypes)).sort();
+        setDocumentTypes(uniqueTypes);
       }
       
       // Fetch institutions
