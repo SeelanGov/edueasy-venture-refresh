@@ -1,14 +1,15 @@
+
 import React from "react";
 import { SubjectMark } from "@/hooks/useProfileCompletionStore";
 import { SubjectEntry } from "./SubjectEntry";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, FieldValues } from "react-hook-form";
 
 interface GradeSubjectsTabProps {
   gradeFields: Record<"id", string>[];
-  control: Control<unknown>;
+  control: Control<FieldValues>;
   fieldName: string;
   append: (value: SubjectMark) => void;
   remove: (index: number) => void;
