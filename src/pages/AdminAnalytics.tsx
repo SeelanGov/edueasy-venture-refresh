@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { AdminAuthGuard } from "@/components/AdminAuthGuard";
@@ -49,8 +48,7 @@ const AdminAnalytics = () => {
         .not('document_type', 'is', null);
       
       if (typeData) {
-        const types = Array.from(new Set(typeData.map(d => d.document_type || '')))
-          .filter(Boolean)
+        const types = Array.from(new Set(typeData.map(d => d.document_type).filter((type): type is string => type !== null)))
           .sort();
         setDocumentTypes(types);
       }
