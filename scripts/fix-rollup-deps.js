@@ -6,6 +6,10 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+
+// Define paths
+const rootDir = path.resolve(__dirname, '..');
 
 console.log('🔧 Fixing Rollup dependencies for the current platform...');
 
@@ -20,74 +24,86 @@ if (skipPlatformSpecific) {
   if (process.env.CI === 'true') {
     console.log('🔄 CI environment detected, installing Linux x64 version as fallback');
     try {
-      execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit' });
+      execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit', cwd: rootDir });
       console.log('✅ Successfully installed fallback Rollup dependency');
     } catch (error) {
-      console.error('❌ Failed to install fallback dependency:', error);
+      console.error('❌ Failed to install fallback dependency:', error.message);
       // Don't exit with error, try to continue
     }
   }
 } else {
-  // Detect the current platform
-  const platform = process.platform;
+  // Detect the current platform and architecture
+  const platform = os.platform();
+  const arch = os.arch();
   let targetDep = '';
+
+  console.log(`📊 Detected platform: ${platform}, architecture: ${arch}`);
 
   switch (platform) {
     case 'linux':
-      // Check if we're on an ARM processor
-      try {
-        const cpuInfo = execSync('uname -m').toString().trim();
-        if (cpuInfo.includes('arm') || cpuInfo.includes('aarch64')) {
-          targetDep = '@rollup/rollup-linux-arm64-gnu';
-        } else {
-          targetDep = '@rollup/rollup-linux-x64-gnu';
-        }
-      } catch (e) {
-        // Default to x64 if we can't determine
+      // Use os.arch() for more reliable architecture detection
+      if (arch === 'arm64' || arch === 'arm') {
+        targetDep = '@rollup/rollup-linux-arm64-gnu';
+      } else {
         targetDep = '@rollup/rollup-linux-x64-gnu';
-        console.warn('⚠️ Could not determine CPU architecture, defaulting to x64');
       }
       break;
-    case 'darwin':
-      // Check if we're on Apple Silicon
-      try {
-        const macArch = execSync('uname -m').toString().trim();
-        if (macArch === 'arm64') {
-          targetDep = '@rollup/rollup-darwin-arm64';
-        } else {
-          targetDep = '@rollup/rollup-darwin-x64';
-        }
-      } catch (e) {
-        // Default to x64 if we can't determine
+    case 'darwin': // macOS
+      if (arch === 'arm64') {
+        targetDep = '@rollup/rollup-darwin-arm64';
+      } else {
         targetDep = '@rollup/rollup-darwin-x64';
-        console.warn('⚠️ Could not determine CPU architecture, defaulting to x64');
       }
       break;
     case 'win32':
       targetDep = '@rollup/rollup-win32-x64-msvc';
       break;
     default:
-      console.error(`❌ Unsupported platform: ${platform}`);
+      console.warn(`⚠️ Unsupported platform: ${platform}`);
       if (process.env.CI === 'true') {
-        console.log('⚠️ Attempting to continue without platform-specific dependency');
+        console.log('⚠️ Attempting to continue with Linux x64 as fallback');
         targetDep = '@rollup/rollup-linux-x64-gnu'; // Default fallback
       } else {
-        process.exit(1);
+        console.log('⚠️ Using Linux x64 as fallback, but this may not work');
+        targetDep = '@rollup/rollup-linux-x64-gnu';
       }
   }
 
-  console.log(`🔍 Detected platform: ${platform}, installing: ${targetDep}`);
+  console.log(`🔍 Installing: ${targetDep}`);
 
   try {
     // Install the platform-specific dependency
-    execSync(`npm install ${targetDep} --no-save`, { stdio: 'inherit' });
+    execSync(`npm install ${targetDep} --no-save`, { stdio: 'inherit', cwd: rootDir });
     console.log('✅ Successfully installed platform-specific Rollup dependency');
   } catch (error) {
-    console.error('❌ Failed to install platform-specific dependency:', error);
-    if (process.env.CI === 'true') {
-      console.log('⚠️ Continuing despite error in CI environment');
-    } else {
-      process.exit(1);
+    console.error('❌ Failed to install platform-specific dependency:', error.message);
+    
+    // Try alternative approach if the first one fails
+    console.log('🔄 Trying alternative approach...');
+    try {
+      // Remove node_modules/.bin/rollup to force reinstallation
+      const rollupBinPath = path.join(rootDir, 'node_modules', '.bin', 'rollup');
+      if (fs.existsSync(rollupBinPath)) {
+        fs.unlinkSync(rollupBinPath);
+        console.log('✅ Removed rollup binary to force reinstallation');
+      }
+      
+      // Reinstall rollup
+      execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
+      console.log('✅ Reinstalled rollup');
+      
+      // Try installing the platform-specific dependency again
+      execSync(`npm install ${targetDep} --no-save`, { stdio: 'inherit', cwd: rootDir });
+      console.log(`✅ Successfully installed ${targetDep} on second attempt`);
+    } catch (secondError) {
+      console.error('❌ Alternative approach also failed:', secondError.message);
+      
+      if (process.env.CI === 'true') {
+        console.log('⚠️ Continuing despite error in CI environment');
+      } else {
+        console.log('⚠️ You may need to manually fix the Rollup dependencies');
+        console.log('   Try running: npm run clean');
+      }
     }
   }
 }

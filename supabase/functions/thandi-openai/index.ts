@@ -148,7 +148,7 @@ serve(async (req) => {
       .limit(1);
     
     const matchedIntent = matchingIntents && matchingIntents.length > 0 ? matchingIntents[0] : null;
-    let intentId = matchedIntent?.id || null;
+    const intentId = matchedIntent?.id || null;
     
     // Calculate confidence score based on intent classification
     const confidenceScore = matchedIntent ? 0.9 : 0.5;  // Simplified confidence scoring

@@ -391,7 +391,7 @@ function validateProofOfResidence(text: string, confidence: number): {
   
   if (hasAddress) {
     // Try to extract the full address using common patterns
-    const addressMatch = text.match(/(?:\b(?:address|residential|physical|home)[\s:]+)([A-Za-z0-9\s,\.\-\/]+)/i);
+    const addressMatch = text.match(/(?:\b(?:address|residential|physical|home)[\s:]+)([A-Za-z0-9\s,.-/]+)/i);
     if (addressMatch) {
       extractedFields.address = addressMatch[1].trim();
       
