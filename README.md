@@ -1,52 +1,14 @@
-# EduEasy - Educational Platform
+# Welcome to your Lovable project
 
-[![CI/CD](https://github.com/SeelanGov/edueasy-venture-refresh/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/SeelanGov/edueasy-venture-refresh/actions/workflows/ci-cd.yml)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.4.1-purple.svg)](https://vitejs.dev/)
+[![CI/CD](https://github.com/SeelanGov/edueasy-venture-refresh/workflows/CI/CD/badge.svg)](https://github.com/SeelanGov/edueasy-venture-refresh/actions)
 
-## Project Info
+## Project info
 
-EduEasy is a modern educational platform built with React, TypeScript, and Vite, designed to provide a seamless learning experience.
+**URL**: https://lovable.dev/projects/f1e7aa7c-0ce5-4a8a-9e5d-737a10658e28
 
-**Development URL**: https://lovable.dev/projects/f1e7aa7c-0ce5-4a8a-9e5d-737a10658e28
+## How can I edit this code?
 
-## Development
-
-### Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Run tests
-npm test
-```
-
-### CI/CD Pipeline
-
-This project uses GitHub Actions for continuous integration and deployment. The pipeline:
-
-1. Builds and tests the application on every push and pull request
-2. Deploys to staging and production environments (when configured)
-
-To check the status of the CI/CD pipeline:
-
-```bash
-npm run ci:status
-```
-
-To verify your CI/CD setup:
-
-```bash
-npm run ci:verify-setup
-```
+There are several ways of editing your application.
 
 **Use Lovable**
 
@@ -69,12 +31,51 @@ git clone <YOUR_GIT_URL>
 # Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Step 3: Set up environment variables.
+cp .env.example .env
+# Edit .env with your Supabase credentials
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Install the necessary dependencies.
+npm install
+
+# Step 5: Fix platform-specific dependencies if needed.
+npm run fix-rollup
+
+# Step 6: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
+
+## Environment Setup
+
+This project requires the following environment variables:
+
+```
+# Supabase Configuration (Required)
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+For loveable.dev preview environments, a mock Supabase client is automatically used if these variables are not set.
+
+## Troubleshooting Common Issues
+
+### Build Failures
+
+If you encounter build failures related to Rollup dependencies, run:
+
+```sh
+npm run fix-rollup
+```
+
+This script detects your operating system and installs the appropriate platform-specific Rollup binary.
+
+For more comprehensive dependency fixes:
+
+```sh
+npm run fix-deps
+```
+
+See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for more detailed information.
 
 **Edit a file directly in GitHub**
 
