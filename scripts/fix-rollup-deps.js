@@ -16,21 +16,30 @@ console.log('🔧 Fixing Rollup dependencies for the current platform...');
 // Check if we should skip platform-specific dependencies
 const skipPlatformSpecific = process.env.ROLLUP_SKIP_PLATFORM_SPECIFIC === 'true';
 
+// Always install Linux dependency for CI environments or when explicitly requested
+const forceLinuxDep = process.env.CI === 'true' || process.env.FORCE_LINUX_ROLLUP === 'true';
+
+// Install Linux dependency if needed for CI
+if (forceLinuxDep) {
+  console.log('🔄 CI environment or forced Linux dependency detected, installing Linux x64 version');
+  try {
+    execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit', cwd: rootDir });
+    console.log('✅ Successfully installed Linux Rollup dependency for CI');
+  } catch (error) {
+    console.error('❌ Failed to install Linux dependency:', error.message);
+    // Try with force flag
+    try {
+      execSync('npm install @rollup/rollup-linux-x64-gnu --no-save --force', { stdio: 'inherit', cwd: rootDir });
+      console.log('✅ Successfully installed Linux Rollup dependency with force flag');
+    } catch (forceError) {
+      console.error('❌ Failed to install Linux dependency even with force flag:', forceError.message);
+    }
+  }
+}
+
 if (skipPlatformSpecific) {
   console.log('⏩ Skipping platform-specific dependencies due to ROLLUP_SKIP_PLATFORM_SPECIFIC=true');
   console.log('⚠️ This may cause issues if the build requires platform-specific binaries');
-  
-  // For CI environments, we'll install the Linux x64 version as a fallback
-  if (process.env.CI === 'true') {
-    console.log('🔄 CI environment detected, installing Linux x64 version as fallback');
-    try {
-      execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit', cwd: rootDir });
-      console.log('✅ Successfully installed fallback Rollup dependency');
-    } catch (error) {
-      console.error('❌ Failed to install fallback dependency:', error.message);
-      // Don't exit with error, try to continue
-    }
-  }
 } else {
   // Detect the current platform and architecture
   const platform = os.platform();
@@ -60,13 +69,8 @@ if (skipPlatformSpecific) {
       break;
     default:
       console.warn(`⚠️ Unsupported platform: ${platform}`);
-      if (process.env.CI === 'true') {
-        console.log('⚠️ Attempting to continue with Linux x64 as fallback');
-        targetDep = '@rollup/rollup-linux-x64-gnu'; // Default fallback
-      } else {
-        console.log('⚠️ Using Linux x64 as fallback, but this may not work');
-        targetDep = '@rollup/rollup-linux-x64-gnu';
-      }
+      console.log('⚠️ Using Linux x64 as fallback');
+      targetDep = '@rollup/rollup-linux-x64-gnu';
   }
 
   console.log(`🔍 Installing: ${targetDep}`);
@@ -93,7 +97,7 @@ if (skipPlatformSpecific) {
       console.log('✅ Reinstalled rollup');
       
       // Try installing the platform-specific dependency again
-      execSync(`npm install ${targetDep} --no-save`, { stdio: 'inherit', cwd: rootDir });
+      execSync(`npm install ${targetDep} --no-save --force`, { stdio: 'inherit', cwd: rootDir });
       console.log(`✅ Successfully installed ${targetDep} on second attempt`);
     } catch (secondError) {
       console.error('❌ Alternative approach also failed:', secondError.message);
