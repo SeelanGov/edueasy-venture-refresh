@@ -84,9 +84,24 @@ console.log('🔧 Installing platform-specific Rollup dependencies...');
 try {
   execSync('node scripts/fix-rollup-deps.js', { stdio: 'inherit', cwd: rootDir });
   console.log('✅ Platform-specific Rollup dependencies installed');
+  
+  // Check if we're in a CI environment or need to force Linux dependency
+  if (process.env.CI === 'true' || process.env.FORCE_LINUX_ROLLUP === 'true') {
+    console.log('🐧 CI environment detected, ensuring Linux Rollup dependency is installed...');
+    execSync('node scripts/install-linux-rollup.js', { stdio: 'inherit', cwd: rootDir });
+  }
 } catch (error) {
   console.error('❌ Failed to install platform-specific Rollup dependencies:', error.message);
-  process.exit(1);
+  
+  // Try the Linux-specific script as a fallback
+  console.log('🔄 Trying Linux-specific installation as fallback...');
+  try {
+    execSync('node scripts/install-linux-rollup.js', { stdio: 'inherit', cwd: rootDir });
+    console.log('✅ Linux Rollup dependency installed as fallback');
+  } catch (fallbackError) {
+    console.error('❌ All Rollup dependency installation attempts failed:', fallbackError.message);
+    process.exit(1);
+  }
 }
 
 console.log('\n🎉 Clean completed successfully');
