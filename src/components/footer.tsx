@@ -1,6 +1,7 @@
 import React from "react";
 
-interface AdminButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+// Using type instead of empty interface
+type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const AdminButton: React.FC<AdminButtonProps> = ({ children, ...props }) => {
   return (
