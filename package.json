@@ -11,6 +11,7 @@
     "build:ci": "node scripts/install-linux-rollup.js && vite build --config vite.config.ci.ts",
     "build:analyze": "vite build --mode analyze",
     "lint": "eslint .",
+    "lint:fix": "node scripts/fix-lint.js",
     "preview": "vite preview",
     "test": "jest",
     "check-env": "node scripts/check-env-vars.js",

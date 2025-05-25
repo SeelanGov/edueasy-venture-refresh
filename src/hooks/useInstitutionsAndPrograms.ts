@@ -44,7 +44,7 @@ export const useInstitutionsAndPrograms = () => {
 
         if (error) throw error;
         setInstitutions(data || []);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error fetching institutions:", error);
         setError(true);
         toast({
@@ -58,7 +58,7 @@ export const useInstitutionsAndPrograms = () => {
     };
 
     fetchInstitutions();
-  }, []);
+  }, [toast]);
 
   // Fetch all programs
   useEffect(() => {
@@ -85,7 +85,7 @@ export const useInstitutionsAndPrograms = () => {
           if (error) throw error;
           setFilteredPrograms(data || []);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error fetching programs:", error);
         setError(true);
         toast({
@@ -99,7 +99,7 @@ export const useInstitutionsAndPrograms = () => {
     };
 
     fetchPrograms();
-  }, [selectedInstitutionId]);
+  }, [selectedInstitutionId, toast]);
 
   // Filter programs based on selected institution
   useEffect(() => {
