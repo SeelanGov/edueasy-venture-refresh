@@ -7,11 +7,19 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   { ignores: ["dist"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [
+      js.configs.recommended, 
+      ...tseslint.configs.recommended,
+      // Removed strictTypeChecked as it requires type information
+    ],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parserOptions: {
+        // Disable project requirement to avoid file not found errors
+        project: false,
+      },
     },
     plugins: {
       "react-hooks": reactHooks,
@@ -23,7 +31,11 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      // Removed ban-empty-interface rule as it's not available in the current version
+      "react-hooks/exhaustive-deps": "warn",
     },
   }
 );

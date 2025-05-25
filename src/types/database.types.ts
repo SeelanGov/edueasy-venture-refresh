@@ -131,9 +131,7 @@ export interface Database {
       };
       // Add other tables as needed
     };
-    Views: {
-      // Add views as needed
-    };
+    Views: Record<string, unknown>;  // Use Record type instead of empty object
     Functions: {
       log_system_error: {
         Args: {

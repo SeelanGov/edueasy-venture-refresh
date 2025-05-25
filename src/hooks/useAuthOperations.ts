@@ -1,15 +1,15 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError, AuthResponse } from '@supabase/supabase-js';
+import { ApiError } from '@/types/common';
 
 export const useAuthOperations = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const signUp = async (email: string, password: string, fullName: string, idNumber: string) => {
+  const signUp = async (email: string, password: string, fullName: string, idNumber: string): Promise<AuthResponse | null> => {
     try {
       console.log("Attempting signup for:", email);
       const { data, error } = await supabase.auth.signUp({ email, password });
@@ -55,7 +55,7 @@ export const useAuthOperations = () => {
         });
 
         // Get the intended destination from parent component's location state
-        const from = location.state?.from || "/dashboard";
+        const from = location.state?.from as string || "/dashboard";
         
         // Navigate to login page after successful registration and pass along the original "from" destination
         navigate('/login', { state: { from: from } });
@@ -63,18 +63,19 @@ export const useAuthOperations = () => {
       }
       
       return null;
-    } catch (error: any) {
-      console.error("Signup error:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Signup error:", apiError);
       toast({
         title: "Error signing up",
-        description: error.message,
+        description: apiError.message || "An unexpected error occurred",
         variant: "destructive"
       });
-      throw error;
+      throw apiError;
     }
   };
 
-  const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
+  const signIn = async (email: string, password: string, rememberMe = false): Promise<AuthResponse | null> => {
     try {
       console.log("Attempting signin for:", email);
       
@@ -99,18 +100,19 @@ export const useAuthOperations = () => {
       console.log("Signin successful:", !!data?.user, data?.user?.id);
       // Navigation is now handled in Login component
       return data;
-    } catch (error: any) {
-      console.error("Signin error:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Signin error:", apiError);
       toast({
         title: "Error signing in",
-        description: error.message,
+        description: apiError.message || "An unexpected error occurred",
         variant: "destructive"
       });
-      throw error;
+      throw apiError;
     }
   };
 
-  const signOut = async () => {
+  const signOut = async (): Promise<void> => {
     try {
       console.log("Attempting signout");
       const { error } = await supabase.auth.signOut();
@@ -122,17 +124,18 @@ export const useAuthOperations = () => {
       
       console.log("Signout successful");
       // Navigation is handled in the onAuthStateChange handler
-    } catch (error: any) {
-      console.error("Signout error:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Signout error:", apiError);
       toast({
         title: "Error signing out",
-        description: error.message,
+        description: apiError.message || "An unexpected error occurred",
         variant: "destructive"
       });
     }
   };
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = async (email: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
@@ -149,18 +152,19 @@ export const useAuthOperations = () => {
       });
       
       return true;
-    } catch (error: any) {
-      console.error("Reset password error:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Reset password error:", apiError);
       toast({
         title: "Error resetting password",
-        description: error.message,
+        description: apiError.message || "An unexpected error occurred",
         variant: "destructive"
       });
-      throw error;
+      throw apiError;
     }
   };
   
-  const updatePassword = async (newPassword: string) => {
+  const updatePassword = async (newPassword: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.updateUser({
         password: newPassword
@@ -178,14 +182,15 @@ export const useAuthOperations = () => {
       
       navigate('/dashboard');
       return true;
-    } catch (error: any) {
-      console.error("Update password error:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Update password error:", apiError);
       toast({
         title: "Error updating password",
-        description: error.message,
+        description: apiError.message || "An unexpected error occurred",
         variant: "destructive"
       });
-      throw error;
+      throw apiError;
     }
   };
 

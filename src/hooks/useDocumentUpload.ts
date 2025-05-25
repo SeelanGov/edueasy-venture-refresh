@@ -8,13 +8,14 @@ import { compressImage } from "@/utils/imageCompression";
 import { toast } from "@/hooks/use-toast";
 import { playNotificationSound } from "@/utils/notificationSound";
 import { useDocumentVerification } from "@/hooks/useDocumentVerification";
+import { ApiError, ExtendedUser, Form } from "@/types/common";
 
 export const useDocumentUpload = (
-  user: any,
+  user: ExtendedUser,
   getDocumentState: (documentType: string) => DocumentUploadState,
   setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
   setCurrentDocumentType: (type: string) => void,
-  form: any
+  form: Form
 ) => {
   const { documents, setDocuments } = useProfileCompletionStore();
   const { verifyDocument, isVerifying, verificationResult } = useDocumentVerification();
@@ -138,12 +139,13 @@ export const useDocumentUpload = (
         // Auto-trigger verification
         triggerVerification(documentData.id, user.id, documentType, data.path, isResubmission);
       }
-    } catch (error: any) {
-      console.error(`Error uploading ${documentType}:`, error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error(`Error uploading ${documentType}:`, apiError);
       setDocumentState(documentType, { 
         uploading: false, 
         progress: 0, 
-        error: error.message || "Upload failed" 
+        error: apiError.message || "Upload failed" 
       });
     }
   }, [user, documents, form, setDocuments, setDocumentState, setCurrentDocumentType]);
