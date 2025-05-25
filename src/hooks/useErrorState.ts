@@ -135,8 +135,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
   const getMostRecentCriticalError = useCallback(() => {
     return errors
       .filter(error => error.severity === ErrorSeverity.CRITICAL)
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      [0];
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
   }, [errors]);
   
   return {
