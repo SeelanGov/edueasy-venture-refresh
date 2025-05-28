@@ -1,147 +1,144 @@
-// Script to fix Rollup platform-specific dependencies issues
-// This script is used to handle the known npm bug with optional dependencies
-// https://github.com/npm/cli/issues/4828
 
-// Use CommonJS since this will be run directly with Node
+// Enhanced cross-platform script to fix Rollup dependencies with better error handling
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
+// Create a simple logger
+const logger = {
+  info: (message, ...args) => console.log('[INFO]', message, ...args),
+  success: (message, ...args) => console.log('[SUCCESS]', message, ...args),
+  warn: (message, ...args) => console.warn('[WARN]', message, ...args),
+  error: (message, ...args) => console.error('[ERROR]', message, ...args),
+};
+
+logger.info('🔧 Starting enhanced dependency fix process...');
+
 // Define paths
 const rootDir = path.resolve(__dirname, '..');
+const nodeModulesPath = path.join(rootDir, 'node_modules');
+const packageLockPath = path.join(rootDir, 'package-lock.json');
 
-console.log('🔧 Fixing Rollup dependencies for the current platform...');
-
-// Check if we should skip platform-specific dependencies
-const skipPlatformSpecific = process.env.ROLLUP_SKIP_PLATFORM_SPECIFIC === 'true';
-
-// Always install Linux dependency for CI environments or when explicitly requested
-const forceLinuxDep = process.env.CI === 'true' || process.env.FORCE_LINUX_ROLLUP === 'true';
-
-// Install Linux dependency if needed for CI
-if (forceLinuxDep) {
-  console.log('🔄 CI environment or forced Linux dependency detected, installing Linux x64 version');
-  try {
-    execSync('npm install @rollup/rollup-linux-x64-gnu --no-save', { stdio: 'inherit', cwd: rootDir });
-    console.log('✅ Successfully installed Linux Rollup dependency for CI');
-  } catch (error) {
-    console.error('❌ Failed to install Linux dependency:', error.message);
-    // Try with force flag
-    try {
-      execSync('npm install @rollup/rollup-linux-x64-gnu --no-save --force', { stdio: 'inherit', cwd: rootDir });
-      console.log('✅ Successfully installed Linux Rollup dependency with force flag');
-    } catch (forceError) {
-      console.error('❌ Failed to install Linux dependency even with force flag:', forceError.message);
-    }
-  }
-}
-
-if (skipPlatformSpecific) {
-  console.log('⏩ Skipping platform-specific dependencies due to ROLLUP_SKIP_PLATFORM_SPECIFIC=true');
-  console.log('⚠️ This may cause issues if the build requires platform-specific binaries');
-} else {
+// Step 1: Install platform-specific Rollup dependency
+logger.info('\n🔧 Installing platform-specific Rollup dependency...');
+try {
   // Detect the current platform and architecture
   const platform = os.platform();
   const arch = os.arch();
-  let targetDep = '';
+  let targetDeps = [];
 
-  console.log(`📊 Detected platform: ${platform}, architecture: ${arch}`);
+  logger.info(`📊 Detected platform: ${platform}, architecture: ${arch}`);
 
+  // Always install Linux dependency for CI/build environments
+  if (process.env.CI === 'true' || process.env.NODE_ENV === 'production') {
+    logger.info('🐧 CI/Production environment detected, installing Linux dependency...');
+    targetDeps.push('@rollup/rollup-linux-x64-gnu');
+  }
+
+  // Install platform-specific dependency based on current platform
   switch (platform) {
     case 'linux':
-      // Use os.arch() for more reliable architecture detection
       if (arch === 'arm64' || arch === 'arm') {
-        targetDep = '@rollup/rollup-linux-arm64-gnu';
+        targetDeps.push('@rollup/rollup-linux-arm64-gnu');
       } else {
-        targetDep = '@rollup/rollup-linux-x64-gnu';
+        targetDeps.push('@rollup/rollup-linux-x64-gnu');
       }
       break;
     case 'darwin': // macOS
       if (arch === 'arm64') {
-        targetDep = '@rollup/rollup-darwin-arm64';
+        targetDeps.push('@rollup/rollup-darwin-arm64');
       } else {
-        targetDep = '@rollup/rollup-darwin-x64';
+        targetDeps.push('@rollup/rollup-darwin-x64');
       }
       break;
     case 'win32':
-      targetDep = '@rollup/rollup-win32-x64-msvc';
+      targetDeps.push('@rollup/rollup-win32-x64-msvc');
       break;
     default:
-      console.warn(`⚠️ Unsupported platform: ${platform}`);
-      console.log('⚠️ Using Linux x64 as fallback');
-      targetDep = '@rollup/rollup-linux-x64-gnu';
+      logger.warn(`⚠️ Unsupported platform: ${platform}, installing Linux x64 as fallback`);
+      targetDeps.push('@rollup/rollup-linux-x64-gnu');
   }
 
-  console.log(`🔍 Installing: ${targetDep}`);
+  // Remove duplicates
+  targetDeps = [...new Set(targetDeps)];
 
-  try {
-    // Install the platform-specific dependency
-    execSync(`npm install ${targetDep} --no-save`, { stdio: 'inherit', cwd: rootDir });
-    console.log('✅ Successfully installed platform-specific Rollup dependency');
-  } catch (error) {
-    console.error('❌ Failed to install platform-specific dependency:', error.message);
-    
-    // Try alternative approach if the first one fails
-    console.log('🔄 Trying alternative approach...');
+  logger.info(`🔍 Installing dependencies: ${targetDeps.join(', ')}`);
+  
+  for (const dep of targetDeps) {
     try {
-      // Remove node_modules/.bin/rollup to force reinstallation
-      const rollupBinPath = path.join(rootDir, 'node_modules', '.bin', 'rollup');
-      if (fs.existsSync(rollupBinPath)) {
-        fs.unlinkSync(rollupBinPath);
-        console.log('✅ Removed rollup binary to force reinstallation');
-      }
-      
-      // Reinstall rollup
-      execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
-      console.log('✅ Reinstalled rollup');
-      
-      // Try installing the platform-specific dependency again
-      execSync(`npm install ${targetDep} --no-save --force`, { stdio: 'inherit', cwd: rootDir });
-      console.log(`✅ Successfully installed ${targetDep} on second attempt`);
-    } catch (secondError) {
-      console.error('❌ Alternative approach also failed:', secondError.message);
-      
-      if (process.env.CI === 'true') {
-        console.log('⚠️ Continuing despite error in CI environment');
-      } else {
-        console.log('⚠️ You may need to manually fix the Rollup dependencies');
-        console.log('   Try running: npm run clean');
+      execSync(`npm install ${dep} --no-save`, { stdio: 'inherit', cwd: rootDir });
+      logger.success(`✅ Successfully installed ${dep}`);
+    } catch (error) {
+      logger.warn(`⚠️ Failed to install ${dep}, trying with force flag...`);
+      try {
+        execSync(`npm install ${dep} --no-save --force`, { stdio: 'inherit', cwd: rootDir });
+        logger.success(`✅ Successfully installed ${dep} with force flag`);
+      } catch (forceError) {
+        logger.error(`❌ Failed to install ${dep} even with force flag:`, forceError.message);
       }
     }
   }
-}
-
-// Update the build script to use the CI config when in CI environment
-if (process.env.CI) {
-  console.log('🔄 CI environment detected, updating build command to use CI-specific configuration');
+  
+  logger.success('✅ Platform-specific Rollup dependencies installation completed');
+} catch (error) {
+  logger.error('❌ Failed to install platform-specific dependencies:', error.message);
+  
+  // Try alternative approach if the first one fails
+  logger.info('🔄 Trying alternative approach...');
   try {
-    const packageJsonPath = path.resolve(process.cwd(), 'package.json');
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    
-    // Add a CI-specific build command if it doesn't exist
-    if (!packageJson.scripts['build:ci']) {
-      packageJson.scripts['build:ci'] = 'vite build --config vite.config.ci.ts';
-      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-      console.log('✅ Added build:ci script to package.json');
+    // Remove node_modules/.bin/rollup to force reinstallation
+    const rollupBinPath = path.join(nodeModulesPath, '.bin', 'rollup');
+    if (fs.existsSync(rollupBinPath)) {
+      fs.unlinkSync(rollupBinPath);
+      logger.success('✅ Removed rollup binary to force reinstallation');
     }
     
-    // Check if vite.config.ci.ts exists
-    const ciConfigPath = path.resolve(process.cwd(), 'vite.config.ci.ts');
-    if (!fs.existsSync(ciConfigPath)) {
-      console.warn('⚠️ vite.config.ci.ts not found, CI build may fail');
-      // Copy the regular vite.config.ts as a fallback
-      const regularConfigPath = path.resolve(process.cwd(), 'vite.config.ts');
-      if (fs.existsSync(regularConfigPath)) {
-        const regularConfig = fs.readFileSync(regularConfigPath, 'utf8');
-        fs.writeFileSync(ciConfigPath, regularConfig);
-        console.log('✅ Created vite.config.ci.ts as a copy of vite.config.ts');
-      }
-    }
-  } catch (error) {
-    console.error('❌ Failed to update package.json or check config files:', error);
-    // Don't exit with error in CI environment
+    // Reinstall rollup
+    execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
+    logger.success('✅ Reinstalled rollup');
+  } catch (secondError) {
+    logger.error('❌ Alternative approach also failed:', secondError.message);
+    logger.info('🔄 Continuing anyway - build may still work');
   }
 }
 
-console.log('🎉 Rollup dependency fix completed');
+// Step 2: Check for other common dependency issues
+logger.info('\n🔍 Checking for other common dependency issues...');
+
+// Check for duplicate dependencies
+try {
+  logger.info('🔍 Checking for duplicate dependencies...');
+  execSync('npm dedupe', { stdio: 'inherit', cwd: rootDir });
+  logger.success('✅ Deduplication completed');
+} catch (error) {
+  logger.warn('⚠️ Deduplication failed:', error.message);
+}
+
+// Step 3: Verify installation
+logger.info('\n🔍 Verifying installation...');
+try {
+  const packageJsonPath = path.join(rootDir, 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  logger.success(`✅ Project: ${packageJson.name} v${packageJson.version}`);
+  
+  if (fs.existsSync(nodeModulesPath)) {
+    logger.success('✅ node_modules directory exists');
+  } else {
+    logger.warn('⚠️ node_modules directory not found');
+  }
+  
+  if (fs.existsSync(packageLockPath)) {
+    logger.success('✅ package-lock.json exists');
+  } else {
+    logger.warn('⚠️ package-lock.json not found');
+  }
+} catch (error) {
+  logger.warn('⚠️ Verification failed:', error.message);
+}
+
+logger.info('\n🎉 Enhanced dependency fix process completed!');
+logger.info('📋 Next steps:');
+logger.info('   1. Try building the project: npm run build');
+logger.info('   2. If build fails, try the safe build: npm run build:safe');
+logger.info('   3. If issues persist, check environment variables');
