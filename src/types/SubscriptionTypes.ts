@@ -1,6 +1,6 @@
 // Types for the EduEasy subscription system
-import { UserProfile } from "@/hooks/useUserProfile";
-import { Application } from "@/types/ApplicationTypes";
+import { UserProfile } from '@/hooks/useUserProfile';
+import { Application } from '@/types/ApplicationTypes';
 
 export type SubscriptionTier = {
   id: string;
@@ -28,7 +28,7 @@ export type UserSubscription = {
   auto_renew: boolean;
   created_at: string;
   updated_at: string;
-  
+
   // Joined fields
   tier?: SubscriptionTier;
 };
@@ -64,7 +64,7 @@ export enum TransactionStatus {
   COMPLETED = 'completed',
   FAILED = 'failed',
   REFUNDED = 'refunded',
-  CANCELLED = 'cancelled'
+  CANCELLED = 'cancelled',
 }
 
 export enum TransactionType {
@@ -72,20 +72,20 @@ export enum TransactionType {
   REFERRAL_REWARD = 'referral_reward',
   REFUND = 'refund',
   UPGRADE = 'upgrade',
-  DOWNGRADE = 'downgrade'
+  DOWNGRADE = 'downgrade',
 }
 
 export enum ReferralStatus {
   PENDING = 'pending',
   COMPLETED = 'completed',
   EXPIRED = 'expired',
-  REJECTED = 'rejected'
+  REJECTED = 'rejected',
 }
 
 export enum SubscriptionTierName {
   FREE = 'Free',
   STANDARD = 'Standard',
-  PREMIUM = 'Premium'
+  PREMIUM = 'Premium',
 }
 
 // Extended types for the existing database schema
@@ -109,7 +109,7 @@ export function isFeatureAvailable(
   if (!subscription || !subscription.tier) {
     return false;
   }
-  
+
   switch (feature) {
     case 'verification':
       return subscription.tier.includes_verification;
@@ -129,7 +129,7 @@ export function getRemainingApplications(
   if (!subscription || !subscription.tier) {
     return 0;
   }
-  
+
   return Math.max(0, subscription.tier.max_applications - currentApplicationCount);
 }
 
@@ -140,7 +140,7 @@ export function getRemainingDocuments(
   if (!subscription || !subscription.tier) {
     return 0;
   }
-  
+
   return Math.max(0, subscription.tier.max_documents - currentDocumentCount);
 }
 

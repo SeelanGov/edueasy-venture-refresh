@@ -1,8 +1,7 @@
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,17 +9,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/Spinner";
-import { PersonalInfoFormValues } from "./types";
-import { GenderSelector } from "./GenderSelector";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/Spinner';
+import { PersonalInfoFormValues } from './types';
+import { GenderSelector } from './GenderSelector';
 
 // South African ID validation
 const validateSAID = (id: string) => {
   // ID must be 13 digits
   if (!/^\d{13}$/.test(id)) return false;
-  
+
   // Check checksum digit
   let sum = 0;
   for (let i = 0; i < 12; i++) {
@@ -31,12 +30,13 @@ const validateSAID = (id: string) => {
 };
 
 const personalInfoSchema = z.object({
-  fullName: z.string().min(2, "Full name must be at least 2 characters"),
-  idNumber: z.string()
-    .length(13, "ID Number must be exactly 13 digits")
-    .regex(/^\d+$/, "ID Number must contain only digits")
-    .refine(validateSAID, "Invalid South African ID number"),
-  gender: z.string().min(1, "Gender is required"),
+  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  idNumber: z
+    .string()
+    .length(13, 'ID Number must be exactly 13 digits')
+    .regex(/^\d+$/, 'ID Number must contain only digits')
+    .refine(validateSAID, 'Invalid South African ID number'),
+  gender: z.string().min(1, 'Gender is required'),
 });
 
 interface PersonalInfoFormProps {
@@ -45,7 +45,11 @@ interface PersonalInfoFormProps {
   isSubmitting: boolean;
 }
 
-export const PersonalInfoForm = ({ initialValues, onSubmit, isSubmitting }: PersonalInfoFormProps) => {
+export const PersonalInfoForm = ({
+  initialValues,
+  onSubmit,
+  isSubmitting,
+}: PersonalInfoFormProps) => {
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: initialValues,
@@ -67,7 +71,7 @@ export const PersonalInfoForm = ({ initialValues, onSubmit, isSubmitting }: Pers
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="idNumber"
@@ -75,27 +79,23 @@ export const PersonalInfoForm = ({ initialValues, onSubmit, isSubmitting }: Pers
             <FormItem>
               <FormLabel>ID Number</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="13 digit South African ID number" 
-                  {...field} 
-                  maxLength={13}
-                />
+                <Input placeholder="13 digit South African ID number" {...field} maxLength={13} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <GenderSelector control={form.control} />
-        
+
         <div className="flex justify-end pt-4">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={isSubmitting}
             className="bg-cap-teal hover:bg-cap-teal/90"
           >
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
-            {isSubmitting ? "Saving..." : "Continue"}
+            {isSubmitting ? 'Saving...' : 'Continue'}
           </Button>
         </div>
       </form>

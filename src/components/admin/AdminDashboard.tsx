@@ -1,47 +1,47 @@
-import React, { useState } from "react";
-import AdminFilters from "./AdminFilters";
-import ExportButton from "./ExportButton";
-import NotificationBell from "./NotificationBell";
-import { ErrorLogsTable } from "./ErrorLogsTable";
-import { SecurityBadge } from "../ui/SecurityBadge";
-import { ErrorCategory } from "@/utils/errorHandler";
-import { ErrorSeverity } from "@/utils/errorLogging";
+import React, { useState } from 'react';
+import AdminFilters from './AdminFilters';
+import ExportButton from './ExportButton';
+import NotificationBell from './NotificationBell';
+import { ErrorLogsTable } from './ErrorLogsTable';
+import { SecurityBadge } from '../ui/SecurityBadge';
+import { ErrorCategory } from '@/utils/errorHandler';
+import { ErrorSeverity } from '@/utils/errorLogging';
 
 // Placeholder for application data
 const mockApplications = [
-  { id: "A001", name: "Jane Doe", status: "Pending", sensitive: true },
-  { id: "A002", name: "John Smith", status: "Approved", sensitive: false },
+  { id: 'A001', name: 'Jane Doe', status: 'Pending', sensitive: true },
+  { id: 'A002', name: 'John Smith', status: 'Approved', sensitive: false },
 ];
 
 // Mock error log data for demonstration
 const mockErrors = [
   {
-    id: "err1",
-    message: "Failed login attempt",
+    id: 'err1',
+    message: 'Failed login attempt',
     category: ErrorCategory.AUTHENTICATION,
     severity: ErrorSeverity.WARNING,
-    component: "LoginForm",
-    action: "login",
-    user_id: "user123",
+    component: 'LoginForm',
+    action: 'login',
+    user_id: 'user123',
     details: {},
-    occurred_at: "2025-05-15T10:00:00Z",
-    is_resolved: false
+    occurred_at: '2025-05-15T10:00:00Z',
+    is_resolved: false,
   },
   {
-    id: "err2",
-    message: "Document upload failed",
+    id: 'err2',
+    message: 'Document upload failed',
     category: ErrorCategory.FILE,
     severity: ErrorSeverity.ERROR,
-    component: "DocumentUpload",
-    action: "upload",
-    user_id: "user456",
+    component: 'DocumentUpload',
+    action: 'upload',
+    user_id: 'user456',
     details: {},
-    occurred_at: "2025-05-15T11:00:00Z",
+    occurred_at: '2025-05-15T11:00:00Z',
     is_resolved: true,
-    resolved_at: "2025-05-15T12:00:00Z",
-    resolved_by: "admin1",
-    resolution_notes: "Network issue resolved"
-  }
+    resolved_at: '2025-05-15T12:00:00Z',
+    resolved_by: 'admin1',
+    resolution_notes: 'Network issue resolved',
+  },
 ];
 
 export const AdminDashboard: React.FC = () => {
@@ -55,7 +55,7 @@ export const AdminDashboard: React.FC = () => {
 
   const handleExport = () => {
     // Add export logic here
-    alert("Exported CSV (stub)");
+    alert('Exported CSV (stub)');
   };
 
   return (
@@ -78,14 +78,16 @@ export const AdminDashboard: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {applications.map(app => (
+            {applications.map((app) => (
               <tr key={app.id}>
                 <td className="p-2 border-b">{app.id}</td>
                 <td className="p-2 border-b">{app.name}</td>
                 <td className="p-2 border-b flex items-center gap-2">
                   {app.status}
                   {/* Show SecurityBadge for sensitive actions */}
-                  {app.sensitive && <SecurityBadge type="data-protection" size="sm" showLabel={false} />}
+                  {app.sensitive && (
+                    <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                  )}
                 </td>
                 <td className="p-2 border-b">
                   <button className="btn btn-xs btn-outline mr-2">Approve</button>
@@ -101,7 +103,7 @@ export const AdminDashboard: React.FC = () => {
         <ErrorLogsTable
           errors={mockErrors}
           loading={false}
-          onRefresh={() => alert("Refresh logs (stub)")}
+          onRefresh={() => alert('Refresh logs (stub)')}
           onResolve={async (id, notes) => {
             alert(`Resolved ${id} with notes: ${notes}`);
             return true;

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Link, useLocation } from "react-router-dom";
-import { Eye, EyeOff, AlertCircle, ChevronDown } from "lucide-react";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Link, useLocation } from 'react-router-dom';
+import { Eye, EyeOff, AlertCircle, ChevronDown } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -14,36 +14,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Spinner } from "@/components/Spinner";
-import { useAuth } from "@/contexts/AuthContext";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { SecurityBadge } from "@/components/ui/SecurityBadge";
-import { EnhancedFormField } from "@/components/ui/EnhancedFormField";
-import { SecurityInfoPanel } from "@/components/ui/SecurityInfoPanel";
+} from '@/components/ui/select';
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
+import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 
 // Schema definition moved to the form component
-const registerFormSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  idNumber: z
-    .string()
-    .length(13, "ID Number must be exactly 13 digits")
-    .regex(/^\d+$/, "ID Number must contain only digits"),
-  gender: z.string().min(1, "Please select your gender"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const registerFormSchema = z
+  .object({
+    fullName: z.string().min(2, 'Name must be at least 2 characters'),
+    idNumber: z
+      .string()
+      .length(13, 'ID Number must be exactly 13 digits')
+      .regex(/^\d+$/, 'ID Number must contain only digits'),
+    gender: z.string().min(1, 'Please select your gender'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
@@ -58,24 +60,24 @@ export const RegisterForm = () => {
   const location = useLocation();
 
   // Get the intended destination from location state, or default to profile completion
-  const from = location.state?.from || "/profile-completion";
+  const from = location.state?.from || '/profile-completion';
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      fullName: "",
-      idNumber: "",
-      gender: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      fullName: '',
+      idNumber: '',
+      gender: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!consentPrivacy || !consentTerms) {
-      setRegistrationError("You must agree to the Privacy Policy and Terms of Service.");
+      setRegistrationError('You must agree to the Privacy Policy and Terms of Service.');
       return;
     }
     setIsLoading(true);
@@ -85,17 +87,17 @@ export const RegisterForm = () => {
       // await logConsent(userId, { privacy: true, terms: true });
       const data = form.getValues();
       const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
-      
+
       // Check if response is null (signUp can return null on handled errors)
       if (!response) {
-        setRegistrationError("Registration is currently unavailable. Please try again later.");
+        setRegistrationError('Registration is currently unavailable. Please try again later.');
       }
       // Note: Navigation to login after successful registration is handled in useAuthOperations
       // The "from" parameter will be handled by the Login component when they sign in
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error("Registration error:", error);
-      setRegistrationError(message || "An unexpected error occurred. Please try again.");
+      console.error('Registration error:', error);
+      setRegistrationError(message || 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +117,7 @@ export const RegisterForm = () => {
             <AlertDescription>{registrationError}</AlertDescription>
           </Alert>
         )}
-        
+
         <Form {...form}>
           <form onSubmit={handleRegister} className="space-y-4">
             <EnhancedFormField
@@ -163,8 +165,8 @@ export const RegisterForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-gray-700">Gender</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
+                  <Select
+                    onValueChange={field.onChange}
                     defaultValue={field.value}
                     disabled={isLoading}
                   >
@@ -197,7 +199,7 @@ export const RegisterForm = () => {
                     <div className="relative">
                       <Input
                         placeholder="******"
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         {...field}
                         disabled={isLoading}
                         className="text-gray-900 pr-10"
@@ -230,7 +232,7 @@ export const RegisterForm = () => {
                     <div className="relative">
                       <Input
                         placeholder="******"
-                        type={showConfirmPassword ? "text" : "password"}
+                        type={showConfirmPassword ? 'text' : 'password'}
                         {...field}
                         disabled={isLoading}
                         className="text-gray-900 pr-10"
@@ -255,12 +257,8 @@ export const RegisterForm = () => {
                   checked={consentPrivacy}
                   onChange={(e) => setConsentPrivacy(e.target.checked)}
                 />
-                I agree to the{" "}
-                <a
-                  href="/privacy-policy.html"
-                  target="_blank"
-                  className="underline"
-                >
+                I agree to the{' '}
+                <a href="/privacy-policy.html" target="_blank" className="underline">
                   Privacy Policy
                 </a>
               </label>
@@ -270,12 +268,8 @@ export const RegisterForm = () => {
                   checked={consentTerms}
                   onChange={(e) => setConsentTerms(e.target.checked)}
                 />
-                I agree to the{" "}
-                <a
-                  href="/terms-of-service.html"
-                  target="_blank"
-                  className="underline"
-                >
+                I agree to the{' '}
+                <a href="/terms-of-service.html" target="_blank" className="underline">
                   Terms of Service
                 </a>
               </label>
@@ -286,15 +280,12 @@ export const RegisterForm = () => {
               disabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-              {isLoading ? "Signing up..." : "Sign Up"}
+              {isLoading ? 'Signing up...' : 'Sign Up'}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="text-cap-teal hover:underline font-medium"
-                >
+                Already have an account?{' '}
+                <Link to="/login" className="text-cap-teal hover:underline font-medium">
                   Sign in
                 </Link>
               </p>

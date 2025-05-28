@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  ConsultationBooking,
-  ConsultationStatus
-} from '@/types/RevenueTypes';
+import { ConsultationBooking, ConsultationStatus } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
 
 export function useConsultations() {
@@ -19,9 +16,9 @@ export function useConsultations() {
     console.error(message, error);
     setError(message);
     toast({
-      title: "Error",
+      title: 'Error',
       description: message,
-      variant: "destructive",
+      variant: 'destructive',
     });
   };
 
@@ -31,22 +28,24 @@ export function useConsultations() {
       setBookings([]);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
-        .select(`
+        .select(
+          `
           *,
           payment:payment_id(*)
-        `)
+        `
+        )
         .eq('user_id', user.id)
         .order('booking_date', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       setBookings(data || []);
     } catch (error) {
       handleError(error, 'Failed to fetch consultation bookings');
@@ -60,18 +59,20 @@ export function useConsultations() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
-        .select(`
+        .select(
+          `
           *,
           payment:payment_id(*)
-        `)
+        `
+        )
         .eq('id', bookingId)
         .single();
-      
+
       if (error) throw error;
-      
+
       setCurrentBooking(data);
     } catch (error) {
       handleError(error, 'Failed to fetch booking details');
@@ -91,11 +92,11 @@ export function useConsultations() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
         .insert({
@@ -104,22 +105,22 @@ export function useConsultations() {
           duration_minutes: durationMinutes,
           status: ConsultationStatus.PENDING,
           notes: notes || null,
-          payment_id: paymentId || null
+          payment_id: paymentId || null,
         })
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the bookings list
       await fetchBookings();
-      
+
       toast({
-        title: "Booking Created",
-        description: "Your consultation has been booked successfully.",
-        variant: "default",
+        title: 'Booking Created',
+        description: 'Your consultation has been booked successfully.',
+        variant: 'default',
       });
-      
+
       return data;
     } catch (error) {
       handleError(error, 'Failed to create booking');
@@ -130,42 +131,39 @@ export function useConsultations() {
   };
 
   // Update an existing booking
-  const updateBooking = async (
-    bookingId: string,
-    updates: Partial<ConsultationBooking>
-  ) => {
+  const updateBooking = async (bookingId: string, updates: Partial<ConsultationBooking>) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
         .update({
           ...updates,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', bookingId)
         .eq('user_id', user.id) // Ensure the user owns this booking
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the bookings list and current booking
       await fetchBookings();
       setCurrentBooking(data);
-      
+
       toast({
-        title: "Booking Updated",
-        description: "Your consultation booking has been updated successfully.",
-        variant: "default",
+        title: 'Booking Updated',
+        description: 'Your consultation booking has been updated successfully.',
+        variant: 'default',
       });
-      
+
       return data;
     } catch (error) {
       handleError(error, 'Failed to update booking');
@@ -181,35 +179,35 @@ export function useConsultations() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return false;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
         .update({
           status: ConsultationStatus.CANCELLED,
           notes: reason ? `Cancelled: ${reason}` : 'Cancelled by user',
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', bookingId)
         .eq('user_id', user.id) // Ensure the user owns this booking
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the bookings list and current booking
       await fetchBookings();
       setCurrentBooking(data);
-      
+
       toast({
-        title: "Booking Cancelled",
-        description: "Your consultation booking has been cancelled.",
-        variant: "default",
+        title: 'Booking Cancelled',
+        description: 'Your consultation booking has been cancelled.',
+        variant: 'default',
       });
-      
+
       return true;
     } catch (error) {
       handleError(error, 'Failed to cancel booking');
@@ -220,43 +218,40 @@ export function useConsultations() {
   };
 
   // Reschedule a booking
-  const rescheduleBooking = async (
-    bookingId: string,
-    newBookingDate: Date
-  ) => {
+  const rescheduleBooking = async (bookingId: string, newBookingDate: Date) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('consultation_bookings')
         .update({
           booking_date: newBookingDate.toISOString(),
           status: ConsultationStatus.RESCHEDULED,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', bookingId)
         .eq('user_id', user.id) // Ensure the user owns this booking
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the bookings list and current booking
       await fetchBookings();
       setCurrentBooking(data);
-      
+
       toast({
-        title: "Booking Rescheduled",
-        description: "Your consultation has been rescheduled successfully.",
-        variant: "default",
+        title: 'Booking Rescheduled',
+        description: 'Your consultation has been rescheduled successfully.',
+        variant: 'default',
       });
-      
+
       return data;
     } catch (error) {
       handleError(error, 'Failed to reschedule booking');
@@ -283,6 +278,6 @@ export function useConsultations() {
     createBooking,
     updateBooking,
     cancelBooking,
-    rescheduleBooking
+    rescheduleBooking,
   };
 }

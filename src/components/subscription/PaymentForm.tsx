@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { formatCurrency } from '@/types/SubscriptionTypes';
 import { CheckCircle, CreditCard } from 'lucide-react';
 
@@ -19,7 +26,7 @@ export function PaymentForm({
   currency = 'ZAR',
   description = 'Complete your payment',
   onPaymentComplete,
-  onCancel
+  onCancel,
 }: PaymentFormProps) {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
@@ -27,22 +34,22 @@ export function PaymentForm({
   const [cardName, setCardName] = useState('');
   const [processing, setProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!cardNumber || !cardExpiry || !cardCvc || !cardName) {
       return;
     }
-    
+
     setProcessing(true);
-    
+
     try {
       // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setPaymentSuccess(true);
-      
+
       // Show success message for a moment before completing
       setTimeout(() => {
         onPaymentComplete('credit_card');
@@ -52,36 +59,36 @@ export function PaymentForm({
       setProcessing(false);
     }
   };
-  
+
   // Format card number with spaces
   const formatCardNumber = (value: string) => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
-    const match = matches && matches[0] || '';
+    const match = (matches && matches[0]) || '';
     const parts = [];
-    
+
     for (let i = 0, len = match.length; i < len; i += 4) {
       parts.push(match.substring(i, i + 4));
     }
-    
+
     if (parts.length) {
       return parts.join(' ');
     } else {
       return value;
     }
   };
-  
+
   // Format card expiry date
   const formatCardExpiry = (value: string) => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    
+
     if (v.length > 2) {
       return `${v.substring(0, 2)}/${v.substring(2, 4)}`;
     }
-    
+
     return v;
   };
-  
+
   if (paymentSuccess) {
     return (
       <Card>
@@ -97,7 +104,7 @@ export function PaymentForm({
       </Card>
     );
   }
-  
+
   return (
     <Card>
       <CardHeader>
@@ -113,7 +120,7 @@ export function PaymentForm({
             </div>
             <span className="font-semibold">{formatCurrency(amount, currency)}</span>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="card-number">Card Number</Label>
             <Input
@@ -125,7 +132,7 @@ export function PaymentForm({
               required
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="expiry">Expiry Date</Label>
@@ -138,7 +145,7 @@ export function PaymentForm({
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="cvc">CVC</Label>
               <Input
@@ -151,7 +158,7 @@ export function PaymentForm({
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="name">Name on Card</Label>
             <Input
@@ -163,17 +170,12 @@ export function PaymentForm({
             />
           </div>
         </CardContent>
-        
+
         <CardFooter className="flex justify-between">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={onCancel}
-            disabled={processing}
-          >
+          <Button type="button" variant="outline" onClick={onCancel} disabled={processing}>
             Cancel
           </Button>
-          <Button 
+          <Button
             type="submit"
             disabled={processing || !cardNumber || !cardExpiry || !cardCvc || !cardName}
           >

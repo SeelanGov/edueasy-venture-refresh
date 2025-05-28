@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/contexts/AuthContext";
-import { Logo } from "@/components/Logo";
-import { Spinner } from "@/components/Spinner";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { Logo } from '@/components/Logo';
+import { Spinner } from '@/components/Spinner';
 import {
   Form,
   FormControl,
@@ -15,13 +15,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { PatternBorder } from "@/components/PatternBorder";
-import { AlertCircle, ArrowLeft } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+} from '@/components/ui/form';
+import { PatternBorder } from '@/components/PatternBorder';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email('Please enter a valid email address'),
 });
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
       setIsSubmitted(true);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      setError(message || "Something went wrong. Please try again.");
+      setError(message || 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -61,9 +61,9 @@ const ForgotPassword = () => {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage: "url('/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            height: "180px",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            height: '180px',
           }}
         />
         <div className="relative z-10 pt-6 flex justify-center">
@@ -133,16 +133,13 @@ const ForgotPassword = () => {
                     disabled={isLoading}
                   >
                     {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-                    {isLoading ? "Sending..." : "Send Reset Link"}
+                    {isLoading ? 'Sending...' : 'Send Reset Link'}
                   </Button>
 
                   <div className="text-center mt-4">
                     <p className="text-sm text-gray-600">
-                      Remember your password?{" "}
-                      <Link
-                        to="/login"
-                        className="text-cap-teal hover:underline font-medium"
-                      >
+                      Remember your password?{' '}
+                      <Link to="/login" className="text-cap-teal hover:underline font-medium">
                         Sign in
                       </Link>
                     </p>

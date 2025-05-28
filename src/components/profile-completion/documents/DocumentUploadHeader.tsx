@@ -1,14 +1,13 @@
-
-import React from "react";
+import React from 'react';
 
 interface DocumentUploadHeaderProps {
   title: string;
   description: string;
 }
 
-export const DocumentUploadHeader: React.FC<DocumentUploadHeaderProps> = ({ 
-  title, 
-  description 
+export const DocumentUploadHeader: React.FC<DocumentUploadHeaderProps> = ({
+  title,
+  description,
 }) => {
   return (
     <div>

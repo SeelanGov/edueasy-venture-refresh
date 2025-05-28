@@ -1,19 +1,18 @@
-
-import { toast } from "@/components/ui/use-toast";
+import { toast } from '@/components/ui/use-toast';
 
 /**
  * Unified error categories for both frontend and backend
  */
 export enum ErrorCategory {
-  AUTHENTICATION = "AUTHENTICATION",
-  DATABASE = "DATABASE",
-  NETWORK = "NETWORK",
-  FILE = "FILE",
-  VALIDATION = "VALIDATION",
-  API = "API",
-  OCR = "OCR",
-  PERMISSION = "PERMISSION",
-  UNKNOWN = "UNKNOWN"
+  AUTHENTICATION = 'AUTHENTICATION',
+  DATABASE = 'DATABASE',
+  NETWORK = 'NETWORK',
+  FILE = 'FILE',
+  VALIDATION = 'VALIDATION',
+  API = 'API',
+  OCR = 'OCR',
+  PERMISSION = 'PERMISSION',
+  UNKNOWN = 'UNKNOWN',
 }
 
 /**
@@ -44,9 +43,9 @@ export interface StandardError {
 export const parseError = (error: unknown): AppError => {
   const timestamp = new Date().toISOString();
   // Handle PostgreSQL/Supabase errors
-  if (typeof error === "object" && error !== null && "code" in error) {
+  if (typeof error === 'object' && error !== null && 'code' in error) {
     const pgError = error as { code?: string; message?: string };
-    if (pgError.code === "PGRST301" || pgError.code === "42501") {
+    if (pgError.code === 'PGRST301' || pgError.code === '42501') {
       return {
         message: "You don't have permission to perform this action",
         category: ErrorCategory.AUTHENTICATION,
@@ -55,14 +54,14 @@ export const parseError = (error: unknown): AppError => {
       };
     }
     return {
-      message: pgError.message || "Database error",
+      message: pgError.message || 'Database error',
       category: ErrorCategory.DATABASE,
       originalError: error,
       timestamp,
     };
   }
   // Network errors
-  if (error instanceof TypeError && error.message.includes("Network")) {
+  if (error instanceof TypeError && error.message.includes('Network')) {
     return {
       message: error.message,
       category: ErrorCategory.NETWORK,
@@ -81,7 +80,7 @@ export const parseError = (error: unknown): AppError => {
   }
   // Fallback for unknown
   return {
-    message: typeof error === "string" ? error : "Unknown error",
+    message: typeof error === 'string' ? error : 'Unknown error',
     category: ErrorCategory.UNKNOWN,
     originalError: error,
     timestamp,
@@ -92,28 +91,28 @@ export const parseError = (error: unknown): AppError => {
  * Handle an error with standardized logging and user feedback
  */
 export const handleError = (
-  error: unknown, 
+  error: unknown,
   userMessage?: string,
   showToast: boolean = true
 ): AppError => {
   const standardError = parseError(error);
-  
+
   // Always log to console
   console.error(
-    `[${standardError.category.toUpperCase()}]`, 
-    standardError.message, 
+    `[${standardError.category.toUpperCase()}]`,
+    standardError.message,
     standardError.originalError
   );
-  
+
   // Show toast notification if requested
   if (showToast) {
     toast({
-      title: userMessage || "Error",
+      title: userMessage || 'Error',
       description: standardError.message,
-      variant: "destructive",
+      variant: 'destructive',
     });
   }
-  
+
   return standardError;
 };
 

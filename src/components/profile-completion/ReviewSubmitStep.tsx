@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/Spinner";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
-import { toast } from "@/components/ui/use-toast";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
+import { toast } from '@/components/ui/use-toast';
+import { CheckCircle, AlertCircle } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { parseError } from "@/utils/errorHandler";
-import { logError } from "@/utils/logging";
+} from '@/components/ui/accordion';
+import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { parseError } from '@/utils/errorHandler';
+import { logError } from '@/utils/logging';
 
 interface ReviewSubmitStepProps {
   onBack: () => void;
@@ -27,14 +27,8 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const {
-    personalInfo,
-    contactInfo,
-    addressInfo,
-    educationInfo,
-    documents,
-    resetFormData
-  } = useProfileCompletionStore();
+  const { personalInfo, contactInfo, addressInfo, educationInfo, documents, resetFormData } =
+    useProfileCompletionStore();
 
   const handleSubmit = async () => {
     if (!user) return;
@@ -51,8 +45,8 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
       if (statusError) throw statusError;
       // Success
       toast({
-        title: "Profile completed",
-        description: "Your profile has been submitted successfully!",
+        title: 'Profile completed',
+        description: 'Your profile has been submitted successfully!',
       });
       // Reset form data
       resetFormData();
@@ -70,9 +64,15 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
   const renderPersonalInfo = () => {
     return (
       <div>
-        <p><strong>Full Name:</strong> {personalInfo.fullName}</p>
-        <p><strong>ID Number:</strong> {personalInfo.idNumber}</p>
-        <p><strong>Gender:</strong> {personalInfo.gender}</p>
+        <p>
+          <strong>Full Name:</strong> {personalInfo.fullName}
+        </p>
+        <p>
+          <strong>ID Number:</strong> {personalInfo.idNumber}
+        </p>
+        <p>
+          <strong>Gender:</strong> {personalInfo.gender}
+        </p>
       </div>
     );
   };
@@ -80,12 +80,20 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
   const renderContactInfo = () => {
     return (
       <div className="space-y-2">
-        <p><strong>Phone Number:</strong> {contactInfo.phoneNumber}</p>
-        <p><strong>Email:</strong> {contactInfo.contactEmail}</p>
+        <p>
+          <strong>Phone Number:</strong> {contactInfo.phoneNumber}
+        </p>
+        <p>
+          <strong>Email:</strong> {contactInfo.contactEmail}
+        </p>
         <div className="pt-2">
           <p className="font-semibold">Emergency Contact</p>
-          <p><strong>Name:</strong> {contactInfo.emergencyContactName}</p>
-          <p><strong>Phone:</strong> {contactInfo.emergencyContactPhone}</p>
+          <p>
+            <strong>Name:</strong> {contactInfo.emergencyContactName}
+          </p>
+          <p>
+            <strong>Phone:</strong> {contactInfo.emergencyContactPhone}
+          </p>
         </div>
       </div>
     );
@@ -94,12 +102,25 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
   const renderAddressInfo = () => {
     return (
       <div className="space-y-2">
-        <p><strong>Address Type:</strong> {addressInfo.addressType === 'residential' ? 'Residential' : 'Postal'}</p>
-        <p><strong>Street Address:</strong> {addressInfo.streetAddress}</p>
-        <p><strong>Suburb:</strong> {addressInfo.suburb}</p>
-        <p><strong>City:</strong> {addressInfo.city}</p>
-        <p><strong>Province:</strong> {addressInfo.province}</p>
-        <p><strong>Postal Code:</strong> {addressInfo.postalCode}</p>
+        <p>
+          <strong>Address Type:</strong>{' '}
+          {addressInfo.addressType === 'residential' ? 'Residential' : 'Postal'}
+        </p>
+        <p>
+          <strong>Street Address:</strong> {addressInfo.streetAddress}
+        </p>
+        <p>
+          <strong>Suburb:</strong> {addressInfo.suburb}
+        </p>
+        <p>
+          <strong>City:</strong> {addressInfo.city}
+        </p>
+        <p>
+          <strong>Province:</strong> {addressInfo.province}
+        </p>
+        <p>
+          <strong>Postal Code:</strong> {addressInfo.postalCode}
+        </p>
       </div>
     );
   };
@@ -108,11 +129,17 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
     return (
       <div className="space-y-4">
         <div>
-          <p><strong>School Name:</strong> {educationInfo.schoolName}</p>
-          <p><strong>Province:</strong> {educationInfo.province}</p>
-          <p><strong>Year of Completion:</strong> {educationInfo.completionYear}</p>
+          <p>
+            <strong>School Name:</strong> {educationInfo.schoolName}
+          </p>
+          <p>
+            <strong>Province:</strong> {educationInfo.province}
+          </p>
+          <p>
+            <strong>Year of Completion:</strong> {educationInfo.completionYear}
+          </p>
         </div>
-        
+
         <div>
           <p className="font-semibold mb-2">Grade 11 Subjects</p>
           <table className="w-full text-sm">
@@ -132,7 +159,7 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
             </tbody>
           </table>
         </div>
-        
+
         <div>
           <p className="font-semibold mb-2">Grade 12 Subjects</p>
           <table className="w-full text-sm">
@@ -183,57 +210,48 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
     <div>
       <h2 className="text-2xl font-bold mb-6">Review & Submit</h2>
       <p className="text-gray-600 mb-6">
-        Please review your information before submitting. You can go back to any section to make changes if needed.
+        Please review your information before submitting. You can go back to any section to make
+        changes if needed.
       </p>
-      
+
       {error && (
         <Alert variant="destructive" className="mb-6">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-      
+
       <Card className="mb-6">
         <CardContent className="pt-6">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="personal" className="border-b">
               <AccordionTrigger>Personal Information</AccordionTrigger>
-              <AccordionContent>
-                {renderPersonalInfo()}
-              </AccordionContent>
+              <AccordionContent>{renderPersonalInfo()}</AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="contact" className="border-b">
               <AccordionTrigger>Contact Information</AccordionTrigger>
-              <AccordionContent>
-                {renderContactInfo()}
-              </AccordionContent>
+              <AccordionContent>{renderContactInfo()}</AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="address" className="border-b">
               <AccordionTrigger>Address Information</AccordionTrigger>
-              <AccordionContent>
-                {renderAddressInfo()}
-              </AccordionContent>
+              <AccordionContent>{renderAddressInfo()}</AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="education" className="border-b">
               <AccordionTrigger>Education History</AccordionTrigger>
-              <AccordionContent>
-                {renderEducationInfo()}
-              </AccordionContent>
+              <AccordionContent>{renderEducationInfo()}</AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="documents">
               <AccordionTrigger>Documents</AccordionTrigger>
-              <AccordionContent>
-                {renderDocuments()}
-              </AccordionContent>
+              <AccordionContent>{renderDocuments()}</AccordionContent>
             </AccordionItem>
           </Accordion>
         </CardContent>
       </Card>
-      
+
       <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
         <div className="flex items-start">
           <div className="flex-shrink-0 pt-0.5">
@@ -252,24 +270,24 @@ export const ReviewSubmitStep = ({ onBack }: ReviewSubmitStepProps) => {
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-between">
-        <Button 
-          type="button" 
-          variant="outline" 
+        <Button
+          type="button"
+          variant="outline"
           onClick={onBack}
           className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
         >
           Back
         </Button>
-        
+
         <Button
           onClick={handleSubmit}
           disabled={isSubmitting}
           className="bg-cap-coral hover:bg-cap-coral/90"
         >
           {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
-          {isSubmitting ? "Submitting..." : "Submit Profile"}
+          {isSubmitting ? 'Submitting...' : 'Submit Profile'}
         </Button>
       </div>
     </div>

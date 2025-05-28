@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -10,13 +9,13 @@ export const recordBelongsToUser = async (
   userId: string | undefined
 ): Promise<boolean> => {
   if (!userId || !recordId) return false;
-  
+
   try {
     const { data, error } = await supabase.rpc('belongs_to_user', {
       table_name: tableName,
-      record_id: recordId
+      record_id: recordId,
     });
-    
+
     if (error) throw error;
     return !!data;
   } catch (error) {

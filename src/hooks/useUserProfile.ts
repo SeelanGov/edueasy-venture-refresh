@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { useState, useEffect } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 export interface UserProfile {
   id: string;
@@ -23,22 +23,22 @@ export const useUserProfile = (
 
       try {
         const { data, error } = await supabase
-          .from("users")
-          .select("id, full_name, id_number, email")
-          .eq("id", userId)
+          .from('users')
+          .select('id, full_name, id_number, email')
+          .eq('id', userId)
           .single();
 
         if (error) throw error;
 
         setUserProfile(data);
-        form.setValue("fullName", data.full_name);
-        form.setValue("idNumber", data.id_number);
+        form.setValue('fullName', data.full_name);
+        form.setValue('idNumber', data.id_number);
       } catch (error: unknown) {
-        console.error("Error fetching user profile:", error);
+        console.error('Error fetching user profile:', error);
         toast({
-          title: "Error",
+          title: 'Error',
           description: error instanceof Error ? error.message : String(error),
-          variant: "destructive",
+          variant: 'destructive',
         });
       }
     };

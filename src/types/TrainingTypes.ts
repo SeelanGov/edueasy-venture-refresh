@@ -1,4 +1,3 @@
-
 // Define common types for the training functionality
 export interface ChatMessage {
   id: string;

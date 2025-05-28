@@ -1,5 +1,4 @@
-
-import { JourneyMap } from "@/components/journey/JourneyMap";
+import { JourneyMap } from '@/components/journey/JourneyMap';
 
 interface ProfileCompletionStepperProps {
   steps: string[];

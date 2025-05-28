@@ -1,5 +1,12 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sponsorship, SponsorshipLevel, formatSponsorshipLevel } from '@/types/RevenueTypes';
@@ -17,17 +24,17 @@ export function SponsorshipCard({
   sponsorship,
   isAdmin = false,
   onEdit,
-  onDeactivate
+  onDeactivate,
 }: SponsorshipCardProps) {
   // Format dates
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
-  
+
   // Get sponsorship level color
   const getLevelColor = (level: string): string => {
     switch (level.toLowerCase()) {
@@ -43,7 +50,7 @@ export function SponsorshipCard({
         return 'bg-blue-100 text-blue-800';
     }
   };
-  
+
   return (
     <Card className={`w-full ${!sponsorship.is_active ? 'opacity-70' : ''}`}>
       <CardHeader className="pb-2">
@@ -64,31 +71,31 @@ export function SponsorshipCard({
         <div className="space-y-3">
           {sponsorship.logo_url && (
             <div className="h-16 flex items-center">
-              <img 
-                src={sponsorship.logo_url} 
-                alt={`${sponsorship.organization_name} logo`} 
+              <img
+                src={sponsorship.logo_url}
+                alt={`${sponsorship.organization_name} logo`}
                 className="max-h-full max-w-full object-contain"
               />
             </div>
           )}
-          
+
           {sponsorship.description && (
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {sponsorship.description}
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-2">{sponsorship.description}</p>
           )}
-          
+
           <div className="flex flex-wrap gap-4 text-sm">
             <div>
               <p className="font-medium">Amount</p>
               <p>{formatCurrency(sponsorship.amount)}</p>
             </div>
-            
+
             <div>
               <p className="font-medium">Duration</p>
               <p className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDate(sponsorship.start_date)} - {formatDate(sponsorship.end_date)}</span>
+                <span>
+                  {formatDate(sponsorship.start_date)} - {formatDate(sponsorship.end_date)}
+                </span>
               </p>
             </div>
           </div>
@@ -96,8 +103,8 @@ export function SponsorshipCard({
       </CardContent>
       <CardFooter className="flex gap-2">
         {sponsorship.website_url && (
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="sm"
             className="flex-1"
             onClick={() => window.open(sponsorship.website_url, '_blank')}
@@ -106,21 +113,21 @@ export function SponsorshipCard({
             <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         )}
-        
+
         {isAdmin && (
           <>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               className="flex-1"
               onClick={() => onEdit && onEdit(sponsorship.id)}
             >
               Edit
             </Button>
-            
+
             {sponsorship.is_active && (
-              <Button 
-                variant="destructive" 
+              <Button
+                variant="destructive"
                 size="sm"
                 className="flex-1"
                 onClick={() => onDeactivate && onDeactivate(sponsorship.id)}

@@ -12,18 +12,16 @@ export const logSecurityEvent = async (
   success: boolean
 ) => {
   try {
-    await supabase
-      .from('system_error_logs')
-      .insert({
-        message: `Security event: ${action} - ${success ? 'Success' : 'Failure'}`,
-        category: 'SECURITY',
-        severity: success ? ErrorSeverity.INFO : ErrorSeverity.WARNING,
-        component: 'SecurityMonitor',
-        action: action,
-        user_id: userId,
-        details: details
-      });
+    await supabase.from('system_error_logs').insert({
+      message: `Security event: ${action} - ${success ? 'Success' : 'Failure'}`,
+      category: 'SECURITY',
+      severity: success ? ErrorSeverity.INFO : ErrorSeverity.WARNING,
+      component: 'SecurityMonitor',
+      action: action,
+      user_id: userId,
+      details: details,
+    });
   } catch (error) {
-    console.error("Failed to log security event:", error);
+    console.error('Failed to log security event:', error);
   }
 };

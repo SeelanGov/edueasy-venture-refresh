@@ -1,6 +1,5 @@
-
-import { toast } from "@/components/ui/use-toast";
-import type { StandardError } from "./errorHandler";
+import { toast } from '@/components/ui/use-toast';
+import type { StandardError } from './errorHandler';
 
 export function logError(error: StandardError, notifyUser = true) {
   // Always log to console for devs
@@ -9,11 +8,11 @@ export function logError(error: StandardError, notifyUser = true) {
   // Optionally show a toast to the user
   if (notifyUser) {
     toast({
-      title: "An error occurred",
+      title: 'An error occurred',
       description: error.message,
-      variant: "destructive",
+      variant: 'destructive',
       duration: 5000,
-      className: "bg-white border-red-200 text-red-800"
+      className: 'bg-white border-red-200 text-red-800',
     });
   }
 

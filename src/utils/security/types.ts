@@ -1,4 +1,3 @@
-
 export interface RLSPolicyTestResult {
   success: boolean;
   results: RLSTestResult[];

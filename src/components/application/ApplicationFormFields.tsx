@@ -1,12 +1,25 @@
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { useInstitutionsAndPrograms } from "@/hooks/useInstitutionsAndPrograms";
-import { Spinner } from "@/components/Spinner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { UseFormReturn } from 'react-hook-form';
+import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
+import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 export interface ApplicationFormValues {
   fullName: string;
@@ -24,14 +37,18 @@ interface ApplicationFormFieldsProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: ApplicationFormFieldsProps) => {
-  const { 
-    institutions, 
-    filteredPrograms, 
-    loading, 
+export const ApplicationFormFields = ({
+  form,
+  isSubmitting,
+  handleFileChange,
+}: ApplicationFormFieldsProps) => {
+  const {
+    institutions,
+    filteredPrograms,
+    loading,
     error,
-    selectedInstitutionId, 
-    setSelectedInstitutionId 
+    selectedInstitutionId,
+    setSelectedInstitutionId,
   } = useInstitutionsAndPrograms();
 
   return (
@@ -93,9 +110,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 className="md:text-base"
               />
             </FormControl>
-            <FormDescription className="md:text-sm">
-              Your final overall percentage
-            </FormDescription>
+            <FormDescription className="md:text-sm">Your final overall percentage</FormDescription>
             <FormMessage />
           </FormItem>
         )}
@@ -122,7 +137,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                   field.onChange(value);
                   setSelectedInstitutionId(value);
                   // Reset program when university changes
-                  form.setValue("program", "");
+                  form.setValue('program', '');
                 }}
                 defaultValue={field.value}
                 disabled={isSubmitting || loading}
@@ -169,9 +184,7 @@ export const ApplicationFormFields = ({ form, isSubmitting, handleFileChange }: 
                 </FormControl>
                 <SelectContent>
                   {filteredPrograms.length === 0 && selectedInstitutionId ? (
-                    <div className="p-2 text-center text-sm text-gray-500">
-                      No programs found
-                    </div>
+                    <div className="p-2 text-center text-sm text-gray-500">No programs found</div>
                   ) : (
                     filteredPrograms.map((program) => (
                       <SelectItem key={program.id} value={program.id}>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 interface FocusTrapProps {
   children: React.ReactNode;
@@ -6,11 +6,7 @@ interface FocusTrapProps {
   className?: string;
 }
 
-export function FocusTrap({
-  children,
-  active = true,
-  className,
-}: FocusTrapProps) {
+export function FocusTrap({ children, active = true, className }: FocusTrapProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [focusableElements, setFocusableElements] = React.useState<HTMLElement[]>([]);
 
@@ -21,40 +17,43 @@ export function FocusTrap({
     const elements = containerRef.current.querySelectorAll<HTMLElement>(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     setFocusableElements(Array.from(elements));
   }, [children, active]);
 
   // Handle tab key to keep focus trapped
-  const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-    if (!active || focusableElements.length === 0) return;
-    
-    if (e.key === 'Tab') {
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-      
-      // If shift+tab and on first element, go to last element
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!active || focusableElements.length === 0) return;
+
+      if (e.key === 'Tab') {
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        // If shift+tab and on first element, go to last element
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+        // If tab and on last element, go to first element
+        else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
-      // If tab and on last element, go to first element
-      else if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-    }
-  }, [active, focusableElements]);
+    },
+    [active, focusableElements]
+  );
 
   // Focus the first element when trap becomes active
   React.useEffect(() => {
     if (active && focusableElements.length > 0) {
       // Store previous focus
       const previousFocus = document.activeElement as HTMLElement;
-      
+
       // Focus first element
       focusableElements[0].focus();
-      
+
       // Return focus when component unmounts
       return () => {
         if (previousFocus) previousFocus.focus();

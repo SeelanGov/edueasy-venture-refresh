@@ -1,58 +1,66 @@
-
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from 'lucide-react';
 
 interface DocumentGuidanceProps {
   failureReason: string | null | undefined;
   documentType?: string;
 }
 
-export const DocumentGuidance = ({ failureReason, documentType = "document" }: DocumentGuidanceProps) => {
+export const DocumentGuidance = ({
+  failureReason,
+  documentType = 'document',
+}: DocumentGuidanceProps) => {
   // Helper function to get guidance based on failure reason
   const getGuidanceForFailure = (reason: string | null | undefined): string => {
     if (!reason) return `Make sure your ${documentType} is clear and all information is visible.`;
-    
-    if (reason.includes("ID number")) {
+
+    if (reason.includes('ID number')) {
       return `Make sure your ID number is clearly visible and not obscured. Position the ${documentType} on a flat surface with good lighting.`;
     }
-    
-    if (reason.includes("outdated")) {
+
+    if (reason.includes('outdated')) {
       return `Please upload a more recent ${documentType} (less than 3 months old). The system requires up-to-date documentation.`;
     }
-    
-    if (reason.includes("address")) {
+
+    if (reason.includes('address')) {
       return `Ensure your address is clearly visible on the ${documentType}. All address lines must be legible and complete.`;
     }
-    
-    if (reason.includes("clear") || reason.includes("blurry") || reason.includes("quality")) {
+
+    if (reason.includes('clear') || reason.includes('blurry') || reason.includes('quality')) {
       return `Try uploading a clearer image with better lighting and focus. Avoid glare and shadows on the ${documentType}.`;
     }
-    
-    if (reason.includes("incomplete") || reason.includes("missing")) {
+
+    if (reason.includes('incomplete') || reason.includes('missing')) {
       return `Your ${documentType} appears to be incomplete. Please ensure all required information is included and clearly visible.`;
     }
-    
-    if (reason.includes("format") || reason.includes("file type")) {
+
+    if (reason.includes('format') || reason.includes('file type')) {
       return `Please upload the ${documentType} in the correct format (PDF, JPG, or PNG) with all pages included.`;
     }
-    
+
     return `Make sure all required information is visible on your ${documentType} and the document is properly oriented. Try taking a new photo in good lighting.`;
   };
 
   // Get specific document tips based on document type
   const getDocumentSpecificTips = () => {
-    if (documentType.toLowerCase().includes("id")) {
-      return "For ID documents: Ensure both sides are clearly visible if needed, and all text is legible.";
+    if (documentType.toLowerCase().includes('id')) {
+      return 'For ID documents: Ensure both sides are clearly visible if needed, and all text is legible.';
     }
-    
-    if (documentType.toLowerCase().includes("proof of residence") || documentType.toLowerCase().includes("address")) {
-      return "For proof of residence: Ensure the document shows your full name, address, and is dated within the last 3 months.";
+
+    if (
+      documentType.toLowerCase().includes('proof of residence') ||
+      documentType.toLowerCase().includes('address')
+    ) {
+      return 'For proof of residence: Ensure the document shows your full name, address, and is dated within the last 3 months.';
     }
-    
-    if (documentType.toLowerCase().includes("grade") || documentType.toLowerCase().includes("result")) {
+
+    if (
+      documentType.toLowerCase().includes('grade') ||
+      documentType.toLowerCase().includes('result')
+    ) {
       return "For academic results: Make sure all subjects, grades, and the school's official stamp or signature are visible.";
     }
-    
-    return "";
+
+    return '';
   };
 
   const specificTip = getDocumentSpecificTips();

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { UserCheck, UserPlus, Info } from "lucide-react";
-import { SecurityBadge } from "@/components/ui/SecurityBadge";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { SecurityInfoPanel } from "@/components/ui/SecurityInfoPanel";
-import { logError } from "@/utils/logging";
-import { parseError } from "@/utils/errorHandler";
+import React, { useState, useEffect } from 'react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { UserCheck, UserPlus, Info } from 'lucide-react';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
+import { logError } from '@/utils/logging';
+import { parseError } from '@/utils/errorHandler';
 
 // Mock data interfaces
 interface Post {
@@ -38,25 +38,25 @@ export const UserProfileCard = () => {
     const fetchProfileData = async () => {
       try {
         const mockUserData: UserProfile = {
-          id: "user123",
-          name: "Alex Johnson",
-          bio: "Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.",
-          avatar: "/images/user-photos/alex-johnson.webp",
+          id: 'user123',
+          name: 'Alex Johnson',
+          bio: 'Software engineer passionate about React and TypeScript. Love building user interfaces and solving complex problems.',
+          avatar: '/images/user-photos/alex-johnson.webp',
           followers: 1245,
           following: 867,
           posts: [
             {
               id: 1,
-              title: "Understanding React Hooks",
-              preview: "A deep dive into useState, useEffect, and custom hooks...",
-              date: "2024-06-01"
+              title: 'Understanding React Hooks',
+              preview: 'A deep dive into useState, useEffect, and custom hooks...',
+              date: '2024-06-01',
             },
             {
               id: 2,
-              title: "TypeScript Tips",
-              preview: "How to write safer, cleaner code with TypeScript.",
-              date: "2024-05-28"
-            }
+              title: 'TypeScript Tips',
+              preview: 'How to write safer, cleaner code with TypeScript.',
+              date: '2024-05-28',
+            },
           ],
           verified: true,
         };
@@ -80,11 +80,18 @@ export const UserProfileCard = () => {
     <Card className="max-w-md mx-auto shadow-lg mt-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
       <SecurityInfoPanel badgeType="privacy" />
       {loading && <div className="p-8 text-center">Loading profile...</div>}
-      {error && <div className="text-red-500 p-4 text-center" role="alert" aria-live="assertive">{error}</div>}
+      {error && (
+        <div className="text-red-500 p-4 text-center" role="alert" aria-live="assertive">
+          {error}
+        </div>
+      )}
       {profileData && !loading && (
         <>
           <CardHeader className="flex flex-row items-center gap-4">
-            <Avatar className="h-16 w-16 ring-2 ring-primary ring-offset-2" aria-label={`Profile picture of ${profileData.name}`}>
+            <Avatar
+              className="h-16 w-16 ring-2 ring-primary ring-offset-2"
+              aria-label={`Profile picture of ${profileData.name}`}
+            >
               <AvatarImage src={profileData.avatar} alt={profileData.name} />
               <AvatarFallback>{profileData.name.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
@@ -103,8 +110,12 @@ export const UserProfileCard = () => {
                 ) : null}
               </h2>
               <div className="flex items-center gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                <span><strong>{profileData.followers}</strong> Followers</span>
-                <span><strong>{profileData.following}</strong> Following</span>
+                <span>
+                  <strong>{profileData.followers}</strong> Followers
+                </span>
+                <span>
+                  <strong>{profileData.following}</strong> Following
+                </span>
               </div>
             </div>
           </CardHeader>
@@ -140,7 +151,7 @@ export const UserProfileCard = () => {
                 ) : null}
               </h3>
               <div className="space-y-3">
-                {profileData.posts.map(post => (
+                {profileData.posts.map((post) => (
                   <div key={post.id} className="bg-gray-50 dark:bg-zinc-800 p-3 rounded-md">
                     <div className="flex justify-between">
                       <h4 className="font-medium text-zinc-900 dark:text-zinc-100">{post.title}</h4>
@@ -158,9 +169,9 @@ export const UserProfileCard = () => {
                 <Button
                   className="w-full"
                   onClick={handleFollowToggle}
-                  variant={isFollowing ? "outline" : "default"}
+                  variant={isFollowing ? 'outline' : 'default'}
                   aria-pressed={isFollowing}
-                  aria-label={isFollowing ? "Unfollow user" : "Follow user"}
+                  aria-label={isFollowing ? 'Unfollow user' : 'Follow user'}
                 >
                   {isFollowing ? (
                     <>
@@ -175,7 +186,9 @@ export const UserProfileCard = () => {
                   )}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>{isFollowing ? "Unfollow this user" : "Follow this user to see updates"}</TooltipContent>
+              <TooltipContent>
+                {isFollowing ? 'Unfollow this user' : 'Follow this user to see updates'}
+              </TooltipContent>
             </Tooltip>
           </CardFooter>
         </>

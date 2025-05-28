@@ -1,7 +1,6 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 export interface Institution {
   id: string;
@@ -35,22 +34,22 @@ export const useInstitutionsAndPrograms = () => {
       try {
         setError(false);
         setLoading(true);
-        
+
         const { data, error } = await supabase
-          .from("institutions")
-          .select("*")
-          .eq("active", true)
-          .order("name");
+          .from('institutions')
+          .select('*')
+          .eq('active', true)
+          .order('name');
 
         if (error) throw error;
         setInstitutions(data || []);
       } catch (error: unknown) {
-        console.error("Error fetching institutions:", error);
+        console.error('Error fetching institutions:', error);
         setError(true);
         toast({
-          title: "Error",
-          description: "Failed to load institutions",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Failed to load institutions',
+          variant: 'destructive',
         });
       } finally {
         setLoading(false);
@@ -66,10 +65,7 @@ export const useInstitutionsAndPrograms = () => {
       try {
         if (!selectedInstitutionId) {
           // Fetch all programs initially to have them ready
-          const { data, error } = await supabase
-            .from("programs")
-            .select("*")
-            .eq("active", true);
+          const { data, error } = await supabase.from('programs').select('*').eq('active', true);
 
           if (error) throw error;
           setPrograms(data || []);
@@ -77,21 +73,21 @@ export const useInstitutionsAndPrograms = () => {
           // Fetch only programs for the selected institution for better performance
           setLoading(true);
           const { data, error } = await supabase
-            .from("programs")
-            .select("*")
-            .eq("active", true)
-            .eq("institution_id", selectedInstitutionId);
+            .from('programs')
+            .select('*')
+            .eq('active', true)
+            .eq('institution_id', selectedInstitutionId);
 
           if (error) throw error;
           setFilteredPrograms(data || []);
         }
       } catch (error: unknown) {
-        console.error("Error fetching programs:", error);
+        console.error('Error fetching programs:', error);
         setError(true);
         toast({
-          title: "Error",
-          description: "Failed to load programs",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Failed to load programs',
+          variant: 'destructive',
         });
       } finally {
         setLoading(false);
@@ -105,7 +101,7 @@ export const useInstitutionsAndPrograms = () => {
   useEffect(() => {
     if (selectedInstitutionId) {
       setFilteredPrograms(
-        programs.filter(program => program.institution_id === selectedInstitutionId)
+        programs.filter((program) => program.institution_id === selectedInstitutionId)
       );
     } else {
       setFilteredPrograms([]);
@@ -119,6 +115,6 @@ export const useInstitutionsAndPrograms = () => {
     error,
     selectedInstitutionId,
     setSelectedInstitutionId,
-    filteredPrograms
+    filteredPrograms,
   };
 };

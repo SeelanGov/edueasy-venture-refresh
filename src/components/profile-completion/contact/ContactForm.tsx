@@ -1,8 +1,7 @@
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,11 +10,11 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/Spinner";
-import { ContactFormValues } from "./types";
-import { EmergencyContactSection } from "./EmergencyContactSection";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/Spinner';
+import { ContactFormValues } from './types';
+import { EmergencyContactSection } from './EmergencyContactSection';
 
 // South African phone number validation
 const validateSAPhoneNumber = (phone: string) => {
@@ -24,14 +23,16 @@ const validateSAPhoneNumber = (phone: string) => {
 };
 
 const contactInfoSchema = z.object({
-  phoneNumber: z.string()
-    .min(10, "Phone number must be at least 10 digits")
-    .refine(validateSAPhoneNumber, "Invalid South African phone number"),
-  contactEmail: z.string().email("Please enter a valid email address"),
-  emergencyContactName: z.string().min(2, "Emergency contact name is required"),
-  emergencyContactPhone: z.string()
-    .min(10, "Phone number must be at least 10 digits")
-    .refine(validateSAPhoneNumber, "Invalid South African phone number"),
+  phoneNumber: z
+    .string()
+    .min(10, 'Phone number must be at least 10 digits')
+    .refine(validateSAPhoneNumber, 'Invalid South African phone number'),
+  contactEmail: z.string().email('Please enter a valid email address'),
+  emergencyContactName: z.string().min(2, 'Emergency contact name is required'),
+  emergencyContactPhone: z
+    .string()
+    .min(10, 'Phone number must be at least 10 digits')
+    .refine(validateSAPhoneNumber, 'Invalid South African phone number'),
 });
 
 interface ContactFormProps {
@@ -41,7 +42,12 @@ interface ContactFormProps {
   isSubmitting: boolean;
 }
 
-export const ContactForm = ({ initialValues, onSubmit, onBack, isSubmitting }: ContactFormProps) => {
+export const ContactForm = ({
+  initialValues,
+  onSubmit,
+  onBack,
+  isSubmitting,
+}: ContactFormProps) => {
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactInfoSchema),
     defaultValues: initialValues,
@@ -57,19 +63,14 @@ export const ContactForm = ({ initialValues, onSubmit, onBack, isSubmitting }: C
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="0821234567 or +27821234567" 
-                  {...field} 
-                />
+                <Input placeholder="0821234567 or +27821234567" {...field} />
               </FormControl>
-              <FormDescription>
-                Enter a valid South African phone number
-              </FormDescription>
+              <FormDescription>Enter a valid South African phone number</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="contactEmail"
@@ -77,36 +78,32 @@ export const ContactForm = ({ initialValues, onSubmit, onBack, isSubmitting }: C
             <FormItem>
               <FormLabel>Contact Email</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  {...field}
-                />
+                <Input type="email" placeholder="your.email@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <EmergencyContactSection control={form.control} />
-        
+
         <div className="flex justify-between pt-4">
-          <Button 
-            type="button" 
-            variant="outline" 
+          <Button
+            type="button"
+            variant="outline"
             onClick={onBack}
             className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
           >
             Back
           </Button>
-          
-          <Button 
-            type="submit" 
+
+          <Button
+            type="submit"
             disabled={isSubmitting}
             className="bg-cap-teal hover:bg-cap-teal/90"
           >
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
-            {isSubmitting ? "Saving..." : "Continue"}
+            {isSubmitting ? 'Saving...' : 'Continue'}
           </Button>
         </div>
       </form>

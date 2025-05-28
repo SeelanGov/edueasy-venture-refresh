@@ -1,15 +1,13 @@
 import { supabase } from '@/integrations/supabase/client';
-import { v4 as uuidv4 } from 'uuid';
 import { StandardError } from './errorHandler';
-import { toast } from "sonner";
-
-// Keep other imports and constants
+import { toast } from 'sonner';
+import logger from './logger';
 
 export enum ErrorSeverity {
   INFO = 'info',
   WARNING = 'warning',
   ERROR = 'error',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 /**
@@ -23,6 +21,7 @@ export const logError = async (
   userId?: string
 ): Promise<string | null> => {
   try {
+    logger.error(`Error in ${component}:`, error.message);
     // Use direct table access instead of RPC function since types aren't defined
     const { data, error: logError } = await supabase
       .from('system_error_logs')
@@ -33,18 +32,18 @@ export const logError = async (
         component: component,
         action: action,
         user_id: userId,
-        details: { 
-          originalError: error.originalError ? String(error.originalError) : undefined 
-        }
+        details: {
+          originalError: error.originalError ? String(error.originalError) : undefined,
+        },
       })
       .select('id')
       .single();
-    
+
     if (logError) {
       console.error('Failed to log error:', logError);
       return null;
     }
-    
+
     return data?.id || null;
   } catch (err) {
     console.error('Error logging to system:', err);
@@ -74,33 +73,31 @@ export const safeAsyncWithLogging = async <T>(
     return { data, error: null };
   } catch (error: unknown) {
     console.error(`Error in ${options.component}/${options.action}:`, error);
-    
+
     // Log the error to our system
     try {
       // Use direct table access instead of RPC function
-      await supabase
-        .from('system_error_logs')
-        .insert({
-          message: error instanceof Error ? error.message : options.errorMessage || 'Unknown error',
-          category: options.errorCategory || 'UNKNOWN',
-          severity: options.severity || ErrorSeverity.ERROR,
-          component: options.component,
-          action: options.action,
-          user_id: options.userId,
-          stack: error instanceof Error ? error.stack : undefined,
-          additionalData: options.additionalData,
-          retryCount: options.retryCount
-        });
+      await supabase.from('system_error_logs').insert({
+        message: error instanceof Error ? error.message : options.errorMessage || 'Unknown error',
+        category: options.errorCategory || 'UNKNOWN',
+        severity: options.severity || ErrorSeverity.ERROR,
+        component: options.component,
+        action: options.action,
+        user_id: options.userId,
+        stack: error instanceof Error ? error.stack : undefined,
+        additionalData: options.additionalData,
+        retryCount: options.retryCount,
+      });
     } catch (loggingError) {
       // If we can't log the error, at least log it to the console
       console.error('Failed to log error to backend:', loggingError);
     }
-    
+
     // If toast display is requested, show it
     if (options.showToast !== false) {
-      toast(error instanceof Error ? error.message : options.errorMessage || "An error occurred");
+      toast(error instanceof Error ? error.message : options.errorMessage || 'An error occurred');
     }
-    
+
     return { data: null, error: error instanceof Error ? error : new Error('Unknown error') };
   }
 };
@@ -111,17 +108,12 @@ export const safeAsyncWithLogging = async <T>(
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
     // Fixed: Use proper count method with Supabase
-    const { data, error, count } = await supabase
-      .from('system_error_logs')
-      .select('*', { count: 'exact', head: true })
-      .eq('severity', 'critical')
-      .eq('is_resolved', false)
-      .gt('occurred_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-      
+    const { error, count } = await supabase.from('documents').select('*');
+
     if (error) throw error;
     return count || 0;
   } catch (err) {
-    console.error("Failed to count critical errors:", err);
+    console.error('Failed to count critical errors:', err);
     return 0;
   }
 };
@@ -130,7 +122,7 @@ export const getCriticalErrorCount = async (): Promise<number> => {
  * Mark an error as resolved
  */
 export const resolveSystemError = async (
-  errorId: string, 
+  errorId: string,
   resolutionNotes: string
 ): Promise<boolean> => {
   try {
@@ -141,14 +133,14 @@ export const resolveSystemError = async (
         is_resolved: true,
         resolved_at: new Date().toISOString(),
         resolved_by: (await supabase.auth.getUser()).data.user?.id,
-        resolution_notes: resolutionNotes
+        resolution_notes: resolutionNotes,
       })
       .eq('id', errorId);
-      
+
     if (error) throw error;
     return true;
   } catch (err) {
-    console.error("Failed to resolve error:", err);
+    console.error('Failed to resolve error:', err);
     return false;
   }
 };

@@ -1,27 +1,39 @@
 // Enhanced cross-platform script to fix dependencies issues with better error handling
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { fileURLToPath } from 'url';
+import chalk from 'chalk';
 
-console.log('🔧 Starting enhanced dependency fix process...');
+// Create a simple logger since we can't import the project logger (circular dependency)
+const logger = {
+  info: (message, ...args) => console.log(chalk.blue('[INFO]'), message, ...args),
+  success: (message, ...args) => console.log(chalk.green('[SUCCESS]'), message, ...args),
+  warn: (message, ...args) => console.warn(chalk.yellow('[WARN]'), message, ...args),
+  error: (message, ...args) => console.error(chalk.red('[ERROR]'), message, ...args),
+};
 
-// Define paths
+logger.info('🔧 Starting enhanced dependency fix process...');
+
+// Define paths for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const nodeModulesPath = path.join(rootDir, 'node_modules');
 const packageLockPath = path.join(rootDir, 'package-lock.json');
 
 // Step 1: Clean npm cache
-console.log('\n📦 Cleaning npm cache...');
+logger.info('\n📦 Cleaning npm cache...');
 try {
   execSync('npm cache clean --force', { stdio: 'inherit', cwd: rootDir });
-  console.log('✅ npm cache cleaned');
+  logger.success('✅ npm cache cleaned');
 } catch (error) {
-  console.warn('⚠️ Failed to clean npm cache (continuing anyway):', error.message);
+  logger.warn('⚠️ Failed to clean npm cache (continuing anyway):', error.message);
 }
 
 // Step 2: Remove node_modules and package-lock.json
-console.log('\n🗑️ Removing node_modules and package-lock.json...');
+logger.info('\n🗑️ Removing node_modules and package-lock.json...');
 try {
   if (fs.existsSync(nodeModulesPath)) {
     // Use rimraf for cross-platform directory removal
@@ -40,39 +52,39 @@ try {
   if (fs.existsSync(packageLockPath)) {
     fs.unlinkSync(packageLockPath);
   }
-  console.log('✅ Removed node_modules and package-lock.json');
+  logger.success('✅ Removed node_modules and package-lock.json');
 } catch (error) {
-  console.warn('⚠️ Failed to remove directories (continuing anyway):', error.message);
+  logger.warn('⚠️ Failed to remove directories (continuing anyway):', error.message);
 }
 
 // Step 3: Install dependencies
-console.log('\n📦 Installing dependencies...');
+logger.info('\n📦 Installing dependencies...');
 try {
   execSync('npm install', { stdio: 'inherit', cwd: rootDir });
-  console.log('✅ Dependencies installed');
+  logger.success('✅ Dependencies installed');
 } catch (error) {
-  console.error('❌ Failed to install dependencies:', error.message);
-  console.log('🔄 Trying alternative approach...');
+  logger.error('❌ Failed to install dependencies:', error.message);
+  logger.info('🔄 Trying alternative approach...');
   
   // Try installing with legacy peer deps
   try {
     execSync('npm install --legacy-peer-deps', { stdio: 'inherit', cwd: rootDir });
-    console.log('✅ Dependencies installed with legacy peer deps');
+    logger.success('✅ Dependencies installed with legacy peer deps');
   } catch (fallbackError) {
-    console.error('❌ Failed with fallback approach:', fallbackError.message);
-    console.log('⚠️ Attempting to continue with platform-specific dependency installation...');
+    logger.error('❌ Failed with fallback approach:', fallbackError.message);
+    logger.info('⚠️ Attempting to continue with platform-specific dependency installation...');
   }
 }
 
 // Step 4: Install platform-specific Rollup dependency
-console.log('\n🔧 Installing platform-specific Rollup dependency...');
+logger.info('\n🔧 Installing platform-specific Rollup dependency...');
 try {
   // Detect the current platform and architecture
   const platform = os.platform();
   const arch = os.arch();
   let targetDeps = [];
 
-  console.log(`📊 Detected platform: ${platform}, architecture: ${arch}`);
+  logger.info(`📊 Detected platform: ${platform}, architecture: ${arch}`);
 
   switch (platform) {
     case 'linux':
@@ -93,7 +105,7 @@ try {
       targetDeps = ['@rollup/rollup-win32-x64-msvc'];
       break;
     default:
-      console.warn(`⚠️ Unsupported platform: ${platform}, installing common Rollup dependencies`);
+      logger.warn(`⚠️ Unsupported platform: ${platform}, installing common Rollup dependencies`);
       targetDeps = [
         '@rollup/rollup-linux-x64-gnu',
         '@rollup/rollup-darwin-x64',
@@ -101,76 +113,76 @@ try {
       ];
   }
 
-  console.log(`🔍 Detected platform: ${platform} (${arch}), installing: ${targetDeps.join(', ')}`);
+  logger.info(`🔍 Detected platform: ${platform} (${arch}), installing: ${targetDeps.join(', ')}`);
   
   for (const dep of targetDeps) {
     try {
       execSync(`npm install ${dep} --no-save`, { stdio: 'inherit', cwd: rootDir });
-      console.log(`✅ Successfully installed ${dep}`);
+      logger.success(`✅ Successfully installed ${dep}`);
     } catch (error) {
-      console.warn(`⚠️ Failed to install ${dep}:`, error.message);
+      logger.warn(`⚠️ Failed to install ${dep}:`, error.message);
     }
   }
   
-  console.log('✅ Platform-specific Rollup dependencies installation completed');
+  logger.success('✅ Platform-specific Rollup dependencies installation completed');
 } catch (error) {
-  console.error('❌ Failed to install platform-specific dependencies:', error.message);
+  logger.error('❌ Failed to install platform-specific dependencies:', error.message);
   
   // Try alternative approach if the first one fails
-  console.log('🔄 Trying alternative approach...');
+  logger.info('🔄 Trying alternative approach...');
   try {
     // Remove node_modules/.bin/rollup to force reinstallation
     const rollupBinPath = path.join(nodeModulesPath, '.bin', 'rollup');
     if (fs.existsSync(rollupBinPath)) {
       fs.unlinkSync(rollupBinPath);
-      console.log('✅ Removed rollup binary to force reinstallation');
+      logger.success('✅ Removed rollup binary to force reinstallation');
     }
     
     // Reinstall rollup
     execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
-    console.log('✅ Reinstalled rollup');
+    logger.success('✅ Reinstalled rollup');
   } catch (secondError) {
-    console.error('❌ Alternative approach also failed:', secondError.message);
-    console.log('🔄 Continuing anyway - build may still work');
+    logger.error('❌ Alternative approach also failed:', secondError.message);
+    logger.info('🔄 Continuing anyway - build may still work');
   }
 }
 
 // Step 5: Check for other common dependency issues
-console.log('\n🔍 Checking for other common dependency issues...');
+logger.info('\n🔍 Checking for other common dependency issues...');
 
 // Check for duplicate dependencies
 try {
-  console.log('🔍 Checking for duplicate dependencies...');
+  logger.info('🔍 Checking for duplicate dependencies...');
   execSync('npx dedupe', { stdio: 'inherit', cwd: rootDir });
-  console.log('✅ Deduplication completed');
+  logger.success('✅ Deduplication completed');
 } catch (error) {
-  console.warn('⚠️ Deduplication failed:', error.message);
+  logger.warn('⚠️ Deduplication failed:', error.message);
 }
 
 // Step 6: Verify installation
-console.log('\n🔍 Verifying installation...');
+logger.info('\n🔍 Verifying installation...');
 try {
   const packageJsonPath = path.join(rootDir, 'package.json');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  console.log(`✅ Project: ${packageJson.name} v${packageJson.version}`);
+  logger.success(`✅ Project: ${packageJson.name} v${packageJson.version}`);
   
   if (fs.existsSync(nodeModulesPath)) {
-    console.log('✅ node_modules directory exists');
+    logger.success('✅ node_modules directory exists');
   } else {
-    console.warn('⚠️ node_modules directory not found');
+    logger.warn('⚠️ node_modules directory not found');
   }
   
   if (fs.existsSync(packageLockPath)) {
-    console.log('✅ package-lock.json exists');
+    logger.success('✅ package-lock.json exists');
   } else {
-    console.warn('⚠️ package-lock.json not found');
+    logger.warn('⚠️ package-lock.json not found');
   }
 } catch (error) {
-  console.warn('⚠️ Verification failed:', error.message);
+  logger.warn('⚠️ Verification failed:', error.message);
 }
 
-console.log('\n🎉 Enhanced dependency fix process completed!');
-console.log('📋 Next steps:');
-console.log('   1. Try building the project: npm run build');
-console.log('   2. If build fails, try the safe build: npm run build:safe');
-console.log('   3. If issues persist, try running: npm run fix-rollup');
+logger.info('\n🎉 Enhanced dependency fix process completed!');
+logger.info('📋 Next steps:');
+logger.info('   1. Try building the project: npm run build');
+logger.info('   2. If build fails, try the safe build: npm run build:safe');
+logger.info('   3. If issues persist, try running: npm run fix-rollup');

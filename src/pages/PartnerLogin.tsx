@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PartnerLogin: React.FC = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ username: "", password: "" });
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({ username: '', password: '' });
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -12,13 +12,13 @@ const PartnerLogin: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     if (!form.username || !form.password) {
-      setError("Both fields are required.");
+      setError('Both fields are required.');
       return;
     }
     // Simulate login success
-    navigate("/partner/dashboard");
+    navigate('/partner/dashboard');
   };
 
   return (

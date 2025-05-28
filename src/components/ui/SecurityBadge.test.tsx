@@ -6,7 +6,7 @@ import { TooltipProvider } from './tooltip';
 describe('SecurityBadge', () => {
   it('renders all badge types with correct tooltip', () => {
     const types: SecurityBadgeType[] = ['encryption', 'data-protection', 'privacy', 'verification'];
-    types.forEach(type => {
+    types.forEach((type) => {
       render(
         <TooltipProvider>
           <SecurityBadge type={type} />

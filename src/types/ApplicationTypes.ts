@@ -1,5 +1,4 @@
-
-import { Database } from "@/integrations/supabase/types";
+import { Database } from '@/integrations/supabase/types';
 
 export interface Application {
   id: string;
@@ -11,7 +10,7 @@ export interface Application {
   institution_id?: string | null;
   program_id?: string | null;
   documents?: Document[];
-  
+
   // Add these properties for UI display purposes
   institution?: { id: string; name: string } | null;
   program?: { id: string; name: string } | null;

@@ -1,8 +1,7 @@
-
-import React, { useState } from "react";
-import { RefreshCw, RotateCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import React, { useState } from 'react';
+import { RefreshCw, RotateCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 interface RecoveryHelperProps {
   title: string;
@@ -18,8 +17,8 @@ export const RecoveryHelper = ({
   description,
   onRecover,
   onCancel,
-  recoveryButtonText = "Recover",
-  cancelButtonText = "Cancel"
+  recoveryButtonText = 'Recover',
+  cancelButtonText = 'Cancel',
 }: RecoveryHelperProps) => {
   const [isRecovering, setIsRecovering] = useState(false);
   const [isRecovered, setIsRecovered] = useState(false);
@@ -28,16 +27,16 @@ export const RecoveryHelper = ({
   const handleRecover = async () => {
     setIsRecovering(true);
     setError(null);
-    
+
     try {
       const success = await onRecover();
       if (success) {
         setIsRecovered(true);
       } else {
-        setError("Recovery attempt failed. Please try again.");
+        setError('Recovery attempt failed. Please try again.');
       }
     } catch (err) {
-      setError(`Recovery error: ${err instanceof Error ? err.message : "Unknown error"}`);
+      setError(`Recovery error: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setIsRecovering(false);
     }
@@ -57,9 +56,9 @@ export const RecoveryHelper = ({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          {isRecovered ? "Recovery completed successfully." : description}
+          {isRecovered ? 'Recovery completed successfully.' : description}
         </p>
-        
+
         {error && (
           <div className="mt-4 p-2 bg-red-50 text-red-700 text-sm border border-red-200 rounded">
             {error}
@@ -68,19 +67,14 @@ export const RecoveryHelper = ({
       </CardContent>
       <CardFooter className="flex justify-end space-x-2">
         {!isRecovered && onCancel && (
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={onCancel}
-            disabled={isRecovering}
-          >
+          <Button variant="outline" size="sm" onClick={onCancel} disabled={isRecovering}>
             {cancelButtonText}
           </Button>
         )}
-        
+
         {!isRecovered ? (
-          <Button 
-            variant="default" 
+          <Button
+            variant="default"
             size="sm"
             onClick={handleRecover}
             disabled={isRecovering}
@@ -96,8 +90,8 @@ export const RecoveryHelper = ({
             )}
           </Button>
         ) : (
-          <Button 
-            variant="default" 
+          <Button
+            variant="default"
             size="sm"
             onClick={onCancel}
             className="bg-green-600 hover:bg-green-700"

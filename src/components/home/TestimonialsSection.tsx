@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Typography } from "@/components/ui/typography";
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Typography } from '@/components/ui/typography';
 
 interface Testimonial {
   id: number;
@@ -15,41 +15,44 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Thabo Molefe",
-    university: "University of Cape Town",
-    program: "Computer Science",
-    image: "/images/user-photos/thabo-molefe.webp",
-    quote: "EduEasy simplified my application process, allowing me to apply to multiple universities with ease. The dashboard made tracking my applications straightforward."
+    name: 'Thabo Molefe',
+    university: 'University of Cape Town',
+    program: 'Computer Science',
+    image: '/images/user-photos/thabo-molefe.webp',
+    quote:
+      'EduEasy simplified my application process, allowing me to apply to multiple universities with ease. The dashboard made tracking my applications straightforward.',
   },
   {
     id: 2,
-    name: "Lerato Ndlovu",
-    university: "University of Pretoria",
-    program: "Medicine",
-    image: "/images/user-photos/lerato-ndlovu.webp",
-    quote: "The support and guidance I received from EduEasy was invaluable. I felt confident every step of the way."
+    name: 'Lerato Ndlovu',
+    university: 'University of Pretoria',
+    program: 'Medicine',
+    image: '/images/user-photos/lerato-ndlovu.webp',
+    quote:
+      'The support and guidance I received from EduEasy was invaluable. I felt confident every step of the way.',
   },
   {
     id: 3,
-    name: "Sipho Khumalo",
-    university: "Stellenbosch University",
-    program: "Business Administration",
-    image: "/images/user-photos/sipho-khumalo.webp",
-    quote: "The document verification feature saved me so much stress. Knowing my application was complete before submission gave me confidence."
-  }
+    name: 'Sipho Khumalo',
+    university: 'Stellenbosch University',
+    program: 'Business Administration',
+    image: '/images/user-photos/sipho-khumalo.webp',
+    quote:
+      'The document verification feature saved me so much stress. Knowing my application was complete before submission gave me confidence.',
+  },
 ];
 
 export const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const nextTestimonial = () => {
     setActiveIndex((current) => (current + 1) % testimonials.length);
   };
-  
+
   const prevTestimonial = () => {
     setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
   };
-  
+
   return (
     <section id="testimonials" className="py-20 px-4 md:py-24 bg-white">
       <div className="container mx-auto">
@@ -64,7 +67,7 @@ export const TestimonialsSection = () => {
             Hear from students who found their path with EduEasy
           </Typography>
         </div>
-        
+
         <div className="max-w-4xl mx-auto">
           <div className="relative bg-gray-50 rounded-lg p-6 md:p-8 shadow-lg">
             <div className="absolute top-0 right-0 transform -translate-y-1/2 translate-x-0">
@@ -72,16 +75,16 @@ export const TestimonialsSection = () => {
                 <span className="text-white text-2xl md:text-3xl">"</span>
               </div>
             </div>
-            
+
             <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-cap-teal">
-                <img 
-                  src={testimonials[activeIndex].image} 
-                  alt={testimonials[activeIndex].name} 
+                <img
+                  src={testimonials[activeIndex].image}
+                  alt={testimonials[activeIndex].name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              
+
               <div className="flex-grow">
                 <Typography variant="body-lg" className="italic mb-4 md:text-xl md:leading-relaxed">
                   "{testimonials[activeIndex].quote}"
@@ -99,7 +102,7 @@ export const TestimonialsSection = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-center mt-8 gap-2">
               {testimonials.map((_, index) => (
                 <button
@@ -111,17 +114,17 @@ export const TestimonialsSection = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="flex justify-center mt-6 md:mt-8 gap-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={prevTestimonial}
               className="border-cap-teal text-cap-teal md:py-6 md:px-8"
             >
               Previous
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={nextTestimonial}
               className="border-cap-teal text-cap-teal md:py-6 md:px-8"
             >

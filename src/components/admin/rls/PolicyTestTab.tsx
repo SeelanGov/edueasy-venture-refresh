@@ -1,11 +1,10 @@
-
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { CardContent, CardFooter } from "@/components/ui/card";
-import { Shield } from "lucide-react";
-import { PolicyTestConfiguration } from "./PolicyTestConfiguration";
-import { PolicyTestResults } from "./PolicyTestResults";
-import { RLSTestResult } from "@/utils/security/types";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { CardContent, CardFooter } from '@/components/ui/card';
+import { Shield } from 'lucide-react';
+import { PolicyTestConfiguration } from './PolicyTestConfiguration';
+import { PolicyTestResults } from './PolicyTestResults';
+import { RLSTestResult } from '@/utils/security/types';
 
 interface PolicyTestTabProps {
   testResults: RLSTestResult[] | null;
@@ -26,7 +25,7 @@ export const PolicyTestTab = ({
   setScenarioName,
   isLoading,
   onRunStandardTests,
-  onRunRoleTests
+  onRunRoleTests,
 }: PolicyTestTabProps) => {
   return (
     <>
@@ -37,7 +36,7 @@ export const PolicyTestTab = ({
           scenarioName={scenarioName}
           setScenarioName={setScenarioName}
         />
-        
+
         {testResults ? (
           <PolicyTestResults results={testResults} />
         ) : (
@@ -46,22 +45,18 @@ export const PolicyTestTab = ({
           </div>
         )}
       </CardContent>
-      
+
       <CardFooter className="flex flex-col sm:flex-row gap-4">
-        <Button 
-          onClick={onRunStandardTests} 
-          disabled={isLoading}
-          variant="outline"
-        >
-          {isLoading ? "Running..." : "Run Standard Tests"}
+        <Button onClick={onRunStandardTests} disabled={isLoading} variant="outline">
+          {isLoading ? 'Running...' : 'Run Standard Tests'}
         </Button>
-        
-        <Button 
-          onClick={onRunRoleTests} 
+
+        <Button
+          onClick={onRunRoleTests}
           disabled={isLoading || !selectedRole}
           className="flex items-center gap-2"
         >
-          {isLoading ? "Running..." : "Test with Role"} {!isLoading && <Shield size={16} />}
+          {isLoading ? 'Running...' : 'Test with Role'} {!isLoading && <Shield size={16} />}
         </Button>
       </CardFooter>
     </>

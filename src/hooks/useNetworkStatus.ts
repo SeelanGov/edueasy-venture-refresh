@@ -1,6 +1,5 @@
-
-import { useState, useEffect, useCallback } from "react";
-import { playNotificationSound } from "@/utils/notificationSound";
+import { useState, useEffect, useCallback } from 'react';
+import { playNotificationSound } from '@/utils/notificationSound';
 
 export const useNetworkStatus = () => {
   const [isOnline, setIsOnline] = useState(
@@ -16,11 +15,11 @@ export const useNetworkStatus = () => {
     const handleOnline = () => {
       setIsOnline(true);
       setLastConnectedTime(new Date());
-      
+
       // Play a notification sound when coming back online
       playNotificationSound();
     };
-    
+
     const handleOffline = () => {
       setIsOnline(false);
     };
@@ -37,29 +36,29 @@ export const useNetworkStatus = () => {
   // Function to manually check internet connection
   const checkConnection = useCallback(async () => {
     setIsRetrying(true);
-    
+
     try {
       // Try to fetch a small resource to check if truly online
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
-      
+
       // Use a timestamp to prevent caching
       const response = await fetch(`/favicon.ico?_=${Date.now()}`, {
         method: 'HEAD',
-        signal: controller.signal
+        signal: controller.signal,
       });
-      
+
       clearTimeout(timeout);
-      
+
       if (response.ok) {
         setIsOnline(true);
         setLastConnectedTime(new Date());
-        
+
         // Play notification sound when connection is restored
         if (!isOnline) {
           playNotificationSound();
         }
-        
+
         return true;
       } else {
         setIsOnline(false);
@@ -73,13 +72,13 @@ export const useNetworkStatus = () => {
     }
   }, [isOnline]);
 
-  return { 
+  return {
     isOnline,
     checkConnection,
     isRetrying,
     lastConnectedTime,
-    timeSinceLastConnection: lastConnectedTime 
+    timeSinceLastConnection: lastConnectedTime
       ? Math.floor((new Date().getTime() - lastConnectedTime.getTime()) / 1000)
-      : null
+      : null,
   };
 };

@@ -1,4 +1,3 @@
-
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,16 +10,16 @@ interface SidebarNavItemProps {
   onClick?: () => void;
 }
 
-export const SidebarNavItem = ({ 
-  path, 
-  icon, 
-  name, 
-  isActive, 
+export const SidebarNavItem = ({
+  path,
+  icon,
+  name,
+  isActive,
   sidebarOpen,
-  onClick 
+  onClick,
 }: SidebarNavItemProps) => {
   return (
-    <Link 
+    <Link
       to={path}
       className={`flex items-center px-3 py-3 rounded-lg transition-colors ${
         isActive
@@ -31,7 +30,9 @@ export const SidebarNavItem = ({
       aria-current={isActive ? 'page' : undefined}
       role="menuitem"
     >
-      <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
+      <span className="flex-shrink-0" aria-hidden="true">
+        {icon}
+      </span>
       {sidebarOpen && <span className="ml-3">{name}</span>}
       {!sidebarOpen && <span className="sr-only">{name}</span>}
     </Link>

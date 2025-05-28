@@ -1,4 +1,3 @@
-
 export interface AddressFormValues {
   addressType: 'residential' | 'postal';
   streetAddress: string;

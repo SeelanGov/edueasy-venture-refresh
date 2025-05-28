@@ -1,15 +1,14 @@
-
-import { useState, useEffect } from "react";
-import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
-import { useDocumentUploadWithErrorHandling } from "@/hooks/useDocumentUploadWithErrorHandling";
-import { useStepperManager } from "@/hooks/useStepperManager";
-import { DocumentType, DocumentUploadState } from "@/components/profile-completion/documents/types";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
-import { DocumentInfo } from "@/types/ApplicationTypes";
+import { useState, useEffect } from 'react';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
+import { useDocumentUploadWithErrorHandling } from '@/hooks/useDocumentUploadWithErrorHandling';
+import { useStepperManager } from '@/hooks/useStepperManager';
+import { DocumentType, DocumentUploadState } from '@/components/profile-completion/documents/types';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import { DocumentInfo } from '@/types/ApplicationTypes';
 
 const schema = z.object({
   idDocument: z.any().optional(),
@@ -26,7 +25,7 @@ export const useDocumentUploadManager = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const { documents } = useProfileCompletionStore();
-  
+
   const [documentStates, setDocumentStates] = useState<Record<DocumentType, DocumentUploadState>>({
     idDocument: {
       file: null,
@@ -57,25 +56,27 @@ export const useDocumentUploadManager = () => {
       uploaded: false,
     },
   });
-  
+
   const form = useForm<DocumentsFormValues>({
     resolver: zodResolver(schema),
   });
-  
+
   // Get document state based on type
   const getDocumentState = (documentType: string): DocumentUploadState => {
-    return documentStates[documentType as DocumentType] || {
-      file: null,
-      uploading: false,
-      progress: 0,
-      error: null,
-      uploaded: false,
-    };
+    return (
+      documentStates[documentType as DocumentType] || {
+        file: null,
+        uploading: false,
+        progress: 0,
+        error: null,
+        uploaded: false,
+      }
+    );
   };
-  
+
   // Set document state based on type
   const setDocumentState = (documentType: string, state: Partial<DocumentUploadState>) => {
-    setDocumentStates(prev => ({
+    setDocumentStates((prev) => ({
       ...prev,
       [documentType]: {
         ...prev[documentType as DocumentType],
@@ -83,21 +84,16 @@ export const useDocumentUploadManager = () => {
       },
     }));
   };
-  
+
   // Document upload handler with error handling
-  const {
-    handleFileChange,
-    handleRetry,
-    triggerVerification,
-    isVerifying,
-    verificationResult,
-  } = useDocumentUploadWithErrorHandling(
-    getDocumentState,
-    setDocumentState,
-    setCurrentDocumentType,
-    form
-  );
-  
+  const { handleFileChange, handleRetry, triggerVerification, isVerifying, verificationResult } =
+    useDocumentUploadWithErrorHandling(
+      getDocumentState,
+      setDocumentState,
+      setCurrentDocumentType,
+      form
+    );
+
   // Use the stepper manager for updates
   useStepperManager(
     currentDocumentType,
@@ -107,11 +103,11 @@ export const useDocumentUploadManager = () => {
     isVerifying,
     verificationResult
   );
-  
+
   // Initialize document states from store
   useEffect(() => {
     if (!documents) return;
-    
+
     Object.entries(documents).forEach(([key, doc]) => {
       if (doc && typeof doc !== 'string' && 'file' in doc && doc.file && doc.path) {
         setDocumentState(key, {
@@ -123,62 +119,62 @@ export const useDocumentUploadManager = () => {
           documentId: doc.documentId,
           filePath: doc.path,
         });
-        
+
         form.setValue(key as keyof DocumentsFormValues, doc.file);
       }
     });
   }, [documents, form]);
-  
+
   // Check if required documents are uploaded
   const checkCompletion = () => {
     const idDocumentState = getDocumentState('idDocument');
     const grade12ResultsState = getDocumentState('grade12Results');
-    
+
     if (idDocumentState.uploaded && grade12ResultsState.uploaded) {
-      toast("All required documents uploaded successfully");
+      toast('All required documents uploaded successfully');
       return true;
     }
-    
+
     return false;
   };
-  
+
   // Handle verify button click
   const handleVerify = (documentType: DocumentType) => {
     const docState = getDocumentState(documentType);
-    
+
     if (docState.documentId && user?.id && docState.filePath) {
       const callVerify = async () => {
         await triggerVerification(
-          docState.documentId as string, 
-          user.id, 
-          documentType, 
+          docState.documentId as string,
+          user.id,
+          documentType,
           docState.filePath as string,
           docState.isResubmission
         );
       };
-      
+
       callVerify();
     }
   };
-  
+
   // Handle form submission
   const handleSubmit = async (data: DocumentsFormValues) => {
     const allUploaded = checkCompletion();
-    
+
     if (!allUploaded) {
-      toast("Please upload all required documents (ID and Grade 12 Results)");
+      toast('Please upload all required documents (ID and Grade 12 Results)');
       return false;
     }
-    
+
     return true;
   };
-  
+
   // Handle document resubmission
   const handleResubmit = () => {
     if (!currentDocumentType) return;
-    
-    toast("Please select a new document to resubmit");
-    
+
+    toast('Please select a new document to resubmit');
+
     // Mark this document as previously rejected to track resubmission
     setDocumentState(currentDocumentType, {
       file: null,
@@ -189,9 +185,11 @@ export const useDocumentUploadManager = () => {
       previouslyRejected: true,
       isResubmission: true,
     });
-    
+
     // Trigger the file input
-    const input = document.getElementById(`dropzone-file-${currentDocumentType}`) as HTMLInputElement;
+    const input = document.getElementById(
+      `dropzone-file-${currentDocumentType}`
+    ) as HTMLInputElement;
     if (input) {
       input.value = '';
       input.click();
@@ -213,6 +211,6 @@ export const useDocumentUploadManager = () => {
     handleVerify,
     handleResubmit,
     handleSubmit,
-    checkCompletion
+    checkCompletion,
   };
 };

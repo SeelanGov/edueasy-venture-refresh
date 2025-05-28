@@ -1,31 +1,25 @@
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTrainingMessages } from './training/useTrainingMessages';
+import { useTrainingEntries } from './training/useTrainingEntries';
+import { TrainingFilters } from '@/types/TrainingTypes';
 
-import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useTrainingMessages } from "./training/useTrainingMessages";
-import { useTrainingEntries } from "./training/useTrainingEntries";
-import { TrainingFilters } from "@/types/TrainingTypes";
-
-export { type ChatMessage, type TrainingEntry } from "@/types/TrainingTypes";
+export { type ChatMessage, type TrainingEntry } from '@/types/TrainingTypes';
 
 export const useTrainingData = () => {
   const [lowConfidenceOnly, setLowConfidenceOnly] = useState(true);
   const [page, setPage] = useState(0);
   const limit = 20;
-  
+
   const { user } = useAuth();
-  const { 
-    messages, 
-    loading, 
-    hasMore, 
-    fetchMessages 
-  } = useTrainingMessages();
-  
-  const { 
-    trainedMessages, 
-    fetchTrainingEntries, 
-    addTrainingData, 
-    updateTrainingData, 
-    deleteTrainingData 
+  const { messages, loading, hasMore, fetchMessages } = useTrainingMessages();
+
+  const {
+    trainedMessages,
+    fetchTrainingEntries,
+    addTrainingData,
+    updateTrainingData,
+    deleteTrainingData,
   } = useTrainingEntries();
 
   // Load messages and their training data when component mounts or filters change
@@ -34,17 +28,17 @@ export const useTrainingData = () => {
       const filters: TrainingFilters = {
         lowConfidenceOnly,
         page,
-        limit
+        limit,
       };
-      
+
       const fetchedMessages = await fetchMessages(filters);
-      
+
       if (fetchedMessages.length > 0) {
-        const messageIds = fetchedMessages.map(m => m.id);
+        const messageIds = fetchedMessages.map((m) => m.id);
         await fetchTrainingEntries(messageIds);
       }
     };
-    
+
     if (user) {
       loadData();
     }
@@ -61,6 +55,6 @@ export const useTrainingData = () => {
     hasMore,
     addTrainingData,
     updateTrainingData,
-    deleteTrainingData
+    deleteTrainingData,
   };
 };

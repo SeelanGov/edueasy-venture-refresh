@@ -1,37 +1,36 @@
-
-import { useState, useEffect, useRef } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { AnimatePresence, motion } from "framer-motion";
-import { Bot, X, MessageCircle, Send, ChevronDown, ArrowUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar } from "@/components/ui/avatar";
-import { useTheme } from "@/hooks/useTheme";
-import { useThandiChat } from "@/hooks/useThandiChat";
-import { Badge } from "@/components/ui/badge";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Bot, X, MessageCircle, Send, ChevronDown, ArrowUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar } from '@/components/ui/avatar';
+import { useTheme } from '@/hooks/useTheme';
+import { useThandiChat } from '@/hooks/useThandiChat';
+import { Badge } from '@/components/ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 export const ThandiAgent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   const { isDarkMode } = useTheme();
   const isMobile = useIsMobile();
-  const { 
-    messages, 
-    isLoading, 
-    sendMessage, 
-    inputValue, 
+  const {
+    messages,
+    isLoading,
+    sendMessage,
+    inputValue,
     setInputValue,
     hasNewMessage,
     setHasNewMessage,
     loadMoreMessages,
     hasMoreMessages,
-    isSending
+    isSending,
   } = useThandiChat();
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -47,7 +46,7 @@ export const ThandiAgent = () => {
   // Scroll to the bottom when new messages arrive
   useEffect(() => {
     if (messagesEndRef.current && isOpen) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen]);
 
@@ -65,19 +64,19 @@ export const ThandiAgent = () => {
     e.preventDefault();
     if (inputValue.trim() && !isSending) {
       sendMessage(inputValue);
-      setInputValue("");
+      setInputValue('');
     }
   };
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
-  
+
   const scrollToTop = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   };
@@ -96,22 +95,22 @@ export const ThandiAgent = () => {
   const renderQuickReplies = () => {
     const quickReplies = [
       "What's the status of my documents?",
-      "How do I choose a program?",
-      "When are the application deadlines?",
-      "What financial aid options are available?"
+      'How do I choose a program?',
+      'When are the application deadlines?',
+      'What financial aid options are available?',
     ];
 
     return (
       <div className="grid grid-cols-1 gap-2 w-full max-w-xs mb-4">
         {quickReplies.map((reply, index) => (
-          <Button 
+          <Button
             key={index}
-            variant="outline" 
-            size="sm" 
-            className="text-xs justify-start" 
+            variant="outline"
+            size="sm"
+            className="text-xs justify-start"
             onClick={() => {
               sendMessage(reply);
-              setInputValue("");
+              setInputValue('');
             }}
           >
             {reply}
@@ -127,9 +126,13 @@ export const ThandiAgent = () => {
       <div className="fixed bottom-4 right-4 z-50">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetContent side="bottom" className="h-[85vh] p-0">
-            <SheetHeader className={`p-3 flex justify-between items-center border-b ${
-              isDarkMode ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-cap-teal text-white"
-            }`}>
+            <SheetHeader
+              className={`p-3 flex justify-between items-center border-b ${
+                isDarkMode
+                  ? 'border-gray-700 bg-gray-900'
+                  : 'border-gray-200 bg-cap-teal text-white'
+              }`}
+            >
               <div className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2 bg-white text-cap-teal">
                   <Bot className="h-4 w-4" />
@@ -140,16 +143,21 @@ export const ThandiAgent = () => {
                 </SheetTitle>
               </div>
             </SheetHeader>
-            
+
             <div className="h-full flex flex-col">
               {/* Chat messages */}
-              <div className="flex-1 p-4 overflow-y-auto" ref={chatContainerRef} onScroll={handleScroll}>
+              <div
+                className="flex-1 p-4 overflow-y-auto"
+                ref={chatContainerRef}
+                onScroll={handleScroll}
+              >
                 {messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-4">
                     <Bot className="h-12 w-12 mb-3 text-cap-teal" />
                     <h3 className="font-medium mb-2">Welcome to Thandi</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
-                      I'm your application assistant. You can ask me anything about your application or financial aid.
+                      I'm your application assistant. You can ask me anything about your application
+                      or financial aid.
                     </p>
                     {renderQuickReplies()}
                   </div>
@@ -157,22 +165,22 @@ export const ThandiAgent = () => {
                   <div className="space-y-4">
                     {hasMoreMessages && (
                       <div className="flex justify-center">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={loadMoreMessages}
                           disabled={isLoading}
                           className="text-xs"
                         >
-                          {isLoading ? "Loading..." : "Load earlier messages"}
+                          {isLoading ? 'Loading...' : 'Load earlier messages'}
                         </Button>
                       </div>
                     )}
-                    
+
                     {messages.map((message, index) => (
                       <div
                         key={message.id || index}
-                        className={`flex ${message.is_user ? "justify-end" : "justify-start"}`}
+                        className={`flex ${message.is_user ? 'justify-end' : 'justify-start'}`}
                       >
                         {!message.is_user && (
                           <Avatar className="h-8 w-8 mr-2 bg-cap-teal/10 text-cap-teal hidden sm:flex">
@@ -182,19 +190,19 @@ export const ThandiAgent = () => {
                         <div
                           className={`max-w-[80%] rounded-lg p-3 ${
                             message.is_user
-                              ? isDarkMode 
-                                ? "bg-blue-700 text-white" 
-                                : "bg-blue-500 text-white"
-                              : isDarkMode 
-                                ? "bg-gray-700 text-white" 
-                                : "bg-gray-100 text-gray-800"
+                              ? isDarkMode
+                                ? 'bg-blue-700 text-white'
+                                : 'bg-blue-500 text-white'
+                              : isDarkMode
+                                ? 'bg-gray-700 text-white'
+                                : 'bg-gray-100 text-gray-800'
                           }`}
                         >
                           <p className="text-sm whitespace-pre-wrap">{message.message}</p>
                           <div className="text-xs opacity-60 text-right mt-1">
                             {new Date(message.created_at).toLocaleTimeString([], {
                               hour: '2-digit',
-                              minute: '2-digit'
+                              minute: '2-digit',
                             })}
                           </div>
                         </div>
@@ -205,13 +213,24 @@ export const ThandiAgent = () => {
                         <Avatar className="h-8 w-8 mr-2 bg-cap-teal/10 text-cap-teal hidden sm:flex">
                           <Bot className="h-4 w-4" />
                         </Avatar>
-                        <div className={`max-w-[80%] rounded-lg p-3 ${
-                          isDarkMode ? "bg-gray-700" : "bg-gray-100"
-                        }`}>
+                        <div
+                          className={`max-w-[80%] rounded-lg p-3 ${
+                            isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+                          }`}
+                        >
                           <div className="flex space-x-1">
-                            <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0s" }}></div>
-                            <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                            <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                            <div
+                              className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                              style={{ animationDelay: '0s' }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                              style={{ animationDelay: '0.2s' }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                              style={{ animationDelay: '0.4s' }}
+                            ></div>
                           </div>
                         </div>
                       </div>
@@ -219,9 +238,9 @@ export const ThandiAgent = () => {
                     <div ref={messagesEndRef} />
                   </div>
                 )}
-                
+
                 {showScrollTop && (
-                  <Button 
+                  <Button
                     className="fixed bottom-20 right-4 rounded-full h-10 w-10 bg-cap-teal hover:bg-cap-teal/90 text-white"
                     onClick={scrollToTop}
                   >
@@ -253,7 +272,9 @@ export const ThandiAgent = () => {
           onClick={toggleChat}
           size="lg"
           className={`rounded-full h-14 w-14 shadow-lg flex items-center justify-center ${
-            isDarkMode ? "bg-cap-teal hover:bg-cap-teal/90" : "bg-cap-teal text-white hover:bg-cap-teal/90"
+            isDarkMode
+              ? 'bg-cap-teal hover:bg-cap-teal/90'
+              : 'bg-cap-teal text-white hover:bg-cap-teal/90'
           }`}
         >
           <MessageCircle className="h-6 w-6" />
@@ -277,14 +298,18 @@ export const ThandiAgent = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className={`mb-2 w-80 sm:w-96 rounded-lg shadow-lg overflow-hidden ${
-              isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+              isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
             }`}
-            style={{ height: "500px" }}
+            style={{ height: '500px' }}
           >
             {/* Chat header */}
-            <div className={`p-3 flex justify-between items-center border-b ${
-              isDarkMode ? "border-gray-700 bg-gray-900" : "border-gray-200 bg-cap-teal text-white"
-            }`}>
+            <div
+              className={`p-3 flex justify-between items-center border-b ${
+                isDarkMode
+                  ? 'border-gray-700 bg-gray-900'
+                  : 'border-gray-200 bg-cap-teal text-white'
+              }`}
+            >
               <div className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2 bg-white text-cap-teal">
                   <Bot className="h-4 w-4" />
@@ -300,9 +325,9 @@ export const ThandiAgent = () => {
             </div>
 
             {/* Chat messages */}
-            <div 
-              className="h-[400px] p-4 overflow-y-auto" 
-              ref={chatContainerRef} 
+            <div
+              className="h-[400px] p-4 overflow-y-auto"
+              ref={chatContainerRef}
               onScroll={() => {
                 handleScroll();
                 handleScrollToTop();
@@ -313,7 +338,8 @@ export const ThandiAgent = () => {
                   <Bot className="h-12 w-12 mb-3 text-cap-teal" />
                   <h3 className="font-medium mb-2">Welcome to Thandi</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    I'm your application assistant. You can ask me anything about your application or financial aid.
+                    I'm your application assistant. You can ask me anything about your application
+                    or financial aid.
                   </p>
                   {renderQuickReplies()}
                 </div>
@@ -321,22 +347,22 @@ export const ThandiAgent = () => {
                 <div className="space-y-4">
                   {hasMoreMessages && (
                     <div className="flex justify-center">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={loadMoreMessages}
                         disabled={isLoading}
                         className="text-xs"
                       >
-                        {isLoading ? "Loading..." : "Load earlier messages"}
+                        {isLoading ? 'Loading...' : 'Load earlier messages'}
                       </Button>
                     </div>
                   )}
-                  
+
                   {messages.map((message, index) => (
                     <div
                       key={message.id || index}
-                      className={`flex ${message.is_user ? "justify-end" : "justify-start"}`}
+                      className={`flex ${message.is_user ? 'justify-end' : 'justify-start'}`}
                     >
                       {!message.is_user && (
                         <Avatar className="h-8 w-8 mr-2 bg-cap-teal/10 text-cap-teal hidden sm:flex">
@@ -346,19 +372,19 @@ export const ThandiAgent = () => {
                       <div
                         className={`max-w-[80%] rounded-lg p-3 ${
                           message.is_user
-                            ? isDarkMode 
-                              ? "bg-blue-700 text-white" 
-                              : "bg-blue-500 text-white"
-                            : isDarkMode 
-                              ? "bg-gray-700 text-white" 
-                              : "bg-gray-100 text-gray-800"
+                            ? isDarkMode
+                              ? 'bg-blue-700 text-white'
+                              : 'bg-blue-500 text-white'
+                            : isDarkMode
+                              ? 'bg-gray-700 text-white'
+                              : 'bg-gray-100 text-gray-800'
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap">{message.message}</p>
                         <div className="text-xs opacity-60 text-right mt-1">
                           {new Date(message.created_at).toLocaleTimeString([], {
                             hour: '2-digit',
-                            minute: '2-digit'
+                            minute: '2-digit',
                           })}
                         </div>
                       </div>
@@ -369,13 +395,24 @@ export const ThandiAgent = () => {
                       <Avatar className="h-8 w-8 mr-2 bg-cap-teal/10 text-cap-teal hidden sm:flex">
                         <Bot className="h-4 w-4" />
                       </Avatar>
-                      <div className={`max-w-[80%] rounded-lg p-3 ${
-                        isDarkMode ? "bg-gray-700" : "bg-gray-100"
-                      }`}>
+                      <div
+                        className={`max-w-[80%] rounded-lg p-3 ${
+                          isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+                        }`}
+                      >
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0s" }}></div>
-                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                          <div
+                            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                            style={{ animationDelay: '0s' }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                            style={{ animationDelay: '0.2s' }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                            style={{ animationDelay: '0.4s' }}
+                          ></div>
                         </div>
                       </div>
                     </div>
@@ -383,9 +420,9 @@ export const ThandiAgent = () => {
                   <div ref={messagesEndRef} />
                 </div>
               )}
-              
+
               {showScrollTop && (
-                <Button 
+                <Button
                   className="fixed bottom-20 right-4 rounded-full h-10 w-10 bg-cap-teal hover:bg-cap-teal/90 text-white"
                   onClick={scrollToTop}
                 >
@@ -417,7 +454,9 @@ export const ThandiAgent = () => {
         onClick={toggleChat}
         size="lg"
         className={`rounded-full h-14 w-14 shadow-lg flex items-center justify-center ${
-          isDarkMode ? "bg-cap-teal hover:bg-cap-teal/90" : "bg-cap-teal text-white hover:bg-cap-teal/90"
+          isDarkMode
+            ? 'bg-cap-teal hover:bg-cap-teal/90'
+            : 'bg-cap-teal text-white hover:bg-cap-teal/90'
         }`}
       >
         {isOpen ? (

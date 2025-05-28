@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  CareerGuidance,
-  AssessmentType
-} from '@/types/RevenueTypes';
+import { CareerGuidance, AssessmentType } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
 
 export function useCareerGuidance() {
@@ -19,9 +16,9 @@ export function useCareerGuidance() {
     console.error(message, error);
     setError(message);
     toast({
-      title: "Error",
+      title: 'Error',
       description: message,
-      variant: "destructive",
+      variant: 'destructive',
     });
   };
 
@@ -31,19 +28,19 @@ export function useCareerGuidance() {
       setAssessments([]);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('career_guidance')
         .select('*')
         .eq('user_id', user.id)
         .order('assessment_date', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       setAssessments(data || []);
     } catch (error) {
       handleError(error, 'Failed to fetch career assessments');
@@ -57,15 +54,15 @@ export function useCareerGuidance() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('career_guidance')
         .select('*')
         .eq('id', assessmentId)
         .single();
-      
+
       if (error) throw error;
-      
+
       setCurrentAssessment(data);
     } catch (error) {
       handleError(error, 'Failed to fetch assessment details');
@@ -85,11 +82,11 @@ export function useCareerGuidance() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('career_guidance')
         .insert({
@@ -98,22 +95,22 @@ export function useCareerGuidance() {
           assessment_date: new Date().toISOString(),
           results,
           recommendations: recommendations || null,
-          is_premium: isPremium
+          is_premium: isPremium,
         })
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the assessments list
       await fetchAssessments();
-      
+
       toast({
-        title: "Assessment Created",
-        description: "Your career assessment has been saved successfully.",
-        variant: "default",
+        title: 'Assessment Created',
+        description: 'Your career assessment has been saved successfully.',
+        variant: 'default',
       });
-      
+
       return data;
     } catch (error) {
       handleError(error, 'Failed to create assessment');
@@ -124,42 +121,39 @@ export function useCareerGuidance() {
   };
 
   // Update an existing assessment
-  const updateAssessment = async (
-    assessmentId: string,
-    updates: Partial<CareerGuidance>
-  ) => {
+  const updateAssessment = async (assessmentId: string, updates: Partial<CareerGuidance>) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('career_guidance')
         .update({
           ...updates,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', assessmentId)
         .eq('user_id', user.id) // Ensure the user owns this assessment
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update the assessments list and current assessment
       await fetchAssessments();
       setCurrentAssessment(data);
-      
+
       toast({
-        title: "Assessment Updated",
-        description: "Your career assessment has been updated successfully.",
-        variant: "default",
+        title: 'Assessment Updated',
+        description: 'Your career assessment has been updated successfully.',
+        variant: 'default',
       });
-      
+
       return data;
     } catch (error) {
       handleError(error, 'Failed to update assessment');
@@ -175,28 +169,28 @@ export function useCareerGuidance() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return false;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { error } = await supabase
         .from('career_guidance')
         .delete()
         .eq('id', assessmentId)
         .eq('user_id', user.id); // Ensure the user owns this assessment
-      
+
       if (error) throw error;
-      
+
       // Update the assessments list
       await fetchAssessments();
-      
+
       toast({
-        title: "Assessment Deleted",
-        description: "Your career assessment has been deleted successfully.",
-        variant: "default",
+        title: 'Assessment Deleted',
+        description: 'Your career assessment has been deleted successfully.',
+        variant: 'default',
       });
-      
+
       return true;
     } catch (error) {
       handleError(error, 'Failed to delete assessment');
@@ -222,6 +216,6 @@ export function useCareerGuidance() {
     fetchAssessment,
     createAssessment,
     updateAssessment,
-    deleteAssessment
+    deleteAssessment,
   };
 }

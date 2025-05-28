@@ -1,20 +1,19 @@
-
-import { useState } from "react";
-import { DashboardLayout } from "@/components/DashboardLayout";
-import { useDocumentsManagement, DocumentWithUserInfo } from "@/hooks/useDocumentsManagement";
-import { Spinner } from "@/components/Spinner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { 
-  FileIcon, 
-  ExternalLinkIcon, 
-  CheckCircle, 
-  XCircle, 
+import { useState } from 'react';
+import { DashboardLayout } from '@/components/DashboardLayout';
+import { useDocumentsManagement, DocumentWithUserInfo } from '@/hooks/useDocumentsManagement';
+import { Spinner } from '@/components/Spinner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  FileIcon,
+  ExternalLinkIcon,
+  CheckCircle,
+  XCircle,
   AlertCircle,
   RefreshCw,
-  BarChart
-} from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  BarChart,
+} from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -23,65 +22,85 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+} from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
-import { AdminAuthGuard } from "@/components/AdminAuthGuard";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { useAuth } from '@/contexts/AuthContext';
+import { AdminAuthGuard } from '@/components/AdminAuthGuard';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const { documents, loading, updateDocumentStatus, getDocumentUrl, refreshDocuments, totalCount, pageSize, currentPage, setCurrentPage } = useDocumentsManagement();
+  const {
+    documents,
+    loading,
+    updateDocumentStatus,
+    getDocumentUrl,
+    refreshDocuments,
+    totalCount,
+    pageSize,
+    currentPage,
+    setCurrentPage,
+  } = useDocumentsManagement();
   const [selectedDocument, setSelectedDocument] = useState<DocumentWithUserInfo | null>(null);
-  const [tabValue, setTabValue] = useState("all");
-  const [rejectionReason, setRejectionReason] = useState("");
+  const [tabValue, setTabValue] = useState('all');
+  const [rejectionReason, setRejectionReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const totalPages = Math.ceil(totalCount / pageSize);
-  
+
   // Filter documents based on the selected tab
-  const filteredDocuments = documents.filter(doc => {
-    if (tabValue === "all") return true;
+  const filteredDocuments = documents.filter((doc) => {
+    if (tabValue === 'all') return true;
     return doc.verification_status === tabValue;
   });
 
   const getStatusBadgeVariant = (status: string | null) => {
     switch (status) {
-      case "approved":
-        return "default"; // Changed from "success" to "default"
-      case "rejected":
-        return "destructive";
-      case "request_resubmission":
-        return "outline";
-      case "pending":
-        return "secondary"; // Changed from "warning" to "secondary"
+      case 'approved':
+        return 'default'; // Changed from "success" to "default"
+      case 'rejected':
+        return 'destructive';
+      case 'request_resubmission':
+        return 'outline';
+      case 'pending':
+        return 'secondary'; // Changed from "warning" to "secondary"
       default:
-        return "secondary";
+        return 'secondary';
     }
   };
 
   const getStatusBadge = (status: string | null) => {
-    let statusText = status ? status.charAt(0).toUpperCase() + status.slice(1) : "Unknown";
-    if (status === "request_resubmission") statusText = "Needs Resubmission";
-    
+    let statusText = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown';
+    if (status === 'request_resubmission') statusText = 'Needs Resubmission';
+
     const variant = getStatusBadgeVariant(status);
-    
+
     return (
-      <Badge variant={variant} className={status === "request_resubmission" ? "border-amber-500 text-amber-500" : ""}>
-        {variant === "default" && <CheckCircle className="h-3 w-3 mr-1" />}
-        {variant === "destructive" && <XCircle className="h-3 w-3 mr-1" />}
-        {variant === "secondary" && <AlertCircle className="h-3 w-3 mr-1" />}
-        {status === "request_resubmission" && <RefreshCw className="h-3 w-3 mr-1" />}
+      <Badge
+        variant={variant}
+        className={status === 'request_resubmission' ? 'border-amber-500 text-amber-500' : ''}
+      >
+        {variant === 'default' && <CheckCircle className="h-3 w-3 mr-1" />}
+        {variant === 'destructive' && <XCircle className="h-3 w-3 mr-1" />}
+        {variant === 'secondary' && <AlertCircle className="h-3 w-3 mr-1" />}
+        {status === 'request_resubmission' && <RefreshCw className="h-3 w-3 mr-1" />}
         {statusText}
       </Badge>
     );
@@ -89,13 +108,13 @@ const AdminDashboard = () => {
 
   const handleViewDocument = async (doc: DocumentWithUserInfo) => {
     setSelectedDocument(doc);
-    setRejectionReason(doc.rejection_reason || "");
+    setRejectionReason(doc.rejection_reason || '');
   };
 
   const handleOpenDocument = async (filePath: string) => {
     const url = await getDocumentUrl(filePath);
     if (url) {
-      window.open(url, "_blank");
+      window.open(url, '_blank');
     }
   };
 
@@ -103,13 +122,13 @@ const AdminDashboard = () => {
     setIsSubmitting(true);
     try {
       // Include rejection reason for rejected or resubmission status
-      if (status === "rejected" || status === "request_resubmission") {
+      if (status === 'rejected' || status === 'request_resubmission') {
         await updateDocumentStatus(id, status, rejectionReason);
       } else {
         await updateDocumentStatus(id, status);
       }
       setSelectedDocument(null);
-      setRejectionReason("");
+      setRejectionReason('');
     } finally {
       setIsSubmitting(false);
     }
@@ -139,10 +158,10 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </Link>
-            
+
             {/* Additional admin cards can be added here */}
           </div>
-          
+
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Document Verification</h1>
             <Button onClick={refreshDocuments} variant="outline" size="sm">
@@ -188,7 +207,7 @@ const AdminDashboard = () => {
                     filteredDocuments.map((doc) => (
                       <TableRow key={doc.id}>
                         <TableCell className="font-medium">
-                          {doc.document_type || "Unknown"}
+                          {doc.document_type || 'Unknown'}
                         </TableCell>
                         <TableCell>
                           <div>{doc.user_name}</div>
@@ -197,18 +216,19 @@ const AdminDashboard = () => {
                         <TableCell>
                           {getStatusBadge(doc.verification_status)}
                           {doc.rejection_reason && (
-                            <div className="text-xs text-gray-500 mt-1 truncate max-w-[200px]" title={doc.rejection_reason}>
+                            <div
+                              className="text-xs text-gray-500 mt-1 truncate max-w-[200px]"
+                              title={doc.rejection_reason}
+                            >
                               Reason: {doc.rejection_reason}
                             </div>
                           )}
                         </TableCell>
-                        <TableCell>
-                          {new Date(doc.created_at).toLocaleDateString()}
-                        </TableCell>
+                        <TableCell>{new Date(doc.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex space-x-2">
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="outline"
                               size="sm"
                               onClick={() => handleOpenDocument(doc.file_path)}
                             >
@@ -216,8 +236,8 @@ const AdminDashboard = () => {
                             </Button>
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button 
-                                  variant="outline" 
+                                <Button
+                                  variant="outline"
                                   size="sm"
                                   onClick={() => handleViewDocument(doc)}
                                 >
@@ -228,26 +248,40 @@ const AdminDashboard = () => {
                                 <DialogHeader>
                                   <DialogTitle>Verify Document</DialogTitle>
                                 </DialogHeader>
-                                
+
                                 {selectedDocument && (
                                   <div className="space-y-4">
                                     <div>
                                       <h3 className="font-medium">Document Details</h3>
-                                      <p><span className="font-semibold">Type:</span> {selectedDocument.document_type || "Unknown"}</p>
-                                      <p><span className="font-semibold">User:</span> {selectedDocument.user_name}</p>
-                                      <p><span className="font-semibold">Status:</span> {selectedDocument.verification_status}</p>
+                                      <p>
+                                        <span className="font-semibold">Type:</span>{' '}
+                                        {selectedDocument.document_type || 'Unknown'}
+                                      </p>
+                                      <p>
+                                        <span className="font-semibold">User:</span>{' '}
+                                        {selectedDocument.user_name}
+                                      </p>
+                                      <p>
+                                        <span className="font-semibold">Status:</span>{' '}
+                                        {selectedDocument.verification_status}
+                                      </p>
                                       <Button
                                         variant="outline"
                                         size="sm"
                                         className="mt-2"
-                                        onClick={() => handleOpenDocument(selectedDocument.file_path)}
+                                        onClick={() =>
+                                          handleOpenDocument(selectedDocument.file_path)
+                                        }
                                       >
-                                        <FileIcon className="h-4 w-4 mr-1" /> Open Document <ExternalLinkIcon className="h-4 w-4 ml-1" />
+                                        <FileIcon className="h-4 w-4 mr-1" /> Open Document{' '}
+                                        <ExternalLinkIcon className="h-4 w-4 ml-1" />
                                       </Button>
                                     </div>
-                                    
+
                                     <div className="space-y-2">
-                                      <Label htmlFor="rejection-reason">Reason (for rejection or resubmission request)</Label>
+                                      <Label htmlFor="rejection-reason">
+                                        Reason (for rejection or resubmission request)
+                                      </Label>
                                       <Textarea
                                         id="rejection-reason"
                                         placeholder="Enter a reason for rejection or resubmission request..."
@@ -256,31 +290,40 @@ const AdminDashboard = () => {
                                         rows={3}
                                       />
                                     </div>
-                                    
+
                                     <div className="grid grid-cols-3 gap-2 pt-4 border-t">
                                       <Button
                                         variant="destructive"
                                         disabled={isSubmitting}
-                                        onClick={() => handleUpdateStatus(selectedDocument.id, "rejected")}
+                                        onClick={() =>
+                                          handleUpdateStatus(selectedDocument.id, 'rejected')
+                                        }
                                         className="w-full"
                                       >
                                         <XCircle className="h-4 w-4 mr-2" /> Reject
                                       </Button>
-                                      
+
                                       <Button
                                         variant="outline"
                                         disabled={isSubmitting}
                                         className="w-full border-amber-500 text-amber-700 hover:bg-amber-50"
-                                        onClick={() => handleUpdateStatus(selectedDocument.id, "request_resubmission")}
+                                        onClick={() =>
+                                          handleUpdateStatus(
+                                            selectedDocument.id,
+                                            'request_resubmission'
+                                          )
+                                        }
                                       >
                                         <RefreshCw className="h-4 w-4 mr-2" /> Request Resubmission
                                       </Button>
-                                      
+
                                       <Button
                                         variant="default"
                                         disabled={isSubmitting}
                                         className="w-full bg-green-600 hover:bg-green-700"
-                                        onClick={() => handleUpdateStatus(selectedDocument.id, "approved")}
+                                        onClick={() =>
+                                          handleUpdateStatus(selectedDocument.id, 'approved')
+                                        }
                                       >
                                         <CheckCircle className="h-4 w-4 mr-2" /> Approve
                                       </Button>
@@ -296,31 +339,34 @@ const AdminDashboard = () => {
                   )}
                 </TableBody>
               </Table>
-              
+
               {totalPages > 1 && (
                 <div className="py-4 flex justify-center">
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationPrevious 
+                        <PaginationPrevious
                           onClick={() => handlePageChange(currentPage - 1)}
-                          className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                          className={
+                            currentPage <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+                          }
                         />
                       </PaginationItem>
-                      
+
                       {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                         // Show pages around current page
-                        const pageNum = currentPage <= 3 
-                          ? i + 1 
-                          : currentPage >= totalPages - 2 
-                            ? totalPages - 4 + i 
-                            : currentPage - 2 + i;
-                        
+                        const pageNum =
+                          currentPage <= 3
+                            ? i + 1
+                            : currentPage >= totalPages - 2
+                              ? totalPages - 4 + i
+                              : currentPage - 2 + i;
+
                         if (pageNum <= 0 || pageNum > totalPages) return null;
-                        
+
                         return (
                           <PaginationItem key={pageNum}>
-                            <PaginationLink 
+                            <PaginationLink
                               isActive={pageNum === currentPage}
                               onClick={() => handlePageChange(pageNum)}
                             >
@@ -329,11 +375,15 @@ const AdminDashboard = () => {
                           </PaginationItem>
                         );
                       })}
-                      
+
                       <PaginationItem>
-                        <PaginationNext 
+                        <PaginationNext
                           onClick={() => handlePageChange(currentPage + 1)}
-                          className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                          className={
+                            currentPage >= totalPages
+                              ? 'pointer-events-none opacity-50'
+                              : 'cursor-pointer'
+                          }
                         />
                       </PaginationItem>
                     </PaginationContent>

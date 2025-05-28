@@ -1,13 +1,12 @@
-
-import React from "react";
-import { Input } from "@/components/ui/input";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
+import React from 'react';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface PolicyTestConfigurationProps {
   selectedRole: string;
@@ -20,7 +19,7 @@ export const PolicyTestConfiguration = ({
   selectedRole,
   setSelectedRole,
   scenarioName,
-  setScenarioName
+  setScenarioName,
 }: PolicyTestConfigurationProps) => {
   return (
     <div className="mb-6">
@@ -28,10 +27,7 @@ export const PolicyTestConfiguration = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm text-muted-foreground mb-2 block">Test As Role</label>
-          <Select 
-            value={selectedRole} 
-            onValueChange={setSelectedRole}
-          >
+          <Select value={selectedRole} onValueChange={setSelectedRole}>
             <SelectTrigger>
               <SelectValue placeholder="Select role" />
             </SelectTrigger>
@@ -43,10 +39,12 @@ export const PolicyTestConfiguration = ({
             </SelectContent>
           </Select>
         </div>
-        
+
         <div>
-          <label className="text-sm text-muted-foreground mb-2 block">Scenario Name (Optional)</label>
-          <Input 
+          <label className="text-sm text-muted-foreground mb-2 block">
+            Scenario Name (Optional)
+          </label>
+          <Input
             value={scenarioName}
             onChange={(e) => setScenarioName(e.target.value)}
             placeholder="Enter a test scenario name"

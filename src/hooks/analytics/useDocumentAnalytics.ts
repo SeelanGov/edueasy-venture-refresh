@@ -1,18 +1,21 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
-import { AnalyticsFilters, DocumentAnalytics } from "./types";
-import { DEFAULT_FILTERS } from "./constants";
-import { 
-  processDocumentsByDate, 
-  processDocumentsByType, 
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { AnalyticsFilters, DocumentAnalytics } from './types';
+import { DEFAULT_FILTERS } from './constants';
+import {
+  processDocumentsByDate,
+  processDocumentsByType,
   extractRejectionReasons,
-  calculateAnalytics
-} from "./analyticUtils";
+  calculateAnalytics,
+} from './analyticUtils';
 
 export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>) => {
   const { user } = useAuth();
-  const [filters, setFilters] = useState<AnalyticsFilters>({...DEFAULT_FILTERS, ...initialFilters});
+  const [filters, setFilters] = useState<AnalyticsFilters>({
+    ...DEFAULT_FILTERS,
+    ...initialFilters,
+  });
   const [analytics, setAnalytics] = useState<DocumentAnalytics | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,21 +26,20 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
       setError(null);
 
       if (!user) {
-        throw new Error("User not authenticated");
+        throw new Error('User not authenticated');
       }
 
       // Build the query with filters
-      let query = supabase
-        .from('documents')
-        .select(`
+      let query = supabase.from('documents').select(`
           *,
           applications(institution_id)
         `);
 
       // Apply date filter if provided
       if (filters.startDate && filters.endDate) {
-        query = query.gte('created_at', filters.startDate.toISOString())
-                      .lte('created_at', filters.endDate.toISOString());
+        query = query
+          .gte('created_at', filters.startDate.toISOString())
+          .lte('created_at', filters.endDate.toISOString());
       }
 
       // Apply document type filter if provided
@@ -52,8 +54,8 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
       // Filter by institution if needed
       let filteredDocuments = documents || [];
       if (filters.institutionId) {
-        filteredDocuments = filteredDocuments.filter(doc => 
-          doc.applications?.institution_id === filters.institutionId
+        filteredDocuments = filteredDocuments.filter(
+          (doc) => doc.applications?.institution_id === filters.institutionId
         );
       }
 
@@ -65,7 +67,7 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
 
       // Prepare document counts by date
       const documentsByDate = processDocumentsByDate(filteredDocuments);
-      
+
       // Prepare document counts by type
       const documentsByType = processDocumentsByType(filteredDocuments);
 
@@ -73,11 +75,11 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
         ...baseAnalytics,
         commonRejectionReasons,
         documentsByDate,
-        documentsByType
+        documentsByType,
       });
     } catch (err: unknown) {
-      console.error("Error fetching document analytics:", err);
-      setError((err as Error).message || "Failed to fetch analytics data");
+      console.error('Error fetching document analytics:', err);
+      setError((err as Error).message || 'Failed to fetch analytics data');
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,7 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
 
   // Update filters
   const updateFilters = (newFilters: Partial<AnalyticsFilters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
   // Reset filters to default
@@ -105,6 +107,6 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
     filters,
     updateFilters,
     resetFilters,
-    refreshAnalytics: fetchAnalytics
+    refreshAnalytics: fetchAnalytics,
   };
 };
