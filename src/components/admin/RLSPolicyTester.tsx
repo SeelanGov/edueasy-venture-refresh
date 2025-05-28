@@ -23,18 +23,24 @@ export const RLSPolicyTester = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('test_rls_policy', {
-        query: testQuery,
-        test_user_id: userId || null
+      const { data, error } = await supabase.rpc('test_rls_policies_with_role', {
+        p_role: 'user',
+        p_scenario: 'test'
       });
 
       if (error) throw error;
       
-      setResults(data || []);
-      toast.success('Test completed successfully');
+      if (Array.isArray(data)) {
+        setResults(data);
+        toast.success('Test completed successfully');
+      } else {
+        setResults([]);
+        toast.error('No data returned from test');
+      }
     } catch (error) {
       console.error('RLS test error:', error);
       toast.error('Test failed: ' + (error as Error).message);
+      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -80,7 +86,7 @@ export const RLSPolicyTester = () => {
                   <Badge variant={result.success ? 'default' : 'destructive'}>
                     {result.success ? 'Passed' : 'Failed'}
                   </Badge>
-                  <pre className="text-sm mt-1">{JSON.stringify(result, null, 2)}</pre>
+                  <pre className="text-xs mt-1">{JSON.stringify(result, null, 2)}</pre>
                 </div>
               ))}
             </div>

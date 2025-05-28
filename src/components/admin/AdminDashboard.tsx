@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -30,15 +31,15 @@ interface ErrorLogEntry {
   message: string;
   category: string;
   severity: string;
-  component?: string;
-  action?: string;
-  user_id?: string;
-  details?: Record<string, unknown>;
+  component?: string | null;
+  action?: string | null;
+  user_id?: string | null;
+  details?: Record<string, unknown> | null;
   occurred_at: string;
   is_resolved: boolean;
-  resolved_at?: string;
-  resolved_by?: string;
-  resolution_notes?: string;
+  resolved_at?: string | null;
+  resolved_by?: string | null;
+  resolution_notes?: string | null;
 }
 
 export const AdminDashboard = () => {
@@ -82,10 +83,10 @@ export const AdminDashboard = () => {
       if (completedAppsError) throw completedAppsError;
 
       setStats({
-        totalUsers: usersData ? usersData[0].count : 0,
-        totalApplications: applicationsData ? applicationsData[0].count : 0,
-        pendingDocuments: pendingDocsData ? pendingDocsData[0].count : 0,
-        completedApplications: completedAppsData ? completedAppsData[0].count : 0
+        totalUsers: usersData?.[0]?.count || 0,
+        totalApplications: applicationsData?.[0]?.count || 0,
+        pendingDocuments: pendingDocsData?.[0]?.count || 0,
+        completedApplications: completedAppsData?.[0]?.count || 0
       });
     } catch (error) {
       console.error('Error fetching admin stats:', error);
@@ -121,7 +122,25 @@ export const AdminDashboard = () => {
         .limit(100);
 
       if (error) throw error;
-      setErrorLogs(data || []);
+      
+      // Transform the data to match ErrorLogEntry interface
+      const transformedData = (data || []).map(item => ({
+        id: item.id,
+        message: item.message,
+        category: item.category,
+        severity: item.severity,
+        component: item.component,
+        action: item.action,
+        user_id: item.user_id,
+        details: item.details as Record<string, unknown> | null,
+        occurred_at: item.occurred_at,
+        is_resolved: item.is_resolved,
+        resolved_at: item.resolved_at,
+        resolved_by: item.resolved_by,
+        resolution_notes: item.resolution_notes
+      }));
+      
+      setErrorLogs(transformedData);
     } catch (error) {
       console.error('Error fetching error logs:', error);
       toast.error('Failed to load error logs');
