@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -9,14 +10,6 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -30,10 +23,6 @@ import {
   AlertOctagon,
   AlertTriangle,
   Info,
-  CheckCircle,
-  Clock,
-  XCircle,
-  ExternalLink,
   RefreshCw,
   ChevronUp,
   ChevronDown,
@@ -42,8 +31,6 @@ import {
 import { ErrorSeverity } from '@/utils/errorLogging';
 import { ErrorCategory } from '@/utils/errorHandler';
 import { format } from 'date-fns';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 
 interface ErrorLogEntry {
@@ -71,8 +58,8 @@ interface ErrorLogsTableProps {
 
 export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorLogsTableProps) => {
   const [filter, setFilter] = useState<{
-    severity?: ErrorSeverity;
-    category?: ErrorCategory;
+    severity?: string;
+    category?: string;
     component?: string;
     search: string;
     showResolved: boolean;
@@ -257,11 +244,11 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
         </div>
 
         <Select
-          value={filter.severity}
+          value={filter.severity || ''}
           onValueChange={(value) =>
             setFilter((prev) => ({
               ...prev,
-              severity: value ? (value as ErrorSeverity) : undefined,
+              severity: value || undefined,
             }))
           }
         >
@@ -278,11 +265,11 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
         </Select>
 
         <Select
-          value={filter.category}
+          value={filter.category || ''}
           onValueChange={(value) =>
             setFilter((prev) => ({
               ...prev,
-              category: value ? (value as ErrorCategory) : undefined,
+              category: value || undefined,
             }))
           }
         >
@@ -302,7 +289,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
 
         {components.length > 0 && (
           <Select
-            value={filter.component}
+            value={filter.component || ''}
             onValueChange={(value) =>
               setFilter((prev) => ({
                 ...prev,
@@ -316,7 +303,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
             <SelectContent>
               <SelectItem value="">All Components</SelectItem>
               {components.map((comp) => (
-                <SelectItem key={comp} value={comp}>
+                <SelectItem key={comp} value={comp || ''}>
                   {comp}
                 </SelectItem>
               ))}
