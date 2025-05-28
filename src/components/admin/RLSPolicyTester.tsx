@@ -1,100 +1,92 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Shield, Database, List, Zap } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Import custom hooks
-import { usePolicyTester } from '@/hooks/usePolicyTester';
-
-// Import all the components we've created
-import { AccessDeniedCard } from './rls/AccessDeniedCard';
-import { PolicyTestTab } from './rls/PolicyTestTab';
-import { PolicyRegistryTab } from './rls/PolicyRegistryTab';
-import { PolicyAnalysisTab } from './rls/PolicyAnalysisTab';
-
-// Add type definition for PolicyRecord
-interface PolicyRecord {
-  table_name: string;
-  policy_name: string;
-  policy_type: string;
-}
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export const RLSPolicyTester = () => {
-  const {
-    isAdmin,
-    testResults,
-    isLoading,
-    registeredPolicies,
-    policyAnalysis,
-    activeTab,
-    setActiveTab,
-    selectedRole,
-    setSelectedRole,
-    scenarioName,
-    setScenarioName,
-    runStandardTests,
-    runRoleTests,
-    refreshData,
-  } = usePolicyTester();
+  const [testQuery, setTestQuery] = useState('');
+  const [userId, setUserId] = useState('');
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  if (isAdmin === false) {
-    return <AccessDeniedCard />;
-  }
+  const runTest = async () => {
+    if (!testQuery.trim()) {
+      toast.error('Please enter a test query');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.rpc('test_rls_policy', {
+        query: testQuery,
+        test_user_id: userId || null
+      });
+
+      if (error) throw error;
+      
+      setResults(data || []);
+      toast.success('Test completed successfully');
+    } catch (error) {
+      console.error('RLS test error:', error);
+      toast.error('Test failed: ' + (error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Card className="mb-8">
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Shield size={20} />
-          RLS Policy Management
-        </CardTitle>
-        <CardDescription>
-          Test and manage Row Level Security policies in the database
-        </CardDescription>
+        <CardTitle>RLS Policy Tester</CardTitle>
       </CardHeader>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="px-6">
-          <TabsList className="mb-4">
-            <TabsTrigger value="test" className="flex items-center gap-1">
-              <Database size={16} />
-              Test Policies
-            </TabsTrigger>
-            <TabsTrigger value="registry" className="flex items-center gap-1">
-              <List size={16} />
-              Policy Registry
-            </TabsTrigger>
-            <TabsTrigger value="analysis" className="flex items-center gap-1">
-              <Zap size={16} />
-              Analysis
-            </TabsTrigger>
-          </TabsList>
+      <CardContent className="space-y-4">
+        <div>
+          <Label htmlFor="userId">Test User ID (optional)</Label>
+          <Input
+            id="userId"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            placeholder="Enter user ID to test with"
+          />
         </div>
-
-        <TabsContent value="test">
-          <PolicyTestTab
-            testResults={testResults}
-            selectedRole={selectedRole}
-            setSelectedRole={setSelectedRole}
-            scenarioName={scenarioName}
-            setScenarioName={setScenarioName}
-            isLoading={isLoading}
-            onRunStandardTests={runStandardTests}
-            onRunRoleTests={runRoleTests}
+        
+        <div>
+          <Label htmlFor="testQuery">Test Query</Label>
+          <Textarea
+            id="testQuery"
+            value={testQuery}
+            onChange={(e) => setTestQuery(e.target.value)}
+            placeholder="SELECT * FROM applications WHERE user_id = auth.uid()"
+            rows={4}
           />
-        </TabsContent>
-
-        <TabsContent value="registry">
-          <PolicyRegistryTab
-            registeredPolicies={registeredPolicies as PolicyRecord[]}
-            onRefreshData={refreshData}
-          />
-        </TabsContent>
-
-        <TabsContent value="analysis">
-          <PolicyAnalysisTab policyAnalysis={policyAnalysis} onRefreshData={refreshData} />
-        </TabsContent>
-      </Tabs>
+        </div>
+        
+        <Button onClick={runTest} disabled={loading}>
+          {loading ? 'Running Test...' : 'Run Test'}
+        </Button>
+        
+        {results.length > 0 && (
+          <div className="mt-4">
+            <h3 className="font-semibold mb-2">Test Results:</h3>
+            <div className="space-y-2">
+              {results.map((result, index) => (
+                <div key={index} className="p-2 bg-gray-50 rounded">
+                  <Badge variant={result.success ? 'default' : 'destructive'}>
+                    {result.success ? 'Passed' : 'Failed'}
+                  </Badge>
+                  <pre className="text-sm mt-1">{JSON.stringify(result, null, 2)}</pre>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </CardContent>
     </Card>
   );
 };

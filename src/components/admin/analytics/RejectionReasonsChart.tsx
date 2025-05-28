@@ -1,41 +1,61 @@
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import type { RejectionReason } from '@/hooks/analytics';
-import { CHART_COLORS } from '@/lib/chart-config';
-import { useMemo } from 'react';
+
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+
+interface RejectionReason {
+  reason: string;
+  count: number;
+}
 
 interface RejectionReasonsChartProps {
   data: RejectionReason[];
 }
 
-export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
-  // Process data with memoization for better performance
-  const chartData = useMemo(() => {
-    return data.map((item) => ({
-      ...item,
-      shortReason: item.reason.length > 20 ? `${item.reason.substring(0, 20)}...` : item.reason,
-    }));
-  }, [data]);
+const COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
 
-  const config = {
-    count: { label: 'Count', color: CHART_COLORS.count },
+export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
+  const renderCustomLabel = (entry: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = entry.innerRadius + (entry.outerRadius - entry.innerRadius) * 0.5;
+    const x = entry.cx + radius * Math.cos(-entry.midAngle * RADIAN);
+    const y = entry.cy + radius * Math.sin(-entry.midAngle * RADIAN);
+
+    return (
+      <text 
+        x={x} 
+        y={y} 
+        fill="white" 
+        textAnchor={x > entry.cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        fontSize={12}
+        fontWeight="bold"
+      >
+        {`${entry.count}`}
+      </text>
+    );
   };
 
   return (
-    <ChartContainer config={config} className="aspect-auto h-[300px] w-full">
-      <BarChart data={chartData} layout="vertical" barCategoryGap={8}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis type="number" tick={{ fontSize: 12 }} />
-        <YAxis type="category" dataKey="shortReason" tick={{ fontSize: 12 }} width={150} />
-        <ChartTooltip
-          content={
-            <ChartTooltipContent
-              formatter={(value, name, props) => [`${value} occurrences`, props.payload.reason]}
-            />
-          }
-        />
-        <Bar dataKey="count" fill={CHART_COLORS.count} />
-      </BarChart>
-    </ChartContainer>
+    <div className="w-full h-[400px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomLabel}
+            outerRadius={120}
+            fill="#8884d8"
+            dataKey="count"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip formatter={(value, label) => [value, label]} />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 };

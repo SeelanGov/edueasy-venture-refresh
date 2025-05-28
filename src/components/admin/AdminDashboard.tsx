@@ -1,117 +1,277 @@
-import React, { useState } from 'react';
-import AdminFilters from './AdminFilters';
-import ExportButton from './ExportButton';
-import NotificationBell from './NotificationBell';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Users, 
+  GraduationCap, 
+  FileText, 
+  AlertCircle,
+  TrendingUp,
+  Clock,
+  CheckCircle
+} from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Spinner } from '@/components/Spinner';
+import { ApplicationTable } from '@/components/dashboard/ApplicationTable';
 import { ErrorLogsTable } from './ErrorLogsTable';
-import { SecurityBadge } from '../ui/SecurityBadge';
-import { ErrorCategory } from '@/utils/errorHandler';
-import { ErrorSeverity } from '@/utils/errorLogging';
 
-// Placeholder for application data
-const mockApplications = [
-  { id: 'A001', name: 'Jane Doe', status: 'Pending', sensitive: true },
-  { id: 'A002', name: 'John Smith', status: 'Approved', sensitive: false },
-];
+interface DashboardStats {
+  totalUsers: number;
+  totalApplications: number;
+  pendingDocuments: number;
+  completedApplications: number;
+}
 
-// Mock error log data for demonstration
-const mockErrors = [
-  {
-    id: 'err1',
-    message: 'Failed login attempt',
-    category: ErrorCategory.AUTHENTICATION,
-    severity: ErrorSeverity.WARNING,
-    component: 'LoginForm',
-    action: 'login',
-    user_id: 'user123',
-    details: {},
-    occurred_at: '2025-05-15T10:00:00Z',
-    is_resolved: false,
-  },
-  {
-    id: 'err2',
-    message: 'Document upload failed',
-    category: ErrorCategory.FILE,
-    severity: ErrorSeverity.ERROR,
-    component: 'DocumentUpload',
-    action: 'upload',
-    user_id: 'user456',
-    details: {},
-    occurred_at: '2025-05-15T11:00:00Z',
-    is_resolved: true,
-    resolved_at: '2025-05-15T12:00:00Z',
-    resolved_by: 'admin1',
-    resolution_notes: 'Network issue resolved',
-  },
-];
+interface ErrorLogEntry {
+  id: string;
+  message: string;
+  category: string;
+  severity: string;
+  component?: string;
+  action?: string;
+  user_id?: string;
+  details?: Record<string, unknown>;
+  occurred_at: string;
+  is_resolved: boolean;
+  resolved_at?: string;
+  resolved_by?: string;
+  resolution_notes?: string;
+}
 
-export const AdminDashboard: React.FC = () => {
-  const [filters, setFilters] = useState({});
-  const [applications, setApplications] = useState(mockApplications);
+export const AdminDashboard = () => {
+  const [stats, setStats] = useState<DashboardStats>({
+    totalUsers: 0,
+    totalApplications: 0,
+    pendingDocuments: 0,
+    completedApplications: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState<any[]>([]);
+  const [errorLogs, setErrorLogs] = useState<ErrorLogEntry[]>([]);
+  const [errorLogsLoading, setErrorLogsLoading] = useState(false);
 
-  const handleFilterChange = (newFilters: Record<string, any>) => {
-    setFilters(newFilters);
-    // Add filter logic here
+  const fetchStats = async () => {
+    try {
+      const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('count', { count: 'exact' });
+
+      if (usersError) throw usersError;
+
+      const { data: applicationsData, error: applicationsError } = await supabase
+        .from('applications')
+        .select('count', { count: 'exact' });
+
+      if (applicationsError) throw applicationsError;
+
+      const { data: pendingDocsData, error: pendingDocsError } = await supabase
+        .from('documents')
+        .select('count', { count: 'exact' })
+        .eq('verification_status', 'pending');
+
+      if (pendingDocsError) throw pendingDocsError;
+
+      const { data: completedAppsData, error: completedAppsError } = await supabase
+        .from('applications')
+        .select('count', { count: 'exact' })
+        .not('status', 'in', 'draft,submitted');
+
+      if (completedAppsError) throw completedAppsError;
+
+      setStats({
+        totalUsers: usersData ? usersData[0].count : 0,
+        totalApplications: applicationsData ? applicationsData[0].count : 0,
+        pendingDocuments: pendingDocsData ? pendingDocsData[0].count : 0,
+        completedApplications: completedAppsData ? completedAppsData[0].count : 0
+      });
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+      toast.error('Failed to load dashboard statistics');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleExport = () => {
-    // Add export logic here
-    alert('Exported CSV (stub)');
+  const fetchApplications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('applications')
+        .select('*, documents(*)')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setApplications(data || []);
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+      toast.error('Failed to load applications');
+    }
   };
+
+  const fetchErrorLogs = async () => {
+    setErrorLogsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('system_error_logs')
+        .select('*')
+        .order('occurred_at', { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+      setErrorLogs(data || []);
+    } catch (error) {
+      console.error('Error fetching error logs:', error);
+      toast.error('Failed to load error logs');
+    } finally {
+      setErrorLogsLoading(false);
+    }
+  };
+
+  const handleResolveError = async (id: string, notes: string) => {
+    try {
+      const { error } = await supabase
+        .from('system_error_logs')
+        .update({
+          is_resolved: true,
+          resolved_at: new Date().toISOString(),
+          resolution_notes: notes
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast.success('Error marked as resolved');
+      await fetchErrorLogs();
+      return true;
+    } catch (error) {
+      console.error('Error resolving error log:', error);
+      toast.error('Failed to resolve error');
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    fetchApplications();
+    fetchErrorLogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <NotificationBell />
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <Button onClick={() => window.location.reload()} variant="outline">
+          Refresh Data
+        </Button>
       </div>
-      <AdminFilters onFilterChange={handleFilterChange} />
-      <ExportButton onExport={handleExport} />
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-2">Applications</h2>
-        <table className="min-w-full bg-white border rounded shadow">
-          <thead>
-            <tr>
-              <th className="p-2 border-b">ID</th>
-              <th className="p-2 border-b">Name</th>
-              <th className="p-2 border-b">Status</th>
-              <th className="p-2 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {applications.map((app) => (
-              <tr key={app.id}>
-                <td className="p-2 border-b">{app.id}</td>
-                <td className="p-2 border-b">{app.name}</td>
-                <td className="p-2 border-b flex items-center gap-2">
-                  {app.status}
-                  {/* Show SecurityBadge for sensitive actions */}
-                  {app.sensitive && (
-                    <SecurityBadge type="data-protection" size="sm" showLabel={false} />
-                  )}
-                </td>
-                <td className="p-2 border-b">
-                  <button className="btn btn-xs btn-outline mr-2">Approve</button>
-                  <button className="btn btn-xs btn-outline">Reject</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalUsers}</div>
+            <Badge variant="secondary" className="mt-1">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              Active
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Applications</CardTitle>
+            <GraduationCap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalApplications}</div>
+            <Badge variant="secondary" className="mt-1">
+              Total Submitted
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Documents</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.pendingDocuments}</div>
+            <Badge variant="outline" className="mt-1 text-amber-600 border-amber-600">
+              Awaiting Review
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.completedApplications}</div>
+            <Badge variant="outline" className="mt-1 text-green-600 border-green-600">
+              Processed
+            </Badge>
+          </CardContent>
+        </Card>
       </div>
-      <div className="mt-10">
-        <h2 className="text-xl font-semibold mb-2">Audit/Error Logs</h2>
-        <ErrorLogsTable
-          errors={mockErrors}
-          loading={false}
-          onRefresh={() => alert('Refresh logs (stub)')}
-          onResolve={async (id, notes) => {
-            alert(`Resolved ${id} with notes: ${notes}`);
-            return true;
-          }}
-        />
-      </div>
+
+      {/* Tabs Section */}
+      <Tabs defaultValue="applications" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="applications">Applications</TabsTrigger>
+          <TabsTrigger value="error-logs">System Errors</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="applications" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="h-5 w-5 mr-2" />
+                Recent Applications
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ApplicationTable applications={applications} loading={false} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="error-logs" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                System Error Logs
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ErrorLogsTable 
+                errors={errorLogs}
+                loading={errorLogsLoading}
+                onRefresh={fetchErrorLogs}
+                onResolve={handleResolveError}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
-
-export default AdminDashboard;

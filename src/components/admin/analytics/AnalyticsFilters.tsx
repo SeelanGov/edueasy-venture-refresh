@@ -1,119 +1,178 @@
-import { useEffect, useState } from 'react';
-import { Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { AnalyticsFilters } from '@/hooks/analytics';
-import { format } from 'date-fns';
 
-interface AnalyticsFilterBarProps {
-  filters: AnalyticsFilters;
-  onUpdateFilters: (filters: Partial<AnalyticsFilters>) => void;
-  onResetFilters: () => void;
-  documentTypes: string[];
-  institutions: { id: string; name: string }[];
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { useState } from 'react';
+
+export interface AnalyticsFilters {
+  dateRange: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+  documentType: string;
+  status: string;
+  searchTerm: string;
 }
 
-export const AnalyticsFilterBar = ({
-  filters,
-  onUpdateFilters,
-  onResetFilters,
-  documentTypes,
-  institutions,
-}: AnalyticsFilterBarProps) => {
-  const [startDate, setStartDate] = useState<Date | null>(filters.startDate);
-  const [endDate, setEndDate] = useState<Date | null>(filters.endDate);
+interface AnalyticsFiltersProps {
+  filters: AnalyticsFilters;
+  onFiltersChange: (filters: AnalyticsFilters) => void;
+  onExport?: () => void;
+}
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      onUpdateFilters({ startDate, endDate });
-    }
-  }, [startDate, endDate]);
+export const AnalyticsFilters = ({ filters, onFiltersChange, onExport }: AnalyticsFiltersProps) => {
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
+
+  const handleStartDateSelect = (date: Date | undefined) => {
+    onFiltersChange({
+      ...filters,
+      dateRange: {
+        ...filters.dateRange,
+        startDate: date || null,
+      },
+    });
+    setStartDateOpen(false);
+  };
+
+  const handleEndDateSelect = (date: Date | undefined) => {
+    onFiltersChange({
+      ...filters,
+      dateRange: {
+        ...filters.dateRange,
+        endDate: date || null,
+      },
+    });
+    setEndDateOpen(false);
+  };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Popover>
+    <div className="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
+      <div className="space-y-2">
+        <Label htmlFor="start-date">Start Date</Label>
+        <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full sm:w-auto justify-start">
-              <Calendar className="mr-2 h-4 w-4" />
-              {filters.startDate ? format(filters.startDate, 'PP') : 'Start date'}
+            <Button
+              variant="outline"
+              className={cn(
+                'w-[200px] justify-start text-left font-normal',
+                !filters.dateRange.startDate && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {filters.dateRange.startDate ? (
+                format(filters.dateRange.startDate, 'PPP')
+              ) : (
+                <span>Pick a start date</span>
+              )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <CalendarComponent
-              initialFocus
+          <PopoverContent className="w-auto p-0">
+            <Calendar
               mode="single"
-              selected={startDate || undefined}
-              onSelect={setStartDate}
-              disabled={(date) => (endDate ? date > endDate : false)}
-            />
-          </PopoverContent>
-        </Popover>
-
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full sm:w-auto justify-start">
-              <Calendar className="mr-2 h-4 w-4" />
-              {filters.endDate ? format(filters.endDate, 'PP') : 'End date'}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <CalendarComponent
+              selected={filters.dateRange.startDate || undefined}
+              onSelect={handleStartDateSelect}
               initialFocus
-              mode="single"
-              selected={endDate || undefined}
-              onSelect={setEndDate}
-              disabled={(date) => (startDate ? date < startDate : false)}
             />
           </PopoverContent>
         </Popover>
       </div>
 
-      <Select
-        value={filters.documentType || ''}
-        onValueChange={(value) => onUpdateFilters({ documentType: value || null })}
-      >
-        <SelectTrigger className="w-full sm:w-[200px]">
-          <SelectValue placeholder="Document Type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="">All Types</SelectItem>
-          {documentTypes.map((type) => (
-            <SelectItem key={type} value={type}>
-              {type.replace(/([A-Z])/g, ' $1').trim()}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="space-y-2">
+        <Label htmlFor="end-date">End Date</Label>
+        <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                'w-[200px] justify-start text-left font-normal',
+                !filters.dateRange.endDate && 'text-muted-foreground'
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {filters.dateRange.endDate ? (
+                format(filters.dateRange.endDate, 'PPP')
+              ) : (
+                <span>Pick an end date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={filters.dateRange.endDate || undefined}
+              onSelect={handleEndDateSelect}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
 
-      <Select
-        value={filters.institutionId || ''}
-        onValueChange={(value) => onUpdateFilters({ institutionId: value || null })}
-      >
-        <SelectTrigger className="w-full sm:w-[200px]">
-          <SelectValue placeholder="Institution" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="">All Institutions</SelectItem>
-          {institutions.map((institution) => (
-            <SelectItem key={institution.id} value={institution.id}>
-              {institution.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="space-y-2">
+        <Label htmlFor="document-type">Document Type</Label>
+        <Select
+          value={filters.documentType}
+          onValueChange={(value) =>
+            onFiltersChange({ ...filters, documentType: value })
+          }
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All Types</SelectItem>
+            <SelectItem value="identity_document">ID Document</SelectItem>
+            <SelectItem value="academic_transcript">Transcript</SelectItem>
+            <SelectItem value="matric_certificate">Matric Certificate</SelectItem>
+            <SelectItem value="proof_of_residence">Proof of Residence</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-      <Button variant="outline" className="ml-auto" onClick={onResetFilters}>
-        Reset Filters
-      </Button>
+      <div className="space-y-2">
+        <Label htmlFor="status">Status</Label>
+        <Select
+          value={filters.status}
+          onValueChange={(value) => onFiltersChange({ ...filters, status: value })}
+        >
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="All Statuses" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All Statuses</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="search">Search</Label>
+        <Input
+          id="search"
+          placeholder="Search applications..."
+          value={filters.searchTerm}
+          onChange={(e) =>
+            onFiltersChange({ ...filters, searchTerm: e.target.value })
+          }
+          className="w-[200px]"
+        />
+      </div>
+
+      {onExport && (
+        <div className="flex items-end">
+          <Button onClick={onExport} variant="outline">
+            Export Data
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
