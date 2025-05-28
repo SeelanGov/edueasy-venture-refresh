@@ -16,7 +16,7 @@ interface PolicyRegistryProps {
 
 export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
   const getPolicyIcon = (type: string) => {
-    switch (type.toLowerCase()) {
+    switch (type?.toLowerCase() || '') {
       case 'select':
         return <Eye className="h-4 w-4 text-blue-600" />;
       case 'insert':
@@ -38,11 +38,11 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
       delete: "bg-red-50 text-red-700 border-red-200"
     };
 
-    const className = colorMap[type.toLowerCase()] || "bg-gray-50 text-gray-700 border-gray-200";
+    const className = colorMap[type?.toLowerCase() || ''] || "bg-gray-50 text-gray-700 border-gray-200";
 
     return (
       <Badge variant="outline" className={className}>
-        {type.toUpperCase()}
+        {type?.toUpperCase() || 'UNKNOWN'}
       </Badge>
     );
   };

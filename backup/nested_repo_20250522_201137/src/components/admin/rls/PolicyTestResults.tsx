@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, AlertTriangle, Clock } from "lucide-react";
+import { CheckCircle, XCircle, Clock } from "lucide-react";
 
 interface TestResult {
   table_name: string;

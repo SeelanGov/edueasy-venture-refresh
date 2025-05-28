@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Table,
@@ -55,9 +54,9 @@ interface ErrorLogsTableProps {
 }
 
 interface FilterState {
-  severity?: string;
-  category?: string;
-  component?: string;
+  severity?: string | undefined;
+  category?: string | undefined;
+  component?: string | undefined;
   search: string;
   showResolved: boolean;
 }

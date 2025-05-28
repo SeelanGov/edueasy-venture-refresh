@@ -1,7 +1,8 @@
+
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertCircle, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
@@ -10,7 +11,7 @@ interface DocumentStatus {
   document_type: string | null;
   verification_status: string | null;
   file_path: string;
-  created_at: string; // Using created_at instead of updated_at
+  created_at: string;
   rejection_reason: string | null;
 }
 
@@ -22,7 +23,10 @@ export const DocumentVerificationNotice = () => {
 
   useEffect(() => {
     const fetchRecentVerifiedDocuments = async () => {
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
       try {
         // Get documents that have been recently verified, rejected, or need resubmission
@@ -41,7 +45,14 @@ export const DocumentVerificationNotice = () => {
         const dismissedDocs = dismissedJson ? JSON.parse(dismissedJson) : {};
 
         setDismissed(dismissedDocs);
-        setRecentlyVerifiedDocs(data || []);
+        // Filter out null created_at and ensure proper typing
+        const validDocs = (data || []).filter((doc): doc is DocumentStatus => 
+          doc.created_at !== null
+        ).map(doc => ({
+          ...doc,
+          created_at: doc.created_at as string
+        }));
+        setRecentlyVerifiedDocs(validDocs);
       } catch (err) {
         console.error('Error fetching document verification status:', err);
       } finally {
@@ -63,7 +74,7 @@ export const DocumentVerificationNotice = () => {
             table: 'documents',
             filter: `user_id=eq.${user.id}`,
           },
-          (payload) => {
+          () => {
             // When a document is updated, refresh the list
             fetchRecentVerifiedDocuments();
           }
