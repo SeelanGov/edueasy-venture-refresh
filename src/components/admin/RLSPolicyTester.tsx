@@ -1,17 +1,16 @@
-
-import React from "react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Shield, Database, List, Zap } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React from 'react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Shield, Database, List, Zap } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Import custom hooks
-import { usePolicyTester } from "@/hooks/usePolicyTester";
+import { usePolicyTester } from '@/hooks/usePolicyTester';
 
 // Import all the components we've created
-import { AccessDeniedCard } from "./rls/AccessDeniedCard";
-import { PolicyTestTab } from "./rls/PolicyTestTab";
-import { PolicyRegistryTab } from "./rls/PolicyRegistryTab";
-import { PolicyAnalysisTab } from "./rls/PolicyAnalysisTab";
+import { AccessDeniedCard } from './rls/AccessDeniedCard';
+import { PolicyTestTab } from './rls/PolicyTestTab';
+import { PolicyRegistryTab } from './rls/PolicyRegistryTab';
+import { PolicyAnalysisTab } from './rls/PolicyAnalysisTab';
 
 // Add type definition for PolicyRecord
 interface PolicyRecord {
@@ -35,7 +34,7 @@ export const RLSPolicyTester = () => {
     setScenarioName,
     runStandardTests,
     runRoleTests,
-    refreshData
+    refreshData,
   } = usePolicyTester();
 
   if (isAdmin === false) {
@@ -53,7 +52,7 @@ export const RLSPolicyTester = () => {
           Test and manage Row Level Security policies in the database
         </CardDescription>
       </CardHeader>
-      
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="px-6">
           <TabsList className="mb-4">
@@ -71,7 +70,7 @@ export const RLSPolicyTester = () => {
             </TabsTrigger>
           </TabsList>
         </div>
-        
+
         <TabsContent value="test">
           <PolicyTestTab
             testResults={testResults}
@@ -84,19 +83,16 @@ export const RLSPolicyTester = () => {
             onRunRoleTests={runRoleTests}
           />
         </TabsContent>
-        
+
         <TabsContent value="registry">
-          <PolicyRegistryTab 
+          <PolicyRegistryTab
             registeredPolicies={registeredPolicies as PolicyRecord[]}
             onRefreshData={refreshData}
           />
         </TabsContent>
-        
+
         <TabsContent value="analysis">
-          <PolicyAnalysisTab 
-            policyAnalysis={policyAnalysis}
-            onRefreshData={refreshData}
-          />
+          <PolicyAnalysisTab policyAnalysis={policyAnalysis} onRefreshData={refreshData} />
         </TabsContent>
       </Tabs>
     </Card>

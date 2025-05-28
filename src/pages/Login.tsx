@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/contexts/AuthContext";
-import { Logo } from "@/components/Logo";
-import { Spinner } from "@/components/Spinner";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { Logo } from '@/components/Logo';
+import { Spinner } from '@/components/Spinner';
 import {
   Form,
   FormControl,
@@ -15,17 +15,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { PatternBorder } from "@/components/PatternBorder";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { SecurityBadge } from "@/components/ui/SecurityBadge";
-import { EnhancedFormField } from "@/components/ui/EnhancedFormField";
+} from '@/components/ui/form';
+import { PatternBorder } from '@/components/PatternBorder';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
 
 const loginFormSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
   rememberMe: z.boolean().default(false),
 });
 
@@ -37,14 +37,14 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Get the intended destination from location state, or default to dashboard
-  const from = location.state?.from || "/dashboard";
-  
+  const from = location.state?.from || '/dashboard';
+
   useEffect(() => {
     // If user is already logged in, redirect them to the intended destination
     if (user) {
-      console.log("User already logged in, redirecting to:", from);
+      console.log('User already logged in, redirecting to:', from);
       navigate(from, { replace: true });
     }
   }, [user, navigate, from]);
@@ -52,8 +52,8 @@ const Login = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       rememberMe: false,
     },
   });
@@ -63,7 +63,7 @@ const Login = () => {
     setError(null);
     try {
       await signIn(data.email, data.password, data.rememberMe);
-      
+
       // Store rememberMe preference in localStorage if the user wants to be remembered
       if (data.rememberMe) {
         localStorage.setItem('rememberMe', 'true');
@@ -72,13 +72,13 @@ const Login = () => {
         localStorage.removeItem('rememberMe');
         localStorage.removeItem('rememberedEmail');
       }
-      
-      console.log("Login successful, navigating to:", from);
+
+      console.log('Login successful, navigating to:', from);
       // Navigation will happen in the useEffect when user state updates
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error("Login error:", error);
-      setError(message || "Failed to sign in. Please check your credentials.");
+      console.error('Login error:', error);
+      setError(message || 'Failed to sign in. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +88,7 @@ const Login = () => {
   useEffect(() => {
     const rememberMe = localStorage.getItem('rememberMe');
     const rememberedEmail = localStorage.getItem('rememberedEmail');
-    
+
     if (rememberMe && rememberedEmail) {
       form.setValue('email', rememberedEmail);
       form.setValue('rememberMe', true);
@@ -102,9 +102,9 @@ const Login = () => {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage: "url('/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            height: "180px",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            height: '180px',
           }}
         />
         <div className="relative z-10 pt-6 flex justify-center">
@@ -131,7 +131,7 @@ const Login = () => {
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
-              
+
                 <EnhancedFormField
                   control={form.control}
                   name="email"
@@ -164,8 +164,8 @@ const Login = () => {
                       </FormControl>
                       <FormMessage />
                       <div className="text-right">
-                        <Link 
-                          to="/forgot-password" 
+                        <Link
+                          to="/forgot-password"
                           className="text-sm text-cap-teal hover:underline"
                         >
                           Forgot password?
@@ -200,16 +200,13 @@ const Login = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-                  {isLoading ? "Signing in..." : "Sign In"}
+                  {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
 
                 <div className="text-center mt-4">
                   <p className="text-sm text-gray-600">
-                    Don't have an account?{" "}
-                    <Link
-                      to="/register"
-                      className="text-cap-teal hover:underline font-medium"
-                    >
+                    Don't have an account?{' '}
+                    <Link to="/register" className="text-cap-teal hover:underline font-medium">
                       Sign up
                     </Link>
                   </p>
@@ -225,7 +222,7 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      
+
       <div className="absolute bottom-0 left-0 right-0">
         <PatternBorder position="bottom" />
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // Using type instead of empty interface
 type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;

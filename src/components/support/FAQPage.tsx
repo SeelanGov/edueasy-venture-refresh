@@ -1,8 +1,14 @@
-import React from "react";
+import React from 'react';
 
 const faqs = [
-  { q: "How do I reset my password?", a: "Go to your profile settings and click 'Reset Password'." },
-  { q: "How do I contact support?", a: "Click the Help button at the bottom right or email support@edueasy.com." },
+  {
+    q: 'How do I reset my password?',
+    a: "Go to your profile settings and click 'Reset Password'.",
+  },
+  {
+    q: 'How do I contact support?',
+    a: 'Click the Help button at the bottom right or email support@edueasy.com.',
+  },
   // Add more FAQs here
 ];
 

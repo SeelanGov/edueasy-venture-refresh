@@ -1,30 +1,18 @@
-
-import { useState } from "react";
-import { Intent } from "@/hooks/useIntentManagement";
-import { ChatMessage, TrainingEntry } from "@/hooks/useTrainingData";
-import { TableRow, TableCell } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { 
+import { useState } from 'react';
+import { Intent } from '@/hooks/useIntentManagement';
+import { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
+import { TableRow, TableCell } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { 
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  XCircle,
-  Tag,
-} from "lucide-react";
+} from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AlertCircle, CheckCircle, Clock, XCircle, Tag } from 'lucide-react';
 
 interface MessageRowProps {
   message: ChatMessage;
@@ -41,26 +29,26 @@ export const MessageRow = ({
   intents,
   onTrain,
   onUpdateTraining,
-  onDeleteTraining
+  onDeleteTraining,
 }: MessageRowProps) => {
-  const [selectedIntent, setSelectedIntent] = useState<string>("");
+  const [selectedIntent, setSelectedIntent] = useState<string>('');
 
   const formatConfidence = (score: number | null | undefined) => {
-    if (score === null || score === undefined) return "-";
+    if (score === null || score === undefined) return '-';
     return `${Math.round(score * 100)}%`;
   };
 
   const handleTrain = () => {
     if (selectedIntent) {
       onTrain(message.id, selectedIntent);
-      setSelectedIntent("");
+      setSelectedIntent('');
     }
   };
 
   const handleUpdateTraining = (trainingId: string) => {
     if (selectedIntent) {
       onUpdateTraining(trainingId, selectedIntent);
-      setSelectedIntent("");
+      setSelectedIntent('');
     }
   };
 
@@ -81,8 +69,8 @@ export const MessageRow = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Badge variant={message.low_confidence ? "outline" : "secondary"}>
-                  {intents.find(i => i.id === message.intent_id)?.intent_name || "Unknown"}
+                <Badge variant={message.low_confidence ? 'outline' : 'secondary'}>
+                  {intents.find((i) => i.id === message.intent_id)?.intent_name || 'Unknown'}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -93,14 +81,14 @@ export const MessageRow = ({
         ) : (
           <Badge variant="outline">None</Badge>
         )}
-        
+
         {training && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Badge variant="default" className="ml-1">
                   <Tag className="h-3 w-3 mr-1" />
-                  {intents.find(i => i.id === training.intent_id)?.intent_name || "Unknown"}
+                  {intents.find((i) => i.id === training.intent_id)?.intent_name || 'Unknown'}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
@@ -112,9 +100,9 @@ export const MessageRow = ({
       </TableCell>
       <TableCell>
         {message.confidence_score !== null ? (
-          <Badge 
-            variant={message.low_confidence ? "destructive" : "default"}
-            className={message.low_confidence ? "" : "bg-green-600 hover:bg-green-700"}
+          <Badge
+            variant={message.low_confidence ? 'destructive' : 'default'}
+            className={message.low_confidence ? '' : 'bg-green-600 hover:bg-green-700'}
           >
             {message.low_confidence ? (
               <AlertCircle className="h-3 w-3 mr-1" />
@@ -131,10 +119,7 @@ export const MessageRow = ({
         )}
       </TableCell>
       <TableCell>
-        <Select 
-          value={selectedIntent} 
-          onValueChange={(value) => setSelectedIntent(value)}
-        >
+        <Select value={selectedIntent} onValueChange={(value) => setSelectedIntent(value)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select intent" />
           </SelectTrigger>
@@ -150,7 +135,7 @@ export const MessageRow = ({
       <TableCell>
         {training ? (
           <div className="flex space-x-2">
-            <Button 
+            <Button
               variant="outline"
               size="sm"
               disabled={!selectedIntent}
@@ -158,7 +143,7 @@ export const MessageRow = ({
             >
               Update
             </Button>
-            <Button 
+            <Button
               variant="outline"
               size="sm"
               className="text-destructive hover:text-destructive"
@@ -168,12 +153,7 @@ export const MessageRow = ({
             </Button>
           </div>
         ) : (
-          <Button 
-            variant="outline"
-            size="sm"
-            disabled={!selectedIntent}
-            onClick={handleTrain}
-          >
+          <Button variant="outline" size="sm" disabled={!selectedIntent} onClick={handleTrain}>
             Train
           </Button>
         )}

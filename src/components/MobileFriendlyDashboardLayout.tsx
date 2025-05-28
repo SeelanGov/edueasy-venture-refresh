@@ -1,4 +1,3 @@
-
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -42,7 +41,7 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
       // Automatically expand/collapse sidebar based on screen width
       setSidebarOpen(window.innerWidth >= 768);
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -116,17 +115,19 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
   return (
     <div className={`h-screen flex overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
       {/* Sidebar for desktop */}
-      <div 
+      <div
         className={`bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 ${
           sidebarOpen ? 'w-64' : 'w-20'
         } transition-all duration-300 ease-in-out hidden md:block`}
       >
         <div className="h-full flex flex-col">
-          <div className={`p-4 flex ${sidebarOpen ? 'justify-between' : 'justify-center'} items-center border-b border-gray-200 dark:border-gray-700`}>
+          <div
+            className={`p-4 flex ${sidebarOpen ? 'justify-between' : 'justify-center'} items-center border-b border-gray-200 dark:border-gray-700`}
+          >
             {sidebarOpen && <Logo />}
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="text-gray-500 dark:text-gray-400"
             >
@@ -136,8 +137,8 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
           <div className="flex-1 py-6 overflow-y-auto">
             <nav className="px-2 space-y-1">
               {navItems.map((item) => (
-                <Link 
-                  key={item.path} 
+                <Link
+                  key={item.path}
                   to={item.path}
                   className={`flex items-center px-3 py-3 rounded-lg transition-colors ${
                     isActive(item.path)
@@ -153,18 +154,20 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
           </div>
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-col space-y-3">
-              <Button 
-                variant="ghost" 
-                size={sidebarOpen ? "default" : "icon"}
+              <Button
+                variant="ghost"
+                size={sidebarOpen ? 'default' : 'icon'}
                 onClick={toggleTheme}
                 className="w-full justify-start text-gray-700 dark:text-gray-300"
               >
                 {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                {sidebarOpen && <span className="ml-2">{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>}
+                {sidebarOpen && (
+                  <span className="ml-2">{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+                )}
               </Button>
-              <Button 
-                variant="ghost" 
-                size={sidebarOpen ? "default" : "icon"}
+              <Button
+                variant="ghost"
+                size={sidebarOpen ? 'default' : 'icon'}
                 onClick={handleSignOut}
                 className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
               >
@@ -180,13 +183,11 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
         <div className="flex justify-around items-center h-16">
           {navItems.slice(0, 5).map((item) => (
-            <Link 
-              key={item.path} 
+            <Link
+              key={item.path}
               to={item.path}
               className={`flex flex-col items-center justify-center p-2 flex-1 ${
-                isActive(item.path)
-                  ? 'text-cap-teal'
-                  : 'text-gray-700 dark:text-gray-300'
+                isActive(item.path) ? 'text-cap-teal' : 'text-gray-700 dark:text-gray-300'
               }`}
             >
               <span className="mb-1">{item.icon}</span>
@@ -204,11 +205,13 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
             <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
                 <Logo />
-                <h2 className="ml-3 text-lg font-semibold text-gray-900 dark:text-gray-100">EduEasy</h2>
+                <h2 className="ml-3 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  EduEasy
+                </h2>
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-gray-500 dark:text-gray-400"
               >
@@ -217,11 +220,13 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
             </div>
             <div className="p-4">
               <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">MAIN NAVIGATION</h3>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">
+                  MAIN NAVIGATION
+                </h3>
                 <nav className="space-y-1">
                   {navItems.map((item) => (
-                    <Link 
-                      key={item.path} 
+                    <Link
+                      key={item.path}
                       to={item.path}
                       className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                         isActive(item.path)
@@ -237,17 +242,23 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
                 </nav>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">SETTINGS</h3>
-                <Button 
-                  variant="ghost" 
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-2">
+                  SETTINGS
+                </h3>
+                <Button
+                  variant="ghost"
                   className="w-full justify-start text-gray-700 dark:text-gray-300 mb-3 px-4 py-3"
                   onClick={toggleTheme}
                 >
-                  {isDarkMode ? <Sun className="h-5 w-5 mr-3" /> : <Moon className="h-5 w-5 mr-3" />}
+                  {isDarkMode ? (
+                    <Sun className="h-5 w-5 mr-3" />
+                  ) : (
+                    <Moon className="h-5 w-5 mr-3" />
+                  )}
                   {isDarkMode ? 'Light Mode' : 'Dark Mode'}
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={handleSignOut}
                   className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 px-4 py-3"
                 >
@@ -267,9 +278,9 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
           <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="md:hidden">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setMobileMenuOpen(true)}
                   className="text-gray-500 dark:text-gray-400"
                 >
@@ -277,24 +288,24 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
                 </Button>
               </div>
               <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 truncate max-w-[200px] sm:max-w-xs">
-                {navItems.find(item => isActive(item.path))?.name || 'Dashboard'}
+                {navItems.find((item) => isActive(item.path))?.name || 'Dashboard'}
               </h1>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               {/* Add NotificationsPanel */}
               {user && <NotificationsPanel />}
-              
+
               <div className="md:hidden">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={toggleTheme}
                   className="text-gray-500 dark:text-gray-400"
                 >
                   {isDarkMode ? <Sun /> : <Moon />}
                 </Button>
               </div>
-              
+
               <div className="hidden sm:flex items-center gap-2 text-sm">
                 <div className="h-8 w-8 rounded-full bg-cap-teal/20 flex items-center justify-center text-cap-teal">
                   {user?.email?.charAt(0).toUpperCase() || 'U'}

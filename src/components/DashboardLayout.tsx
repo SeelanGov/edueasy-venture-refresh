@@ -1,4 +1,3 @@
-
 import { ReactNode, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -88,30 +87,32 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       icon: <User className="h-5 w-5" />,
     },
   ];
-  
+
   // Admin-only navigation items
-  const adminNavItems = isAdmin ? [
-    {
-      name: 'Admin Dashboard',
-      path: '/admin',
-      icon: <Settings className="h-5 w-5" />,
-    },
-    {
-      name: 'Analytics',
-      path: '/admin/analytics',
-      icon: <BarChart className="h-5 w-5" />,
-    },
-    {
-      name: 'AI Training',
-      path: '/admin/ai-training',
-      icon: <MessageSquare className="h-5 w-5" />,
-    }
-  ] : [];
+  const adminNavItems = isAdmin
+    ? [
+        {
+          name: 'Admin Dashboard',
+          path: '/admin',
+          icon: <Settings className="h-5 w-5" />,
+        },
+        {
+          name: 'Analytics',
+          path: '/admin/analytics',
+          icon: <BarChart className="h-5 w-5" />,
+        },
+        {
+          name: 'AI Training',
+          path: '/admin/ai-training',
+          icon: <MessageSquare className="h-5 w-5" />,
+        },
+      ]
+    : [];
 
   const getPageTitle = () => {
     const allNavItems = [...navItems, ...adminNavItems];
     const currentNavItem = allNavItems.find(
-      item => isActive(item.path) || location.pathname.startsWith(item.path + '/')
+      (item) => isActive(item.path) || location.pathname.startsWith(item.path + '/')
     );
     return currentNavItem?.name || 'Dashboard';
   };

@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/contexts/AuthContext";
-import { Logo } from "@/components/Logo";
-import { Spinner } from "@/components/Spinner";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { Logo } from '@/components/Logo';
+import { Spinner } from '@/components/Spinner';
 import {
   Form,
   FormControl,
@@ -15,19 +15,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { PatternBorder } from "@/components/PatternBorder";
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { supabase } from "@/integrations/supabase/client";
+} from '@/components/ui/form';
+import { PatternBorder } from '@/components/PatternBorder';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
 
-const resetPasswordSchema = z.object({
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
@@ -45,18 +47,20 @@ const ResetPassword = () => {
       try {
         // This will use the hash fragment to set the session if it's a valid reset token
         const { error } = await supabase.auth.getSession();
-        
+
         if (error) {
-          console.error("Invalid or expired reset token:", error);
+          console.error('Invalid or expired reset token:', error);
           setIsTokenValid(false);
-          setError("This password reset link is invalid or has expired. Please request a new one.");
+          setError('This password reset link is invalid or has expired. Please request a new one.');
         } else {
           setIsTokenValid(true);
         }
       } catch (err) {
-        console.error("Error verifying reset token:", err);
+        console.error('Error verifying reset token:', err);
         setIsTokenValid(false);
-        setError("There was a problem verifying your password reset link. Please request a new one.");
+        setError(
+          'There was a problem verifying your password reset link. Please request a new one.'
+        );
       } finally {
         setIsVerifying(false);
       }
@@ -68,8 +72,8 @@ const ResetPassword = () => {
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     },
   });
 
@@ -81,7 +85,7 @@ const ResetPassword = () => {
       // Navigation will happen in the updatePassword function
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      setError(message || "Something went wrong. Please try again.");
+      setError(message || 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -95,9 +99,9 @@ const ResetPassword = () => {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage: "url('/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            height: "180px",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            height: '180px',
           }}
         />
         <div className="relative z-10 pt-6 flex justify-center">
@@ -177,7 +181,7 @@ const ResetPassword = () => {
                     disabled={isLoading}
                   >
                     {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-                    {isLoading ? "Updating..." : "Update Password"}
+                    {isLoading ? 'Updating...' : 'Update Password'}
                   </Button>
                 </form>
               </Form>
@@ -187,13 +191,10 @@ const ResetPassword = () => {
                   <AlertCircle className="h-4 w-4" />
                   <AlertTitle>Invalid Reset Link</AlertTitle>
                   <AlertDescription>
-                    {error || "This password reset link is invalid or has expired."}
+                    {error || 'This password reset link is invalid or has expired.'}
                   </AlertDescription>
                 </Alert>
-                <Link
-                  to="/forgot-password"
-                  className="text-cap-teal hover:underline font-medium"
-                >
+                <Link to="/forgot-password" className="text-cap-teal hover:underline font-medium">
                   Request a new reset link
                 </Link>
               </div>

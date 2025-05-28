@@ -1,6 +1,5 @@
-
-import React from "react";
-import { UserProfileCard } from "@/components/profile/UserProfileCard";
+import React from 'react';
+import { UserProfileCard } from '@/components/profile/UserProfileCard';
 
 const ProfileDemo = () => {
   return (

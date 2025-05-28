@@ -1,14 +1,13 @@
-
 import {
   ChartContainer,
   ChartTooltip,
   ChartLegend,
   ChartLegendContent,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Cell, Legend, Pie, PieChart } from "recharts";
-import { useMemo } from "react";
-import { CHART_COLORS } from "@/lib/chart-config";
+} from '@/components/ui/chart';
+import { Cell, Legend, Pie, PieChart } from 'recharts';
+import { useMemo } from 'react';
+import { CHART_COLORS } from '@/lib/chart-config';
 
 interface StatusDistributionChartProps {
   approved: number;
@@ -25,25 +24,22 @@ export const StatusDistributionChart = ({
 }: StatusDistributionChartProps) => {
   const data = useMemo(() => {
     return [
-      { name: "Approved", value: approved, color: CHART_COLORS.approved },
-      { name: "Rejected", value: rejected, color: CHART_COLORS.rejected },
-      { name: "Pending", value: pending, color: CHART_COLORS.pending },
-      { name: "Resubmission", value: resubmission, color: CHART_COLORS.request_resubmission },
+      { name: 'Approved', value: approved, color: CHART_COLORS.approved },
+      { name: 'Rejected', value: rejected, color: CHART_COLORS.rejected },
+      { name: 'Pending', value: pending, color: CHART_COLORS.pending },
+      { name: 'Resubmission', value: resubmission, color: CHART_COLORS.request_resubmission },
     ].filter((item) => item.value > 0);
   }, [approved, rejected, pending, resubmission]);
 
   const config = {
-    approved: { label: "Approved", color: CHART_COLORS.approved },
-    rejected: { label: "Rejected", color: CHART_COLORS.rejected },
-    pending: { label: "Pending", color: CHART_COLORS.pending },
-    resubmission: { label: "Resubmission", color: CHART_COLORS.request_resubmission },
+    approved: { label: 'Approved', color: CHART_COLORS.approved },
+    rejected: { label: 'Rejected', color: CHART_COLORS.rejected },
+    pending: { label: 'Pending', color: CHART_COLORS.pending },
+    resubmission: { label: 'Resubmission', color: CHART_COLORS.request_resubmission },
   };
 
   return (
-    <ChartContainer 
-      config={config}
-      className="aspect-auto h-[300px] w-full"
-    >
+    <ChartContainer config={config} className="aspect-auto h-[300px] w-full">
       <PieChart>
         <Pie
           data={data}
@@ -62,15 +58,9 @@ export const StatusDistributionChart = ({
           ))}
         </Pie>
         <ChartTooltip
-          content={
-            <ChartTooltipContent 
-              formatter={(value) => [`${value} documents`]}
-            />
-          }
+          content={<ChartTooltipContent formatter={(value) => [`${value} documents`]} />}
         />
-        <ChartLegend
-          content={<ChartLegendContent />}
-        />
+        <ChartLegend content={<ChartLegendContent />} />
       </PieChart>
     </ChartContainer>
   );

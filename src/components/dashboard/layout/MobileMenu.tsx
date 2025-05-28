@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
@@ -33,7 +32,7 @@ export const MobileMenu = ({
   onSignOut,
   isDarkMode,
   toggleTheme,
-  isActive
+  isActive,
 }: MobileMenuProps) => {
   if (!isOpen) return null;
 
@@ -43,9 +42,9 @@ export const MobileMenu = ({
       <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white dark:bg-gray-900 overflow-y-auto">
         <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
           <Logo />
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
             className="text-gray-500 dark:text-gray-400"
           >
@@ -65,7 +64,7 @@ export const MobileMenu = ({
                 onClick={onClose}
               />
             ))}
-            
+
             {isAdmin && adminNavItems.length > 0 && (
               <>
                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -88,16 +87,16 @@ export const MobileMenu = ({
             )}
           </nav>
           <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="w-full justify-start text-gray-700 dark:text-gray-300 mb-3"
               onClick={toggleTheme}
             >
               {isDarkMode ? <Sun className="h-5 w-5 mr-3" /> : <Moon className="h-5 w-5 mr-3" />}
               {isDarkMode ? 'Light Mode' : 'Dark Mode'}
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={onSignOut}
               className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
             >

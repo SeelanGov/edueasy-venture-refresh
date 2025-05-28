@@ -1,8 +1,7 @@
-
-import React from "react";
-import { JourneyMilestone } from "./JourneyMilestone";
-import { JourneyPath } from "./JourneyPath";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { JourneyMilestone } from './JourneyMilestone';
+import { JourneyPath } from './JourneyPath';
+import { cn } from '@/lib/utils';
 
 export interface JourneyMapProps {
   steps: string[];
@@ -10,18 +9,14 @@ export interface JourneyMapProps {
   className?: string;
 }
 
-export const JourneyMap: React.FC<JourneyMapProps> = ({ 
-  steps, 
-  currentStep,
-  className
-}) => {
+export const JourneyMap: React.FC<JourneyMapProps> = ({ steps, currentStep, className }) => {
   return (
-    <div className={cn("w-full px-4 py-6", className)}>
+    <div className={cn('w-full px-4 py-6', className)}>
       {/* Desktop version (hidden on mobile) */}
       <div className="hidden sm:flex items-center justify-between relative">
         {/* Journey path connecting milestones */}
         <JourneyPath totalSteps={steps.length} currentStep={currentStep} />
-        
+
         {/* Milestones */}
         {steps.map((step, index) => (
           <JourneyMilestone
@@ -29,11 +24,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
             title={step}
             stepNumber={index + 1}
             status={
-              currentStep === index
-                ? "active"
-                : currentStep > index
-                ? "completed"
-                : "pending"
+              currentStep === index ? 'active' : currentStep > index ? 'completed' : 'pending'
             }
             onClick={() => {}} // In a future enhancement, this could navigate to that step if allowed
           />
@@ -46,26 +37,24 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
           <span className="text-sm font-medium text-primary">
             Step {currentStep + 1} of {steps.length}
           </span>
-          <span className="text-sm font-medium text-primary">
-            {steps[currentStep]}
-          </span>
+          <span className="text-sm font-medium text-primary">{steps[currentStep]}</span>
         </div>
-        
+
         {/* Mobile progress bar */}
         <div className="relative h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-          <div 
+          <div
             className="absolute top-0 left-0 h-full bg-primary transition-all duration-500 ease-in-out"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
-          
+
           {/* Small milestone markers */}
           <div className="absolute top-0 left-0 w-full h-full flex justify-between px-1">
             {steps.map((_, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={cn(
-                  "w-1.5 h-1.5 rounded-full mt-0.25 z-10",
-                  currentStep >= index ? "bg-white" : "bg-gray-300"
+                  'w-1.5 h-1.5 rounded-full mt-0.25 z-10',
+                  currentStep >= index ? 'bg-white' : 'bg-gray-300'
                 )}
               />
             ))}

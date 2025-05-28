@@ -1,11 +1,10 @@
-
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { X } from "lucide-react";
-import { IntentWithStats } from "@/hooks/useIntentManagement";
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { X } from 'lucide-react';
+import { IntentWithStats } from '@/hooks/useIntentManagement';
 
 interface IntentFormProps {
   intent?: IntentWithStats;
@@ -19,11 +18,11 @@ interface IntentFormProps {
 }
 
 export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
-  const [name, setName] = useState(intent?.intent_name || "");
-  const [description, setDescription] = useState(intent?.description || "");
-  const [template, setTemplate] = useState(intent?.response_template || "");
+  const [name, setName] = useState(intent?.intent_name || '');
+  const [description, setDescription] = useState(intent?.description || '');
+  const [template, setTemplate] = useState(intent?.response_template || '');
   const [queries, setQueries] = useState<string[]>(intent?.sample_queries || []);
-  const [newQuery, setNewQuery] = useState("");
+  const [newQuery, setNewQuery] = useState('');
   const [errors, setErrors] = useState({
     name: false,
   });
@@ -31,8 +30,8 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
   useEffect(() => {
     if (intent) {
       setName(intent.intent_name);
-      setDescription(intent.description || "");
-      setTemplate(intent.response_template || "");
+      setDescription(intent.description || '');
+      setTemplate(intent.response_template || '');
       setQueries(intent.sample_queries || []);
     }
   }, [intent]);
@@ -40,7 +39,7 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
   const handleAddQuery = () => {
     if (newQuery.trim() && !queries.includes(newQuery.trim())) {
       setQueries([...queries, newQuery.trim()]);
-      setNewQuery("");
+      setNewQuery('');
     }
   };
 
@@ -50,13 +49,13 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     if (!name.trim()) {
       setErrors({ ...errors, name: true });
       return;
     }
-    
+
     onSubmit({
       intent_name: name.trim(),
       description: description.trim() || undefined,
@@ -68,7 +67,7 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name" className={errors.name ? "text-destructive" : ""}>
+        <Label htmlFor="name" className={errors.name ? 'text-destructive' : ''}>
           Intent Name*
         </Label>
         <Input
@@ -79,13 +78,11 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
             setErrors({ ...errors, name: false });
           }}
           placeholder="e.g., document_status, general_question"
-          className={errors.name ? "border-destructive" : ""}
+          className={errors.name ? 'border-destructive' : ''}
         />
-        {errors.name && (
-          <p className="text-xs text-destructive">Intent name is required</p>
-        )}
+        {errors.name && <p className="text-xs text-destructive">Intent name is required</p>}
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
@@ -96,7 +93,7 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
           rows={2}
         />
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="template">Response Template</Label>
         <Textarea
@@ -110,7 +107,7 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
           Provide guidance on how Thandi should respond to this intent
         </p>
       </div>
-      
+
       <div className="space-y-2">
         <Label>Sample Queries</Label>
         <div className="flex space-x-2">
@@ -125,9 +122,11 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
               }
             }}
           />
-          <Button type="button" onClick={handleAddQuery}>Add</Button>
+          <Button type="button" onClick={handleAddQuery}>
+            Add
+          </Button>
         </div>
-        
+
         {queries.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-2">
             {queries.map((query, index) => (
@@ -150,14 +149,12 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
           </div>
         )}
       </div>
-      
+
       <div className="flex justify-end space-x-2 pt-4">
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          {intent ? "Update Intent" : "Create Intent"}
-        </Button>
+        <Button type="submit">{intent ? 'Update Intent' : 'Create Intent'}</Button>
       </div>
     </form>
   );

@@ -1,4 +1,3 @@
-
 import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,6 +6,7 @@ import { useNetwork } from '@/hooks/useNetwork';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, WifiOff } from 'lucide-react';
 import { Button } from './ui/button';
+import logger from '@/utils/logger';
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -29,7 +29,12 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
     }
   }, [isOnline]);
 
-  console.log("AuthGuard rendering:", { loading, user: !!user, userID: user?.id, path: location.pathname });
+  logger.debug('AuthGuard rendering:', {
+    loading,
+    user: !!user,
+    userID: user?.id,
+    path: location.pathname,
+  });
 
   // If authentication is still loading, show spinner
   if (loading) {
@@ -46,15 +51,19 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
   // Handle authentication rules
   if (requiresAuth && !user) {
     // If this route requires authentication and user is not logged in, redirect to login
-    console.log("User not authenticated, redirecting to login from:", location.pathname);
+    logger.debug('User not authenticated, redirecting to login from:', location.pathname);
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
   // If user is logged in but accesses auth pages (login, register, etc.), redirect to dashboard
-  if (!requiresAuth && user && (location.pathname === '/login' || location.pathname === '/register')) {
-    console.log("User already authenticated, redirecting to dashboard");
+  if (
+    !requiresAuth &&
+    user &&
+    (location.pathname === '/login' || location.pathname === '/register')
+  ) {
+    logger.debug('User already authenticated, redirecting to dashboard');
     // Check if there's a specific "from" location to navigate to
-    const targetPath = location.state?.from || "/dashboard";
+    const targetPath = location.state?.from || '/dashboard';
     return <Navigate to={targetPath} replace />;
   }
 
@@ -65,30 +74,28 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
         <Alert variant="destructive" className="mb-4">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>You're offline</AlertTitle>
-          <AlertDescription>
-            Some features may be limited while you're offline.
-          </AlertDescription>
+          <AlertDescription>Some features may be limited while you're offline.</AlertDescription>
         </Alert>
-        
+
         <div className="text-center">
           <WifiOff className="mx-auto mb-4 h-12 w-12 text-gray-400" />
           <h2 className="text-xl font-bold mb-2">No Internet Connection</h2>
           <p className="mb-4 text-gray-600">
             You can still access some features, but you'll need to reconnect to submit applications.
           </p>
-          <Button 
-            onClick={() => window.location.reload()} 
+          <Button
+            onClick={() => window.location.reload()}
             className="bg-cap-teal hover:bg-cap-teal/90"
           >
             Try Again
           </Button>
         </div>
-        
+
         {children}
       </div>
     );
   }
 
-  console.log("AuthGuard passing through - user authenticated:", user?.id);
+  logger.debug('AuthGuard passing through - user authenticated:', user?.id);
   return <>{children}</>;
 };

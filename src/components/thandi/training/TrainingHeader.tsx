@@ -1,8 +1,7 @@
-
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { ModelTrainingStatus } from "./ModelTrainingStatus";
-import { TrainingStats } from "@/hooks/useModelTraining";
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { ModelTrainingStatus } from './ModelTrainingStatus';
+import { TrainingStats } from '@/hooks/useModelTraining';
 
 interface TrainingHeaderProps {
   lowConfidenceOnly: boolean;
@@ -14,14 +13,14 @@ interface TrainingHeaderProps {
   onRetrain: () => Promise<void>;
 }
 
-export const TrainingHeader = ({ 
-  lowConfidenceOnly, 
+export const TrainingHeader = ({
+  lowConfidenceOnly,
   setLowConfidenceOnly,
   trainingStats,
   lastTrainingDate,
   isLoading,
   isRetraining,
-  onRetrain
+  onRetrain,
 }: TrainingHeaderProps) => {
   return (
     <div className="space-y-4">
@@ -29,16 +28,16 @@ export const TrainingHeader = ({
         <h2 className="text-xl font-semibold">Message Training</h2>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <Switch 
-              id="low-confidence" 
-              checked={lowConfidenceOnly} 
+            <Switch
+              id="low-confidence"
+              checked={lowConfidenceOnly}
               onCheckedChange={setLowConfidenceOnly}
             />
             <Label htmlFor="low-confidence">Show low confidence only</Label>
           </div>
         </div>
       </div>
-      
+
       <ModelTrainingStatus
         trainingStats={trainingStats}
         lastTrainingDate={lastTrainingDate}

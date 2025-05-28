@@ -3,15 +3,58 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import prettier from "eslint-plugin-prettier";
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default tseslint.config(
   { ignores: ["dist"] },
-  {
-    extends: [
-      js.configs.recommended, 
+  {    extends: [
+      js.configs.recommended,
       ...tseslint.configs.recommended,
-      // Removed strictTypeChecked as it requires type information
+      "plugin:react-hooks/recommended",
+      "plugin:prettier/recommended"
     ],
+    plugins: [
+      reactHooks,
+      reactRefresh,
+      prettier,
+      unusedImports
+    ],    rules: {
+      // TypeScript
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-empty-interface": "error",
+      "@typescript-eslint/explicit-function-return-type": "warn",
+      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+      "@typescript-eslint/prefer-optional-chain": "warn",
+      "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
+      
+      // React
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error",
+      "react/prop-types": "off",
+      "react/jsx-no-undef": "error",
+      "react/no-unescaped-entities": "error",
+      "react/jsx-fragments": ["warn", "syntax"],
+      "react/jsx-no-duplicate-props": "error",
+      
+      // Code quality
+      "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+      "no-duplicate-imports": "error",
+      "no-var": "error",
+      "prefer-const": "error",
+      "eqeqeq": ["error", "smart"],
+      
+      // Security
+      "no-eval": "error",
+      "no-implied-eval": "error",
+      
+      // Prettier
+      "prettier/prettier": ["warn", {}, { "usePrettierrc": true }]
+    },
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
@@ -20,22 +63,52 @@ export default tseslint.config(
         // Disable project requirement to avoid file not found errors
         project: false,
       },
-    },
-    plugins: {
+    },    plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      // Removed ban-empty-interface rule as it's not available in the current version
-      "react-hooks/exhaustive-deps": "warn",
+      "prettier": prettier,
+      "unused-imports": unusedImports,
+    },rules: {
+      // TypeScript rules
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-empty-interface": "error",
+      "@typescript-eslint/explicit-function-return-type": "warn",
+      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+      "@typescript-eslint/prefer-optional-chain": "warn",
+      "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
+      "@typescript-eslint/no-floating-promises": "warn",
+      
+      // React rules
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error",
+      "react/prop-types": "off",
+      "react/jsx-no-undef": "error",
+      "react/no-unescaped-entities": "error",
+      "react/jsx-fragments": ["warn", "syntax"],
+      "react/jsx-no-duplicate-props": "error",
+      "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+      
+      // Code quality rules
+      "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": ["error", {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "args": "after-used"
+      }],
+      "no-duplicate-imports": "error",
+      "no-var": "error",
+      "prefer-const": "error",
+      "eqeqeq": ["error", "smart"],
+      
+      // Security rules
+      "no-eval": "error",
+      "no-implied-eval": "error",
+      
+      // Prettier integration
+      "prettier/prettier": ["warn", {}, { "usePrettierrc": true }]
     },
   }
 );

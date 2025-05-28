@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/DashboardLayout";
-import { AdminAuthGuard } from "@/components/AdminAuthGuard";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/Spinner";
-import { ChartBarIcon, TableIcon, Download } from "lucide-react";
-import { StatCard } from "@/components/admin/analytics/StatCard";
-import { StatusDistributionChart } from "@/components/admin/analytics/StatusDistributionChart";
-import { DocumentTimelineChart } from "@/components/admin/analytics/DocumentTimelineChart";
-import { RejectionReasonsChart } from "@/components/admin/analytics/RejectionReasonsChart";
-import { DocumentTypePerformanceChart } from "@/components/admin/analytics/DocumentTypePerformanceChart";
-import { AnalyticsFilterBar } from "@/components/admin/analytics/AnalyticsFilters";
-import { useDocumentAnalytics } from "@/hooks/analytics";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from 'react';
+import { DashboardLayout } from '@/components/DashboardLayout';
+import { AdminAuthGuard } from '@/components/AdminAuthGuard';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/Spinner';
+import { ChartBarIcon, TableIcon, Download } from 'lucide-react';
+import { StatCard } from '@/components/admin/analytics/StatCard';
+import { StatusDistributionChart } from '@/components/admin/analytics/StatusDistributionChart';
+import { DocumentTimelineChart } from '@/components/admin/analytics/DocumentTimelineChart';
+import { RejectionReasonsChart } from '@/components/admin/analytics/RejectionReasonsChart';
+import { DocumentTypePerformanceChart } from '@/components/admin/analytics/DocumentTypePerformanceChart';
+import { AnalyticsFilterBar } from '@/components/admin/analytics/AnalyticsFilters';
+import { useDocumentAnalytics } from '@/hooks/analytics';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Table,
   TableBody,
@@ -22,22 +22,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 const AdminAnalytics = () => {
-  const { 
-    analytics, 
-    loading, 
-    error, 
-    filters, 
-    updateFilters, 
-    resetFilters,
-    refreshAnalytics
-  } = useDocumentAnalytics();
+  const { analytics, loading, error, filters, updateFilters, resetFilters, refreshAnalytics } =
+    useDocumentAnalytics();
 
   const [documentTypes, setDocumentTypes] = useState<string[]>([]);
-  const [institutions, setInstitutions] = useState<{id: string, name: string}[]>([]);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [institutions, setInstitutions] = useState<{ id: string; name: string }[]>([]);
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     const fetchMetadata = async () => {
@@ -46,38 +39,38 @@ const AdminAnalytics = () => {
         .from('documents')
         .select('document_type')
         .not('document_type', 'is', null);
-      
+
       if (typeData) {
         const validTypes: string[] = typeData
-          .map(d => d.document_type)
+          .map((d) => d.document_type)
           .filter((type): type is string => type !== null && typeof type === 'string');
         const uniqueTypes: string[] = Array.from(new Set(validTypes)).sort();
         setDocumentTypes(uniqueTypes);
       }
-      
+
       // Fetch institutions
       const { data: institutionData } = await supabase
         .from('institutions')
         .select('id, name')
         .order('name');
-      
+
       if (institutionData) {
         setInstitutions(institutionData);
       }
     };
-    
+
     fetchMetadata();
   }, []);
 
   const handleExportData = () => {
     if (!analytics) return;
-    
+
     // Create CSV data
     let csv = 'data:text/csv;charset=utf-8,';
-    
+
     // Headers
     csv += 'Metric,Value\r\n';
-    
+
     // Data rows
     csv += `Total Documents,${analytics.totalDocuments}\r\n`;
     csv += `Approved Documents,${analytics.approvedDocuments}\r\n`;
@@ -86,7 +79,7 @@ const AdminAnalytics = () => {
     csv += `Resubmission Requested,${analytics.resubmissionRequestedDocuments}\r\n`;
     csv += `Pass Rate,${analytics.passRate.toFixed(2)}%\r\n`;
     csv += `Fail Rate,${analytics.failRate.toFixed(2)}%\r\n`;
-    
+
     // Create and trigger download
     const encodedUri = encodeURI(csv);
     const link = document.createElement('a');
@@ -96,7 +89,7 @@ const AdminAnalytics = () => {
     link.click();
     document.body.removeChild(link);
   };
-  
+
   if (error) {
     return (
       <AdminAuthGuard>
@@ -119,21 +112,15 @@ const AdminAnalytics = () => {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
             <div>
               <h1 className="text-2xl font-bold">Document Analytics Dashboard</h1>
-              <p className="text-muted-foreground">Monitor document verification performance and trends</p>
+              <p className="text-muted-foreground">
+                Monitor document verification performance and trends
+              </p>
             </div>
             <div className="flex items-center gap-4 mt-4 lg:mt-0">
-              <Button
-                variant="outline"
-                onClick={refreshAnalytics}
-                disabled={loading}
-              >
-                {loading ? <Spinner size="sm" /> : "Refresh Data"}
+              <Button variant="outline" onClick={refreshAnalytics} disabled={loading}>
+                {loading ? <Spinner size="sm" /> : 'Refresh Data'}
               </Button>
-              <Button
-                variant="outline"
-                onClick={handleExportData}
-                disabled={loading || !analytics}
-              >
+              <Button variant="outline" onClick={handleExportData} disabled={loading || !analytics}>
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
@@ -173,23 +160,30 @@ const AdminAnalytics = () => {
                 <StatCard
                   title="Pending Review"
                   value={analytics.pendingDocuments}
-                  description={`${(analytics.pendingDocuments / (analytics.totalDocuments || 1) * 100).toFixed(1)}% of total`}
+                  description={`${((analytics.pendingDocuments / (analytics.totalDocuments || 1)) * 100).toFixed(1)}% of total`}
                 />
               </div>
 
-              <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="mt-8">
+              <Tabs
+                defaultValue="overview"
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="mt-8"
+              >
                 <TabsList className="grid w-full md:w-auto grid-cols-3 mb-6">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="charts">Charts</TabsTrigger>
                   <TabsTrigger value="data">Data Tables</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="overview" className="space-y-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <Card>
                       <CardHeader>
                         <CardTitle>Document Status Distribution</CardTitle>
-                        <CardDescription>Breakdown of document verification statuses</CardDescription>
+                        <CardDescription>
+                          Breakdown of document verification statuses
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
                         <StatusDistributionChart
@@ -200,7 +194,7 @@ const AdminAnalytics = () => {
                         />
                       </CardContent>
                     </Card>
-                    
+
                     <Card>
                       <CardHeader>
                         <CardTitle>Top Rejection Reasons</CardTitle>
@@ -212,7 +206,7 @@ const AdminAnalytics = () => {
                     </Card>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="charts" className="space-y-6">
                   <Card>
                     <CardHeader>
@@ -223,23 +217,27 @@ const AdminAnalytics = () => {
                       <DocumentTimelineChart data={analytics.documentsByDate} />
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardHeader>
                       <CardTitle>Document Type Performance</CardTitle>
-                      <CardDescription>Approval and rejection rates by document type</CardDescription>
+                      <CardDescription>
+                        Approval and rejection rates by document type
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <DocumentTypePerformanceChart data={analytics.documentsByType} />
                     </CardContent>
                   </Card>
                 </TabsContent>
-                
+
                 <TabsContent value="data" className="space-y-6">
                   <Card>
                     <CardHeader>
                       <CardTitle>Rejection Reasons</CardTitle>
-                      <CardDescription>Detailed breakdown of document rejection causes</CardDescription>
+                      <CardDescription>
+                        Detailed breakdown of document rejection causes
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Table>
@@ -263,7 +261,13 @@ const AdminAnalytics = () => {
                                 <TableCell>{reason.reason}</TableCell>
                                 <TableCell className="text-right">{reason.count}</TableCell>
                                 <TableCell className="text-right">
-                                  {((reason.count / (analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments || 1)) * 100).toFixed(1)}%
+                                  {(
+                                    (reason.count /
+                                      (analytics.rejectedDocuments +
+                                        analytics.resubmissionRequestedDocuments || 1)) *
+                                    100
+                                  ).toFixed(1)}
+                                  %
                                 </TableCell>
                               </TableRow>
                             ))
@@ -272,7 +276,7 @@ const AdminAnalytics = () => {
                       </Table>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardHeader>
                       <CardTitle>Document Type Breakdown</CardTitle>
@@ -299,18 +303,30 @@ const AdminAnalytics = () => {
                             </TableRow>
                           ) : (
                             analytics.documentsByType.map((type) => {
-                              const total = type.approved + type.rejected + type.pending + type.request_resubmission;
-                              const processed = type.approved + type.rejected + type.request_resubmission;
-                              const passRate = processed > 0 ? (type.approved / processed) * 100 : 0;
-                              
+                              const total =
+                                type.approved +
+                                type.rejected +
+                                type.pending +
+                                type.request_resubmission;
+                              const processed =
+                                type.approved + type.rejected + type.request_resubmission;
+                              const passRate =
+                                processed > 0 ? (type.approved / processed) * 100 : 0;
+
                               return (
                                 <TableRow key={type.type}>
-                                  <TableCell>{type.type.replace(/([A-Z])/g, ' $1').trim()}</TableCell>
+                                  <TableCell>
+                                    {type.type.replace(/([A-Z])/g, ' $1').trim()}
+                                  </TableCell>
                                   <TableCell className="text-right">{total}</TableCell>
                                   <TableCell className="text-right">{type.approved}</TableCell>
-                                  <TableCell className="text-right">{type.rejected + type.request_resubmission}</TableCell>
+                                  <TableCell className="text-right">
+                                    {type.rejected + type.request_resubmission}
+                                  </TableCell>
                                   <TableCell className="text-right">{type.pending}</TableCell>
-                                  <TableCell className="text-right">{passRate.toFixed(1)}%</TableCell>
+                                  <TableCell className="text-right">
+                                    {passRate.toFixed(1)}%
+                                  </TableCell>
                                 </TableRow>
                               );
                             })
@@ -324,7 +340,9 @@ const AdminAnalytics = () => {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No data available. Try adjusting your filters.</p>
+              <p className="text-muted-foreground">
+                No data available. Try adjusting your filters.
+              </p>
             </div>
           )}
         </div>

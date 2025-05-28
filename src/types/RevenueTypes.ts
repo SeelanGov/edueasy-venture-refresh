@@ -34,7 +34,7 @@ export type Payment = {
   metadata: Record<string, any> | null;
   created_at: string;
   updated_at: string;
-  
+
   // Joined fields
   transaction?: Transaction;
 };
@@ -63,7 +63,7 @@ export type ConsultationBooking = {
   payment_id: string | null;
   created_at: string;
   updated_at: string;
-  
+
   // Joined fields
   payment?: Payment;
 };
@@ -113,7 +113,7 @@ export enum ConsultationStatus {
   CONFIRMED = 'confirmed',
   COMPLETED = 'completed',
   CANCELLED = 'cancelled',
-  RESCHEDULED = 'rescheduled'
+  RESCHEDULED = 'rescheduled',
 }
 
 export enum LeadStatus {
@@ -121,14 +121,14 @@ export enum LeadStatus {
   CONTACTED = 'contacted',
   QUALIFIED = 'qualified',
   CONVERTED = 'converted',
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 export enum SponsorshipLevel {
   BRONZE = 'bronze',
   SILVER = 'silver',
   GOLD = 'gold',
-  PLATINUM = 'platinum'
+  PLATINUM = 'platinum',
 }
 
 export enum AssessmentType {
@@ -136,7 +136,7 @@ export enum AssessmentType {
   SKILLS = 'skills',
   INTERESTS = 'interests',
   CAREER_MATCH = 'career_match',
-  COMPREHENSIVE = 'comprehensive'
+  COMPREHENSIVE = 'comprehensive',
 }
 
 // Helper functions

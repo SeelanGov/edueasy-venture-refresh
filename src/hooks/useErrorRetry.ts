@@ -1,7 +1,6 @@
-
-import { useState, useCallback } from "react";
-import { StandardError, parseError } from "@/utils/errorHandler";
-import { safeAsyncWithLogging, ErrorSeverity } from "@/utils/errorLogging";
+import { useState, useCallback } from 'react';
+import { StandardError, parseError } from '@/utils/errorHandler';
+import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
 interface ErrorRetryOptions {
   maxRetries?: number;
@@ -14,10 +13,7 @@ interface ErrorRetryOptions {
   userId?: string;
 }
 
-export const useErrorRetry = <T>(
-  asyncFn: () => Promise<T>,
-  options: ErrorRetryOptions = {}
-) => {
+export const useErrorRetry = <T>(asyncFn: () => Promise<T>, options: ErrorRetryOptions = {}) => {
   const {
     maxRetries = 3,
     retryDelay = 1000,
@@ -26,7 +22,7 @@ export const useErrorRetry = <T>(
     errorMessage,
     showToast = true,
     severity = ErrorSeverity.ERROR,
-    userId
+    userId,
   } = options;
 
   const [data, setData] = useState<T | null>(null);
@@ -38,7 +34,7 @@ export const useErrorRetry = <T>(
   const execute = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
+
     const result = await safeAsyncWithLogging(asyncFn, {
       component,
       action,
@@ -48,18 +44,22 @@ export const useErrorRetry = <T>(
       showToast,
       retryCount: 0, // We're handling retry manually in this hook
     });
-    
+
     setData(result.data);
-    
+
     // Ensure we convert any Error to StandardError
     if (result.error) {
-      setError(result.error instanceof Error ? parseError(result.error) : result.error as unknown as StandardError);
+      setError(
+        result.error instanceof Error
+          ? parseError(result.error)
+          : (result.error as unknown as StandardError)
+      );
     } else {
       setError(null);
     }
-    
+
     setLoading(false);
-    
+
     return result;
   }, [asyncFn, component, action, userId, severity, errorMessage, showToast]);
 
@@ -67,10 +67,10 @@ export const useErrorRetry = <T>(
     if (retryCount >= maxRetries) {
       return { data: null, error };
     }
-    
+
     setRetrying(true);
     setRetryCount((prev) => prev + 1);
-    
+
     try {
       const result = await execute();
       return result;
@@ -95,6 +95,6 @@ export const useErrorRetry = <T>(
     retrying,
     retryCount,
     reset,
-    hasRetriesLeft: retryCount < maxRetries
+    hasRetriesLeft: retryCount < maxRetries,
   };
 };

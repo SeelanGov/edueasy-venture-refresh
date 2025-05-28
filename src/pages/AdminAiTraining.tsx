@@ -1,25 +1,20 @@
-import { useState } from "react";
-import { DashboardLayout } from "@/components/DashboardLayout";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { useIntentManagement, IntentWithStats } from "@/hooks/useIntentManagement";
-import { useTrainingData } from "@/hooks/useTrainingData";
-import { IntentList } from "@/components/thandi/IntentList";
-import { IntentForm } from "@/components/thandi/IntentForm";
-import { MessageTraining } from "@/components/thandi/MessageTraining";
-import { Card } from "@/components/ui/card";
-import { Spinner } from "@/components/Spinner";
+import { useState } from 'react';
+import { DashboardLayout } from '@/components/DashboardLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIntentManagement, IntentWithStats } from '@/hooks/useIntentManagement';
+import { useTrainingData } from '@/hooks/useTrainingData';
+import { IntentList } from '@/components/thandi/IntentList';
+import { IntentForm } from '@/components/thandi/IntentForm';
+import { MessageTraining } from '@/components/thandi/MessageTraining';
+import { Card } from '@/components/ui/card';
+import { Spinner } from '@/components/Spinner';
 
 const AdminAiTraining = () => {
-  const [activeTab, setActiveTab] = useState("messages");
+  const [activeTab, setActiveTab] = useState('messages');
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  
+
   // Intent management hook
-  const { 
+  const {
     intents,
     loading: intentsLoading,
     selectedIntent,
@@ -29,7 +24,7 @@ const AdminAiTraining = () => {
     updateIntent,
     deleteIntent,
   } = useIntentManagement();
-  
+
   // Training data hook
   const {
     messages,
@@ -42,15 +37,15 @@ const AdminAiTraining = () => {
     hasMore,
     addTrainingData,
     updateTrainingData,
-    deleteTrainingData
+    deleteTrainingData,
   } = useTrainingData();
-  
+
   // Handle intent edit
   const handleEditIntent = (intent: IntentWithStats) => {
     setSelectedIntent(intent);
     setIsEditFormOpen(true);
   };
-  
+
   // Handle intent update
   const handleUpdateIntent = async (data: {
     intent_name: string;
@@ -74,18 +69,14 @@ const AdminAiTraining = () => {
             Manage intents and train the AI assistant with correct responses
           </p>
         </div>
-        
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-6"
-        >
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="messages">Message Training</TabsTrigger>
             <TabsTrigger value="intents">Intent Management</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
-          
+
           {/* Messages Training Tab */}
           <TabsContent value="messages" className="space-y-6">
             {messagesLoading || intentsLoading ? (
@@ -109,7 +100,7 @@ const AdminAiTraining = () => {
               />
             )}
           </TabsContent>
-          
+
           {/* Intent Management Tab */}
           <TabsContent value="intents" className="space-y-6">
             {isEditFormOpen && selectedIntent ? (
@@ -134,7 +125,7 @@ const AdminAiTraining = () => {
               />
             )}
           </TabsContent>
-          
+
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
             <Card className="p-6">

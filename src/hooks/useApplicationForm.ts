@@ -1,30 +1,26 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNetwork } from "@/hooks/useNetwork";
-import { useOfflineFormStorage } from "@/hooks/useOfflineFormStorage";
-import { useApplicationFormState } from "@/hooks/useApplicationFormState";
-import { useDraftManagement } from "@/hooks/useDraftManagement";
-import { useApplicationSubmission } from "@/hooks/useApplicationSubmission";
-import { useDraftLoading } from "@/hooks/useDraftLoading";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNetwork } from '@/hooks/useNetwork';
+import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
+import { useApplicationFormState } from '@/hooks/useApplicationFormState';
+import { useDraftManagement } from '@/hooks/useDraftManagement';
+import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
+import { useDraftLoading } from '@/hooks/useDraftLoading';
 
 export const useApplicationForm = () => {
   const navigate = useNavigate();
   const { isOnline } = useNetwork();
-  
+
   // Get form state from the specialized hook
-  const {
-    form,
-    documentFile,
-    handleFileChange,
-    hasSavedDraft,
-    setHasSavedDraft,
-    user
-  } = useApplicationFormState();
+  const { form, documentFile, handleFileChange, hasSavedDraft, setHasSavedDraft, user } =
+    useApplicationFormState();
 
   // Initialize the storage hooks
-  const { saveFormToStorage, loadSavedForm, clearSavedForm } = useOfflineFormStorage(form, isOnline);
+  const { saveFormToStorage, loadSavedForm, clearSavedForm } = useOfflineFormStorage(
+    form,
+    isOnline
+  );
 
   // Load draft from Supabase
   useDraftLoading(user?.id, isOnline, form, setHasSavedDraft);
@@ -39,15 +35,18 @@ export const useApplicationForm = () => {
   );
 
   // Initialize application submission
-  const { isSubmitting, onSubmit: submitFormData, handleSyncNow: syncNow } = 
-    useApplicationSubmission(
-      user?.id,
-      isOnline,
-      documentFile,
-      saveFormToStorage,
-      clearSavedForm,
-      hasSavedDraft
-    );
+  const {
+    isSubmitting,
+    onSubmit: submitFormData,
+    handleSyncNow: syncNow,
+  } = useApplicationSubmission(
+    user?.id,
+    isOnline,
+    documentFile,
+    saveFormToStorage,
+    clearSavedForm,
+    hasSavedDraft
+  );
 
   // Create a submit wrapper that calls the form's handleSubmit
   const onSubmit = form.handleSubmit(submitFormData);
@@ -69,6 +68,6 @@ export const useApplicationForm = () => {
     saveDraft,
     handleSyncNow,
     isOnline,
-    hasSavedDraft
+    hasSavedDraft,
   };
 };

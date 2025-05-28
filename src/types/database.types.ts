@@ -21,7 +21,7 @@ export interface Database {
   public: {
     Tables: {
       addresses: {
-        Row: { 
+        Row: {
           address_type: string;
           city: string;
           created_at: string;
@@ -131,7 +131,7 @@ export interface Database {
       };
       // Add other tables as needed
     };
-    Views: Record<string, unknown>;  // Using Record type instead of empty object
+    Views: Record<string, unknown>; // Using Record type instead of empty object
     Functions: {
       log_system_error: {
         Args: {

@@ -1,9 +1,8 @@
-
-import React from "react";
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ChartConfig } from "@/lib/chart-config";
+import React from 'react';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ChartConfig } from '@/lib/chart-config';
 
 interface ChartWrapperProps {
   title?: string;
@@ -22,7 +21,7 @@ interface ChartContainerProps {
 
 const ChartContainer = ({ children, config, className }: ChartContainerProps) => {
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       {children}
       {config?.showLegend && <div className="mt-2">Legend placeholder</div>}
     </div>
@@ -34,8 +33,8 @@ export const ChartWrapper = ({
   children,
   isLoading = false,
   height = 300,
-  className = "",
-  config
+  className = '',
+  config,
 }: ChartWrapperProps) => {
   return (
     <div className="space-y-2">

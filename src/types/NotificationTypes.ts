@@ -1,4 +1,3 @@
-
 export interface Notification {
   id: string;
   title: string;
@@ -9,12 +8,12 @@ export interface Notification {
   related_document_id?: string;
 }
 
-export type NotificationType = 
-  | "document_status" 
-  | "document_approved" 
-  | "document_rejected" 
-  | "document_resubmission_required" 
-  | "document_under_review"
-  | "application_status" 
-  | "admin_feedback" 
-  | "system";
+export type NotificationType =
+  | 'document_status'
+  | 'document_approved'
+  | 'document_rejected'
+  | 'document_resubmission_required'
+  | 'document_under_review'
+  | 'application_status'
+  | 'admin_feedback'
+  | 'system';

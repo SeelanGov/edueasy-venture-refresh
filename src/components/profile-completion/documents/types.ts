@@ -1,6 +1,6 @@
-import { VerificationResult } from "@/hooks/useDocumentVerification";
+import { VerificationResult } from '@/hooks/useDocumentVerification';
 
-export type DocumentType = "idDocument" | "proofOfResidence" | "grade11Results" | "grade12Results";
+export type DocumentType = 'idDocument' | 'proofOfResidence' | 'grade11Results' | 'grade12Results';
 
 export interface DocumentFileValidation {
   valid: boolean;

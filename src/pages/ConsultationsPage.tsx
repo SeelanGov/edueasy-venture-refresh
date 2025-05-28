@@ -4,9 +4,23 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { ConsultationBookingForm } from '@/components/consultations/ConsultationBookingForm';
 import { PremiumFeature } from '@/components/subscription/PremiumFeature';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -18,14 +32,14 @@ import { format, parseISO } from 'date-fns';
 export default function ConsultationsPage() {
   const { bookings, loading, createBooking, cancelBooking, rescheduleBooking } = useConsultations();
   const { userSubscription } = useSubscription();
-  
+
   const [showBookingDialog, setShowBookingDialog] = useState(false);
   const [showRescheduleDialog, setShowRescheduleDialog] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
-  
+
   // Base price for consultations
   const consultationPrice = 150; // R150 per 30 minutes
-  
+
   // Handle booking creation
   const handleCreateBooking = async (date: Date, durationMinutes: number, notes?: string) => {
     const result = await createBooking(date, durationMinutes, notes);
@@ -33,7 +47,7 @@ export default function ConsultationsPage() {
       setShowBookingDialog(false);
     }
   };
-  
+
   // Handle booking cancellation
   const handleCancelBooking = async (bookingId: string) => {
     const confirmed = window.confirm('Are you sure you want to cancel this consultation?');
@@ -41,13 +55,13 @@ export default function ConsultationsPage() {
       await cancelBooking(bookingId);
     }
   };
-  
+
   // Handle booking rescheduling
   const handleRescheduleBooking = async (bookingId: string) => {
     setSelectedBookingId(bookingId);
     setShowRescheduleDialog(true);
   };
-  
+
   // Submit rescheduling
   const handleRescheduleSubmit = async (date: Date, durationMinutes: number, notes?: string) => {
     if (selectedBookingId) {
@@ -58,16 +72,16 @@ export default function ConsultationsPage() {
       }
     }
   };
-  
+
   // Format date for display
   const formatBookingDate = (dateString: string) => {
     const date = parseISO(dateString);
     return {
       date: format(date, 'EEEE, MMMM d, yyyy'),
-      time: format(date, 'h:mm a')
+      time: format(date, 'h:mm a'),
     };
   };
-  
+
   // Get status badge for booking
   const getStatusBadge = (status: ConsultationStatus) => {
     switch (status) {
@@ -85,7 +99,7 @@ export default function ConsultationsPage() {
         return <Badge variant="outline">{status}</Badge>;
     }
   };
-  
+
   return (
     <div className="container mx-auto py-8 space-y-8">
       <div className="flex flex-col space-y-2">
@@ -94,7 +108,7 @@ export default function ConsultationsPage() {
           Book one-on-one sessions with career experts for personalized guidance
         </p>
       </div>
-      
+
       <PremiumFeature
         title="Premium Career Consultations"
         description="Book personalized sessions with career experts"
@@ -106,15 +120,14 @@ export default function ConsultationsPage() {
               <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
               <TabsTrigger value="past">Past Consultations</TabsTrigger>
             </TabsList>
-            <Button onClick={() => setShowBookingDialog(true)}>
-              Book Consultation
-            </Button>
+            <Button onClick={() => setShowBookingDialog(true)}>Book Consultation</Button>
           </div>
-          
+
           <TabsContent value="upcoming" className="mt-0">
-            {bookings.filter(b => 
-              b.status !== ConsultationStatus.COMPLETED && 
-              b.status !== ConsultationStatus.CANCELLED
+            {bookings.filter(
+              (b) =>
+                b.status !== ConsultationStatus.COMPLETED &&
+                b.status !== ConsultationStatus.CANCELLED
             ).length === 0 ? (
               <Card>
                 <CardContent className="pt-6">
@@ -124,10 +137,7 @@ export default function ConsultationsPage() {
                     <p className="text-muted-foreground mt-2">
                       Book your first consultation with a career expert for personalized guidance.
                     </p>
-                    <Button 
-                      className="mt-4"
-                      onClick={() => setShowBookingDialog(true)}
-                    >
+                    <Button className="mt-4" onClick={() => setShowBookingDialog(true)}>
                       Book Now
                     </Button>
                   </div>
@@ -136,9 +146,10 @@ export default function ConsultationsPage() {
             ) : (
               <div className="space-y-4">
                 {bookings
-                  .filter(b => 
-                    b.status !== ConsultationStatus.COMPLETED && 
-                    b.status !== ConsultationStatus.CANCELLED
+                  .filter(
+                    (b) =>
+                      b.status !== ConsultationStatus.COMPLETED &&
+                      b.status !== ConsultationStatus.CANCELLED
                   )
                   .map((booking) => {
                     const { date, time } = formatBookingDate(booking.booking_date);
@@ -161,13 +172,13 @@ export default function ConsultationsPage() {
                               <Clock className="h-4 w-4 text-muted-foreground" />
                               <span>{booking.duration_minutes} minutes</span>
                             </div>
-                            
+
                             {booking.meeting_link && (
                               <div className="flex items-center gap-2 text-sm">
                                 <Video className="h-4 w-4 text-muted-foreground" />
-                                <a 
-                                  href={booking.meeting_link} 
-                                  target="_blank" 
+                                <a
+                                  href={booking.meeting_link}
+                                  target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-primary hover:underline"
                                 >
@@ -175,7 +186,7 @@ export default function ConsultationsPage() {
                                 </a>
                               </div>
                             )}
-                            
+
                             {booking.notes && (
                               <div className="flex items-start gap-2 text-sm">
                                 <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5" />
@@ -187,15 +198,15 @@ export default function ConsultationsPage() {
                         <CardFooter className="flex gap-2">
                           {booking.status !== ConsultationStatus.CANCELLED && (
                             <>
-                              <Button 
-                                variant="outline" 
+                              <Button
+                                variant="outline"
                                 className="flex-1"
                                 onClick={() => handleRescheduleBooking(booking.id)}
                               >
                                 Reschedule
                               </Button>
-                              <Button 
-                                variant="destructive" 
+                              <Button
+                                variant="destructive"
                                 className="flex-1"
                                 onClick={() => handleCancelBooking(booking.id)}
                               >
@@ -210,11 +221,12 @@ export default function ConsultationsPage() {
               </div>
             )}
           </TabsContent>
-          
+
           <TabsContent value="past" className="mt-0">
-            {bookings.filter(b => 
-              b.status === ConsultationStatus.COMPLETED || 
-              b.status === ConsultationStatus.CANCELLED
+            {bookings.filter(
+              (b) =>
+                b.status === ConsultationStatus.COMPLETED ||
+                b.status === ConsultationStatus.CANCELLED
             ).length === 0 ? (
               <Card>
                 <CardContent className="pt-6">
@@ -230,14 +242,20 @@ export default function ConsultationsPage() {
             ) : (
               <div className="space-y-4">
                 {bookings
-                  .filter(b => 
-                    b.status === ConsultationStatus.COMPLETED || 
-                    b.status === ConsultationStatus.CANCELLED
+                  .filter(
+                    (b) =>
+                      b.status === ConsultationStatus.COMPLETED ||
+                      b.status === ConsultationStatus.CANCELLED
                   )
                   .map((booking) => {
                     const { date, time } = formatBookingDate(booking.booking_date);
                     return (
-                      <Card key={booking.id} className={booking.status === ConsultationStatus.CANCELLED ? 'opacity-70' : ''}>
+                      <Card
+                        key={booking.id}
+                        className={
+                          booking.status === ConsultationStatus.CANCELLED ? 'opacity-70' : ''
+                        }
+                      >
                         <CardHeader className="pb-2">
                           <div className="flex justify-between items-start">
                             <div>
@@ -255,7 +273,7 @@ export default function ConsultationsPage() {
                               <Clock className="h-4 w-4 text-muted-foreground" />
                               <span>{booking.duration_minutes} minutes</span>
                             </div>
-                            
+
                             {booking.notes && (
                               <div className="flex items-start gap-2 text-sm">
                                 <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5" />
@@ -266,8 +284,8 @@ export default function ConsultationsPage() {
                         </CardContent>
                         {booking.status === ConsultationStatus.COMPLETED && (
                           <CardFooter>
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="outline"
                               className="w-full"
                               onClick={() => setShowBookingDialog(true)}
                             >
@@ -282,17 +300,18 @@ export default function ConsultationsPage() {
             )}
           </TabsContent>
         </Tabs>
-        
+
         <Alert className="mt-6">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>About Our Consultations</AlertTitle>
           <AlertDescription>
-            Our career experts provide personalized guidance to help you navigate your career journey.
-            Consultations are conducted via video call and can be rescheduled up to 24 hours before the appointment.
+            Our career experts provide personalized guidance to help you navigate your career
+            journey. Consultations are conducted via video call and can be rescheduled up to 24
+            hours before the appointment.
           </AlertDescription>
         </Alert>
       </PremiumFeature>
-      
+
       {/* Booking Dialog */}
       <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
         <DialogContent className="sm:max-w-md">
@@ -302,7 +321,7 @@ export default function ConsultationsPage() {
               Schedule a one-on-one session with a career expert
             </DialogDescription>
           </DialogHeader>
-          
+
           <ConsultationBookingForm
             onSubmit={handleCreateBooking}
             onCancel={() => setShowBookingDialog(false)}
@@ -310,17 +329,15 @@ export default function ConsultationsPage() {
           />
         </DialogContent>
       </Dialog>
-      
+
       {/* Reschedule Dialog */}
       <Dialog open={showRescheduleDialog} onOpenChange={setShowRescheduleDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Reschedule Consultation</DialogTitle>
-            <DialogDescription>
-              Select a new date and time for your consultation
-            </DialogDescription>
+            <DialogDescription>Select a new date and time for your consultation</DialogDescription>
           </DialogHeader>
-          
+
           <ConsultationBookingForm
             onSubmit={handleRescheduleSubmit}
             onCancel={() => setShowRescheduleDialog(false)}

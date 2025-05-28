@@ -1,8 +1,7 @@
-
-import React, { Component, ErrorInfo, ReactNode } from "react";
-import { logError, ErrorSeverity } from "@/utils/errorLogging";
-import { ErrorDisplay } from "./ErrorDisplay";
-import { parseError } from "@/utils/errorHandler";
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { logError, ErrorSeverity } from '@/utils/errorLogging';
+import { ErrorDisplay } from './ErrorDisplay';
+import { parseError } from '@/utils/errorHandler';
 
 interface Props {
   children: ReactNode;
@@ -22,7 +21,7 @@ interface State {
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
-    error: null
+    error: null,
   };
 
   static getDerivedStateFromError(error: Error): State {
@@ -39,22 +38,22 @@ export class ErrorBoundary extends Component<Props, State> {
   private async logErrorToSystem(error: Error, errorInfo: ErrorInfo) {
     try {
       const standardError = parseError(error);
-      
+
       // Add React component stack to error details
       const errorDetails = {
         componentStack: errorInfo.componentStack,
         // Add any other relevant details here
       };
-      
+
       // Create enhanced error for logging
       const enhancedError = {
         ...standardError,
-        originalError: { 
-          ...standardError.originalError as Record<string, unknown>, 
-          ...errorDetails 
-        }
+        originalError: {
+          ...(standardError.originalError as Record<string, unknown>),
+          ...errorDetails,
+        },
       };
-      
+
       // Log to our error system
       await logError(
         enhancedError,
@@ -62,7 +61,7 @@ export class ErrorBoundary extends Component<Props, State> {
         this.props.component || 'React Component',
         'render'
       );
-      
+
       // Also log to console for developers
       console.error('React Error Boundary caught an error:', error);
       console.error('Component Stack:', errorInfo.componentStack);
@@ -87,12 +86,12 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) {
         return this.props.fallback;
       }
-      
+
       // Otherwise render standard error display
       return (
         <div className="p-4">
           <ErrorDisplay
-            error={parseError(this.state.error || new Error("An unknown error occurred"))}
+            error={parseError(this.state.error || new Error('An unknown error occurred'))}
             onRetry={this.handleReset}
             className="mb-4"
           />
@@ -116,16 +115,15 @@ export const withErrorBoundary = <P extends object>(
   } = {}
 ) => {
   const { fallback, componentName, onReset } = options;
-  
+
   const WrappedComponent = (props: P) => (
     <ErrorBoundary fallback={fallback} component={componentName} onReset={onReset}>
       <Component {...props} />
     </ErrorBoundary>
   );
-  
+
   // Set display name for debugging
-  WrappedComponent.displayName = 
-    `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
-  
+  WrappedComponent.displayName = `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
+
   return WrappedComponent;
 };

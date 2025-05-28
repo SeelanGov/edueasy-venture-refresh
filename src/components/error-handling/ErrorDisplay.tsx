@@ -1,9 +1,8 @@
-
-import React from "react";
-import { AlertCircle, RefreshCw, FileWarning, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { StandardError, ErrorCategory } from "@/utils/errorHandler";
+import React from 'react';
+import { AlertCircle, RefreshCw, FileWarning, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { StandardError, ErrorCategory } from '@/utils/errorHandler';
 
 interface ErrorDisplayProps {
   error: StandardError;
@@ -17,7 +16,7 @@ export const ErrorDisplay = ({
   error,
   onRetry,
   isRetrying = false,
-  className = "",
+  className = '',
   showDetails = false,
 }: ErrorDisplayProps) => {
   const getIcon = () => {
@@ -40,26 +39,26 @@ export const ErrorDisplay = ({
   const getTitle = () => {
     switch (error.category) {
       case ErrorCategory.NETWORK:
-        return "Network Error";
+        return 'Network Error';
       case ErrorCategory.DATABASE:
-        return "Data Error";
+        return 'Data Error';
       case ErrorCategory.AUTHENTICATION:
-        return "Authentication Error";
+        return 'Authentication Error';
       case ErrorCategory.VALIDATION:
-        return "Validation Error";
+        return 'Validation Error';
       case ErrorCategory.FILE:
-        return "File Error";
+        return 'File Error';
       default:
-        return "Error";
+        return 'Error';
     }
   };
 
   const getVariant = () => {
     switch (error.category) {
       case ErrorCategory.VALIDATION:
-        return "default";
+        return 'default';
       default:
-        return "destructive";
+        return 'destructive';
     }
   };
 
@@ -69,7 +68,7 @@ export const ErrorDisplay = ({
       <AlertTitle>{getTitle()}</AlertTitle>
       <AlertDescription>
         <p>{error.message}</p>
-        
+
         {showDetails && error.originalError && (
           <details className="mt-2 text-xs">
             <summary>Technical details</summary>
@@ -78,11 +77,11 @@ export const ErrorDisplay = ({
             </pre>
           </details>
         )}
-        
+
         {onRetry && (
           <div className="mt-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={onRetry}
               disabled={isRetrying}

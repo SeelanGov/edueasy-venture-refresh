@@ -2,13 +2,23 @@ import { createContext, useContext, ReactNode, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useSession } from '@/hooks/useSession';
 import { useAuthOperations } from '@/hooks/useAuthOperations';
+import logger from '@/utils/logger';
 
 type AuthContextType = {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
-  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ user: User | null; session: Session | null; error?: string | null }>; 
+  signUp: (
+    email: string,
+    password: string,
+    fullName: string,
+    idNumber: string
+  ) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
+  signIn: (
+    email: string,
+    password: string,
+    rememberMe?: boolean
+  ) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
@@ -28,16 +38,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signOut,
     resetPassword,
-    updatePassword
+    updatePassword,
   };
 
-  console.log("AuthContext state:", { loading, isAuthenticated: !!user, userId: user?.id });
+  // Use logger.debug instead of console.log for development-only logging
+  logger.debug('AuthContext state:', { loading, isAuthenticated: !!user, userId: user?.id });
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

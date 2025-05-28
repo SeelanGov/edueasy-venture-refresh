@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  SubscriptionTier, 
-  UserSubscription, 
+import {
+  SubscriptionTier,
+  UserSubscription,
   Transaction,
   TransactionStatus,
-  TransactionType
+  TransactionType,
 } from '@/types/SubscriptionTypes';
 import { toast } from '@/components/ui/use-toast';
 
@@ -23,9 +23,9 @@ export function useSubscription() {
     console.error(message, error);
     setError(message);
     toast({
-      title: "Error",
+      title: 'Error',
       description: message,
-      variant: "destructive",
+      variant: 'destructive',
     });
   };
 
@@ -34,14 +34,14 @@ export function useSubscription() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('subscription_tiers')
         .select('*')
         .order('price_monthly', { ascending: true });
-      
+
       if (error) throw error;
-      
+
       setTiers(data || []);
     } catch (error) {
       handleError(error, 'Failed to fetch subscription tiers');
@@ -56,25 +56,28 @@ export function useSubscription() {
       setUserSubscription(null);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('user_subscriptions')
-        .select(`
+        .select(
+          `
           *,
           tier:tier_id(*)
-        `)
+        `
+        )
         .eq('user_id', user.id)
         .eq('is_active', true)
         .single();
-      
-      if (error && error.code !== 'PGRST116') { // PGRST116 is "No rows returned" error
+
+      if (error && error.code !== 'PGRST116') {
+        // PGRST116 is "No rows returned" error
         throw error;
       }
-      
+
       setUserSubscription(data || null);
     } catch (error) {
       handleError(error, 'Failed to fetch user subscription');
@@ -89,19 +92,19 @@ export function useSubscription() {
       setTransactions([]);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('transactions')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       setTransactions(data || []);
     } catch (error) {
       handleError(error, 'Failed to fetch transaction history');
@@ -112,8 +115,8 @@ export function useSubscription() {
 
   // Subscribe to a tier
   const subscribeToPlan = async (
-    tierId: string, 
-    paymentMethod: string, 
+    tierId: string,
+    paymentMethod: string,
     autoRenew: boolean = false,
     billingCycle: 'monthly' | 'yearly' = 'monthly'
   ) => {
@@ -121,17 +124,17 @@ export function useSubscription() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       // Get the tier details
-      const tier = tiers.find(t => t.id === tierId);
+      const tier = tiers.find((t) => t.id === tierId);
       if (!tier) {
         throw new Error('Invalid subscription tier');
       }
-      
+
       // Calculate end date based on billing cycle
       const startDate = new Date();
       const endDate = new Date(startDate);
@@ -140,17 +143,17 @@ export function useSubscription() {
       } else {
         endDate.setFullYear(endDate.getFullYear() + 1);
       }
-      
+
       // Deactivate any existing active subscriptions
       if (userSubscription) {
         const { error: deactivateError } = await supabase
           .from('user_subscriptions')
           .update({ is_active: false })
           .eq('id', userSubscription.id);
-        
+
         if (deactivateError) throw deactivateError;
       }
-      
+
       // Create new subscription
       const { data: newSubscription, error: subscriptionError } = await supabase
         .from('user_subscriptions')
@@ -161,38 +164,36 @@ export function useSubscription() {
           end_date: endDate.toISOString(),
           is_active: true,
           payment_method: paymentMethod,
-          auto_renew: autoRenew
+          auto_renew: autoRenew,
         })
         .select()
         .single();
-      
+
       if (subscriptionError) throw subscriptionError;
-      
+
       // Record the transaction
       const amount = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
-      const { error: transactionError } = await supabase
-        .from('transactions')
-        .insert({
-          user_id: user.id,
-          subscription_id: newSubscription.id,
-          amount,
-          status: TransactionStatus.COMPLETED,
-          payment_method: paymentMethod,
-          transaction_type: TransactionType.SUBSCRIPTION
-        });
-      
+      const { error: transactionError } = await supabase.from('transactions').insert({
+        user_id: user.id,
+        subscription_id: newSubscription.id,
+        amount,
+        status: TransactionStatus.COMPLETED,
+        payment_method: paymentMethod,
+        transaction_type: TransactionType.SUBSCRIPTION,
+      });
+
       if (transactionError) throw transactionError;
-      
+
       // Refresh user subscription data
       await fetchUserSubscription();
       await fetchTransactions();
-      
+
       toast({
-        title: "Subscription Successful",
+        title: 'Subscription Successful',
         description: `You are now subscribed to the ${tier.name} plan.`,
-        variant: "default",
+        variant: 'default',
       });
-      
+
       return newSubscription;
     } catch (error) {
       handleError(error, 'Failed to subscribe to plan');
@@ -208,45 +209,43 @@ export function useSubscription() {
       handleError(new Error('No active subscription'), 'No active subscription to cancel');
       return false;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { error } = await supabase
         .from('user_subscriptions')
-        .update({ 
+        .update({
           is_active: false,
           auto_renew: false,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', userSubscription.id);
-      
+
       if (error) throw error;
-      
+
       // Record the cancellation transaction
-      const { error: transactionError } = await supabase
-        .from('transactions')
-        .insert({
-          user_id: user.id,
-          subscription_id: userSubscription.id,
-          amount: 0,
-          status: TransactionStatus.CANCELLED,
-          transaction_type: TransactionType.SUBSCRIPTION
-        });
-      
+      const { error: transactionError } = await supabase.from('transactions').insert({
+        user_id: user.id,
+        subscription_id: userSubscription.id,
+        amount: 0,
+        status: TransactionStatus.CANCELLED,
+        transaction_type: TransactionType.SUBSCRIPTION,
+      });
+
       if (transactionError) throw transactionError;
-      
+
       // Refresh user subscription data
       await fetchUserSubscription();
       await fetchTransactions();
-      
+
       toast({
-        title: "Subscription Cancelled",
-        description: "Your subscription has been cancelled successfully.",
-        variant: "default",
+        title: 'Subscription Cancelled',
+        description: 'Your subscription has been cancelled successfully.',
+        variant: 'default',
       });
-      
+
       return true;
     } catch (error) {
       handleError(error, 'Failed to cancel subscription');
@@ -262,34 +261,34 @@ export function useSubscription() {
       handleError(new Error('No active subscription'), 'No active subscription');
       return false;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const newAutoRenewValue = !userSubscription.auto_renew;
-      
+
       const { error } = await supabase
         .from('user_subscriptions')
-        .update({ 
+        .update({
           auto_renew: newAutoRenewValue,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', userSubscription.id);
-      
+
       if (error) throw error;
-      
+
       // Refresh user subscription data
       await fetchUserSubscription();
-      
+
       toast({
-        title: "Auto-Renew Updated",
-        description: newAutoRenewValue 
-          ? "Your subscription will automatically renew." 
-          : "Auto-renew has been turned off.",
-        variant: "default",
+        title: 'Auto-Renew Updated',
+        description: newAutoRenewValue
+          ? 'Your subscription will automatically renew.'
+          : 'Auto-renew has been turned off.',
+        variant: 'default',
       });
-      
+
       return true;
     } catch (error) {
       handleError(error, 'Failed to update auto-renew setting');
@@ -305,7 +304,12 @@ export function useSubscription() {
     paymentMethod: string,
     billingCycle: 'monthly' | 'yearly' = 'monthly'
   ) => {
-    return subscribeToPlan(newTierId, paymentMethod, userSubscription?.auto_renew || false, billingCycle);
+    return subscribeToPlan(
+      newTierId,
+      paymentMethod,
+      userSubscription?.auto_renew || false,
+      billingCycle
+    );
   };
 
   // Load data when user changes
@@ -329,6 +333,6 @@ export function useSubscription() {
     subscribeToPlan,
     cancelSubscription,
     toggleAutoRenew,
-    changeTier
+    changeTier,
   };
 }

@@ -10,9 +10,15 @@ export function lazyLoad<T extends React.ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>
 ): React.LazyExoticComponent<T> {
   const LazyComponent = React.lazy(importFunc);
-  
+
   return ((props: React.ComponentProps<T>) => (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-[200px]"><Spinner /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-[200px]">
+          <Spinner />
+        </div>
+      }
+    >
       <LazyComponent {...props} />
     </Suspense>
   )) as unknown as React.LazyExoticComponent<T>;
@@ -27,16 +33,18 @@ export function lazyLoadAdmin<T extends React.ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>
 ): React.LazyExoticComponent<T> {
   const LazyComponent = React.lazy(importFunc);
-  
+
   return ((props: React.ComponentProps<T>) => (
-    <Suspense fallback={
-      <div className="flex justify-center items-center min-h-[400px] bg-muted/20 rounded-lg">
-        <div className="flex flex-col items-center gap-2">
-          <Spinner size="lg" />
-          <p className="text-sm text-muted-foreground">Loading admin module...</p>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-[400px] bg-muted/20 rounded-lg">
+          <div className="flex flex-col items-center gap-2">
+            <Spinner size="lg" />
+            <p className="text-sm text-muted-foreground">Loading admin module...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <LazyComponent {...props} />
     </Suspense>
   )) as unknown as React.LazyExoticComponent<T>;

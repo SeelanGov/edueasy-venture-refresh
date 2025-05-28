@@ -1,8 +1,7 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { Json } from "@/integrations/supabase/types";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Json } from '@/integrations/supabase/types';
 
 export interface Intent {
   id: string;
@@ -31,24 +30,25 @@ export const useIntentManagement = () => {
     try {
       // Get all intents with aggregated stats
       const { data, error } = await supabase.rpc('get_intents_with_stats');
-      
+
       if (error) throw error;
-      
+
       // Transform the data to ensure sample_queries is properly typed
-      const transformedData = data?.map(intent => ({
-        ...intent,
-        // Convert Json to string[] or null
-        sample_queries: intent.sample_queries 
-          ? (Array.isArray(intent.sample_queries) 
-              ? intent.sample_queries.map(q => String(q)) 
-              : null) 
-          : null
-      })) || [];
-      
+      const transformedData =
+        data?.map((intent) => ({
+          ...intent,
+          // Convert Json to string[] or null
+          sample_queries: intent.sample_queries
+            ? Array.isArray(intent.sample_queries)
+              ? intent.sample_queries.map((q) => String(q))
+              : null
+            : null,
+        })) || [];
+
       setIntents(transformedData);
     } catch (error) {
-      console.error("Error fetching intents:", error);
-      toast.error("Failed to load intents");
+      console.error('Error fetching intents:', error);
+      toast.error('Failed to load intents');
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ export const useIntentManagement = () => {
   }) => {
     try {
       const { data, error } = await supabase
-        .from("thandi_intents")
+        .from('thandi_intents')
         .insert({
           intent_name: intentData.intent_name,
           description: intentData.description || null,
@@ -73,41 +73,44 @@ export const useIntentManagement = () => {
         .select();
 
       if (error) throw error;
-      
-      toast.success("Intent created successfully");
+
+      toast.success('Intent created successfully');
       fetchIntents(); // Refresh intents list
       return data[0];
     } catch (error) {
-      console.error("Error creating intent:", error);
-      toast.error("Failed to create intent");
+      console.error('Error creating intent:', error);
+      toast.error('Failed to create intent');
       return null;
     }
   };
 
   // Update an existing intent
-  const updateIntent = async (id: string, updates: {
-    intent_name?: string;
-    description?: string;
-    response_template?: string;
-    sample_queries?: string[];
-  }) => {
+  const updateIntent = async (
+    id: string,
+    updates: {
+      intent_name?: string;
+      description?: string;
+      response_template?: string;
+      sample_queries?: string[];
+    }
+  ) => {
     try {
       const { error } = await supabase
-        .from("thandi_intents")
+        .from('thandi_intents')
         .update({
           ...updates,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", id);
+        .eq('id', id);
 
       if (error) throw error;
 
-      toast.success("Intent updated successfully");
+      toast.success('Intent updated successfully');
       fetchIntents(); // Refresh intents list
       return true;
     } catch (error) {
-      console.error("Error updating intent:", error);
-      toast.error("Failed to update intent");
+      console.error('Error updating intent:', error);
+      toast.error('Failed to update intent');
       return false;
     }
   };
@@ -117,9 +120,9 @@ export const useIntentManagement = () => {
     try {
       // Check if the intent has associated messages
       const { count, error: countError } = await supabase
-        .from("thandi_interactions")
-        .select("*", { count: "exact", head: true })
-        .eq("intent_id", id);
+        .from('thandi_interactions')
+        .select('*', { count: 'exact', head: true })
+        .eq('intent_id', id);
 
       if (countError) throw countError;
 
@@ -129,19 +132,16 @@ export const useIntentManagement = () => {
         return false;
       }
 
-      const { error } = await supabase
-        .from("thandi_intents")
-        .delete()
-        .eq("id", id);
+      const { error } = await supabase.from('thandi_intents').delete().eq('id', id);
 
       if (error) throw error;
 
-      toast.success("Intent deleted successfully");
+      toast.success('Intent deleted successfully');
       fetchIntents(); // Refresh intents list
       return true;
     } catch (error) {
-      console.error("Error deleting intent:", error);
-      toast.error("Failed to delete intent");
+      console.error('Error deleting intent:', error);
+      toast.error('Failed to delete intent');
       return false;
     }
   };

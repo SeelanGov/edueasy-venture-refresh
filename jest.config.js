@@ -1,5 +1,5 @@
 export default {
-  rootDir: './edueasy-venture-refresh',
+  rootDir: '.',
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'jsdom', // Use jsdom for React component tests
   transform: {

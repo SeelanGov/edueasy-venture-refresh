@@ -12,67 +12,69 @@ import { Badge } from '@/components/ui/badge';
 import { formatCurrency, getSubscriptionPrice } from '@/types/SubscriptionTypes';
 import { AlertCircle, CheckCircle, CreditCard, Calendar, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
 
 export default function SubscriptionPage() {
-  const { 
-    loading, 
-    tiers, 
-    userSubscription, 
+  const {
+    loading,
+    tiers,
+    userSubscription,
     transactions,
     subscribeToPlan,
     cancelSubscription,
-    toggleAutoRenew
+    toggleAutoRenew,
   } = useSubscription();
-  
+
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const [selectedTierId, setSelectedTierId] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const navigate = useNavigate();
-  
-  const selectedTier = selectedTierId ? tiers.find(tier => tier.id === selectedTierId) : null;
-  
+
+  const selectedTier = selectedTierId ? tiers.find((tier) => tier.id === selectedTierId) : null;
+
   const handleSelectTier = (tierId: string) => {
     setSelectedTierId(tierId);
     setShowPaymentDialog(true);
   };
-  
+
   const handlePaymentComplete = async (paymentMethod: string) => {
     if (!selectedTierId) return;
-    
-    const result = await subscribeToPlan(
-      selectedTierId,
-      paymentMethod,
-      true,
-      billingCycle
-    );
-    
+
+    const result = await subscribeToPlan(selectedTierId, paymentMethod, true, billingCycle);
+
     if (result) {
       setShowPaymentDialog(false);
     }
   };
-  
+
   const handleCancelSubscription = async () => {
     const confirmed = window.confirm('Are you sure you want to cancel your subscription?');
     if (confirmed) {
       await cancelSubscription();
     }
   };
-  
+
   const handleToggleAutoRenew = async () => {
     await toggleAutoRenew();
   };
-  
+
   // Format date for display
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
-  
+
   return (
     <div className="container mx-auto py-8 space-y-8">
       <div className="flex flex-col space-y-2">
@@ -81,14 +83,12 @@ export default function SubscriptionPage() {
           Manage your EduEasy subscription and billing information
         </p>
       </div>
-      
+
       {userSubscription && userSubscription.tier && (
         <Card>
           <CardHeader>
             <CardTitle>Current Subscription</CardTitle>
-            <CardDescription>
-              Your subscription details and management options
-            </CardDescription>
+            <CardDescription>Your subscription details and management options</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -96,16 +96,16 @@ export default function SubscriptionPage() {
                 <h3 className="text-sm font-medium text-muted-foreground">Plan</h3>
                 <p className="text-lg font-semibold">{userSubscription.tier.name}</p>
               </div>
-              
+
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Billing Period</h3>
                 <p className="text-lg font-semibold">
-                  {userSubscription.end_date 
+                  {userSubscription.end_date
                     ? `${formatDate(userSubscription.start_date)} to ${formatDate(userSubscription.end_date)}`
                     : 'Lifetime'}
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Status</h3>
                 <div className="flex items-center space-x-2">
@@ -114,39 +114,37 @@ export default function SubscriptionPage() {
                 </div>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div className="flex items-center space-x-2">
                 <RefreshCw className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium">Auto-renewal</p>
                   <p className="text-sm text-muted-foreground">
-                    {userSubscription.auto_renew 
-                      ? 'Your subscription will automatically renew' 
+                    {userSubscription.auto_renew
+                      ? 'Your subscription will automatically renew'
                       : 'Your subscription will not renew automatically'}
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
-                <Switch 
-                  checked={userSubscription.auto_renew} 
+                <Switch
+                  checked={userSubscription.auto_renew}
                   onCheckedChange={handleToggleAutoRenew}
                   id="auto-renew"
                 />
-                <Label htmlFor="auto-renew">
-                  {userSubscription.auto_renew ? 'On' : 'Off'}
-                </Label>
+                <Label htmlFor="auto-renew">{userSubscription.auto_renew ? 'On' : 'Off'}</Label>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div className="flex justify-end">
-              <Button 
-                variant="destructive" 
+              <Button
+                variant="destructive"
                 onClick={handleCancelSubscription}
                 disabled={userSubscription.tier.name === 'Free'}
               >
@@ -156,29 +154,23 @@ export default function SubscriptionPage() {
           </CardContent>
         </Card>
       )}
-      
+
       <Tabs defaultValue="monthly" className="w-full">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Subscription Plans</h2>
           <TabsList>
-            <TabsTrigger 
-              value="monthly" 
-              onClick={() => setBillingCycle('monthly')}
-            >
+            <TabsTrigger value="monthly" onClick={() => setBillingCycle('monthly')}>
               Monthly
             </TabsTrigger>
-            <TabsTrigger 
-              value="yearly" 
-              onClick={() => setBillingCycle('yearly')}
-            >
+            <TabsTrigger value="yearly" onClick={() => setBillingCycle('yearly')}>
               Yearly
             </TabsTrigger>
           </TabsList>
         </div>
-        
+
         <TabsContent value="monthly" className="mt-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {tiers.map(tier => (
+            {tiers.map((tier) => (
               <SubscriptionTierCard
                 key={tier.id}
                 tier={tier}
@@ -190,7 +182,7 @@ export default function SubscriptionPage() {
             ))}
           </div>
         </TabsContent>
-        
+
         <TabsContent value="yearly" className="mt-0">
           <Alert className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -199,9 +191,9 @@ export default function SubscriptionPage() {
               Get up to 20% discount when you choose yearly billing.
             </AlertDescription>
           </Alert>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {tiers.map(tier => (
+            {tiers.map((tier) => (
               <SubscriptionTierCard
                 key={tier.id}
                 tier={tier}
@@ -214,14 +206,12 @@ export default function SubscriptionPage() {
           </div>
         </TabsContent>
       </Tabs>
-      
+
       {transactions.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Billing History</CardTitle>
-            <CardDescription>
-              Your recent transactions and billing history
-            </CardDescription>
+            <CardDescription>Your recent transactions and billing history</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -235,11 +225,9 @@ export default function SubscriptionPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map(transaction => (
+                  {transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b">
-                      <td className="py-3 px-4">
-                        {formatDate(transaction.created_at)}
-                      </td>
+                      <td className="py-3 px-4">{formatDate(transaction.created_at)}</td>
                       <td className="py-3 px-4">
                         {transaction.transaction_type.replace('_', ' ')}
                       </td>
@@ -247,7 +235,7 @@ export default function SubscriptionPage() {
                         {formatCurrency(transaction.amount, transaction.currency)}
                       </td>
                       <td className="py-3 px-4">
-                        <Badge 
+                        <Badge
                           variant={transaction.status === 'completed' ? 'default' : 'secondary'}
                         >
                           {transaction.status}
@@ -261,7 +249,7 @@ export default function SubscriptionPage() {
           </CardContent>
         </Card>
       )}
-      
+
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -270,7 +258,7 @@ export default function SubscriptionPage() {
               Enter your payment details to subscribe to the selected plan.
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedTier && (
             <PaymentForm
               amount={getSubscriptionPrice(selectedTier, billingCycle)}

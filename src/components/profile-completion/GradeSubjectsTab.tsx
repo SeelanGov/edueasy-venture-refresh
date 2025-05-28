@@ -1,14 +1,13 @@
-
-import React from "react";
-import { SubjectMark } from "@/hooks/useProfileCompletionStore";
-import { SubjectEntry } from "./SubjectEntry";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
+import React from 'react';
+import { SubjectMark } from '@/hooks/useProfileCompletionStore';
+import { SubjectEntry } from './SubjectEntry';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import { Control, FieldValues } from 'react-hook-form';
 
 interface GradeSubjectsTabProps {
-  gradeFields: Record<"id", string>[];
+  gradeFields: Record<'id', string>[];
   control: Control<FieldValues>;
   fieldName: string;
   append: (value: SubjectMark) => void;
@@ -37,7 +36,7 @@ export const GradeSubjectsTab: React.FC<GradeSubjectsTabProps> = ({
             onDelete={() => remove(index)}
           />
         ))}
-        
+
         <Button
           type="button"
           variant="outline"

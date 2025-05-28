@@ -1,4 +1,3 @@
-
 import { ReactNode } from 'react';
 import { SidebarNavItem } from './SidebarNavItem';
 
@@ -18,7 +17,7 @@ export const AdminNavSection = ({ items, sidebarOpen, isActive }: AdminNavSectio
   if (items.length === 0) {
     return null;
   }
-  
+
   return (
     <>
       {sidebarOpen && (

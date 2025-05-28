@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useNavigate } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNetwork } from "@/hooks/useNetwork";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNetwork } from '@/hooks/useNetwork';
+import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({
-  fullName: z.string().min(1, "Full name is required"),
-  idNumber: z.string().min(1, "ID number is required"),
-  grade12Results: z.string().min(1, "Grade 12 results are required"),
-  university: z.string().min(1, "Please select a university"),
-  program: z.string().min(1, "Please select a program"),
+  fullName: z.string().min(1, 'Full name is required'),
+  idNumber: z.string().min(1, 'ID number is required'),
+  grade12Results: z.string().min(1, 'Grade 12 results are required'),
+  university: z.string().min(1, 'Please select a university'),
+  program: z.string().min(1, 'Please select a program'),
   documentFile: z.any().optional(),
   personalStatement: z.string().optional(),
 });
@@ -33,12 +33,12 @@ export const useApplicationFormManager = () => {
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationFormSchema),
     defaultValues: {
-      fullName: user?.user_metadata?.full_name || "",
-      idNumber: user?.user_metadata?.id_number || "",
-      grade12Results: "",
-      university: "",
-      program: "",
-      personalStatement: "",
+      fullName: user?.user_metadata?.full_name || '',
+      idNumber: user?.user_metadata?.id_number || '',
+      grade12Results: '',
+      university: '',
+      program: '',
+      personalStatement: '',
     },
   });
 
@@ -51,7 +51,7 @@ export const useApplicationFormManager = () => {
         form.reset(parsedForm);
         setHasSavedDraft(true);
       } catch (e) {
-        console.error("Failed to load saved draft:", e);
+        console.error('Failed to load saved draft:', e);
       }
     }
   };
@@ -66,9 +66,9 @@ export const useApplicationFormManager = () => {
   const saveDraft = async () => {
     if (!user) {
       toast({
-        title: "Authentication required",
-        description: "Please log in to save your application",
-        variant: "destructive",
+        title: 'Authentication required',
+        description: 'Please log in to save your application',
+        variant: 'destructive',
       });
       return;
     }
@@ -78,7 +78,7 @@ export const useApplicationFormManager = () => {
     try {
       // Get current form values
       const formValues = form.getValues();
-      
+
       // Save to local storage
       localStorage.setItem('application-draft', JSON.stringify(formValues));
 
@@ -87,7 +87,7 @@ export const useApplicationFormManager = () => {
       if (selectedFile) {
         const fileName = `${user.id}/${Date.now()}-${selectedFile.name}`;
         const { error: uploadError } = await supabase.storage
-          .from("user_documents")
+          .from('user_documents')
           .upload(fileName, selectedFile);
 
         if (uploadError) throw uploadError;
@@ -96,13 +96,13 @@ export const useApplicationFormManager = () => {
 
       // Save application to database if online
       if (isOnline) {
-        const { error } = await supabase.from("applications").insert({
+        const { error } = await supabase.from('applications').insert({
           user_id: user.id,
           institution_id: formValues.university,
           program_id: formValues.program,
           grade12_results: formValues.grade12Results,
           personal_statement: formValues.personalStatement,
-          status: "draft",
+          status: 'draft',
           document_path: documentPath,
         });
 
@@ -110,19 +110,19 @@ export const useApplicationFormManager = () => {
       }
 
       toast({
-        title: "Draft saved",
-        description: isOnline 
-          ? "Your application has been saved as a draft"
+        title: 'Draft saved',
+        description: isOnline
+          ? 'Your application has been saved as a draft'
           : "Draft saved locally. Will sync when you're back online",
       });
-      
+
       setHasSavedDraft(true);
     } catch (error) {
-      console.error("Error saving draft:", error);
+      console.error('Error saving draft:', error);
       toast({
-        title: "Error",
-        description: "Failed to save draft. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to save draft. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsSavingDraft(false);
@@ -133,9 +133,9 @@ export const useApplicationFormManager = () => {
   const onSubmit = form.handleSubmit(async (data) => {
     if (!user) {
       toast({
-        title: "Authentication required",
-        description: "Please log in to submit your application",
-        variant: "destructive",
+        title: 'Authentication required',
+        description: 'Please log in to submit your application',
+        variant: 'destructive',
       });
       return;
     }
@@ -148,7 +148,7 @@ export const useApplicationFormManager = () => {
       if (selectedFile) {
         const fileName = `${user.id}/${Date.now()}-${selectedFile.name}`;
         const { error: uploadError } = await supabase.storage
-          .from("user_documents")
+          .from('user_documents')
           .upload(fileName, selectedFile);
 
         if (uploadError) throw uploadError;
@@ -157,14 +157,14 @@ export const useApplicationFormManager = () => {
 
       // Save application to database
       const { data: applicationData, error } = await supabase
-        .from("applications")
+        .from('applications')
         .insert({
           user_id: user.id,
           institution_id: data.university,
           program_id: data.program,
           grade12_results: data.grade12Results,
           personal_statement: data.personalStatement,
-          status: "submitted",
+          status: 'submitted',
           document_path: documentPath,
         })
         .select()
@@ -174,11 +174,11 @@ export const useApplicationFormManager = () => {
 
       // Create document record if file was uploaded
       if (documentPath && applicationData) {
-        const { error: docError } = await supabase.from("documents").insert({
+        const { error: docError } = await supabase.from('documents').insert({
           application_id: applicationData.id,
           file_path: documentPath,
-          document_type: "Supporting Document",
-          verification_status: "pending",
+          document_type: 'Supporting Document',
+          verification_status: 'pending',
         });
 
         if (docError) throw docError;
@@ -189,18 +189,18 @@ export const useApplicationFormManager = () => {
       setHasSavedDraft(false);
 
       toast({
-        title: "Application submitted",
-        description: "Your application has been submitted successfully",
+        title: 'Application submitted',
+        description: 'Your application has been submitted successfully',
       });
 
       // Redirect to dashboard
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch (error) {
-      console.error("Error submitting application:", error);
+      console.error('Error submitting application:', error);
       toast({
-        title: "Error",
-        description: "Failed to submit application. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to submit application. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);
@@ -225,6 +225,6 @@ export const useApplicationFormManager = () => {
     handleSyncNow,
     isOnline,
     hasSavedDraft,
-    initializeForm
+    initializeForm,
   };
 };

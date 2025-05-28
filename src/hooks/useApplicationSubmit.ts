@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // This hook is now simplified as most functionality has moved to useApplicationForm
 export const useApplicationSubmit = (
@@ -22,13 +22,22 @@ export const useApplicationSubmit = (
   };
 
   const onSubmit = async (data: ApplicationFormValues) => {
+    if (!userId) {
+      toast({
+        title: 'Error',
+        description: 'User ID is required to submit an application',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     // Save form data to local storage
     saveFormToStorage(data);
 
     // If offline, show saved message and return
     if (!isOnline) {
       toast({
-        title: "Saved offline",
+        title: 'Saved offline',
         description: "Your application will be submitted when you're back online",
       });
       return;
@@ -39,17 +48,15 @@ export const useApplicationSubmit = (
     try {
       // Step 1: Insert application record with institution and program IDs
       const applicationId = uuidv4();
-      const { error: appError } = await supabase.from("applications").insert([
-        {
-          id: applicationId,
-          user_id: userId,
-          grade12_results: data.grade12Results,
-          institution_id: data.university, // Now this is the institution ID
-          program_id: data.program, // Now this is the program ID
-          status: "Submitted", // Change from Draft to Submitted
-          personal_statement: data.personalStatement
-        },
-      ]);
+      const { error: appError } = await supabase.from('applications').insert({
+        id: applicationId,
+        user_id: userId,
+        grade12_results: data.grade12Results,
+        institution_id: data.university,
+        program_id: data.program,
+        status: 'Submitted',
+        personal_statement: data.personalStatement,
+      });
 
       if (appError) throw appError;
 
@@ -60,7 +67,7 @@ export const useApplicationSubmit = (
 
         // Upload file to storage
         const { error: uploadError } = await supabase.storage
-          .from("application_docs")
+          .from('application_docs')
           .upload(filePath, documentFile, {
             contentType: documentFile.type,
             upsert: false,
@@ -69,14 +76,14 @@ export const useApplicationSubmit = (
         if (uploadError) throw uploadError;
 
         // Insert document record
-        const { error: docError } = await supabase.from("documents").insert([
+        const { error: docError } = await supabase.from('documents').insert([
           {
             id: documentId,
             application_id: applicationId,
             user_id: userId,
             file_path: filePath,
-            document_type: "Application Document",
-            verification_status: "pending",
+            document_type: 'Application Document',
+            verification_status: 'pending',
           },
         ]);
 
@@ -87,19 +94,19 @@ export const useApplicationSubmit = (
       clearSavedForm();
 
       toast({
-        title: "Application submitted",
-        description: "Your application has been submitted successfully",
+        title: 'Application submitted',
+        description: 'Your application has been submitted successfully',
       });
 
       // Navigate to dashboard
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
-      console.error("Application submission error:", err);
+      console.error('Application submission error:', err);
       toast({
-        title: "Error",
+        title: 'Error',
         description: `Failed to submit application: ${err.message}`,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);

@@ -3,78 +3,100 @@ name: CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
-
-# Prevent multiple deployments running at the same time
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [main, develop]
+  workflow_dispatch:
 
 jobs:
-  build-and-test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # Set a timeout to prevent hung builds
-    defaults:
-      run:
-        working-directory: .
-    
-    env:
-      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      # Set preview flag for loveable.dev previews
-      LOVEABLE_PREVIEW: ${{ github.event_name == 'pull_request' || contains(github.ref, 'preview') }}
-      # Force platform-specific dependencies to be skipped
-      ROLLUP_SKIP_PLATFORM_SPECIFIC: true
-      # Set CI flag
-      CI: true
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+          bun-version: latest
 
-      - name: Clean install (fix for Rollup platform-specific dependencies)
-        run: |
-          echo "Removing package-lock.json and node_modules to fix Rollup dependency issues"
-          rm -f package-lock.json
-          rm -rf node_modules
-          npm install
-          
-      - name: Fix Rollup dependencies
-        run: |
-          echo "Installing platform-specific Rollup dependencies"
-          node scripts/fix-rollup-deps.js || npm install @rollup/rollup-linux-x64-gnu --no-save
+      - name: Install dependencies
+        run: bun install
 
       - name: Environment check
-        run: npm run check-env
+        run: bun run check-env
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Type check
-        run: npm run type-check
+        run: bun run type-check
 
       - name: Lint
-        run: npm run lint
+        run: bun run lint
 
       - name: Run tests
-        run: npm test
-        continue-on-error: true  # Don't fail the build if tests fail
+        run: bun test
 
-      - name: Build with fallback
-        run: |
-          echo "Attempting build with standard configuration..."
-          export NODE_OPTIONS="--max-old-space-size=4096"
-          npm run build || npm run build:ci || npm run build:safe
-          
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-files
+          name: dist
           path: dist/
-          retention-days: 7
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy to staging
+        run: bun run deploy:staging
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+  deploy-production:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy to production
+        run: bun run deploy:production
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}

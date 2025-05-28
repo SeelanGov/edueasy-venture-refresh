@@ -1,5 +1,12 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, X } from 'lucide-react';
@@ -18,13 +25,15 @@ export function SubscriptionTierCard({
   isCurrentTier = false,
   billingCycle,
   onSelectTier,
-  disabled = false
+  disabled = false,
 }: SubscriptionTierCardProps) {
   const price = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
   const yearlySavings = getYearlySavings(tier);
-  
+
   return (
-    <Card className={`w-full max-w-sm transition-all ${isCurrentTier ? 'border-primary shadow-lg' : ''}`}>
+    <Card
+      className={`w-full max-w-sm transition-all ${isCurrentTier ? 'border-primary shadow-lg' : ''}`}
+    >
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl">{tier.name}</CardTitle>
@@ -45,45 +54,32 @@ export function SubscriptionTierCard({
             </span>
           </div>
           {billingCycle === 'yearly' && tier.price_yearly > 0 && (
-            <p className="text-sm text-green-600">
-              Save {formatCurrency(yearlySavings)} per year
-            </p>
+            <p className="text-sm text-green-600">Save {formatCurrency(yearlySavings)} per year</p>
           )}
         </div>
-        
+
         <div className="space-y-2">
-          <FeatureItem 
-            feature={`${tier.max_applications} applications`} 
-            included={true} 
-          />
-          <FeatureItem 
-            feature={`${tier.max_documents} document uploads`} 
-            included={true} 
-          />
-          <FeatureItem 
-            feature="Document verification" 
-            included={tier.includes_verification} 
-          />
-          <FeatureItem 
-            feature="AI career guidance" 
-            included={tier.includes_ai_assistance} 
-          />
-          <FeatureItem 
-            feature="Priority support" 
-            included={tier.includes_priority_support} 
-          />
+          <FeatureItem feature={`${tier.max_applications} applications`} included={true} />
+          <FeatureItem feature={`${tier.max_documents} document uploads`} included={true} />
+          <FeatureItem feature="Document verification" included={tier.includes_verification} />
+          <FeatureItem feature="AI career guidance" included={tier.includes_ai_assistance} />
+          <FeatureItem feature="Priority support" included={tier.includes_priority_support} />
         </div>
       </CardContent>
       <CardFooter>
-        <Button 
-          className="w-full" 
-          variant={isCurrentTier ? "outline" : "default"}
+        <Button
+          className="w-full"
+          variant={isCurrentTier ? 'outline' : 'default'}
           onClick={() => onSelectTier(tier.id)}
           disabled={disabled || (isCurrentTier && tier.name !== 'Free')}
         >
-          {isCurrentTier 
-            ? tier.name === 'Free' ? 'Upgrade' : 'Current Plan' 
-            : tier.price_monthly === 0 ? 'Select' : 'Subscribe'}
+          {isCurrentTier
+            ? tier.name === 'Free'
+              ? 'Upgrade'
+              : 'Current Plan'
+            : tier.price_monthly === 0
+              ? 'Select'
+              : 'Subscribe'}
         </Button>
       </CardFooter>
     </Card>
@@ -103,9 +99,7 @@ function FeatureItem({ feature, included }: FeatureItemProps) {
       ) : (
         <X className="h-4 w-4 text-muted-foreground" />
       )}
-      <span className={included ? '' : 'text-muted-foreground'}>
-        {feature}
-      </span>
+      <span className={included ? '' : 'text-muted-foreground'}>{feature}</span>
     </div>
   );
 }

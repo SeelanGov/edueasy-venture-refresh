@@ -1,9 +1,8 @@
-
-import { UseFormReturn } from "react-hook-form";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
+import { UseFormReturn } from 'react-hook-form';
+import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // Local storage keys
-export const LOCAL_STORAGE_FORM_KEY = "edueasy-application-form";
+export const LOCAL_STORAGE_FORM_KEY = 'edueasy-application-form';
 
 export const useOfflineFormStorage = (
   form: UseFormReturn<ApplicationFormValues>,

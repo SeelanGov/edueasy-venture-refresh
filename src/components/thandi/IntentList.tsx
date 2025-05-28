@@ -1,40 +1,39 @@
-
-import { useState } from "react";
-import { IntentWithStats } from "@/hooks/useIntentManagement";
-import { 
+import { useState } from 'react';
+import { IntentWithStats } from '@/hooks/useIntentManagement';
+import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2, Plus, Info } from "lucide-react";
+  TableRow,
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Edit, Trash2, Plus, Info } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { IntentForm } from './IntentForm';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { IntentForm } from "./IntentForm";
-import { 
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 interface IntentListProps {
   intents: IntentWithStats[];
   loading: boolean;
   onEdit: (intent: IntentWithStats) => void;
   onDelete: (id: string) => void;
-  onCreate: (data: { intent_name: string; description?: string; response_template?: string; sample_queries?: string[] }) => void;
+  onCreate: (data: {
+    intent_name: string;
+    description?: string;
+    response_template?: string;
+    sample_queries?: string[];
+  }) => void;
 }
 
 export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: IntentListProps) => {
@@ -54,8 +53,13 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
       setIntentToDelete(null);
     }
   };
-  
-  const handleCreate = (data: { intent_name: string; description?: string; response_template?: string; sample_queries?: string[] }) => {
+
+  const handleCreate = (data: {
+    intent_name: string;
+    description?: string;
+    response_template?: string;
+    sample_queries?: string[];
+  }) => {
     onCreate(data);
     setIsCreating(false);
   };
@@ -68,20 +72,18 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
           <Plus className="h-4 w-4 mr-2" /> Add Intent
         </Button>
       </div>
-      
+
       {/* Create Intent Form Dialog */}
       <Dialog open={isCreating} onOpenChange={setIsCreating}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Create New Intent</DialogTitle>
-            <DialogDescription>
-              Define a new intent for Thandi to recognize.
-            </DialogDescription>
+            <DialogDescription>Define a new intent for Thandi to recognize.</DialogDescription>
           </DialogHeader>
           <IntentForm onSubmit={handleCreate} onCancel={() => setIsCreating(false)} />
         </DialogContent>
       </Dialog>
-      
+
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent className="sm:max-w-md">
@@ -92,31 +94,43 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
+            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Delete
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       <div className="border rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">Name</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead className="w-[100px]" title="Number of messages">Messages</TableHead>
-              <TableHead className="w-[100px]" title="Average confidence score">Avg. Conf.</TableHead>
+              <TableHead className="w-[100px]" title="Number of messages">
+                Messages
+              </TableHead>
+              <TableHead className="w-[100px]" title="Average confidence score">
+                Avg. Conf.
+              </TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-4">Loading intents...</TableCell>
+                <TableCell colSpan={5} className="text-center py-4">
+                  Loading intents...
+                </TableCell>
               </TableRow>
             ) : intents.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-4">No intents found.</TableCell>
+                <TableCell colSpan={5} className="text-center py-4">
+                  No intents found.
+                </TableCell>
               </TableRow>
             ) : (
               intents.map((intent) => (
@@ -136,7 +150,9 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
                               <h4 className="font-semibold mb-1">Sample Queries:</h4>
                               <ul className="list-disc pl-5">
                                 {intent.sample_queries.slice(0, 5).map((query, idx) => (
-                                  <li key={idx} className="text-sm">{query}</li>
+                                  <li key={idx} className="text-sm">
+                                    {query}
+                                  </li>
                                 ))}
                                 {intent.sample_queries.length > 5 && (
                                   <li className="text-sm font-italic">
@@ -151,7 +167,7 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
                     )}
                   </TableCell>
                   <TableCell>
-                    <div className="line-clamp-2">{intent.description || "-"}</div>
+                    <div className="line-clamp-2">{intent.description || '-'}</div>
                     {intent.response_template && (
                       <TooltipProvider>
                         <Tooltip>
@@ -173,8 +189,8 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
                   <TableCell>{intent.message_count}</TableCell>
                   <TableCell>
                     {intent.avg_confidence !== null
-                      ? Math.round(intent.avg_confidence * 100) + "%"
-                      : "-"}
+                      ? Math.round(intent.avg_confidence * 100) + '%'
+                      : '-'}
                   </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">

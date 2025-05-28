@@ -1,7 +1,6 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 export interface Document {
   id: string;
@@ -30,32 +29,34 @@ export const useDocumentsManagement = () => {
   const fetchDocuments = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // First get the total count
       const { count, error: countError } = await supabase
-        .from("documents")
-        .select("id", { count: "exact", head: true });
-        
+        .from('documents')
+        .select('id', { count: 'exact', head: true });
+
       if (countError) throw countError;
-      
+
       setTotalCount(count || 0);
 
       // Fetch documents with pagination
       const from = (currentPage - 1) * pageSize;
       const to = from + pageSize - 1;
-      
+
       // Fetch documents with user info
       const { data, error } = await supabase
-        .from("documents")
-        .select(`
+        .from('documents')
+        .select(
+          `
           *,
           users:user_id (
             full_name,
             email
           )
-        `)
-        .order("created_at", { ascending: false })
+        `
+        )
+        .order('created_at', { ascending: false })
         .range(from, to);
 
       if (error) throw error;
@@ -63,18 +64,18 @@ export const useDocumentsManagement = () => {
       // Transform the data to include user info
       const docsWithUserInfo = data.map((doc: any) => ({
         ...doc,
-        user_name: doc.users?.full_name || "Unknown",
-        user_email: doc.users?.email || "Unknown"
+        user_name: doc.users?.full_name || 'Unknown',
+        user_email: doc.users?.email || 'Unknown',
       }));
 
       setDocuments(docsWithUserInfo);
     } catch (err: any) {
-      console.error("Error fetching documents:", err);
+      console.error('Error fetching documents:', err);
       setError(err.message);
       toast({
-        title: "Error",
-        description: "Failed to load documents",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to load documents',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -87,9 +88,9 @@ export const useDocumentsManagement = () => {
         verification_status: string;
         rejection_reason?: string | null;
       } = {
-        verification_status: status
+        verification_status: status,
       };
-      
+
       // Add or clear rejection reason based on status
       if (status === 'rejected' || status === 'request_resubmission') {
         updateData.rejection_reason = rejectionReason || null;
@@ -97,10 +98,7 @@ export const useDocumentsManagement = () => {
         updateData.rejection_reason = null;
       }
 
-      const { error } = await supabase
-        .from("documents")
-        .update(updateData)
-        .eq("id", id);
+      const { error } = await supabase.from('documents').update(updateData).eq('id', id);
 
       if (error) throw error;
 
@@ -108,15 +106,15 @@ export const useDocumentsManagement = () => {
       fetchDocuments();
 
       toast({
-        title: "Status updated",
+        title: 'Status updated',
         description: `Document status changed to ${status}`,
       });
     } catch (err: any) {
-      console.error("Error updating document status:", err);
+      console.error('Error updating document status:', err);
       toast({
-        title: "Error",
-        description: "Failed to update document status",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update document status',
+        variant: 'destructive',
       });
     }
   };
@@ -124,17 +122,17 @@ export const useDocumentsManagement = () => {
   const getDocumentUrl = async (filePath: string) => {
     try {
       const { data, error } = await supabase.storage
-        .from("user_documents")
+        .from('user_documents')
         .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 
       if (error) throw error;
       return data.signedUrl;
     } catch (error) {
-      console.error("Error creating signed URL:", error);
+      console.error('Error creating signed URL:', error);
       toast({
-        title: "Error",
-        description: "Could not generate document link",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Could not generate document link',
+        variant: 'destructive',
       });
       return null;
     }
@@ -154,6 +152,6 @@ export const useDocumentsManagement = () => {
     currentPage,
     setCurrentPage,
     totalCount,
-    pageSize
+    pageSize,
   };
 };

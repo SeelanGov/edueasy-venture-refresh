@@ -1,15 +1,14 @@
-
-import { ChatMessage, TrainingEntry } from "@/hooks/useTrainingData";
-import { Intent } from "@/hooks/useIntentManagement";
+import { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
+import { Intent } from '@/hooks/useIntentManagement';
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { MessageRow } from "./MessageRow";
+  TableRow,
+} from '@/components/ui/table';
+import { MessageRow } from './MessageRow';
 
 interface MessageTableProps {
   messages: ChatMessage[];
@@ -28,10 +27,10 @@ export const MessageTable = ({
   intents,
   onTrain,
   onUpdateTraining,
-  onDeleteTraining
+  onDeleteTraining,
 }: MessageTableProps) => {
   const getTrainingForMessage = (messageId: string) => {
-    return trainedMessages.find(t => t.message_id === messageId);
+    return trainedMessages.find((t) => t.message_id === messageId);
   };
 
   return (
@@ -50,15 +49,19 @@ export const MessageTable = ({
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-4">Loading messages...</TableCell>
+              <TableCell colSpan={6} className="text-center py-4">
+                Loading messages...
+              </TableCell>
             </TableRow>
           ) : messages.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-4">No messages found.</TableCell>
+              <TableCell colSpan={6} className="text-center py-4">
+                No messages found.
+              </TableCell>
             </TableRow>
           ) : (
             messages.map((message) => (
-              <MessageRow 
+              <MessageRow
                 key={message.id}
                 message={message}
                 training={getTrainingForMessage(message.id)}

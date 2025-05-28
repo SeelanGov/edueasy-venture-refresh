@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface AdminFiltersProps {
   onFilterChange: (filters: Record<string, any>) => void;
@@ -12,7 +12,7 @@ export const AdminFilters: React.FC<AdminFiltersProps> = ({ onFilterChange }) =>
         type="text"
         placeholder="Search by name, email, or ID"
         className="input input-bordered"
-        onChange={e => onFilterChange({ search: e.target.value })}
+        onChange={(e) => onFilterChange({ search: e.target.value })}
       />
       {/* Add more filter controls here */}
     </div>

@@ -1,8 +1,7 @@
-
-import React from "react";
-import { WifiOff, RefreshCw, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import React from 'react';
+import { WifiOff, RefreshCw, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 interface OfflineErrorDisplayProps {
   message?: string;
@@ -14,10 +13,10 @@ interface OfflineErrorDisplayProps {
 }
 
 export const OfflineErrorDisplay = ({
-  message = "You appear to be offline. Some features may be unavailable.",
+  message = 'You appear to be offline. Some features may be unavailable.',
   onRetryConnection,
   isRetrying = false,
-  className = "",
+  className = '',
   timeSinceLastConnection = null,
   lastConnectedTime = null,
 }: OfflineErrorDisplayProps) => {
@@ -29,25 +28,25 @@ export const OfflineErrorDisplay = ({
   };
 
   return (
-    <Alert className={`border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 ${className}`}>
+    <Alert
+      className={`border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 ${className}`}
+    >
       <WifiOff className="h-4 w-4 text-amber-500" />
       <AlertTitle>Connection Lost</AlertTitle>
       <AlertDescription>
         <p>{message}</p>
-        
+
         {lastConnectedTime && timeSinceLastConnection && timeSinceLastConnection > 10 && (
           <div className="flex items-center mt-2 text-xs text-amber-600 dark:text-amber-400">
             <Clock className="h-3 w-3 mr-1" />
-            <span>
-              Last online {formatTimeSince(timeSinceLastConnection)} ago
-            </span>
+            <span>Last online {formatTimeSince(timeSinceLastConnection)} ago</span>
           </div>
         )}
-        
+
         {onRetryConnection && (
           <div className="mt-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={onRetryConnection}
               disabled={isRetrying}

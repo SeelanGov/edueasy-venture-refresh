@@ -1,12 +1,17 @@
-
-import { useEffect, useState } from "react";
-import { Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AnalyticsFilters } from "@/hooks/analytics";
-import { format } from "date-fns";
+import { useEffect, useState } from 'react';
+import { Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { AnalyticsFilters } from '@/hooks/analytics';
+import { format } from 'date-fns';
 
 interface AnalyticsFilterBarProps {
   filters: AnalyticsFilters;
@@ -39,7 +44,7 @@ export const AnalyticsFilterBar = ({
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-full sm:w-auto justify-start">
               <Calendar className="mr-2 h-4 w-4" />
-              {filters.startDate ? format(filters.startDate, "PP") : "Start date"}
+              {filters.startDate ? format(filters.startDate, 'PP') : 'Start date'}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -48,7 +53,7 @@ export const AnalyticsFilterBar = ({
               mode="single"
               selected={startDate || undefined}
               onSelect={setStartDate}
-              disabled={(date) => endDate ? date > endDate : false}
+              disabled={(date) => (endDate ? date > endDate : false)}
             />
           </PopoverContent>
         </Popover>
@@ -57,7 +62,7 @@ export const AnalyticsFilterBar = ({
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-full sm:w-auto justify-start">
               <Calendar className="mr-2 h-4 w-4" />
-              {filters.endDate ? format(filters.endDate, "PP") : "End date"}
+              {filters.endDate ? format(filters.endDate, 'PP') : 'End date'}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -66,14 +71,14 @@ export const AnalyticsFilterBar = ({
               mode="single"
               selected={endDate || undefined}
               onSelect={setEndDate}
-              disabled={(date) => startDate ? date < startDate : false}
+              disabled={(date) => (startDate ? date < startDate : false)}
             />
           </PopoverContent>
         </Popover>
       </div>
 
       <Select
-        value={filters.documentType || ""}
+        value={filters.documentType || ''}
         onValueChange={(value) => onUpdateFilters({ documentType: value || null })}
       >
         <SelectTrigger className="w-full sm:w-[200px]">
@@ -90,7 +95,7 @@ export const AnalyticsFilterBar = ({
       </Select>
 
       <Select
-        value={filters.institutionId || ""}
+        value={filters.institutionId || ''}
         onValueChange={(value) => onUpdateFilters({ institutionId: value || null })}
       >
         <SelectTrigger className="w-full sm:w-[200px]">

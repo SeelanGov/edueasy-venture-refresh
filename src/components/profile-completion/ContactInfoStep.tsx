@@ -1,12 +1,11 @@
-
-import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { useProfileCompletionStore } from "@/hooks/useProfileCompletionStore";
-import { ContactForm } from "./contact/ContactForm";
-import { ContactFormValues } from "./contact/types";
-import { parseError } from "@/utils/errorHandler";
-import { logError } from "@/utils/logging";
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
+import { ContactForm } from './contact/ContactForm';
+import { ContactFormValues } from './contact/types';
+import { parseError } from '@/utils/errorHandler';
+import { logError } from '@/utils/logging';
 
 interface ContactInfoStepProps {
   onComplete: () => void;
@@ -55,7 +54,7 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-      
+
       <ContactForm
         initialValues={contactInfo}
         onSubmit={onSubmit}
@@ -63,7 +62,9 @@ export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) =>
         onBack={onBack}
       />
       {error && (
-        <div className="text-red-500 p-2 mb-2 text-center" role="alert">{error}</div>
+        <div className="text-red-500 p-2 mb-2 text-center" role="alert">
+          {error}
+        </div>
       )}
     </div>
   );

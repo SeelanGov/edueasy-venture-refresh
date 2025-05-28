@@ -1,9 +1,8 @@
-
-import React, { useRef, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { X, ChevronRight } from "lucide-react";
-import { MilestoneStatus } from "./JourneyMilestone";
+import React, { useRef, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { X, ChevronRight } from 'lucide-react';
+import { MilestoneStatus } from './JourneyMilestone';
 
 interface MilestoneDetailProps {
   title: string;
@@ -16,7 +15,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   title,
   status,
   stepNumber,
-  onClose
+  onClose,
 }) => {
   const detailRef = useRef<HTMLDivElement>(null);
 
@@ -28,56 +27,56 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
   // Get description based on milestone title
   const getDescription = () => {
     switch (true) {
-      case title.includes("Personal"):
-        return "Basic personal information including your full name, ID number, and gender.";
-      case title.includes("Contact"):
-        return "Your contact details and emergency contact information.";
-      case title.includes("Address"):
-        return "Your residential or postal address information.";
-      case title.includes("Education"):
-        return "Your educational background including school name and academic results.";
-      case title.includes("Document"):
-        return "Upload required documents such as ID, proof of residence, and academic records.";
-      case title.includes("Review"):
-        return "Review all your provided information before final submission.";
+      case title.includes('Personal'):
+        return 'Basic personal information including your full name, ID number, and gender.';
+      case title.includes('Contact'):
+        return 'Your contact details and emergency contact information.';
+      case title.includes('Address'):
+        return 'Your residential or postal address information.';
+      case title.includes('Education'):
+        return 'Your educational background including school name and academic results.';
+      case title.includes('Document'):
+        return 'Upload required documents such as ID, proof of residence, and academic records.';
+      case title.includes('Review'):
+        return 'Review all your provided information before final submission.';
       default:
-        return "Complete this step in your application journey.";
+        return 'Complete this step in your application journey.';
     }
   };
 
   // Get status text
   const getStatusText = () => {
     switch (status) {
-      case "completed":
-        return "Completed";
-      case "active":
-        return "In Progress";
-      case "pending":
-        return "Not Started";
-      case "error":
-        return "Needs Attention";
+      case 'completed':
+        return 'Completed';
+      case 'active':
+        return 'In Progress';
+      case 'pending':
+        return 'Not Started';
+      case 'error':
+        return 'Needs Attention';
       default:
-        return "";
+        return '';
     }
   };
 
   const getStatusColor = () => {
     switch (status) {
-      case "completed":
-        return "text-green-600";
-      case "active":
-        return "text-primary";
-      case "error":
-        return "text-red-500";
+      case 'completed':
+        return 'text-green-600';
+      case 'active':
+        return 'text-primary';
+      case 'error':
+        return 'text-red-500';
       default:
-        return "text-gray-500";
+        return 'text-gray-500';
     }
   };
 
@@ -105,23 +104,21 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
           <div className="flex items-center mt-1">
             <span className="text-xs font-medium text-gray-500">Step {stepNumber}</span>
             <span className="mx-2 text-gray-300">•</span>
-            <span className={`text-xs font-medium ${getStatusColor()}`}>
-              {getStatusText()}
-            </span>
+            <span className={`text-xs font-medium ${getStatusColor()}`}>{getStatusText()}</span>
           </div>
         </CardHeader>
         <CardContent className="px-4 py-2">
           <p className="text-xs text-gray-600">{getDescription()}</p>
         </CardContent>
-        {status !== "completed" && (
+        {status !== 'completed' && (
           <CardFooter className="pt-2 pb-4 px-4">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="w-full text-xs justify-between border-primary text-primary hover:bg-primary/10"
               onClick={onClose}
             >
-              <span>{status === "active" ? "Continue" : "View Details"}</span>
+              <span>{status === 'active' ? 'Continue' : 'View Details'}</span>
               <ChevronRight className="h-3 w-3" />
             </Button>
           </CardFooter>

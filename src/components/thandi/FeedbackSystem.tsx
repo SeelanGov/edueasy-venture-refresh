@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { ThumbsUp, ThumbsDown } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
+import { Button } from '@/components/ui/button';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FeedbackSystemProps {
   messageId: string;
@@ -17,20 +16,18 @@ export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemPr
 
   const handleFeedback = async (type: 'helpful' | 'unhelpful') => {
     if (isSubmitting || !user?.id) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       // Store feedback in the database using the correct table name
       // that exists in the Database (checking via Typescript types)
-      await supabase
-        .from('thandi_message_feedback')
-        .insert({
-          message_id: messageId,
-          user_id: user.id,
-          feedback_type: type,
-        });
-      
+      await supabase.from('thandi_message_feedback').insert({
+        message_id: messageId,
+        user_id: user.id,
+        feedback_type: type,
+      });
+
       setFeedback(type);
       if (onFeedbackSubmit) onFeedbackSubmit(type);
     } catch (error) {

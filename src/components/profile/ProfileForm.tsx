@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/Spinner";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
-import { User } from "@supabase/supabase-js";
+import { useState } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/Spinner';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { User } from '@supabase/supabase-js';
 import {
   Form,
   FormControl,
@@ -15,19 +15,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { parseError } from "@/utils/errorHandler";
-import { logError } from "@/utils/logging";
+} from '@/components/ui/form';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { parseError } from '@/utils/errorHandler';
+import { logError } from '@/utils/logging';
 
 const profileFormSchema = z.object({
-  email: z.string().email("Please enter a valid email address").optional(),
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email('Please enter a valid email address').optional(),
+  fullName: z.string().min(2, 'Name must be at least 2 characters'),
   idNumber: z
     .string()
-    .length(13, "ID Number must be exactly 13 digits")
-    .regex(/^\d+$/, "ID Number must contain only digits"),
+    .length(13, 'ID Number must be exactly 13 digits')
+    .regex(/^\d+$/, 'ID Number must contain only digits'),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -44,13 +44,13 @@ interface ProfileFormProps {
 export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      email: initialData.email || "",
-      fullName: initialData.fullName || "",
-      idNumber: initialData.idNumber || "",
+      email: initialData.email || '',
+      fullName: initialData.fullName || '',
+      idNumber: initialData.idNumber || '',
     },
   });
 
@@ -68,8 +68,8 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
         .eq('id', user.id);
       if (dbError) throw dbError;
       toast({
-        title: "Profile updated",
-        description: "Your profile information has been updated successfully.",
+        title: 'Profile updated',
+        description: 'Your profile information has been updated successfully.',
       });
     } catch (err) {
       const parsed = parseError(err);
@@ -90,7 +90,7 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        
+
         <FormField
           control={form.control}
           name="email"
@@ -98,19 +98,14 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Your email"
-                  {...field}
-                  disabled
-                  className="bg-gray-100"
-                />
+                <Input placeholder="Your email" {...field} disabled className="bg-gray-100" />
               </FormControl>
               <FormMessage />
               <p className="text-sm text-muted-foreground">Email cannot be changed</p>
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="fullName"
@@ -118,17 +113,13 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Your full name"
-                  {...field}
-                  disabled={isSubmitting}
-                />
+                <Input placeholder="Your full name" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="idNumber"
@@ -136,17 +127,13 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
             <FormItem>
               <FormLabel>ID Number</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="13-digit ID number"
-                  {...field}
-                  disabled={isSubmitting}
-                />
+                <Input placeholder="13-digit ID number" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
+
         <div className="flex justify-end">
           <Button
             type="submit"
@@ -154,7 +141,7 @@ export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
             disabled={isSubmitting}
           >
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>

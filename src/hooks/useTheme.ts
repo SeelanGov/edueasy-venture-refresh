@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
@@ -7,12 +6,12 @@ export function useTheme() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     // Check for saved theme preference in localStorage
     const savedTheme = localStorage.getItem('theme');
-    
+
     // Check for system preference if no saved preference
     if (!savedTheme) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
-    
+
     return savedTheme === 'dark';
   });
 
@@ -20,7 +19,7 @@ export function useTheme() {
   useEffect(() => {
     // Save theme preference to localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    
+
     // Add or remove the 'dark' class on the document element
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -32,23 +31,23 @@ export function useTheme() {
   // Listen for system preference changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
       // Only update if user hasn't explicitly set a preference
       if (!localStorage.getItem('theme')) {
         setIsDarkMode(e.matches);
       }
     };
-    
+
     mediaQuery.addEventListener('change', handleChange);
-    
+
     return () => {
       mediaQuery.removeEventListener('change', handleChange);
     };
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
+    setIsDarkMode((prev) => !prev);
   };
 
   const setTheme = (theme: Theme) => {
@@ -59,6 +58,6 @@ export function useTheme() {
     isDarkMode,
     toggleTheme,
     setTheme,
-    theme: isDarkMode ? 'dark' : 'light' as Theme
+    theme: isDarkMode ? 'dark' : ('light' as Theme),
   };
 }

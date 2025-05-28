@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
+import {
   Referral,
   ReferralStatus,
   TransactionStatus,
   TransactionType,
-  ProfileWithSubscription
+  ProfileWithSubscription,
 } from '@/types/SubscriptionTypes';
 import { toast } from '@/components/ui/use-toast';
 
@@ -19,7 +19,7 @@ export function useReferrals() {
     totalReferrals: 0,
     completedReferrals: 0,
     pendingReferrals: 0,
-    totalRewards: 0
+    totalRewards: 0,
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -28,9 +28,9 @@ export function useReferrals() {
     console.error(message, error);
     setError(message);
     toast({
-      title: "Error",
+      title: 'Error',
       description: message,
-      variant: "destructive",
+      variant: 'destructive',
     });
   };
 
@@ -40,32 +40,34 @@ export function useReferrals() {
       setUserProfile(null);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('profiles')
-        .select(`
+        .select(
+          `
           *,
           subscription:user_subscriptions(
             *,
             tier:tier_id(*)
           )
-        `)
+        `
+        )
         .eq('user_id', user.id)
         .eq('user_subscriptions.is_active', true)
         .single();
-      
+
       if (error) throw error;
-      
+
       // Flatten the subscription data
       const profile = {
         ...data,
-        subscription: data.subscription?.[0] || null
+        subscription: data.subscription?.[0] || null,
       };
-      
+
       setUserProfile(profile);
     } catch (error) {
       handleError(error, 'Failed to fetch user profile');
@@ -80,32 +82,33 @@ export function useReferrals() {
       setReferrals([]);
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data, error } = await supabase
         .from('referrals')
         .select('*')
         .eq('referrer_id', user.id)
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       setReferrals(data || []);
-      
+
       // Calculate referral statistics
       const totalReferrals = data?.length || 0;
-      const completedReferrals = data?.filter(r => r.status === ReferralStatus.COMPLETED).length || 0;
-      const pendingReferrals = data?.filter(r => r.status === ReferralStatus.PENDING).length || 0;
+      const completedReferrals =
+        data?.filter((r) => r.status === ReferralStatus.COMPLETED).length || 0;
+      const pendingReferrals = data?.filter((r) => r.status === ReferralStatus.PENDING).length || 0;
       const totalRewards = data?.reduce((sum, r) => sum + (r.reward_amount || 0), 0) || 0;
-      
+
       setReferralStats({
         totalReferrals,
         completedReferrals,
         pendingReferrals,
-        totalRewards
+        totalRewards,
       });
     } catch (error) {
       handleError(error, 'Failed to fetch referrals');
@@ -120,32 +123,32 @@ export function useReferrals() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       // Generate a random code
       const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-      
+
       const { data, error } = await supabase
         .from('profiles')
         .update({ referral_code: randomCode })
         .eq('user_id', user.id)
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       // Update local state
-      setUserProfile(prev => prev ? { ...prev, referral_code: randomCode } : null);
-      
+      setUserProfile((prev) => (prev ? { ...prev, referral_code: randomCode } : null));
+
       toast({
-        title: "Referral Code Generated",
+        title: 'Referral Code Generated',
         description: `Your new referral code is: ${randomCode}`,
-        variant: "default",
+        variant: 'default',
       });
-      
+
       return data.referral_code;
     } catch (error) {
       handleError(error, 'Failed to generate referral code');
@@ -160,31 +163,31 @@ export function useReferrals() {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Find the referrer
       const { data: referrerData, error: referrerError } = await supabase
         .from('profiles')
         .select('user_id')
         .eq('referral_code', referralCode)
         .single();
-      
+
       if (referrerError) {
         toast({
-          title: "Invalid Referral Code",
-          description: "The referral code you entered is invalid.",
-          variant: "destructive",
+          title: 'Invalid Referral Code',
+          description: 'The referral code you entered is invalid.',
+          variant: 'destructive',
         });
         throw new Error('Invalid referral code');
       }
-      
+
       // Update the new user's profile
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ referred_by: referrerData.user_id })
         .eq('user_id', newUserId);
-      
+
       if (updateError) throw updateError;
-      
+
       // Create a referral record
       const { data: referralData, error: referralError } = await supabase
         .from('referrals')
@@ -192,19 +195,19 @@ export function useReferrals() {
           referrer_id: referrerData.user_id,
           referred_id: newUserId,
           status: ReferralStatus.PENDING,
-          reward_amount: 50 // Default reward amount
+          reward_amount: 50, // Default reward amount
         })
         .select()
         .single();
-      
+
       if (referralError) throw referralError;
-      
+
       toast({
-        title: "Referral Applied",
-        description: "The referral code has been applied successfully.",
-        variant: "default",
+        title: 'Referral Applied',
+        description: 'The referral code has been applied successfully.',
+        variant: 'default',
       });
-      
+
       return referralData;
     } catch (error) {
       handleError(error, 'Failed to apply referral code');
@@ -220,59 +223,57 @@ export function useReferrals() {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return false;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       // Get the referral details
       const { data: referralData, error: referralError } = await supabase
         .from('referrals')
         .select('*')
         .eq('id', referralId)
         .single();
-      
+
       if (referralError) throw referralError;
-      
+
       // Only admins or the referrer can complete a referral
       const isAdmin = await checkIfUserIsAdmin(user.id);
       if (referralData.referrer_id !== user.id && !isAdmin) {
         throw new Error('Unauthorized to complete this referral');
       }
-      
+
       // Update the referral status
       const { error: updateError } = await supabase
         .from('referrals')
-        .update({ 
+        .update({
           status: ReferralStatus.COMPLETED,
           reward_claimed: true,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', referralId);
-      
+
       if (updateError) throw updateError;
-      
+
       // Record the reward transaction
-      const { error: transactionError } = await supabase
-        .from('transactions')
-        .insert({
-          user_id: referralData.referrer_id,
-          amount: referralData.reward_amount || 0,
-          status: TransactionStatus.COMPLETED,
-          transaction_type: TransactionType.REFERRAL_REWARD
-        });
-      
+      const { error: transactionError } = await supabase.from('transactions').insert({
+        user_id: referralData.referrer_id,
+        amount: referralData.reward_amount || 0,
+        status: TransactionStatus.COMPLETED,
+        transaction_type: TransactionType.REFERRAL_REWARD,
+      });
+
       if (transactionError) throw transactionError;
-      
+
       // Refresh referrals data
       await fetchReferrals();
-      
+
       toast({
-        title: "Referral Completed",
-        description: "The referral has been completed and the reward has been issued.",
-        variant: "default",
+        title: 'Referral Completed',
+        description: 'The referral has been completed and the reward has been issued.',
+        variant: 'default',
       });
-      
+
       return true;
     } catch (error) {
       handleError(error, 'Failed to complete referral');
@@ -291,7 +292,7 @@ export function useReferrals() {
         .eq('user_id', userId)
         .eq('role', 'admin')
         .single();
-      
+
       if (error) return false;
       return !!data;
     } catch {
@@ -317,6 +318,6 @@ export function useReferrals() {
     fetchReferrals,
     generateReferralCode,
     applyReferralCode,
-    completeReferral
+    completeReferral,
   };
 }

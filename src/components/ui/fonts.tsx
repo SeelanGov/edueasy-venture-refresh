@@ -1,10 +1,9 @@
-
-import React from "react";
-import { Helmet } from "react-helmet";
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
 /**
  * Fonts component to load additional web fonts
- * 
+ *
  * This component uses Helmet to inject the Google Fonts link
  * in the document head
  */

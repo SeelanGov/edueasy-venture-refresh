@@ -1,10 +1,9 @@
-
-import { TrainingHeader } from "./training/TrainingHeader";
-import { MessageTable } from "./training/MessageTable";
-import { TrainingFooter } from "./training/TrainingFooter";
-import { type ChatMessage, type TrainingEntry } from "@/hooks/useTrainingData";
-import { type Intent } from "@/hooks/useIntentManagement";
-import { useModelTraining } from "@/hooks/useModelTraining";
+import { TrainingHeader } from './training/TrainingHeader';
+import { MessageTable } from './training/MessageTable';
+import { TrainingFooter } from './training/TrainingFooter';
+import { type ChatMessage, type TrainingEntry } from '@/hooks/useTrainingData';
+import { type Intent } from '@/hooks/useIntentManagement';
+import { useModelTraining } from '@/hooks/useModelTraining';
 
 interface MessageTrainingProps {
   messages: ChatMessage[];
@@ -21,7 +20,7 @@ interface MessageTrainingProps {
   onDeleteTraining: (id: string) => void;
 }
 
-export const MessageTraining = ({ 
+export const MessageTraining = ({
   messages,
   trainedMessages,
   loading,
@@ -33,20 +32,20 @@ export const MessageTraining = ({
   hasMore,
   onTrain,
   onUpdateTraining,
-  onDeleteTraining
+  onDeleteTraining,
 }: MessageTrainingProps) => {
-  const { 
-    trainingStats, 
-    lastTrainingDate, 
-    isLoading: statsLoading, 
+  const {
+    trainingStats,
+    lastTrainingDate,
+    isLoading: statsLoading,
     isRetraining,
-    retrainModel
+    retrainModel,
   } = useModelTraining();
 
   return (
     <div className="space-y-4">
-      <TrainingHeader 
-        lowConfidenceOnly={lowConfidenceOnly} 
+      <TrainingHeader
+        lowConfidenceOnly={lowConfidenceOnly}
         setLowConfidenceOnly={setLowConfidenceOnly}
         trainingStats={trainingStats}
         lastTrainingDate={lastTrainingDate}
@@ -54,8 +53,8 @@ export const MessageTraining = ({
         isRetraining={isRetraining}
         onRetrain={retrainModel}
       />
-      
-      <MessageTable 
+
+      <MessageTable
         messages={messages}
         trainedMessages={trainedMessages}
         loading={loading}
@@ -64,12 +63,8 @@ export const MessageTraining = ({
         onUpdateTraining={onUpdateTraining}
         onDeleteTraining={onDeleteTraining}
       />
-      
-      <TrainingFooter 
-        page={page}
-        setPage={setPage}
-        hasMore={hasMore}
-      />
+
+      <TrainingFooter page={page} setPage={setPage} hasMore={hasMore} />
     </div>
   );
 };

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PartnerRegister: React.FC = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    instituteName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
+    instituteName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,25 +18,27 @@ const PartnerRegister: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     if (!form.instituteName || !form.username || !form.password || !form.confirmPassword) {
-      setError("All fields are required.");
+      setError('All fields are required.');
       return;
     }
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
     // Simulate registration success
-    setSuccess("Registration successful! You can now log in.");
-    setTimeout(() => navigate("/partner/login"), 1500);
+    setSuccess('Registration successful! You can now log in.');
+    setTimeout(() => navigate('/partner/login'), 1500);
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
       <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center text-primary">Partner Institute Registration</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-primary">
+          Partner Institute Registration
+        </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"

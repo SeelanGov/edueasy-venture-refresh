@@ -1,11 +1,10 @@
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { ApplicationFormValues } from "@/components/application/ApplicationFormFields";
-import { useApplicationFormSchema } from "@/hooks/useApplicationFormSchema";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { useAuth } from "@/contexts/AuthContext";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAuth } from '@/contexts/AuthContext';
 
 /**
  * Hook for managing application form state and validation
@@ -20,11 +19,11 @@ export const useApplicationFormState = () => {
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      idNumber: "",
-      grade12Results: "",
-      university: "",
-      program: "",
+      fullName: '',
+      idNumber: '',
+      grade12Results: '',
+      university: '',
+      program: '',
     },
   });
 
@@ -42,6 +41,6 @@ export const useApplicationFormState = () => {
     handleFileChange,
     hasSavedDraft,
     setHasSavedDraft,
-    user
+    user,
   };
 };

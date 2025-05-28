@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { DocumentUploadState } from "@/components/profile-completion/documents/types";
-import { VerificationResult } from "@/hooks/useDocumentVerification";
+import { useEffect } from 'react';
+import { DocumentUploadState } from '@/components/profile-completion/documents/types';
+import { VerificationResult } from '@/hooks/useDocumentVerification';
 
 export const useStepperManager = (
   currentDocumentType: string | null,
@@ -13,70 +13,78 @@ export const useStepperManager = (
   // Update steps based on current document upload process
   useEffect(() => {
     if (!currentDocumentType) return;
-    
+
     const documentState = getDocumentState(currentDocumentType);
     const isResubmission = documentState.isResubmission || false;
-    
+
     const getStepLabel = (stepName: string) => {
       if (isResubmission && stepName === 'Upload') return 'Resubmit';
       if (isResubmission && stepName === 'Verify') return 'Re-verify';
       return stepName;
     };
-    
+
     const newSteps = [
-      { 
-        id: 1, 
-        label: getStepLabel('Select'), 
+      {
+        id: 1,
+        label: getStepLabel('Select'),
         description: isResubmission ? 'Choose new file' : 'Choose file',
-        status: documentState.file ? 'complete' : 'current'
+        status: documentState.file ? 'complete' : 'current',
       },
-      { 
-        id: 2, 
-        label: getStepLabel('Upload'), 
+      {
+        id: 2,
+        label: getStepLabel('Upload'),
         description: isResubmission ? 'Resubmit document' : 'Upload to server',
-        status: documentState.uploaded 
-          ? 'complete' 
-          : documentState.uploading 
-            ? 'current' 
-            : documentState.file 
-              ? 'current' 
-              : 'pending'
+        status: documentState.uploaded
+          ? 'complete'
+          : documentState.uploading
+            ? 'current'
+            : documentState.file
+              ? 'current'
+              : 'pending',
       },
-      { 
-        id: 3, 
-        label: getStepLabel('Verify'), 
+      {
+        id: 3,
+        label: getStepLabel('Verify'),
         description: isResubmission ? 'Re-verification' : 'AI verification',
         status: documentState.verificationTriggered
           ? isVerifying
             ? 'current'
             : verificationResult?.status === 'approved'
               ? 'complete'
-              : verificationResult?.status === 'rejected' || verificationResult?.status === 'request_resubmission'
+              : verificationResult?.status === 'rejected' ||
+                  verificationResult?.status === 'request_resubmission'
                 ? 'error'
                 : 'current'
           : documentState.uploaded
             ? 'current'
-            : 'pending'
+            : 'pending',
       },
-      { 
-        id: 4, 
-        label: 'Complete', 
+      {
+        id: 4,
+        label: 'Complete',
         description: 'Document ready',
-        status: documentState.uploaded && verificationResult?.status === 'approved'
-          ? 'complete'
-          : 'pending'
+        status:
+          documentState.uploaded && verificationResult?.status === 'approved'
+            ? 'complete'
+            : 'pending',
       },
     ];
-    
+
     setUploadSteps(newSteps);
-    
+
     // Calculate current step
     let step = 1;
     if (documentState.file) step = 2;
     if (documentState.uploaded) step = 3;
     if (documentState.uploaded && verificationResult?.status === 'approved') step = 4;
-    
+
     setCurrentStep(step);
-    
-  }, [currentDocumentType, getDocumentState, isVerifying, verificationResult, setUploadSteps, setCurrentStep]);
+  }, [
+    currentDocumentType,
+    getDocumentState,
+    isVerifying,
+    verificationResult,
+    setUploadSteps,
+    setCurrentStep,
+  ]);
 };
