@@ -1,7 +1,7 @@
 
-import React, { useMemo } from "react";
-import { Separator } from "@/components/ui/separator";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Shield, Eye, Plus, Edit, Trash2 } from "lucide-react";
 
 interface PolicyRecord {
   table_name: string;
@@ -15,61 +15,75 @@ interface PolicyRegistryProps {
 }
 
 export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
-  // Group policies by table name for better organization
-  const groupedPolicies = useMemo(() => {
-    return policies.reduce((acc, policy) => {
-      if (!acc[policy.table_name]) {
-        acc[policy.table_name] = [];
-      }
-      acc[policy.table_name].push(policy);
-      return acc;
-    }, {} as Record<string, PolicyRecord[]>);
-  }, [policies]);
-
-  // Get policy type badge variant
-  const getPolicyTypeVariant = (type: string) => {
-    switch (type.toUpperCase()) {
-      case 'SELECT': return 'outline';
-      case 'INSERT': return 'secondary';
-      case 'UPDATE': return 'default';
-      case 'DELETE': return 'destructive';
-      default: return 'outline';
+  const getPolicyIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'select':
+        return <Eye className="h-4 w-4 text-blue-600" />;
+      case 'insert':
+        return <Plus className="h-4 w-4 text-green-600" />;
+      case 'update':
+        return <Edit className="h-4 w-4 text-yellow-600" />;
+      case 'delete':
+        return <Trash2 className="h-4 w-4 text-red-600" />;
+      default:
+        return <Shield className="h-4 w-4 text-gray-600" />;
     }
   };
 
+  const getPolicyBadge = (type: string) => {
+    const colorMap: Record<string, string> = {
+      select: "bg-blue-50 text-blue-700 border-blue-200",
+      insert: "bg-green-50 text-green-700 border-green-200",
+      update: "bg-yellow-50 text-yellow-700 border-yellow-200",
+      delete: "bg-red-50 text-red-700 border-red-200"
+    };
+
+    const className = colorMap[type.toLowerCase()] || "bg-gray-50 text-gray-700 border-gray-200";
+
+    return (
+      <Badge variant="outline" className={className}>
+        {type.toUpperCase()}
+      </Badge>
+    );
+  };
+
+  if (!policies?.length) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        No RLS policies found
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      {Object.keys(groupedPolicies).length > 0 ? (
-        Object.entries(groupedPolicies).map(([tableName, tablePolicies]) => (
-          <div key={tableName} className="border rounded-md p-4">
-            <h4 className="font-medium mb-2">{tableName}</h4>
-            <Separator className="mb-3" />
-            
-            <div className="space-y-2">
-              {tablePolicies.map((policy, idx) => (
-                <div key={idx} className="flex justify-between items-center px-2 py-1 hover:bg-muted rounded">
-                  <div>
-                    <span className="font-medium">{policy.policy_name}</span>
-                    <Badge 
-                      variant={getPolicyTypeVariant(policy.policy_type)} 
-                      className="ml-2"
-                    >
-                      {policy.policy_type}
-                    </Badge>
-                  </div>
-                  <div className="text-sm text-muted-foreground max-w-[60%] truncate">
-                    {policy.description || "No description"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
-      ) : (
-        <div className="p-8 text-center text-muted-foreground">
-          No registered policies found. Run tests to discover policies.
-        </div>
-      )}
+    <div className="border rounded-md">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Table</TableHead>
+            <TableHead>Policy Name</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Description</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {policies.map((policy, index) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">{policy.table_name}</TableCell>
+              <TableCell className="flex items-center gap-2">
+                {getPolicyIcon(policy.policy_type)}
+                {policy.policy_name}
+              </TableCell>
+              <TableCell>
+                {getPolicyBadge(policy.policy_type)}
+              </TableCell>
+              <TableCell className="text-sm text-gray-600">
+                {policy.description || 'No description provided'}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

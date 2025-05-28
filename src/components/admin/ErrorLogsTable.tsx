@@ -54,14 +54,16 @@ interface ErrorLogsTableProps {
   onResolve: (id: string, notes: string) => Promise<boolean>;
 }
 
+interface FilterState {
+  severity?: string;
+  category?: string;
+  component?: string;
+  search: string;
+  showResolved: boolean;
+}
+
 export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorLogsTableProps) => {
-  const [filter, setFilter] = useState<{
-    severity?: string;
-    category?: string;
-    component?: string;
-    search: string;
-    showResolved: boolean;
-  }>({
+  const [filter, setFilter] = useState<FilterState>({
     search: '',
     showResolved: false,
   });

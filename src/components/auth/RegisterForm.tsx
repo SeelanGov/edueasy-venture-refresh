@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +27,6 @@ import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 
 // Schema definition moved to the form component
@@ -57,10 +57,6 @@ export const RegisterForm = () => {
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const [consentPrivacy, setConsentPrivacy] = useState(false);
   const [consentTerms, setConsentTerms] = useState(false);
-  const location = useLocation();
-
-  // Get the intended destination from location state, or default to profile completion
-  const from = location.state?.from || '/profile-completion';
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
@@ -83,8 +79,6 @@ export const RegisterForm = () => {
     setIsLoading(true);
     setRegistrationError(null);
     try {
-      // Log consent (stub)
-      // await logConsent(userId, { privacy: true, terms: true });
       const data = form.getValues();
       const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
 
@@ -93,7 +87,6 @@ export const RegisterForm = () => {
         setRegistrationError('Registration is currently unavailable. Please try again later.');
       }
       // Note: Navigation to login after successful registration is handled in useAuthOperations
-      // The "from" parameter will be handled by the Login component when they sign in
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       console.error('Registration error:', error);
@@ -120,45 +113,85 @@ export const RegisterForm = () => {
 
         <Form {...form}>
           <form onSubmit={handleRegister} className="space-y-4">
-            <EnhancedFormField
+            <FormField
               control={form.control}
               name="fullName"
-              label="Full Name"
-              required
-              placeholder="John Doe"
-              tooltip="Enter your full legal name as it appears on your ID."
-              helperText="This will be used for your application documents."
-              disabled={isLoading}
-              securityBadgeType="privacy"
-              maxLength={50}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 flex items-center gap-2">
+                    Full Name
+                    <SecurityBadge type="privacy" size="sm" showLabel={false} />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="John Doe"
+                      {...field}
+                      disabled={isLoading}
+                      className="text-gray-900"
+                      maxLength={50}
+                    />
+                  </FormControl>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Enter your full legal name as it appears on your ID.
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <EnhancedFormField
+            
+            <FormField
               control={form.control}
               name="idNumber"
-              label="ID Number"
-              required
-              placeholder="1234567890123"
-              tooltip="South African 13-digit ID number. Digits only."
-              helperText="Used for identity verification."
-              disabled={isLoading}
-              securityBadgeType="verification"
-              maxLength={13}
-              patternExample="1234567890123"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 flex items-center gap-2">
+                    ID Number
+                    <SecurityBadge type="verification" size="sm" showLabel={false} />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="1234567890123"
+                      {...field}
+                      disabled={isLoading}
+                      className="text-gray-900"
+                      maxLength={13}
+                    />
+                  </FormControl>
+                  <div className="text-xs text-gray-500 mt-1">
+                    South African 13-digit ID number. Used for identity verification.
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <EnhancedFormField
+
+            <FormField
               control={form.control}
               name="email"
-              label="Email"
-              required
-              type="email"
-              placeholder="your.email@example.com"
-              tooltip="We'll send important updates to this address."
-              helperText="Use a personal email you check regularly."
-              disabled={isLoading}
-              securityBadgeType="data-protection"
-              maxLength={64}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 flex items-center gap-2">
+                    Email
+                    <SecurityBadge type="data-protection" size="sm" showLabel={false} />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="your.email@example.com"
+                      {...field}
+                      disabled={isLoading}
+                      className="text-gray-900"
+                      maxLength={64}
+                    />
+                  </FormControl>
+                  <div className="text-xs text-gray-500 mt-1">
+                    We'll send important updates to this address.
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {/* Gender and password fields remain as custom for now, can be migrated next */}
+
             <FormField
               control={form.control}
               name="gender"
@@ -186,6 +219,7 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
+            
             <FormField
               control={form.control}
               name="password"
@@ -222,6 +256,7 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
+            
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -250,6 +285,7 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
+            
             <div className="flex flex-col gap-2 my-4">
               <label className="flex items-center gap-2">
                 <input
@@ -274,6 +310,7 @@ export const RegisterForm = () => {
                 </a>
               </label>
             </div>
+            
             <Button
               type="submit"
               className="w-full bg-cap-coral hover:bg-cap-coral/90"
@@ -282,6 +319,7 @@ export const RegisterForm = () => {
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
               {isLoading ? 'Signing up...' : 'Sign Up'}
             </Button>
+            
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
