@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -28,25 +28,23 @@ import {
   ChevronDown,
   Check,
 } from 'lucide-react';
-import { ErrorSeverity } from '@/utils/errorLogging';
-import { ErrorCategory } from '@/utils/errorHandler';
 import { format } from 'date-fns';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 
 interface ErrorLogEntry {
   id: string;
   message: string;
-  category: ErrorCategory;
-  severity: ErrorSeverity;
-  component?: string;
-  action?: string;
-  user_id?: string;
-  details?: Record<string, unknown>;
+  category: string;
+  severity: string;
+  component?: string | null;
+  action?: string | null;
+  user_id?: string | null;
+  details?: Record<string, unknown> | null;
   occurred_at: string;
   is_resolved: boolean;
-  resolved_at?: string;
-  resolved_by?: string;
-  resolution_notes?: string;
+  resolved_at?: string | null;
+  resolved_by?: string | null;
+  resolution_notes?: string | null;
 }
 
 interface ErrorLogsTableProps {
@@ -129,81 +127,81 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
     return true;
   });
 
-  const getSeverityIcon = (severity: ErrorSeverity) => {
+  const getSeverityIcon = (severity: string) => {
     switch (severity) {
-      case ErrorSeverity.INFO:
+      case 'INFO':
         return <Info className="h-4 w-4 text-blue-500" />;
-      case ErrorSeverity.WARNING:
+      case 'WARNING':
         return <AlertTriangle className="h-4 w-4 text-amber-500" />;
-      case ErrorSeverity.ERROR:
+      case 'ERROR':
         return <AlertCircle className="h-4 w-4 text-red-500" />;
-      case ErrorSeverity.CRITICAL:
+      case 'CRITICAL':
         return <AlertOctagon className="h-4 w-4 text-red-600" />;
       default:
         return <AlertCircle className="h-4 w-4" />;
     }
   };
 
-  const getSeverityBadge = (severity: ErrorSeverity) => {
+  const getSeverityBadge = (severity: string) => {
     switch (severity) {
-      case ErrorSeverity.INFO:
+      case 'INFO':
         return (
           <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
             Info
           </Badge>
         );
-      case ErrorSeverity.WARNING:
+      case 'WARNING':
         return (
           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
             Warning
           </Badge>
         );
-      case ErrorSeverity.ERROR:
+      case 'ERROR':
         return (
           <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
             Error
           </Badge>
         );
-      case ErrorSeverity.CRITICAL:
+      case 'CRITICAL':
         return <Badge variant="destructive">Critical</Badge>;
       default:
         return <Badge variant="outline">Unknown</Badge>;
     }
   };
 
-  const getCategoryBadge = (category: ErrorCategory) => {
+  const getCategoryBadge = (category: string) => {
     switch (category) {
-      case ErrorCategory.NETWORK:
+      case 'NETWORK':
         return (
           <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
             Network
           </Badge>
         );
-      case ErrorCategory.DATABASE:
+      case 'DATABASE':
         return (
           <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200">
             Database
           </Badge>
         );
-      case ErrorCategory.AUTHENTICATION:
+      case 'AUTHENTICATION':
         return (
           <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-200">
             Auth
           </Badge>
         );
-      case ErrorCategory.VALIDATION:
+      case 'VALIDATION':
         return (
           <Badge variant="outline" className="bg-teal-50 text-teal-700 border-teal-200">
             Validation
           </Badge>
         );
-      case ErrorCategory.FILE:
+      case 'FILE':
         return (
           <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
             File
           </Badge>
         );
-      case ErrorCategory.UNKNOWN:
+      case 'UNKNOWN':
         return (
           <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
             Unknown
@@ -257,10 +255,10 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="">All Severities</SelectItem>
-            <SelectItem value={ErrorSeverity.INFO}>Info</SelectItem>
-            <SelectItem value={ErrorSeverity.WARNING}>Warning</SelectItem>
-            <SelectItem value={ErrorSeverity.ERROR}>Error</SelectItem>
-            <SelectItem value={ErrorSeverity.CRITICAL}>Critical</SelectItem>
+            <SelectItem value="INFO">Info</SelectItem>
+            <SelectItem value="WARNING">Warning</SelectItem>
+            <SelectItem value="ERROR">Error</SelectItem>
+            <SelectItem value="CRITICAL">Critical</SelectItem>
           </SelectContent>
         </Select>
 
@@ -278,12 +276,12 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="">All Categories</SelectItem>
-            <SelectItem value={ErrorCategory.NETWORK}>Network</SelectItem>
-            <SelectItem value={ErrorCategory.DATABASE}>Database</SelectItem>
-            <SelectItem value={ErrorCategory.AUTHENTICATION}>Auth</SelectItem>
-            <SelectItem value={ErrorCategory.VALIDATION}>Validation</SelectItem>
-            <SelectItem value={ErrorCategory.FILE}>File</SelectItem>
-            <SelectItem value={ErrorCategory.UNKNOWN}>Unknown</SelectItem>
+            <SelectItem value="NETWORK">Network</SelectItem>
+            <SelectItem value="DATABASE">Database</SelectItem>
+            <SelectItem value="AUTHENTICATION">Auth</SelectItem>
+            <SelectItem value="VALIDATION">Validation</SelectItem>
+            <SelectItem value="FILE">File</SelectItem>
+            <SelectItem value="UNKNOWN">Unknown</SelectItem>
           </SelectContent>
         </Select>
 
@@ -387,13 +385,13 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                           {format(new Date(error.occurred_at), 'HH:mm:ss')}
                         </div>
                       </div>
-                      {error.severity === ErrorSeverity.CRITICAL && (
+                      {error.severity === 'CRITICAL' && (
                         <SecurityBadge type="privacy" size="sm" showLabel={false} />
                       )}
-                      {error.severity === ErrorSeverity.WARNING && (
+                      {error.severity === 'WARNING' && (
                         <SecurityBadge type="data-protection" size="sm" showLabel={false} />
                       )}
-                      {error.severity === ErrorSeverity.INFO && (
+                      {error.severity === 'INFO' && (
                         <SecurityBadge type="verification" size="sm" showLabel={false} />
                       )}
                     </TableCell>

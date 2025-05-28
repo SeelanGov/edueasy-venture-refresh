@@ -5,11 +5,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import Logo from './Logo';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut();
     } catch (error) {
       console.error('Logout error:', error);
     }
