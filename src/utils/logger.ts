@@ -1,44 +1,62 @@
-// Enhanced logger utility for production-safe logging
-// In production, only errors are logged, while in development all levels are logged
 
-/**
- * Logger interface defining the available logging methods
- */
-export interface Logger {
-  info: (message: string, ...optionalParams: any[]) => void;
-  success: (message: string, ...optionalParams: any[]) => void;
-  warn: (message: string, ...optionalParams: any[]) => void;
-  error: (message: string, ...optionalParams: any[]) => void;
-  debug: (message: string, ...optionalParams: any[]) => void;
+enum LogLevel {
+  DEBUG = 0,
+  INFO = 1,
+  WARN = 2,
+  ERROR = 3,
 }
 
-/**
- * Logger implementation with production-safe logging
- */
-const logger: Logger = {
-  info: (message: string, ...optionalParams: any[]) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.info('[INFO]', message, ...optionalParams);
-    }
-  },
-  success: (message: string, ...optionalParams: any[]) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[SUCCESS]', message, ...optionalParams);
-    }
-  },
-  warn: (message: string, ...optionalParams: any[]) => {
-    // Warnings are logged in all environments
-    console.warn('[WARN]', message, ...optionalParams);
-  },
-  error: (message: string, ...optionalParams: any[]) => {
-    // Errors are always logged, even in production
-    console.error('[ERROR]', message, ...optionalParams);
-  },
-  debug: (message: string, ...optionalParams: any[]) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.debug('[DEBUG]', message, ...optionalParams);
-    }
-  },
-};
+class Logger {
+  private level: LogLevel;
 
+  constructor() {
+    // Set log level based on environment
+    this.level = import.meta.env.PROD ? LogLevel.WARN : LogLevel.DEBUG;
+  }
+
+  private shouldLog(level: LogLevel): boolean {
+    return level >= this.level;
+  }
+
+  private formatMessage(level: string, message: string, ...args: unknown[]): void {
+    const timestamp = new Date().toISOString();
+    const prefix = `[${timestamp}] [${level}]`;
+    
+    if (import.meta.env.PROD) {
+      // In production, only log warnings and errors to console
+      if (level === 'WARN' || level === 'ERROR') {
+        console[level.toLowerCase() as 'warn' | 'error'](prefix, message, ...args);
+      }
+    } else {
+      // In development, log everything to console
+      console.log(prefix, message, ...args);
+    }
+  }
+
+  debug(message: string, ...args: unknown[]): void {
+    if (this.shouldLog(LogLevel.DEBUG)) {
+      this.formatMessage('DEBUG', message, ...args);
+    }
+  }
+
+  info(message: string, ...args: unknown[]): void {
+    if (this.shouldLog(LogLevel.INFO)) {
+      this.formatMessage('INFO', message, ...args);
+    }
+  }
+
+  warn(message: string, ...args: unknown[]): void {
+    if (this.shouldLog(LogLevel.WARN)) {
+      this.formatMessage('WARN', message, ...args);
+    }
+  }
+
+  error(message: string, ...args: unknown[]): void {
+    if (this.shouldLog(LogLevel.ERROR)) {
+      this.formatMessage('ERROR', message, ...args);
+    }
+  }
+}
+
+const logger = new Logger();
 export default logger;

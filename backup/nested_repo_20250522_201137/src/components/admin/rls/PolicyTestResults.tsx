@@ -1,115 +1,96 @@
 
-import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { CheckCircle, XCircle } from "lucide-react";
-import { RLSTestResult } from "@/utils/security/types";
+import { CheckCircle, XCircle, AlertTriangle, Clock } from "lucide-react";
 
-interface PolicyTestResultsProps {
-  results: RLSTestResult[];
+interface TestResult {
+  table_name: string;
+  policy_name: string;
+  operation: string;
+  success: boolean;
+  details: string;
 }
 
-export const PolicyTestResults = ({ results }: PolicyTestResultsProps) => {
-  // Group results by table name for better organization
-  const groupedResults = results.reduce((acc, result) => {
-    if (!acc[result.table_name]) {
-      acc[result.table_name] = [];
-    }
-    acc[result.table_name].push(result);
-    return acc;
-  }, {} as Record<string, RLSTestResult[]>);
+interface PolicyTestResultsProps {
+  results: TestResult[];
+  isLoading: boolean;
+}
 
-  // Calculate test statistics
-  const totalTests = results.length;
-  const passedTests = results.filter(r => r.success).length;
-  const passRate = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
-  
+export const PolicyTestResults = ({ results, isLoading }: PolicyTestResultsProps) => {
+  const getStatusIcon = (success: boolean) => {
+    return success ? 
+      <CheckCircle className="h-4 w-4 text-green-600" /> : 
+      <XCircle className="h-4 w-4 text-red-600" />;
+  };
+
+  const getStatusBadge = (success: boolean) => {
+    return success ? 
+      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Passed</Badge> :
+      <Badge variant="destructive">Failed</Badge>;
+  };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5 animate-spin" />
+            Running Tests...
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-gray-500">
+            Testing RLS policies, please wait...
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!results?.length) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Test Results</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-gray-500">
+            No test results yet. Configure and run a test above.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="mb-4 p-4 border rounded-md bg-muted/30">
-        <div className="flex justify-between mb-2">
-          <h4 className="font-medium">Test Results Summary</h4>
-          <Badge variant={passRate > 90 ? "default" : passRate > 70 ? "secondary" : "destructive"}>
-            {passRate}% Pass Rate
-          </Badge>
-        </div>
-        <div className="grid grid-cols-3 gap-2 text-sm">
-          <div>
-            <div className="text-muted-foreground">Total Tests</div>
-            <div className="font-medium">{totalTests}</div>
-          </div>
-          <div>
-            <div className="text-muted-foreground">Passed</div>
-            <div className="font-medium text-green-600">{passedTests}</div>
-          </div>
-          <div>
-            <div className="text-muted-foreground">Failed</div>
-            <div className="font-medium text-red-600">{totalTests - passedTests}</div>
-          </div>
-        </div>
-      </div>
-
-      {Object.entries(groupedResults).map(([tableName, tableResults]) => (
-        <div key={tableName} className="border rounded-md p-3">
-          <div className="flex items-center justify-between mb-2">
-            <h4 className="font-semibold">{tableName}</h4>
-            <div>
-              <Badge variant="outline" className="mr-2">
-                {tableResults.length} {tableResults.length === 1 ? 'policy' : 'policies'}
-              </Badge>
-              
-              {tableResults.every(r => r.success) ? (
-                <Badge variant="default" className="bg-green-600">All Passed</Badge>
-              ) : (
-                <Badge variant="destructive">
-                  {tableResults.filter(r => !r.success).length} Failed
-                </Badge>
-              )}
-            </div>
-          </div>
-          
-          <Separator className="my-2" />
-          
-          <div className="space-y-2 mt-2">
-            {tableResults.map((result, idx) => (
-              <div key={idx} className="flex items-start justify-between px-2 py-1 hover:bg-muted rounded">
+    <Card>
+      <CardHeader>
+        <CardTitle>Test Results</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {results.map((result, index) => (
+            <div key={index} className="border rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  {result.success ? (
-                    <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
-                  ) : (
-                    <XCircle className="h-4 w-4 text-red-600 shrink-0" />
-                  )}
-                  
-                  <div>
-                    <div className="font-medium">
-                      {result.operation} Operation
-                    </div>
-                    
-                    {!result.success && result.message && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {result.message}
-                      </div>
-                    )}
-                  </div>
+                  {getStatusIcon(result.success)}
+                  <span className="font-medium">{result.table_name}</span>
+                  <Badge variant="outline">{result.operation}</Badge>
                 </div>
-                
-                <Badge 
-                  variant={result.success ? "outline" : "destructive"}
-                  className={result.success ? "border-green-600 text-green-700 bg-green-50" : ""}
-                >
-                  {result.success ? "Pass" : "Fail"}
-                </Badge>
+                {getStatusBadge(result.success)}
               </div>
-            ))}
-          </div>
+              
+              <div className="text-sm text-gray-600 mb-1">
+                Policy: {result.policy_name}
+              </div>
+              
+              <div className="text-sm bg-gray-50 p-2 rounded">
+                {result.details}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-      
-      {results.length === 0 && (
-        <div className="p-8 text-center text-muted-foreground">
-          No test results available. Run tests to see results here.
-        </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
 };
