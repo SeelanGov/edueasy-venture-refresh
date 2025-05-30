@@ -17,11 +17,14 @@
     "strict": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": false,
-    "noUncheckedIndexedAccess": false
+    "noUncheckedIndexedAccess": false,
+    "module": "esnext",
+    "target": "es2020",
+    "composite": true
   }
 }
