@@ -1,5 +1,3 @@
-import React from 'react';
-
 type PatternBorderProps = {
   position: 'top' | 'bottom';
   className?: string;

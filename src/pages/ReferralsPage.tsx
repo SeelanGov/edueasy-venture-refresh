@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReferralDashboard } from '@/components/referrals/ReferralDashboard';
 
 export default function ReferralsPage() {

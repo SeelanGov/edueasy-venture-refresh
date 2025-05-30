@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useSponsorships } from '@/hooks/useSponsorships';
 import { SponsorshipCard } from '@/components/sponsorships/SponsorshipCard';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,21 +9,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { SponsorshipLevel } from '@/types/RevenueTypes';
-import { AlertCircle, Building, Users, Briefcase } from 'lucide-react';
+import { useSponsorships } from '@/hooks/useSponsorships';
+import { AlertCircle, Building } from 'lucide-react';
+import React, { useState } from 'react';
 
 export default function SponsorshipsPage() {
   const {
@@ -63,7 +61,7 @@ export default function SponsorshipsPage() {
       inquiryForm.contactName,
       inquiryForm.contactEmail,
       inquiryForm.contactPhone,
-      inquiryForm.message
+      inquiryForm.message,
     );
 
     if (result) {
@@ -129,7 +127,9 @@ export default function SponsorshipsPage() {
                   key={sponsorship.id}
                   sponsorship={sponsorship}
                   isAdmin={isAdmin}
-                  onEdit={() => {}} // Would implement edit functionality for admins
+                  onEdit={() => {
+                    return undefined;
+                  }} // Would implement edit functionality for admins
                   onDeactivate={handleDeactivateSponsorship}
                 />
               ))}

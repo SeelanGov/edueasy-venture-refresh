@@ -1,8 +1,7 @@
-import React from 'react';
-import { AlertCircle, RefreshCw, FileWarning, CheckCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { StandardError, ErrorCategory } from '@/utils/errorHandler';
+import { ErrorCategory, StandardError } from '@/utils/errorHandler';
+import { AlertCircle, FileWarning, RefreshCw } from 'lucide-react';
 
 interface ErrorDisplayProps {
   error: StandardError;
