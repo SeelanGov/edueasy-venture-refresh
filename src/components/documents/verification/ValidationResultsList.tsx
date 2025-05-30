@@ -1,10 +1,10 @@
+
 import { CheckCircle, XCircle, ClipboardList } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { Fragment, ReactNode } from 'react';
 
 interface ValidationResultsListProps {
   validationResults: Record<string, unknown> | undefined;
-  extractedFields?: Record<string, string>;
+  extractedFields?: Record<string, string> | undefined;
 }
 
 export const ValidationResultsList = ({
@@ -62,7 +62,6 @@ export const ValidationResultsList = ({
           </h4>
           <div className="text-xs space-y-1 bg-slate-50 p-2 rounded border border-slate-100">
             {Object.entries(extractedFields).map(([key, value]) => {
-              // Skip displaying JSON fields directly
               if (typeof value === 'string' && (value.startsWith('[') || value.startsWith('{'))) {
                 try {
                   const parsed = JSON.parse(value);
@@ -95,7 +94,6 @@ export const ValidationResultsList = ({
                 }
               }
 
-              // Regular string fields
               return (
                 <div key={key} className="flex flex-col">
                   <span className="font-medium">
