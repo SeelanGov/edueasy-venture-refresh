@@ -1,6 +1,6 @@
+
 import PatternBorder from '@/components/PatternBorder';
 
-// Update partnerLogos to use new image paths and formats
 const partnerLogos = [
   { name: 'University of Cape Town', logo: '/images/partner-logos/uct.webp' },
   { name: 'University of Pretoria', logo: '/images/partner-logos/pretoria.webp' },
@@ -13,7 +13,6 @@ const partnerLogos = [
 export const PartnersSection = () => {
   return (
     <section className="py-16 px-4 bg-cap-dark text-white relative overflow-hidden">
-      {/* Top Pattern Border */}
       <div className="absolute top-0 left-0 right-0">
         <PatternBorder position="top" />
       </div>
@@ -45,7 +44,6 @@ export const PartnersSection = () => {
         </div>
       </div>
 
-      {/* Bottom Pattern Border */}
       <div className="absolute bottom-0 left-0 right-0">
         <PatternBorder position="bottom" />
       </div>

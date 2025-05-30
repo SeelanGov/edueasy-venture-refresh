@@ -29,7 +29,6 @@ export const DocumentVerificationNotice = () => {
       }
 
       try {
-        // Get documents that have been recently verified, rejected, or need resubmission
         const { data, error } = await supabase
           .from('documents')
           .select('id, document_type, verification_status, file_path, created_at, rejection_reason')
@@ -40,12 +39,10 @@ export const DocumentVerificationNotice = () => {
 
         if (error) throw error;
 
-        // Check dismissed status from localStorage
         const dismissedJson = localStorage.getItem('dismissedDocNotifications');
         const dismissedDocs = dismissedJson ? JSON.parse(dismissedJson) : {};
 
         setDismissed(dismissedDocs);
-        // Filter out null created_at and ensure proper typing
         const validDocs = (data || []).filter((doc): doc is DocumentStatus => 
           doc.created_at !== null
         ).map(doc => ({
@@ -62,7 +59,6 @@ export const DocumentVerificationNotice = () => {
 
     fetchRecentVerifiedDocuments();
 
-    // Set up subscription for real-time updates
     if (user) {
       const channel = supabase
         .channel('documents-updates')
@@ -75,7 +71,6 @@ export const DocumentVerificationNotice = () => {
             filter: `user_id=eq.${user.id}`,
           },
           () => {
-            // When a document is updated, refresh the list
             fetchRecentVerifiedDocuments();
           }
         )
@@ -121,13 +116,12 @@ export const DocumentVerificationNotice = () => {
   return (
     <div className="space-y-4 mb-6">
       {recentlyVerifiedDocs.map((doc) => {
-        // Skip if dismissed
         if (dismissed[doc.id]) return null;
 
         const isApproved = doc.verification_status === 'approved';
         const isRejected = doc.verification_status === 'rejected';
         const isResubmission = doc.verification_status === 'request_resubmission';
-        const isRecent = new Date(doc.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
+        const isRecent = new Date(doc.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
         if (!isRecent) return null;
 
