@@ -104,11 +104,12 @@ export function ConsultationBookingForm({
       return;
     }
 
-    // Store form data for payment step
+    // Store form data for payment step - handle notes properly
+    const notesValue = values.notes && values.notes.trim() !== '' ? values.notes : undefined;
     setFormData({
       date: bookingDateTime,
       duration: durationValue,
-      notes: values.notes || undefined,
+      notes: notesValue,
     });
 
     // Show payment form
