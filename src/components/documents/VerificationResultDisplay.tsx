@@ -1,3 +1,4 @@
+
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
 import { VerifyingDocument } from './verification/VerifyingDocument';
 import { ApprovedDocument } from './verification/ApprovedDocument';
@@ -32,7 +33,7 @@ export const VerificationResultDisplay = ({
 
   if (!result) return null;
 
-  const { status, extractedFields } = result;
+  const { status } = result;
 
   // Format document type for display
   const displayDocumentType = formatDocumentType(documentType);
@@ -41,7 +42,7 @@ export const VerificationResultDisplay = ({
     return <ApprovedDocument result={result} documentType={displayDocumentType} />;
   }
 
-  if (status === 'rejected') {
+  if (status === 'rejected' && onResubmit) {
     return (
       <RejectedDocument
         result={result}
@@ -51,7 +52,7 @@ export const VerificationResultDisplay = ({
     );
   }
 
-  if (status === 'request_resubmission') {
+  if (status === 'request_resubmission' && onResubmit) {
     return (
       <ResubmissionDocument
         result={result}

@@ -1,7 +1,7 @@
+
 import { XCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
 import { ValidationResultsList } from './ValidationResultsList';
 import { DocumentGuidance } from './DocumentGuidance';
@@ -9,7 +9,7 @@ import { DocumentGuidance } from './DocumentGuidance';
 interface RejectedDocumentProps {
   result: VerificationResult;
   documentType: string;
-  onResubmit?: () => void;
+  onResubmit: () => void;
 }
 
 export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedDocumentProps) => {
@@ -26,25 +26,23 @@ export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedD
         <DocumentGuidance failureReason={failureReason} documentType={documentType} />
 
         <ValidationResultsList
-          validationResults={validationResults}
-          extractedFields={extractedFields}
+          validationResults={validationResults || {}}
+          extractedFields={extractedFields || {}}
         />
 
-        {onResubmit && (
-          <div className="mt-4">
-            <Button
-              onClick={onResubmit}
-              size="sm"
-              variant="outline"
-              className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium"
-            >
-              Resubmit Document
-            </Button>
-            <p className="text-xs mt-2 text-red-600">
-              Please address the issues above before resubmitting your {documentType}.
-            </p>
-          </div>
-        )}
+        <div className="mt-4">
+          <Button
+            onClick={onResubmit}
+            size="sm"
+            variant="outline"
+            className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium"
+          >
+            Resubmit Document
+          </Button>
+          <p className="text-xs mt-2 text-red-600">
+            Please address the issues above before resubmitting your {documentType}.
+          </p>
+        </div>
       </AlertDescription>
     </Alert>
   );
