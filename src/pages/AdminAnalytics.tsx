@@ -1,28 +1,27 @@
-import { useState, useEffect } from 'react';
-import { DashboardLayout } from '@/components/DashboardLayout';
-import { AdminAuthGuard } from '@/components/AdminAuthGuard';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/Spinner';
-import { ChartBarIcon, TableIcon, Download } from 'lucide-react';
+import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
+import { DocumentTimelineChart } from '@/components/admin/analytics/DocumentTimelineChart';
+import { DocumentTypePerformanceChart } from '@/components/admin/analytics/DocumentTypePerformanceChart';
+import { RejectionReasonsChart } from '@/components/admin/analytics/RejectionReasonsChart';
 import { StatCard } from '@/components/admin/analytics/StatCard';
 import { StatusDistributionChart } from '@/components/admin/analytics/StatusDistributionChart';
-import { DocumentTimelineChart } from '@/components/admin/analytics/DocumentTimelineChart';
-import { RejectionReasonsChart } from '@/components/admin/analytics/RejectionReasonsChart';
-import { DocumentTypePerformanceChart } from '@/components/admin/analytics/DocumentTypePerformanceChart';
-import { AnalyticsFilterBar } from '@/components/admin/analytics/AnalyticsFilters';
-import { useDocumentAnalytics } from '@/hooks/analytics';
-import { supabase } from '@/integrations/supabase/client';
+import { AdminAuthGuard } from '@/components/AdminAuthGuard';
+import { DashboardLayout } from '@/components/DashboardLayout';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useDocumentAnalytics } from '@/hooks/analytics';
+import { supabase } from '@/integrations/supabase/client';
+import { ChartBarIcon, Download } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const AdminAnalytics = () => {
   const { analytics, loading, error, filters, updateFilters, resetFilters, refreshAnalytics } =
@@ -127,7 +126,7 @@ const AdminAnalytics = () => {
             </div>
           </div>
 
-          <AnalyticsFilterBar
+          <AnalyticsFilters
             filters={filters}
             onUpdateFilters={updateFilters}
             onResetFilters={resetFilters}

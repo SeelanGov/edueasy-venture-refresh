@@ -1,13 +1,8 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
 import { Logo } from '@/components/Logo';
+import PatternBorder from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,9 +11,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PatternBorder } from '@/components/PatternBorder';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
