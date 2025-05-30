@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { PatternBorder } from '@/components/PatternBorder';
+import PatternBorder from '@/components/PatternBorder';
 
 // Update partnerLogos to use new image paths and formats
 const partnerLogos = [

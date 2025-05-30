@@ -1,9 +1,8 @@
-
-import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, WifiOff } from 'lucide-react';
 import { useNetwork } from '@/hooks/useNetwork';
+import { AlertCircle, WifiOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface NetworkErrorHandlerProps {
   children: React.ReactNode;
@@ -20,6 +19,7 @@ export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
     } else {
       setShowOfflineWarning(false);
     }
+    return; // Add explicit return
   }, [isOnline]);
 
   if (!isOnline && showOfflineWarning) {
@@ -28,25 +28,23 @@ export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
         <Alert variant="destructive" className="mb-4">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>You're offline</AlertTitle>
-          <AlertDescription>
-            Some features may be limited while you're offline.
-          </AlertDescription>
+          <AlertDescription>Some features may be limited while you're offline.</AlertDescription>
         </Alert>
-        
+
         <div className="text-center">
           <WifiOff className="mx-auto mb-4 h-12 w-12 text-gray-400" />
           <h2 className="text-xl font-bold mb-2">No Internet Connection</h2>
           <p className="mb-4 text-gray-600">
             You can still access some features, but you'll need to reconnect to submit applications.
           </p>
-          <Button 
-            onClick={() => window.location.reload()} 
+          <Button
+            onClick={() => window.location.reload()}
             className="bg-cap-teal hover:bg-cap-teal/90"
           >
             Try Again
           </Button>
         </div>
-        
+
         {children}
       </div>
     );

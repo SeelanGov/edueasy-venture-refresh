@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="bg-white border-t border-gray-100 py-12 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center space-y-8">
-          <Logo size="large" />
+          <Logo />
 
           <div className="flex space-x-6 mt-6">
             <SocialLink
