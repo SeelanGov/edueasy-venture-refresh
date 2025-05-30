@@ -14,7 +14,9 @@ export const PartnersSection = () => {
   return (
     <section className="py-16 px-4 bg-cap-dark text-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0">
-        <PatternBorder />
+        <PatternBorder>
+          <div></div>
+        </PatternBorder>
       </div>
 
       <div className="container mx-auto relative z-10">
@@ -45,7 +47,9 @@ export const PartnersSection = () => {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0">
-        <PatternBorder />
+        <PatternBorder>
+          <div></div>
+        </PatternBorder>
       </div>
     </section>
   );
