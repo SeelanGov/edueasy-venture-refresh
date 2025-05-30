@@ -1,12 +1,13 @@
-
-import { ReactNode, useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import Logo from '@/components/Logo';
-import { useAuth } from '@/contexts/AuthContext';
+import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
+import { Logo } from '@/components/Logo';
 import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/hooks/useTheme';
 import {
   BookOpen,
+  Briefcase,
+  Building,
   ChevronLeft,
   ChevronRight,
   ClipboardList,
@@ -16,14 +17,12 @@ import {
   Moon,
   Sun,
   User,
-  X,
-  Briefcase,
   Users,
-  Building,
   Video,
+  X,
 } from 'lucide-react';
-import { useTheme } from '@/hooks/useTheme';
-import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
+import { ReactNode, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface MobileFriendlyDashboardLayoutProps {
   children: ReactNode;

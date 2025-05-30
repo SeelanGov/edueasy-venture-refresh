@@ -1,4 +1,4 @@
-import PatternBorder from '@/components/PatternBorder';
+import { PatternBorder } from '@/components/PatternBorder';
 import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
 import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
 import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';

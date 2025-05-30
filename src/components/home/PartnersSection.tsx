@@ -1,4 +1,3 @@
-
 import PatternBorder from '@/components/PatternBorder';
 
 const partnerLogos = [
