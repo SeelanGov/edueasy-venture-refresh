@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertCircle, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { CheckCircle, XCircle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
@@ -43,7 +43,12 @@ export const DocumentVerificationNotice = () => {
         const dismissedDocs = dismissedJson ? JSON.parse(dismissedJson) : {};
         
         setDismissed(dismissedDocs);
-        setRecentlyVerifiedDocs(data || []);
+        
+        // Filter out documents with null created_at and ensure type safety
+        const validDocs = (data || []).filter((doc): doc is DocumentStatus => 
+          doc.created_at !== null
+        );
+        setRecentlyVerifiedDocs(validDocs);
       } catch (err) {
         console.error("Error fetching document verification status:", err);
       } finally {
@@ -74,6 +79,8 @@ export const DocumentVerificationNotice = () => {
         supabase.removeChannel(channel);
       };
     }
+    
+    return undefined;
   }, [user]);
   
   const handleDismiss = (docId: string) => {

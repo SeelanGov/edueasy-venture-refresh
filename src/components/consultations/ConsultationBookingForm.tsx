@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -97,11 +98,17 @@ export function ConsultationBookingForm({
     const bookingDateTime = new Date(values.bookingDate);
     bookingDateTime.setHours(hours, minutes, 0, 0);
 
+    const durationValue = parseInt(values.duration);
+    if (isNaN(durationValue)) {
+      console.error('Invalid duration value');
+      return;
+    }
+
     // Store form data for payment step
     setFormData({
       date: bookingDateTime,
-      duration: parseInt(values.duration),
-      notes: values.notes,
+      duration: durationValue,
+      notes: values.notes || undefined,
     });
 
     // Show payment form
