@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { WifiOff, RefreshCw, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';

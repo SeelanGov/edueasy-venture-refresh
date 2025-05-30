@@ -41,7 +41,12 @@
     "deploy:production": "bun scripts/deploy.js production",
     "ci:status": "bun scripts/check-ci-status.js",
     "ci:verify": "bun run verify-env && bun run type-check && bun run lint:all && bun run test:ci",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "ts:check-config": "node scripts/check-typescript-config.js",
+    "ts:fix-react-imports": "node scripts/fix-react-imports.js",
+    "ts:find-missing-types": "node scripts/find-missing-return-types.js",
+    "ts:fix-all": "node scripts/run-typescript-fixes.js",
+    "ts:commit-fixes": "node scripts/commit-typescript-fixes.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
