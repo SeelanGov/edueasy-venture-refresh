@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
 import { Spinner } from '@/components/Spinner';
+import React, { Suspense } from 'react';
 
 /**
  * Utility function for lazy loading components with a consistent loading state
@@ -7,11 +7,11 @@ import { Spinner } from '@/components/Spinner';
  * @returns Lazy loaded component with Suspense
  */
 export function lazyLoad<T extends React.ComponentType<any>>(
-  importFunc: () => Promise<{ default: T }>
+  importFunc: () => Promise<{ default: T }>,
 ): React.LazyExoticComponent<T> {
   const LazyComponent = React.lazy(importFunc);
 
-  return ((props: React.ComponentProps<T>) => (
+  return ((props: React.ComponentProps<T>): JSX.Element => (
     <Suspense
       fallback={
         <div className="flex justify-center items-center min-h-[200px]">
@@ -30,11 +30,11 @@ export function lazyLoad<T extends React.ComponentType<any>>(
  * @returns Lazy loaded component with Suspense
  */
 export function lazyLoadAdmin<T extends React.ComponentType<any>>(
-  importFunc: () => Promise<{ default: T }>
+  importFunc: () => Promise<{ default: T }>,
 ): React.LazyExoticComponent<T> {
   const LazyComponent = React.lazy(importFunc);
 
-  return ((props: React.ComponentProps<T>) => (
+  return ((props: React.ComponentProps<T>): JSX.Element => (
     <Suspense
       fallback={
         <div className="flex justify-center items-center min-h-[400px] bg-muted/20 rounded-lg">

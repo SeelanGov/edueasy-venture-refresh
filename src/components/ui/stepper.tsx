@@ -1,6 +1,5 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
-import { Check, AlertTriangle, Circle } from 'lucide-react';
+import { AlertTriangle, Check, Circle } from 'lucide-react';
 
 export interface StepperProps {
   steps: {
@@ -13,7 +12,7 @@ export interface StepperProps {
   className?: string;
 }
 
-export function Stepper({ steps, currentStep, className }: StepperProps) {
+export function Stepper({ steps, currentStep, className }: StepperProps): JSX.Element {
   return (
     <div className={cn('w-full space-y-4', className)}>
       <ol className="flex flex-col gap-2">
@@ -52,7 +51,7 @@ export function Stepper({ steps, currentStep, className }: StepperProps) {
                     step.status === 'complete' && 'text-green-600',
                     step.status === 'error' && 'text-red-600',
                     step.status === 'current' && 'text-primary',
-                    step.status === 'pending' && 'text-gray-500'
+                    step.status === 'pending' && 'text-gray-500',
                   )}
                 >
                   {step.label}
