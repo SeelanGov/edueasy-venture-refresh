@@ -1,3 +1,4 @@
+
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useNetwork } from '@/hooks/useNetwork';
@@ -19,7 +20,6 @@ export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
     } else {
       setShowOfflineWarning(false);
     }
-    return; // Add explicit return
   }, [isOnline]);
 
   if (!isOnline && showOfflineWarning) {
