@@ -1,3 +1,4 @@
+
 import { CheckCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
@@ -25,8 +26,8 @@ export const ApprovedDocument = ({ result, documentType }: ApprovedDocumentProps
         )}
 
         <ValidationResultsList
-          validationResults={validationResults}
-          extractedFields={extractedFields}
+          validationResults={validationResults || {}}
+          extractedFields={extractedFields || {}}
         />
       </AlertDescription>
     </Alert>
