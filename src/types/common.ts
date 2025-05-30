@@ -28,8 +28,6 @@ export interface UserProfile {
   created_at?: string;
   updated_at?: string;
   profile_completed?: boolean;
-  referral_code?: string;
-  referred_by?: string;
   [key: string]: unknown;
 }
 

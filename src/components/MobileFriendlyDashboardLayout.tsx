@@ -17,7 +17,6 @@ import {
   Moon,
   Sun,
   User,
-  Users,
   Video,
   X,
 } from 'lucide-react';
@@ -94,11 +93,6 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
       name: 'Consultations',
       path: '/consultations',
       icon: <Video className="h-5 w-5" />,
-    },
-    {
-      name: 'Referrals',
-      path: '/referrals',
-      icon: <Users className="h-5 w-5" />,
     },
     {
       name: 'Sponsorships',

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import {
   SubscriptionTier,
-  UserSubscription,
   Transaction,
   TransactionStatus,
   TransactionType,
+  UserSubscription,
 } from '@/types/SubscriptionTypes';
-import { toast } from '@/components/ui/use-toast';
+import { useEffect, useState } from 'react';
 
 export function useSubscription() {
   const { user } = useAuth();
@@ -67,7 +67,7 @@ export function useSubscription() {
           `
           *,
           tier:tier_id(*)
-        `
+        `,
         )
         .eq('user_id', user.id)
         .eq('is_active', true)
@@ -105,7 +105,14 @@ export function useSubscription() {
 
       if (error) throw error;
 
-      setTransactions(data || []);
+      // Convert string status and transaction_type to enum values
+      const typedTransactions: Transaction[] = (data || []).map((transaction) => ({
+        ...transaction,
+        status: transaction.status as TransactionStatus,
+        transaction_type: transaction.transaction_type as TransactionType,
+      }));
+
+      setTransactions(typedTransactions);
     } catch (error) {
       handleError(error, 'Failed to fetch transaction history');
     } finally {
@@ -118,7 +125,7 @@ export function useSubscription() {
     tierId: string,
     paymentMethod: string,
     autoRenew: boolean = false,
-    billingCycle: 'monthly' | 'yearly' = 'monthly'
+    billingCycle: 'monthly' | 'yearly' = 'monthly',
   ) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
@@ -302,13 +309,13 @@ export function useSubscription() {
   const changeTier = async (
     newTierId: string,
     paymentMethod: string,
-    billingCycle: 'monthly' | 'yearly' = 'monthly'
+    billingCycle: 'monthly' | 'yearly' = 'monthly',
   ) => {
     return subscribeToPlan(
       newTierId,
       paymentMethod,
       userSubscription?.auto_renew || false,
-      billingCycle
+      billingCycle,
     );
   };
 
