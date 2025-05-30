@@ -19,6 +19,7 @@ export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
       return () => clearTimeout(timer);
     } else {
       setShowOfflineWarning(false);
+      return undefined;
     }
   }, [isOnline]);
 

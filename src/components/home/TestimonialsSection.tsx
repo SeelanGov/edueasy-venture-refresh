@@ -1,5 +1,5 @@
+
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 
@@ -53,6 +53,12 @@ export const TestimonialsSection = () => {
     setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
   };
 
+  const currentTestimonial = testimonials[activeIndex];
+
+  if (!currentTestimonial) {
+    return null;
+  }
+
   return (
     <section id="testimonials" className="py-20 px-4 md:py-24 bg-white">
       <div className="container mx-auto">
@@ -79,25 +85,25 @@ export const TestimonialsSection = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-cap-teal">
                 <img
-                  src={testimonials[activeIndex].image}
-                  alt={testimonials[activeIndex].name}
+                  src={currentTestimonial.image}
+                  alt={currentTestimonial.name}
                   className="w-full h-full object-cover"
                 />
               </div>
 
               <div className="flex-grow">
                 <Typography variant="body-lg" className="italic mb-4 md:text-xl md:leading-relaxed">
-                  "{testimonials[activeIndex].quote}"
+                  "{currentTestimonial.quote}"
                 </Typography>
                 <div>
                   <Typography variant="h4" className="font-semibold md:text-xl">
-                    {testimonials[activeIndex].name}
+                    {currentTestimonial.name}
                   </Typography>
                   <Typography variant="body" color="primary" className="md:text-lg">
-                    {testimonials[activeIndex].program}
+                    {currentTestimonial.program}
                   </Typography>
                   <Typography variant="body-sm" className="text-gray-600 md:text-base">
-                    {testimonials[activeIndex].university}
+                    {currentTestimonial.university}
                   </Typography>
                 </div>
               </div>
