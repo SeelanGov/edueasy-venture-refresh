@@ -93,6 +93,8 @@ export function ConsultationBookingForm({
 
   // Handle form submission
   const handleFormSubmit = (values: FormValues) => {
+    console.log('Form submitted with values:', values);
+    
     // Combine date and time
     const [hours, minutes] = values.timeSlot.split(':').map(Number);
     const bookingDateTime = new Date(values.bookingDate);
@@ -100,7 +102,7 @@ export function ConsultationBookingForm({
 
     const durationValue = parseInt(values.duration);
     if (isNaN(durationValue)) {
-      console.error('Invalid duration value');
+      console.error('Invalid duration value:', values.duration);
       return;
     }
 

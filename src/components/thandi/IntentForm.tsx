@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,12 +57,29 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
       return;
     }
 
-    onSubmit({
+    // Handle optional fields properly for exactOptionalPropertyTypes
+    const submitData: {
+      intent_name: string;
+      description?: string;
+      response_template?: string;
+      sample_queries?: string[];
+    } = {
       intent_name: name.trim(),
-      description: description.trim() || undefined,
-      response_template: template.trim() || undefined,
-      sample_queries: queries.length > 0 ? queries : undefined,
-    });
+    };
+
+    if (description.trim()) {
+      submitData.description = description.trim();
+    }
+
+    if (template.trim()) {
+      submitData.response_template = template.trim();
+    }
+
+    if (queries.length > 0) {
+      submitData.sample_queries = queries;
+    }
+
+    onSubmit(submitData);
   };
 
   return (

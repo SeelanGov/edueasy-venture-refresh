@@ -24,10 +24,13 @@ const validateSAID = (id: string) => {
   // Check checksum digit
   let sum = 0;
   for (let i = 0; i < 12; i++) {
-    sum += parseInt(id[i]) * (i % 2 === 0 ? 1 : 2);
+    const digit = parseInt(id[i]);
+    if (isNaN(digit)) return false;
+    sum += digit * (i % 2 === 0 ? 1 : 2);
   }
   const checkDigit = (10 - (sum % 10)) % 10;
-  return checkDigit === parseInt(id[12]);
+  const lastDigit = parseInt(id[12]);
+  return !isNaN(lastDigit) && checkDigit === lastDigit;
 };
 
 const personalInfoSchema = z.object({
