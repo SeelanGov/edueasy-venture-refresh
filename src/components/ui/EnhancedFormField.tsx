@@ -1,14 +1,13 @@
-import React from 'react';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { CheckCircle, XCircle, Info } from 'lucide-react';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { Control, FieldValues } from 'react-hook-form';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { CheckCircle, Info, XCircle } from 'lucide-react';
+import { Control, FieldValues, Path } from 'react-hook-form';
 
-interface EnhancedFormFieldProps {
-  control: Control<FieldValues>;
-  name: string;
+interface EnhancedFormFieldProps<TFieldValues extends FieldValues = FieldValues> {
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
   label: string;
   required?: boolean;
   type?: string;
@@ -22,7 +21,7 @@ interface EnhancedFormFieldProps {
   patternExample?: string;
 }
 
-export const EnhancedFormField: React.FC<EnhancedFormFieldProps> = ({
+export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues>({
   control,
   name,
   label,
@@ -36,7 +35,7 @@ export const EnhancedFormField: React.FC<EnhancedFormFieldProps> = ({
   securityBadgeType,
   maxLength,
   patternExample,
-}) => {
+}: EnhancedFormFieldProps<TFieldValues>) => {
   return (
     <FormField
       control={control}

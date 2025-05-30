@@ -1,5 +1,5 @@
 import { Logo } from '@/components/Logo';
-import PatternBorder from '@/components/PatternBorder';
+import { PatternBorder } from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
