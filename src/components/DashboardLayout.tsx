@@ -1,24 +1,23 @@
-import { ReactNode, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Spinner } from '@/components/Spinner';
-import {
-  BookOpen,
-  ClipboardList,
-  Home,
-  User,
-  BarChart,
-  Settings,
-  MessageSquare,
-  CreditCard,
-  Users,
-} from 'lucide-react';
-import { useTheme } from '@/hooks/useTheme';
-import { useAdminRole } from '@/hooks/useAdminRole';
+import { DashboardContent } from '@/components/dashboard/layout/DashboardContent';
+import { DashboardHeader } from '@/components/dashboard/layout/DashboardHeader';
 import { DashboardSidebar } from '@/components/dashboard/layout/DashboardSidebar';
 import { MobileMenu } from '@/components/dashboard/layout/MobileMenu';
-import { DashboardHeader } from '@/components/dashboard/layout/DashboardHeader';
-import { DashboardContent } from '@/components/dashboard/layout/DashboardContent';
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useTheme } from '@/hooks/useTheme';
+import {
+  BarChart,
+  BookOpen,
+  ClipboardList,
+  CreditCard,
+  Home,
+  MessageSquare,
+  Settings,
+  User,
+} from 'lucide-react';
+import { ReactNode, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -77,11 +76,6 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       icon: <CreditCard className="h-5 w-5" />,
     },
     {
-      name: 'Referrals',
-      path: '/referrals',
-      icon: <Users className="h-5 w-5" />,
-    },
-    {
       name: 'My Profile',
       path: '/profile',
       icon: <User className="h-5 w-5" />,
@@ -112,7 +106,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const getPageTitle = () => {
     const allNavItems = [...navItems, ...adminNavItems];
     const currentNavItem = allNavItems.find(
-      (item) => isActive(item.path) || location.pathname.startsWith(item.path + '/')
+      (item) => isActive(item.path) || location.pathname.startsWith(item.path + '/'),
     );
     return currentNavItem?.name || 'Dashboard';
   };

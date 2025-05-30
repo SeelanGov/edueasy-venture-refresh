@@ -91,7 +91,6 @@ export type AdminStats = {
   revenue_daily: number;
   active_applications: number;
   premium_conversions: number;
-  referral_signups: number;
   consultation_bookings: number;
   created_at: string;
   updated_at: string;

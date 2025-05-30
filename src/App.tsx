@@ -1,35 +1,34 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from '@/contexts/AuthContext';
 import { AuthGuard } from '@/components/AuthGuard';
-import { AdminAuthGuard } from './components/AdminAuthGuard';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
 import { Toaster as ShadcnToaster } from '@/components/ui/toaster';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { AuthProvider } from '@/contexts/AuthContext';
 import logger from '@/utils/logger';
-import Index from './pages/Index';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ApplicationForm from './pages/ApplicationForm';
-import NotFound from './pages/NotFound';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import UserProfile from './pages/UserProfile';
-import ProfileDemo from './pages/ProfileDemo';
-import ProfileCompletion from './pages/ProfileCompletion';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminAnalytics from './pages/AdminAnalytics';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { AdminAuthGuard } from './components/AdminAuthGuard';
 import AdminAiTraining from './pages/AdminAiTraining';
-import PartnerRegister from './pages/PartnerRegister';
-import PartnerLogin from './pages/PartnerLogin';
-import PartnerDashboard from './pages/PartnerDashboard';
-import SubscriptionPage from './pages/SubscriptionPage';
-import ReferralsPage from './pages/ReferralsPage';
+import AdminAnalytics from './pages/AdminAnalytics';
+import AdminDashboard from './pages/AdminDashboard';
+import ApplicationForm from './pages/ApplicationForm';
 import CareerGuidancePage from './pages/CareerGuidancePage';
 import ConsultationsPage from './pages/ConsultationsPage';
+import Dashboard from './pages/Dashboard';
+import ForgotPassword from './pages/ForgotPassword';
+import Index from './pages/Index';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import PartnerDashboard from './pages/PartnerDashboard';
+import PartnerLogin from './pages/PartnerLogin';
+import PartnerRegister from './pages/PartnerRegister';
+import ProfileCompletion from './pages/ProfileCompletion';
+import ProfileDemo from './pages/ProfileDemo';
+import Register from './pages/Register';
+import ResetPassword from './pages/ResetPassword';
 import SponsorshipsPage from './pages/SponsorshipsPage';
+import SubscriptionPage from './pages/SubscriptionPage';
+import UserProfile from './pages/UserProfile';
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -123,14 +122,6 @@ const App = () => {
                   element={
                     <AuthGuard>
                       <SubscriptionPage />
-                    </AuthGuard>
-                  }
-                />
-                <Route
-                  path="/referrals"
-                  element={
-                    <AuthGuard>
-                      <ReferralsPage />
                     </AuthGuard>
                   }
                 />

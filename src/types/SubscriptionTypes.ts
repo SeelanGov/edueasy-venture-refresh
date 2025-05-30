@@ -47,17 +47,6 @@ export type Transaction = {
   updated_at: string;
 };
 
-export type Referral = {
-  id: string;
-  referrer_id: string;
-  referred_id: string;
-  status: ReferralStatus;
-  reward_amount: number | null;
-  reward_claimed: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
 // Enums
 export enum TransactionStatus {
   PENDING = 'pending',
@@ -69,17 +58,9 @@ export enum TransactionStatus {
 
 export enum TransactionType {
   SUBSCRIPTION = 'subscription',
-  REFERRAL_REWARD = 'referral_reward',
   REFUND = 'refund',
   UPGRADE = 'upgrade',
   DOWNGRADE = 'downgrade',
-}
-
-export enum ReferralStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  EXPIRED = 'expired',
-  REJECTED = 'rejected',
 }
 
 export enum SubscriptionTierName {
@@ -90,8 +71,8 @@ export enum SubscriptionTierName {
 
 // Extended types for the existing database schema
 export interface ProfileWithSubscription extends UserProfile {
-  referral_code?: string;
-  referred_by?: string;
+  // Note: These fields might not exist in the actual database
+  // They are kept here for type compatibility with existing code
   verifications_used?: number;
   verifications_limit?: number;
   subscription?: UserSubscription;
@@ -104,7 +85,7 @@ export interface ApplicationWithTier extends Application {
 // Helper functions
 export function isFeatureAvailable(
   subscription: UserSubscription | undefined,
-  feature: 'verification' | 'ai_assistance' | 'priority_support'
+  feature: 'verification' | 'ai_assistance' | 'priority_support',
 ): boolean {
   if (!subscription || !subscription.tier) {
     return false;
@@ -124,7 +105,7 @@ export function isFeatureAvailable(
 
 export function getRemainingApplications(
   subscription: UserSubscription | undefined,
-  currentApplicationCount: number
+  currentApplicationCount: number,
 ): number {
   if (!subscription || !subscription.tier) {
     return 0;
@@ -135,7 +116,7 @@ export function getRemainingApplications(
 
 export function getRemainingDocuments(
   subscription: UserSubscription | undefined,
-  currentDocumentCount: number
+  currentDocumentCount: number,
 ): number {
   if (!subscription || !subscription.tier) {
     return 0;
@@ -153,7 +134,7 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
 
 export function getSubscriptionPrice(
   tier: SubscriptionTier,
-  billingCycle: 'monthly' | 'yearly'
+  billingCycle: 'monthly' | 'yearly',
 ): number {
   return billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
 }
