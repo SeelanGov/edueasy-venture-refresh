@@ -1,13 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
 import { Logo } from '@/components/Logo';
+import PatternBorder from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,10 +11,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PatternBorder } from '@/components/PatternBorder';
-import { AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const resetPasswordSchema = z
   .object({
@@ -59,7 +59,7 @@ const ResetPassword = () => {
         console.error('Error verifying reset token:', err);
         setIsTokenValid(false);
         setError(
-          'There was a problem verifying your password reset link. Please request a new one.'
+          'There was a problem verifying your password reset link. Please request a new one.',
         );
       } finally {
         setIsVerifying(false);

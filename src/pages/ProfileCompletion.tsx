@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
-import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoStep';
-import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
+import PatternBorder from '@/components/PatternBorder';
 import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
-import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
+import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
 import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
+import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
+import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoStep';
+import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
 import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
-import { PatternBorder } from '@/components/PatternBorder';
-import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
-import { toast } from '@/components/ui/use-toast';
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { AlertCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileCompletion = () => {
   const { user } = useAuth();

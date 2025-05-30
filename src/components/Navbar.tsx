@@ -1,7 +1,6 @@
-
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import Logo from './Logo';
 
 const Navbar = () => {
@@ -24,7 +23,7 @@ const Navbar = () => {
               <Logo />
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {user ? (
               <>
@@ -41,9 +40,7 @@ const Navbar = () => {
                   <Button variant="ghost">Login</Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-cap-teal hover:bg-cap-teal/90">
-                    Get Started
-                  </Button>
+                  <Button className="bg-cap-teal hover:bg-cap-teal/90">Get Started</Button>
                 </Link>
               </>
             )}
@@ -54,4 +51,5 @@ const Navbar = () => {
   );
 };
 
+export { Navbar };
 export default Navbar;

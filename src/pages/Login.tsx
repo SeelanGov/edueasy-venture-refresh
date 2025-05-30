@@ -1,13 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
 import { Logo } from '@/components/Logo';
+import PatternBorder from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
 import {
   Form,
   FormControl,
@@ -16,12 +13,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PatternBorder } from '@/components/PatternBorder';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
+import { useAuth } from '@/contexts/AuthContext';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const loginFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
