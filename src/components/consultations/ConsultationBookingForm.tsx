@@ -1,11 +1,11 @@
-
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
+import { PaymentForm } from '@/components/subscription/PaymentForm';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -26,8 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { PaymentForm } from '@/components/subscription/PaymentForm';
 
 // Define the form schema
 const formSchema = z.object({
@@ -94,24 +93,25 @@ export function ConsultationBookingForm({
   // Handle form submission
   const handleFormSubmit = (values: FormValues) => {
     console.log('Form submitted with values:', values);
-    
+
     // Combine date and time
     const [hours, minutes] = values.timeSlot.split(':').map(Number);
     const bookingDateTime = new Date(values.bookingDate);
     bookingDateTime.setHours(hours, minutes, 0, 0);
 
-    const durationValue = parseInt(values.duration);
-    if (isNaN(durationValue)) {
-      console.error('Invalid duration value:', values.duration);
+    // Fix duration parsing with proper validation
+    const durationValue = parseInt(values.duration, 10);
+    if (isNaN(durationValue) || durationValue <= 0) {
+      form.setError('duration', { message: 'Please select a valid duration' });
       return;
     }
 
-    // Store form data for payment step - handle notes properly
-    const notesValue = values.notes && values.notes.trim() !== '' ? values.notes : undefined;
+    // Fix notes handling - only include if not empty
+    const notesValue = values.notes?.trim() || '';
     setFormData({
       date: bookingDateTime,
       duration: durationValue,
-      notes: notesValue,
+      notes: notesValue === '' ? undefined : notesValue,
     });
 
     // Show payment form
@@ -164,7 +164,7 @@ export function ConsultationBookingForm({
                       variant={'outline'}
                       className={cn(
                         'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground'
+                        !field.value && 'text-muted-foreground',
                       )}
                     >
                       {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}

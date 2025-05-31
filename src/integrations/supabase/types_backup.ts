@@ -1,4 +1,4 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+﻿export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   public: {
@@ -639,6 +639,51 @@ export type Database = {
           table_name?: string;
           test_session_id?: string;
           tested_as?: string;
+        };
+        Relationships: [];
+      };
+      subscription_tiers: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          price_monthly: number;
+          price_yearly: number;
+          max_applications: number;
+          max_documents: number;
+          includes_verification: boolean;
+          includes_ai_assistance: boolean;
+          includes_priority_support: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description?: string | null;
+          price_monthly: number;
+          price_yearly: number;
+          max_applications: number;
+          max_documents: number;
+          includes_verification?: boolean;
+          includes_ai_assistance?: boolean;
+          includes_priority_support?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string | null;
+          price_monthly?: number;
+          price_yearly?: number;
+          max_applications?: number;
+          max_documents?: number;
+          includes_verification?: boolean;
+          includes_ai_assistance?: boolean;
+          includes_priority_support?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };

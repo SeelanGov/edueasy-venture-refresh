@@ -69,7 +69,6 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-    environment: stage
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -87,7 +86,6 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4

@@ -1,4 +1,4 @@
-import { CheckCircle, CircleDashed, ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle, CircleDashed } from 'lucide-react';
 
 export type Step = {
   id: number;
@@ -9,15 +9,13 @@ export type Step = {
 
 interface DocumentUploadStepperProps {
   steps: Step[];
-  currentStep: number;
 }
 
-export const DocumentUploadStepper = ({ steps, currentStep }: DocumentUploadStepperProps) => {
+export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps) => {
   return (
     <div className="w-full">
       <ol className="flex items-center w-full">
         {steps.map((step, index) => {
-          const isFirst = index === 0;
           const isLast = index === steps.length - 1;
           const isPending = step.status === 'pending';
           const isCurrent = step.status === 'current';

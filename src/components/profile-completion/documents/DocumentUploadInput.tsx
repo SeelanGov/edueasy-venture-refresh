@@ -1,22 +1,21 @@
-
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-} from '@/components/ui/form';
-import { Upload, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
-import { DocumentUploadInputProps } from './types';
 import { DocumentPreview } from '@/components/documents/DocumentPreview';
 import { DocumentUploadStepper } from '@/components/documents/DocumentUploadStepper';
 import { VerificationResultDisplay } from '@/components/documents/VerificationResultDisplay';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Progress } from '@/components/ui/progress';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { AlertCircle, CheckCircle, RefreshCw, Upload } from 'lucide-react';
+import { DocumentUploadInputProps } from './types';
 
 export const DocumentUploadInput = ({
   documentType,
@@ -84,7 +83,7 @@ export const DocumentUploadInput = ({
 
               {currentDocumentType === documentType && (
                 <div className="mt-2 md:mt-0 md:ml-4">
-                  <DocumentUploadStepper steps={uploadSteps} currentStep={currentStep} />
+                  <DocumentUploadStepper steps={uploadSteps} />
                 </div>
               )}
             </div>
@@ -142,7 +141,7 @@ export const DocumentUploadInput = ({
                     <DocumentPreview
                       filePath={state.filePath || ''}
                       fileName={file?.name || label}
-                      fileType={file?.type}
+                      fileType={file?.type || ''}
                       size="sm"
                     />
                   </div>
@@ -197,7 +196,7 @@ export const DocumentUploadInput = ({
                             onClick={() => {
                               // Reset input
                               const input = document.getElementById(
-                                `dropzone-file-${documentType}`
+                                `dropzone-file-${documentType}`,
                               ) as HTMLInputElement;
                               if (input) input.value = '';
 
@@ -245,7 +244,7 @@ export const DocumentUploadInput = ({
                       isVerifying={isVerifying}
                       documentType={label}
                       onResubmit={onResubmit}
-                      isResubmission={isResubmission}
+                      isResubmission={isResubmission || false}
                     />
                   </div>
                 )}

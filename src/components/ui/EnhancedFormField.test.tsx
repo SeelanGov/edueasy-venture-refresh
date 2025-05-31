@@ -1,30 +1,31 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { EnhancedFormField } from './EnhancedFormField';
-import { useForm, FormProvider } from 'react-hook-form';
-import React from 'react';
 import { TooltipProvider } from './tooltip';
 
-function FormWrapper({ children }: { children: React.ReactNode }) {
+// Create a test component that uses the hooks
+const TestComponent = () => {
   const methods = useForm({ defaultValues: { password: '' } });
-  return <FormProvider {...methods}>{children}</FormProvider>;
-}
+
+  return (
+    <TooltipProvider>
+      <FormProvider {...methods}>
+        <EnhancedFormField
+          control={methods.control}
+          name="password"
+          label="Password"
+          helperText="Use a strong password."
+          securityBadgeType="encryption"
+        />
+      </FormProvider>
+    </TooltipProvider>
+  );
+};
 
 describe('EnhancedFormField', () => {
   it('renders with label, helper, and badge', () => {
-    render(
-      <TooltipProvider>
-        <FormWrapper>
-          <EnhancedFormField
-            control={undefined} // control is provided by FormProvider context
-            name="password"
-            label="Password"
-            helperText="Use a strong password."
-            securityBadgeType="encryption"
-          />
-        </FormWrapper>
-      </TooltipProvider>
-    );
+    render(<TestComponent />);
     expect(screen.getByText('Password')).toBeInTheDocument();
     expect(screen.getByText('Use a strong password.')).toBeInTheDocument();
     expect(screen.getByTestId('security-badge-encryption')).toBeInTheDocument();
