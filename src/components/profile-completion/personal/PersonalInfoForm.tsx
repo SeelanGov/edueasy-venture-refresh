@@ -1,7 +1,4 @@
-
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -12,24 +9,41 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/Spinner';
-import { PersonalInfoFormValues } from './types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { GenderSelector } from './GenderSelector';
+import { PersonalInfoFormValues } from './types';
 
 // South African ID validation
-const validateSAID = (id: string) => {
-  // ID must be 13 digits
+const validateSAID = (id: string): boolean => {
+  // Check if id is undefined or not a string
+  if (!id || typeof id !== 'string') return false;
+
+  // Check if id has exactly 13 digits
   if (!/^\d{13}$/.test(id)) return false;
 
-  // Check checksum digit
   let sum = 0;
   for (let i = 0; i < 12; i++) {
-    const digit = parseInt(id[i]);
+    // Safely access characters with bounds checking
+    if (i >= id.length) return false;
+
+    const char = id.charAt(i);
+    const digit = parseInt(char, 10);
     if (isNaN(digit)) return false;
+
+    // Apply Luhn algorithm
     sum += digit * (i % 2 === 0 ? 1 : 2);
   }
+
+  // Calculate check digit
   const checkDigit = (10 - (sum % 10)) % 10;
-  const lastDigit = parseInt(id[12]);
+
+  // Safely access the last character
+  if (id.length < 13) return false;
+
+  const lastChar = id.charAt(12);
+  const lastDigit = parseInt(lastChar, 10);
   return !isNaN(lastDigit) && checkDigit === lastDigit;
 };
 
