@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
-import { LogOut, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
-import { SidebarNavItem } from './SidebarNavItem';
-import { AdminNavSection } from './AdminNavSection';
+import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
+import { ChevronLeft, ChevronRight, LogOut, Moon, Sun } from 'lucide-react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { AdminNavSection } from './AdminNavSection';
+import { SidebarNavItem } from './SidebarNavItem';
 
 interface NavItem {
   name: string;

@@ -1,11 +1,10 @@
-
-import { useState, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { MessageSquare, Send, Bot, User, Sparkles, HelpCircle } from 'lucide-react';
+import { Bot, HelpCircle, Send, Sparkles, User } from 'lucide-react';
+import { useState } from 'react';
 
 interface Message {
   id: string;
@@ -14,15 +13,14 @@ interface Message {
   timestamp: Date;
 }
 
-interface ThandiAgentProps {
-  onClose?: () => void;
-}
+interface ThandiAgentProps {}
 
-export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
+export const ThandiAgent = ({}: ThandiAgentProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hi! I\'m Thandi, your AI assistant. I\'m here to help you with your university applications. How can I assist you today?',
+      content:
+        "Hi! I'm Thandi, your AI assistant. I'm here to help you with your university applications. How can I assist you today?",
       role: 'assistant',
       timestamp: new Date(),
     },
@@ -40,7 +38,7 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
 
@@ -52,7 +50,7 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
         role: 'assistant',
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
     }, 1500);
   };
@@ -76,15 +74,13 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
           </Badge>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex gap-3 ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
+              className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.role === 'assistant' && (
                 <div className="flex-shrink-0">
@@ -93,20 +89,16 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
                   </div>
                 </div>
               )}
-              
+
               <div
                 className={`max-w-[80%] rounded-lg p-3 ${
-                  message.role === 'user'
-                    ? 'bg-cap-teal text-white'
-                    : 'bg-gray-100 text-gray-900'
+                  message.role === 'user' ? 'bg-cap-teal text-white' : 'bg-gray-100 text-gray-900'
                 }`}
               >
                 <p className="text-sm">{message.content}</p>
-                <p className="text-xs mt-1 opacity-70">
-                  {message.timestamp.toLocaleTimeString()}
-                </p>
+                <p className="text-xs mt-1 opacity-70">{message.timestamp.toLocaleTimeString()}</p>
               </div>
-              
+
               {message.role === 'user' && (
                 <div className="flex-shrink-0">
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
@@ -116,7 +108,7 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
               )}
             </div>
           ))}
-          
+
           {isLoading && (
             <div className="flex gap-3 justify-start">
               <div className="flex-shrink-0">
@@ -127,8 +119,14 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
               <div className="bg-gray-100 rounded-lg p-3">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.1s' }}
+                  ></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.2s' }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -136,7 +134,7 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
         </div>
 
         <Separator className="mb-4" />
-        
+
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
             {quickActions.map((action) => (
@@ -152,7 +150,7 @@ export const ThandiAgent = ({ onClose }: ThandiAgentProps) => {
               </Button>
             ))}
           </div>
-          
+
           <div className="flex gap-2">
             <Input
               value={inputMessage}

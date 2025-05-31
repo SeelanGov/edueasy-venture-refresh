@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
+import { Button } from '@/components/ui/button';
 import { LogOut, Moon, Sun, X } from 'lucide-react';
 import { SidebarNavItem } from './SidebarNavItem';
-import { AdminNavSection } from './AdminNavSection';
 
 interface NavItem {
   name: string;

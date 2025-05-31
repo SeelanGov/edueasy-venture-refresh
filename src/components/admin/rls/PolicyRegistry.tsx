@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { useMemo } from 'react';
 
 interface PolicyRecord {
   table_name: string;
@@ -18,13 +18,18 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
   const groupedPolicies = useMemo(() => {
     return policies.reduce(
       (acc, policy) => {
-        if (!acc[policy.table_name]) {
-          acc[policy.table_name] = [];
+        // Ensure policy and table_name are defined
+        if (policy && policy.table_name) {
+          // Initialize array if it doesn't exist
+          if (!acc[policy.table_name]) {
+            acc[policy.table_name] = [];
+          }
+          // Safely push to the array
+          acc[policy.table_name].push(policy);
         }
-        acc[policy.table_name].push(policy);
         return acc;
       },
-      {} as Record<string, PolicyRecord[]>
+      {} as Record<string, PolicyRecord[]>,
     );
   }, [policies]);
 

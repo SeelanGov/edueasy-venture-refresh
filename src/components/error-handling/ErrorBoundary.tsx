@@ -1,7 +1,7 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { logError, ErrorSeverity } from '@/utils/errorLogging';
-import { ErrorDisplay } from './ErrorDisplay';
 import { parseError } from '@/utils/errorHandler';
+import { ErrorSeverity, logError } from '@/utils/errorLogging';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { ErrorDisplay } from './ErrorDisplay';
 
 interface Props {
   children: ReactNode;
@@ -59,7 +59,7 @@ export class ErrorBoundary extends Component<Props, State> {
         enhancedError,
         ErrorSeverity.ERROR,
         this.props.component || 'React Component',
-        'render'
+        'render',
       );
 
       // Also log to console for developers
@@ -112,15 +112,25 @@ export const withErrorBoundary = <P extends object>(
     fallback?: ReactNode;
     componentName?: string;
     onReset?: () => void;
-  } = {}
+  } = {},
 ) => {
   const { fallback, componentName, onReset } = options;
 
-  const WrappedComponent = (props: P) => (
-    <ErrorBoundary fallback={fallback} component={componentName} onReset={onReset}>
-      <Component {...props} />
-    </ErrorBoundary>
-  );
+  const WrappedComponent = (props: P) => {
+    // Only include defined props to avoid exactOptionalPropertyTypes issues
+    const boundaryProps: Record<string, unknown> = {};
+
+    // Only add properties that are defined
+    if (fallback !== undefined) boundaryProps.fallback = fallback;
+    if (componentName !== undefined) boundaryProps.component = componentName;
+    if (onReset !== undefined) boundaryProps.onReset = onReset;
+
+    return (
+      <ErrorBoundary {...boundaryProps}>
+        <Component {...props} />
+      </ErrorBoundary>
+    );
+  };
 
   // Set display name for debugging
   WrappedComponent.displayName = `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;

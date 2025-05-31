@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
-import { FileIcon, FileText, Image, FileWarning } from 'lucide-react';
+import { FileIcon, FileText, FileWarning } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface DocumentPreviewProps {
   filePath: string;

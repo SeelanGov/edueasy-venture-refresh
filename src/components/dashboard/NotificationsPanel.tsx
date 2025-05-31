@@ -1,22 +1,21 @@
-import { useState, useMemo } from 'react';
-import { Bell, Check, Trash2, X, Filter, AlertCircle, Clock, MessageSquare } from 'lucide-react';
-import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNotificationSystem, Notification } from '@/hooks/useNotificationSystem';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Notification, useNotificationSystem } from '@/hooks/useNotificationSystem';
+import { format, isThisMonth, isThisWeek, isToday, isYesterday } from 'date-fns';
+import { AlertCircle, Bell, Check, Clock, Filter, MessageSquare, Trash2 } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 type FilterOption = 'all' | 'unread' | 'document' | 'application' | 'admin' | 'system';
 type GroupBy = 'date' | 'type' | 'none';
@@ -68,7 +67,7 @@ export const NotificationsPanel = () => {
           groups[displayType].push(notification);
           return groups;
         },
-        {} as Record<string, Notification[]>
+        {} as Record<string, Notification[]>,
       );
     }
 
@@ -83,7 +82,7 @@ export const NotificationsPanel = () => {
         groups[dateKey].push(notification);
         return groups;
       },
-      {} as Record<string, Notification[]>
+      {} as Record<string, Notification[]>,
     );
   }, [filteredNotifications, groupBy]);
 

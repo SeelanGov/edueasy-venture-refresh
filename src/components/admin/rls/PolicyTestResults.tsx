@@ -1,8 +1,7 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, XCircle } from 'lucide-react';
 import { RLSTestResult } from '@/utils/security/types';
+import { CheckCircle, XCircle } from 'lucide-react';
 
 interface PolicyTestResultsProps {
   results: RLSTestResult[];
@@ -12,13 +11,18 @@ export const PolicyTestResults = ({ results }: PolicyTestResultsProps) => {
   // Group results by table name for better organization
   const groupedResults = results.reduce(
     (acc, result) => {
-      if (!acc[result.table_name]) {
-        acc[result.table_name] = [];
+      // Ensure result and table_name are defined
+      if (result && result.table_name) {
+        // Initialize array if it doesn't exist
+        if (!acc[result.table_name]) {
+          acc[result.table_name] = [];
+        }
+        // Safely push to the array
+        acc[result.table_name].push(result);
       }
-      acc[result.table_name].push(result);
       return acc;
     },
-    {} as Record<string, RLSTestResult[]>
+    {} as Record<string, RLSTestResult[]>,
   );
 
   // Calculate test statistics
