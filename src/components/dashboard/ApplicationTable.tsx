@@ -72,8 +72,9 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   }, [applications]);
 
-  const getStatusBadgeClass = (status: string = 'draft') => {
-    switch (status.toLowerCase()) {
+  const getStatusBadgeClass = (status: string | null = 'draft') => {
+    const statusValue = status || 'draft';
+    switch (statusValue.toLowerCase()) {
       case "draft":
         return "bg-yellow-100 text-yellow-800";
       case "submitted":
@@ -218,7 +219,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
                 )}
             </TableCell>
             <TableCell className="text-gray-500">
-              {new Date(app.created_at).toLocaleDateString()}
+              {app.created_at ? new Date(app.created_at).toLocaleDateString() : 'N/A'}
             </TableCell>
           </TableRow>
         ))}
