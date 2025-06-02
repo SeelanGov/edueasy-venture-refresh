@@ -29,8 +29,8 @@ export interface DocumentInfo {
 export interface Application {
   id: string;
   user_id: string;
-  institution_id?: string | null;
-  program_id?: string | null;
+  institution_id?: string;
+  program_id?: string;
   grade12_results?: string;
   university?: string;
   program?: string;
@@ -40,7 +40,7 @@ export interface Application {
   documents?: Document[];
 }
 
-export interface EnrichedApplication extends Omit<Application, 'program'> {
+export interface EnrichedApplication extends Application {
   institution?: { id: string; name: string; } | null;
   program?: { id: string; name: string; } | null;
 }
