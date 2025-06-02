@@ -5,6 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Notification } from '@/types/Notification';
 import { toast } from '@/components/ui/use-toast';
 
+export { Notification } from '@/types/Notification';
+
 export function useNotificationSystem() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -94,6 +96,50 @@ export function useNotificationSystem() {
     }
   };
 
+  const deleteNotification = async (notificationId: string) => {
+    if (!user?.id) return;
+
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', notificationId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      const notificationToDelete = notifications.find(n => n.id === notificationId);
+      setNotifications(prev => prev.filter(n => n.id !== notificationId));
+
+      if (notificationToDelete && !notificationToDelete.is_read) {
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      }
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+
+  const deleteAllReadNotifications = async () => {
+    if (!user?.id) return;
+
+    const readNotifications = notifications.filter(n => n.is_read);
+    if (readNotifications.length === 0) return;
+
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('is_read', true);
+
+      if (error) throw error;
+
+      setNotifications(prev => prev.filter(n => !n.is_read));
+    } catch (error) {
+      console.error('Error deleting read notifications:', error);
+    }
+  };
+
   useEffect(() => {
     fetchNotifications();
   }, [user]);
@@ -105,5 +151,7 @@ export function useNotificationSystem() {
     fetchNotifications,
     markAsRead,
     markAllAsRead,
+    deleteNotification,
+    deleteAllReadNotifications,
   };
 }

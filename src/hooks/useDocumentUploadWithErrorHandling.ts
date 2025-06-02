@@ -1,131 +1,108 @@
-import { useCallback } from 'react';
-import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
-import {
-  DocumentType,
-  DocumentUploadState,
-  RetryData,
-} from '@/components/profile-completion/documents/types';
-import { useAuth } from '@/contexts/AuthContext';
-import { useDocumentVerification } from '@/hooks/useDocumentVerification';
-import { useFileProcessing } from './document-upload/useFileProcessing';
-import { useSupabaseUpload } from './document-upload/useSupabaseUpload';
-import { useDocumentNotifications } from './document-upload/useDocumentNotifications';
 
-// Import the DocumentsStore interface from useSupabaseUpload
-import { DocumentsStore } from './document-upload/useSupabaseUpload';
+import { useState } from 'react';
+import { useErrorRetry } from './useErrorRetry';
+import { useDocumentUploadManager, VerificationResult } from './useDocumentUploadManager';
+import { toast } from '@/components/ui/use-toast';
 
-export const useDocumentUploadWithErrorHandling = (
-  getDocumentState: (documentType: string) => DocumentUploadState,
-  setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
-  setCurrentDocumentType: (type: string) => void,
-  form: any
-) => {
-  const { user } = useAuth();
-  const { documents, setDocuments } = useProfileCompletionStore();
-  const { verifyDocument, isVerifying, verificationResult } = useDocumentVerification();
+interface DocumentUploadError {
+  message: string;
+  code?: string;
+  retryable: boolean;
+}
 
-  // Use our specialized hooks
-  const { processFile, handleRetry: processRetry } = useFileProcessing(setDocumentState, user);
-  const { uploadToSupabase } = useSupabaseUpload(
-    setDocumentState,
-    documents as DocumentsStore,
-    setDocuments,
-    form
-  );
-  const { createResubmissionNotification, showVerificationResultToast } =
-    useDocumentNotifications();
+export const useDocumentUploadWithErrorHandling = () => {
+  const [error, setError] = useState<DocumentUploadError | null>(null);
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  const [currentDocType, setCurrentDocType] = useState<string>('');
+  const [currentAppId, setCurrentAppId] = useState<string>('');
+  
+  const { processDocument, isProcessing, verificationResult } = useDocumentUploadManager();
 
-  const handleFileChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+  const uploadOperation = async () => {
+    if (!currentFile || !currentDocType || !currentAppId) {
+      throw new Error('Missing required upload parameters');
+    }
 
-      // Set current document type for stepper
-      setCurrentDocumentType(documentType);
-
-      // Track if this is a resubmission
-      const isResubmission = getDocumentState(documentType).previouslyRejected;
-
-      // Process the file (validate and compress if needed)
-      const { valid, file: processedFile } = await processFile(file, documentType, isResubmission);
-      if (!valid || !processedFile) return;
-
-      // Upload to Supabase
-      if (user) {
-        const { success, documentId, filePath } = await uploadToSupabase(
-          processedFile,
-          documentType,
-          user.id,
-          documents.applicationId,
-          isResubmission
-        );
-
-        if (!success) return;
-
-        // Create notification for resubmissions
-        if (isResubmission && documentId) {
-          await createResubmissionNotification(user.id, documentId, documentType);
-        }
-
-        // Auto-trigger verification
-        if (documentId && filePath) {
-          triggerVerification(documentId, user.id, documentType, filePath, isResubmission);
-        }
+    setError(null);
+    
+    try {
+      const result = await processDocument(currentFile, currentDocType, currentAppId);
+      
+      if (!result || !result.verificationResult?.success) {
+        throw new Error(result?.verificationResult?.failureReason || 'Upload failed');
       }
-    },
-    [
-      user,
-      documents,
-      setCurrentDocumentType,
-      processFile,
-      uploadToSupabase,
-      createResubmissionNotification,
-    ]
-  );
-
-  const triggerVerification = useCallback(
-    async (
-      documentId: string,
-      userId: string,
-      documentType: string,
-      filePath: string,
-      isResubmission: boolean = false
-    ) => {
-      setDocumentState(documentType, { verificationTriggered: true });
-
-      const result = await verifyDocument(documentId, userId, documentType, filePath);
-
-      // Show notification and play sound for verification results
-      if (result) {
-        const needsResubmission =
-          result.status === 'rejected' || result.status === 'request_resubmission';
-
-        // Mark as previously rejected to track resubmission if needed
-        if (needsResubmission) {
-          setDocumentState(documentType, { previouslyRejected: true });
-        }
-
-        // Show toast notification
-        showVerificationResultToast(result, isResubmission);
-      }
-
+      
       return result;
-    },
-    [verifyDocument, setDocumentState, showVerificationResultToast]
-  );
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      const uploadError: DocumentUploadError = {
+        message: errorMessage,
+        retryable: !errorMessage.includes('invalid file') && !errorMessage.includes('unsupported'),
+      };
+      
+      setError(uploadError);
+      throw err;
+    }
+  };
 
-  const handleRetry = useCallback(
-    (documentType: DocumentType, currentState: DocumentUploadState) => {
-      processRetry(documentType, currentState, handleFileChange);
-    },
-    [handleFileChange, processRetry]
-  );
+  const { retry, isRetrying, canRetry, resetRetry } = useErrorRetry(uploadOperation, {
+    maxRetries: 3,
+    delay: 1000,
+    backoff: true,
+  });
+
+  const uploadWithErrorHandling = async (
+    file: File,
+    documentType: string,
+    applicationId: string
+  ) => {
+    setCurrentFile(file);
+    setCurrentDocType(documentType);
+    setCurrentAppId(applicationId);
+    setError(null);
+    resetRetry();
+
+    try {
+      const result = await processDocument(file, documentType, applicationId);
+      
+      if (result?.verificationResult) {
+        // Convert null to undefined for failureReason
+        const convertedResult: VerificationResult = {
+          ...result.verificationResult,
+          failureReason: result.verificationResult.failureReason || undefined,
+        };
+        
+        if (!convertedResult.success) {
+          const uploadError: DocumentUploadError = {
+            message: convertedResult.failureReason || 'Verification failed',
+            retryable: true,
+          };
+          setError(uploadError);
+        }
+        
+        return { ...result, verificationResult: convertedResult };
+      }
+      
+      return result;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      const uploadError: DocumentUploadError = {
+        message: errorMessage,
+        retryable: !errorMessage.includes('invalid file') && !errorMessage.includes('unsupported'),
+      };
+      
+      setError(uploadError);
+      return null;
+    }
+  };
 
   return {
-    handleFileChange,
-    handleRetry,
-    triggerVerification,
-    isVerifying,
+    uploadWithErrorHandling,
+    isProcessing: isProcessing || isRetrying,
+    error,
+    canRetry,
+    retry,
     verificationResult,
+    clearError: () => setError(null),
   };
 };
