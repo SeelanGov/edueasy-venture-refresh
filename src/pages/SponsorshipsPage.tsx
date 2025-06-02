@@ -56,13 +56,7 @@ export default function SponsorshipsPage() {
     e.preventDefault();
 
     setSubmitting(true);
-    const result = await submitSponsorshipInquiry(
-      inquiryForm.organizationName,
-      inquiryForm.contactName,
-      inquiryForm.contactEmail,
-      inquiryForm.contactPhone,
-      inquiryForm.message,
-    );
+    const result = await submitSponsorshipInquiry(inquiryForm);
 
     if (result) {
       setInquiryForm({
