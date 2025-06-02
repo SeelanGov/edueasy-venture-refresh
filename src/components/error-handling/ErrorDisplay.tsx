@@ -1,121 +1,111 @@
 
+import React from 'react';
+import { AlertTriangle, RefreshCw, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { ErrorCategory, StandardError } from '@/utils/errorHandler';
-import { AlertCircle, FileWarning, RefreshCw } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+export interface ErrorInfo {
+  message: string;
+  stack?: string;
+  component?: string;
+  action?: string;
+  timestamp?: Date;
+  userId?: string;
+  sessionId?: string;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
+  category?: string;
+  details?: Record<string, any>;
+  context?: Record<string, any>;
+}
 
 interface ErrorDisplayProps {
-  error: StandardError;
+  error: ErrorInfo;
   onRetry?: () => void;
-  isRetrying?: boolean;
-  className?: string;
+  onDismiss?: () => void;
   showDetails?: boolean;
 }
 
-export const ErrorDisplay = ({
+export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   error,
   onRetry,
-  isRetrying = false,
-  className = '',
+  onDismiss,
   showDetails = false,
-}: ErrorDisplayProps) => {
-  const getIcon = () => {
-    switch (error.category) {
-      case ErrorCategory.NETWORK:
-        return <FileWarning className="h-4 w-4" />;
-      case ErrorCategory.DATABASE:
-        return <FileWarning className="h-4 w-4" />;
-      case ErrorCategory.AUTHENTICATION:
-        return <FileWarning className="h-4 w-4" />;
-      case ErrorCategory.VALIDATION:
-        return <AlertCircle className="h-4 w-4" />;
-      case ErrorCategory.FILE:
-        return <FileWarning className="h-4 w-4" />;
+}) => {
+  const getSeverityColor = (severity: string = 'medium') => {
+    switch (severity) {
+      case 'low':
+        return 'border-yellow-200 bg-yellow-50';
+      case 'high':
+        return 'border-orange-200 bg-orange-50';
+      case 'critical':
+        return 'border-red-200 bg-red-50';
       default:
-        return <AlertCircle className="h-4 w-4" />;
+        return 'border-blue-200 bg-blue-50';
     }
   };
 
-  const getTitle = () => {
-    switch (error.category) {
-      case ErrorCategory.NETWORK:
-        return 'Network Error';
-      case ErrorCategory.DATABASE:
-        return 'Data Error';
-      case ErrorCategory.AUTHENTICATION:
-        return 'Authentication Error';
-      case ErrorCategory.VALIDATION:
-        return 'Validation Error';
-      case ErrorCategory.FILE:
-        return 'File Error';
-      default:
-        return 'Error';
-    }
-  };
+  const renderErrorDetails = () => {
+    if (!showDetails) return null;
 
-  const getVariant = () => {
-    switch (error.category) {
-      case ErrorCategory.VALIDATION:
-        return 'default' as const;
-      default:
-        return 'destructive' as const;
-    }
-  };
-
-  const formatErrorDetails = (errorObj: unknown): string => {
-    if (typeof errorObj === 'string') {
-      return errorObj;
-    }
-    if (errorObj && typeof errorObj === 'object') {
-      try {
-        return JSON.stringify(errorObj, null, 2);
-      } catch {
-        return String(errorObj);
-      }
-    }
-    return String(errorObj);
-  };
-
-  return (
-    <Alert variant={getVariant()} className={className}>
-      {getIcon()}
-      <AlertTitle>{getTitle()}</AlertTitle>
-      <AlertDescription>
-        <p>{error.message}</p>
-
-        {showDetails && error.originalError && (
-          <details className="mt-2 text-xs">
-            <summary>Technical details</summary>
-            <pre className="mt-2 p-2 bg-gray-100 rounded overflow-x-auto">
-              {formatErrorDetails(error.originalError)}
+    return (
+      <div className="mt-4 space-y-2">
+        {error.component && (
+          <div className="text-sm">
+            <span className="font-medium">Component:</span> {error.component}
+          </div>
+        )}
+        {error.action && (
+          <div className="text-sm">
+            <span className="font-medium">Action:</span> {error.action}
+          </div>
+        )}
+        {error.stack && (
+          <details className="text-sm">
+            <summary className="cursor-pointer font-medium">Stack Trace</summary>
+            <pre className="mt-2 whitespace-pre-wrap text-xs">{error.stack}</pre>
+          </details>
+        )}
+        {error.details && Object.keys(error.details).length > 0 && (
+          <details className="text-sm">
+            <summary className="cursor-pointer font-medium">Error Details</summary>
+            <pre className="mt-2 whitespace-pre-wrap text-xs">
+              {typeof error.details === 'string' 
+                ? error.details 
+                : JSON.stringify(error.details, null, 2)}
             </pre>
           </details>
         )}
+      </div>
+    );
+  };
 
-        {onRetry && (
-          <div className="mt-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRetry}
-              disabled={isRetrying}
-              className="flex items-center"
-            >
-              {isRetrying ? (
-                <>
-                  <RefreshCw className="h-3 w-3 mr-2 animate-spin" />
-                  Retrying...
-                </>
-              ) : (
-                <>
-                  <RefreshCw className="h-3 w-3 mr-2" />
-                  Try Again
-                </>
-              )}
+  return (
+    <Card className={`w-full ${getSeverityColor(error.severity)}`}>
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="h-5 w-5 text-red-500" />
+          <CardTitle className="text-lg">Something went wrong</CardTitle>
+        </div>
+        <CardDescription>{error.message}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {renderErrorDetails()}
+        
+        <div className="flex gap-2 mt-4">
+          {onRetry && (
+            <Button onClick={onRetry} size="sm" variant="outline">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Try Again
             </Button>
-          </div>
-        )}
-      </AlertDescription>
-    </Alert>
+          )}
+          {onDismiss && (
+            <Button onClick={onDismiss} size="sm" variant="ghost">
+              Dismiss
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

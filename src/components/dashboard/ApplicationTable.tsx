@@ -17,13 +17,18 @@ import { AlertCircle, CheckCircle, ExternalLinkIcon, FileIcon, PlusIcon, Refresh
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+interface EnrichedApplication extends Application {
+  institution?: { id: string; name: string; } | null;
+  program?: { id: string; name: string; } | null;
+}
+
 interface ApplicationTableProps {
   applications: Application[];
   loading: boolean;
 }
 
 export const ApplicationTable = ({ applications, loading }: ApplicationTableProps) => {
-  const [enrichedApplications, setEnrichedApplications] = useState<Application[]>([]);
+  const [enrichedApplications, setEnrichedApplications] = useState<EnrichedApplication[]>([]);
 
   useEffect(() => {
     // Fetch institution and program details for each application
@@ -179,28 +184,28 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
         {enrichedApplications.map((app) => (
           <TableRow key={app.id}>
             <TableCell className="font-medium">
-              {app.institution?.name || "Not specified"}
+              {app.institution?.name || app.university || "Not specified"}
             </TableCell>
             <TableCell>
-              {app.program?.name || "Not specified"}
+              {app.program?.name || app.program || "Not specified"}
             </TableCell>
             <TableCell>
               <span 
-                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status)}`}
+                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status || 'draft')}`}
               >
-                {app.status}
+                {app.status || 'draft'}
               </span>
             </TableCell>
             <TableCell>
                 {Array.isArray(app.documents) && app.documents.length > 0 ? (
                 <div className="flex flex-col gap-2">
-                  {app.documents.map((doc) => (
+                  {app.documents.map((doc: any) => (
                   <div key={doc.id} className="flex items-center justify-between">
                     <Button
                     variant="outline"
                     size="sm"
                     className="text-xs justify-start"
-                    onClick={() => handleDocumentClick(doc.file_path)}
+                    onClick={() => handleDocumentClick(doc.file_path || '')}
                     >
                     <FileIcon className="h-3 w-3 mr-1" />
                     <span className="truncate">{doc.document_type || "Document"}</span>
@@ -243,6 +248,3 @@ const EmptyApplicationState = () => {
     </div>
   );
 };
-
-
-

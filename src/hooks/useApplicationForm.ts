@@ -19,10 +19,15 @@ export const useApplicationForm = () => {
     useApplicationFormState();
 
   // Create a proper conversion function for storage
-  const saveFormToStorageWrapper = (data: ApplicationFormValues) => {
-    // Use the complete ApplicationFormValues for storage
+  const saveFormToStorageWrapper = (data: DraftFormData) => {
+    // Convert DraftFormData to ApplicationFormValues for storage
+    const applicationFormData: ApplicationFormValues = {
+      fullName: form.getValues('fullName') || '',
+      idNumber: form.getValues('idNumber') || '',
+      ...data
+    };
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
-    saveFormToStorage(data);
+    saveFormToStorage(applicationFormData);
   };
 
   // Initialize the storage hooks

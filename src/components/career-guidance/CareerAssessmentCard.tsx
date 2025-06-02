@@ -33,6 +33,8 @@ export function CareerAssessmentCard({ assessment, onView }: CareerAssessmentCar
         return 'Skills Assessment';
       case AssessmentType.INTERESTS:
         return 'Interests Assessment';
+      case AssessmentType.VALUES:
+        return 'Values Assessment';
       case AssessmentType.CAREER_MATCH:
         return 'Career Match Assessment';
       case AssessmentType.COMPREHENSIVE:
@@ -92,7 +94,7 @@ export function CareerAssessmentCard({ assessment, onView }: CareerAssessmentCar
 
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <FileText className="h-4 w-4" />
-            <span>{Object.keys(assessment.results).length} data points analyzed</span>
+            <span>{Object.keys(assessment.results || {}).length} data points analyzed</span>
           </div>
 
           {assessment.is_premium && (

@@ -1,4 +1,28 @@
 
+export interface Document {
+  id: string;
+  application_id: string;
+  document_type: string;
+  file_path: string;
+  verification_status: 'pending' | 'approved' | 'rejected' | 'request_resubmission';
+  verification_confidence?: number;
+  verification_details?: Record<string, any>;
+  rejection_reason?: string;
+  extracted_text?: string;
+  created_at: string;
+  verified_at?: string;
+  user_id?: string;
+}
+
+export interface DocumentInfo {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  url?: string;
+  uploadedAt: string;
+}
+
 export interface Application {
   id: string;
   user_id: string;
@@ -10,4 +34,21 @@ export interface Application {
   status?: string;
   created_at: string;
   updated_at?: string;
+  documents?: Document[];
+  institution?: { id: string; name: string; } | null;
+  program?: { id: string; name: string; } | null;
+}
+
+export interface ApplicationFormValues {
+  fullName: string;
+  idNumber: string;
+  university: string;
+  program: string;
+  grade12Results: string;
+}
+
+export interface DraftFormData {
+  university: string;
+  program: string;
+  grade12Results: string;
 }
