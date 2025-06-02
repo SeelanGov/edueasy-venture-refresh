@@ -35,8 +35,8 @@ export interface Application {
   university?: string | null;
   program?: string | null;
   status?: string | null;
-  created_at: string;
-  updated_at?: string;
+  created_at: string | null;
+  updated_at?: string | null;
   documents?: Document[];
 }
 
