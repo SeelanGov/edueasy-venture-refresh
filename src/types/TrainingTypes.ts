@@ -19,3 +19,23 @@ export interface IntentWithStats {
   message_count: number;
   avg_confidence: number;
 }
+
+export interface ChatMessage {
+  id: string;
+  user_id: string;
+  message: string;
+  is_user: boolean;
+  confidence_score?: number;
+  intent_id?: string;
+  response_type?: string;
+  low_confidence?: boolean;
+  created_at: string;
+  user_name?: string;
+  user_email?: string;
+}
+
+export interface TrainingFilters {
+  page: number;
+  limit: number;
+  lowConfidenceOnly: boolean;
+}

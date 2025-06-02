@@ -22,6 +22,8 @@ export enum AssessmentType {
   PERSONALITY = 'personality',
   INTERESTS = 'interests',
   VALUES = 'values',
+  CAREER_MATCH = 'career_match',
+  COMPREHENSIVE = 'comprehensive',
 }
 
 export interface Sponsorship {
@@ -72,8 +74,12 @@ export interface CareerGuidance {
   id: string;
   user_id: string;
   assessment_id?: string;
+  assessment_type: AssessmentType;
+  assessment_date: string;
   recommendations: Record<string, any> | null;
   action_plan?: Record<string, any>;
+  results: Record<string, any>;
+  is_premium: boolean;
   created_at: string;
   updated_at: string;
 }

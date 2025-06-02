@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 import { useDocumentUpload } from './useDocumentUpload';
 import { useDocumentVerification } from './useDocumentVerification';
@@ -62,7 +61,7 @@ export const useDocumentUploadManager = () => {
 
     try {
       // Upload document with proper arguments
-      const uploadResult = await uploadDocument(file, documentType, applicationId, true);
+      const uploadResult = await uploadDocument(file, documentType, applicationId);
       
       if (!uploadResult) {
         throw new Error('Failed to upload document');
