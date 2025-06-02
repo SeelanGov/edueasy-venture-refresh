@@ -59,9 +59,12 @@ export const useTrainingData = () => {
     }
   }, [user, page, lowConfidenceOnly]);
 
+  // Cast trainedMessages to our local TrainingEntry type to avoid conflicts
+  const typedTrainedMessages = trainedMessages as TrainingEntry[];
+
   return {
     messages,
-    trainedMessages,
+    trainedMessages: typedTrainedMessages,
     loading,
     lowConfidenceOnly,
     setLowConfidenceOnly,
