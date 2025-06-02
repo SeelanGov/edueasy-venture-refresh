@@ -1,15 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
-
-export interface UserProfile {
-  id: string;
-  full_name: string;
-  id_number: string;
-  email: string;
-}
+import { UserProfile } from '@/types/UserProfile';
 
 export const useUserProfile = (
   userId: string | undefined,
@@ -30,9 +25,17 @@ export const useUserProfile = (
 
         if (error) throw error;
 
-        setUserProfile(data);
-        form.setValue('fullName', data.full_name);
-        form.setValue('idNumber', data.id_number);
+        // Handle null values from database
+        const profile: UserProfile = {
+          id: data.id,
+          full_name: data.full_name || '',
+          id_number: data.id_number || '',
+          email: data.email || '',
+        };
+
+        setUserProfile(profile);
+        form.setValue('fullName', profile.full_name);
+        form.setValue('idNumber', profile.id_number);
       } catch (error: unknown) {
         console.error('Error fetching user profile:', error);
         toast({

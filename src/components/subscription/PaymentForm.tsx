@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -97,7 +98,7 @@ export function PaymentForm({
             <CheckCircle className="h-16 w-16 text-green-500" />
             <h3 className="text-xl font-semibold text-center">Payment Successful!</h3>
             <p className="text-center text-muted-foreground">
-              Your payment of {formatCurrency(amount, currency)} has been processed successfully.
+              Your payment of {formatCurrency(amount)} has been processed successfully.
             </p>
           </div>
         </CardContent>
@@ -118,7 +119,7 @@ export function PaymentForm({
               <CreditCard className="h-5 w-5 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">Secure Payment</span>
             </div>
-            <span className="font-semibold">{formatCurrency(amount, currency)}</span>
+            <span className="font-semibold">{formatCurrency(amount)}</span>
           </div>
 
           <div className="space-y-2">

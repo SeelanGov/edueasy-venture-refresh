@@ -1,18 +1,11 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import DOMPurify from 'dompurify';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
-
-interface ChatMessage {
-  id: string;
-  message: string;
-  is_user: boolean;
-  created_at: string;
-  confidence_score?: number;
-  low_confidence?: boolean;
-}
+import { ChatMessage } from '@/types/ChatMessage';
 
 export const useThandiChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -49,17 +42,31 @@ export const useThandiChat = () => {
         }
 
         if (data && data.length > 0) {
+          // Convert database records to ChatMessage type, handling null values
+          const mappedMessages: ChatMessage[] = data.map(item => ({
+            id: item.id,
+            user_id: item.user_id,
+            message: item.message,
+            is_user: item.is_user,
+            created_at: item.created_at,
+            intent_id: item.intent_id || undefined,
+            confidence_score: item.confidence_score || undefined,
+            low_confidence: item.low_confidence || undefined,
+            response_type: item.response_type || undefined,
+          }));
+
           // If it's the first page, set the messages
           // Otherwise, append to existing messages
           if (pageNumber === 0) {
-            setMessages(data.reverse());
+            setMessages(mappedMessages.reverse());
           } else {
-            setMessages((prevMessages) => [...data.reverse(), ...prevMessages]);
+            setMessages((prevMessages) => [...mappedMessages.reverse(), ...prevMessages]);
           }
         } else if (pageNumber === 0) {
           // Send a welcome message if no chat history exists
-          const welcomeMessage = {
+          const welcomeMessage: ChatMessage = {
             id: uuidv4(),
+            user_id: user.id,
             message: "Hi there! I'm Thandi, your application assistant. How can I help you today?",
             is_user: false,
             created_at: new Date().toISOString(),
@@ -220,8 +227,9 @@ export const useThandiChat = () => {
       setIsSending(true);
 
       // Add user message to local state immediately for better UX
-      const userMessageObj = {
+      const userMessageObj: ChatMessage = {
         id: uuidv4(),
+        user_id: user.id,
         message: sanitizedMessage,
         is_user: true,
         created_at: new Date().toISOString(),
@@ -234,8 +242,9 @@ export const useThandiChat = () => {
         const thandiResponse = await processUserMessage(sanitizedMessage);
 
         if (thandiResponse) {
-          const thandiMessageObj = {
+          const thandiMessageObj: ChatMessage = {
             id: uuidv4(),
+            user_id: user.id,
             message: thandiResponse,
             is_user: false,
             created_at: new Date().toISOString(),
@@ -276,17 +285,30 @@ export const useThandiChat = () => {
         },
         (payload) => {
           // Only update if this is a new message not from the current session
-          const newMessage = payload.new as ChatMessage;
+          const newMessage = payload.new as any;
+
+          // Convert to ChatMessage type
+          const mappedMessage: ChatMessage = {
+            id: newMessage.id,
+            user_id: newMessage.user_id,
+            message: newMessage.message,
+            is_user: newMessage.is_user,
+            created_at: newMessage.created_at,
+            intent_id: newMessage.intent_id || undefined,
+            confidence_score: newMessage.confidence_score || undefined,
+            low_confidence: newMessage.low_confidence || undefined,
+            response_type: newMessage.response_type || undefined,
+          };
 
           setMessages((current) => {
             // Check if we already have this message in our local state
             const messageExists = current.some(
               (msg) =>
-                msg.message === newMessage.message &&
-                msg.is_user === newMessage.is_user &&
+                msg.message === mappedMessage.message &&
+                msg.is_user === mappedMessage.is_user &&
                 // check if messages were created within 1 second of each other
                 Math.abs(
-                  new Date(msg.created_at).getTime() - new Date(newMessage.created_at).getTime()
+                  new Date(msg.created_at).getTime() - new Date(mappedMessage.created_at).getTime()
                 ) < 1000
             );
 
@@ -299,7 +321,7 @@ export const useThandiChat = () => {
               audio.play().catch((e) => console.log('Audio play prevented:', e));
 
               setHasNewMessage(true);
-              return [...current, newMessage];
+              return [...current, mappedMessage];
             }
           });
         }
