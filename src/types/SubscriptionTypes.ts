@@ -17,6 +17,10 @@ export interface SubscriptionTier {
   active: boolean;
   created_at: string;
   updated_at: string;
+  max_documents?: number;
+  includes_verification?: boolean;
+  includes_ai_assistance?: boolean;
+  includes_priority_support?: boolean;
 }
 
 export interface UserSubscription {
@@ -30,3 +34,15 @@ export interface UserSubscription {
   updated_at: string;
   tier: SubscriptionTier;
 }
+
+// Utility functions
+export const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat('en-ZA', {
+    style: 'currency',
+    currency: 'ZAR',
+  }).format(amount);
+};
+
+export const getYearlySavings = (monthlyPrice: number, yearlyPrice: number): number => {
+  return (monthlyPrice * 12) - yearlyPrice;
+};

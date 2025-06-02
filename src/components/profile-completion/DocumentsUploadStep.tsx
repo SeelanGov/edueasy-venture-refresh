@@ -5,7 +5,7 @@ import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
 import { DocumentFormActions } from './documents/DocumentFormActions';
 import { useDocumentUploadManager } from '@/hooks/useDocumentUploadManager';
 import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
-import type { Step } from './documents/types';
+import type { Step, DocumentUploadState as ComponentDocumentUploadState, DocumentType } from './documents/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
 
@@ -52,6 +52,49 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     ? currentDocumentType.replace(/([A-Z])/g, ' $1').trim()
     : '';
 
+  // Convert hook's DocumentUploadState to component's DocumentUploadState
+  const convertDocumentState = (state: any): ComponentDocumentUploadState => {
+    return {
+      file: state.file,
+      uploading: state.uploading || false,
+      progress: state.progress || 0,
+      error: state.error || null,
+      uploaded: state.uploaded || false,
+      documentId: state.documentId,
+      filePath: state.filePath,
+      verificationTriggered: state.verificationTriggered,
+      previouslyRejected: state.previouslyRejected,
+      isResubmission: state.isResubmission,
+      retryData: state.retryData,
+    };
+  };
+
+  // Convert documentStates to component format
+  const componentDocumentStates: Record<DocumentType, ComponentDocumentUploadState> = {
+    idDocument: convertDocumentState(getDocumentState('idDocument')),
+    proofOfResidence: convertDocumentState(getDocumentState('proofOfResidence')),
+    grade11Results: convertDocumentState(getDocumentState('grade11Results')),
+    grade12Results: convertDocumentState(getDocumentState('grade12Results')),
+  };
+
+  // Wrapper for handleFileChange to match expected signature
+  const handleFileChangeWrapper = (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileChange(file, documentType);
+    }
+  };
+
+  // Wrapper for handleRetry to match expected signature
+  const handleRetryWrapper = (documentType: DocumentType, state: ComponentDocumentUploadState) => {
+    handleRetry(documentType);
+  };
+
+  // Wrapper for handleResubmit to match expected signature
+  const handleResubmitWrapper = () => {
+    handleResubmit();
+  };
+
   return (
     <div className="space-y-6">
       <DocumentUploadHeader
@@ -68,17 +111,17 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
         <DocumentStepperCard
           currentDocumentType={currentDocumentType}
           documentName={documentName}
-          uploadSteps={uploadSteps}
+          uploadSteps={uploadSteps as Step[]}
           currentStep={currentStep}
         />
 
         <DocumentUploadGrid
-          documentStates={documentStates}
-          getDocumentState={getDocumentState}
-          handleFileChange={handleFileChange}
-          handleRetry={handleRetry}
+          documentStates={componentDocumentStates}
+          getDocumentState={(documentType: string) => convertDocumentState(getDocumentState(documentType))}
+          handleFileChange={handleFileChangeWrapper}
+          handleRetry={handleRetryWrapper}
           handleVerify={handleVerify}
-          handleResubmit={handleResubmit}
+          handleResubmit={handleResubmitWrapper}
           verificationResult={verificationResult || null}
           isVerifying={isVerifying}
           setCurrentDocumentType={(type) => {}}
