@@ -18,7 +18,7 @@ export const useDocumentUploadWithErrorHandling = () => {
   
   const { processDocument, isProcessing, verificationResult } = useDocumentUploadManager();
 
-  const uploadOperation = async () => {
+  const uploadOperation = async (): Promise<void> => {
     if (!currentFile || !currentDocType || !currentAppId) {
       throw new Error('Missing required upload parameters');
     }
@@ -31,8 +31,6 @@ export const useDocumentUploadWithErrorHandling = () => {
       if (!result || !result.verificationResult?.success) {
         throw new Error(result?.verificationResult?.failureReason || 'Upload failed');
       }
-      
-      return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       const uploadError: DocumentUploadError = {
@@ -66,10 +64,14 @@ export const useDocumentUploadWithErrorHandling = () => {
       const result = await processDocument(file, documentType, applicationId);
       
       if (result?.verificationResult) {
-        // Convert null to undefined for failureReason
         const convertedResult: VerificationResult = {
-          ...result.verificationResult,
+          success: result.verificationResult.success,
+          status: result.verificationResult.status,
+          confidence: result.verificationResult.confidence,
           failureReason: result.verificationResult.failureReason || undefined,
+          validationResults: result.verificationResult.validationResults,
+          processingTimeMs: result.verificationResult.processingTimeMs,
+          extractedFields: result.verificationResult.extractedFields,
         };
         
         if (!convertedResult.success) {

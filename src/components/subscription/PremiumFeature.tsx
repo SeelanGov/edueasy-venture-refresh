@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useSubscription } from '@/hooks/useSubscription';
 import {
@@ -28,16 +29,16 @@ export function PremiumFeature({
   children,
   showPreview = false,
 }: PremiumFeatureProps) {
-  const { userSubscription } = useSubscription();
+  const { currentSubscription } = useSubscription();
   const navigate = useNavigate();
 
   // Check if user has access to this feature
   const hasAccess = () => {
-    if (!userSubscription || !userSubscription.tier) {
+    if (!currentSubscription || !currentSubscription.tier) {
       return false;
     }
 
-    const tierName = userSubscription.tier.name as SubscriptionTierName;
+    const tierName = currentSubscription.tier.name as SubscriptionTierName;
 
     // Access logic based on tier hierarchy
     switch (requiredTier) {
