@@ -1,10 +1,25 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTrainingMessages } from './training/useTrainingMessages';
 import { useTrainingEntries } from './training/useTrainingEntries';
-import { TrainingFilters } from '@/types/TrainingTypes';
+import { TrainingFilters, ChatMessage } from '@/types/TrainingTypes';
 
-export { type ChatMessage, type TrainingEntry } from '@/types/TrainingTypes';
+// Define TrainingEntry interface locally to avoid conflicts
+interface TrainingEntry {
+  id: string;
+  message_id: string;
+  intent_id: string | null;
+  admin_id: string;
+  confidence: number | null;
+  created_at: string;
+  intents: {
+    intent_name: string;
+  } | null;
+}
+
+export { type ChatMessage };
+export type { TrainingEntry };
 
 export const useTrainingData = () => {
   const [lowConfidenceOnly, setLowConfidenceOnly] = useState(true);
