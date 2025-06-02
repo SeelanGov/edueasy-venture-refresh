@@ -28,7 +28,7 @@ export function SubscriptionTierCard({
   disabled = false,
 }: SubscriptionTierCardProps) {
   const price = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
-  const yearlySavings = getYearlySavings(tier);
+  const yearlySavings = getYearlySavings(tier.price_monthly, tier.price_yearly);
 
   return (
     <Card
@@ -60,10 +60,10 @@ export function SubscriptionTierCard({
 
         <div className="space-y-2">
           <FeatureItem feature={`${tier.max_applications} applications`} included={true} />
-          <FeatureItem feature={`${tier.max_documents} document uploads`} included={true} />
-          <FeatureItem feature="Document verification" included={tier.includes_verification} />
-          <FeatureItem feature="AI career guidance" included={tier.includes_ai_assistance} />
-          <FeatureItem feature="Priority support" included={tier.includes_priority_support} />
+          <FeatureItem feature={`${tier.max_documents || 'Unlimited'} document uploads`} included={true} />
+          <FeatureItem feature="Document verification" included={tier.includes_verification || false} />
+          <FeatureItem feature="AI career guidance" included={tier.includes_ai_assistance || false} />
+          <FeatureItem feature="Priority support" included={tier.includes_priority_support || false} />
         </div>
       </CardContent>
       <CardFooter>
