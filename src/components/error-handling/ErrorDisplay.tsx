@@ -62,6 +62,20 @@ export const ErrorDisplay = ({
     }
   };
 
+  const formatErrorDetails = (errorObj: unknown): string => {
+    if (typeof errorObj === 'string') {
+      return errorObj;
+    }
+    if (errorObj && typeof errorObj === 'object') {
+      try {
+        return JSON.stringify(errorObj, null, 2);
+      } catch {
+        return String(errorObj);
+      }
+    }
+    return String(errorObj);
+  };
+
   return (
     <Alert variant={getVariant()} className={className}>
       {getIcon()}
@@ -73,9 +87,7 @@ export const ErrorDisplay = ({
           <details className="mt-2 text-xs">
             <summary>Technical details</summary>
             <pre className="mt-2 p-2 bg-gray-100 rounded overflow-x-auto">
-              {typeof error.originalError === 'string' 
-                ? error.originalError 
-                : JSON.stringify(error.originalError, null, 2)}
+              {formatErrorDetails(error.originalError)}
             </pre>
           </details>
         )}

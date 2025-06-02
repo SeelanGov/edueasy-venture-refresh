@@ -18,18 +18,23 @@ export const useApplicationForm = () => {
   const { form, documentFile, handleFileChange, hasSavedDraft, setHasSavedDraft, user } =
     useApplicationFormState();
 
-  // Create a wrapper function that converts ApplicationFormValues to DraftFormData
-  const saveFormToStorageWrapper = (data: ApplicationFormValues) => {
-    const draftData: DraftFormData = {
+  // Create a proper conversion function for DraftFormData
+  const convertToDraftData = (data: ApplicationFormValues): DraftFormData => {
+    return {
       grade12Results: data.grade12Results,
       university: data.university,
       program: data.program,
       personalStatement: data.personalStatement,
     };
+  };
+
+  // Create a wrapper function that converts ApplicationFormValues to DraftFormData
+  const saveFormToStorageWrapper = (data: ApplicationFormValues) => {
+    const draftData = convertToDraftData(data);
     
     // Use the draft data for storage (excluding fullName and idNumber)
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
-    saveFormToStorage(draftData as any);
+    saveFormToStorage(draftData);
   };
 
   // Initialize the storage hooks

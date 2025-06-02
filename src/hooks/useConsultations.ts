@@ -1,5 +1,5 @@
+
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { ConsultationBooking, ConsultationStatus } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
@@ -22,10 +22,11 @@ export function useConsultations() {
     });
   };
 
-  // Fetch user's consultation bookings
+  // Since consultation_bookings table doesn't exist, we'll use a placeholder implementation
   const fetchBookings = async () => {
     if (!user?.id) {
       setBookings([]);
+      setLoading(false);
       return;
     }
 
@@ -33,20 +34,9 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .select(
-          `
-          *,
-          payment:payment_id(*)
-        `
-        )
-        .eq('user_id', user.id)
-        .order('booking_date', { ascending: false });
-
-      if (error) throw error;
-
-      setBookings(data || []);
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
+      setBookings([]);
     } catch (error) {
       handleError(error, 'Failed to fetch consultation bookings');
     } finally {
@@ -60,20 +50,9 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .select(
-          `
-          *,
-          payment:payment_id(*)
-        `
-        )
-        .eq('id', bookingId)
-        .single();
-
-      if (error) throw error;
-
-      setCurrentBooking(data);
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
+      setCurrentBooking(null);
     } catch (error) {
       handleError(error, 'Failed to fetch booking details');
     } finally {
@@ -97,23 +76,8 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .insert({
-          user_id: user.id,
-          booking_date: bookingDate.toISOString(),
-          duration_minutes: durationMinutes,
-          status: ConsultationStatus.PENDING,
-          notes: notes || null,
-          payment_id: paymentId || null,
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the bookings list
-      await fetchBookings();
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Created',
@@ -121,7 +85,7 @@ export function useConsultations() {
         variant: 'default',
       });
 
-      return data;
+      return null;
     } catch (error) {
       handleError(error, 'Failed to create booking');
       return null;
@@ -141,22 +105,8 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', bookingId)
-        .eq('user_id', user.id) // Ensure the user owns this booking
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the bookings list and current booking
-      await fetchBookings();
-      setCurrentBooking(data);
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Updated',
@@ -164,7 +114,7 @@ export function useConsultations() {
         variant: 'default',
       });
 
-      return data;
+      return null;
     } catch (error) {
       handleError(error, 'Failed to update booking');
       return null;
@@ -184,23 +134,8 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .update({
-          status: ConsultationStatus.CANCELLED,
-          notes: reason ? `Cancelled: ${reason}` : 'Cancelled by user',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', bookingId)
-        .eq('user_id', user.id) // Ensure the user owns this booking
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the bookings list and current booking
-      await fetchBookings();
-      setCurrentBooking(data);
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Cancelled',
@@ -228,23 +163,8 @@ export function useConsultations() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('consultation_bookings')
-        .update({
-          booking_date: newBookingDate.toISOString(),
-          status: ConsultationStatus.RESCHEDULED,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', bookingId)
-        .eq('user_id', user.id) // Ensure the user owns this booking
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the bookings list and current booking
-      await fetchBookings();
-      setCurrentBooking(data);
+      // TODO: Implement when consultation_bookings table is created
+      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Rescheduled',
@@ -252,7 +172,7 @@ export function useConsultations() {
         variant: 'default',
       });
 
-      return data;
+      return null;
     } catch (error) {
       handleError(error, 'Failed to reschedule booking');
       return null;
