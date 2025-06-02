@@ -2,193 +2,227 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
-// Define career guidance types since the table doesn't exist yet
 export enum AssessmentType {
+  SKILLS = 'skills',
   PERSONALITY = 'personality',
-  APTITUDE = 'aptitude',
-  INTEREST = 'interest',
+  INTERESTS = 'interests',
   VALUES = 'values',
-  SKILLS = 'skills'
+  CAREER_MATCH = 'career_match',
+  COMPREHENSIVE = 'comprehensive',
+  APTITUDE = 'aptitude',
+}
+
+export interface CareerAssessment {
+  id: string;
+  user_id: string;
+  assessment_type: AssessmentType;
+  questions: Record<string, any>;
+  responses: Record<string, any>;
+  results: Record<string, any>;
+  completed_at?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CareerGuidance {
   id: string;
   user_id: string;
+  assessment_id?: string;
   assessment_type: AssessmentType;
   assessment_date: string;
+  recommendations: Record<string, any> | null;
+  action_plan?: Record<string, any>;
   results: Record<string, any>;
-  recommendations?: Record<string, any> | null;
   is_premium: boolean;
   created_at: string;
-  updated_at?: string;
+  updated_at: string;
 }
 
-export function useCareerGuidance() {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [assessments, setAssessments] = useState<CareerGuidance[]>([]);
-  const [currentAssessment, setCurrentAssessment] = useState<CareerGuidance | null>(null);
+export const useCareerGuidance = () => {
+  const [assessments, setAssessments] = useState<CareerAssessment[]>([]);
+  const [guidance, setGuidance] = useState<CareerGuidance[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
-  // Helper function to handle errors
-  const handleError = (error: any, message: string) => {
-    console.error(message, error);
-    setError(message);
-    toast({
-      title: 'Error',
-      description: message,
-      variant: 'destructive',
-    });
-  };
-
-  // Since career_guidance table doesn't exist, we'll use a placeholder implementation
   const fetchAssessments = async () => {
-    if (!user?.id) {
-      setAssessments([]);
-      setLoading(false);
-      return;
-    }
+    if (!user) return;
+
+    setLoading(true);
+    setError(null);
 
     try {
-      setLoading(true);
-      setError(null);
+      const { data, error } = await supabase
+        .from('career_assessments')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
 
-      // TODO: Implement when career_guidance table is created
-      console.log('Career guidance table not yet implemented');
-      setAssessments([]);
-    } catch (error) {
-      handleError(error, 'Failed to fetch career assessments');
+      if (error) throw error;
+      setAssessments(data || []);
+    } catch (err) {
+      console.error('Error fetching assessments:', err);
+      setError('Failed to load assessments');
+      toast.error('Failed to load assessments');
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch a specific assessment
-  const fetchAssessment = async (assessmentId: string) => {
-    try {
-      setLoading(true);
-      setError(null);
+  const fetchGuidance = async () => {
+    if (!user) return;
 
-      // TODO: Implement when career_guidance table is created
-      console.log('Career guidance table not yet implemented');
-      setCurrentAssessment(null);
-    } catch (error) {
-      handleError(error, 'Failed to fetch assessment details');
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('career_guidance')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setGuidance(data || []);
+    } catch (err) {
+      console.error('Error fetching guidance:', err);
+      setError('Failed to load career guidance');
+      toast.error('Failed to load career guidance');
     } finally {
       setLoading(false);
     }
   };
 
-  // Create a new assessment
-  const createAssessment = async (
-    assessmentType: AssessmentType,
-    results: Record<string, any>,
-    recommendations?: Record<string, any>,
-    isPremium: boolean = false
-  ) => {
-    if (!user?.id) {
-      handleError(new Error('User not authenticated'), 'Authentication required');
-      return null;
-    }
+  const createAssessment = async (assessmentType: AssessmentType, questions: Record<string, any>) => {
+    if (!user) return null;
 
     try {
-      setLoading(true);
-      setError(null);
+      const { data, error } = await supabase
+        .from('career_assessments')
+        .insert({
+          user_id: user.id,
+          assessment_type: assessmentType,
+          questions,
+          responses: {},
+          results: {},
+        })
+        .select()
+        .single();
 
-      // TODO: Implement when career_guidance table is created
-      console.log('Career guidance table not yet implemented');
-
-      toast({
-        title: 'Assessment Created',
-        description: 'Your career assessment has been saved successfully.',
-        variant: 'default',
-      });
-
+      if (error) throw error;
+      
+      await fetchAssessments();
+      toast.success('Assessment created successfully');
+      return data;
+    } catch (err) {
+      console.error('Error creating assessment:', err);
+      toast.error('Failed to create assessment');
       return null;
-    } catch (error) {
-      handleError(error, 'Failed to create assessment');
-      return null;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Update an existing assessment
-  const updateAssessment = async (assessmentId: string, updates: Partial<CareerGuidance>) => {
-    if (!user?.id) {
-      handleError(new Error('User not authenticated'), 'Authentication required');
-      return null;
-    }
+  const submitAssessmentResponses = async (assessmentId: string, responses: Record<string, any>) => {
+    if (!user) return null;
 
     try {
-      setLoading(true);
-      setError(null);
+      // Mock results generation for now
+      const mockResults = {
+        score: Math.random() * 100,
+        recommendations: ['Consider software engineering', 'Explore data science'],
+        strengths: ['Analytical thinking', 'Problem solving'],
+        areas_for_growth: ['Communication', 'Leadership'],
+      };
 
-      // TODO: Implement when career_guidance table is created
-      console.log('Career guidance table not yet implemented');
+      const { data, error } = await supabase
+        .from('career_assessments')
+        .update({
+          responses,
+          results: mockResults,
+          completed_at: new Date().toISOString(),
+        })
+        .eq('id', assessmentId)
+        .eq('user_id', user.id)
+        .select()
+        .single();
 
-      toast({
-        title: 'Assessment Updated',
-        description: 'Your career assessment has been updated successfully.',
-        variant: 'default',
-      });
-
+      if (error) throw error;
+      
+      await fetchAssessments();
+      toast.success('Assessment completed successfully');
+      return data;
+    } catch (err) {
+      console.error('Error submitting assessment:', err);
+      toast.error('Failed to submit assessment');
       return null;
-    } catch (error) {
-      handleError(error, 'Failed to update assessment');
-      return null;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Delete an assessment
-  const deleteAssessment = async (assessmentId: string) => {
-    if (!user?.id) {
-      handleError(new Error('User not authenticated'), 'Authentication required');
-      return false;
-    }
+  const generateGuidance = async (assessmentId: string, isPremium: boolean = false) => {
+    if (!user) return null;
 
     try {
-      setLoading(true);
-      setError(null);
+      // Get the assessment
+      const { data: assessment, error: assessmentError } = await supabase
+        .from('career_assessments')
+        .select('*')
+        .eq('id', assessmentId)
+        .eq('user_id', user.id)
+        .single();
 
-      // TODO: Implement when career_guidance table is created
-      console.log('Career guidance table not yet implemented');
+      if (assessmentError) throw assessmentError;
 
-      toast({
-        title: 'Assessment Deleted',
-        description: 'Your career assessment has been deleted successfully.',
-        variant: 'default',
-      });
+      // Mock guidance generation
+      const mockGuidance = {
+        career_paths: ['Software Engineer', 'Data Scientist', 'Product Manager'],
+        skills_to_develop: ['JavaScript', 'Python', 'Machine Learning'],
+        next_steps: ['Complete online courses', 'Build portfolio projects', 'Network with professionals'],
+        premium_insights: isPremium ? ['Detailed salary ranges', 'Industry contacts', 'Personalized mentoring'] : null,
+      };
 
-      return true;
-    } catch (error) {
-      handleError(error, 'Failed to delete assessment');
-      return false;
-    } finally {
-      setLoading(false);
+      const { data, error } = await supabase
+        .from('career_guidance')
+        .insert({
+          user_id: user.id,
+          assessment_id: assessmentId,
+          assessment_type: assessment.assessment_type,
+          assessment_date: assessment.created_at,
+          recommendations: mockGuidance,
+          results: assessment.results,
+          is_premium: isPremium,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      await fetchGuidance();
+      toast.success('Career guidance generated successfully');
+      return data;
+    } catch (err) {
+      console.error('Error generating guidance:', err);
+      toast.error('Failed to generate career guidance');
+      return null;
     }
   };
 
-  // Load data when user changes
   useEffect(() => {
-    if (user?.id) {
+    if (user) {
       fetchAssessments();
+      fetchGuidance();
     }
   }, [user]);
 
   return {
+    assessments,
+    guidance,
     loading,
     error,
-    assessments,
-    currentAssessment,
-    fetchAssessments,
-    fetchAssessment,
     createAssessment,
-    updateAssessment,
-    deleteAssessment,
+    submitAssessmentResponses,
+    generateGuidance,
+    fetchAssessments,
+    fetchGuidance,
   };
-}
+};

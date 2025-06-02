@@ -63,7 +63,7 @@ export const useDocumentUploadManager = () => {
 
     try {
       // Upload document with proper arguments
-      const uploadResult = await uploadDocument(file, documentType, applicationId);
+      const uploadResult = await uploadDocument(file, documentType, applicationId, isResubmission);
       
       if (!uploadResult) {
         throw new Error('Failed to upload document');

@@ -1,4 +1,3 @@
-
 import { Spinner } from "@/components/Spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -183,7 +182,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
               {app.institution?.name || app.university || "Not specified"}
             </TableCell>
             <TableCell>
-              {app.program?.name || app.program || "Not specified"}
+              {typeof app.program === 'object' && app.program?.name ? app.program.name : app.program || "Not specified"}
             </TableCell>
             <TableCell>
               <span 
