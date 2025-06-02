@@ -68,9 +68,9 @@ export const useDocumentUploadManager = () => {
         throw new Error('Failed to upload document');
       }
 
-      // Verify document with correct arguments (documentId)
+      // Verify document with all required arguments
       setIsVerifying(true);
-      const result = await verifyDocument(uploadResult.id);
+      const result = await verifyDocument(uploadResult.id, documentType, uploadResult.file_path, 'automatic');
       
       // Convert verification result to our interface
       const convertedResult: VerificationResult = {

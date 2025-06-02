@@ -114,7 +114,7 @@ export default function CareerGuidancePage() {
         </TabsList>
 
         <TabsContent value="assessments" className="mt-6">
-          {assessments.length === 0 ? (
+          {guidance.length === 0 ? (
             <Card>
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center justify-center py-8 text-center">
@@ -136,10 +136,10 @@ export default function CareerGuidancePage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {assessments.map((assessment) => (
+              {guidance.map((guidanceRecord) => (
                 <CareerAssessmentCard
-                  key={assessment.id}
-                  assessment={assessment}
+                  key={guidanceRecord.id}
+                  assessment={guidanceRecord}
                   onView={handleViewAssessment}
                 />
               ))}

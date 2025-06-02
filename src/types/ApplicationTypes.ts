@@ -31,7 +31,7 @@ export interface Application {
   user_id: string;
   institution_id?: string | null;
   program_id?: string | null;
-  grade12_results?: string;
+  grade12_results?: string | null;
   university?: string;
   program?: string;
   status?: string;
