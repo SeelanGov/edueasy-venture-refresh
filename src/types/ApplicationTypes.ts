@@ -32,9 +32,9 @@ export interface Application {
   institution_id?: string | null;
   program_id?: string | null;
   grade12_results?: string | null;
-  university?: string;
-  program?: string;
-  status?: string;
+  university?: string | null;
+  program?: string | null;
+  status?: string | null;
   created_at: string;
   updated_at?: string;
   documents?: Document[];
