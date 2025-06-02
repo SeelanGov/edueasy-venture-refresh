@@ -1,3 +1,4 @@
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
@@ -106,13 +107,23 @@ export function ConsultationBookingForm({
       return;
     }
 
-    // Fix notes handling - only include if not empty
-    const notesValue = values.notes?.trim() || '';
-    setFormData({
+    // Fix notes handling - properly handle undefined for exactOptionalPropertyTypes
+    const notesValue = values.notes?.trim();
+    const formDataToSet: {
+      date: Date;
+      duration: number;
+      notes?: string;
+    } = {
       date: bookingDateTime,
       duration: durationValue,
-      notes: notesValue === '' ? undefined : notesValue,
-    });
+    };
+
+    // Only add notes if it has a value
+    if (notesValue && notesValue !== '') {
+      formDataToSet.notes = notesValue;
+    }
+
+    setFormData(formDataToSet);
 
     // Show payment form
     setShowPayment(true);

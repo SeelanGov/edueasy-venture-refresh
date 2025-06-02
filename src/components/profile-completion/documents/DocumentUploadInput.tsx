@@ -1,3 +1,4 @@
+
 import { DocumentPreview } from '@/components/documents/DocumentPreview';
 import { DocumentUploadStepper } from '@/components/documents/DocumentUploadStepper';
 import { VerificationResultDisplay } from '@/components/documents/VerificationResultDisplay';
@@ -32,7 +33,6 @@ export const DocumentUploadInput = ({
   setCurrentDocumentType,
   currentDocumentType,
   uploadSteps,
-  currentStep,
 }: DocumentUploadInputProps) => {
   const { file, uploading, progress, error, uploaded, isResubmission } = state;
 
@@ -141,7 +141,7 @@ export const DocumentUploadInput = ({
                     <DocumentPreview
                       filePath={state.filePath || ''}
                       fileName={file?.name || label}
-                      fileType={file?.type || ''}
+                      fileType={file?.type || undefined}
                       size="sm"
                     />
                   </div>

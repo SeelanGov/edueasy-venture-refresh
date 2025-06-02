@@ -1,3 +1,4 @@
+
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import {
@@ -53,7 +54,7 @@ const personalInfoSchema = z.object({
     .string()
     .length(13, 'ID Number must be exactly 13 digits')
     .regex(/^\d+$/, 'ID Number must contain only digits')
-    .refine(validateSAID, 'Invalid South African ID number'),
+    .refine((val) => validateSAID(val || ''), 'Invalid South African ID number'),
   gender: z.string().min(1, 'Gender is required'),
 });
 
