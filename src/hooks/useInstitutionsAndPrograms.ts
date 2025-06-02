@@ -1,40 +1,19 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
-
-export interface Institution {
-  id: string;
-  name: string;
-  short_name: string;
-  province: string;
-  type: string;
-}
-
-export interface Program {
-  id: string;
-  name: string;
-  code: string;
-  qualification_type: string;
-  study_mode: string;
-  faculty: string;
-  institution_id: string;
-}
+import { Institution, Program } from '@/types/Institution';
 
 export const useInstitutionsAndPrograms = () => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
-  const [selectedInstitutionId, setSelectedInstitutionId] = useState<string | null>(null);
-  const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedInstitutionId, setSelectedInstitutionId] = useState<string>('');
 
-  // Fetch all institutions
+  // Fetch institutions
   useEffect(() => {
     const fetchInstitutions = async () => {
       try {
-        setError(false);
-        setLoading(true);
-
         const { data, error } = await supabase
           .from('institutions')
           .select('*')
@@ -42,79 +21,83 @@ export const useInstitutionsAndPrograms = () => {
           .order('name');
 
         if (error) throw error;
-        setInstitutions(data || []);
-      } catch (error: unknown) {
-        console.error('Error fetching institutions:', error);
-        setError(true);
-        toast({
-          title: 'Error',
-          description: 'Failed to load institutions',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
+
+        // Map database data to our Institution type, handling null values
+        const mappedInstitutions: Institution[] = (data || []).map(item => ({
+          id: item.id,
+          name: item.name,
+          short_name: item.short_name || '',
+          type: item.type,
+          logo_url: item.logo_url || undefined,
+          website: item.website || undefined,
+          email: item.email || undefined,
+          phone: item.phone || undefined,
+          province: item.province || undefined,
+          active: item.active ?? true,
+          created_at: item.created_at || '',
+          updated_at: item.updated_at || '',
+        }));
+
+        setInstitutions(mappedInstitutions);
+      } catch (err) {
+        console.error('Error fetching institutions:', err);
+        setError('Failed to load institutions');
       }
     };
 
     fetchInstitutions();
-  }, [toast]);
+  }, []);
 
   // Fetch all programs
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        if (!selectedInstitutionId) {
-          // Fetch all programs initially to have them ready
-          const { data, error } = await supabase.from('programs').select('*').eq('active', true);
+        const { data, error } = await supabase
+          .from('programs')
+          .select('*')
+          .eq('active', true)
+          .order('name');
 
-          if (error) throw error;
-          setPrograms(data || []);
-        } else {
-          // Fetch only programs for the selected institution for better performance
-          setLoading(true);
-          const { data, error } = await supabase
-            .from('programs')
-            .select('*')
-            .eq('active', true)
-            .eq('institution_id', selectedInstitutionId);
+        if (error) throw error;
 
-          if (error) throw error;
-          setFilteredPrograms(data || []);
-        }
-      } catch (error: unknown) {
-        console.error('Error fetching programs:', error);
-        setError(true);
-        toast({
-          title: 'Error',
-          description: 'Failed to load programs',
-          variant: 'destructive',
-        });
-      } finally {
+        // Map database data to our Program type, handling null values
+        const mappedPrograms: Program[] = (data || []).map(item => ({
+          id: item.id,
+          institution_id: item.institution_id,
+          name: item.name,
+          code: item.code || '',
+          faculty: item.faculty || undefined,
+          qualification_type: item.qualification_type || undefined,
+          study_mode: item.study_mode || undefined,
+          active: item.active ?? true,
+          created_at: item.created_at || '',
+          updated_at: item.updated_at || '',
+        }));
+
+        setPrograms(mappedPrograms);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching programs:', err);
+        setError('Failed to load programs');
         setLoading(false);
       }
     };
 
     fetchPrograms();
-  }, [selectedInstitutionId, toast]);
+  }, []);
 
-  // Filter programs based on selected institution
-  useEffect(() => {
-    if (selectedInstitutionId) {
-      setFilteredPrograms(
-        programs.filter((program) => program.institution_id === selectedInstitutionId)
-      );
-    } else {
-      setFilteredPrograms([]);
-    }
-  }, [selectedInstitutionId, programs]);
+  // Filter programs by selected institution
+  const filteredPrograms = selectedInstitutionId
+    ? programs.filter(program => program.institution_id === selectedInstitutionId)
+    : [];
 
   return {
     institutions,
     programs,
+    filteredPrograms,
     loading,
     error,
     selectedInstitutionId,
     setSelectedInstitutionId,
-    filteredPrograms,
   };
 };

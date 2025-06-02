@@ -1,100 +1,83 @@
-import { useState, useCallback } from 'react';
-import { StandardError, parseError } from '@/utils/errorHandler';
-import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
-interface ErrorRetryOptions {
+import { useState, useCallback } from 'react';
+import { toast } from '@/components/ui/use-toast';
+
+interface RetryOptions {
   maxRetries?: number;
-  retryDelay?: number;
-  component?: string;
-  action?: string;
-  errorMessage?: string;
-  showToast?: boolean;
-  severity?: ErrorSeverity;
-  userId?: string;
+  delay?: number;
+  backoff?: boolean;
 }
 
-export const useErrorRetry = <T>(asyncFn: () => Promise<T>, options: ErrorRetryOptions = {}) => {
-  const {
-    maxRetries = 3,
-    retryDelay = 1000,
-    component,
-    action,
-    errorMessage,
-    showToast = true,
-    severity = ErrorSeverity.ERROR,
-    userId,
-  } = options;
+interface UseErrorRetryReturn {
+  retry: () => Promise<void>;
+  isRetrying: boolean;
+  retryCount: number;
+  canRetry: boolean;
+  resetRetry: () => void;
+}
 
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<StandardError | null>(null);
-  const [loading, setLoading] = useState(false);
+export const useErrorRetry = (
+  operation: () => Promise<void>,
+  options: RetryOptions = {}
+): UseErrorRetryReturn => {
+  const { maxRetries = 3, delay = 1000, backoff = true } = options;
+  
+  const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const [retrying, setRetrying] = useState(false);
-
-  const execute = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    const result = await safeAsyncWithLogging(asyncFn, {
-      component,
-      action,
-      userId,
-      severity,
-      errorMessage,
-      showToast,
-      retryCount: 0, // We're handling retry manually in this hook
-    });
-
-    setData(result.data);
-
-    // Ensure we convert any Error to StandardError
-    if (result.error) {
-      setError(
-        result.error instanceof Error
-          ? parseError(result.error)
-          : (result.error as unknown as StandardError)
-      );
-    } else {
-      setError(null);
-    }
-
-    setLoading(false);
-
-    return result;
-  }, [asyncFn, component, action, userId, severity, errorMessage, showToast]);
 
   const retry = useCallback(async () => {
     if (retryCount >= maxRetries) {
-      return { data: null, error };
+      toast({
+        title: 'Maximum retries reached',
+        description: 'Please try again later or contact support',
+        variant: 'destructive',
+      });
+      return;
     }
 
-    setRetrying(true);
-    setRetryCount((prev) => prev + 1);
-
+    setIsRetrying(true);
+    
     try {
-      const result = await execute();
-      return result;
+      const retryDelay = backoff ? delay * Math.pow(2, retryCount) : delay;
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+      
+      await operation();
+      
+      // Reset retry count on success
+      setRetryCount(0);
+      toast({
+        title: 'Operation succeeded',
+        description: 'The operation completed successfully',
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorDetails = error instanceof Error ? error.stack : String(error);
+      
+      setRetryCount(prev => prev + 1);
+      toast({
+        title: `Retry failed (${retryCount + 1}/${maxRetries})`,
+        description: errorMessage || 'An error occurred during retry',
+        variant: 'destructive',
+      });
+      
+      console.error('Retry failed:', errorDetails || errorMessage);
     } finally {
-      setRetrying(false);
+      setIsRetrying(false);
     }
-  }, [execute, error, retryCount, maxRetries]);
+  }, [operation, retryCount, maxRetries, delay, backoff]);
 
-  const reset = useCallback(() => {
-    setData(null);
-    setError(null);
+  const resetRetry = useCallback(() => {
     setRetryCount(0);
-    setRetrying(false);
+    setIsRetrying(false);
   }, []);
 
+  const canRetry = retryCount < maxRetries;
+
   return {
-    data,
-    error,
-    loading,
-    execute,
     retry,
-    retrying,
+    isRetrying,
     retryCount,
-    reset,
-    hasRetriesLeft: retryCount < maxRetries,
+    canRetry,
+    resetRetry,
   };
 };
