@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -73,10 +72,10 @@ export const useSponsorships = () => {
     sponsorName: string,
     amount: number,
     requirements?: Record<string, any>
-  ) => {
+  ): Promise<Sponsorship | undefined> => {
     if (!user) {
       toast.error('Please log in to apply for sponsorships');
-      return;
+      return undefined;
     }
 
     try {
@@ -105,6 +104,7 @@ export const useSponsorships = () => {
     } catch (err) {
       console.error('Error applying for sponsorship:', err);
       toast.error('Failed to submit sponsorship application');
+      return undefined;
     }
   };
 
@@ -129,16 +129,18 @@ export const useSponsorships = () => {
   // Admin functions
   const isAdmin = user?.email?.includes('admin') || false;
 
-  const submitSponsorshipInquiry = async (inquiry: any) => {
+  const submitSponsorshipInquiry = async (inquiry: any): Promise<boolean> => {
     try {
       toast.success('Sponsorship inquiry submitted successfully');
+      return true;
     } catch (err) {
       console.error('Error submitting inquiry:', err);
       toast.error('Failed to submit inquiry');
+      return false;
     }
   };
 
-  const createSponsorship = async (sponsorship: Partial<Sponsorship>) => {
+  const createSponsorship = async (sponsorship: Partial<Sponsorship>): Promise<Sponsorship | undefined> => {
     try {
       const newSponsorship: Sponsorship = {
         id: Date.now().toString(),
@@ -167,6 +169,7 @@ export const useSponsorships = () => {
     } catch (err) {
       console.error('Error creating sponsorship:', err);
       toast.error('Failed to create sponsorship');
+      return undefined;
     }
   };
 

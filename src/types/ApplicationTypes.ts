@@ -29,8 +29,8 @@ export interface DocumentInfo {
 export interface Application {
   id: string;
   user_id: string;
-  institution_id?: string;
-  program_id?: string;
+  institution_id?: string | null;
+  program_id?: string | null;
   grade12_results?: string;
   university?: string;
   program?: string;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCareerGuidance } from '@/hooks/useCareerGuidance';
+import { useCareerGuidance, AssessmentType } from '@/hooks/useCareerGuidance';
 import { useSubscription } from '@/hooks/useSubscription';
 import { CareerAssessmentCard } from '@/components/career-guidance/CareerAssessmentCard';
 import { PremiumFeature } from '@/components/subscription/PremiumFeature';
@@ -24,23 +24,25 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { SubscriptionTierName } from '@/types/SubscriptionTypes';
-import { AssessmentType } from '@/types/RevenueTypes';
 import { Lightbulb, BookOpen, Brain, Sparkles, AlertCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CareerGuidancePage() {
-  const { assessments, loading, createAssessment, fetchAssessment } = useCareerGuidance();
+  const { assessments, guidance, loading, createAssessment, fetchAssessment } = useCareerGuidance();
   const { userSubscription } = useSubscription();
   const navigate = useNavigate();
 
-  const [selectedAssessmentId, setSelectedAssessmentId] = useState<string | null>(null);
+  const [selectedGuidanceId, setSelectedGuidanceId] = useState<string | null>(null);
   const [showAssessmentDialog, setShowAssessmentDialog] = useState(false);
 
-  // Handle viewing an assessment
+  // Handle viewing guidance results
   const handleViewAssessment = async (assessmentId: string) => {
-    setSelectedAssessmentId(assessmentId);
-    await fetchAssessment(assessmentId);
-    setShowAssessmentDialog(true);
+    // Find the guidance record associated with this assessment
+    const guidanceRecord = guidance.find(g => g.assessment_id === assessmentId);
+    if (guidanceRecord) {
+      setSelectedGuidanceId(guidanceRecord.id);
+      setShowAssessmentDialog(true);
+    }
   };
 
   // Start a new assessment (this would be a placeholder for now)
@@ -82,16 +84,17 @@ export default function CareerGuidancePage() {
       skills: ['Programming', 'Data Analysis', 'Project Management'],
     };
 
-    // Create the assessment
-    const newAssessment = await createAssessment(
+    // Create the assessment and guidance
+    const newGuidance = await createAssessment(
       assessmentType,
       mockResults,
       mockRecommendations,
       isPremium
     );
 
-    if (newAssessment) {
-      handleViewAssessment(newAssessment.id);
+    if (newGuidance) {
+      setSelectedGuidanceId(newGuidance.id);
+      setShowAssessmentDialog(true);
     }
   };
 
