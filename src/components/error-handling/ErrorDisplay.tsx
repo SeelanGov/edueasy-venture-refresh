@@ -1,3 +1,4 @@
+
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { ErrorCategory, StandardError } from '@/utils/errorHandler';
@@ -72,7 +73,9 @@ export const ErrorDisplay = ({
           <details className="mt-2 text-xs">
             <summary>Technical details</summary>
             <pre className="mt-2 p-2 bg-gray-100 rounded overflow-x-auto">
-              {JSON.stringify(error.originalError, null, 2)}
+              {typeof error.originalError === 'string' 
+                ? error.originalError 
+                : JSON.stringify(error.originalError, null, 2)}
             </pre>
           </details>
         )}

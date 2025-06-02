@@ -1,8 +1,21 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
-import { TrainingEntry, ChatMessage } from '@/types/TrainingTypes';
+
+// Define the training entry type to match the database response
+interface TrainingEntry {
+  id: string;
+  message_id: string;
+  intent_id: string | null;
+  admin_id: string;
+  confidence: number | null;
+  created_at: string;
+  intents: {
+    intent_name: string;
+  } | null;
+}
 
 export const useTrainingEntries = () => {
   const [trainedMessages, setTrainedMessages] = useState<TrainingEntry[]>([]);

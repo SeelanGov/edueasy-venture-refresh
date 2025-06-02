@@ -1,3 +1,4 @@
+
 import { DocumentDateData, DocumentTypeData, RejectionReason } from './types';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -8,6 +9,8 @@ export const processDocumentsByDate = (documents: Document[]): DocumentDateData[
   const dateMap: Record<string, Record<string, number>> = {};
 
   documents.forEach((doc) => {
+    if (!doc.created_at) return; // Skip if no created_at date
+    
     const date = new Date(doc.created_at).toISOString().split('T')[0];
     const status = doc.verification_status || 'pending';
 
@@ -15,7 +18,10 @@ export const processDocumentsByDate = (documents: Document[]): DocumentDateData[
       dateMap[date] = { approved: 0, rejected: 0, pending: 0, request_resubmission: 0 };
     }
 
-    dateMap[date][status] = (dateMap[date][status] || 0) + 1;
+    const statusCounts = dateMap[date];
+    if (status in statusCounts) {
+      statusCounts[status as keyof typeof statusCounts] = (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
+    }
   });
 
   // Convert to array format for charting
@@ -45,7 +51,10 @@ export const processDocumentsByType = (documents: Document[]): DocumentTypeData[
       typeMap[type] = { approved: 0, rejected: 0, pending: 0, request_resubmission: 0 };
     }
 
-    typeMap[type][status] = (typeMap[type][status] || 0) + 1;
+    const statusCounts = typeMap[type];
+    if (status in statusCounts) {
+      statusCounts[status as keyof typeof statusCounts] = (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
+    }
   });
 
   // Convert to array format for charting

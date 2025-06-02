@@ -107,7 +107,7 @@ export function SponsorshipCard({
             variant="outline"
             size="sm"
             className="flex-1"
-            onClick={() => window.open(sponsorship.website_url, '_blank')}
+            onClick={() => sponsorship.website_url && window.open(sponsorship.website_url, '_blank')}
           >
             Visit Website
             <ExternalLink className="ml-2 h-4 w-4" />
