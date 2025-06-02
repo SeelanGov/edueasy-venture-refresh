@@ -10,6 +10,7 @@ interface Testimonial {
   program: string;
   image: string;
   quote: string;
+  achievement?: string;
 }
 
 const testimonials: Testimonial[] = [
@@ -18,27 +19,30 @@ const testimonials: Testimonial[] = [
     name: 'Thabo Molefe',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: '/images/user-photos/thabo-molefe.webp',
+    image: '/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png',
     quote:
-      'EduEasy simplified my application process, allowing me to apply to multiple universities with ease. The dashboard made tracking my applications straightforward.',
+      'EduEasy transformed my application journey. The platform made it so easy to apply to multiple universities while celebrating my African heritage. I felt supported every step of the way.',
+    achievement: 'Dean\'s List Scholar'
   },
   {
     id: 2,
     name: 'Lerato Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: '/images/user-photos/lerato-ndlovu.webp',
+    image: '/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png',
     quote:
-      'The support and guidance I received from EduEasy was invaluable. I felt confident every step of the way.',
+      'The support and guidance I received from EduEasy was invaluable. From document verification to application tracking, everything was seamless. I felt confident every step of the way.',
+    achievement: 'Medical School Scholarship Recipient'
   },
   {
     id: 3,
     name: 'Sipho Khumalo',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: '/images/user-photos/sipho-khumalo.webp',
+    image: '/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png',
     quote:
-      'The document verification feature saved me so much stress. Knowing my application was complete before submission gave me confidence.',
+      'The document verification feature saved me so much stress. Knowing my application was complete before submission gave me the confidence to pursue my dreams at top universities.',
+    achievement: 'Business Leadership Award'
   },
 ];
 
@@ -60,7 +64,7 @@ export const TestimonialsSection = () => {
   }
 
   return (
-    <section id="testimonials" className="py-20 px-4 md:py-24 bg-white">
+    <section id="testimonials" className="py-20 px-4 md:py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <div className="mb-6 flex justify-center">
@@ -70,36 +74,47 @@ export const TestimonialsSection = () => {
             Student Success Stories
           </Typography>
           <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
-            Hear from students who found their path with EduEasy
+            Real stories from South African students who found their path with EduEasy
           </Typography>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="relative bg-gray-50 rounded-lg p-6 md:p-8 shadow-lg">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100">
+            {/* Decorative quote mark */}
             <div className="absolute top-0 right-0 transform -translate-y-1/2 translate-x-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-cap-coral flex items-center justify-center">
-                <span className="text-white text-2xl md:text-3xl">"</span>
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-cap-coral to-cap-teal flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl md:text-3xl font-bold">"</span>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-cap-teal">
-                <img
-                  src={currentTestimonial.image}
-                  alt={currentTestimonial.name}
-                  className="w-full h-full object-cover"
-                />
+            <div className="flex flex-col lg:flex-row items-center gap-8 pt-8">
+              {/* Enhanced image with cultural frame */}
+              <div className="relative flex-shrink-0">
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gradient-to-br from-cap-teal to-cap-coral shadow-lg">
+                  <img
+                    src={currentTestimonial.image}
+                    alt={currentTestimonial.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Achievement badge */}
+                {currentTestimonial.achievement && (
+                  <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-xs font-medium shadow-md">
+                    🏆 {currentTestimonial.achievement}
+                  </div>
+                )}
               </div>
 
-              <div className="flex-grow">
-                <Typography variant="body-lg" className="italic mb-4 md:text-xl md:leading-relaxed">
+              <div className="flex-grow text-center lg:text-left">
+                <Typography variant="body-lg" className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700">
                   "{currentTestimonial.quote}"
                 </Typography>
-                <div>
-                  <Typography variant="h4" className="font-semibold md:text-xl">
+                
+                <div className="space-y-2">
+                  <Typography variant="h4" className="font-semibold md:text-xl text-gray-900">
                     {currentTestimonial.name}
                   </Typography>
-                  <Typography variant="body" color="primary" className="md:text-lg">
+                  <Typography variant="body" className="md:text-lg font-medium text-cap-teal">
                     {currentTestimonial.program}
                   </Typography>
                   <Typography variant="body-sm" className="text-gray-600 md:text-base">
@@ -109,33 +124,55 @@ export const TestimonialsSection = () => {
               </div>
             </div>
 
-            <div className="flex justify-center mt-8 gap-2">
+            {/* Enhanced navigation dots */}
+            <div className="flex justify-center mt-8 gap-3">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${index === activeIndex ? 'bg-cap-teal' : 'bg-gray-300'}`}
+                  className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
+                    index === activeIndex 
+                      ? 'bg-gradient-to-r from-cap-teal to-cap-coral shadow-md scale-110' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
             </div>
           </div>
 
+          {/* Enhanced navigation buttons */}
           <div className="flex justify-center mt-6 md:mt-8 gap-4">
             <Button
               variant="outline"
               onClick={prevTestimonial}
-              className="border-cap-teal text-cap-teal md:py-6 md:px-8"
+              className="border-cap-teal text-cap-teal hover:bg-cap-teal hover:text-white md:py-6 md:px-8 transition-all duration-300"
             >
-              Previous
+              Previous Story
             </Button>
             <Button
               variant="outline"
               onClick={nextTestimonial}
-              className="border-cap-teal text-cap-teal md:py-6 md:px-8"
+              className="border-cap-coral text-cap-coral hover:bg-cap-coral hover:text-white md:py-6 md:px-8 transition-all duration-300"
             >
-              Next
+              Next Story
             </Button>
+          </div>
+        </div>
+
+        {/* Success metrics section */}
+        <div className="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
+            <div className="text-3xl font-bold text-cap-teal mb-2">95%</div>
+            <div className="text-gray-600">Application Success Rate</div>
+          </div>
+          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
+            <div className="text-3xl font-bold text-cap-coral mb-2">1,200+</div>
+            <div className="text-gray-600">Students Placed</div>
+          </div>
+          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
+            <div className="text-3xl font-bold text-cap-teal mb-2">R50M+</div>
+            <div className="text-gray-600">Scholarships Secured</div>
           </div>
         </div>
       </div>
