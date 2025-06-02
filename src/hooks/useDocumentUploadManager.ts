@@ -40,7 +40,7 @@ export const useDocumentUploadManager = () => {
   
   const form = useForm();
   const { uploadDocument, uploading } = useDocumentUpload();
-  const { verifyDocument, verificationResult: hookVerificationResult } = useDocumentVerification();
+  const { verifyDocument } = useDocumentVerification();
 
   const getDocumentState = useCallback((documentType: string): DocumentUploadState => {
     return documentStates[documentType] || {
@@ -61,8 +61,8 @@ export const useDocumentUploadManager = () => {
     setVerificationResult(undefined);
 
     try {
-      // Upload document
-      const uploadResult = await uploadDocument(file, documentType, applicationId);
+      // Upload document with proper arguments
+      const uploadResult = await uploadDocument(file, documentType, applicationId, true);
       
       if (!uploadResult) {
         throw new Error('Failed to upload document');

@@ -1,169 +1,203 @@
 
 import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
+import { SubscriptionTier, UserSubscription, Transaction } from '@/types/SubscriptionTypes';
 
-export function useSubscription() {
+export const useSubscription = () => {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [subscriptionTiers, setSubscriptionTiers] = useState<SubscriptionTier[]>([]);
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // Helper function to handle errors
-  const handleError = (error: any, message: string) => {
-    console.error(message, error);
-    setError(message);
-    toast({
-      title: 'Error',
-      description: message,
-      variant: 'destructive',
-    });
-  };
+  // Mock subscription tiers since we don't have the database table yet
+  const mockTiers: SubscriptionTier[] = [
+    {
+      id: '1',
+      name: 'Free',
+      description: 'Basic features for getting started',
+      price_monthly: 0,
+      price_yearly: 0,
+      max_applications: 3,
+      career_guidance: false,
+      priority_processing: false,
+      active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      max_documents: 5,
+      includes_verification: false,
+      includes_ai_assistance: false,
+      includes_priority_support: false,
+    },
+    {
+      id: '2',
+      name: 'Standard',
+      description: 'Enhanced features for serious applicants',
+      price_monthly: 99,
+      price_yearly: 999,
+      max_applications: 10,
+      career_guidance: true,
+      priority_processing: false,
+      active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      max_documents: 20,
+      includes_verification: true,
+      includes_ai_assistance: true,
+      includes_priority_support: false,
+    },
+    {
+      id: '3',
+      name: 'Premium',
+      description: 'All features with priority support',
+      price_monthly: 199,
+      price_yearly: 1999,
+      max_applications: -1, // Unlimited
+      career_guidance: true,
+      priority_processing: true,
+      active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      max_documents: -1, // Unlimited
+      includes_verification: true,
+      includes_ai_assistance: true,
+      includes_priority_support: true,
+    },
+  ];
 
-  // Since subscription tables don't exist, we'll use a mock implementation
-  const fetchSubscriptionTiers = async () => {
+  const fetchSubscriptions = async () => {
+    if (!user) return;
+
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
-
-      // TODO: Implement when subscription_tiers table is created
-      console.log('Subscription tiers table not yet implemented');
-      
-      // Mock data for now
-      const mockTiers: SubscriptionTier[] = [
-        {
-          id: '1',
-          name: 'Basic',
-          description: 'Basic subscription tier',
-          price_monthly: 9.99,
-          price_yearly: 99.99,
-          max_applications: 5,
-          career_guidance: false,
-          priority_processing: false,
-          active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          name: 'Premium',
-          description: 'Premium subscription tier',
-          price_monthly: 19.99,
-          price_yearly: 199.99,
-          max_applications: 20,
-          career_guidance: true,
-          priority_processing: true,
-          active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ];
-      
+      // Use mock data for now
       setSubscriptionTiers(mockTiers);
-    } catch (error) {
-      handleError(error, 'Failed to fetch subscription tiers');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Fetch user's current subscription
-  const fetchCurrentSubscription = async () => {
-    if (!user?.id) {
-      setCurrentSubscription(null);
-      return;
-    }
+      // Mock current subscription (free tier)
+      const mockSubscription: UserSubscription = {
+        id: '1',
+        user_id: user.id,
+        tier_id: '1',
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        is_active: true,
+        auto_renew: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        tier: mockTiers[0],
+      };
+      setCurrentSubscription(mockSubscription);
 
-    try {
-      setLoading(true);
       setError(null);
-
-      // TODO: Implement when user_subscriptions table is created
-      console.log('User subscriptions table not yet implemented');
-      setCurrentSubscription(null);
-    } catch (error) {
-      handleError(error, 'Failed to fetch current subscription');
+    } catch (err) {
+      console.error('Error fetching subscriptions:', err);
+      setError('Failed to load subscription data');
     } finally {
       setLoading(false);
     }
   };
 
-  // Subscribe to a tier
   const subscribe = async (tierId: string, paymentToken?: string) => {
-    if (!user?.id) {
-      handleError(new Error('User not authenticated'), 'Authentication required');
-      return null;
-    }
+    if (!user) return false;
 
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
+      // Mock subscription logic
+      const tier = mockTiers.find(t => t.id === tierId);
+      if (!tier) throw new Error('Tier not found');
 
-      // TODO: Implement when subscription tables are created
-      console.log('Subscription tables not yet implemented');
+      const newSubscription: UserSubscription = {
+        id: Date.now().toString(),
+        user_id: user.id,
+        tier_id: tierId,
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        is_active: true,
+        auto_renew: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        tier,
+      };
+
+      setCurrentSubscription(newSubscription);
 
       toast({
-        title: 'Subscription Created',
-        description: 'Your subscription has been created successfully.',
-        variant: 'default',
+        title: 'Subscription successful',
+        description: `You've successfully subscribed to ${tier.name}`,
       });
 
-      return null;
-    } catch (error) {
-      handleError(error, 'Failed to create subscription');
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Cancel subscription
-  const cancelSubscription = async () => {
-    if (!user?.id || !currentSubscription) {
-      handleError(new Error('No active subscription'), 'No active subscription found');
-      return false;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      // TODO: Implement when subscription tables are created
-      console.log('Subscription tables not yet implemented');
-
-      toast({
-        title: 'Subscription Cancelled',
-        description: 'Your subscription has been cancelled.',
-        variant: 'default',
-      });
-
-      setCurrentSubscription(null);
       return true;
-    } catch (error) {
-      handleError(error, 'Failed to cancel subscription');
+    } catch (err) {
+      console.error('Error subscribing:', err);
+      setError('Failed to subscribe');
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  // Load data when user changes
-  useEffect(() => {
-    fetchSubscriptionTiers();
-    if (user?.id) {
-      fetchCurrentSubscription();
+  const cancelSubscription = async () => {
+    if (!user || !currentSubscription) return false;
+
+    try {
+      // Mock cancellation
+      setCurrentSubscription({
+        ...currentSubscription,
+        auto_renew: false,
+        updated_at: new Date().toISOString(),
+      });
+
+      toast({
+        title: 'Subscription cancelled',
+        description: 'Your subscription will not auto-renew',
+      });
+
+      return true;
+    } catch (err) {
+      console.error('Error cancelling subscription:', err);
+      return false;
     }
+  };
+
+  const refreshSubscriptions = async () => {
+    await fetchSubscriptions();
+  };
+
+  const subscribeToPlan = async (tierId: string, paymentMethod?: string, autoRenew?: boolean, billingCycle?: 'monthly' | 'yearly') => {
+    return await subscribe(tierId, paymentMethod);
+  };
+
+  const toggleAutoRenew = async () => {
+    if (!currentSubscription) return false;
+    
+    setCurrentSubscription({
+      ...currentSubscription,
+      auto_renew: !currentSubscription.auto_renew,
+      updated_at: new Date().toISOString(),
+    });
+
+    return true;
+  };
+
+  useEffect(() => {
+    fetchSubscriptions();
   }, [user]);
 
   return {
     loading,
     error,
     subscriptionTiers,
+    tiers: subscriptionTiers, // Alias for backward compatibility
     currentSubscription,
+    userSubscription: currentSubscription, // Alias for backward compatibility
+    transactions,
     subscribe,
+    subscribeToPlan,
     cancelSubscription,
-    refreshSubscriptions: fetchCurrentSubscription,
+    toggleAutoRenew,
+    refreshSubscriptions,
   };
-}
+};
