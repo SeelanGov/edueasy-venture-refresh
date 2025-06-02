@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 
 interface FocusTrapProps {
@@ -34,11 +35,13 @@ export function FocusTrap({ children, active = true, className }: FocusTrapProps
         if (e.shiftKey && document.activeElement === firstElement) {
           e.preventDefault();
           lastElement.focus();
+          return;
         }
         // If tab and on last element, go to first element
         else if (!e.shiftKey && document.activeElement === lastElement) {
           e.preventDefault();
           firstElement.focus();
+          return;
         }
       }
     },
