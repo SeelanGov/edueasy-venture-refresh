@@ -1,3 +1,4 @@
+
 import { Spinner } from "@/components/Spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,15 +13,10 @@ import {
 } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import type { Application } from "@/types/ApplicationTypes";
+import type { Application, EnrichedApplication } from "@/types/ApplicationTypes";
 import { AlertCircle, CheckCircle, ExternalLinkIcon, FileIcon, PlusIcon, RefreshCw, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-interface EnrichedApplication extends Application {
-  institution?: { id: string; name: string; } | null;
-  program?: { id: string; name: string; } | null;
-}
 
 interface ApplicationTableProps {
   applications: Application[];
@@ -61,7 +57,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
               ...app,
               institution: institutionData,
               program: programData
-            };
+            } as EnrichedApplication;
           })
         );
         
@@ -76,7 +72,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   }, [applications]);
 
-  const getStatusBadgeClass = (status: string) => {
+  const getStatusBadgeClass = (status: string = 'draft') => {
     switch (status.toLowerCase()) {
       case "draft":
         return "bg-yellow-100 text-yellow-800";
@@ -191,21 +187,21 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
             </TableCell>
             <TableCell>
               <span 
-                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status || 'draft')}`}
+                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status)}`}
               >
                 {app.status || 'draft'}
               </span>
             </TableCell>
             <TableCell>
-                {Array.isArray(app.documents) && app.documents.length > 0 ? (
+                {app.documents && app.documents.length > 0 ? (
                 <div className="flex flex-col gap-2">
-                  {app.documents.map((doc: any) => (
+                  {app.documents.map((doc) => (
                   <div key={doc.id} className="flex items-center justify-between">
                     <Button
                     variant="outline"
                     size="sm"
                     className="text-xs justify-start"
-                    onClick={() => handleDocumentClick(doc.file_path || '')}
+                    onClick={() => handleDocumentClick(doc.file_path)}
                     >
                     <FileIcon className="h-3 w-3 mr-1" />
                     <span className="truncate">{doc.document_type || "Document"}</span>

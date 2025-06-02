@@ -8,7 +8,7 @@ import { useApplicationFormState } from '@/hooks/useApplicationFormState';
 import { useDraftManagement } from '@/hooks/useDraftManagement';
 import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
-import { ApplicationFormValues } from '@/types/ApplicationFormTypes';
+import { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
 
 export const useApplicationForm = () => {
   const navigate = useNavigate();
@@ -24,7 +24,9 @@ export const useApplicationForm = () => {
     const applicationFormData: ApplicationFormValues = {
       fullName: form.getValues('fullName') || '',
       idNumber: form.getValues('idNumber') || '',
-      ...data
+      university: data.university,
+      program: data.program,
+      grade12Results: data.grade12Results
     };
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
     saveFormToStorage(applicationFormData);

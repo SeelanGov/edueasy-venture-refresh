@@ -1,7 +1,8 @@
+
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
-import { DocumentType, DocumentUploadState } from '@/components/profile-completion/documents/types';
+import { DocumentType } from '@/components/profile-completion/documents/types';
 import { DocumentInfo } from '@/types/ApplicationTypes';
 import logger from '@/utils/logger';
 
@@ -91,14 +92,21 @@ export const useSupabaseUpload = (
         });
 
         // Update the documents store with the new document
+        const docInfo: DocumentInfo = {
+          id: documentId,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          uploadedAt: new Date().toISOString(),
+          path: filePath,
+          documentId: documentId
+        };
+        
         const updatedDocuments: DocumentsStore = {
           ...documents,
-          [documentType]: {
-            file: file,
-            path: filePath,
-            documentId: documentId,
-          },
+          [documentType]: docInfo,
         };
+        
         if (applicationId) {
           updatedDocuments.applicationId = applicationId;
         }
@@ -119,3 +127,6 @@ export const useSupabaseUpload = (
 
   return { uploadToSupabase };
 };
+
+// Import the type so that it's available in this file
+import { DocumentUploadState } from '@/hooks/useDocumentUploadManager';

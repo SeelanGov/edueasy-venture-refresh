@@ -21,13 +21,16 @@ export interface DocumentInfo {
   size: number;
   url?: string;
   uploadedAt: string;
+  file?: File;
+  path?: string;
+  documentId?: string;
 }
 
 export interface Application {
   id: string;
   user_id: string;
-  institution_id?: string;
-  program_id?: string;
+  institution_id?: string | null;
+  program_id?: string | null;
   grade12_results?: string;
   university?: string;
   program?: string;
@@ -35,6 +38,9 @@ export interface Application {
   created_at: string;
   updated_at?: string;
   documents?: Document[];
+}
+
+export interface EnrichedApplication extends Omit<Application, 'program'> {
   institution?: { id: string; name: string; } | null;
   program?: { id: string; name: string; } | null;
 }
