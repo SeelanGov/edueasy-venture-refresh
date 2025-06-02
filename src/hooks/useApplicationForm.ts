@@ -28,6 +28,15 @@ export const useApplicationForm = () => {
     };
   };
 
+  // Create a conversion function from DraftFormData to ApplicationFormValues
+  const convertFromDraftData = (data: DraftFormData): ApplicationFormValues => {
+    return {
+      ...data,
+      fullName: form.getValues('fullName') || '',
+      idNumber: form.getValues('idNumber') || '',
+    };
+  };
+
   // Create a wrapper function that converts ApplicationFormValues to DraftFormData
   const saveFormToStorageWrapper = (data: ApplicationFormValues) => {
     const draftData = convertToDraftData(data);
@@ -49,12 +58,8 @@ export const useApplicationForm = () => {
     isOnline,
     documentFile,
     (data: DraftFormData) => {
-      // Convert DraftFormData back to ApplicationFormValues for storage
-      const fullData: ApplicationFormValues = {
-        ...data,
-        fullName: form.getValues('fullName') || '',
-        idNumber: form.getValues('idNumber') || '',
-      };
+      // Convert DraftFormData to ApplicationFormValues for storage
+      const fullData = convertFromDraftData(data);
       saveFormToStorageWrapper(fullData);
     },
     setHasSavedDraft

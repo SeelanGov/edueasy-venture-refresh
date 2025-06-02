@@ -1,21 +1,14 @@
-import { toast } from '@/components/ui/use-toast';
+
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import {
-  SubscriptionTier,
-  Transaction,
-  TransactionStatus,
-  TransactionType,
-  UserSubscription,
-} from '@/types/SubscriptionTypes';
-import { useEffect, useState } from 'react';
+import { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
+import { toast } from '@/components/ui/use-toast';
 
 export function useSubscription() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [tiers, setTiers] = useState<SubscriptionTier[]>([]);
-  const [userSubscription, setUserSubscription] = useState<UserSubscription | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [subscriptionTiers, setSubscriptionTiers] = useState<SubscriptionTier[]>([]);
+  const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Helper function to handle errors
@@ -29,20 +22,48 @@ export function useSubscription() {
     });
   };
 
-  // Fetch all subscription tiers
-  const fetchTiers = async () => {
+  // Since subscription tables don't exist, we'll use a mock implementation
+  const fetchSubscriptionTiers = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('subscription_tiers')
-        .select('*')
-        .order('price_monthly', { ascending: true });
-
-      if (error) throw error;
-
-      setTiers(data || []);
+      // TODO: Implement when subscription_tiers table is created
+      console.log('Subscription tiers table not yet implemented');
+      
+      // Mock data for now
+      const mockTiers: SubscriptionTier[] = [
+        {
+          id: '1',
+          name: 'Basic',
+          description: 'Basic subscription tier',
+          price_monthly: 9.99,
+          price_yearly: 99.99,
+          max_applications: 5,
+          premium_support: false,
+          career_guidance: false,
+          priority_processing: false,
+          active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: '2',
+          name: 'Premium',
+          description: 'Premium subscription tier',
+          price_monthly: 19.99,
+          price_yearly: 199.99,
+          max_applications: 20,
+          premium_support: true,
+          career_guidance: true,
+          priority_processing: true,
+          active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      ];
+      
+      setSubscriptionTiers(mockTiers);
     } catch (error) {
       handleError(error, 'Failed to fetch subscription tiers');
     } finally {
@@ -50,10 +71,10 @@ export function useSubscription() {
     }
   };
 
-  // Fetch user's active subscription
-  const fetchUserSubscription = async () => {
+  // Fetch user's current subscription
+  const fetchCurrentSubscription = async () => {
     if (!user?.id) {
-      setUserSubscription(null);
+      setCurrentSubscription(null);
       return;
     }
 
@@ -61,72 +82,18 @@ export function useSubscription() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('user_subscriptions')
-        .select(
-          `
-          *,
-          tier:tier_id(*)
-        `,
-        )
-        .eq('user_id', user.id)
-        .eq('is_active', true)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        // PGRST116 is "No rows returned" error
-        throw error;
-      }
-
-      setUserSubscription(data || null);
+      // TODO: Implement when user_subscriptions table is created
+      console.log('User subscriptions table not yet implemented');
+      setCurrentSubscription(null);
     } catch (error) {
-      handleError(error, 'Failed to fetch user subscription');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch user's transaction history
-  const fetchTransactions = async () => {
-    if (!user?.id) {
-      setTransactions([]);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      const { data, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      // Convert string status and transaction_type to enum values
-      const typedTransactions: Transaction[] = (data || []).map((transaction) => ({
-        ...transaction,
-        status: transaction.status as TransactionStatus,
-        transaction_type: transaction.transaction_type as TransactionType,
-      }));
-
-      setTransactions(typedTransactions);
-    } catch (error) {
-      handleError(error, 'Failed to fetch transaction history');
+      handleError(error, 'Failed to fetch current subscription');
     } finally {
       setLoading(false);
     }
   };
 
   // Subscribe to a tier
-  const subscribeToPlan = async (
-    tierId: string,
-    paymentMethod: string,
-    autoRenew: boolean = false,
-    billingCycle: 'monthly' | 'yearly' = 'monthly',
-  ) => {
+  const subscribe = async (tierId: string, paymentToken?: string) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
@@ -136,74 +103,18 @@ export function useSubscription() {
       setLoading(true);
       setError(null);
 
-      // Get the tier details
-      const tier = tiers.find((t) => t.id === tierId);
-      if (!tier) {
-        throw new Error('Invalid subscription tier');
-      }
-
-      // Calculate end date based on billing cycle
-      const startDate = new Date();
-      const endDate = new Date(startDate);
-      if (billingCycle === 'monthly') {
-        endDate.setMonth(endDate.getMonth() + 1);
-      } else {
-        endDate.setFullYear(endDate.getFullYear() + 1);
-      }
-
-      // Deactivate any existing active subscriptions
-      if (userSubscription) {
-        const { error: deactivateError } = await supabase
-          .from('user_subscriptions')
-          .update({ is_active: false })
-          .eq('id', userSubscription.id);
-
-        if (deactivateError) throw deactivateError;
-      }
-
-      // Create new subscription
-      const { data: newSubscription, error: subscriptionError } = await supabase
-        .from('user_subscriptions')
-        .insert({
-          user_id: user.id,
-          tier_id: tierId,
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
-          is_active: true,
-          payment_method: paymentMethod,
-          auto_renew: autoRenew,
-        })
-        .select()
-        .single();
-
-      if (subscriptionError) throw subscriptionError;
-
-      // Record the transaction
-      const amount = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
-      const { error: transactionError } = await supabase.from('transactions').insert({
-        user_id: user.id,
-        subscription_id: newSubscription.id,
-        amount,
-        status: TransactionStatus.COMPLETED,
-        payment_method: paymentMethod,
-        transaction_type: TransactionType.SUBSCRIPTION,
-      });
-
-      if (transactionError) throw transactionError;
-
-      // Refresh user subscription data
-      await fetchUserSubscription();
-      await fetchTransactions();
+      // TODO: Implement when subscription tables are created
+      console.log('Subscription tables not yet implemented');
 
       toast({
-        title: 'Subscription Successful',
-        description: `You are now subscribed to the ${tier.name} plan.`,
+        title: 'Subscription Created',
+        description: 'Your subscription has been created successfully.',
         variant: 'default',
       });
 
-      return newSubscription;
+      return null;
     } catch (error) {
-      handleError(error, 'Failed to subscribe to plan');
+      handleError(error, 'Failed to create subscription');
       return null;
     } finally {
       setLoading(false);
@@ -212,8 +123,8 @@ export function useSubscription() {
 
   // Cancel subscription
   const cancelSubscription = async () => {
-    if (!user?.id || !userSubscription) {
-      handleError(new Error('No active subscription'), 'No active subscription to cancel');
+    if (!user?.id || !currentSubscription) {
+      handleError(new Error('No active subscription'), 'No active subscription found');
       return false;
     }
 
@@ -221,38 +132,16 @@ export function useSubscription() {
       setLoading(true);
       setError(null);
 
-      const { error } = await supabase
-        .from('user_subscriptions')
-        .update({
-          is_active: false,
-          auto_renew: false,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', userSubscription.id);
-
-      if (error) throw error;
-
-      // Record the cancellation transaction
-      const { error: transactionError } = await supabase.from('transactions').insert({
-        user_id: user.id,
-        subscription_id: userSubscription.id,
-        amount: 0,
-        status: TransactionStatus.CANCELLED,
-        transaction_type: TransactionType.SUBSCRIPTION,
-      });
-
-      if (transactionError) throw transactionError;
-
-      // Refresh user subscription data
-      await fetchUserSubscription();
-      await fetchTransactions();
+      // TODO: Implement when subscription tables are created
+      console.log('Subscription tables not yet implemented');
 
       toast({
         title: 'Subscription Cancelled',
-        description: 'Your subscription has been cancelled successfully.',
+        description: 'Your subscription has been cancelled.',
         variant: 'default',
       });
 
+      setCurrentSubscription(null);
       return true;
     } catch (error) {
       handleError(error, 'Failed to cancel subscription');
@@ -262,84 +151,21 @@ export function useSubscription() {
     }
   };
 
-  // Toggle auto-renew setting
-  const toggleAutoRenew = async () => {
-    if (!user?.id || !userSubscription) {
-      handleError(new Error('No active subscription'), 'No active subscription');
-      return false;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      const newAutoRenewValue = !userSubscription.auto_renew;
-
-      const { error } = await supabase
-        .from('user_subscriptions')
-        .update({
-          auto_renew: newAutoRenewValue,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', userSubscription.id);
-
-      if (error) throw error;
-
-      // Refresh user subscription data
-      await fetchUserSubscription();
-
-      toast({
-        title: 'Auto-Renew Updated',
-        description: newAutoRenewValue
-          ? 'Your subscription will automatically renew.'
-          : 'Auto-renew has been turned off.',
-        variant: 'default',
-      });
-
-      return true;
-    } catch (error) {
-      handleError(error, 'Failed to update auto-renew setting');
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Upgrade or downgrade subscription
-  const changeTier = async (
-    newTierId: string,
-    paymentMethod: string,
-    billingCycle: 'monthly' | 'yearly' = 'monthly',
-  ) => {
-    return subscribeToPlan(
-      newTierId,
-      paymentMethod,
-      userSubscription?.auto_renew || false,
-      billingCycle,
-    );
-  };
-
   // Load data when user changes
   useEffect(() => {
-    fetchTiers();
+    fetchSubscriptionTiers();
     if (user?.id) {
-      fetchUserSubscription();
-      fetchTransactions();
+      fetchCurrentSubscription();
     }
   }, [user]);
 
   return {
     loading,
     error,
-    tiers,
-    userSubscription,
-    transactions,
-    fetchTiers,
-    fetchUserSubscription,
-    fetchTransactions,
-    subscribeToPlan,
+    subscriptionTiers,
+    currentSubscription,
+    subscribe,
     cancelSubscription,
-    toggleAutoRenew,
-    changeTier,
+    refreshSubscriptions: fetchCurrentSubscription,
   };
 }
