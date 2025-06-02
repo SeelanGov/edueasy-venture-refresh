@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -17,12 +18,9 @@ export const Hero = () => {
         description: 'Please log in to start your application.',
         variant: 'destructive',
       });
-      // Pass the current location to preserve the intended destination
       navigate('/login', { state: { from: '/apply' } });
       return;
     }
-
-    // If user is authenticated, proceed to the application page
     navigate('/apply');
   };
 
@@ -114,27 +112,51 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right Column - Image */}
+          {/* Right Column - Enhanced Image Gallery */}
           <div className="hidden md:block relative h-full">
+            {/* Background decorative elements */}
             <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
             <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
-            <div className="relative z-10 bg-white p-4 rounded-2xl shadow-lg border border-gray-100">
-              <img
-                src="/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png"
-                alt="Students using EduEasy"
-                className="w-full h-auto rounded-xl object-cover"
-              />
-              <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
-                <div className="flex items-center gap-2 text-primary">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span className="font-medium">Easy Application Process</span>
+            
+            {/* Main image showcase */}
+            <div className="relative z-10 grid grid-cols-2 gap-4 h-96">
+              {/* Primary image - Study environment */}
+              <div className="col-span-2 bg-white p-2 rounded-2xl shadow-lg border border-gray-100">
+                <img
+                  src="/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png"
+                  alt="Students in modern study environment"
+                  className="w-full h-48 rounded-xl object-cover"
+                />
+              </div>
+              
+              {/* Secondary images */}
+              <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100">
+                <img
+                  src="/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png"
+                  alt="African student celebrating success"
+                  className="w-full h-32 rounded-lg object-cover"
+                />
+              </div>
+              
+              <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100 flex items-center justify-center">
+                <div className="text-center text-primary">
+                  <div className="text-2xl font-bold">1000+</div>
+                  <div className="text-xs">Students Helped</div>
                 </div>
+              </div>
+            </div>
+
+            {/* Floating success badge */}
+            <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
+              <div className="flex items-center gap-2 text-primary">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <span className="font-medium">Success Guaranteed</span>
               </div>
             </div>
           </div>
