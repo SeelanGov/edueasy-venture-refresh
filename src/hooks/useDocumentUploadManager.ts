@@ -22,6 +22,11 @@ export interface DocumentUploadState {
   verificationTriggered: boolean;
   isResubmission?: boolean;
   previouslyRejected?: boolean;
+  documentId?: string;
+  filePath?: string;
+  progress?: number;
+  error?: string | null;
+  retryData?: any;
 }
 
 export const useDocumentUploadManager = () => {
@@ -31,16 +36,19 @@ export const useDocumentUploadManager = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const [documentStates, setDocumentStates] = useState<Record<string, DocumentUploadState>>({});
+  const [isVerifying, setIsVerifying] = useState(false);
   
   const form = useForm();
   const { uploadDocument, uploading } = useDocumentUpload();
-  const { verifyDocument, isVerifying, verificationResult: hookVerificationResult } = useDocumentVerification();
+  const { verifyDocument, verificationResult: hookVerificationResult } = useDocumentVerification();
 
   const getDocumentState = useCallback((documentType: string): DocumentUploadState => {
     return documentStates[documentType] || {
       uploaded: false,
       uploading: false,
       verificationTriggered: false,
+      progress: 0,
+      error: null,
     };
   }, [documentStates]);
 
@@ -61,6 +69,7 @@ export const useDocumentUploadManager = () => {
       }
 
       // Verify document
+      setIsVerifying(true);
       const result = await verifyDocument(uploadResult.id, file);
       
       // Convert verification result to our interface
@@ -91,6 +100,7 @@ export const useDocumentUploadManager = () => {
       return null;
     } finally {
       setIsProcessing(false);
+      setIsVerifying(false);
     }
   }, [uploadDocument, verifyDocument]);
 
@@ -107,8 +117,8 @@ export const useDocumentUploadManager = () => {
     console.log('Verifying document:', documentType);
   }, []);
 
-  const handleResubmit = useCallback((documentType: string) => {
-    console.log('Resubmitting document:', documentType);
+  const handleResubmit = useCallback(() => {
+    console.log('Resubmitting document');
   }, []);
 
   const handleSubmit = useCallback(async (data: Record<string, unknown>) => {

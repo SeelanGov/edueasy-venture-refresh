@@ -56,9 +56,9 @@ export const ErrorDisplay = ({
   const getVariant = () => {
     switch (error.category) {
       case ErrorCategory.VALIDATION:
-        return 'default';
+        return 'default' as const;
       default:
-        return 'destructive';
+        return 'destructive' as const;
     }
   };
 
