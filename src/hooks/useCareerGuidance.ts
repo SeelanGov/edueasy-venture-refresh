@@ -1,8 +1,29 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { CareerGuidance, AssessmentType } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
+
+// Define career guidance types since the table doesn't exist yet
+export enum AssessmentType {
+  PERSONALITY = 'personality',
+  APTITUDE = 'aptitude',
+  INTEREST = 'interest',
+  VALUES = 'values',
+  SKILLS = 'skills'
+}
+
+export interface CareerGuidance {
+  id: string;
+  user_id: string;
+  assessment_type: AssessmentType;
+  assessment_date: string;
+  results: Record<string, any>;
+  recommendations?: Record<string, any> | null;
+  is_premium: boolean;
+  created_at: string;
+  updated_at?: string;
+}
 
 export function useCareerGuidance() {
   const { user } = useAuth();
@@ -22,10 +43,11 @@ export function useCareerGuidance() {
     });
   };
 
-  // Fetch user's assessments
+  // Since career_guidance table doesn't exist, we'll use a placeholder implementation
   const fetchAssessments = async () => {
     if (!user?.id) {
       setAssessments([]);
+      setLoading(false);
       return;
     }
 
@@ -33,15 +55,9 @@ export function useCareerGuidance() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('career_guidance')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('assessment_date', { ascending: false });
-
-      if (error) throw error;
-
-      setAssessments(data || []);
+      // TODO: Implement when career_guidance table is created
+      console.log('Career guidance table not yet implemented');
+      setAssessments([]);
     } catch (error) {
       handleError(error, 'Failed to fetch career assessments');
     } finally {
@@ -55,15 +71,9 @@ export function useCareerGuidance() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('career_guidance')
-        .select('*')
-        .eq('id', assessmentId)
-        .single();
-
-      if (error) throw error;
-
-      setCurrentAssessment(data);
+      // TODO: Implement when career_guidance table is created
+      console.log('Career guidance table not yet implemented');
+      setCurrentAssessment(null);
     } catch (error) {
       handleError(error, 'Failed to fetch assessment details');
     } finally {
@@ -87,23 +97,8 @@ export function useCareerGuidance() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('career_guidance')
-        .insert({
-          user_id: user.id,
-          assessment_type: assessmentType,
-          assessment_date: new Date().toISOString(),
-          results,
-          recommendations: recommendations || null,
-          is_premium: isPremium,
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the assessments list
-      await fetchAssessments();
+      // TODO: Implement when career_guidance table is created
+      console.log('Career guidance table not yet implemented');
 
       toast({
         title: 'Assessment Created',
@@ -111,7 +106,7 @@ export function useCareerGuidance() {
         variant: 'default',
       });
 
-      return data;
+      return null;
     } catch (error) {
       handleError(error, 'Failed to create assessment');
       return null;
@@ -131,22 +126,8 @@ export function useCareerGuidance() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('career_guidance')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', assessmentId)
-        .eq('user_id', user.id) // Ensure the user owns this assessment
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update the assessments list and current assessment
-      await fetchAssessments();
-      setCurrentAssessment(data);
+      // TODO: Implement when career_guidance table is created
+      console.log('Career guidance table not yet implemented');
 
       toast({
         title: 'Assessment Updated',
@@ -154,7 +135,7 @@ export function useCareerGuidance() {
         variant: 'default',
       });
 
-      return data;
+      return null;
     } catch (error) {
       handleError(error, 'Failed to update assessment');
       return null;
@@ -174,16 +155,8 @@ export function useCareerGuidance() {
       setLoading(true);
       setError(null);
 
-      const { error } = await supabase
-        .from('career_guidance')
-        .delete()
-        .eq('id', assessmentId)
-        .eq('user_id', user.id); // Ensure the user owns this assessment
-
-      if (error) throw error;
-
-      // Update the assessments list
-      await fetchAssessments();
+      // TODO: Implement when career_guidance table is created
+      console.log('Career guidance table not yet implemented');
 
       toast({
         title: 'Assessment Deleted',

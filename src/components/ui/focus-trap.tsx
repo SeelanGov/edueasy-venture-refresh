@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 
 interface FocusTrapProps {
@@ -62,6 +61,8 @@ export function FocusTrap({ children, active = true, className }: FocusTrapProps
         if (previousFocus) previousFocus.focus();
       };
     }
+    // Ensure all code paths return a value
+    return undefined;
   }, [active, focusableElements]);
 
   return (

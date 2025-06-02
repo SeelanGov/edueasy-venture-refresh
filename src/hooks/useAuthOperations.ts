@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-import { User, Session, AuthError, AuthResponse } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { ApiError } from '@/types/common';
 import logger from '@/utils/logger';
 
@@ -15,7 +15,7 @@ export const useAuthOperations = () => {
     password: string,
     fullName: string,
     idNumber: string
-  ): Promise<AuthResponse | null> => {
+  ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
     try {
       logger.debug('Attempting signup for:', email);
       const { data, error } = await supabase.auth.signUp({ email, password });
@@ -36,7 +36,7 @@ export const useAuthOperations = () => {
         } else {
           throw error;
         }
-        return null;
+        return { user: null, session: null, error: error.message };
       }
 
       if (data.user) {
@@ -67,10 +67,10 @@ export const useAuthOperations = () => {
 
         // Navigate to login page after successful registration and pass along the original "from" destination
         navigate('/login', { state: { from: from } });
-        return data;
+        return { user: data.user, session: data.session };
       }
 
-      return null;
+      return { user: null, session: null };
     } catch (error) {
       const apiError = error as ApiError;
       logger.error('Signup error:', apiError);
@@ -79,7 +79,7 @@ export const useAuthOperations = () => {
         description: apiError.message || 'An unexpected error occurred',
         variant: 'destructive',
       });
-      throw apiError;
+      return { user: null, session: null, error: apiError.message };
     }
   };
 
@@ -87,12 +87,10 @@ export const useAuthOperations = () => {
     email: string,
     password: string,
     rememberMe = false
-  ): Promise<AuthResponse | null> => {
+  ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
     try {
       logger.debug('Attempting signin for:', email);
 
-      // Instead of using expiresIn in the options object, we need to use the correct structure
-      // For Supabase v2, we need to handle session expiry differently
       const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -111,7 +109,7 @@ export const useAuthOperations = () => {
 
       logger.debug('Signin successful:', !!data?.user, data?.user?.id);
       // Navigation is now handled in Login component
-      return data;
+      return { user: data.user, session: data.session };
     } catch (error) {
       const apiError = error as ApiError;
       logger.error('Signin error:', apiError);
@@ -120,7 +118,7 @@ export const useAuthOperations = () => {
         description: apiError.message || 'An unexpected error occurred',
         variant: 'destructive',
       });
-      throw apiError;
+      return { user: null, session: null, error: apiError.message };
     }
   };
 

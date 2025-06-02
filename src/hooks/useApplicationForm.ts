@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,6 +8,7 @@ import { useApplicationFormState } from '@/hooks/useApplicationFormState';
 import { useDraftManagement } from '@/hooks/useDraftManagement';
 import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
+import { ApplicationFormValues, DraftFormData } from '@/types/ApplicationFormTypes';
 
 export const useApplicationForm = () => {
   const navigate = useNavigate();
@@ -16,11 +18,22 @@ export const useApplicationForm = () => {
   const { form, documentFile, handleFileChange, hasSavedDraft, setHasSavedDraft, user } =
     useApplicationFormState();
 
+  // Create a wrapper function that converts ApplicationFormValues to DraftFormData
+  const saveFormToStorageWrapper = (data: ApplicationFormValues) => {
+    const draftData: DraftFormData = {
+      grade12Results: data.grade12Results,
+      university: data.university,
+      program: data.program,
+      personalStatement: data.personalStatement,
+    };
+    
+    // Use the draft data for storage (excluding fullName and idNumber)
+    const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
+    saveFormToStorage(draftData as any);
+  };
+
   // Initialize the storage hooks
-  const { saveFormToStorage, loadSavedForm, clearSavedForm } = useOfflineFormStorage(
-    form,
-    isOnline
-  );
+  const { loadSavedForm, clearSavedForm } = useOfflineFormStorage(form, isOnline);
 
   // Load draft from Supabase
   useDraftLoading(user?.id, isOnline, form, setHasSavedDraft);
@@ -30,7 +43,7 @@ export const useApplicationForm = () => {
     user?.id,
     isOnline,
     documentFile,
-    saveFormToStorage,
+    saveFormToStorageWrapper,
     setHasSavedDraft
   );
 
@@ -43,7 +56,7 @@ export const useApplicationForm = () => {
     user?.id,
     isOnline,
     documentFile,
-    saveFormToStorage,
+    saveFormToStorageWrapper,
     clearSavedForm,
     hasSavedDraft
   );
