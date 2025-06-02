@@ -3,7 +3,43 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
-import { Sponsorship, SponsorshipStatus } from '@/types/RevenueTypes';
+
+export enum SponsorshipStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  ACTIVE = 'active',
+  EXPIRED = 'expired',
+}
+
+export enum SponsorshipLevel {
+  BRONZE = 'bronze',
+  SILVER = 'silver',
+  GOLD = 'gold',
+  PLATINUM = 'platinum',
+}
+
+export interface Sponsorship {
+  id: string;
+  organization_name: string;
+  contact_name: string;
+  contact_email: string;
+  contact_phone: string;
+  description: string;
+  amount: number;
+  currency: string;
+  status: SponsorshipStatus;
+  sponsorship_level: SponsorshipLevel;
+  start_date: string;
+  end_date: string;
+  is_active: boolean;
+  requirements?: Record<string, any>;
+  logo_url?: string;
+  website_url?: string;
+  created_at: string;
+  updated_at: string;
+  expires_at?: string;
+}
 
 export const useSponsorships = () => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
@@ -23,7 +59,7 @@ export const useSponsorships = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSponsorships(data || []);
+      setSponsorships((data || []) as Sponsorship[]);
     } catch (err) {
       console.error('Error fetching sponsorships:', err);
       setError('Failed to load sponsorships');
@@ -55,7 +91,7 @@ export const useSponsorships = () => {
         amount,
         currency: 'ZAR',
         status: SponsorshipStatus.PENDING,
-        sponsorship_level: 'bronze' as any,
+        sponsorship_level: SponsorshipLevel.BRONZE,
         start_date: new Date().toISOString(),
         end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
         is_active: true,
@@ -114,7 +150,7 @@ export const useSponsorships = () => {
         amount: sponsorship.amount || 0,
         currency: sponsorship.currency || 'ZAR',
         status: SponsorshipStatus.PENDING,
-        sponsorship_level: sponsorship.sponsorship_level || 'bronze' as any,
+        sponsorship_level: sponsorship.sponsorship_level || SponsorshipLevel.BRONZE,
         start_date: sponsorship.start_date || new Date().toISOString(),
         end_date: sponsorship.end_date || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
         is_active: true,

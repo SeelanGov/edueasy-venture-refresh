@@ -61,7 +61,7 @@ export const useCareerGuidance = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setAssessments(data || []);
+      setAssessments((data || []) as CareerAssessment[]);
     } catch (err) {
       console.error('Error fetching assessments:', err);
       setError('Failed to load assessments');
@@ -85,7 +85,7 @@ export const useCareerGuidance = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setGuidance(data || []);
+      setGuidance((data || []) as CareerGuidance[]);
     } catch (err) {
       console.error('Error fetching guidance:', err);
       setError('Failed to load career guidance');
@@ -95,27 +95,72 @@ export const useCareerGuidance = () => {
     }
   };
 
-  const createAssessment = async (assessmentType: AssessmentType, questions: Record<string, any>) => {
+  const fetchAssessment = async (assessmentId: string) => {
     if (!user) return null;
 
     try {
       const { data, error } = await supabase
         .from('career_assessments')
+        .select('*')
+        .eq('id', assessmentId)
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+      return data as CareerAssessment;
+    } catch (err) {
+      console.error('Error fetching assessment:', err);
+      toast.error('Failed to load assessment');
+      return null;
+    }
+  };
+
+  const createAssessment = async (
+    assessmentType: AssessmentType,
+    results: Record<string, any>,
+    recommendations: Record<string, any>,
+    isPremium: boolean = false
+  ) => {
+    if (!user) return null;
+
+    try {
+      // Create the assessment first
+      const { data: assessmentData, error: assessmentError } = await supabase
+        .from('career_assessments')
         .insert({
           user_id: user.id,
           assessment_type: assessmentType,
-          questions,
+          questions: {},
           responses: {},
-          results: {},
+          results,
+          completed_at: new Date().toISOString(),
         })
         .select()
         .single();
 
-      if (error) throw error;
-      
+      if (assessmentError) throw assessmentError;
+
+      // Create the guidance record
+      const { data: guidanceData, error: guidanceError } = await supabase
+        .from('career_guidance')
+        .insert({
+          user_id: user.id,
+          assessment_id: assessmentData.id,
+          assessment_type: assessmentType,
+          assessment_date: new Date().toISOString(),
+          recommendations,
+          results,
+          is_premium: isPremium,
+        })
+        .select()
+        .single();
+
+      if (guidanceError) throw guidanceError;
+
       await fetchAssessments();
-      toast.success('Assessment created successfully');
-      return data;
+      await fetchGuidance();
+      toast.success('Assessment completed successfully');
+      return guidanceData as CareerGuidance;
     } catch (err) {
       console.error('Error creating assessment:', err);
       toast.error('Failed to create assessment');
@@ -151,7 +196,7 @@ export const useCareerGuidance = () => {
       
       await fetchAssessments();
       toast.success('Assessment completed successfully');
-      return data;
+      return data as CareerAssessment;
     } catch (err) {
       console.error('Error submitting assessment:', err);
       toast.error('Failed to submit assessment');
@@ -199,7 +244,7 @@ export const useCareerGuidance = () => {
       
       await fetchGuidance();
       toast.success('Career guidance generated successfully');
-      return data;
+      return data as CareerGuidance;
     } catch (err) {
       console.error('Error generating guidance:', err);
       toast.error('Failed to generate career guidance');
@@ -224,5 +269,6 @@ export const useCareerGuidance = () => {
     generateGuidance,
     fetchAssessments,
     fetchGuidance,
+    fetchAssessment,
   };
 };

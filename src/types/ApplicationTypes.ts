@@ -42,7 +42,7 @@ export interface Application {
 
 export interface EnrichedApplication extends Application {
   institution?: { id: string; name: string; } | null;
-  program?: { id: string; name: string; } | null;
+  program_detail?: { id: string; name: string; } | null;
 }
 
 export interface ApplicationFormValues {

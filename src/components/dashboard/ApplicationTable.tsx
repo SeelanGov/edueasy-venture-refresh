@@ -1,3 +1,4 @@
+
 import { Spinner } from "@/components/Spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,7 +56,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
             return {
               ...app,
               institution: institutionData,
-              program: programData
+              program_detail: programData
             } as EnrichedApplication;
           })
         );
@@ -182,7 +183,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
               {app.institution?.name || app.university || "Not specified"}
             </TableCell>
             <TableCell>
-              {typeof app.program === 'object' && app.program?.name ? app.program.name : app.program || "Not specified"}
+              {app.program_detail?.name || app.program || "Not specified"}
             </TableCell>
             <TableCell>
               <span 
