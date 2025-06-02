@@ -106,6 +106,92 @@ export type Database = {
           },
         ]
       }
+      career_assessments: {
+        Row: {
+          assessment_type: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          questions: Json
+          responses: Json
+          results: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assessment_type: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          questions?: Json
+          responses?: Json
+          results?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assessment_type?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          questions?: Json
+          responses?: Json
+          results?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_guidance: {
+        Row: {
+          action_plan: Json | null
+          assessment_date: string
+          assessment_id: string | null
+          assessment_type: string
+          created_at: string
+          id: string
+          is_premium: boolean
+          recommendations: Json | null
+          results: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_plan?: Json | null
+          assessment_date: string
+          assessment_id?: string | null
+          assessment_type: string
+          created_at?: string
+          id?: string
+          is_premium?: boolean
+          recommendations?: Json | null
+          results?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_plan?: Json | null
+          assessment_date?: string
+          assessment_id?: string | null
+          assessment_type?: string
+          created_at?: string
+          id?: string
+          is_premium?: boolean
+          recommendations?: Json | null
+          results?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "career_guidance_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "career_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_verification_logs: {
         Row: {
           completed_at: string | null
@@ -441,6 +527,72 @@ export type Database = {
           table_name?: string
           test_session_id?: string
           tested_as?: string
+        }
+        Relationships: []
+      }
+      sponsorships: {
+        Row: {
+          amount: number
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          currency: string
+          description: string
+          end_date: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          organization_name: string
+          requirements: Json | null
+          sponsorship_level: string
+          start_date: string
+          status: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          amount: number
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          currency?: string
+          description: string
+          end_date: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          organization_name: string
+          requirements?: Json | null
+          sponsorship_level?: string
+          start_date: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          amount?: number
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          end_date?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          organization_name?: string
+          requirements?: Json | null
+          sponsorship_level?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
       }
