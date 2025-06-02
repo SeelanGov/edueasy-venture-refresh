@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Notification } from '@/types/Notification';
 import { toast } from '@/components/ui/use-toast';
 
-export { Notification } from '@/types/Notification';
+export type { Notification } from '@/types/Notification';
 
 export function useNotificationSystem() {
   const { user } = useAuth();

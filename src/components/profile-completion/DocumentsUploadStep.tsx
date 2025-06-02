@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DocumentStepperCard } from './documents/DocumentStepperCard';
 import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
@@ -78,7 +79,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
           handleRetry={handleRetry}
           handleVerify={handleVerify}
           handleResubmit={handleResubmit}
-          verificationResult={verificationResult}
+          verificationResult={verificationResult || null}
           isVerifying={isVerifying}
           setCurrentDocumentType={(type) => {}}
           currentDocumentType={currentDocumentType}
