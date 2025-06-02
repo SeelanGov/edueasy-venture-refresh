@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -32,6 +33,16 @@ export const useApplicationSubmission = (
       return;
     }
 
+    // Validate required fields
+    if (!userId) {
+      toast({
+        title: 'Authentication required',
+        description: 'Please log in to submit your application',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -58,7 +69,7 @@ export const useApplicationSubmission = (
           institution_id: data.university, // Institution ID
           program_id: data.program, // Program ID
           status: 'Submitted', // Change from Draft to Submitted
-          personal_statement: data.personalStatement,
+          personal_statement: data.personalStatement || null,
         },
       ]);
 
