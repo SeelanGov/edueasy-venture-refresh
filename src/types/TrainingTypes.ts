@@ -2,7 +2,7 @@
 export interface TrainingEntry {
   id: string;
   message_id: string;
-  intent_id: string;
+  intent_id: string | null;
   confidence: number | null;
   admin_id: string;
   created_at: string;
@@ -25,10 +25,10 @@ export interface ChatMessage {
   user_id: string;
   message: string;
   is_user: boolean;
-  confidence_score?: number;
-  intent_id?: string;
+  confidence_score?: number | null;
+  intent_id?: string | null;
   response_type?: string;
-  low_confidence?: boolean;
+  low_confidence?: boolean | null;
   created_at: string;
   user_name?: string;
   user_email?: string;

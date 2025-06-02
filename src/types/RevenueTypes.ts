@@ -1,12 +1,17 @@
 
-import { SubscriptionTier, UserSubscription } from './SubscriptionTypes';
-
 export enum SponsorshipStatus {
   PENDING = 'pending',
   APPROVED = 'approved',
   REJECTED = 'rejected',
   ACTIVE = 'active',
   EXPIRED = 'expired',
+}
+
+export enum SponsorshipLevel {
+  BRONZE = 'bronze',
+  SILVER = 'silver',
+  GOLD = 'gold',
+  PLATINUM = 'platinum',
 }
 
 export enum ConsultationStatus {
@@ -24,6 +29,7 @@ export enum AssessmentType {
   VALUES = 'values',
   CAREER_MATCH = 'career_match',
   COMPREHENSIVE = 'comprehensive',
+  APTITUDE = 'aptitude',
 }
 
 export interface Sponsorship {
@@ -36,6 +42,10 @@ export interface Sponsorship {
   amount: number;
   currency: string;
   status: SponsorshipStatus;
+  sponsorship_level: SponsorshipLevel;
+  start_date: string;
+  end_date: string;
+  is_active: boolean;
   requirements?: Record<string, any>;
   logo_url?: string;
   website_url?: string;
@@ -84,5 +94,20 @@ export interface CareerGuidance {
   updated_at: string;
 }
 
+export const formatSponsorshipLevel = (level: SponsorshipLevel): string => {
+  switch (level) {
+    case SponsorshipLevel.BRONZE:
+      return 'Bronze';
+    case SponsorshipLevel.SILVER:
+      return 'Silver';
+    case SponsorshipLevel.GOLD:
+      return 'Gold';
+    case SponsorshipLevel.PLATINUM:
+      return 'Platinum';
+    default:
+      return level;
+  }
+};
+
 // Re-export subscription types for convenience
-export { SubscriptionTier, UserSubscription };
+export type { SubscriptionTier, UserSubscription } from './SubscriptionTypes';

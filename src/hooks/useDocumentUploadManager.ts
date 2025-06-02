@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { useDocumentUpload } from './useDocumentUpload';
 import { useDocumentVerification } from './useDocumentVerification';
@@ -54,7 +55,8 @@ export const useDocumentUploadManager = () => {
   const processDocument = useCallback(async (
     file: File,
     documentType: string,
-    applicationId: string
+    applicationId: string,
+    isResubmission: boolean = false
   ) => {
     setIsProcessing(true);
     setVerificationResult(undefined);
@@ -69,7 +71,7 @@ export const useDocumentUploadManager = () => {
 
       // Verify document
       setIsVerifying(true);
-      const result = await verifyDocument(uploadResult.id, file);
+      const result = await verifyDocument(uploadResult.id);
       
       // Convert verification result to our interface
       const convertedResult: VerificationResult = {

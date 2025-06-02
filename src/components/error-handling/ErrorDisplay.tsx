@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AlertTriangle, RefreshCw, Info } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,6 +24,7 @@ interface ErrorDisplayProps {
   onRetry?: () => void;
   onDismiss?: () => void;
   showDetails?: boolean;
+  className?: string;
 }
 
 export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
@@ -31,6 +32,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   onRetry,
   onDismiss,
   showDetails = false,
+  className = '',
 }) => {
   const getSeverityColor = (severity: string = 'medium') => {
     switch (severity) {
@@ -81,7 +83,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   };
 
   return (
-    <Card className={`w-full ${getSeverityColor(error.severity)}`}>
+    <Card className={`w-full ${getSeverityColor(error.severity)} ${className}`}>
       <CardHeader>
         <div className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-red-500" />

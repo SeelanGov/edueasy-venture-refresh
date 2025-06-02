@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -46,10 +47,18 @@ export const useTrainingMessages = () => {
       const transformedMessages = messages.map((msg) => {
         const userInfo = users?.find((u) => u.id === msg.user_id);
         return {
-          ...msg,
+          id: msg.id,
+          user_id: msg.user_id,
+          message: msg.message,
+          is_user: msg.is_user,
+          confidence_score: msg.confidence_score ?? undefined,
+          intent_id: msg.intent_id ?? undefined,
+          response_type: msg.response_type || undefined,
+          low_confidence: msg.low_confidence ?? undefined,
+          created_at: msg.created_at,
           user_name: userInfo?.full_name || 'Unknown User',
           user_email: userInfo?.email || 'Unknown Email',
-        };
+        } as ChatMessage;
       });
 
       setMessages(transformedMessages);

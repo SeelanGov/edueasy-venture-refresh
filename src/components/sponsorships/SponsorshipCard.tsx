@@ -36,8 +36,8 @@ export function SponsorshipCard({
   };
 
   // Get sponsorship level color
-  const getLevelColor = (level: string): string => {
-    switch (level.toLowerCase()) {
+  const getLevelColor = (level: SponsorshipLevel): string => {
+    switch (level) {
       case SponsorshipLevel.PLATINUM:
         return 'bg-purple-100 text-purple-800';
       case SponsorshipLevel.GOLD:

@@ -1,8 +1,7 @@
-
 import { parseError } from '@/utils/errorHandler';
 import { ErrorSeverity, logError } from '@/utils/errorLogging';
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorDisplay } from './ErrorDisplay';
+import { ErrorDisplay, ErrorInfo as AppError } from './ErrorDisplay';
 
 interface Props {
   children: ReactNode;
@@ -30,19 +29,30 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, reactErrorInfo: ErrorInfo) {
+    // Convert React's ErrorInfo to our AppError format
+    const errorInfo: AppError = {
+      message: error.message || 'An unknown error occurred',
+      stack: error.stack,
+      component: this.props.component,
+      timestamp: new Date(),
+      details: {
+        componentStack: reactErrorInfo.componentStack,
+      }
+    };
+    
     // Log the error to our error logging system
     this.logErrorToSystem(error, errorInfo);
   }
 
   // Log error to our central system
-  private async logErrorToSystem(error: Error, errorInfo: ErrorInfo) {
+  private async logErrorToSystem(error: Error, errorInfo: AppError) {
     try {
       const standardError = parseError(error);
 
       // Add React component stack to error details
       const errorDetails = {
-        componentStack: errorInfo.componentStack,
+        componentStack: errorInfo.details?.componentStack,
         // Add any other relevant details here
       };
 
@@ -65,12 +75,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Also log to console for developers
       console.error('React Error Boundary caught an error:', error);
-      console.error('Component Stack:', errorInfo.componentStack);
+      console.error('Error info:', errorInfo);
     } catch (loggingError) {
       // Fallback to console if logging fails
       console.error('Failed to log error to system:', loggingError);
       console.error('Original error:', error);
-      console.error('Component info:', errorInfo);
+      console.error('Error info:', errorInfo);
     }
   }
 
@@ -87,12 +97,20 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) {
         return this.props.fallback;
       }
-
+      
+      // Convert the error to our AppError format
+      const appError: AppError = {
+        message: this.state.error?.message || 'An unknown error occurred',
+        stack: this.state.error?.stack,
+        component: this.props.component,
+        timestamp: new Date(),
+      };
+      
       // Otherwise render standard error display
       return (
         <div className="p-4">
           <ErrorDisplay
-            error={parseError(this.state.error || new Error('An unknown error occurred'))}
+            error={appError}
             onRetry={this.handleReset}
             className="mb-4"
           />
@@ -116,7 +134,7 @@ export const withErrorBoundary = <P extends object>(
   } = {},
 ) => {
   const { fallback, componentName, onReset } = options;
-
+  
   const WrappedComponent = (props: P) => {
     // Build props object conditionally to satisfy exactOptionalPropertyTypes
     const boundaryProps: {
@@ -135,9 +153,10 @@ export const withErrorBoundary = <P extends object>(
 
     return <ErrorBoundary {...boundaryProps} />;
   };
-
+  
   // Set display name for debugging
-  WrappedComponent.displayName = `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
-
+  WrappedComponent.displayName = 
+    `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
+  
   return WrappedComponent;
 };
