@@ -43,12 +43,20 @@ export const useApplicationForm = () => {
   // Load draft from Supabase
   useDraftLoading(user?.id, isOnline, form, setHasSavedDraft);
 
-  // Initialize draft management
+  // Initialize draft management with proper type conversion
   const { isSavingDraft, saveDraft } = useDraftManagement(
     user?.id,
     isOnline,
     documentFile,
-    saveFormToStorageWrapper,
+    (data: DraftFormData) => {
+      // Convert DraftFormData back to ApplicationFormValues for storage
+      const fullData: ApplicationFormValues = {
+        ...data,
+        fullName: form.getValues('fullName') || '',
+        idNumber: form.getValues('idNumber') || '',
+      };
+      saveFormToStorageWrapper(fullData);
+    },
     setHasSavedDraft
   );
 
