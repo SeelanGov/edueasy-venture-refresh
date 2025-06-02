@@ -1,6 +1,7 @@
+
 import { parseError } from '@/utils/errorHandler';
 import { ErrorSeverity, logError } from '@/utils/errorLogging';
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { ErrorDisplay } from './ErrorDisplay';
 
 interface Props {
@@ -117,19 +118,22 @@ export const withErrorBoundary = <P extends object>(
   const { fallback, componentName, onReset } = options;
 
   const WrappedComponent = (props: P) => {
-    // Only include defined props to avoid exactOptionalPropertyTypes issues
-    const boundaryProps: Record<string, unknown> = {};
+    // Build props object conditionally to satisfy exactOptionalPropertyTypes
+    const boundaryProps: {
+      children: ReactNode;
+      fallback?: ReactNode;
+      component?: string;
+      onReset?: () => void;
+    } = {
+      children: <Component {...props} />,
+    };
 
     // Only add properties that are defined
     if (fallback !== undefined) boundaryProps.fallback = fallback;
     if (componentName !== undefined) boundaryProps.component = componentName;
     if (onReset !== undefined) boundaryProps.onReset = onReset;
 
-    return (
-      <ErrorBoundary {...boundaryProps}>
-        <Component {...props} />
-      </ErrorBoundary>
-    );
+    return <ErrorBoundary {...boundaryProps} />;
   };
 
   // Set display name for debugging

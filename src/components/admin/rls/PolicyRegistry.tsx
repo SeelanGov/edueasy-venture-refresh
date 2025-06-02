@@ -1,3 +1,4 @@
+
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useMemo } from 'react';
@@ -19,7 +20,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
     return policies.reduce(
       (acc, policy) => {
         // Ensure policy and table_name are defined
-        if (policy && policy.table_name) {
+        if (policy?.table_name) {
           // Initialize array if it doesn't exist
           if (!acc[policy.table_name]) {
             acc[policy.table_name] = [];
@@ -58,7 +59,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
             <Separator className="mb-3" />
 
             <div className="space-y-2">
-              {tablePolicies.map((policy, idx) => (
+              {tablePolicies?.map((policy, idx) => (
                 <div
                   key={idx}
                   className="flex justify-between items-center px-2 py-1 hover:bg-muted rounded"
