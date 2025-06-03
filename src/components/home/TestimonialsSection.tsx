@@ -16,33 +16,33 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: 'Thabo Molefe',
+    name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=faces',
+    image: '/lovable-uploads/68c7d7e0-aacc-412e-9a3e-5c52e51d5b62.png',
     quote:
-      'EduEasy transformed my application journey. The platform made it so easy to apply to multiple universities while celebrating my African heritage. I felt supported every step of the way.',
-    achievement: 'Dean\'s List Scholar'
+      'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
+    achievement: 'Academic Excellence Award'
   },
   {
     id: 2,
-    name: 'Lerato Ndlovu',
+    name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: '/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png',
+    image: '/lovable-uploads/0e0daa96-b84c-44dd-8838-b37906afe829.png',
     quote:
-      'The support and guidance I received from EduEasy was invaluable. From document verification to application tracking, everything was seamless. I felt confident every step of the way.',
+      'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship Recipient'
   },
   {
     id: 3,
-    name: 'Sipho Khumalo',
+    name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop&crop=faces',
+    image: '/lovable-uploads/7ee06eae-bb53-426b-bf4e-0b7327d3b734.png',
     quote:
-      'The document verification feature saved me so much stress. Knowing my application was complete before submission gave me the confidence to pursue my dreams at top universities.',
-    achievement: 'Business Leadership Award'
+      'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
+    achievement: 'Dean\'s List Honor Student'
   },
 ];
 
@@ -71,10 +71,10 @@ export const TestimonialsSection = () => {
             <div className="w-16 h-1 md:w-20 md:h-1.5 bg-orange-500 rounded"></div>
           </div>
           <Typography variant="h2" className="mb-4 md:text-4xl">
-            Student Success Stories
+            Success Stories from Real Students
           </Typography>
           <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
-            Real stories from South African students who found their path with EduEasy
+            Hear from South African students who achieved their dreams with EduEasy and Thandi
           </Typography>
         </div>
 
@@ -160,6 +160,34 @@ export const TestimonialsSection = () => {
           </div>
         </div>
 
+        {/* Featured Success Story Section */}
+        <div className="mt-16 bg-gradient-to-r from-teal-600 to-orange-500 rounded-2xl p-8 text-white">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <Typography variant="h3" className="mb-4 text-white">
+                Celebrating Graduate Success
+              </Typography>
+              <Typography variant="body-lg" className="mb-6 text-white/90">
+                Every graduation is a celebration of determination, hard work, and the support 
+                that made dreams possible. Join thousands of successful South African graduates.
+              </Typography>
+              <Button
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-teal-600"
+              >
+                Start Your Success Story
+              </Button>
+            </div>
+            <div className="relative">
+              <img
+                src="/lovable-uploads/47a59528-b777-4b65-8636-16b9db8c94ab.png"
+                alt="South African graduate celebrating success"
+                className="w-full h-auto rounded-xl shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Success metrics section */}
         <div className="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
@@ -167,11 +195,11 @@ export const TestimonialsSection = () => {
             <div className="text-gray-600">Application Success Rate</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-orange-500 mb-2">1,200+</div>
-            <div className="text-gray-600">Students Placed</div>
+            <div className="text-3xl font-bold text-orange-500 mb-2">2,500+</div>
+            <div className="text-gray-600">Students Supported</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-teal-600 mb-2">R50M+</div>
+            <div className="text-3xl font-bold text-teal-600 mb-2">R75M+</div>
             <div className="text-gray-600">Scholarships Secured</div>
           </div>
         </div>
