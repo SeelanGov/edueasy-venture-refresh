@@ -28,7 +28,7 @@ export const AISupportSection = () => {
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <Typography variant="h6" className="font-semibold">
+                  <Typography variant="h5" className="font-semibold">
                     Smart Application Help
                   </Typography>
                 </div>
@@ -40,7 +40,7 @@ export const AISupportSection = () => {
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  <Typography variant="h6" className="font-semibold">
+                  <Typography variant="h5" className="font-semibold">
                     Career Guidance
                   </Typography>
                 </div>
@@ -52,7 +52,7 @@ export const AISupportSection = () => {
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                  <Typography variant="h6" className="font-semibold">
+                  <Typography variant="h5" className="font-semibold">
                     Cultural Understanding
                   </Typography>
                 </div>
