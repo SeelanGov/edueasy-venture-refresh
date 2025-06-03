@@ -123,7 +123,7 @@ export const Hero = () => {
               {/* Primary image - Study environment */}
               <div className="col-span-2 bg-white p-2 rounded-2xl shadow-lg border border-gray-100">
                 <img
-                  src="/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png"
+                  src="/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png"
                   alt="Students in modern study environment"
                   className="w-full h-48 rounded-xl object-cover"
                 />
@@ -132,8 +132,8 @@ export const Hero = () => {
               {/* Secondary images */}
               <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100">
                 <img
-                  src="/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png"
-                  alt="African student celebrating success"
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop&crop=faces"
+                  alt="Student celebrating success"
                   className="w-full h-32 rounded-lg object-cover"
                 />
               </div>
