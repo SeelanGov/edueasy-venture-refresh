@@ -1,12 +1,13 @@
+
 import React from 'react';
 import { Typography } from '@/components/ui/typography';
 
 export const AboutSection = () => {
   return (
-    <section id="learn-more" className="py-20 px-4 bg-white text-cap-dark">
+    <section id="learn-more" className="py-20 px-4 bg-white text-gray-900">
       <div className="container mx-auto">
         <div className="mb-6 flex justify-center">
-          <div className="w-16 h-1 bg-cap-teal rounded"></div>
+          <div className="w-16 h-1 bg-teal-600 rounded"></div>
         </div>
 
         <Typography variant="h2" className="text-center font-heading mb-8">
@@ -16,20 +17,20 @@ export const AboutSection = () => {
         <div className="flex flex-col md:flex-row gap-12 items-center max-w-6xl mx-auto">
           <div className="md:w-1/2">
             <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-cap-coral opacity-20 rounded-full"></div>
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500 opacity-20 rounded-full"></div>
               <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
                 <img
-                  src="/lovable-uploads/ff94423b-eb6f-4168-8c59-c20117e3c378.png"
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop&crop=faces"
                   alt="Students using EduEasy"
                   className="w-full h-auto"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-cap-teal opacity-20 rounded-full"></div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-teal-600 opacity-20 rounded-full"></div>
             </div>
           </div>
 
           <div className="md:w-1/2">
-            <Typography variant="h3" color="primary" className="mb-4">
+            <Typography variant="h3" className="mb-4 text-primary">
               Simplifying Higher Education Access
             </Typography>
 
@@ -42,7 +43,7 @@ export const AboutSection = () => {
             <div className="space-y-4">
               <div className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
+                  <div className="w-5 h-5 rounded-full bg-teal-600"></div>
                 </div>
                 <div className="ml-4">
                   <Typography variant="h5">Simplified Applications</Typography>
@@ -55,7 +56,7 @@ export const AboutSection = () => {
 
               <div className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-cap-coral"></div>
+                  <div className="w-5 h-5 rounded-full bg-orange-500"></div>
                 </div>
                 <div className="ml-4">
                   <Typography variant="h5">Document Verification</Typography>
@@ -67,7 +68,7 @@ export const AboutSection = () => {
 
               <div className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-cap-teal"></div>
+                  <div className="w-5 h-5 rounded-full bg-teal-600"></div>
                 </div>
                 <div className="ml-4">
                   <Typography variant="h5">Real-time Tracking</Typography>
@@ -156,7 +157,7 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
   return (
     <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
-      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cap-teal flex items-center justify-center">
+      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-teal-600 flex items-center justify-center">
         {icon}
       </div>
       <Typography variant="h4" className="mb-4 text-center">
