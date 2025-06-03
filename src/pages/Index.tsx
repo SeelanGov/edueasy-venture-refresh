@@ -8,6 +8,8 @@ import { PartnersSection } from '@/components/home/PartnersSection';
 import { CTASection } from '@/components/home/CTASection';
 import Footer from '@/components/home/Footer';
 import { JourneyMapDemo } from '@/components/demo/JourneyMapDemo';
+import { CommunitySection } from '@/components/home/CommunitySection';
+import { AISupportSection } from '@/components/home/AISupportSection';
 
 const Index = () => {
   console.log('Index page rendering');
@@ -23,7 +25,9 @@ const Index = () => {
 
       {/* Main Content Sections */}
       <Hero />
+      <AISupportSection />
       <HowItWorks />
+      <CommunitySection />
       <AboutSection />
 
       {/* Journey Map Demo Section */}

@@ -20,8 +20,8 @@ export const AboutSection = () => {
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500 opacity-20 rounded-full"></div>
               <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
                 <img
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop&crop=faces"
-                  alt="Students using EduEasy"
+                  src="/lovable-uploads/68c7d7e0-aacc-412e-9a3e-5c52e51d5b62.png"
+                  alt="Students collaborating and using EduEasy platform"
                   className="w-full h-auto"
                 />
               </div>
@@ -31,13 +31,13 @@ export const AboutSection = () => {
 
           <div className="md:w-1/2">
             <Typography variant="h3" className="mb-4 text-primary">
-              Simplifying Higher Education Access
+              Empowering South African Students
             </Typography>
 
             <Typography variant="body-lg" className="mb-6">
-              EduEasy is your gateway to higher education in South Africa. We streamline the
-              application process, making it easier for students to apply to multiple institutions
-              with a single application form.
+              EduEasy is your comprehensive gateway to higher education in South Africa. We combine 
+              cutting-edge AI technology with deep cultural understanding to support students from 
+              all backgrounds in achieving their academic dreams.
             </Typography>
 
             <div className="space-y-4">
@@ -46,10 +46,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-teal-600"></div>
                 </div>
                 <div className="ml-4">
-                  <Typography variant="h5">Simplified Applications</Typography>
+                  <Typography variant="h5">AI-Powered Guidance</Typography>
                   <Typography variant="body" className="text-gray-700">
-                    Apply to multiple institutions with one application, saving time and reducing
-                    stress.
+                    Thandi, our AI assistant, provides personalized support and guidance throughout 
+                    your education journey.
                   </Typography>
                 </div>
               </div>
@@ -59,9 +59,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-orange-500"></div>
                 </div>
                 <div className="ml-4">
-                  <Typography variant="h5">Document Verification</Typography>
+                  <Typography variant="h5">Cultural Understanding</Typography>
                   <Typography variant="body" className="text-gray-700">
-                    Our system ensures your documents meet all requirements before submission.
+                    Built specifically for South African students, understanding local context, 
+                    languages, and cultural nuances.
                   </Typography>
                 </div>
               </div>
@@ -71,9 +72,10 @@ export const AboutSection = () => {
                   <div className="w-5 h-5 rounded-full bg-teal-600"></div>
                 </div>
                 <div className="ml-4">
-                  <Typography variant="h5">Real-time Tracking</Typography>
+                  <Typography variant="h5">Comprehensive Support</Typography>
                   <Typography variant="body" className="text-gray-700">
-                    Monitor your application status and receive updates throughout the process.
+                    From application guidance to career counseling, we support you every step 
+                    of the way to success.
                   </Typography>
                 </div>
               </div>
@@ -95,12 +97,12 @@ export const AboutSection = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2h-2a2 2 0 01-2-2z"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 ></path>
               </svg>
             }
-            title="One Application"
-            description="Apply once for multiple institutions and programs"
+            title="AI Assistant"
+            description="24/7 support from Thandi, your personal education AI"
           />
           <FeatureCard
             icon={
@@ -115,12 +117,12 @@ export const AboutSection = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                 ></path>
               </svg>
             }
-            title="Track Progress"
-            description="Monitor your application status in real-time"
+            title="Community Support"
+            description="Connect with peers and mentors across South Africa"
           />
           <FeatureCard
             icon={
@@ -135,12 +137,12 @@ export const AboutSection = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                 ></path>
               </svg>
             }
-            title="Get Support"
-            description="Access guidance throughout your application journey"
+            title="Success Tracking"
+            description="Monitor your progress and celebrate achievements"
           />
         </div>
       </div>

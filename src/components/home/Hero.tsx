@@ -24,6 +24,15 @@ export const Hero = () => {
     navigate('/apply');
   };
 
+  const handleStartWithThandi = () => {
+    // Navigate to chat or AI assistant
+    console.log('Start with Thandi clicked');
+    toast({
+      title: 'Thandi AI Assistant',
+      description: 'Meet Thandi, your personal education assistant!',
+    });
+  };
+
   return (
     <section id="home" className="py-16 md:py-24 bg-white relative overflow-hidden">
       {/* Background dot pattern */}
@@ -50,7 +59,7 @@ export const Hero = () => {
           {/* Left Column - Text */}
           <div className="text-left space-y-6">
             <div className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
-              Education Made Simple
+              Empowering SA Youth
             </div>
 
             <Typography
@@ -58,36 +67,36 @@ export const Hero = () => {
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight"
             >
               <span className="text-primary">EduEasy</span> <br />
-              Bridging Education to Employment
+              Online and Offline Education Support
             </Typography>
 
             <Typography variant="body-lg" className="text-gray-600 max-w-lg">
-              Apply to multiple universities across South Africa with a single application. Save
-              time, track progress, and increase your chances of acceptance.
+              Get personalized guidance from Thandi, our AI assistant, and apply to multiple 
+              South African universities with confidence. Your success story starts here.
             </Typography>
 
             <div className="flex flex-wrap gap-4 pt-4">
               <Button
                 size="lg"
                 className="text-white bg-primary hover:bg-primary/90 rounded-full px-8"
-                onClick={handleStartApplication}
+                onClick={handleStartWithThandi}
               >
-                Start Application
+                Start with Thandi
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="border-gray-300 text-gray-700 hover:bg-gray-100 rounded-full px-8"
-                onClick={() => navigate('#how-it-works')}
+                onClick={handleStartApplication}
               >
-                Learn More
+                Start Application
               </Button>
             </div>
 
             <div className="flex gap-8 pt-4">
               <div className="text-center">
                 <Typography variant="h3" className="text-primary font-bold">
-                  93%
+                  95%
                 </Typography>
                 <Typography variant="small" className="text-gray-500">
                   Success Rate
@@ -106,57 +115,38 @@ export const Hero = () => {
                   24/7
                 </Typography>
                 <Typography variant="small" className="text-gray-500">
-                  Support
+                  AI Support
                 </Typography>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Enhanced Image Gallery */}
+          {/* Right Column - Featured Image */}
           <div className="hidden md:block relative h-full">
             {/* Background decorative elements */}
             <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
             <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
             
-            {/* Main image showcase */}
-            <div className="relative z-10 grid grid-cols-2 gap-4 h-96">
-              {/* Primary image - Study environment */}
-              <div className="col-span-2 bg-white p-2 rounded-2xl shadow-lg border border-gray-100">
-                <img
-                  src="/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png"
-                  alt="Students in modern study environment"
-                  className="w-full h-48 rounded-xl object-cover"
-                />
-              </div>
+            {/* Main hero image */}
+            <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
+              <img
+                src="/lovable-uploads/0e0daa96-b84c-44dd-8838-b37906afe829.png"
+                alt="South African student studying with EduEasy platform"
+                className="w-full h-auto rounded-xl object-cover"
+              />
               
-              {/* Secondary images */}
-              <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100">
-                <img
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop&crop=faces"
-                  alt="Student celebrating success"
-                  className="w-full h-32 rounded-lg object-cover"
-                />
-              </div>
-              
-              <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100 flex items-center justify-center">
-                <div className="text-center text-primary">
-                  <div className="text-2xl font-bold">1000+</div>
-                  <div className="text-xs">Students Helped</div>
+              {/* Floating badge */}
+              <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
+                <div className="flex items-center gap-2 text-primary">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <span className="font-medium">AI-Powered Success</span>
                 </div>
-              </div>
-            </div>
-
-            {/* Floating success badge */}
-            <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
-              <div className="flex items-center gap-2 text-primary">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="font-medium">Success Guaranteed</span>
               </div>
             </div>
           </div>
