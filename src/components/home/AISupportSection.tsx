@@ -1,9 +1,24 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const AISupportSection = () => {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const imagePath = '/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png';
+
+  const handleImageLoad = () => {
+    console.log('AI Support image loaded successfully:', imagePath);
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('AI Support image failed to load:', imagePath, e);
+    setImageError(true);
+  };
+
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="container mx-auto">
@@ -76,10 +91,30 @@ export const AISupportSection = () => {
           <div className="relative">
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-200 rounded-full opacity-50"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
+              {/* Loading indicator */}
+              {!imageLoaded && !imageError && (
+                <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
+                  <div className="text-gray-500">Loading image...</div>
+                </div>
+              )}
+              
+              {/* Error state */}
+              {imageError && (
+                <div className="w-full h-64 bg-red-100 flex items-center justify-center">
+                  <div className="text-red-600 text-center">
+                    <div>Image failed to load</div>
+                    <div className="text-xs mt-1">{imagePath}</div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Main image */}
               <img
-                src="/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png"
+                src={imagePath}
                 alt="South African student representing cultural heritage and modern education"
-                className="w-full h-auto object-cover"
+                className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
               />
             </div>
             <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-yellow-200 rounded-full opacity-50"></div>

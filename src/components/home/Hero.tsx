@@ -5,10 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/components/ui/use-toast';
 import { Typography } from '@/components/ui/typography';
+import { useState } from 'react';
 
 export const Hero = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const heroImagePath = '/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png';
 
   const handleStartApplication = () => {
     console.log('Start application clicked, user:', !!user);
@@ -25,12 +30,21 @@ export const Hero = () => {
   };
 
   const handleStartWithThandi = () => {
-    // Navigate to chat or AI assistant
     console.log('Start with Thandi clicked');
     toast({
       title: 'Thandi AI Assistant',
       description: 'Meet Thandi, your personal education assistant!',
     });
+  };
+
+  const handleImageLoad = () => {
+    console.log('Hero image loaded successfully:', heroImagePath);
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('Hero image failed to load:', heroImagePath, e);
+    setImageError(true);
   };
 
   return (
@@ -129,10 +143,30 @@ export const Hero = () => {
             
             {/* Main hero image */}
             <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
+              {/* Loading indicator */}
+              {!imageLoaded && !imageError && (
+                <div className="w-full h-64 bg-gray-200 animate-pulse rounded-xl flex items-center justify-center">
+                  <div className="text-gray-500">Loading image...</div>
+                </div>
+              )}
+              
+              {/* Error state */}
+              {imageError && (
+                <div className="w-full h-64 bg-red-100 rounded-xl flex items-center justify-center">
+                  <div className="text-red-600 text-center">
+                    <div>Image failed to load</div>
+                    <div className="text-xs mt-1">{heroImagePath}</div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Main image */}
               <img
-                src="/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png"
+                src={heroImagePath}
                 alt="South African student studying with EduEasy platform"
-                className="w-full h-auto rounded-xl object-cover"
+                className={`w-full h-auto rounded-xl object-cover ${imageLoaded ? 'block' : 'hidden'}`}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
               />
               
               {/* Floating badge */}
