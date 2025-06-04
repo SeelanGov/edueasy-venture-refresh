@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -48,6 +47,12 @@ const testimonials: Testimonial[] = [
 
 export const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [testimonialImageErrors, setTestimonialImageErrors] = useState<{[key: number]: boolean}>({});
+  const [testimonialImageLoaded, setTestimonialImageLoaded] = useState<{[key: number]: boolean}>({});
+  const [graduationImageError, setGraduationImageError] = useState(false);
+  const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
+
+  const graduationImagePath = '/lovable-uploads/afcfaff3-41d9-4c49-aee4-dd9e0ad3b96c.png';
 
   const nextTestimonial = () => {
     setActiveIndex((current) => (current + 1) % testimonials.length);
@@ -58,6 +63,26 @@ export const TestimonialsSection = () => {
   };
 
   const currentTestimonial = testimonials[activeIndex];
+
+  const handleTestimonialImageLoad = (testimonialId: number, imagePath: string) => {
+    console.log(`Testimonial image loaded for ${testimonialId}:`, imagePath);
+    setTestimonialImageLoaded(prev => ({ ...prev, [testimonialId]: true }));
+  };
+
+  const handleTestimonialImageError = (testimonialId: number, imagePath: string, e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error(`Testimonial image failed to load for ${testimonialId}:`, imagePath, e);
+    setTestimonialImageErrors(prev => ({ ...prev, [testimonialId]: true }));
+  };
+
+  const handleGraduationImageLoad = () => {
+    console.log('Graduation image loaded successfully:', graduationImagePath);
+    setGraduationImageLoaded(true);
+  };
+
+  const handleGraduationImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('Graduation image failed to load:', graduationImagePath, e);
+    setGraduationImageError(true);
+  };
 
   if (!currentTestimonial) {
     return null;
@@ -91,10 +116,30 @@ export const TestimonialsSection = () => {
               {/* Enhanced image with cultural frame */}
               <div className="relative flex-shrink-0">
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gradient-to-br from-teal-600 to-orange-500 shadow-lg">
+                  {/* Loading indicator */}
+                  {!testimonialImageLoaded[currentTestimonial.id] && !testimonialImageErrors[currentTestimonial.id] && (
+                    <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
+                      <div className="text-xs text-gray-500">Loading...</div>
+                    </div>
+                  )}
+                  
+                  {/* Error state */}
+                  {testimonialImageErrors[currentTestimonial.id] && (
+                    <div className="w-full h-full bg-red-100 flex items-center justify-center">
+                      <div className="text-red-600 text-xs text-center">
+                        <div>Failed</div>
+                        <div className="text-[10px]">{currentTestimonial.image}</div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Main image */}
                   <img
                     src={currentTestimonial.image}
                     alt={currentTestimonial.name}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full object-cover ${testimonialImageLoaded[currentTestimonial.id] ? 'block' : 'hidden'}`}
+                    onLoad={() => handleTestimonialImageLoad(currentTestimonial.id, currentTestimonial.image)}
+                    onError={(e) => handleTestimonialImageError(currentTestimonial.id, currentTestimonial.image, e)}
                   />
                 </div>
                 {/* Achievement badge */}
@@ -179,10 +224,30 @@ export const TestimonialsSection = () => {
               </Button>
             </div>
             <div className="relative">
+              {/* Loading indicator */}
+              {!graduationImageLoaded && !graduationImageError && (
+                <div className="w-full h-64 bg-white/20 animate-pulse rounded-xl flex items-center justify-center">
+                  <div className="text-white">Loading image...</div>
+                </div>
+              )}
+              
+              {/* Error state */}
+              {graduationImageError && (
+                <div className="w-full h-64 bg-red-100 rounded-xl flex items-center justify-center">
+                  <div className="text-red-600 text-center">
+                    <div>Image failed to load</div>
+                    <div className="text-xs mt-1">{graduationImagePath}</div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Main image */}
               <img
-                src="/lovable-uploads/afcfaff3-41d9-4c49-aee4-dd9e0ad3b96c.png"
+                src={graduationImagePath}
                 alt="South African graduate celebrating success"
-                className="w-full h-auto rounded-xl shadow-lg"
+                className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded ? 'block' : 'hidden'}`}
+                onLoad={handleGraduationImageLoad}
+                onError={handleGraduationImageError}
               />
             </div>
           </div>

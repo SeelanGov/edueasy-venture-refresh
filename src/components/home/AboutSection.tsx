@@ -1,8 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 
 export const AboutSection = () => {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const imagePath = '/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png';
+
+  const handleImageLoad = () => {
+    console.log('About image loaded successfully:', imagePath);
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('About image failed to load:', imagePath, e);
+    setImageError(true);
+  };
+
   return (
     <section id="learn-more" className="py-20 px-4 bg-white text-gray-900">
       <div className="container mx-auto">
@@ -19,10 +34,30 @@ export const AboutSection = () => {
             <div className="relative">
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500 opacity-20 rounded-full"></div>
               <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
+                {/* Loading indicator */}
+                {!imageLoaded && !imageError && (
+                  <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
+                    <div className="text-gray-500">Loading image...</div>
+                  </div>
+                )}
+                
+                {/* Error state */}
+                {imageError && (
+                  <div className="w-full h-64 bg-red-100 flex items-center justify-center">
+                    <div className="text-red-600 text-center">
+                      <div>Image failed to load</div>
+                      <div className="text-xs mt-1">{imagePath}</div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Main image */}
                 <img
-                  src="/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png"
+                  src={imagePath}
                   alt="Students collaborating and using EduEasy platform"
-                  className="w-full h-auto"
+                  className={`w-full h-auto ${imageLoaded ? 'block' : 'hidden'}`}
+                  onLoad={handleImageLoad}
+                  onError={handleImageError}
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-teal-600 opacity-20 rounded-full"></div>
