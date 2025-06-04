@@ -20,7 +20,7 @@ export const AboutSection = () => {
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500 opacity-20 rounded-full"></div>
               <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
                 <img
-                  src="/lovable-uploads/68c7d7e0-aacc-412e-9a3e-5c52e51d5b62.png"
+                  src="/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png"
                   alt="Students collaborating and using EduEasy platform"
                   className="w-full h-auto"
                 />

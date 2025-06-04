@@ -13,7 +13,7 @@ export const CommunitySection = () => {
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
               <img
-                src="/lovable-uploads/68c7d7e0-aacc-412e-9a3e-5c52e51d5b62.png"
+                src="/lovable-uploads/28a13c7e-32a7-4549-8064-05ceb0db35a8.png"
                 alt="South African students working together in community"
                 className="w-full h-auto object-cover"
               />

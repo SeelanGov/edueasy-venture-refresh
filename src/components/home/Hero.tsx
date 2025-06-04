@@ -130,7 +130,7 @@ export const Hero = () => {
             {/* Main hero image */}
             <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
               <img
-                src="/lovable-uploads/0e0daa96-b84c-44dd-8838-b37906afe829.png"
+                src="/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png"
                 alt="South African student studying with EduEasy platform"
                 className="w-full h-auto rounded-xl object-cover"
               />

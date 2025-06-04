@@ -19,7 +19,7 @@ const testimonials: Testimonial[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: '/lovable-uploads/68c7d7e0-aacc-412e-9a3e-5c52e51d5b62.png',
+    image: '/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png',
     quote:
       'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: '/lovable-uploads/0e0daa96-b84c-44dd-8838-b37906afe829.png',
+    image: '/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png',
     quote:
       'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship Recipient'
@@ -39,7 +39,7 @@ const testimonials: Testimonial[] = [
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: '/lovable-uploads/7ee06eae-bb53-426b-bf4e-0b7327d3b734.png',
+    image: '/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png',
     quote:
       'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: 'Dean\'s List Honor Student'
@@ -180,7 +180,7 @@ export const TestimonialsSection = () => {
             </div>
             <div className="relative">
               <img
-                src="/lovable-uploads/47a59528-b777-4b65-8636-16b9db8c94ab.png"
+                src="/lovable-uploads/afcfaff3-41d9-4c49-aee4-dd9e0ad3b96c.png"
                 alt="South African graduate celebrating success"
                 className="w-full h-auto rounded-xl shadow-lg"
               />
