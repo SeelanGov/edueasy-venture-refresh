@@ -77,7 +77,7 @@ export const AISupportSection = () => {
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-200 rounded-full opacity-50"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
               <img
-                src="/lovable-uploads/7ee06eae-bb53-426b-bf4e-0b7327d3b734.png"
+                src="/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png"
                 alt="South African student representing cultural heritage and modern education"
                 className="w-full h-auto object-cover"
               />
