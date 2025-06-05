@@ -37,6 +37,8 @@
     "verify-env": "bun scripts/verify-env.js",
     "type-check": "tsc --noEmit",
     "clean": "bun scripts/clean.js",
+    "fix-rollup": "node scripts/fix-rollup-deps.js",
+    "fix-deps": "node scripts/fix-deps.cjs",
     "deploy:staging": "bun scripts/deploy.js staging",
     "deploy:production": "bun scripts/deploy.js production",
     "ci:status": "bun scripts/check-ci-status.js",
