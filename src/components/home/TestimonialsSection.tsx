@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -18,7 +19,7 @@ const testimonials: Testimonial[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: '/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&auto=format',
     quote:
       'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
@@ -28,7 +29,7 @@ const testimonials: Testimonial[] = [
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: '/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&auto=format',
     quote:
       'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship Recipient'
@@ -38,7 +39,7 @@ const testimonials: Testimonial[] = [
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: '/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png',
+    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b330?w=150&h=150&fit=crop&auto=format',
     quote:
       'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: 'Dean\'s List Honor Student'
@@ -52,7 +53,7 @@ export const TestimonialsSection = () => {
   const [graduationImageError, setGraduationImageError] = useState(false);
   const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
 
-  const graduationImagePath = '/lovable-uploads/afcfaff3-41d9-4c49-aee4-dd9e0ad3b96c.png';
+  const graduationImagePath = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&auto=format';
 
   const nextTestimonial = () => {
     setActiveIndex((current) => (current + 1) % testimonials.length);

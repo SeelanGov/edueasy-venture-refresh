@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 
@@ -6,7 +5,7 @@ export const AboutSection = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const imagePath = '/lovable-uploads/7f37f80a-49b2-4688-bbbf-4db8b2e4c1a0.png';
+  const imagePath = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&auto=format';
 
   const handleImageLoad = () => {
     console.log('About image loaded successfully:', imagePath);
