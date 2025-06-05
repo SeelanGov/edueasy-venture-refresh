@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -19,7 +18,7 @@ const testimonials: Testimonial[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&auto=format',
+    image: '/lovable-uploads/49463fc8-3383-4542-9984-4749a5631579.png',
     quote:
       'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
@@ -29,7 +28,7 @@ const testimonials: Testimonial[] = [
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&auto=format',
+    image: '/lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png',
     quote:
       'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship Recipient'
@@ -39,7 +38,7 @@ const testimonials: Testimonial[] = [
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b330?w=150&h=150&fit=crop&auto=format',
+    image: '/lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png',
     quote:
       'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: 'Dean\'s List Honor Student'
@@ -53,7 +52,7 @@ export const TestimonialsSection = () => {
   const [graduationImageError, setGraduationImageError] = useState(false);
   const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
 
-  const graduationImagePath = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&auto=format';
+  const graduationImagePath = '/lovable-uploads/57daccfa-072c-4923-9c2c-938786e6a3be.png';
 
   const nextTestimonial = () => {
     setActiveIndex((current) => (current + 1) % testimonials.length);
@@ -114,7 +113,7 @@ export const TestimonialsSection = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row items-center gap-8 pt-8">
-              {/* Enhanced image with cultural frame */}
+              {/* Enhanced image with your uploaded images */}
               <div className="relative flex-shrink-0">
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gradient-to-br from-teal-600 to-orange-500 shadow-lg">
                   {/* Loading indicator */}
@@ -134,7 +133,7 @@ export const TestimonialsSection = () => {
                     </div>
                   )}
                   
-                  {/* Main image */}
+                  {/* Main image - now using your uploaded images */}
                   <img
                     src={currentTestimonial.image}
                     alt={currentTestimonial.name}
@@ -206,7 +205,7 @@ export const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* Featured Success Story Section */}
+        {/* Featured Success Story Section - Updated with your graduation image */}
         <div className="mt-16 bg-gradient-to-r from-teal-600 to-orange-500 rounded-2xl p-8 text-white">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
@@ -242,10 +241,10 @@ export const TestimonialsSection = () => {
                 </div>
               )}
               
-              {/* Main image */}
+              {/* Main image - now using your graduation celebration image */}
               <img
                 src={graduationImagePath}
-                alt="South African graduate celebrating success"
+                alt="South African graduates celebrating success with EduEasy"
                 className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded ? 'block' : 'hidden'}`}
                 onLoad={handleGraduationImageLoad}
                 onError={handleGraduationImageError}
