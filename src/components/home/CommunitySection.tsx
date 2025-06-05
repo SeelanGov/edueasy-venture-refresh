@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ export const CommunitySection = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const imagePath = '/lovable-uploads/28a13c7e-32a7-4549-8064-05ceb0db35a8.png';
+  const imagePath = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop&auto=format';
 
   const handleImageLoad = () => {
     console.log('Community image loaded successfully:', imagePath);
@@ -47,7 +46,7 @@ export const CommunitySection = () => {
               {/* Main image */}
               <img
                 src={imagePath}
-                alt="South African students working together in community"
+                alt="Students working together in community collaboration"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={handleImageLoad}
                 onError={handleImageError}

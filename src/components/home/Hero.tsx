@@ -13,7 +13,7 @@ export const Hero = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const heroImagePath = '/lovable-uploads/11b0063a-10e7-40d8-b0eb-7fbdcd155a27.png';
+  const heroImagePath = 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=600&h=400&fit=crop&auto=format';
 
   const handleStartApplication = () => {
     console.log('Start application clicked, user:', !!user);

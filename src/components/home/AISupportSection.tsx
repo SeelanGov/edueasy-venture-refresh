@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ export const AISupportSection = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const imagePath = '/lovable-uploads/6e43a58a-0f03-4f86-9c49-7ab5b4cf4ea5.png';
+  const imagePath = 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop&auto=format';
 
   const handleImageLoad = () => {
     console.log('AI Support image loaded successfully:', imagePath);
@@ -111,7 +110,7 @@ export const AISupportSection = () => {
               {/* Main image */}
               <img
                 src={imagePath}
-                alt="South African student representing cultural heritage and modern education"
+                alt="Cultural heritage representing AI technology and traditional South African elements"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={handleImageLoad}
                 onError={handleImageError}
