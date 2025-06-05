@@ -5,7 +5,7 @@ export const AboutSection = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const imagePath = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&auto=format';
+  const imagePath = '/lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png';
 
   const handleImageLoad = () => {
     console.log('About image loaded successfully:', imagePath);
@@ -50,10 +50,10 @@ export const AboutSection = () => {
                   </div>
                 )}
                 
-                {/* Main image */}
+                {/* Main image - now using your about/study image */}
                 <img
                   src={imagePath}
-                  alt="Students collaborating and using EduEasy platform"
+                  alt="Students studying and using EduEasy platform with branding"
                   className={`w-full h-auto ${imageLoaded ? 'block' : 'hidden'}`}
                   onLoad={handleImageLoad}
                   onError={handleImageError}

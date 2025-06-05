@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ export const Hero = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const heroImagePath = 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=600&h=400&fit=crop&auto=format';
+  const heroImagePath = '/lovable-uploads/04f40fae-9965-4e84-aec0-11be9d7789a1.png';
 
   const handleStartApplication = () => {
     console.log('Start application clicked, user:', !!user);
@@ -135,13 +134,11 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right Column - Featured Image */}
+          {/* Right Column - Updated with your image */}
           <div className="hidden md:block relative h-full">
-            {/* Background decorative elements */}
             <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
             <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
             
-            {/* Main hero image */}
             <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
               {/* Loading indicator */}
               {!imageLoaded && !imageError && (
@@ -160,10 +157,10 @@ export const Hero = () => {
                 </div>
               )}
               
-              {/* Main image */}
+              {/* Main image - now using your uploaded image */}
               <img
                 src={heroImagePath}
-                alt="South African student studying with EduEasy platform"
+                alt="EduEasy platform for South African students"
                 className={`w-full h-auto rounded-xl object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={handleImageLoad}
                 onError={handleImageError}

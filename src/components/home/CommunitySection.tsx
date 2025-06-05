@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ export const CommunitySection = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const imagePath = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop&auto=format';
+  const imagePath = '/lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png';
 
   const handleImageLoad = () => {
     console.log('Community image loaded successfully:', imagePath);
@@ -22,7 +23,7 @@ export const CommunitySection = () => {
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          {/* Left Column - Image */}
+          {/* Left Column - Updated with your community collaboration image */}
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
@@ -43,10 +44,10 @@ export const CommunitySection = () => {
                 </div>
               )}
               
-              {/* Main image */}
+              {/* Main image - now using your community collaboration image */}
               <img
                 src={imagePath}
-                alt="Students working together in community collaboration"
+                alt="Students collaborating and working together in community"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={handleImageLoad}
                 onError={handleImageError}
