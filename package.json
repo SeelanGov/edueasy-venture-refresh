@@ -40,6 +40,7 @@
     "deploy:staging": "bun scripts/deploy.js staging",
     "deploy:production": "bun scripts/deploy.js production",
     "ci:status": "bun scripts/check-ci-status.js",
+    "ci:verify-setup": "node scripts/verify-ci-cd-setup.js",
     "ci:verify": "bun run verify-env && bun run type-check && bun run lint:all && bun run test:ci",
     "prepare": "husky install",
     "ts:check-config": "node scripts/check-typescript-config.js",
