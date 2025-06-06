@@ -1,6 +1,8 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
+import { TestimonialCard } from './TestimonialCard';
 
 interface Testimonial {
   id: number;
@@ -47,9 +49,6 @@ const testimonials: Testimonial[] = [
 
 export const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [testimonialImageErrors, setTestimonialImageErrors] = useState<{[key: number]: boolean}>({});
-  const [testimonialImageLoaded, setTestimonialImageLoaded] = useState<{[key: number]: boolean}>({});
-  const [graduationImageError, setGraduationImageError] = useState(false);
   const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
 
   const graduationImagePath = '/lovable-uploads/57daccfa-072c-4923-9c2c-938786e6a3be.png';
@@ -63,26 +62,6 @@ export const TestimonialsSection = () => {
   };
 
   const currentTestimonial = testimonials[activeIndex];
-
-  const handleTestimonialImageLoad = (testimonialId: number, imagePath: string) => {
-    console.log(`Testimonial image loaded for ${testimonialId}:`, imagePath);
-    setTestimonialImageLoaded(prev => ({ ...prev, [testimonialId]: true }));
-  };
-
-  const handleTestimonialImageError = (testimonialId: number, imagePath: string, e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error(`Testimonial image failed to load for ${testimonialId}:`, imagePath, e);
-    setTestimonialImageErrors(prev => ({ ...prev, [testimonialId]: true }));
-  };
-
-  const handleGraduationImageLoad = () => {
-    console.log('Graduation image loaded successfully:', graduationImagePath);
-    setGraduationImageLoaded(true);
-  };
-
-  const handleGraduationImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('Graduation image failed to load:', graduationImagePath, e);
-    setGraduationImageError(true);
-  };
 
   if (!currentTestimonial) {
     return null;
@@ -104,86 +83,22 @@ export const TestimonialsSection = () => {
         </div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="relative bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100">
-            {/* Decorative quote mark */}
-            <div className="absolute top-0 right-0 transform -translate-y-1/2 translate-x-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-orange-500 to-teal-600 flex items-center justify-center shadow-lg">
-                <span className="text-white text-2xl md:text-3xl font-bold">"</span>
-              </div>
-            </div>
+          <TestimonialCard testimonial={currentTestimonial} />
 
-            <div className="flex flex-col lg:flex-row items-center gap-8 pt-8">
-              {/* Enhanced image with your uploaded images */}
-              <div className="relative flex-shrink-0">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gradient-to-br from-teal-600 to-orange-500 shadow-lg">
-                  {/* Loading indicator */}
-                  {!testimonialImageLoaded[currentTestimonial.id] && !testimonialImageErrors[currentTestimonial.id] && (
-                    <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-                      <div className="text-xs text-gray-500">Loading...</div>
-                    </div>
-                  )}
-                  
-                  {/* Error state */}
-                  {testimonialImageErrors[currentTestimonial.id] && (
-                    <div className="w-full h-full bg-red-100 flex items-center justify-center">
-                      <div className="text-red-600 text-xs text-center">
-                        <div>Failed</div>
-                        <div className="text-[10px]">{currentTestimonial.image}</div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Main image - now using your uploaded images */}
-                  <img
-                    src={currentTestimonial.image}
-                    alt={currentTestimonial.name}
-                    className={`w-full h-full object-cover ${testimonialImageLoaded[currentTestimonial.id] ? 'block' : 'hidden'}`}
-                    onLoad={() => handleTestimonialImageLoad(currentTestimonial.id, currentTestimonial.image)}
-                    onError={(e) => handleTestimonialImageError(currentTestimonial.id, currentTestimonial.image, e)}
-                  />
-                </div>
-                {/* Achievement badge */}
-                {currentTestimonial.achievement && (
-                  <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-xs font-medium shadow-md">
-                    🏆 {currentTestimonial.achievement}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex-grow text-center lg:text-left">
-                <Typography variant="body-lg" className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700">
-                  "{currentTestimonial.quote}"
-                </Typography>
-                
-                <div className="space-y-2">
-                  <Typography variant="h4" className="font-semibold md:text-xl text-gray-900">
-                    {currentTestimonial.name}
-                  </Typography>
-                  <Typography variant="body" className="md:text-lg font-medium text-teal-600">
-                    {currentTestimonial.program}
-                  </Typography>
-                  <Typography variant="body-sm" className="text-gray-600 md:text-base">
-                    {currentTestimonial.university}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced navigation dots */}
-            <div className="flex justify-center mt-8 gap-3">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
-                    index === activeIndex 
-                      ? 'bg-gradient-to-r from-teal-600 to-orange-500 shadow-md scale-110' 
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
+          {/* Enhanced navigation dots */}
+          <div className="flex justify-center mt-8 gap-3">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
+                  index === activeIndex 
+                    ? 'bg-gradient-to-r from-teal-600 to-orange-500 shadow-md scale-110' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
           </div>
 
           {/* Enhanced navigation buttons */}
@@ -205,7 +120,7 @@ export const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* Featured Success Story Section - Updated with your graduation image */}
+        {/* Featured Success Story Section */}
         <div className="mt-16 bg-gradient-to-r from-teal-600 to-orange-500 rounded-2xl p-8 text-white">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
@@ -224,30 +139,18 @@ export const TestimonialsSection = () => {
               </Button>
             </div>
             <div className="relative">
-              {/* Loading indicator */}
-              {!graduationImageLoaded && !graduationImageError && (
+              {!graduationImageLoaded && (
                 <div className="w-full h-64 bg-white/20 animate-pulse rounded-xl flex items-center justify-center">
-                  <div className="text-white">Loading image...</div>
+                  <div className="text-white">Loading...</div>
                 </div>
               )}
               
-              {/* Error state */}
-              {graduationImageError && (
-                <div className="w-full h-64 bg-red-100 rounded-xl flex items-center justify-center">
-                  <div className="text-red-600 text-center">
-                    <div>Image failed to load</div>
-                    <div className="text-xs mt-1">{graduationImagePath}</div>
-                  </div>
-                </div>
-              )}
-              
-              {/* Main image - now using your graduation celebration image */}
               <img
                 src={graduationImagePath}
                 alt="South African graduates celebrating success with EduEasy"
                 className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded ? 'block' : 'hidden'}`}
-                onLoad={handleGraduationImageLoad}
-                onError={handleGraduationImageError}
+                onLoad={() => setGraduationImageLoaded(true)}
+                onError={() => console.error('Graduation image failed to load:', graduationImagePath)}
               />
             </div>
           </div>

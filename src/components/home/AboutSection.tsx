@@ -1,22 +1,11 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { Typography } from '@/components/ui/typography';
+import { AboutContent } from './AboutContent';
+import { AboutImage } from './AboutImage';
+import { FeatureCard } from './FeatureCard';
 
 export const AboutSection = () => {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  const imagePath = '/lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png';
-
-  const handleImageLoad = () => {
-    console.log('About image loaded successfully:', imagePath);
-    setImageLoaded(true);
-  };
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('About image failed to load:', imagePath, e);
-    setImageError(true);
-  };
-
   return (
     <section id="learn-more" className="py-20 px-4 bg-white text-gray-900">
       <div className="container mx-auto">
@@ -29,92 +18,8 @@ export const AboutSection = () => {
         </Typography>
 
         <div className="flex flex-col md:flex-row gap-12 items-center max-w-6xl mx-auto">
-          <div className="md:w-1/2">
-            <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500 opacity-20 rounded-full"></div>
-              <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
-                {/* Loading indicator */}
-                {!imageLoaded && !imageError && (
-                  <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
-                    <div className="text-gray-500">Loading image...</div>
-                  </div>
-                )}
-                
-                {/* Error state */}
-                {imageError && (
-                  <div className="w-full h-64 bg-red-100 flex items-center justify-center">
-                    <div className="text-red-600 text-center">
-                      <div>Image failed to load</div>
-                      <div className="text-xs mt-1">{imagePath}</div>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Main image - now using your about/study image */}
-                <img
-                  src={imagePath}
-                  alt="Students studying and using EduEasy platform with branding"
-                  className={`w-full h-auto ${imageLoaded ? 'block' : 'hidden'}`}
-                  onLoad={handleImageLoad}
-                  onError={handleImageError}
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-teal-600 opacity-20 rounded-full"></div>
-            </div>
-          </div>
-
-          <div className="md:w-1/2">
-            <Typography variant="h3" className="mb-4 text-primary">
-              Empowering South African Students
-            </Typography>
-
-            <Typography variant="body-lg" className="mb-6">
-              EduEasy is your comprehensive gateway to higher education in South Africa. We combine 
-              cutting-edge AI technology with deep cultural understanding to support students from 
-              all backgrounds in achieving their academic dreams.
-            </Typography>
-
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-teal-600"></div>
-                </div>
-                <div className="ml-4">
-                  <Typography variant="h5">AI-Powered Guidance</Typography>
-                  <Typography variant="body" className="text-gray-700">
-                    Thandi, our AI assistant, provides personalized support and guidance throughout 
-                    your education journey.
-                  </Typography>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-orange-500"></div>
-                </div>
-                <div className="ml-4">
-                  <Typography variant="h5">Cultural Understanding</Typography>
-                  <Typography variant="body" className="text-gray-700">
-                    Built specifically for South African students, understanding local context, 
-                    languages, and cultural nuances.
-                  </Typography>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-5 h-5 rounded-full bg-teal-600"></div>
-                </div>
-                <div className="ml-4">
-                  <Typography variant="h5">Comprehensive Support</Typography>
-                  <Typography variant="body" className="text-gray-700">
-                    From application guidance to career counseling, we support you every step 
-                    of the way to success.
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AboutImage />
+          <AboutContent />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16">
@@ -181,27 +86,5 @@ export const AboutSection = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
-  return (
-    <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
-      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-teal-600 flex items-center justify-center">
-        {icon}
-      </div>
-      <Typography variant="h4" className="mb-4 text-center">
-        {title}
-      </Typography>
-      <Typography variant="body" className="text-gray-600 text-center">
-        {description}
-      </Typography>
-    </div>
   );
 };

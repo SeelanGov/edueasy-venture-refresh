@@ -4,53 +4,29 @@ import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const CommunitySection = () => {
-  const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
   const imagePath = '/lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png';
-
-  const handleImageLoad = () => {
-    console.log('Community image loaded successfully:', imagePath);
-    setImageLoaded(true);
-  };
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('Community image failed to load:', imagePath, e);
-    setImageError(true);
-  };
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          {/* Left Column - Updated with your community collaboration image */}
+          {/* Left Column - Image */}
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
-              {/* Loading indicator */}
-              {!imageLoaded && !imageError && (
+              {!imageLoaded && (
                 <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
-                  <div className="text-gray-500">Loading image...</div>
+                  <div className="text-gray-500">Loading...</div>
                 </div>
               )}
               
-              {/* Error state */}
-              {imageError && (
-                <div className="w-full h-64 bg-red-100 flex items-center justify-center">
-                  <div className="text-red-600 text-center">
-                    <div>Image failed to load</div>
-                    <div className="text-xs mt-1">{imagePath}</div>
-                  </div>
-                </div>
-              )}
-              
-              {/* Main image - now using your community collaboration image */}
               <img
                 src={imagePath}
                 alt="Students collaborating and working together in community"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => console.error('Community image failed to load:', imagePath)}
               />
             </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-500 opacity-20 rounded-full"></div>
