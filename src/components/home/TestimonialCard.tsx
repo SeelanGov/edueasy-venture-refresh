@@ -43,7 +43,10 @@ export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
               alt={testimonial.name}
               className={`w-full h-full object-cover ${imageLoaded ? 'block' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}
-              onError={() => console.error(`Testimonial image failed to load: ${testimonial.image}`)}
+              onError={() => {
+                console.warn(`Testimonial image failed to load for ${testimonial.name}`);
+                setImageLoaded(true);
+              }}
             />
           </div>
           {/* Achievement badge */}
