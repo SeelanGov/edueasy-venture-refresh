@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export const AISupportSection = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imagePath = '/lovable-uploads/49463fc8-3383-4542-9984-4749a5631579.png';
+  const imagePath = 'lovable-uploads/49463fc8-3383-4542-9984-4749a5631579.png';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">

@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export const AboutImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imagePath = '/lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png';
+  const imagePath = 'lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png';
 
   return (
     <div className="md:w-1/2">

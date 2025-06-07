@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export const HeroImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const heroImagePath = '/lovable-uploads/04f40fae-9965-4e84-aec0-11be9d7789a1.png';
+  const heroImagePath = 'lovable-uploads/04f40fae-9965-4e84-aec0-11be9d7789a1.png';
 
   return (
     <div className="hidden md:block relative h-full">
