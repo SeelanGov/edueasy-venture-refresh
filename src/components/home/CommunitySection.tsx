@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export const CommunitySection = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imagePath = '/lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png';
+  const imagePath = 'lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
