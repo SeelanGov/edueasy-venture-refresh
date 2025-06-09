@@ -6,7 +6,7 @@ import { CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
@@ -39,13 +39,10 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
         .update({
           full_name: personalInfo.fullName,
           id_number: personalInfo.idNumber,
-          gender: personalInfo.gender,
           phone_number: contactInfo.phoneNumber,
-          address_line_1: addressInfo.addressLine1 || addressInfo.streetAddress,
-          address_line_2: addressInfo.addressLine2 || '',
-          city: addressInfo.city,
-          province: addressInfo.province,
-          postal_code: addressInfo.postalCode,
+          contact_email: contactInfo.contactEmail || contactInfo.email,
+          emergency_contact_name: contactInfo.emergencyContactName,
+          emergency_contact_phone: contactInfo.emergencyContactPhone,
         })
         .eq('id', user.id);
 
@@ -61,10 +58,6 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
               .upload(filePath, doc.file, { upsert: true });
 
             if (uploadError) throw uploadError;
-
-            // Save document metadata to the database - simplified for now
-            // Note: This would need proper application_id if documents table requires it
-            // For now, we'll skip the database insert since it's causing schema issues
           }
         }
       }
@@ -123,6 +116,13 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
           <p>
             <strong>Email:</strong> {contactInfo.contactEmail || contactInfo.email}
           </p>
+          {contactInfo.emergencyContactName && (
+            <div className="mt-2">
+              <p className="font-semibold">Emergency Contact</p>
+              <p><strong>Name:</strong> {contactInfo.emergencyContactName}</p>
+              <p><strong>Phone:</strong> {contactInfo.emergencyContactPhone}</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -133,11 +133,13 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
         </CardHeader>
         <CardContent>
           <p>
-            <strong>Address Line 1:</strong> {addressInfo.addressLine1 || addressInfo.streetAddress}
+            <strong>Street Address:</strong> {addressInfo.streetAddress}
           </p>
-          <p>
-            <strong>Address Line 2:</strong> {addressInfo.addressLine2 || ''}
-          </p>
+          {addressInfo.suburb && (
+            <p>
+              <strong>Suburb:</strong> {addressInfo.suburb}
+            </p>
+          )}
           <p>
             <strong>City:</strong> {addressInfo.city}
           </p>
