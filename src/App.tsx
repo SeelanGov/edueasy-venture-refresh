@@ -15,6 +15,7 @@ import ProfileDemo from "./pages/ProfileDemo";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import Pricing from "./pages/Pricing";
+import CheckoutPage from "./pages/CheckoutPage";
 import MeetThandi from "./pages/MeetThandi";
 import Institutions from "./pages/Institutions";
 import SponsorshipsPage from "./pages/SponsorshipsPage";
@@ -35,6 +36,7 @@ const App = () => (
               {/* Public routes */}
               <Route path="/" element={<Index />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/meet-thandi" element={<MeetThandi />} />
               <Route path="/institutions" element={<Institutions />} />
               <Route path="/faqs" element={<FAQPage />} />

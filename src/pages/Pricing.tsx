@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star, Shield, Users, Zap, Heart, Award } from "lucide-react";
@@ -8,12 +7,12 @@ import { PatternBorder } from "@/components/PatternBorder";
 const Pricing = () => {
   const plans = [
     {
-      name: "Free",
+      name: "Starter",
       price: "R0",
-      period: "/month",
+      period: "Once-Off",
       description: "Perfect for getting started with your education journey",
       features: [
-        "1 Application (no-fee institutions only)",
+        "1 Application (any institution)",
         "Basic APS calculator",
         "Application deadline alerts",
         "Program browsing",
@@ -21,42 +20,45 @@ const Pricing = () => {
       ],
       buttonText: "Get Started",
       popular: false,
-      buttonVariant: "outline" as const
+      buttonVariant: "outline" as const,
+      route: "/register?plan=starter"
     },
     {
-      name: "Basic",
-      price: "R150",
-      period: "/month",
+      name: "Essential",
+      price: "R199",
+      period: "Once-Off",
       description: "Essential tools for serious applicants",
       features: [
         "Up to 3 applications",
         "Document management system",
         "Form auto-fill technology",
+        "NSFAS guidance",
         "Email support",
-        "Application tracking",
-        "NSFAS guidance"
+        "Application tracking"
       ],
-      buttonText: "Choose Basic",
+      buttonText: "Choose Essential",
       popular: true,
-      buttonVariant: "default" as const
+      buttonVariant: "default" as const,
+      route: "/checkout?plan=essential"
     },
     {
-      name: "Premium",
+      name: "Pro + AI",
       price: "R300",
-      period: "/month",
-      description: "Complete support for your academic success",
+      period: "Once-Off",
+      description: "Complete support with AI-powered guidance",
       features: [
         "Up to 6 applications",
-        "Priority processing",
         "Career guidance with Thandi AI",
-        "30-min consultation session",
-        "Priority support",
         "Document reviews",
+        "Priority processing",
+        "Priority support",
+        "Application tracking",
         "Interview preparation"
       ],
-      buttonText: "Choose Premium",
+      buttonText: "Choose Pro + AI",
       popular: false,
-      buttonVariant: "default" as const
+      buttonVariant: "default" as const,
+      route: "/checkout?plan=pro-ai"
     }
   ];
 
@@ -106,7 +108,7 @@ const Pricing = () => {
             Choose Your Plan
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Select the perfect plan to support your educational journey and unlock your potential
+            Pay once and get lifetime access to support your educational journey
           </p>
         </div>
 
@@ -135,7 +137,7 @@ const Pricing = () => {
                 </CardTitle>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-cap-teal">{plan.price}</span>
-                  <span className="text-gray-500 text-lg">{plan.period}</span>
+                  <span className="text-gray-500 text-lg ml-2">{plan.period}</span>
                 </div>
                 <CardDescription className="text-gray-600 leading-relaxed">
                   {plan.description}
@@ -154,7 +156,7 @@ const Pricing = () => {
               </CardContent>
 
               <CardFooter className="pt-6">
-                <Link to="/register" className="w-full">
+                <Link to={plan.route} className="w-full">
                   <Button 
                     variant={plan.buttonVariant}
                     className={`w-full py-3 font-semibold transition-all duration-300 ${
@@ -183,7 +185,38 @@ const Pricing = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
+            {[
+              {
+                icon: Star,
+                title: "Expert Guidance",
+                description: "AI-powered assistance from Thandi, your personal education advisor"
+              },
+              {
+                icon: Shield,
+                title: "Secure & Trusted",
+                description: "Your documents and data are protected with enterprise-grade security"
+              },
+              {
+                icon: Users,
+                title: "Proven Success",
+                description: "Join 2,500+ students who achieved their academic goals with EduEasy"
+              },
+              {
+                icon: Zap,
+                title: "Lightning Fast",
+                description: "Streamlined applications that save you hours of paperwork"
+              },
+              {
+                icon: Heart,
+                title: "South African",
+                description: "Built specifically for South African students and institutions"
+              },
+              {
+                icon: Award,
+                title: "95% Success Rate",
+                description: "Our students have the highest application acceptance rates"
+              }
+            ].map((benefit, index) => (
               <div key={index} className="text-center group">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-cap-teal/10 rounded-full mb-4 group-hover:bg-cap-teal/20 transition-colors duration-300">
                   <benefit.icon className="h-8 w-8 text-cap-teal" />
@@ -205,16 +238,16 @@ const Pricing = () => {
             Ready to Start Your Journey?
           </h3>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            All plans include our core features, 24/7 support, and a 30-day money-back guarantee. 
-            No hidden fees or setup costs.
+            All plans include our core features, 24/7 support, and lifetime access. 
+            No hidden fees or recurring charges.
           </p>
-          <Link to="/register">
+          <Link to="/register?plan=starter">
             <Button className="bg-cap-teal hover:bg-cap-teal/90 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
               Get Started Today
             </Button>
           </Link>
           <p className="text-sm text-gray-500 mt-4">
-            Prices are in South African Rand (ZAR) • Cancel anytime
+            Prices are in South African Rand (ZAR) • One-time payment
           </p>
         </div>
       </div>
