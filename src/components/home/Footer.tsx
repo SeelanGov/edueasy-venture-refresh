@@ -1,42 +1,123 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <footer className="bg-cap-dark text-white py-16">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-xl font-bold mb-4">EduEasy</h3>
-            <p className="text-gray-300 leading-relaxed">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* Company Info Section */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold text-cap-coral mb-4">EduEasy</h3>
+            <p className="text-gray-300 leading-relaxed mb-6">
               Your trusted partner in education and career development. Connecting students with opportunities across South Africa.
             </p>
+            
+            <div className="space-y-2">
+              <h4 className="text-lg font-semibold mb-3">Contact Us</h4>
+              <p className="text-gray-300">
+                <strong>Email:</strong> info@edueasy.co.za
+              </p>
+              <p className="text-gray-300">
+                <strong>Phone:</strong> +27 21 123 4567
+              </p>
+              <p className="text-gray-300">
+                <strong>Address:</strong> Cape Town, South Africa
+              </p>
+            </div>
           </div>
 
+          {/* Navigation Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li><Link to="/about" className="hover:text-cap-coral transition-colors">About Us</Link></li>
-              <li><Link to="/programs" className="hover:text-cap-coral transition-colors">Programs</Link></li>
-              <li><Link to="/funding" className="hover:text-cap-coral transition-colors">Funding</Link></li>
-              <li><Link to="/career-guidance" className="hover:text-cap-coral transition-colors">Career Guidance</Link></li>
+            <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
+            <ul className="space-y-3 text-gray-300">
+              <li>
+                <button 
+                  onClick={() => scrollToSection('how-it-works')}
+                  className="hover:text-cap-coral transition-colors text-left"
+                >
+                  How It Works
+                </button>
+              </li>
+              <li>
+                <Link to="/meet-thandi" className="hover:text-cap-coral transition-colors">
+                  Meet Thandi
+                </Link>
+              </li>
+              <li>
+                <Link to="/pricing" className="hover:text-cap-coral transition-colors">
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('testimonials')}
+                  className="hover:text-cap-coral transition-colors text-left"
+                >
+                  Success Stories
+                </button>
+              </li>
+              <li>
+                <Link to="/faqs" className="hover:text-cap-coral transition-colors">
+                  FAQs
+                </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('contact')}
+                  className="hover:text-cap-coral transition-colors text-left"
+                >
+                  Contact Us
+                </button>
+              </li>
             </ul>
           </div>
 
+          {/* Resources & Partners */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li><Link to="/help" className="hover:text-cap-coral transition-colors">Help Center</Link></li>
-              <li><Link to="/contact" className="hover:text-cap-coral transition-colors">Contact Us</Link></li>
-              <li><Link to="/faq" className="hover:text-cap-coral transition-colors">FAQ</Link></li>
-              <li><a href="tel:+27800123456" className="hover:text-cap-coral transition-colors">0800 123 456</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-gray-300">
+            <h4 className="text-lg font-semibold mb-6">Resources & Partners</h4>
+            <ul className="space-y-3 text-gray-300">
+              <li>
+                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
+                  University Partners
+                </Link>
+              </li>
+              <li>
+                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
+                  TVET Integration
+                </Link>
+              </li>
+              <li>
+                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
+                  SETA Collaboration
+                </Link>
+              </li>
+              <li>
+                <Link to="/sponsorships" className="hover:text-cap-coral transition-colors">
+                  Sponsorships
+                </Link>
+              </li>
               <li>
                 <a 
                   href="/privacy-policy.html" 

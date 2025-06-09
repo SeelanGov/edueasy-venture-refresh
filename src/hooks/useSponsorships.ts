@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -47,7 +48,8 @@ export const useSponsorships = () => {
         website_url: item.website_url || undefined,
         expires_at: item.expires_at || undefined,
         status: item.status as SponsorshipStatus,
-        sponsorship_level: item.sponsorship_level as SponsorshipLevel
+        sponsorship_level: item.sponsorship_level as SponsorshipLevel,
+        requirements: item.requirements as Record<string, any> | null
       }));
       
       setSponsorships(convertedData);
@@ -64,7 +66,7 @@ export const useSponsorships = () => {
     }
   };
 
-  const createSponsorship = async (sponsorshipData: Partial<Sponsorship>) => {
+  const createSponsorship = async (sponsorshipData: Omit<Sponsorship, 'id' | 'created_at' | 'updated_at'>) => {
     if (!user) {
       toast({
         title: 'Authentication required',
