@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { ConsultationBooking, ConsultationStatus } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 
 /**
  * Hook for managing application form state and validation
