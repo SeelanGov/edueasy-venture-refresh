@@ -1,43 +1,28 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { toast } from '@/components/ui/use-toast';
-
-export enum SponsorshipStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-  ACTIVE = 'active',
-  EXPIRED = 'expired',
-}
-
-export enum SponsorshipLevel {
-  BRONZE = 'bronze',
-  SILVER = 'silver',
-  GOLD = 'gold',
-  PLATINUM = 'platinum',
-}
 
 export interface Sponsorship {
   id: string;
   organization_name: string;
+  amount: number;
+  currency: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  requirements: any;
+  status: string;
+  sponsorship_level: string;
+  logo_url?: string;
+  website_url?: string;
   contact_name: string;
   contact_email: string;
   contact_phone: string;
-  description: string;
-  amount: number;
-  currency: string;
-  status: SponsorshipStatus;
-  sponsorship_level: SponsorshipLevel;
-  start_date: string;
-  end_date: string;
   is_active: boolean;
-  requirements?: Record<string, any>;
-  logo_url?: string;
-  website_url?: string;
   created_at: string;
   updated_at: string;
-  expires_at?: string;
 }
 
 export const useSponsorships = () => {
@@ -58,152 +43,163 @@ export const useSponsorships = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSponsorships((data || []) as Sponsorship[]);
+      setSponsorships(data || []);
     } catch (err) {
       console.error('Error fetching sponsorships:', err);
       setError('Failed to load sponsorships');
-      toast.error('Failed to load sponsorships');
+      toast({
+        title: 'Error',
+        description: 'Failed to load sponsorships',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const applyForSponsorship = async (
-    sponsorName: string,
-    amount: number,
-    requirements?: Record<string, any>
-  ): Promise<Sponsorship | undefined> => {
+  const createSponsorship = async (sponsorshipData: Partial<Sponsorship>) => {
     if (!user) {
-      toast.error('Please log in to apply for sponsorships');
-      return undefined;
+      toast({
+        title: 'Authentication required',
+        description: 'Please log in to create a sponsorship',
+        variant: 'destructive',
+      });
+      return null;
     }
 
     try {
-      // Mock sponsorship application
-      const mockApplication = {
-        id: Date.now().toString(),
-        organization_name: sponsorName,
-        contact_name: 'Contact Person',
-        contact_email: 'contact@sponsor.com',
-        contact_phone: '+1234567890',
-        description: 'Mock sponsorship application',
-        amount,
-        currency: 'ZAR',
-        status: SponsorshipStatus.PENDING,
-        sponsorship_level: SponsorshipLevel.BRONZE,
-        start_date: new Date().toISOString(),
-        end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-        is_active: true,
-        requirements,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('sponsorships')
+        .insert([sponsorshipData])
+        .select()
+        .single();
 
-      toast.success('Sponsorship application submitted successfully');
-      return mockApplication;
-    } catch (err) {
-      console.error('Error applying for sponsorship:', err);
-      toast.error('Failed to submit sponsorship application');
-      return undefined;
-    }
-  };
+      if (error) throw error;
 
-  const updateSponsorshipStatus = async (sponsorshipId: string, status: SponsorshipStatus) => {
-    try {
-      // Mock status update
-      setSponsorships(prev => 
-        prev.map(s => 
-          s.id === sponsorshipId 
-            ? { ...s, status, updated_at: new Date().toISOString() }
-            : s
-        )
-      );
-      
-      toast.success(`Sponsorship status updated to ${status}`);
-    } catch (err) {
-      console.error('Error updating sponsorship status:', err);
-      toast.error('Failed to update sponsorship status');
-    }
-  };
-
-  // Admin functions
-  const isAdmin = user?.email?.includes('admin') || false;
-
-  const submitSponsorshipInquiry = async (inquiry: any): Promise<boolean> => {
-    try {
-      toast.success('Sponsorship inquiry submitted successfully');
-      return true;
-    } catch (err) {
-      console.error('Error submitting inquiry:', err);
-      toast.error('Failed to submit inquiry');
-      return false;
-    }
-  };
-
-  const createSponsorship = async (sponsorship: Partial<Sponsorship>): Promise<Sponsorship | undefined> => {
-    try {
-      const newSponsorship: Sponsorship = {
-        id: Date.now().toString(),
-        organization_name: sponsorship.organization_name || '',
-        contact_name: sponsorship.contact_name || '',
-        contact_email: sponsorship.contact_email || '',
-        contact_phone: sponsorship.contact_phone || '',
-        description: sponsorship.description || '',
-        amount: sponsorship.amount || 0,
-        currency: sponsorship.currency || 'ZAR',
-        status: SponsorshipStatus.PENDING,
-        sponsorship_level: sponsorship.sponsorship_level || SponsorshipLevel.BRONZE,
-        start_date: sponsorship.start_date || new Date().toISOString(),
-        end_date: sponsorship.end_date || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-        is_active: true,
-        requirements: sponsorship.requirements,
-        logo_url: sponsorship.logo_url,
-        website_url: sponsorship.website_url,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-
-      setSponsorships(prev => [newSponsorship, ...prev]);
-      toast.success('Sponsorship created successfully');
-      return newSponsorship;
+      await fetchSponsorships();
+      toast({
+        title: 'Success',
+        description: 'Sponsorship created successfully',
+      });
+      return data;
     } catch (err) {
       console.error('Error creating sponsorship:', err);
-      toast.error('Failed to create sponsorship');
-      return undefined;
+      toast({
+        title: 'Error',
+        description: 'Failed to create sponsorship',
+        variant: 'destructive',
+      });
+      return null;
     }
   };
 
   const updateSponsorship = async (id: string, updates: Partial<Sponsorship>) => {
     try {
-      setSponsorships(prev => 
-        prev.map(s => 
-          s.id === id 
-            ? { ...s, ...updates, updated_at: new Date().toISOString() }
-            : s
-        )
-      );
-      
-      toast.success('Sponsorship updated successfully');
+      const { data, error } = await supabase
+        .from('sponsorships')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      await fetchSponsorships();
+      toast({
+        title: 'Success',
+        description: 'Sponsorship updated successfully',
+      });
+      return data;
     } catch (err) {
       console.error('Error updating sponsorship:', err);
-      toast.error('Failed to update sponsorship');
+      toast({
+        title: 'Error',
+        description: 'Failed to update sponsorship',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
+  const deleteSponsorship = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('sponsorships')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchSponsorships();
+      toast({
+        title: 'Success',
+        description: 'Sponsorship deleted successfully',
+      });
+      return true;
+    } catch (err) {
+      console.error('Error deleting sponsorship:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete sponsorship',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
+  const activateSponsorship = async (id: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('sponsorships')
+        .update({ is_active: true, status: 'active' })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      await fetchSponsorships();
+      toast({
+        title: 'Success',
+        description: 'Sponsorship activated successfully',
+      });
+      return data;
+    } catch (err) {
+      console.error('Error activating sponsorship:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to activate sponsorship',
+        variant: 'destructive',
+      });
+      return null;
     }
   };
 
   const deactivateSponsorship = async (id: string) => {
     try {
-      setSponsorships(prev => 
-        prev.map(s => 
-          s.id === id 
-            ? { ...s, is_active: false, updated_at: new Date().toISOString() }
-            : s
-        )
-      );
-      
-      toast.success('Sponsorship deactivated successfully');
+      const { data, error } = await supabase
+        .from('sponsorships')
+        .update({ is_active: false, status: 'inactive' })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      await fetchSponsorships();
+      toast({
+        title: 'Success',
+        description: 'Sponsorship deactivated successfully',
+      });
+      return data;
     } catch (err) {
       console.error('Error deactivating sponsorship:', err);
-      toast.error('Failed to deactivate sponsorship');
+      toast({
+        title: 'Error',
+        description: 'Failed to deactivate sponsorship',
+        variant: 'destructive',
+      });
+      return null;
     }
   };
 
@@ -215,13 +211,11 @@ export const useSponsorships = () => {
     sponsorships,
     loading,
     error,
-    isAdmin,
     fetchSponsorships,
-    applyForSponsorship,
-    updateSponsorshipStatus,
-    submitSponsorshipInquiry,
     createSponsorship,
     updateSponsorship,
+    deleteSponsorship,
+    activateSponsorship,
     deactivateSponsorship,
   };
 };
