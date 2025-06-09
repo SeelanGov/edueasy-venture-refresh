@@ -1,8 +1,8 @@
-import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
-import { Logo } from '@/components/Logo';
+import { ReactNode, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/hooks/useTheme';
 import {
   BookOpen,
@@ -20,8 +20,8 @@ import {
   Video,
   X,
 } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
+import { Logo } from '@/components/Logo';
 
 interface MobileFriendlyDashboardLayoutProps {
   children: ReactNode;

@@ -1,50 +1,29 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Spinner } from '@/components/Spinner';
-import { useAuth } from '@/contexts/AuthContext';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
-// Schema definition moved to the form component
 const registerFormSchema = z
   .object({
-    fullName: z.string().min(2, 'Name must be at least 2 characters'),
-    idNumber: z
-      .string()
-      .length(13, 'ID Number must be exactly 13 digits')
-      .regex(/^\d+$/, 'ID Number must contain only digits'),
-    gender: z.string().min(1, 'Please select your gender'),
+    fullName: z.string().min(1, 'Full name is required'),
+    idNumber: z.string().min(1, 'ID number is required'),
     email: z.string().email('Please enter a valid email address'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
-    confirmPassword: z.string(),
+    terms: z.literal(true, {
+      errorMap: () => ({ message: 'You must accept the terms and conditions' }),
+    }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
+  .refine((data) => data.password.length >= 6, {
+    message: 'Password must be at least 6 characters',
+    path: ['password'],
   });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
@@ -53,283 +32,126 @@ export const RegisterForm = () => {
   const { signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [registrationError, setRegistrationError] = useState<string | null>(null);
-  const [consentPrivacy, setConsentPrivacy] = useState(false);
-  const [consentTerms, setConsentTerms] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       fullName: '',
       idNumber: '',
-      gender: '',
       email: '',
       password: '',
-      confirmPassword: '',
+      terms: false,
     },
   });
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!consentPrivacy || !consentTerms) {
-      setRegistrationError('You must agree to the Privacy Policy and Terms of Service.');
-      return;
-    }
+  const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
-    setRegistrationError(null);
+    setError(null);
     try {
-      const data = form.getValues();
-      const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
-
-      // Check if response is null (signUp can return null on handled errors)
-      if (!response) {
-        setRegistrationError('Registration is currently unavailable. Please try again later.');
-      }
-      // Note: Navigation to login after successful registration is handled in useAuthOperations
+      await signUp(data.email, data.password, data.fullName, data.idNumber);
+      navigate('/dashboard');
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error('Registration error:', error);
-      setRegistrationError(message || 'An unexpected error occurred. Please try again.');
+      setError(message || 'Failed to sign up. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      <div className="bg-cap-teal p-6 text-white text-center">
-        <h2 className="text-2xl font-bold">Create Your Account</h2>
-        <p className="mt-2 text-sm opacity-90">Get started with EduEasy today</p>
-      </div>
-      <div className="p-6">
-        <SecurityInfoPanel badgeType="privacy" />
-        {registrationError && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{registrationError}</AlertDescription>
-          </Alert>
-        )}
-
-        <Form {...form}>
-          <form onSubmit={handleRegister} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700 flex items-center gap-2">
-                    Full Name
-                    <SecurityBadge type="privacy" size="sm" showLabel={false} />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John Doe"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                      maxLength={50}
-                    />
-                  </FormControl>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Enter your full legal name as it appears on your ID.
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <div className="w-full">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Label htmlFor="fullName">Full Name</Label>
+          <Input
+            id="fullName"
+            type="text"
+            placeholder="John Doe"
+            {...form.register('fullName')}
+            disabled={isLoading}
+          />
+          {form.formState.errors.fullName && (
+            <p className="text-red-500 text-sm">{form.formState.errors.fullName.message}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="idNumber">ID Number</Label>
+          <Input
+            id="idNumber"
+            type="text"
+            placeholder="0000000000000"
+            {...form.register('idNumber')}
+            disabled={isLoading}
+          />
+          {form.formState.errors.idNumber && (
+            <p className="text-red-500 text-sm">{form.formState.errors.idNumber.message}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="your.email@example.com"
+            {...form.register('email')}
+            disabled={isLoading}
+          />
+          {form.formState.errors.email && (
+            <p className="text-red-500 text-sm">{form.formState.errors.email.message}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="******"
+              {...form.register('password')}
+              disabled={isLoading}
             />
-            
-            <FormField
-              control={form.control}
-              name="idNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700 flex items-center gap-2">
-                    ID Number
-                    <SecurityBadge type="verification" size="sm" showLabel={false} />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="1234567890123"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                      maxLength={13}
-                    />
-                  </FormControl>
-                  <div className="text-xs text-gray-500 mt-1">
-                    South African 13-digit ID number. Used for identity verification.
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700 flex items-center gap-2">
-                    Email
-                    <SecurityBadge type="data-protection" size="sm" showLabel={false} />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="your.email@example.com"
-                      {...field}
-                      disabled={isLoading}
-                      className="text-gray-900"
-                      maxLength={64}
-                    />
-                  </FormControl>
-                  <div className="text-xs text-gray-500 mt-1">
-                    We'll send important updates to this address.
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700">Gender</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={isLoading}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="text-gray-900">
-                        <SelectValue placeholder="Select your gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="non-binary">Non-binary</SelectItem>
-                      <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700 flex items-center gap-2">
-                    Password
-                    <SecurityBadge type="encryption" size="sm" showLabel={false} />
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="******"
-                        type={showPassword ? 'text' : 'password'}
-                        {...field}
-                        disabled={isLoading}
-                        className="text-gray-900 pr-10"
-                        maxLength={32}
-                        aria-describedby="password-helper"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
-                      >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <div id="password-helper" className="text-xs text-gray-500 mt-1 animate-fade-in">
-                    Must be at least 6 characters. Use a strong password for your security.
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700">Confirm Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="******"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        {...field}
-                        disabled={isLoading}
-                        className="text-gray-900 pr-10"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
-                      >
-                        {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="flex flex-col gap-2 my-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={consentPrivacy}
-                  onChange={(e) => setConsentPrivacy(e.target.checked)}
-                />
-                I agree to the{' '}
-                <a href="/privacy-policy.html" target="_blank" className="underline">
-                  Privacy Policy
-                </a>
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={consentTerms}
-                  onChange={(e) => setConsentTerms(e.target.checked)}
-                />
-                I agree to the{' '}
-                <a href="/terms-of-service.html" target="_blank" className="underline">
-                  Terms of Service
-                </a>
-              </label>
-            </div>
-            
             <Button
-              type="submit"
-              className="w-full bg-cap-coral hover:bg-cap-coral/90"
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              onClick={() => setShowPassword(!showPassword)}
               disabled={isLoading}
             >
-              {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-              {isLoading ? 'Signing up...' : 'Sign Up'}
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              <span className="sr-only">Show password</span>
             </Button>
-            
-            <div className="text-center mt-4">
-              <p className="text-sm text-gray-600">
-                Already have an account?{' '}
-                <Link to="/login" className="text-cap-teal hover:underline font-medium">
-                  Sign in
-                </Link>
-              </p>
-            </div>
-          </form>
-        </Form>
+          </div>
+          {form.formState.errors.password && (
+            <p className="text-red-500 text-sm">{form.formState.errors.password.message}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="terms" className="flex items-center space-x-2">
+            <Checkbox id="terms" {...form.register('terms')} disabled={isLoading} />
+            <span>I agree to the terms and conditions</span>
+          </Label>
+          {form.formState.errors.terms && (
+            <p className="text-red-500 text-sm">{form.formState.errors.terms.message}</p>
+          )}
+        </div>
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Sign Up
+        </Button>
+      </form>
+      <div className="mt-4 text-center">
+        <Link to="/login" className="text-sm text-gray-500 hover:underline">
+          Already have an account? Login
+        </Link>
       </div>
     </div>
   );

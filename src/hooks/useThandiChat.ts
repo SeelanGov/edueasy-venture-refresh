@@ -1,10 +1,9 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 import DOMPurify from 'dompurify';
 import { v4 as uuidv4 } from 'uuid';
-import { toast } from 'sonner';
 import { ChatMessage } from '@/types/ChatMessage';
 
 export const useThandiChat = () => {

@@ -1,8 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { AssessmentType } from '@/types/assessment';
+import { CareerAssessment } from '@/types/career-assessment';
+import { CareerGuidance } from '@/types/career-guidance';
 
 export enum AssessmentType {
   SKILLS = 'skills',
