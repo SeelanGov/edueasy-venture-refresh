@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
+import { useAuth } from '@/hooks/useAuth';
+import { useNetwork } from '@/hooks/useNetwork';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNetwork } from '@/hooks/useNetwork';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({

@@ -1,20 +1,23 @@
-import { PatternBorder } from '@/components/PatternBorder';
-import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
-import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
-import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
-import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { CheckCircle, Circle, ArrowLeft, ArrowRight, Home } from 'lucide-react';
 import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoStep';
-import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
+import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
+import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
+import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
+import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
 import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
+import { useAuth } from '@/hooks/useAuth';
+import { AuthGuard } from '@/components/AuthGuard';
+import { PatternBorder } from '@/components/PatternBorder';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
+import { toast } from '@/components/ui/use-toast';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
-import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { AlertCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const ProfileCompletion = () => {
   const { user } = useAuth();
@@ -22,16 +25,21 @@ const ProfileCompletion = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { resetFormData, isDataSaved, setDataSaved, loadSavedFormData, hasSavedData } =
-    useProfileCompletionStore();
+  const {
+    resetFormData,
+    isDataSaved,
+    setDataSaved,
+    loadSavedFormData,
+    hasSavedData,
+  } = useProfileCompletionStore();
 
   const steps = [
-    'Personal Information',
-    'Contact Information',
-    'Address Information',
-    'Education History',
-    'Documents Upload',
-    'Review & Submit',
+    "Personal Information",
+    "Contact Information",
+    "Address Information",
+    "Education History",
+    "Documents Upload",
+    "Review & Submit"
   ];
 
   useEffect(() => {
@@ -41,7 +49,7 @@ const ProfileCompletion = () => {
         setError(null);
       }
     };
-
+    
     checkSavedData();
   }, [hasSavedData]);
 
@@ -62,14 +70,14 @@ const ProfileCompletion = () => {
     try {
       setDataSaved(true);
       toast({
-        title: 'Progress saved',
-        description: 'Your progress has been saved. You can continue later.',
+        title: "Progress saved",
+        description: "Your progress has been saved. You can continue later.",
       });
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error('Error saving progress:', error);
-      setError('Failed to save your progress. Please try again.');
+      console.error("Error saving progress:", error);
+      setError("Failed to save your progress. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +88,8 @@ const ProfileCompletion = () => {
       await loadSavedFormData();
       setError(null);
     } catch (error) {
-      console.error('Error loading saved data:', error);
-      setError('Failed to load your saved progress. Please try again.');
+      console.error("Error loading saved data:", error);
+      setError("Failed to load your saved progress. Please try again.");
     }
   };
 
@@ -114,18 +122,20 @@ const ProfileCompletion = () => {
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-3xl mx-auto mt-20 bg-white rounded-lg shadow-md p-8">
           <h2 className="text-2xl font-bold text-center mb-6">Continue Your Profile</h2>
-
+          
           <p className="text-gray-600 mb-6">
-            You have previously saved your profile completion progress. Would you like to continue
-            where you left off or start a new submission?
+            You have previously saved your profile completion progress. Would you like to continue where you left off or start a new submission?
           </p>
-
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={handleContinueSavedData} className="bg-cap-teal hover:bg-cap-teal/90">
+            <Button 
+              onClick={handleContinueSavedData}
+              className="bg-cap-teal hover:bg-cap-teal/90"
+            >
               Continue Saved Progress
             </Button>
-
-            <Button
+            
+            <Button 
               variant="outline"
               onClick={handleStartNew}
               className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
@@ -160,8 +170,10 @@ const ProfileCompletion = () => {
 
           <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
             <ProfileCompletionStepper steps={steps} currentStep={currentStep} />
-
-            <div className="p-6">{renderStep()}</div>
+            
+            <div className="p-6">
+              {renderStep()}
+            </div>
           </div>
 
           <div className="flex justify-center">
@@ -177,7 +189,7 @@ const ProfileCompletion = () => {
           </div>
         </div>
       </div>
-
+      
       <div className="relative w-full">
         <PatternBorder position="bottom" />
       </div>

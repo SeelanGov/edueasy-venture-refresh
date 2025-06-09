@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, Menu, X } from 'lucide-react';
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import AdminButton from './admin/AdminButton';
-import { Logo } from './Logo';
-import PartnerButton from './ui/PartnerButton';
+import { Button } from "@/components/ui/button";
+import { X, Menu, LogOut, User } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Logo } from "./Logo";
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from "@/components/ui/use-toast";
+import AdminButton from "./admin/AdminButton";
+import PartnerButton from "./ui/PartnerButton";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
