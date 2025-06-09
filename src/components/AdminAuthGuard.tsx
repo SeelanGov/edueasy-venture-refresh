@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminRole } from '@/hooks/useAdminRole';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 
 interface AdminAuthGuardProps {

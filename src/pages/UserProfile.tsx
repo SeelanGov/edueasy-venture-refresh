@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 import { DashboardLayoutWithThandi } from '@/components/DashboardLayoutWithThandi';
 import { supabase } from '@/integrations/supabase/client';
