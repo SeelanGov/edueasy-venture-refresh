@@ -1,5 +1,6 @@
-import { ReactNode, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
+import { ReactNode, useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';

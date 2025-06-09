@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,7 +19,6 @@ const applicationFormSchema = z.object({
   university: z.string().min(1, 'Please select a university'),
   program: z.string().min(1, 'Please select a program'),
   documentFile: z.any().optional(),
-  personalStatement: z.string().optional(),
 });
 
 export const useApplicationFormManager = () => {
@@ -39,7 +39,6 @@ export const useApplicationFormManager = () => {
       grade12Results: '',
       university: '',
       program: '',
-      personalStatement: '',
     },
   });
 
@@ -102,7 +101,6 @@ export const useApplicationFormManager = () => {
           institution_id: formValues.university,
           program_id: formValues.program,
           grade12_results: formValues.grade12Results,
-          personal_statement: formValues.personalStatement,
           status: 'draft',
           document_path: documentPath,
         });
@@ -164,7 +162,6 @@ export const useApplicationFormManager = () => {
           institution_id: data.university,
           program_id: data.program,
           grade12_results: data.grade12Results,
-          personal_statement: data.personalStatement,
           status: 'submitted',
           document_path: documentPath,
         })

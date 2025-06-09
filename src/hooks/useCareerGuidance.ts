@@ -1,10 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { AssessmentType } from '@/types/assessment';
-import { CareerAssessment } from '@/types/career-assessment';
-import { CareerGuidance } from '@/types/career-guidance';
 
 export enum AssessmentType {
   SKILLS = 'skills',
@@ -67,7 +65,11 @@ export const useCareerGuidance = () => {
     } catch (err) {
       console.error('Error fetching assessments:', err);
       setError('Failed to load assessments');
-      toast.error('Failed to load assessments');
+      toast({
+        title: 'Error',
+        description: 'Failed to load assessments',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,11 @@ export const useCareerGuidance = () => {
     } catch (err) {
       console.error('Error fetching guidance:', err);
       setError('Failed to load career guidance');
-      toast.error('Failed to load career guidance');
+      toast({
+        title: 'Error',
+        description: 'Failed to load career guidance',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -112,7 +118,11 @@ export const useCareerGuidance = () => {
       return data as CareerAssessment;
     } catch (err) {
       console.error('Error fetching assessment:', err);
-      toast.error('Failed to load assessment');
+      toast({
+        title: 'Error',
+        description: 'Failed to load assessment',
+        variant: 'destructive',
+      });
       return null;
     }
   };
@@ -161,11 +171,18 @@ export const useCareerGuidance = () => {
 
       await fetchAssessments();
       await fetchGuidance();
-      toast.success('Assessment completed successfully');
+      toast({
+        title: 'Success',
+        description: 'Assessment completed successfully',
+      });
       return guidanceData as CareerGuidance;
     } catch (err) {
       console.error('Error creating assessment:', err);
-      toast.error('Failed to create assessment');
+      toast({
+        title: 'Error',
+        description: 'Failed to create assessment',
+        variant: 'destructive',
+      });
       return null;
     }
   };
@@ -197,11 +214,18 @@ export const useCareerGuidance = () => {
       if (error) throw error;
       
       await fetchAssessments();
-      toast.success('Assessment completed successfully');
+      toast({
+        title: 'Success',
+        description: 'Assessment completed successfully',
+      });
       return data as CareerAssessment;
     } catch (err) {
       console.error('Error submitting assessment:', err);
-      toast.error('Failed to submit assessment');
+      toast({
+        title: 'Error',
+        description: 'Failed to submit assessment',
+        variant: 'destructive',
+      });
       return null;
     }
   };
@@ -245,11 +269,18 @@ export const useCareerGuidance = () => {
       if (error) throw error;
       
       await fetchGuidance();
-      toast.success('Career guidance generated successfully');
+      toast({
+        title: 'Success',
+        description: 'Career guidance generated successfully',
+      });
       return data as CareerGuidance;
     } catch (err) {
       console.error('Error generating guidance:', err);
-      toast.error('Failed to generate career guidance');
+      toast({
+        title: 'Error',
+        description: 'Failed to generate career guidance',
+        variant: 'destructive',
+      });
       return null;
     }
   };
