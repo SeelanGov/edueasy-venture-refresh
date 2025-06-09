@@ -10,7 +10,7 @@ class Logger {
   private level: LogLevel;
 
   constructor() {
-    // Set log level based on environment
+    // Set log level based on environment - only allow warnings and errors in production
     this.level = import.meta.env.PROD ? LogLevel.WARN : LogLevel.DEBUG;
   }
 
@@ -19,16 +19,17 @@ class Logger {
   }
 
   private formatMessage(level: string, message: string, ...args: unknown[]): void {
-    const timestamp = new Date().toISOString();
-    const prefix = `[${timestamp}] [${level}]`;
-    
     if (import.meta.env.PROD) {
-      // In production, only log warnings and errors to console
+      // In production, only log warnings and errors
       if (level === 'WARN' || level === 'ERROR') {
+        const timestamp = new Date().toISOString();
+        const prefix = `[${timestamp}] [${level}]`;
         console[level.toLowerCase() as 'warn' | 'error'](prefix, message, ...args);
       }
     } else {
-      // In development, log everything to console
+      // In development, log everything but with less noise
+      const timestamp = new Date().toLocaleTimeString();
+      const prefix = `[${timestamp}] [${level}]`;
       console.log(prefix, message, ...args);
     }
   }

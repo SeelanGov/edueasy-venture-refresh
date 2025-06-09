@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -150,10 +149,7 @@ export const TestimonialsSection = () => {
                 alt="South African graduates celebrating success with EduEasy"
                 className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded ? 'block' : 'hidden'}`}
                 onLoad={() => setGraduationImageLoaded(true)}
-                onError={() => {
-                  console.warn('Graduation image failed to load, using fallback');
-                  setGraduationImageLoaded(true);
-                }}
+                onError={() => setGraduationImageLoaded(true)}
               />
             </div>
           </div>

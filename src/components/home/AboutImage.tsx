@@ -21,10 +21,7 @@ export const AboutImage = () => {
             alt="Students studying and using EduEasy platform with branding"
             className={`w-full h-auto ${imageLoaded ? 'block' : 'hidden'}`}
             onLoad={() => setImageLoaded(true)}
-            onError={() => {
-              console.warn('About image failed to load, using fallback');
-              setImageLoaded(true);
-            }}
+            onError={() => setImageLoaded(true)}
           />
         </div>
         <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-teal-600 opacity-20 rounded-full"></div>
