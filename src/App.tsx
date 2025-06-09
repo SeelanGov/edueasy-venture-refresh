@@ -13,6 +13,12 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import ProfileDemo from "./pages/ProfileDemo";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import ProfileCompletion from "./pages/ProfileCompletion";
+import Pricing from "./pages/Pricing";
+import MeetThandi from "./pages/MeetThandi";
+import Institutions from "./pages/Institutions";
+import SponsorshipsPage from "./pages/SponsorshipsPage";
+import FAQPage from "./components/support/FAQPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +34,12 @@ const App = () => (
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/meet-thandi" element={<MeetThandi />} />
+              <Route path="/institutions" element={<Institutions />} />
+              <Route path="/faqs" element={<FAQPage />} />
+              <Route path="/sponsorships" element={<SponsorshipsPage />} />
+              
               <Route
                 path="/register"
                 element={
@@ -51,6 +63,14 @@ const App = () => (
                 element={
                   <AuthGuard>
                     <ProfileDemo />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/profile-completion"
+                element={
+                  <AuthGuard>
+                    <ProfileCompletion />
                   </AuthGuard>
                 }
               />
