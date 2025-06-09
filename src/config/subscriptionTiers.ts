@@ -1,7 +1,8 @@
+
 export const TIER_LEVELS = {
-  FREE: 'free',
-  BASIC: 'basic',
-  PREMIUM: 'premium',
+  STARTER: 'starter',
+  ESSENTIAL: 'essential',
+  PRO_AI: 'pro-ai',
 } as const;
 
 export type TierLevel = (typeof TIER_LEVELS)[keyof typeof TIER_LEVELS];
@@ -21,23 +22,25 @@ export interface SubscriptionTier {
   applicationLimit: number;
   documentReviews: number;
   features: SubscriptionFeature[];
-  color: string; // For UI styling
+  color: string;
+  paymentType: 'once-off' | 'subscription';
 }
 
 export const subscriptionTiers: SubscriptionTier[] = [
   {
-    id: TIER_LEVELS.FREE,
-    name: 'Free',
+    id: TIER_LEVELS.STARTER,
+    name: 'Starter',
     price: 0,
-    description: 'Get started with a single application to a no-fee institution',
+    description: 'Perfect for getting started with your education journey',
     applicationLimit: 1,
     documentReviews: 0,
     color: 'gray',
+    paymentType: 'once-off',
     features: [
       {
-        id: 'app-limit-free',
+        id: 'app-limit-starter',
         name: '1 Application',
-        description: 'Submit 1 application to a no-fee institution',
+        description: 'Submit 1 application to any institution',
         included: true,
       },
       {
@@ -59,6 +62,12 @@ export const subscriptionTiers: SubscriptionTier[] = [
         included: true,
       },
       {
+        id: 'community-support',
+        name: 'Community Support',
+        description: 'Access to community forums and peer support',
+        included: true,
+      },
+      {
         id: 'document-management',
         name: 'Document Management',
         description: 'Upload and manage application documents',
@@ -77,9 +86,9 @@ export const subscriptionTiers: SubscriptionTier[] = [
         included: false,
       },
       {
-        id: 'consultation',
-        name: 'Mock Consultation',
-        description: '30-minute consultation with education advisor',
+        id: 'ai-guidance',
+        name: 'AI Career Guidance',
+        description: 'Access Thandi AI for career guidance',
         included: false,
       },
       {
@@ -88,31 +97,20 @@ export const subscriptionTiers: SubscriptionTier[] = [
         description: 'Get faster responses to your queries',
         included: false,
       },
-      {
-        id: 'career-guidance',
-        name: 'Career Guidance',
-        description: 'Access Thandi career guidance reports',
-        included: false,
-      },
-      {
-        id: 'nsfas-checklist',
-        name: 'NSFAS Checklist',
-        description: 'Get NSFAS application guidance',
-        included: false,
-      },
     ],
   },
   {
-    id: TIER_LEVELS.BASIC,
-    name: 'Basic',
-    price: 150,
-    description: 'Submit up to 3 applications with supporting features',
+    id: TIER_LEVELS.ESSENTIAL,
+    name: 'Essential',
+    price: 199,
+    description: 'Essential tools for serious applicants',
     applicationLimit: 3,
     documentReviews: 1,
     color: 'blue',
+    paymentType: 'once-off',
     features: [
       {
-        id: 'app-limit-basic',
+        id: 'app-limit-essential',
         name: '3 Applications',
         description: 'Submit up to 3 applications',
         included: true,
@@ -148,15 +146,21 @@ export const subscriptionTiers: SubscriptionTier[] = [
         included: true,
       },
       {
+        id: 'nsfas-guidance',
+        name: 'NSFAS Guidance',
+        description: 'Get NSFAS application guidance',
+        included: true,
+      },
+      {
         id: 'email-support',
         name: 'Email Support',
         description: 'Get assistance via email',
         included: true,
       },
       {
-        id: 'consultation',
-        name: 'Mock Consultation',
-        description: '30-minute consultation with education advisor',
+        id: 'ai-guidance',
+        name: 'AI Career Guidance',
+        description: 'Access Thandi AI for career guidance',
         included: false,
       },
       {
@@ -165,31 +169,20 @@ export const subscriptionTiers: SubscriptionTier[] = [
         description: 'Get faster responses to your queries',
         included: false,
       },
-      {
-        id: 'career-guidance',
-        name: 'Career Guidance',
-        description: 'Access Thandi career guidance reports',
-        included: false,
-      },
-      {
-        id: 'nsfas-checklist',
-        name: 'NSFAS Checklist',
-        description: 'Get NSFAS application guidance',
-        included: false,
-      },
     ],
   },
   {
-    id: TIER_LEVELS.PREMIUM,
-    name: 'Premium',
+    id: TIER_LEVELS.PRO_AI,
+    name: 'Pro + AI',
     price: 300,
-    description: 'Submit up to 6 applications with premium features',
+    description: 'Complete support with AI-powered guidance',
     applicationLimit: 6,
     documentReviews: 3,
     color: 'purple',
+    paymentType: 'once-off',
     features: [
       {
-        id: 'app-limit-premium',
+        id: 'app-limit-pro',
         name: '6 Applications',
         description: 'Submit up to 6 applications',
         included: true,
@@ -225,15 +218,21 @@ export const subscriptionTiers: SubscriptionTier[] = [
         included: true,
       },
       {
-        id: 'email-support',
-        name: 'Email Support',
-        description: 'Get assistance via email',
+        id: 'ai-guidance',
+        name: 'AI Career Guidance',
+        description: 'Access Thandi AI for career guidance',
         included: true,
       },
       {
-        id: 'consultation',
-        name: 'Mock Consultation',
-        description: '30-minute consultation with education advisor',
+        id: 'document-reviews',
+        name: 'Document Reviews',
+        description: 'Professional review of your application documents',
+        included: true,
+      },
+      {
+        id: 'priority-processing',
+        name: 'Priority Processing',
+        description: 'Faster application processing',
         included: true,
       },
       {
@@ -243,15 +242,9 @@ export const subscriptionTiers: SubscriptionTier[] = [
         included: true,
       },
       {
-        id: 'career-guidance',
-        name: 'Career Guidance',
-        description: 'Access Thandi career guidance reports',
-        included: true,
-      },
-      {
-        id: 'nsfas-checklist',
-        name: 'NSFAS Checklist',
-        description: 'Get NSFAS application guidance',
+        id: 'interview-prep',
+        name: 'Interview Preparation',
+        description: 'AI-powered interview practice and tips',
         included: true,
       },
     ],
@@ -265,4 +258,14 @@ export const findTierById = (tierId: TierLevel): SubscriptionTier | undefined =>
 export const getApplicationLimit = (tierId: TierLevel): number => {
   const tier = findTierById(tierId);
   return tier?.applicationLimit || 0;
+};
+
+export const formatCurrency = (amount: number, currency: string = 'ZAR'): string => {
+  if (currency === 'ZAR') {
+    return `R${amount}`;
+  }
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+  }).format(amount / 100);
 };
