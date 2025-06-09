@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { SponsorshipCard } from '@/components/sponsorships/SponsorshipCard';
-import { Sponsorship, SponsorshipLevel } from '@/types/RevenueTypes';
+import { Sponsorship, SponsorshipLevel, SponsorshipStatus } from '@/types/RevenueTypes';
 
 // Mock data for demo
 const mockSponsorships: Sponsorship[] = [
@@ -12,8 +12,11 @@ const mockSponsorships: Sponsorship[] = [
     organization_name: 'TechCorp Foundation',
     contact_name: 'Sarah Johnson',
     contact_email: 'sarah@techcorp.com',
+    contact_phone: '+27 11 123 4567',
     sponsorship_level: SponsorshipLevel.PLATINUM,
     amount: 50000,
+    currency: 'ZAR',
+    status: SponsorshipStatus.ACTIVE,
     start_date: '2024-01-01',
     end_date: '2024-12-31',
     description: 'Supporting technology education for South African students',

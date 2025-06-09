@@ -53,6 +53,9 @@ export const Navbar = () => {
             <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
             </Link>
+            <Link to="/sponsorships" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+              Sponsors
+            </Link>
             <button 
               onClick={() => scrollToSection('testimonials')}
               className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
@@ -127,6 +130,13 @@ export const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 FOR INSTITUTIONS
+              </Link>
+              <Link
+                to="/sponsorships"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                SPONSORS
               </Link>
               <button 
                 onClick={() => scrollToSection('testimonials')}
