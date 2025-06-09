@@ -1,28 +1,25 @@
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
-import { TestimonialCard } from './TestimonialCard';
+import { StudentSuccessCard } from './StudentSuccessCard';
 
-interface Testimonial {
+interface Student {
   id: number;
   name: string;
   university: string;
   program: string;
   image: string;
   quote: string;
-  achievement?: string;
+  achievement: string;
 }
 
-const testimonials: Testimonial[] = [
+const students: Student[] = [
   {
     id: 1,
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
     image: 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png',
-    quote:
-      'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
+    quote: 'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
   },
   {
@@ -31,9 +28,8 @@ const testimonials: Testimonial[] = [
     university: 'University of Pretoria',
     program: 'Medicine',
     image: 'lovable-uploads/79d5be30-b5aa-4fc7-a655-097b5c751a7c.png',
-    quote:
-      'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
-    achievement: 'Medical School Scholarship Recipient'
+    quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
+    achievement: 'Medical School Scholarship'
   },
   {
     id: 3,
@@ -41,38 +37,12 @@ const testimonials: Testimonial[] = [
     university: 'Stellenbosch University',
     program: 'Business Administration',
     image: 'lovable-uploads/5d3ceb5a-9a68-4269-88d7-d73c8fffa59d.png',
-    quote:
-      'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
+    quote: 'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: 'Dean\'s List Honor Student'
   },
 ];
 
 export const TestimonialsSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
-  const [graduationImageError, setGraduationImageError] = useState(false);
-
-  const graduationImagePath = 'lovable-uploads/175fae29-9d91-4e88-99db-07cb4e316298.png';
-
-  const handleGraduationImageError = () => {
-    setGraduationImageError(true);
-    setGraduationImageLoaded(true);
-  };
-
-  const nextTestimonial = () => {
-    setActiveIndex((current) => (current + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const currentTestimonial = testimonials[activeIndex];
-
-  if (!currentTestimonial) {
-    return null;
-  }
-
   return (
     <section id="testimonials" className="py-20 px-4 md:py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto">
@@ -81,95 +51,18 @@ export const TestimonialsSection = () => {
             <div className="w-16 h-1 md:w-20 md:h-1.5 bg-orange-500 rounded"></div>
           </div>
           <Typography variant="h2" className="mb-4 md:text-4xl">
-            Success Stories from Real Students
+            Student Success Showcase
           </Typography>
           <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
-            Hear from South African students who achieved their dreams with EduEasy and Thandi
+            Celebrating the achievements of South African students who reached their goals with EduEasy
           </Typography>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <TestimonialCard testimonial={currentTestimonial} />
-
-          {/* Enhanced navigation dots */}
-          <div className="flex justify-center mt-8 gap-3">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
-                  index === activeIndex 
-                    ? 'bg-gradient-to-r from-teal-600 to-orange-500 shadow-md scale-110' 
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Enhanced navigation buttons */}
-          <div className="flex justify-center mt-6 md:mt-8 gap-4">
-            <Button
-              variant="outline"
-              onClick={prevTestimonial}
-              className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white md:py-6 md:px-8 transition-all duration-300"
-            >
-              Previous Story
-            </Button>
-            <Button
-              variant="outline"
-              onClick={nextTestimonial}
-              className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white md:py-6 md:px-8 transition-all duration-300"
-            >
-              Next Story
-            </Button>
-          </div>
-        </div>
-
-        {/* Featured Success Story Section */}
-        <div className="mt-16 bg-gradient-to-r from-teal-600 to-orange-500 rounded-2xl p-8 text-white">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <Typography variant="h3" className="mb-4 text-white">
-                Celebrating Graduate Success
-              </Typography>
-              <Typography variant="body-lg" className="mb-6 text-white/90">
-                Every graduation is a celebration of determination, hard work, and the support 
-                that made dreams possible. Join thousands of successful South African graduates.
-              </Typography>
-              <Button
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-teal-600"
-              >
-                Start Your Success Story
-              </Button>
-            </div>
-            <div className="relative">
-              {!graduationImageLoaded && !graduationImageError && (
-                <div className="w-full h-64 bg-white/20 animate-pulse rounded-xl flex items-center justify-center">
-                  <div className="text-white">Loading...</div>
-                </div>
-              )}
-
-              {graduationImageError && (
-                <div className="w-full h-64 bg-white/20 rounded-xl flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🎓</div>
-                    <div className="text-white font-medium">Graduation Success</div>
-                    <div className="text-white/80 text-sm">Your Achievement Awaits</div>
-                  </div>
-                </div>
-              )}
-              
-              <img
-                src={graduationImagePath}
-                alt="South African graduates celebrating success with EduEasy"
-                className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded && !graduationImageError ? 'block' : 'hidden'}`}
-                onLoad={() => setGraduationImageLoaded(true)}
-                onError={handleGraduationImageError}
-              />
-            </div>
-          </div>
+        {/* 3-Column Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+          {students.map((student) => (
+            <StudentSuccessCard key={student.id} student={student} />
+          ))}
         </div>
 
         {/* Success metrics section */}
