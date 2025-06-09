@@ -1,35 +1,31 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-
-export interface Sponsorship {
-  id: string;
-  organization_name: string;
-  amount: number;
-  currency: string;
-  start_date: string;
-  end_date: string;
-  description: string;
-  requirements: any;
-  status: string;
-  sponsorship_level: string;
-  logo_url?: string;
-  website_url?: string;
-  contact_name: string;
-  contact_email: string;
-  contact_phone: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import { Sponsorship, SponsorshipStatus } from '@/types/RevenueTypes';
 
 export const useSponsorships = () => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { user } = useAuth();
+
+  useEffect(() => {
+    // Check if user is admin
+    const checkAdminStatus = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .single();
+        setIsAdmin(!!data);
+      }
+    };
+    checkAdminStatus();
+  }, [user]);
 
   const fetchSponsorships = async () => {
     setLoading(true);
@@ -43,7 +39,17 @@ export const useSponsorships = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSponsorships(data || []);
+      
+      // Convert database format to our type format
+      const convertedData: Sponsorship[] = (data || []).map(item => ({
+        ...item,
+        logo_url: item.logo_url || undefined,
+        website_url: item.website_url || undefined,
+        expires_at: item.expires_at || undefined,
+        status: item.status as SponsorshipStatus
+      }));
+      
+      setSponsorships(convertedData);
     } catch (err) {
       console.error('Error fetching sponsorships:', err);
       setError('Failed to load sponsorships');
@@ -87,6 +93,51 @@ export const useSponsorships = () => {
       toast({
         title: 'Error',
         description: 'Failed to create sponsorship',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
+  const submitSponsorshipInquiry = async (inquiryData: {
+    organizationName: string;
+    contactName: string;
+    contactEmail: string;
+    contactPhone: string;
+    message: string;
+  }) => {
+    try {
+      // For now, just create a sponsorship record with inquiry status
+      const sponsorshipData = {
+        organization_name: inquiryData.organizationName,
+        contact_name: inquiryData.contactName,
+        contact_email: inquiryData.contactEmail,
+        contact_phone: inquiryData.contactPhone,
+        description: inquiryData.message,
+        amount: 0,
+        currency: 'ZAR',
+        status: SponsorshipStatus.PENDING,
+        sponsorship_level: 'bronze',
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        is_active: false
+      };
+
+      const result = await createSponsorship(sponsorshipData);
+      
+      if (result) {
+        toast({
+          title: 'Inquiry Submitted',
+          description: 'Thank you for your interest! We will contact you soon.',
+        });
+      }
+      
+      return result;
+    } catch (err) {
+      console.error('Error submitting sponsorship inquiry:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to submit inquiry',
         variant: 'destructive',
       });
       return null;
@@ -211,8 +262,10 @@ export const useSponsorships = () => {
     sponsorships,
     loading,
     error,
+    isAdmin,
     fetchSponsorships,
     createSponsorship,
+    submitSponsorshipInquiry,
     updateSponsorship,
     deleteSponsorship,
     activateSponsorship,

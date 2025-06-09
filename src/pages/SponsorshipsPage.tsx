@@ -1,3 +1,4 @@
+
 import { SponsorshipCard } from '@/components/sponsorships/SponsorshipCard';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useSponsorships } from '@/hooks/useSponsorships';
+import { Sponsorship } from '@/types/RevenueTypes';
 import { AlertCircle, Building } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -116,7 +118,7 @@ export default function SponsorshipsPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sponsorships.map((sponsorship) => (
+              {sponsorships.map((sponsorship: Sponsorship) => (
                 <SponsorshipCard
                   key={sponsorship.id}
                   sponsorship={sponsorship}

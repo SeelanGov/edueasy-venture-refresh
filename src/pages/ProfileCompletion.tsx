@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +11,7 @@ import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep
 import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
 import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
 import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
+import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthGuard } from '@/components/AuthGuard';
 import { PatternBorder } from '@/components/PatternBorder';
