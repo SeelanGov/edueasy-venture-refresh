@@ -40,7 +40,7 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
           full_name: personalInfo.fullName,
           id_number: personalInfo.idNumber,
           phone_number: contactInfo.phoneNumber,
-          contact_email: contactInfo.contactEmail || contactInfo.email,
+          contact_email: contactInfo.contactEmail,
           emergency_contact_name: contactInfo.emergencyContactName,
           emergency_contact_phone: contactInfo.emergencyContactPhone,
         })
@@ -114,7 +114,7 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
             <strong>Phone Number:</strong> {contactInfo.phoneNumber}
           </p>
           <p>
-            <strong>Email:</strong> {contactInfo.contactEmail || contactInfo.email}
+            <strong>Email:</strong> {contactInfo.contactEmail}
           </p>
           {contactInfo.emergencyContactName && (
             <div className="mt-2">
