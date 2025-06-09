@@ -3,7 +3,13 @@ import { useState } from 'react';
 
 export const HeroImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const heroImagePath = 'lovable-uploads/04f40fae-9965-4e84-aec0-11be9d7789a1.png';
+  const [imageError, setImageError] = useState(false);
+  const heroImagePath = 'lovable-uploads/ef86b3aa-83e2-480b-bd40-5bd13ba181a5.png';
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(true); // Stop loading state
+  };
 
   return (
     <div className="hidden md:block relative h-full">
@@ -11,18 +17,28 @@ export const HeroImage = () => {
       <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
       
       <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
-        {!imageLoaded && (
+        {!imageLoaded && !imageError && (
           <div className="w-full h-64 bg-gray-200 animate-pulse rounded-xl flex items-center justify-center">
             <div className="text-gray-500">Loading...</div>
+          </div>
+        )}
+
+        {imageError && (
+          <div className="w-full h-64 bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl flex items-center justify-center">
+            <div className="text-center p-4">
+              <div className="text-2xl mb-2">🎓</div>
+              <div className="text-gray-700 font-medium">EduEasy Platform</div>
+              <div className="text-sm text-gray-500">Empowering Student Success</div>
+            </div>
           </div>
         )}
         
         <img
           src={heroImagePath}
           alt="EduEasy platform for South African students"
-          className={`w-full h-auto rounded-xl object-cover ${imageLoaded ? 'block' : 'hidden'}`}
+          className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
           onLoad={() => setImageLoaded(true)}
-          onError={() => setImageLoaded(true)}
+          onError={handleImageError}
         />
         
         <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">

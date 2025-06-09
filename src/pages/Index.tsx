@@ -12,8 +12,6 @@ import { CommunitySection } from '@/components/home/CommunitySection';
 import { AISupportSection } from '@/components/home/AISupportSection';
 
 const Index = () => {
-  console.log('Index page rendering');
-
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header */}

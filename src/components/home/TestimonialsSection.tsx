@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -19,7 +20,7 @@ const testimonials: Testimonial[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: 'lovable-uploads/49463fc8-3383-4542-9984-4749a5631579.png',
+    image: 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png',
     quote:
       'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
@@ -29,7 +30,7 @@ const testimonials: Testimonial[] = [
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: 'lovable-uploads/c4b1dd67-036e-4e3f-ae13-21cd7edba772.png',
+    image: 'lovable-uploads/79d5be30-b5aa-4fc7-a655-097b5c751a7c.png',
     quote:
       'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship Recipient'
@@ -39,7 +40,7 @@ const testimonials: Testimonial[] = [
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: 'lovable-uploads/5bd44e59-3046-4b66-8ba8-3439553962e0.png',
+    image: 'lovable-uploads/5d3ceb5a-9a68-4269-88d7-d73c8fffa59d.png',
     quote:
       'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: 'Dean\'s List Honor Student'
@@ -49,8 +50,14 @@ const testimonials: Testimonial[] = [
 export const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [graduationImageLoaded, setGraduationImageLoaded] = useState(false);
+  const [graduationImageError, setGraduationImageError] = useState(false);
 
-  const graduationImagePath = 'lovable-uploads/57daccfa-072c-4923-9c2c-938786e6a3be.png';
+  const graduationImagePath = 'lovable-uploads/175fae29-9d91-4e88-99db-07cb4e316298.png';
+
+  const handleGraduationImageError = () => {
+    setGraduationImageError(true);
+    setGraduationImageLoaded(true);
+  };
 
   const nextTestimonial = () => {
     setActiveIndex((current) => (current + 1) % testimonials.length);
@@ -138,18 +145,28 @@ export const TestimonialsSection = () => {
               </Button>
             </div>
             <div className="relative">
-              {!graduationImageLoaded && (
+              {!graduationImageLoaded && !graduationImageError && (
                 <div className="w-full h-64 bg-white/20 animate-pulse rounded-xl flex items-center justify-center">
                   <div className="text-white">Loading...</div>
+                </div>
+              )}
+
+              {graduationImageError && (
+                <div className="w-full h-64 bg-white/20 rounded-xl flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">🎓</div>
+                    <div className="text-white font-medium">Graduation Success</div>
+                    <div className="text-white/80 text-sm">Your Achievement Awaits</div>
+                  </div>
                 </div>
               )}
               
               <img
                 src={graduationImagePath}
                 alt="South African graduates celebrating success with EduEasy"
-                className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded ? 'block' : 'hidden'}`}
+                className={`w-full h-auto rounded-xl shadow-lg ${graduationImageLoaded && !graduationImageError ? 'block' : 'hidden'}`}
                 onLoad={() => setGraduationImageLoaded(true)}
-                onError={() => setGraduationImageLoaded(true)}
+                onError={handleGraduationImageError}
               />
             </div>
           </div>
