@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +18,8 @@ const registerFormSchema = z
     idNumber: z.string().min(1, 'ID number is required'),
     email: z.string().email('Please enter a valid email address'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
-    terms: z.literal(true, {
-      errorMap: () => ({ message: 'You must accept the terms and conditions' }),
+    terms: z.boolean().refine((val) => val === true, {
+      message: 'You must accept the terms and conditions',
     }),
   })
   .refine((data) => data.password.length >= 6, {
