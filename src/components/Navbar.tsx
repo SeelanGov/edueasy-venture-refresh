@@ -32,7 +32,9 @@ export const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Logo />
+          <Link to="/" className="flex items-center">
+            <Logo layout="horizontal" size="small" />
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
@@ -85,7 +87,9 @@ export const Navbar = () => {
         {isOpen && (
           <div className="fixed inset-0 bg-white z-50 flex flex-col p-6">
             <div className="flex justify-between items-center mb-8">
-              <Logo />
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                <Logo layout="horizontal" size="medium" />
+              </Link>
               <Button
                 variant="ghost"
                 size="icon"

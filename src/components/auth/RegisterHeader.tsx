@@ -1,3 +1,4 @@
+
 import { Logo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
 
@@ -6,7 +7,7 @@ export const RegisterHeader = () => {
     <div className="relative w-full">
       <div className="relative z-10 pt-6 flex justify-center">
         <Link to="/">
-          <Logo />
+          <Logo layout="horizontal" size="medium" />
         </Link>
       </div>
     </div>
