@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useTrainingMessages } from './training/useTrainingMessages';
 import { useTrainingEntries } from './training/useTrainingEntries';
 import { TrainingFilters, ChatMessage } from '@/types/TrainingTypes';

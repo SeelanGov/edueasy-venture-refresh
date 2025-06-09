@@ -1,4 +1,4 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { DashboardLayoutWithThandi } from '@/components/DashboardLayoutWithThandi';
 import { useApplications } from '@/hooks/useApplications';
 import { DocumentVerificationNotice } from '@/components/dashboard/DocumentVerificationNotice';

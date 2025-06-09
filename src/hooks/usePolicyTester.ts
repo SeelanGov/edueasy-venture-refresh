@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
@@ -136,7 +136,7 @@ export const usePolicyTester = () => {
     selectedRole,
     setSelectedRole,
     scenarioName,
-    setScenarioName,
+    setScenarioName: (name: string) => setScenarioName(name),
     runStandardTests,
     runRoleTests,
     refreshData,
