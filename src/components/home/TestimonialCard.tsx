@@ -18,6 +18,12 @@ interface TestimonialCardProps {
 
 export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(true);
+  };
 
   return (
     <div className="relative bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100">
@@ -32,18 +38,27 @@ export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
         {/* Enhanced image */}
         <div className="relative flex-shrink-0">
           <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gradient-to-br from-teal-600 to-orange-500 shadow-lg">
-            {!imageLoaded && (
+            {!imageLoaded && !imageError && (
               <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
                 <div className="text-xs text-gray-500">Loading...</div>
+              </div>
+            )}
+
+            {imageError && (
+              <div className="w-full h-full bg-gradient-to-br from-teal-100 to-orange-100 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-2xl mb-1">👤</div>
+                  <div className="text-xs text-gray-600">Student</div>
+                </div>
               </div>
             )}
             
             <img
               src={testimonial.image}
               alt={testimonial.name}
-              className={`w-full h-full object-cover ${imageLoaded ? 'block' : 'hidden'}`}
+              className={`w-full h-full object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}
-              onError={() => setImageLoaded(true)}
+              onError={handleImageError}
             />
           </div>
           {/* Achievement badge */}

@@ -1,10 +1,17 @@
+
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const AISupportSection = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imagePath = 'lovable-uploads/49463fc8-3383-4542-9984-4749a5631579.png';
+  const [imageError, setImageError] = useState(false);
+  const imagePath = 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png';
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(true);
+  };
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -78,18 +85,28 @@ export const AISupportSection = () => {
           <div className="relative">
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-200 rounded-full opacity-50"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
-              {!imageLoaded && (
+              {!imageLoaded && !imageError && (
                 <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
                   <div className="text-gray-500">Loading...</div>
+                </div>
+              )}
+
+              {imageError && (
+                <div className="w-full h-64 bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="text-2xl mb-2">🤖</div>
+                    <div className="text-gray-700 font-medium">AI Assistant Thandi</div>
+                    <div className="text-sm text-gray-500">Your Personal Education Guide</div>
+                  </div>
                 </div>
               )}
               
               <img
                 src={imagePath}
                 alt="South African cultural heritage with traditional beadwork representing AI technology and tradition"
-                className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
+                className={`w-full h-auto object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
                 onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(true)}
+                onError={handleImageError}
               />
             </div>
             <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-yellow-200 rounded-full opacity-50"></div>
