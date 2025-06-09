@@ -1,25 +1,14 @@
 
 import { Button } from "@/components/ui/button";
-import { X, Menu, LogOut } from "lucide-react";
+import { X, Menu } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "./Logo";
-import { useAuth } from '@/hooks/useAuth';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   const scrollToSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -46,71 +35,37 @@ export const Navbar = () => {
           <Logo />
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-8">
             <button 
               onClick={() => scrollToSection('how-it-works')}
-              className="text-gray-700 hover:text-cap-teal transition-colors"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
             >
               How It Works
             </button>
-            <Link to="/meet-thandi" className="text-gray-700 hover:text-cap-teal transition-colors">
+            <Link to="/meet-thandi" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Meet Thandi
             </Link>
-            <Link to="/pricing" className="text-gray-700 hover:text-cap-teal transition-colors">
+            <Link to="/pricing" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Pricing
             </Link>
-            <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors">
+            <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
             </Link>
             <button 
               onClick={() => scrollToSection('testimonials')}
-              className="text-gray-700 hover:text-cap-teal transition-colors"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
             >
               Success Stories
             </button>
-            <Link to="/faqs" className="text-gray-700 hover:text-cap-teal transition-colors">
+            <Link to="/faqs" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               FAQs
             </Link>
             <button 
               onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-cap-teal transition-colors"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
             >
               Contact
             </button>
-
-            {user ? (
-              <>
-                <Link to="/dashboard" className="text-gray-700 hover:text-cap-teal">
-                  Dashboard
-                </Link>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-                    onClick={handleSignOut}
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Logout
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link to="/login">
-                  <Button
-                    variant="outline"
-                    className="mr-2 border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="bg-cap-teal hover:bg-cap-teal/90 text-white">
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -128,8 +83,8 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="fixed inset-0 bg-white z-50 flex flex-col p-5">
-            <div className="flex justify-between items-center">
+          <div className="fixed inset-0 bg-white z-50 flex flex-col p-6">
+            <div className="flex justify-between items-center mb-8">
               <Logo />
               <Button
                 variant="ghost"
@@ -140,95 +95,54 @@ export const Navbar = () => {
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            <div className="flex flex-col space-y-6 items-center justify-center h-full text-gray-800 text-xl">
+            
+            <div className="flex flex-col space-y-8 items-center justify-center flex-1 text-gray-800">
               <button 
                 onClick={() => scrollToSection('how-it-works')}
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
               >
                 HOW IT WORKS
               </button>
               <Link
                 to="/meet-thandi"
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 MEET THANDI
               </Link>
               <Link
                 to="/pricing"
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 PRICING
               </Link>
               <Link
                 to="/institutions"
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 FOR INSTITUTIONS
               </Link>
               <button 
                 onClick={() => scrollToSection('testimonials')}
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
               >
                 SUCCESS STORIES
               </button>
               <Link
                 to="/faqs"
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 FAQS
               </Link>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="text-gray-700 hover:text-cap-teal"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
               >
                 CONTACT
               </button>
-
-              {user ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="text-gray-700 hover:text-cap-teal"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    DASHBOARD
-                  </Link>
-                  <Button
-                    className="bg-cap-teal hover:bg-cap-teal/90 text-white mt-4"
-                    onClick={() => {
-                      handleSignOut();
-                      setIsOpen(false);
-                    }}
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    LOGOUT
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link to="/register">
-                    <Button
-                      className="bg-cap-teal hover:bg-cap-teal/90 text-white mt-4"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      GET STARTED
-                    </Button>
-                  </Link>
-                  <Link to="/login">
-                    <Button
-                      variant="outline"
-                      className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      LOGIN
-                    </Button>
-                  </Link>
-                </>
-              )}
             </div>
           </div>
         )}
