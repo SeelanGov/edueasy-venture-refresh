@@ -4,6 +4,7 @@ export enum SponsorshipStatus {
   APPROVED = 'approved',
   REJECTED = 'rejected',
   ACTIVE = 'active',
+  INACTIVE = 'inactive',
   EXPIRED = 'expired',
 }
 
@@ -46,7 +47,7 @@ export interface Sponsorship {
   start_date: string;
   end_date: string;
   is_active: boolean;
-  requirements?: Record<string, any>;
+  requirements?: Record<string, any> | null;
   logo_url?: string;
   website_url?: string;
   created_at: string;
