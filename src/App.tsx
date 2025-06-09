@@ -22,6 +22,14 @@ import SponsorshipsPage from "./pages/SponsorshipsPage";
 import FAQPage from "./components/support/FAQPage";
 import NotFound from "./pages/NotFound";
 
+// Admin Pages
+import AdminDashboardOverview from "./pages/admin/AdminDashboardOverview";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminPayments from "./pages/admin/AdminPayments";
+import AdminPlans from "./pages/admin/AdminPlans";
+import AdminSessions from "./pages/admin/AdminSessions";
+import AdminUserProfile from "./pages/admin/AdminUserProfile";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -77,12 +85,62 @@ const App = () => (
                 }
               />
               
-              {/* Admin routes */}
+              {/* Legacy admin route - redirect to new admin dashboard */}
               <Route
                 path="/partner-dashboard"
                 element={
                   <AdminAuthGuard>
                     <PartnerDashboard />
+                  </AdminAuthGuard>
+                }
+              />
+              
+              {/* New Admin CRM Routes */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminAuthGuard>
+                    <AdminDashboardOverview />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <AdminAuthGuard>
+                    <AdminUsers />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/users/:userId"
+                element={
+                  <AdminAuthGuard>
+                    <AdminUserProfile />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/payments"
+                element={
+                  <AdminAuthGuard>
+                    <AdminPayments />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/plans"
+                element={
+                  <AdminAuthGuard>
+                    <AdminPlans />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/sessions"
+                element={
+                  <AdminAuthGuard>
+                    <AdminSessions />
                   </AdminAuthGuard>
                 }
               />
