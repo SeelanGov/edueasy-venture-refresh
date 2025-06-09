@@ -119,6 +119,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/partner-dashboard" className="hover:text-cap-coral transition-colors">
+                  EduEasy Admin
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="/privacy-policy.html" 
                   target="_blank" 

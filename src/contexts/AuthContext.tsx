@@ -7,7 +7,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuthActions } from '@/hooks/useAuthActions';
 import logger from '@/utils/logger';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
