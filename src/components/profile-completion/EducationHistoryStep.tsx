@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { EducationForm, EducationFormValues } from './EducationForm';

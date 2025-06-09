@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { ErrorDetails, ErrorHandlingConfig } from '@/types/errorTypes';
 import { ErrorSeverity, logError } from '@/utils/errorLogging';
 import { ErrorCategory, parseError } from '@/utils/errorHandler';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 const DEFAULT_CONFIG: ErrorHandlingConfig = {

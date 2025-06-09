@@ -1,9 +1,10 @@
+
 import { DashboardContent } from '@/components/dashboard/layout/DashboardContent';
 import { DashboardHeader } from '@/components/dashboard/layout/DashboardHeader';
 import { DashboardSidebar } from '@/components/dashboard/layout/DashboardSidebar';
 import { MobileMenu } from '@/components/dashboard/layout/MobileMenu';
 import { Spinner } from '@/components/Spinner';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { useTheme } from '@/hooks/useTheme';
 import {
