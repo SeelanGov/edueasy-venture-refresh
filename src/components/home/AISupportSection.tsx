@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -90,10 +89,7 @@ export const AISupportSection = () => {
                 alt="South African cultural heritage with traditional beadwork representing AI technology and tradition"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={() => setImageLoaded(true)}
-                onError={() => {
-                  console.warn('AI Support image failed to load, using fallback');
-                  setImageLoaded(true);
-                }}
+                onError={() => setImageLoaded(true)}
               />
             </div>
             <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-yellow-200 rounded-full opacity-50"></div>

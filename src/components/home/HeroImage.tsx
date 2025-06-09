@@ -22,10 +22,7 @@ export const HeroImage = () => {
           alt="EduEasy platform for South African students"
           className={`w-full h-auto rounded-xl object-cover ${imageLoaded ? 'block' : 'hidden'}`}
           onLoad={() => setImageLoaded(true)}
-          onError={() => {
-            console.warn('Hero image failed to load, using fallback');
-            setImageLoaded(true);
-          }}
+          onError={() => setImageLoaded(true)}
         />
         
         <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">

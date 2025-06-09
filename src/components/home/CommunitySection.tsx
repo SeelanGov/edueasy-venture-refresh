@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -26,10 +25,7 @@ export const CommunitySection = () => {
                 alt="Students collaborating and working together in community"
                 className={`w-full h-auto object-cover ${imageLoaded ? 'block' : 'hidden'}`}
                 onLoad={() => setImageLoaded(true)}
-                onError={() => {
-                  console.warn('Community image failed to load, using fallback');
-                  setImageLoaded(true);
-                }}
+                onError={() => setImageLoaded(true)}
               />
             </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-500 opacity-20 rounded-full"></div>
