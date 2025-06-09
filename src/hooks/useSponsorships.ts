@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { Sponsorship, SponsorshipStatus } from '@/types/RevenueTypes';
+import { Sponsorship, SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
 
 export const useSponsorships = () => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
@@ -40,13 +40,14 @@ export const useSponsorships = () => {
 
       if (error) throw error;
       
-      // Convert database format to our type format
+      // Convert database format to our type format with proper type casting
       const convertedData: Sponsorship[] = (data || []).map(item => ({
         ...item,
         logo_url: item.logo_url || undefined,
         website_url: item.website_url || undefined,
         expires_at: item.expires_at || undefined,
-        status: item.status as SponsorshipStatus
+        status: item.status as SponsorshipStatus,
+        sponsorship_level: item.sponsorship_level as SponsorshipLevel
       }));
       
       setSponsorships(convertedData);
@@ -76,7 +77,7 @@ export const useSponsorships = () => {
     try {
       const { data, error } = await supabase
         .from('sponsorships')
-        .insert([sponsorshipData])
+        .insert(sponsorshipData)
         .select()
         .single();
 
@@ -117,7 +118,7 @@ export const useSponsorships = () => {
         amount: 0,
         currency: 'ZAR',
         status: SponsorshipStatus.PENDING,
-        sponsorship_level: 'bronze',
+        sponsorship_level: SponsorshipLevel.BRONZE,
         start_date: new Date().toISOString(),
         end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
         is_active: false
@@ -202,7 +203,7 @@ export const useSponsorships = () => {
     try {
       const { data, error } = await supabase
         .from('sponsorships')
-        .update({ is_active: true, status: 'active' })
+        .update({ is_active: true, status: SponsorshipStatus.ACTIVE })
         .eq('id', id)
         .select()
         .single();
@@ -230,7 +231,7 @@ export const useSponsorships = () => {
     try {
       const { data, error } = await supabase
         .from('sponsorships')
-        .update({ is_active: false, status: 'inactive' })
+        .update({ is_active: false, status: SponsorshipStatus.INACTIVE })
         .eq('id', id)
         .select()
         .single();
