@@ -41,8 +41,8 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
           id: allocation.id,
           updates: {
             plan: formData.plan,
-            expires_on: formData.expires_on || null,
-            notes: formData.notes || null,
+            expires_on: formData.expires_on || undefined,
+            notes: formData.notes || undefined,
           }
         });
       } else {
@@ -52,8 +52,8 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
           plan: formData.plan,
           status: 'active' as const,
           allocated_on: new Date().toISOString(),
-          expires_on: formData.expires_on || null,
-          notes: formData.notes || null,
+          expires_on: formData.expires_on || undefined,
+          notes: formData.notes || undefined,
         };
         await createAllocation.mutateAsync(allocationData);
       }

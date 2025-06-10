@@ -15,8 +15,8 @@ export const useSponsorAllocations = (sponsorId?: string) => {
         .from('sponsor_allocations')
         .select(`
           *,
-          sponsors(name, email),
-          profiles(full_name, email)
+          partners(name, email),
+          users(full_name, email)
         `);
 
       if (sponsorId) {
@@ -26,7 +26,7 @@ export const useSponsorAllocations = (sponsorId?: string) => {
       const { data, error } = await query.order('allocated_on', { ascending: false });
 
       if (error) throw error;
-      return data as SponsorAllocation[];
+      return data as any[];
     },
     enabled: true,
   });
@@ -36,7 +36,11 @@ export const useSponsorAllocations = (sponsorId?: string) => {
     mutationFn: async (allocationData: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('sponsor_allocations')
-        .insert(allocationData)
+        .insert({
+          ...allocationData,
+          expires_on: allocationData.expires_on || undefined,
+          notes: allocationData.notes || undefined,
+        })
         .select()
         .single();
 
@@ -65,7 +69,11 @@ export const useSponsorAllocations = (sponsorId?: string) => {
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<SponsorAllocation> }) => {
       const { data, error } = await supabase
         .from('sponsor_allocations')
-        .update(updates)
+        .update({
+          ...updates,
+          expires_on: updates.expires_on || undefined,
+          notes: updates.notes || undefined,
+        })
         .eq('id', id)
         .select()
         .single();

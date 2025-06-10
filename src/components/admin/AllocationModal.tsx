@@ -34,8 +34,8 @@ export const AllocationModal: React.FC<AllocationModalProps> = ({ sponsorId }) =
       plan: formData.plan,
       status: 'active' as const,
       allocated_on: new Date().toISOString(),
-      expires_on: formData.expires_on || null,
-      notes: formData.notes || null,
+      expires_on: formData.expires_on || undefined,
+      notes: formData.notes || undefined,
     };
 
     try {

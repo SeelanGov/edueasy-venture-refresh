@@ -1,4 +1,30 @@
 
+export interface Partner {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  website?: string;
+  contact_person?: string;
+  contact_email?: string;
+  address?: string;
+  city?: string;
+  province?: string;
+  postal_code?: string;
+  type: 'partner' | 'sponsor' | 'institution';
+  tier: 'basic' | 'standard' | 'premium';
+  status: 'active' | 'inactive' | 'pending' | 'suspended';
+  annual_investment?: number;
+  contract_start_date?: string;
+  contract_end_date?: string;
+  integration_status?: string;
+  api_key?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+  created_by?: string;
+}
+
 export interface Sponsor {
   id: string;
   name: string;
@@ -61,4 +87,50 @@ export interface SponsorNote {
   profiles?: {
     full_name: string;
   };
+}
+
+export interface PartnerPayment {
+  id: string;
+  partner_id: string;
+  amount: number;
+  payment_date: string;
+  payment_method?: string;
+  status: string;
+  invoice_number?: string;
+  reference_number?: string;
+  notes?: string;
+  due_date?: string;
+  created_at: string;
+  updated_at: string;
+  created_by?: string;
+}
+
+export interface PartnerNote {
+  id: string;
+  partner_id: string;
+  note: string;
+  note_type?: string;
+  created_at: string;
+  created_by?: string;
+}
+
+export interface PartnerTierConfig {
+  id: string;
+  tier: string;
+  name: string;
+  annual_fee: number;
+  max_applications?: number;
+  api_rate_limit?: number;
+  features?: any;
+  support_level?: string;
+  active?: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PartnerMetrics {
+  totalPartners: number;
+  activePartners: number;
+  totalRevenue: number;
+  tierBreakdown: { [key: string]: number };
 }
