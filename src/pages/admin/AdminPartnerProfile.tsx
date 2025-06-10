@@ -27,7 +27,6 @@ const AdminPartnerProfile = () => {
   const handleSave = async () => {
     if (editedPartner && partnerId) {
       await updatePartner.mutateAsync({
-        id: partnerId,
         ...editedPartner,
       });
       setIsEditing(false);
