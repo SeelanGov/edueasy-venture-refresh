@@ -1,4 +1,5 @@
 
+
 export interface Partner {
   id: string;
   name: string;
@@ -17,7 +18,7 @@ export interface Partner {
   annual_investment: number | null;
   contract_start_date?: string | null;
   contract_end_date?: string | null;
-  integration_status: string;
+  integration_status: string | null;
   api_key?: string | null;
   notes?: string | null;
   created_at: string;
@@ -58,7 +59,7 @@ export interface PartnerTierConfig {
   max_applications: number | null;
   api_rate_limit: number | null;
   support_level: string | null;
-  features: string[] | null;
+  features: any; // Using any to handle Json type from Supabase
   active: boolean | null;
   created_at: string;
   updated_at: string;
@@ -70,3 +71,4 @@ export interface PartnerMetrics {
   totalRevenue: number;
   tierBreakdown: { [key: string]: number };
 }
+
