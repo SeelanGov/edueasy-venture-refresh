@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,6 +32,7 @@ import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import AdminPartners from './pages/admin/AdminPartners';
 import AdminPartnerProfile from './pages/admin/AdminPartnerProfile';
 import AdminSponsors from './pages/admin/AdminSponsors';
+import AdminSponsorProfile from './pages/admin/AdminSponsorProfile';
 
 const queryClient = new QueryClient();
 
@@ -146,6 +146,14 @@ const App = () => (
                 element={
                   <AdminAuthGuard>
                     <AdminSponsors />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/sponsors/:id"
+                element={
+                  <AdminAuthGuard>
+                    <AdminSponsorProfile />
                   </AdminAuthGuard>
                 }
               />
