@@ -11,7 +11,7 @@ export const useUserVerification = (userId?: string) => {
 
       const { data, error } = await supabase
         .from('users')
-        .select('id, tracking_id, id_verified, referrer_partner_id, sponsor_id, full_name, email')
+        .select('id, tracking_id, id_verified, referrer_partner_id, sponsor_id, full_name, email, created_at')
         .eq('id', userId)
         .single();
       
