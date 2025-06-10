@@ -810,6 +810,53 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsor_allocations: {
+        Row: {
+          allocated_on: string
+          created_at: string
+          expires_on: string | null
+          id: string
+          notes: string | null
+          plan: string
+          sponsor_id: string
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          allocated_on?: string
+          created_at?: string
+          expires_on?: string | null
+          id?: string
+          notes?: string | null
+          plan: string
+          sponsor_id: string
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          allocated_on?: string
+          created_at?: string
+          expires_on?: string | null
+          id?: string
+          notes?: string | null
+          plan?: string
+          sponsor_id?: string
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_allocations_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsorships: {
         Row: {
           amount: number
