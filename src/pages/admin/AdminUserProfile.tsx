@@ -149,7 +149,7 @@ const AdminUserProfile = () => {
                           <StatusBadge status={payment.status} />
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-500">
-                          {new Date(payment.created_at).toLocaleDateString()}
+                          {payment.created_at ? new Date(payment.created_at).toLocaleDateString() : 'N/A'}
                         </td>
                       </tr>
                     ))}
@@ -179,7 +179,7 @@ const AdminUserProfile = () => {
                     <div>
                       <h4 className="font-medium capitalize">{plan.plan}</h4>
                       <p className="text-sm text-gray-500">
-                        Started: {new Date(plan.start_date).toLocaleDateString()}
+                        Started: {plan.start_date ? new Date(plan.start_date).toLocaleDateString() : 'N/A'}
                         {plan.end_date && ` • Ended: ${new Date(plan.end_date).toLocaleDateString()}`}
                       </p>
                     </div>

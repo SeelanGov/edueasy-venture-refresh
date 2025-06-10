@@ -143,7 +143,7 @@ const AdminPayments = () => {
                         <StatusBadge status={payment.status} />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(payment.created_at).toLocaleDateString()}
+                        {payment.created_at ? new Date(payment.created_at).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         {payment.status === 'pending' && (

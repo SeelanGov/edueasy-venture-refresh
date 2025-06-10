@@ -24,16 +24,22 @@ const AdminUsers = () => {
     return matchesSearch && matchesFilter;
   }) || [];
 
-  const getPlanBadgeColor = (plan: string | null) => {
-    if (!plan || plan === 'starter') return 'bg-gray-100 text-gray-800';
-    if (plan === 'essential') return 'bg-blue-100 text-blue-800';
-    if (plan === 'pro-ai') return 'bg-purple-100 text-purple-800';
+  const getPlanBadgeColor = (plan: string | null | undefined) => {
+    // Normalize the plan value to string | null
+    const normalizedPlan = plan || null;
+    
+    if (!normalizedPlan || normalizedPlan === 'starter') return 'bg-gray-100 text-gray-800';
+    if (normalizedPlan === 'essential') return 'bg-blue-100 text-blue-800';
+    if (normalizedPlan === 'pro-ai') return 'bg-purple-100 text-purple-800';
     return 'bg-gray-100 text-gray-800';
   };
 
-  const getStatusBadgeColor = (status: string | null) => {
-    if (!status || status === 'incomplete') return 'bg-yellow-100 text-yellow-800';
-    if (status === 'complete') return 'bg-green-100 text-green-800';
+  const getStatusBadgeColor = (status: string | null | undefined) => {
+    // Normalize the status value to string | null
+    const normalizedStatus = status || null;
+    
+    if (!normalizedStatus || normalizedStatus === 'incomplete') return 'bg-yellow-100 text-yellow-800';
+    if (normalizedStatus === 'complete') return 'bg-green-100 text-green-800';
     return 'bg-gray-100 text-gray-800';
   };
 
