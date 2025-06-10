@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerificationRequired from "./pages/VerificationRequired";
+import AdminVerification from "./pages/admin/AdminVerification";
 
 // Create a client with default options
 const queryClient = new QueryClient({
@@ -32,6 +33,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verification-required" element={<VerificationRequired />} />
+              <Route path="/admin/verification" element={<AdminVerification />} />
               {/* Protected routes wrapped in VerificationGuard would go here */}
               {/* Example: */}
               {/* <Route path="/dashboard" element={
