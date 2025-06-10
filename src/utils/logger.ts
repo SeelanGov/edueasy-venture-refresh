@@ -1,22 +1,17 @@
 
-// Simple logger utility for consistent logging across the application
-const logger = {
-  debug: (message: string, ...args: any[]) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[DEBUG] ${message}`, ...args);
-    }
+// Simple logger utility for debugging
+export const logger = {
+  error: (...args: any[]) => {
+    console.error('[EduEasy Error]:', ...args);
   },
-  
-  info: (message: string, ...args: any[]) => {
-    console.info(`[INFO] ${message}`, ...args);
+  warn: (...args: any[]) => {
+    console.warn('[EduEasy Warning]:', ...args);
   },
-  
-  warn: (message: string, ...args: any[]) => {
-    console.warn(`[WARN] ${message}`, ...args);
+  info: (...args: any[]) => {
+    console.info('[EduEasy Info]:', ...args);
   },
-  
-  error: (message: string, ...args: any[]) => {
-    console.error(`[ERROR] ${message}`, ...args);
+  debug: (...args: any[]) => {
+    console.log('[EduEasy Debug]:', ...args);
   }
 };
 
