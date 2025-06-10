@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     user,
     session,
-    loading: sessionLoading || authActions.loading,
     isAuthenticated: !!user,
     ...authActions,
   };
