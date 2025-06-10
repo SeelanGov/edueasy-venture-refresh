@@ -240,7 +240,7 @@ const AdminPartnerProfile = () => {
                       onChange={(e) => setEditedPartner(prev => prev ? {...prev, annual_investment: parseFloat(e.target.value) || 0} : null)}
                     />
                   ) : (
-                    <p className="text-sm font-medium">{formatCurrency(partner.annual_investment)}</p>
+                    <p className="text-sm font-medium">{formatCurrency(partner.annual_investment || 0)}</p>
                   )}
                 </div>
               </div>

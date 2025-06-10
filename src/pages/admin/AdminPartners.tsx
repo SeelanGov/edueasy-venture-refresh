@@ -199,7 +199,7 @@ const AdminPartners = () => {
                         <h3 className="font-medium">{partner.name}</h3>
                         <p className="text-sm text-gray-500">{partner.email}</p>
                         <p className="text-xs text-gray-400">
-                          Investment: {formatCurrency(partner.annual_investment)}
+                          Investment: {formatCurrency(partner.annual_investment || 0)}
                         </p>
                       </div>
                       

@@ -14,7 +14,7 @@ export interface Partner {
   city?: string | null;
   province?: string | null;
   postal_code?: string | null;
-  annual_investment: number;
+  annual_investment: number | null;
   contract_start_date?: string | null;
   contract_end_date?: string | null;
   integration_status: string;
@@ -45,7 +45,7 @@ export interface PartnerNote {
   id: string;
   partner_id: string;
   note: string;
-  note_type: string;
+  note_type: string | null;
   created_at: string;
   created_by?: string | null;
 }
@@ -55,11 +55,11 @@ export interface PartnerTierConfig {
   tier: 'basic' | 'standard' | 'premium';
   name: string;
   annual_fee: number;
-  max_applications: number;
-  api_rate_limit: number;
-  support_level: string;
+  max_applications: number | null;
+  api_rate_limit: number | null;
+  support_level: string | null;
   features: string[] | null;
-  active: boolean;
+  active: boolean | null;
   created_at: string;
   updated_at: string;
 }
