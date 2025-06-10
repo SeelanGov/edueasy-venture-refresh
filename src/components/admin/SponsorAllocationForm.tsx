@@ -6,9 +6,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { usePartnerData } from '@/hooks/usePartnerData';
+import { usePartners } from '@/hooks/usePartnerData';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
-import { SponsorAllocation } from '@/types/PartnerTypes';
+import { SponsorAllocation, Partner } from '@/types/PartnerTypes';
 import { Plus } from 'lucide-react';
 
 interface SponsorAllocationFormProps {
@@ -30,10 +30,10 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
     notes: allocation?.notes || '',
   });
 
-  const { partners } = usePartnerData();
+  const { data: partners } = usePartners();
   const { createAllocation, updateAllocation } = useSponsorAllocations();
 
-  const sponsors = partners?.filter(p => p.type === 'sponsor') || [];
+  const sponsors = partners?.filter((p: Partner) => p.type === 'sponsor') || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +41,7 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
 
     const allocationData = {
       ...formData,
+      allocated_on: allocation?.allocated_on || new Date().toISOString(),
       expires_on: formData.expires_on || null,
       notes: formData.notes || null,
     };
@@ -101,7 +102,7 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
                 <SelectValue placeholder="Select sponsor" />
               </SelectTrigger>
               <SelectContent>
-                {sponsors.map((sponsor) => (
+                {sponsors.map((sponsor: Partner) => (
                   <SelectItem key={sponsor.id} value={sponsor.id}>
                     {sponsor.name}
                   </SelectItem>

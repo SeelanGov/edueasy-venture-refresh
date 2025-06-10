@@ -4,24 +4,25 @@ import { AdminLayout } from '@/components/admin/layout/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SponsorAllocationsTable } from '@/components/admin/SponsorAllocationsTable';
-import { usePartnerData } from '@/hooks/usePartnerData';
+import { usePartners } from '@/hooks/usePartnerData';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
 import { Badge } from '@/components/ui/badge';
 import { Users, Gift, CheckCircle, XCircle } from 'lucide-react';
+import { Partner } from '@/types/PartnerTypes';
 
 const AdminSponsors = () => {
-  const { partners } = usePartnerData();
+  const { data: partners } = usePartners();
   const { allocations } = useSponsorAllocations();
 
-  const sponsors = partners?.filter(p => p.type === 'sponsor') || [];
-  const activeSponsors = sponsors.filter(s => s.status === 'active');
-  const activeAllocations = allocations?.filter(a => a.status === 'active') || [];
+  const sponsors = partners?.filter((p: Partner) => p.type === 'sponsor') || [];
+  const activeSponsors = sponsors.filter((s: Partner) => s.status === 'active');
+  const activeAllocations = allocations?.filter((a: any) => a.status === 'active') || [];
   const totalAllocations = allocations?.length || 0;
 
   console.log('Sponsors data:', { sponsors, allocations });
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Sponsor Management">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Sponsor Management</h1>
@@ -94,7 +95,7 @@ const AdminSponsors = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {sponsors.map((sponsor) => (
+                  {sponsors.map((sponsor: Partner) => (
                     <div key={sponsor.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div>
                         <h3 className="font-semibold">{sponsor.name}</h3>
