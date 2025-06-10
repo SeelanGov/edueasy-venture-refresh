@@ -1249,8 +1249,13 @@ export type Database = {
           full_name: string | null
           id: string
           id_number: string | null
+          id_verified: boolean | null
+          national_id_encrypted: string | null
           phone_number: string | null
           profile_status: string | null
+          referrer_partner_id: string | null
+          sponsor_id: string | null
+          tracking_id: string | null
         }
         Insert: {
           contact_email?: string | null
@@ -1262,8 +1267,13 @@ export type Database = {
           full_name?: string | null
           id?: string
           id_number?: string | null
+          id_verified?: boolean | null
+          national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          referrer_partner_id?: string | null
+          sponsor_id?: string | null
+          tracking_id?: string | null
         }
         Update: {
           contact_email?: string | null
@@ -1275,10 +1285,68 @@ export type Database = {
           full_name?: string | null
           id?: string
           id_number?: string | null
+          id_verified?: boolean | null
+          national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          referrer_partner_id?: string | null
+          sponsor_id?: string | null
+          tracking_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_referrer_partner_id_fkey"
+            columns: ["referrer_partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_logs: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          national_id_last4: string | null
+          result: string
+          user_id: string | null
+          verification_method: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          national_id_last4?: string | null
+          result: string
+          user_id?: string | null
+          verification_method?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          national_id_last4?: string | null
+          result?: string
+          user_id?: string | null
+          verification_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -1309,6 +1377,10 @@ export type Database = {
       belongs_to_user: {
         Args: { table_name: string; record_id: string }
         Returns: boolean
+      }
+      generate_tracking_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_intents_with_stats: {
         Args: Record<PropertyKey, never>

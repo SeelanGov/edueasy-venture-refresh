@@ -1,195 +1,105 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { AuthGuard } from "@/components/AuthGuard";
-import { AdminAuthGuard } from "@/components/AdminAuthGuard";
-import { GlobalErrorBoundary } from "@/components/error-handling/GlobalErrorBoundary";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Register from "./pages/Register";
-import ProfileDemo from "./pages/ProfileDemo";
-import PartnerDashboard from "./pages/PartnerDashboard";
-import ProfileCompletion from "./pages/ProfileCompletion";
-import Pricing from "./pages/Pricing";
-import InstitutionPricing from "./pages/InstitutionPricing";
-import CheckoutPage from "./pages/CheckoutPage";
-import MeetThandi from "./pages/MeetThandi";
-import Institutions from "./pages/Institutions";
-import SponsorshipsPage from "./pages/SponsorshipsPage";
-import FAQPage from "./components/support/FAQPage";
-import NotFound from "./pages/NotFound";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Toaster } from '@/components/ui/toaster';
 
-// Admin Pages
-import AdminDashboardOverview from "./pages/admin/AdminDashboardOverview";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminPayments from "./pages/admin/AdminPayments";
-import AdminPlans from "./pages/admin/AdminPlans";
-import AdminSessions from "./pages/admin/AdminSessions";
-import AdminUserProfile from "./pages/admin/AdminUserProfile";
-import AdminPartners from './pages/admin/AdminPartners';
-import AdminPartnerProfile from './pages/admin/AdminPartnerProfile';
-import AdminSponsors from './pages/admin/AdminSponsors';
-import AdminSponsorProfile from './pages/admin/AdminSponsorProfile';
+// Pages
+import Index from '@/pages/Index';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import Dashboard from '@/pages/Dashboard';
+import Profile from '@/pages/Profile';
+import Applications from '@/pages/Applications';
+import ApplicationDetail from '@/pages/ApplicationDetail';
+import NewApplication from '@/pages/NewApplication';
+import Settings from '@/pages/Settings';
+import NotFound from '@/pages/NotFound';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminUsers from '@/pages/admin/AdminUsers';
+import AdminApplications from '@/pages/admin/AdminApplications';
+import AdminSettings from '@/pages/admin/AdminSettings';
+import AdminPartners from '@/pages/admin/AdminPartners';
+import AdminPartnerDetail from '@/pages/admin/AdminPartnerDetail';
+import AdminSponsors from '@/pages/admin/AdminSponsors';
+import AdminSponsorDetail from '@/pages/admin/AdminSponsorDetail';
+import VerificationRequired from '@/pages/VerificationRequired';
+import { VerificationGuard } from '@/components/auth/VerificationGuard';
 
-const queryClient = new QueryClient();
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
-const App = () => (
-  <GlobalErrorBoundary>
+function App() {
+  return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
+      <AuthProvider>
+        <Router>
+          <div className="App">
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/institution-pricing" element={<InstitutionPricing />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/meet-thandi" element={<MeetThandi />} />
-              <Route path="/institutions" element={<Institutions />} />
-              <Route path="/faqs" element={<FAQPage />} />
-              <Route path="/sponsorships" element={<SponsorshipsPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/verification-required" element={<VerificationRequired />} />
               
-              <Route
-                path="/register"
-                element={
-                  <AuthGuard requiresAuth={false}>
-                    <Register />
-                  </AuthGuard>
-                }
-              />
-              
-              {/* Protected routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  <AuthGuard>
-                    <Dashboard />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/profile-demo"
-                element={
-                  <AuthGuard>
-                    <ProfileDemo />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/profile-completion"
-                element={
-                  <AuthGuard>
-                    <ProfileCompletion />
-                  </AuthGuard>
-                }
-              />
-              
-              {/* Legacy admin route - redirect to new admin dashboard */}
-              <Route
-                path="/partner-dashboard"
-                element={
-                  <AdminAuthGuard>
-                    <PartnerDashboard />
-                  </AdminAuthGuard>
-                }
-              />
-              
-              {/* New Admin CRM Routes */}
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminAuthGuard>
-                    <AdminDashboardOverview />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/users"
-                element={
-                  <AdminAuthGuard>
-                    <AdminUsers />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/users/:userId"
-                element={
-                  <AdminAuthGuard>
-                    <AdminUserProfile />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/partners"
-                element={
-                  <AdminAuthGuard>
-                    <AdminPartners />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/partners/:partnerId"
-                element={
-                  <AdminAuthGuard>
-                    <AdminPartnerProfile />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/sponsors"
-                element={
-                  <AdminAuthGuard>
-                    <AdminSponsors />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/sponsors/:id"
-                element={
-                  <AdminAuthGuard>
-                    <AdminSponsorProfile />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/payments"
-                element={
-                  <AdminAuthGuard>
-                    <AdminPayments />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/plans"
-                element={
-                  <AdminAuthGuard>
-                    <AdminPlans />
-                  </AdminAuthGuard>
-                }
-              />
-              <Route
-                path="/admin/sessions"
-                element={
-                  <AdminAuthGuard>
-                    <AdminSessions />
-                  </AdminAuthGuard>
-                }
-              />
-              
+              {/* Protected routes with verification guard */}
+              <Route path="/dashboard" element={
+                <VerificationGuard>
+                  <Dashboard />
+                </VerificationGuard>
+              } />
+              <Route path="/profile" element={
+                <VerificationGuard>
+                  <Profile />
+                </VerificationGuard>
+              } />
+              <Route path="/applications" element={
+                <VerificationGuard>
+                  <Applications />
+                </VerificationGuard>
+              } />
+              <Route path="/applications/:id" element={
+                <VerificationGuard>
+                  <ApplicationDetail />
+                </VerificationGuard>
+              } />
+              <Route path="/applications/new" element={
+                <VerificationGuard>
+                  <NewApplication />
+                </VerificationGuard>
+              } />
+              <Route path="/settings" element={
+                <VerificationGuard>
+                  <Settings />
+                </VerificationGuard>
+              } />
+
+              {/* Admin routes */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/applications" element={<AdminApplications />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+              <Route path="/admin/partners" element={<AdminPartners />} />
+              <Route path="/admin/partners/:id" element={<AdminPartnerDetail />} />
+              <Route path="/admin/sponsors" element={<AdminSponsors />} />
+              <Route path="/admin/sponsors/:id" element={<AdminSponsorDetail />} />
+
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
+          </div>
+          <Toaster />
+        </Router>
+      </AuthProvider>
     </QueryClientProvider>
-  </GlobalErrorBoundary>
-);
+  );
+}
 
 export default App;
