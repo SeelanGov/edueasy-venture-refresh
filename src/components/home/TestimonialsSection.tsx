@@ -1,83 +1,19 @@
 
-import { Typography } from '@/components/ui/typography';
-import { StudentSuccessCard } from './StudentSuccessCard';
-
-interface Student {
-  id: number;
-  name: string;
-  university: string;
-  program: string;
-  image: string;
-  quote: string;
-  achievement: string;
-}
-
-const students: Student[] = [
-  {
-    id: 1,
-    name: 'Lerato Mthembu',
-    university: 'University of Cape Town',
-    program: 'Computer Science',
-    image: 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png',
-    quote: 'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
-    achievement: 'Academic Excellence Award'
-  },
-  {
-    id: 2,
-    name: 'Sipho Ndlovu',
-    university: 'University of Pretoria',
-    program: 'Medicine',
-    image: 'lovable-uploads/79d5be30-b5aa-4fc7-a655-097b5c751a7c.png',
-    quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
-    achievement: 'Medical School Scholarship'
-  },
-  {
-    id: 3,
-    name: 'Thandiwe Cele',
-    university: 'Stellenbosch University',
-    program: 'Business Administration',
-    image: 'lovable-uploads/5d3ceb5a-9a68-4269-88d7-d73c8fffa59d.png',
-    quote: 'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
-    achievement: 'Dean\'s List Honor Student'
-  },
-];
-
 export const TestimonialsSection = () => {
   return (
-    <section id="testimonials" className="py-20 px-4 md:py-24 bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-12 md:mb-16">
-          <div className="mb-6 flex justify-center">
-            <div className="w-16 h-1 md:w-20 md:h-1.5 bg-orange-500 rounded"></div>
+    <section className="py-20 px-4 bg-white">
+      <div className="container mx-auto max-w-4xl text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-16 text-gray-900">
+          Student Success Stories
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 mb-4">"EduEasy made the application process so much easier. The ID verification was quick and secure."</p>
+            <p className="font-semibold">- Sarah M., UCT Student</p>
           </div>
-          <Typography variant="h2" className="mb-4 md:text-4xl">
-            Student Success Showcase
-          </Typography>
-          <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
-            Celebrating the achievements of South African students who reached their goals with EduEasy
-          </Typography>
-        </div>
-
-        {/* 3-Column Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
-          {students.map((student) => (
-            <StudentSuccessCard key={student.id} student={student} />
-          ))}
-        </div>
-
-        {/* Success metrics section */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-teal-600 mb-2">95%</div>
-            <div className="text-gray-600">Application Success Rate</div>
-          </div>
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-orange-500 mb-2">2,500+</div>
-            <div className="text-gray-600">Students Supported</div>
-          </div>
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-teal-600 mb-2">R75M+</div>
-            <div className="text-gray-600">Scholarships Secured</div>
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <p className="text-gray-600 mb-4">"I found the perfect program match through EduEasy's personalized recommendations."</p>
+            <p className="font-semibold">- Thabo K., Wits Student</p>
           </div>
         </div>
       </div>
