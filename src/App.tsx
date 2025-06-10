@@ -15,6 +15,7 @@ import ProfileDemo from "./pages/ProfileDemo";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import Pricing from "./pages/Pricing";
+import SubscriptionPage from "./pages/SubscriptionPage";
 import MeetThandi from "./pages/MeetThandi";
 import Institutions from "./pages/Institutions";
 import SponsorshipsPage from "./pages/SponsorshipsPage";
@@ -71,6 +72,14 @@ const App = () => (
                 element={
                   <AuthGuard>
                     <ProfileCompletion />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/subscription"
+                element={
+                  <AuthGuard>
+                    <SubscriptionPage />
                   </AuthGuard>
                 }
               />

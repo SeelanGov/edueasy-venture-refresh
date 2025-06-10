@@ -411,6 +411,286 @@ export type Database = {
           },
         ]
       }
+      partner_notes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          note: string
+          note_type: string | null
+          partner_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note: string
+          note_type?: string | null
+          partner_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string
+          note_type?: string | null
+          partner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_notes_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string | null
+          due_date: string | null
+          id: string
+          invoice_number: string | null
+          notes: string | null
+          partner_id: string
+          payment_date: string
+          payment_method: string | null
+          reference_number: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number?: string | null
+          notes?: string | null
+          partner_id: string
+          payment_date: string
+          payment_method?: string | null
+          reference_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number?: string | null
+          notes?: string | null
+          partner_id?: string
+          payment_date?: string
+          payment_method?: string | null
+          reference_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_payments_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_tier_config: {
+        Row: {
+          active: boolean | null
+          annual_fee: number
+          api_rate_limit: number | null
+          created_at: string
+          features: Json | null
+          id: string
+          max_applications: number | null
+          name: string
+          support_level: string | null
+          tier: Database["public"]["Enums"]["partner_tier"]
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          annual_fee: number
+          api_rate_limit?: number | null
+          created_at?: string
+          features?: Json | null
+          id?: string
+          max_applications?: number | null
+          name: string
+          support_level?: string | null
+          tier: Database["public"]["Enums"]["partner_tier"]
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          annual_fee?: number
+          api_rate_limit?: number | null
+          created_at?: string
+          features?: Json | null
+          id?: string
+          max_applications?: number | null
+          name?: string
+          support_level?: string | null
+          tier?: Database["public"]["Enums"]["partner_tier"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      partners: {
+        Row: {
+          address: string | null
+          annual_investment: number | null
+          api_key: string | null
+          city: string | null
+          contact_email: string | null
+          contact_person: string | null
+          contract_end_date: string | null
+          contract_start_date: string | null
+          created_at: string
+          created_by: string | null
+          email: string
+          id: string
+          integration_status: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          postal_code: string | null
+          province: string | null
+          status: Database["public"]["Enums"]["partner_status"]
+          tier: Database["public"]["Enums"]["partner_tier"]
+          type: Database["public"]["Enums"]["partner_type"]
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          annual_investment?: number | null
+          api_key?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contract_end_date?: string | null
+          contract_start_date?: string | null
+          created_at?: string
+          created_by?: string | null
+          email: string
+          id?: string
+          integration_status?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          province?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          tier?: Database["public"]["Enums"]["partner_tier"]
+          type: Database["public"]["Enums"]["partner_type"]
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          annual_investment?: number | null
+          api_key?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contract_end_date?: string | null
+          contract_start_date?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          id?: string
+          integration_status?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          province?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          tier?: Database["public"]["Enums"]["partner_tier"]
+          type?: Database["public"]["Enums"]["partner_type"]
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          payment_method: string
+          payment_reference: string | null
+          plan: string
+          status: string
+          transaction_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          payment_method: string
+          payment_reference?: string | null
+          plan: string
+          status: string
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          payment_method?: string
+          payment_reference?: string | null
+          plan?: string
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          features: string[] | null
+          id: string
+          name: string
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          features?: string[] | null
+          id?: string
+          name: string
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          features?: string[] | null
+          id?: string
+          name?: string
+          price?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       programs: {
         Row: {
           active: boolean | null
@@ -529,6 +809,53 @@ export type Database = {
           tested_as?: string
         }
         Relationships: []
+      }
+      sponsor_allocations: {
+        Row: {
+          allocated_on: string
+          created_at: string
+          expires_on: string | null
+          id: string
+          notes: string | null
+          plan: string
+          sponsor_id: string
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          allocated_on?: string
+          created_at?: string
+          expires_on?: string | null
+          id?: string
+          notes?: string | null
+          plan: string
+          sponsor_id: string
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          allocated_on?: string
+          created_at?: string
+          expires_on?: string | null
+          id?: string
+          notes?: string | null
+          plan?: string
+          sponsor_id?: string
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_allocations_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sponsorships: {
         Row: {
@@ -830,6 +1157,39 @@ export type Database = {
           },
         ]
       }
+      user_plans: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          end_date: string | null
+          id: string
+          plan: string
+          start_date: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          plan: string
+          start_date?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          plan?: string
+          start_date?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string
@@ -882,40 +1242,111 @@ export type Database = {
         Row: {
           contact_email: string | null
           created_at: string
+          current_plan: string | null
           email: string | null
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
           full_name: string | null
           id: string
           id_number: string | null
+          id_verified: boolean | null
+          national_id_encrypted: string | null
           phone_number: string | null
           profile_status: string | null
+          referrer_partner_id: string | null
+          sponsor_id: string | null
+          tracking_id: string | null
         }
         Insert: {
           contact_email?: string | null
           created_at?: string
+          current_plan?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           full_name?: string | null
           id?: string
           id_number?: string | null
+          id_verified?: boolean | null
+          national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          referrer_partner_id?: string | null
+          sponsor_id?: string | null
+          tracking_id?: string | null
         }
         Update: {
           contact_email?: string | null
           created_at?: string
+          current_plan?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           full_name?: string | null
           id?: string
           id_number?: string | null
+          id_verified?: boolean | null
+          national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          referrer_partner_id?: string | null
+          sponsor_id?: string | null
+          tracking_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_referrer_partner_id_fkey"
+            columns: ["referrer_partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_logs: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          national_id_last4: string | null
+          result: string
+          user_id: string | null
+          verification_method: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          national_id_last4?: string | null
+          result: string
+          user_id?: string | null
+          verification_method?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          national_id_last4?: string | null
+          result?: string
+          user_id?: string | null
+          verification_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -946,6 +1377,10 @@ export type Database = {
       belongs_to_user: {
         Args: { table_name: string; record_id: string }
         Returns: boolean
+      }
+      generate_tracking_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_intents_with_stats: {
         Args: Record<PropertyKey, never>
@@ -987,7 +1422,15 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      partner_status: "active" | "inactive" | "pending" | "suspended"
+      partner_tier: "basic" | "standard" | "premium"
+      partner_type:
+        | "university"
+        | "tvet"
+        | "funder"
+        | "seta"
+        | "other"
+        | "sponsor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1102,6 +1545,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      partner_status: ["active", "inactive", "pending", "suspended"],
+      partner_tier: ["basic", "standard", "premium"],
+      partner_type: [
+        "university",
+        "tvet",
+        "funder",
+        "seta",
+        "other",
+        "sponsor",
+      ],
+    },
   },
 } as const
