@@ -10,13 +10,13 @@ import logger from '@/utils/logger';
 export interface AuthContextType {
   user: User | null;
   session: Session | null;
-  loading: boolean;
   isAuthenticated: boolean;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
