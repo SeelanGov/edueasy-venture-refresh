@@ -16,7 +16,9 @@ export const useUserVerification = (userId?: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      
+      // Convert the data to match our User type
+      return data as User;
     },
     enabled: !!userId,
   });
@@ -35,7 +37,9 @@ export const useVerificationLogs = (userId?: string) => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data || [];
+      
+      // Convert the data to match our VerificationLog type
+      return (data || []) as VerificationLog[];
     },
     enabled: !!userId,
   });
