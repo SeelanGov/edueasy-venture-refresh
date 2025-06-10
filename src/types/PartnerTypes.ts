@@ -3,34 +3,34 @@ export interface Partner {
   id: string;
   name: string;
   email: string;
-  phone?: string;
-  website?: string;
-  contact_person?: string;
-  contact_email?: string;
-  address?: string;
-  city?: string;
-  province?: string;
-  postal_code?: string;
-  type: 'partner' | 'sponsor' | 'institution';
+  phone?: string | null;
+  website?: string | null;
+  contact_person?: string | null;
+  contact_email?: string | null;
+  address?: string | null;
+  city?: string | null;
+  province?: string | null;
+  postal_code?: string | null;
+  type: 'university' | 'tvet' | 'sponsor' | 'funder' | 'seta' | 'other';
   tier: 'basic' | 'standard' | 'premium';
   status: 'active' | 'inactive' | 'pending' | 'suspended';
-  annual_investment?: number;
-  contract_start_date?: string;
-  contract_end_date?: string;
-  integration_status?: string;
-  api_key?: string;
-  notes?: string;
+  annual_investment?: number | null;
+  contract_start_date?: string | null;
+  contract_end_date?: string | null;
+  integration_status?: string | null;
+  api_key?: string | null;
+  notes?: string | null;
   created_at: string;
   updated_at: string;
-  created_by?: string;
+  created_by?: string | null;
 }
 
 export interface Sponsor {
   id: string;
   name: string;
   email: string;
-  phone?: string;
-  organization?: string;
+  phone?: string | null;
+  organization?: string | null;
   sponsorship_type: 'individual' | 'organization' | 'corporate';
   total_amount: number;
   allocated_amount: number;
@@ -38,7 +38,7 @@ export interface Sponsor {
   status: 'active' | 'inactive' | 'suspended';
   created_at: string;
   updated_at: string;
-  notes?: string;
+  notes?: string | null;
 }
 
 export interface SponsorAllocation {
@@ -48,8 +48,8 @@ export interface SponsorAllocation {
   plan: string;
   status: 'active' | 'inactive' | 'expired';
   allocated_on: string;
-  expires_on?: string;
-  notes?: string;
+  expires_on?: string | null;
+  notes?: string | null;
   created_at: string;
   updated_at: string;
   // Joined data
@@ -69,9 +69,9 @@ export interface SponsorPayment {
   amount: number;
   payment_method: 'bank_transfer' | 'credit_card' | 'cash' | 'other';
   payment_date: string;
-  reference_number?: string;
+  reference_number?: string | null;
   status: 'pending' | 'completed' | 'failed' | 'refunded';
-  notes?: string;
+  notes?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -94,24 +94,24 @@ export interface PartnerPayment {
   partner_id: string;
   amount: number;
   payment_date: string;
-  payment_method?: string;
+  payment_method?: string | null;
   status: string;
-  invoice_number?: string;
-  reference_number?: string;
-  notes?: string;
-  due_date?: string;
+  invoice_number?: string | null;
+  reference_number?: string | null;
+  notes?: string | null;
+  due_date?: string | null;
   created_at: string;
   updated_at: string;
-  created_by?: string;
+  created_by?: string | null;
 }
 
 export interface PartnerNote {
   id: string;
   partner_id: string;
   note: string;
-  note_type?: string;
+  note_type?: string | null;
   created_at: string;
-  created_by?: string;
+  created_by?: string | null;
 }
 
 export interface PartnerTierConfig {
@@ -119,11 +119,11 @@ export interface PartnerTierConfig {
   tier: string;
   name: string;
   annual_fee: number;
-  max_applications?: number;
-  api_rate_limit?: number;
+  max_applications?: number | null;
+  api_rate_limit?: number | null;
   features?: any;
-  support_level?: string;
-  active?: boolean;
+  support_level?: string | null;
+  active?: boolean | null;
   created_at: string;
   updated_at: string;
 }
