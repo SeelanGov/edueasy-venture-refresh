@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
   const navigate = useNavigate();
   const authActions = useAuthActions();
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error) {
         logger.error('Error in getInitialSession:', error);
       } finally {
-        setAuthLoading(false);
+        setSessionLoading(false);
       }
     };
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setAuthLoading(false);
+        setSessionLoading(false);
 
         if (event === 'SIGNED_IN') {
           toast({
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     user,
     session,
-    loading: authLoading || authActions.loading,
+    loading: sessionLoading || authActions.loading,
     isAuthenticated: !!user,
     ...authActions,
   };
