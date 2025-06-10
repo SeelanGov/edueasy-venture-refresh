@@ -6,110 +6,101 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { usePartners } from '@/hooks/usePartnerData';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
-import { SponsorAllocation, Partner } from '@/types/PartnerTypes';
-import { Plus } from 'lucide-react';
+import { SponsorAllocation } from '@/types/PartnerTypes';
+import { Plus, Edit } from 'lucide-react';
 
 interface SponsorAllocationFormProps {
   allocation?: SponsorAllocation;
-  onClose?: () => void;
+  sponsorId?: string;
 }
 
 export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({ 
   allocation, 
-  onClose 
+  sponsorId 
 }) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    sponsor_id: allocation?.sponsor_id || '',
+    sponsor_id: sponsorId || allocation?.sponsor_id || '',
     student_id: allocation?.student_id || '',
     plan: allocation?.plan || '',
-    status: allocation?.status || 'active',
-    expires_on: allocation?.expires_on || '',
+    expires_on: allocation?.expires_on ? new Date(allocation.expires_on).toISOString().slice(0, 16) : '',
     notes: allocation?.notes || '',
   });
 
-  const { data: partners } = usePartners();
   const { createAllocation, updateAllocation } = useSponsorAllocations();
-
-  const sponsors = partners?.filter((p: Partner) => p.type === 'sponsor') || [];
+  const isEditing = !!allocation;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting sponsor allocation form:', formData);
+    console.log('Submitting allocation form:', formData);
 
-    const allocationData = {
-      ...formData,
-      allocated_on: allocation?.allocated_on || new Date().toISOString(),
-      expires_on: formData.expires_on || null,
-      notes: formData.notes || null,
-    };
-
-    if (allocation) {
-      await updateAllocation.mutateAsync({
-        id: allocation.id,
-        updates: allocationData,
-      });
-    } else {
-      await createAllocation.mutateAsync(allocationData);
-    }
-
-    setOpen(false);
-    onClose?.();
-    
-    // Reset form if creating new allocation
-    if (!allocation) {
-      setFormData({
-        sponsor_id: '',
-        student_id: '',
-        plan: '',
-        status: 'active',
-        expires_on: '',
-        notes: '',
-      });
+    try {
+      if (isEditing) {
+        await updateAllocation.mutateAsync({
+          id: allocation.id,
+          updates: {
+            plan: formData.plan,
+            expires_on: formData.expires_on || null,
+            notes: formData.notes || null,
+          }
+        });
+      } else {
+        const allocationData = {
+          sponsor_id: formData.sponsor_id,
+          student_id: formData.student_id,
+          plan: formData.plan,
+          status: 'active' as const,
+          allocated_on: new Date().toISOString(),
+          expires_on: formData.expires_on || null,
+          notes: formData.notes || null,
+        };
+        await createAllocation.mutateAsync(allocationData);
+      }
+      
+      setOpen(false);
+      if (!isEditing) {
+        setFormData({
+          sponsor_id: sponsorId || '',
+          student_id: '',
+          plan: '',
+          expires_on: '',
+          notes: '',
+        });
+      }
+    } catch (error) {
+      console.error('Failed to save allocation:', error);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {!allocation ? (
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            Allocate Sponsorship
-          </Button>
-        ) : (
-          <Button variant="outline" size="sm">
-            Edit
-          </Button>
-        )}
+        <Button size="sm" variant={isEditing ? "outline" : "default"}>
+          {isEditing ? <Edit className="w-4 h-4" /> : <Plus className="w-4 h-4 mr-2" />}
+          {isEditing ? '' : 'New Allocation'}
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {allocation ? 'Edit Sponsor Allocation' : 'Create Sponsor Allocation'}
+            {isEditing ? 'Edit Allocation' : 'Create Sponsor Allocation'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="sponsor_id">Sponsor</Label>
-            <Select
-              value={formData.sponsor_id}
-              onValueChange={(value) => setFormData({ ...formData, sponsor_id: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select sponsor" />
-              </SelectTrigger>
-              <SelectContent>
-                {sponsors.map((sponsor: Partner) => (
-                  <SelectItem key={sponsor.id} value={sponsor.id}>
-                    {sponsor.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {!sponsorId && (
+            <div>
+              <Label htmlFor="sponsor_id">Sponsor ID</Label>
+              <Input
+                id="sponsor_id"
+                value={formData.sponsor_id}
+                onChange={(e) => setFormData({ ...formData, sponsor_id: e.target.value })}
+                placeholder="Enter sponsor ID"
+                required
+                disabled={isEditing}
+              />
+            </div>
+          )}
 
           <div>
             <Label htmlFor="student_id">Student ID</Label>
@@ -119,6 +110,7 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
               onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
               placeholder="Enter student user ID"
               required
+              disabled={isEditing}
             />
           </div>
 
@@ -135,23 +127,6 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
                 <SelectItem value="basic">Basic</SelectItem>
                 <SelectItem value="premium">Premium</SelectItem>
                 <SelectItem value="enterprise">Enterprise</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="status">Status</Label>
-            <Select
-              value={formData.status}
-              onValueChange={(value) => setFormData({ ...formData, status: value as any })}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="expired">Expired</SelectItem>
-                <SelectItem value="revoked">Revoked</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -180,8 +155,11 @@ export const SponsorAllocationForm: React.FC<SponsorAllocationFormProps> = ({
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={createAllocation.isPending || updateAllocation.isPending}>
-              {allocation ? 'Update' : 'Create'} Allocation
+            <Button 
+              type="submit" 
+              disabled={createAllocation.isPending || updateAllocation.isPending}
+            >
+              {isEditing ? 'Update' : 'Create'} Allocation
             </Button>
           </div>
         </form>

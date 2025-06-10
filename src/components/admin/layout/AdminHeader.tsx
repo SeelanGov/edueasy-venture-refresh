@@ -1,35 +1,44 @@
 
-import { Menu, Bell } from 'lucide-react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import { LogOut, User, Bell } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-interface AdminHeaderProps {
-  title: string;
-  onMenuClick: () => void;
-}
+export const AdminHeader: React.FC = () => {
+  const { user, logout } = useAuth();
 
-export const AdminHeader = ({ title, onMenuClick }: AdminHeaderProps) => {
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-3">
+    <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onMenuClick}
-            className="md:hidden mr-2"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-          <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
+        <div className="flex items-center space-x-4">
+          <h1 className="text-xl font-semibold text-gray-900">EduEasy Admin</h1>
+          <Badge variant="outline">Admin Portal</Badge>
         </div>
         
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
-              3
-            </Badge>
+          <Button variant="ghost" size="sm">
+            <Bell className="w-4 h-4" />
+          </Button>
+          
+          <div className="flex items-center space-x-2">
+            <User className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              {user?.email || 'Admin User'}
+            </span>
+          </div>
+          
+          <Button variant="outline" size="sm" onClick={handleLogout}>
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
           </Button>
         </div>
       </div>
