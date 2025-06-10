@@ -1,9 +1,8 @@
 
-
 export interface Partner {
   id: string;
   name: string;
-  type: 'university' | 'tvet' | 'funder' | 'seta' | 'other';
+  type: 'university' | 'tvet' | 'funder' | 'seta' | 'other' | 'sponsor';
   tier: 'basic' | 'standard' | 'premium';
   status: 'active' | 'inactive' | 'pending' | 'suspended';
   email: string;
@@ -59,8 +58,21 @@ export interface PartnerTierConfig {
   max_applications: number | null;
   api_rate_limit: number | null;
   support_level: string | null;
-  features: any; // Using any to handle Json type from Supabase
+  features: any;
   active: boolean | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SponsorAllocation {
+  id: string;
+  sponsor_id: string;
+  student_id: string;
+  plan: string;
+  status: 'active' | 'expired' | 'revoked';
+  allocated_on: string;
+  expires_on?: string | null;
+  notes?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -71,4 +83,3 @@ export interface PartnerMetrics {
   totalRevenue: number;
   tierBreakdown: { [key: string]: number };
 }
-

@@ -32,6 +32,7 @@ import AdminSessions from "./pages/admin/AdminSessions";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import AdminPartners from './pages/admin/AdminPartners';
 import AdminPartnerProfile from './pages/admin/AdminPartnerProfile';
+import AdminSponsors from './pages/admin/AdminSponsors';
 
 const queryClient = new QueryClient();
 
@@ -137,6 +138,14 @@ const App = () => (
                 element={
                   <AdminAuthGuard>
                     <AdminPartnerProfile />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/sponsors"
+                element={
+                  <AdminAuthGuard>
+                    <AdminSponsors />
                   </AdminAuthGuard>
                 }
               />
