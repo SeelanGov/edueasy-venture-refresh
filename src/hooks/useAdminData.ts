@@ -75,7 +75,7 @@ export const useDashboardMetrics = () => {
       
       if (usersError) throw usersError;
 
-      // Get paid users
+      // Get paid users - only those with active plans that are not 'starter'
       const { data: paidUsers, error: paidError } = await supabase
         .from('user_plans')
         .select('user_id')
@@ -138,7 +138,7 @@ export const useUpdatePaymentStatus = () => {
         description: 'Payment status updated successfully',
       });
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: 'Error',
         description: 'Failed to update payment status',
