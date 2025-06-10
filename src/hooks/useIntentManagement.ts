@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -36,12 +35,12 @@ export const useIntentManagement = () => {
 
       // Transform the data to ensure sample_queries is properly typed
       const transformedData =
-        data?.map((intent: any) => ({
+        data?.map((intent) => ({
           ...intent,
           // Convert Json to string[] or null
           sample_queries: intent.sample_queries
             ? Array.isArray(intent.sample_queries)
-              ? intent.sample_queries.map((q: any) => String(q))
+              ? intent.sample_queries.map((q) => String(q))
               : null
             : null,
         })) || [];

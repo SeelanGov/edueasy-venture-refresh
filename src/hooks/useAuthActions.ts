@@ -1,217 +1,148 @@
 
-import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
 import { User, Session } from '@supabase/supabase-js';
+import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
 
 export const useAuthActions = () => {
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const signUp = async (email: string, password: string, fullName: string, idNumber: string) => {
-    setLoading(true);
     try {
-      logger.info("Attempting signup for:", email);
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const redirectUrl = `${window.location.origin}/`;
       
-      if (error) {
-        logger.error("Signup error:", error);
-        
-        if (error.message === 'email rate limit exceeded' || error.code === 'over_email_send_rate_limit') {
-          toast({
-            title: "Too many attempts",
-            description: "Please try again later or contact support for assistance.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Error signing up",
-            description: error.message,
-            variant: "destructive"
-          });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: fullName,
+            id_number: idNumber
+          }
         }
-        return { user: null, session: null, error: error.message };
+      });
+
+      if (error) {
+        throw error;
       }
-      
+
+      // Create user profile
       if (data.user) {
-        logger.info("User created successfully:", data.user.id);
-        
-        // Insert user data into users table
         const { error: profileError } = await supabase
           .from('users')
           .insert([
-            { 
-              id: data.user.id, 
-              email, 
-              full_name: fullName, 
-              id_number: idNumber 
+            {
+              id: data.user.id,
+              full_name: fullName,
+              id_number: idNumber,
+              email: email,
+              profile_status: 'incomplete'
             }
           ]);
-        
+
         if (profileError) {
-          logger.error('Error creating profile:', profileError);
-          throw profileError;
+          logger.error('Error creating user profile:', profileError);
         }
-        
-        toast({
-          title: "Account created",
-          description: "Your account has been created successfully. Please check your email for verification."
-        });
-
-        const from = location.state?.from || "/dashboard";
-        navigate('/login', { state: { from: from } });
-        return { user: data.user, session: data.session };
       }
-      
-      return { user: null, session: null };
-    } catch (error: any) {
-      logger.error("Signup error:", error);
+
       toast({
-        title: "Error signing up",
-        description: error.message,
-        variant: "destructive"
+        title: "Registration successful!",
+        description: "Please check your email to verify your account."
       });
-      return { user: null, session: null, error: error.message };
-    } finally {
-      setLoading(false);
+
+      return { user: data.user, session: data.session, error: null };
+    } catch (error: any) {
+      const message = error.message || 'Registration failed';
+      logger.error('Sign up failed:', error);
+      return { user: null, session: null, error: message };
     }
   };
 
-  const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
-    setLoading(true);
+  const signIn = async (email: string, password: string, rememberMe?: boolean) => {
     try {
-      logger.info("Attempting signin for:", email);
-      
-      const { error, data } = await supabase.auth.signInWithPassword({ 
-        email, 
-        password
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      
-      if (error) {
-        logger.error("Signin error:", error);
-        toast({
-          title: "Error signing in",
-          description: error.message,
-          variant: "destructive"
-        });
-        return { user: null, session: null, error: error.message };
-      }
-      
-      if (rememberMe && data.session) {
-        logger.info("Remember me enabled: setting longer session persistence");
-      }
-      
-      logger.info("Signin successful:", !!data?.user, data?.user?.id);
-      return { user: data.user, session: data.session };
-    } catch (error: any) {
-      logger.error("Signin error:", error);
-      toast({
-        title: "Error signing in",
-        description: error.message,
-        variant: "destructive"
-      });
-      return { user: null, session: null, error: error.message };
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const signOut = async () => {
-    setLoading(true);
-    try {
-      logger.info("Attempting signout");
-      const { error } = await supabase.auth.signOut();
-      
       if (error) {
-        logger.error("Signout error:", error);
         throw error;
       }
-      
-      logger.info("Signout successful");
+
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberMe');
+        localStorage.removeItem('rememberedEmail');
+      }
+
+      return { user: data.user, session: data.session, error: null };
     } catch (error: any) {
-      logger.error("Signout error:", error);
-      toast({
-        title: "Error signing out",
-        description: error.message,
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
+      const message = error.message || 'Sign in failed';
+      logger.error('Sign in failed:', error);
+      throw new Error(message);
     }
   };
 
-  const resetPassword = async (email: string) => {
-    setLoading(true);
+  const resetPassword = async (email: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/reset-password`
       });
-      
+
       if (error) {
-        logger.error("Reset password error:", error);
         throw error;
       }
-      
-      toast({
-        title: "Password reset email sent",
-        description: "Check your email for a link to reset your password."
-      });
-      
+
       return true;
     } catch (error: any) {
-      logger.error("Reset password error:", error);
-      toast({
-        title: "Error resetting password",
-        description: error.message,
-        variant: "destructive"
-      });
-      return false;
-    } finally {
-      setLoading(false);
+      const message = error.message || 'Password reset failed';
+      logger.error('Password reset failed:', error);
+      throw new Error(message);
     }
   };
-  
-  const updatePassword = async (newPassword: string) => {
-    setLoading(true);
+
+  const updatePassword = async (newPassword: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.updateUser({
         password: newPassword
       });
-      
+
       if (error) {
-        logger.error("Update password error:", error);
         throw error;
       }
-      
+
       toast({
         title: "Password updated",
-        description: "Your password has been updated successfully."
+        description: "Your password has been successfully updated."
       });
-      
-      navigate('/dashboard');
+
       return true;
     } catch (error: any) {
-      logger.error("Update password error:", error);
-      toast({
-        title: "Error updating password",
-        description: error.message,
-        variant: "destructive"
-      });
-      return false;
-    } finally {
-      setLoading(false);
+      const message = error.message || 'Password update failed';
+      logger.error('Password update failed:', error);
+      throw new Error(message);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        logger.error('Error signing out:', error);
+        throw error;
+      }
+    } catch (error) {
+      logger.error('Failed to sign out:', error);
+      throw error;
     }
   };
 
   return {
-    loading,
     signUp,
     signIn,
-    signOut,
     resetPassword,
-    updatePassword
+    updatePassword,
+    signOut
   };
 };

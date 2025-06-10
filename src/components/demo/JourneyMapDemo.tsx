@@ -1,34 +1,75 @@
+import { useState } from 'react';
+import { JourneyMap } from '@/components/journey/JourneyMap';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
 export const JourneyMapDemo = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = [
+    'Personal Information',
+    'Contact Details',
+    'Address Information',
+    'Education History',
+    'Document Upload',
+    'Review & Submit',
+  ];
+
+  const handleNext = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleReset = () => {
+    setCurrentStep(0);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4">Track Your Progress</h3>
-        <p className="text-gray-600">Follow your journey from registration to enrollment</p>
-      </div>
-      
-      <div className="flex justify-between items-center">
-        {[
-          { step: "1", title: "ID Verification", completed: true },
-          { step: "2", title: "Profile Setup", completed: false },
-          { step: "3", title: "Applications", completed: false },
-          { step: "4", title: "Enrollment", completed: false }
-        ].map((item, index) => (
-          <div key={item.step} className="flex flex-col items-center">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mb-2 ${
-              item.completed ? 'bg-green-500' : 'bg-gray-300'
-            }`}>
-              {item.step}
+    <section className="py-12 px-4 bg-white rounded-lg">
+      <div className="max-w-4xl mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-center">Journey Map Demo</CardTitle>
+            <CardDescription className="text-center">
+              Interactive visualization of user progress through multi-step processes
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <div className="mb-8 bg-slate-50 p-4 rounded-lg">
+              <JourneyMap steps={steps} currentStep={currentStep} />
             </div>
-            <span className="text-sm font-medium text-gray-700">{item.title}</span>
-            {index < 3 && (
-              <div className={`hidden md:block w-24 h-1 mt-6 ${
-                item.completed ? 'bg-green-500' : 'bg-gray-300'
-              }`} />
-            )}
-          </div>
-        ))}
+
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 0}>
+                Previous Step
+              </Button>
+
+              <Button
+                onClick={handleNext}
+                disabled={currentStep === steps.length - 1}
+                className="bg-cap-teal hover:bg-cap-teal/90"
+              >
+                Next Step
+              </Button>
+
+              <Button variant="outline" onClick={handleReset} className="ml-2">
+                Reset
+              </Button>
+            </div>
+
+            <div className="mt-6 text-center text-sm text-gray-500">
+              Current step: {currentStep + 1} - {steps[currentStep]}
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </section>
   );
 };

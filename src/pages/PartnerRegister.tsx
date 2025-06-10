@@ -1,18 +1,16 @@
-
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PartnerRegister: React.FC = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    instituteName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
+    instituteName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,35 +18,27 @@ const PartnerRegister: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     if (!form.instituteName || !form.username || !form.password || !form.confirmPassword) {
-      setError("All fields are required.");
+      setError('All fields are required.');
       return;
     }
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
     // Simulate registration success
-    setSuccess("Registration successful! You can now log in.");
-    setTimeout(() => navigate("/partner/login"), 1500);
+    setSuccess('Registration successful! You can now log in.');
+    setTimeout(() => navigate('/partner/login'), 1500);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <div className="absolute top-8 left-8">
-        <Link 
-          to="/" 
-          className="inline-flex items-center text-cap-teal hover:text-cap-teal/80 transition-colors font-medium"
-        >
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          Back to Home
-        </Link>
-      </div>
-
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Partner Institute Registration</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
+      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-primary">
+          Partner Institute Registration
+        </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
@@ -56,7 +46,7 @@ const PartnerRegister: React.FC = () => {
             placeholder="Institute Name"
             value={form.instituteName}
             onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
+            className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
           <input
@@ -65,7 +55,7 @@ const PartnerRegister: React.FC = () => {
             placeholder="Username"
             value={form.username}
             onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
+            className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
           <input
@@ -74,7 +64,7 @@ const PartnerRegister: React.FC = () => {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
+            className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
           <input
@@ -83,21 +73,21 @@ const PartnerRegister: React.FC = () => {
             placeholder="Confirm Password"
             value={form.confirmPassword}
             onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900"
+            className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-500 text-sm">{success}</div>}
           <button
             type="submit"
-            className="bg-cap-teal hover:bg-cap-teal/90 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
           >
             Register
           </button>
         </form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
-          <button className="text-cap-teal underline" onClick={() => navigate('/partner/login')}>
+          <button className="text-primary underline" onClick={() => navigate('/partner/login')}>
             Log in
           </button>
         </div>
