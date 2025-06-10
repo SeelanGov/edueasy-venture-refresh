@@ -6,13 +6,13 @@ import { LogOut, User, Bell } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export const AdminHeader: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
 
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     try {
-      await logout();
+      await signOut();
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error('Sign out failed:', error);
     }
   };
 
@@ -36,7 +36,7 @@ export const AdminHeader: React.FC = () => {
             </span>
           </div>
           
-          <Button variant="outline" size="sm" onClick={handleLogout}>
+          <Button variant="outline" size="sm" onClick={handleSignOut}>
             <LogOut className="w-4 h-4 mr-2" />
             Logout
           </Button>
