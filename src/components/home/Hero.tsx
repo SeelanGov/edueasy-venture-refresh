@@ -1,47 +1,24 @@
 
-import { ChevronDown } from 'lucide-react';
-import { Typography } from '@/components/ui/typography';
-import { HeroContent } from './HeroContent';
-import { HeroImage } from './HeroImage';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 export const Hero = () => {
   return (
-    <section id="home" className="py-16 md:py-24 bg-white relative overflow-hidden">
-      {/* Background dot pattern */}
-      <div className="absolute inset-0 opacity-5 z-0 pointer-events-none">
-        <div
-          className="absolute top-0 left-0 right-0 h-64 bg-repeat"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #2A9D8F 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 right-0 h-64 bg-repeat"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #2A9D8F 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-      </div>
-
-      {/* Hero Content */}
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <HeroContent />
-          <HeroImage />
-        </div>
-
-        <div className="mt-20 flex justify-center">
-          <a
-            href="#how-it-works"
-            className="flex flex-col items-center text-gray-500 animate-bounce hover:text-primary transition-colors"
-          >
-            <Typography variant="small" className="mb-2">
-              EXPLORE MORE
-            </Typography>
-            <ChevronDown className="h-5 w-5" />
-          </a>
+    <section className="py-24 px-4 text-center bg-gradient-to-b from-blue-50 to-white">
+      <div className="container mx-auto max-w-4xl">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
+          Your Gateway to Higher Education
+        </h1>
+        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          EduEasy connects South African students with educational opportunities through secure ID verification and personalized guidance.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Link to="/register">
+            <Button size="lg" className="px-8">Start Your Journey</Button>
+          </Link>
+          <Link to="/login">
+            <Button variant="outline" size="lg" className="px-8">Sign In</Button>
+          </Link>
         </div>
       </div>
     </section>
