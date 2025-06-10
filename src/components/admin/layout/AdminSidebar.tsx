@@ -5,82 +5,50 @@ import { cn } from '@/lib/utils';
 import { 
   LayoutDashboard, 
   Users, 
+  Building2, 
+  Gift, 
   CreditCard, 
   Package, 
-  MessageSquare, 
-  Building2,
-  Gift
+  Activity 
 } from 'lucide-react';
 
-const AdminSidebar = () => {
+const navigation = [
+  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Users', href: '/admin/users', icon: Users },
+  { name: 'Partners', href: '/admin/partners', icon: Building2 },
+  { name: 'Sponsors', href: '/admin/sponsors', icon: Gift },
+  { name: 'Payments', href: '/admin/payments', icon: CreditCard },
+  { name: 'Plans', href: '/admin/plans', icon: Package },
+  { name: 'Sessions', href: '/admin/sessions', icon: Activity },
+];
+
+export const AdminSidebar: React.FC = () => {
   const location = useLocation();
 
-  const menuItems = [
-    {
-      title: 'Dashboard',
-      href: '/admin/dashboard',
-      icon: LayoutDashboard,
-    },
-    {
-      title: 'Users',
-      href: '/admin/users',
-      icon: Users,
-    },
-    {
-      title: 'Partners',
-      href: '/admin/partners',
-      icon: Building2,
-    },
-    {
-      title: 'Sponsors',
-      href: '/admin/sponsors',
-      icon: Gift,
-    },
-    {
-      title: 'Payments',
-      href: '/admin/payments',
-      icon: CreditCard,
-    },
-    {
-      title: 'Plans',
-      href: '/admin/plans',
-      icon: Package,
-    },
-    {
-      title: 'Sessions',
-      href: '/admin/sessions',
-      icon: MessageSquare,
-    },
-  ];
-
   return (
-    <div className="pb-12 w-64">
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Admin
-          </h2>
-          <div className="space-y-1">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  "flex items-center rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent",
-                  location.pathname === item.href
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <item.icon className="mr-2 h-4 w-4" />
-                {item.title}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <aside className="w-64 bg-white border-r border-gray-200 min-h-screen">
+      <nav className="p-4 space-y-2">
+        {navigation.map((item) => {
+          const isActive = location.pathname.startsWith(item.href);
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={cn(
+                "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                isActive
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              <Icon className="w-4 h-4" />
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
   );
 };
-
-export default AdminSidebar;
