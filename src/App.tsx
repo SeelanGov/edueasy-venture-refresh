@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +15,7 @@ import ProfileDemo from "./pages/ProfileDemo";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import Pricing from "./pages/Pricing";
+import InstitutionPricing from "./pages/InstitutionPricing";
 import CheckoutPage from "./pages/CheckoutPage";
 import MeetThandi from "./pages/MeetThandi";
 import Institutions from "./pages/Institutions";
@@ -45,6 +47,7 @@ const App = () => (
               {/* Public routes */}
               <Route path="/" element={<Index />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/institution-pricing" element={<InstitutionPricing />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/meet-thandi" element={<MeetThandi />} />
               <Route path="/institutions" element={<Institutions />} />
