@@ -32,7 +32,13 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verification-required" element={<VerificationRequired />} />
-              {/* Protected routes would go here wrapped in VerificationGuard */}
+              {/* Protected routes wrapped in VerificationGuard would go here */}
+              {/* Example: */}
+              {/* <Route path="/dashboard" element={
+                <VerificationGuard>
+                  <Dashboard />
+                </VerificationGuard>
+              } /> */}
             </Routes>
             <Toaster position="top-right" closeButton />
             <ShadcnToaster />
