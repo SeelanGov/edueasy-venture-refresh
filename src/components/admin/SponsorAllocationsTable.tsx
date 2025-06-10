@@ -8,8 +8,17 @@ import { SponsorAllocationForm } from './SponsorAllocationForm';
 import { format } from 'date-fns';
 import { Trash2 } from 'lucide-react';
 
-export const SponsorAllocationsTable: React.FC = () => {
+interface SponsorAllocationsTableProps {
+  sponsorId?: string;
+}
+
+export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = ({ sponsorId }) => {
   const { allocations, isLoading, deleteAllocation } = useSponsorAllocations();
+
+  // Filter allocations by sponsor if sponsorId is provided
+  const filteredAllocations = sponsorId 
+    ? allocations?.filter((a: any) => a.sponsor_id === sponsorId) 
+    : allocations;
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -37,15 +46,17 @@ export const SponsorAllocationsTable: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Sponsor Allocations</h3>
-        <SponsorAllocationForm />
+        <h3 className="text-lg font-semibold">
+          {sponsorId ? 'Student Allocations' : 'All Sponsor Allocations'}
+        </h3>
+        {!sponsorId && <SponsorAllocationForm />}
       </div>
 
       <div className="border rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Sponsor</TableHead>
+              {!sponsorId && <TableHead>Sponsor</TableHead>}
               <TableHead>Student</TableHead>
               <TableHead>Plan</TableHead>
               <TableHead>Status</TableHead>
@@ -55,14 +66,16 @@ export const SponsorAllocationsTable: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {allocations?.map((allocation: any) => (
+            {filteredAllocations?.map((allocation: any) => (
               <TableRow key={allocation.id}>
-                <TableCell>
-                  <div>
-                    <div className="font-medium">{allocation.partners?.name || 'Unknown'}</div>
-                    <div className="text-sm text-muted-foreground">{allocation.partners?.email}</div>
-                  </div>
-                </TableCell>
+                {!sponsorId && (
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{allocation.partners?.name || 'Unknown'}</div>
+                      <div className="text-sm text-muted-foreground">{allocation.partners?.email}</div>
+                    </div>
+                  </TableCell>
+                )}
                 <TableCell>
                   <div>
                     <div className="font-medium">{allocation.users?.full_name || 'Unknown'}</div>
@@ -101,7 +114,7 @@ export const SponsorAllocationsTable: React.FC = () => {
             ))}
           </TableBody>
         </Table>
-        {allocations?.length === 0 && (
+        {(!filteredAllocations || filteredAllocations.length === 0) && (
           <div className="p-8 text-center text-muted-foreground">
             No sponsor allocations found.
           </div>
