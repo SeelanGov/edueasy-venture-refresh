@@ -1,8 +1,7 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Partner, PartnerPayment, PartnerNote, PartnerTierConfig, PartnerMetrics } from '@/types/PartnerTypes';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 export const usePartners = () => {
   return useQuery({
@@ -127,7 +126,7 @@ export const useCreatePartner = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (partner: any) => {
+    mutationFn: async (partner: Omit<Partner, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('partners')
         .insert(partner)
@@ -223,7 +222,7 @@ export const useCreatePartnerNote = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (note: any) => {
+    mutationFn: async (note: Omit<PartnerNote, 'id' | 'created_at'>) => {
       const { data, error } = await supabase
         .from('partner_notes')
         .insert(note)
@@ -247,7 +246,7 @@ export const useCreatePartnerPayment = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (payment: any) => {
+    mutationFn: async (payment: Omit<PartnerPayment, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('partner_payments')
         .insert(payment)

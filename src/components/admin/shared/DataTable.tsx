@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { LoadingSpinner } from './LoadingSpinner';
 import { EmptyState } from './EmptyState';
+import { LucideIcon } from 'lucide-react';
 
 interface Column<T> {
   key: keyof T | string;
@@ -18,7 +18,7 @@ interface DataTableProps<T> {
   columns: Column<T>[];
   loading?: boolean;
   emptyState?: {
-    icon: React.ComponentType<{ className?: string }>;
+    icon: LucideIcon;
     title: string;
     description: string;
   };
@@ -47,10 +47,9 @@ export function DataTable<T extends Record<string, any>>({
   }
 
   if (data.length === 0 && emptyState) {
-    const EmptyIcon = emptyState.icon;
     return (
       <EmptyState
-        icon={EmptyIcon}
+        icon={emptyState.icon}
         title={emptyState.title}
         description={emptyState.description}
       />
