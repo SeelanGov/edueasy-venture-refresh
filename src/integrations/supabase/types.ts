@@ -1305,7 +1305,13 @@ export type Database = {
     Enums: {
       partner_status: "active" | "inactive" | "pending" | "suspended"
       partner_tier: "basic" | "standard" | "premium"
-      partner_type: "university" | "tvet" | "funder" | "seta" | "other"
+      partner_type:
+        | "university"
+        | "tvet"
+        | "funder"
+        | "seta"
+        | "other"
+        | "sponsor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1423,7 +1429,14 @@ export const Constants = {
     Enums: {
       partner_status: ["active", "inactive", "pending", "suspended"],
       partner_tier: ["basic", "standard", "premium"],
-      partner_type: ["university", "tvet", "funder", "seta", "other"],
+      partner_type: [
+        "university",
+        "tvet",
+        "funder",
+        "seta",
+        "other",
+        "sponsor",
+      ],
     },
   },
 } as const
