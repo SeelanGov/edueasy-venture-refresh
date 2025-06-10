@@ -1,54 +1,98 @@
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { VerificationGuard } from "@/components/auth/VerificationGuard";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/sonner";
-import { Toaster as ShadcnToaster } from "@/components/ui/toaster";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthGuard } from "@/components/AuthGuard";
+import { AdminAuthGuard } from "@/components/AdminAuthGuard";
+import { GlobalErrorBoundary } from "@/components/error-handling/GlobalErrorBoundary";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
-import VerificationRequired from "./pages/VerificationRequired";
-import AdminVerification from "./pages/admin/AdminVerification";
+import ProfileDemo from "./pages/ProfileDemo";
+import PartnerDashboard from "./pages/PartnerDashboard";
+import ProfileCompletion from "./pages/ProfileCompletion";
+import Pricing from "./pages/Pricing";
+import MeetThandi from "./pages/MeetThandi";
+import Institutions from "./pages/Institutions";
+import SponsorshipsPage from "./pages/SponsorshipsPage";
+import FAQPage from "./components/support/FAQPage";
+import NotFound from "./pages/NotFound";
 
-// Create a client with default options
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    },
-  },
-});
+const queryClient = new QueryClient();
 
-const App = () => {
-  return (
+const App = () => (
+  <GlobalErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Router>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
           <AuthProvider>
             <Routes>
+              {/* Public routes */}
               <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verification-required" element={<VerificationRequired />} />
-              <Route path="/admin/verification" element={<AdminVerification />} />
-              {/* Protected routes wrapped in VerificationGuard would go here */}
-              {/* Example: */}
-              {/* <Route path="/dashboard" element={
-                <VerificationGuard>
-                  <Dashboard />
-                </VerificationGuard>
-              } /> */}
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/meet-thandi" element={<MeetThandi />} />
+              <Route path="/institutions" element={<Institutions />} />
+              <Route path="/faqs" element={<FAQPage />} />
+              <Route path="/sponsorships" element={<SponsorshipsPage />} />
+              
+              <Route
+                path="/register"
+                element={
+                  <AuthGuard requiresAuth={false}>
+                    <Register />
+                  </AuthGuard>
+                }
+              />
+              
+              {/* Protected routes */}
+              <Route
+                path="/dashboard"
+                element={
+                  <AuthGuard>
+                    <Dashboard />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/profile-demo"
+                element={
+                  <AuthGuard>
+                    <ProfileDemo />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/profile-completion"
+                element={
+                  <AuthGuard>
+                    <ProfileCompletion />
+                  </AuthGuard>
+                }
+              />
+              
+              {/* Admin routes */}
+              <Route
+                path="/partner-dashboard"
+                element={
+                  <AdminAuthGuard>
+                    <PartnerDashboard />
+                  </AdminAuthGuard>
+                }
+              />
+              
+              {/* 404 route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
-            <Toaster position="top-right" closeButton />
-            <ShadcnToaster />
           </AuthProvider>
-        </Router>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
-  );
-};
+  </GlobalErrorBoundary>
+);
 
 export default App;

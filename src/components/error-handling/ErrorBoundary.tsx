@@ -1,81 +1,119 @@
-
-import React, { Component, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { parseError } from '@/utils/errorHandler';
+import { ErrorSeverity, logError } from '@/utils/errorLogging';
+import { Component, ErrorInfo, ReactNode } from 'react';
+import { ErrorDisplay, ErrorInfo as AppError } from './ErrorDisplay';
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
   component?: string;
+  onReset?: () => void;
 }
 
 interface State {
   hasError: boolean;
-  error?: Error;
-  errorInfo?: React.ErrorInfo;
+  error: Error | null;
 }
 
+/**
+ * Error boundary component to catch React errors and display a fallback UI
+ */
 export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
 
   static getDerivedStateFromError(error: Error): State {
+    // Update state so the next render will show the fallback UI
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    this.setState({ error, errorInfo });
+  componentDidCatch(error: Error, reactErrorInfo: ErrorInfo) {
+    // Convert React's ErrorInfo to our AppError format
+    const errorInfo: AppError = {
+      message: error.message || 'An unknown error occurred',
+      stack: error.stack,
+      component: this.props.component,
+      timestamp: new Date(),
+      details: {
+        componentStack: reactErrorInfo.componentStack,
+      }
+    };
     
-    // Log error to monitoring service in production
-    if (process.env.NODE_ENV === 'production') {
-      // Add error logging service here
+    // Log the error to our error logging system
+    this.logErrorToSystem(error, errorInfo);
+  }
+
+  // Log error to our central system
+  private async logErrorToSystem(error: Error, errorInfo: AppError) {
+    try {
+      const standardError = parseError(error);
+
+      // Add React component stack to error details
+      const errorDetails = {
+        componentStack: errorInfo.details?.componentStack,
+        // Add any other relevant details here
+      };
+
+      // Create enhanced error for logging
+      const enhancedError = {
+        ...standardError,
+        originalError: {
+          ...(standardError.originalError as Record<string, unknown>),
+          ...errorDetails,
+        },
+      };
+
+      // Log to our error system
+      await logError(
+        enhancedError,
+        ErrorSeverity.ERROR,
+        this.props.component || 'React Component',
+        'render',
+      );
+
+      // Also log to console for developers
+      console.error('React Error Boundary caught an error:', error);
+      console.error('Error info:', errorInfo);
+    } catch (loggingError) {
+      // Fallback to console if logging fails
+      console.error('Failed to log error to system:', loggingError);
+      console.error('Original error:', error);
+      console.error('Error info:', errorInfo);
     }
   }
 
-  handleRetry = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+  private handleReset = () => {
+    this.setState({ hasError: false, error: null });
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
   };
 
   render() {
     if (this.state.hasError) {
+      // Render custom fallback UI if provided
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+      
+      // Convert the error to our AppError format
+      const appError: AppError = {
+        message: this.state.error?.message || 'An unknown error occurred',
+        stack: this.state.error?.stack,
+        component: this.props.component,
+        timestamp: new Date(),
+      };
+      
+      // Otherwise render standard error display
       return (
-        <div className="flex items-center justify-center min-h-[400px] p-4">
-          <Card className="max-w-md w-full">
-            <CardHeader className="text-center">
-              <AlertTriangle className="w-12 h-12 text-destructive mx-auto mb-4" />
-              <CardTitle className="text-lg">Something went wrong</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center">
-                {this.props.component 
-                  ? `An error occurred in the ${this.props.component} component.`
-                  : 'An unexpected error occurred.'
-                }
-              </p>
-              
-              {process.env.NODE_ENV === 'development' && this.state.error && (
-                <div className="bg-muted p-3 rounded text-xs font-mono overflow-auto max-h-32">
-                  {this.state.error.message}
-                </div>
-              )}
-              
-              <div className="flex gap-2 justify-center">
-                <Button onClick={this.handleRetry} variant="outline" size="sm">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Try Again
-                </Button>
-                <Button 
-                  onClick={() => window.location.reload()} 
-                  size="sm"
-                >
-                  Refresh Page
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="p-4">
+          <ErrorDisplay
+            error={appError}
+            onRetry={this.handleReset}
+            className="mb-4"
+          />
         </div>
       );
     }
@@ -83,3 +121,42 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+/**
+ * Hook-friendly error boundary wrapper
+ */
+export const withErrorBoundary = <P extends object>(
+  Component: React.ComponentType<P>,
+  options: {
+    fallback?: ReactNode;
+    componentName?: string;
+    onReset?: () => void;
+  } = {},
+) => {
+  const { fallback, componentName, onReset } = options;
+  
+  const WrappedComponent = (props: P) => {
+    // Build props object conditionally to satisfy exactOptionalPropertyTypes
+    const boundaryProps: {
+      children: ReactNode;
+      fallback?: ReactNode;
+      component?: string;
+      onReset?: () => void;
+    } = {
+      children: <Component {...props} />,
+    };
+
+    // Only add properties that are defined
+    if (fallback !== undefined) boundaryProps.fallback = fallback;
+    if (componentName !== undefined) boundaryProps.component = componentName;
+    if (onReset !== undefined) boundaryProps.onReset = onReset;
+
+    return <ErrorBoundary {...boundaryProps} />;
+  };
+  
+  // Set display name for debugging
+  WrappedComponent.displayName = 
+    `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
+  
+  return WrappedComponent;
+};

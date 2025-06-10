@@ -3,20 +3,20 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useAuthActions } from '@/hooks/useAuthActions';
 import logger from '@/utils/logger';
 
 export interface AuthContextType {
   user: User | null;
   session: Session | null;
+  loading: boolean;
   isAuthenticated: boolean;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string, fullName: string, idNumber: string) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ user: User | null; session: Session | null; error?: string | null }>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
-  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [sessionLoading, setSessionLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const authActions = useAuthActions();
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error) {
         logger.error('Error in getInitialSession:', error);
       } finally {
-        setSessionLoading(false);
+        setLoading(false);
       }
     };
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setSessionLoading(false);
+        setLoading(false);
 
         if (event === 'SIGNED_IN') {
           toast({
@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     user,
     session,
+    loading,
     isAuthenticated: !!user,
     ...authActions,
   };

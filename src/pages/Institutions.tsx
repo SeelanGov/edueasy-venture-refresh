@@ -159,7 +159,7 @@ const Institutions = () => {
                 Request a Demo
               </Button>
             </Link>
-            <Link to="/institution-pricing">
+            <Link to="/pricing">
               <Button variant="outline" className="border-cap-teal text-cap-teal hover:bg-cap-teal/10 px-8 py-3 text-lg">
                 View Pricing
               </Button>
