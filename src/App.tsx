@@ -1,58 +1,46 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { Toaster } from '@/components/ui/toaster';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { VerificationGuard } from "@/components/auth/VerificationGuard";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
+import { Toaster as ShadcnToaster } from "@/components/ui/toaster";
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import VerificationRequired from "./pages/VerificationRequired";
 
-// Pages
-import Index from '@/pages/Index';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import Dashboard from '@/pages/Dashboard';
-import NotFound from '@/pages/NotFound';
-import VerificationRequired from '@/pages/VerificationRequired';
-import { VerificationGuard } from '@/components/auth/VerificationGuard';
-
-// Create a client
+// Create a client with default options
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
       retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },
 });
 
-function App() {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <AuthProvider>
-          <div className="App">
+      <TooltipProvider>
+        <Router>
+          <AuthProvider>
             <Routes>
-              {/* Public routes */}
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verification-required" element={<VerificationRequired />} />
-              
-              {/* Protected routes with verification guard */}
-              <Route path="/dashboard" element={
-                <VerificationGuard>
-                  <Dashboard />
-                </VerificationGuard>
-              } />
-
-              {/* 404 route */}
-              <Route path="*" element={<NotFound />} />
+              {/* Protected routes would go here wrapped in VerificationGuard */}
             </Routes>
-          </div>
-          <Toaster />
-        </AuthProvider>
-      </Router>
+            <Toaster position="top-right" closeButton />
+            <ShadcnToaster />
+          </AuthProvider>
+        </Router>
+      </TooltipProvider>
     </QueryClientProvider>
   );
-}
+};
 
 export default App;
