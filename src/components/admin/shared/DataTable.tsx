@@ -47,9 +47,10 @@ export function DataTable<T extends Record<string, any>>({
   }
 
   if (data.length === 0 && emptyState) {
+    const EmptyIcon = emptyState.icon;
     return (
       <EmptyState
-        icon={emptyState.icon}
+        icon={EmptyIcon}
         title={emptyState.title}
         description={emptyState.description}
       />
