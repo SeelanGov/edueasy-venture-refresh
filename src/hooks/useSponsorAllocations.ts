@@ -1,72 +1,68 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 import { SponsorAllocation } from '@/types/PartnerTypes';
-import { useToast } from '@/hooks/use-toast';
 
-export const useSponsorAllocations = () => {
-  const { toast } = useToast();
+export const useSponsorAllocations = (sponsorId?: string) => {
   const queryClient = useQueryClient();
 
-  const { data: allocations, isLoading } = useQuery({
-    queryKey: ['sponsor-allocations'],
+  // Fetch allocations for a specific sponsor or all allocations
+  const { data: allocations, isLoading, error } = useQuery({
+    queryKey: ['sponsor-allocations', sponsorId],
     queryFn: async () => {
-      console.log('Fetching sponsor allocations...');
-      const { data, error } = await supabase
+      let query = supabase
         .from('sponsor_allocations')
         .select(`
           *,
-          partners!sponsor_allocations_sponsor_id_fkey(name, email),
-          users!sponsor_allocations_student_id_fkey(full_name, email)
-        `)
-        .order('created_at', { ascending: false });
+          sponsors(name, email),
+          profiles(full_name, email)
+        `);
 
-      if (error) {
-        console.error('Error fetching sponsor allocations:', error);
-        throw error;
+      if (sponsorId) {
+        query = query.eq('sponsor_id', sponsorId);
       }
 
-      console.log('Fetched sponsor allocations:', data);
-      return data;
+      const { data, error } = await query.order('allocated_on', { ascending: false });
+
+      if (error) throw error;
+      return data as SponsorAllocation[];
     },
+    enabled: true,
   });
 
+  // Create new allocation
   const createAllocation = useMutation({
-    mutationFn: async (allocation: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>) => {
-      console.log('Creating sponsor allocation:', allocation);
+    mutationFn: async (allocationData: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('sponsor_allocations')
-        .insert([allocation])
+        .insert(allocationData)
         .select()
         .single();
 
-      if (error) {
-        console.error('Error creating sponsor allocation:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sponsor-allocations'] });
       toast({
-        title: "Success",
-        description: "Sponsor allocation created successfully",
+        title: 'Success',
+        description: 'Sponsor allocation created successfully',
       });
     },
     onError: (error) => {
       console.error('Error creating allocation:', error);
       toast({
-        title: "Error",
-        description: "Failed to create sponsor allocation",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to create sponsor allocation',
+        variant: 'destructive',
       });
     },
   });
 
+  // Update allocation
   const updateAllocation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<SponsorAllocation> }) => {
-      console.log('Updating sponsor allocation:', id, updates);
       const { data, error } = await supabase
         .from('sponsor_allocations')
         .update(updates)
@@ -74,63 +70,57 @@ export const useSponsorAllocations = () => {
         .select()
         .single();
 
-      if (error) {
-        console.error('Error updating sponsor allocation:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sponsor-allocations'] });
       toast({
-        title: "Success",
-        description: "Sponsor allocation updated successfully",
+        title: 'Success',
+        description: 'Sponsor allocation updated successfully',
       });
     },
     onError: (error) => {
       console.error('Error updating allocation:', error);
       toast({
-        title: "Error",
-        description: "Failed to update sponsor allocation",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update sponsor allocation',
+        variant: 'destructive',
       });
     },
   });
 
+  // Delete allocation
   const deleteAllocation = useMutation({
     mutationFn: async (id: string) => {
-      console.log('Deleting sponsor allocation:', id);
       const { error } = await supabase
         .from('sponsor_allocations')
         .delete()
         .eq('id', id);
 
-      if (error) {
-        console.error('Error deleting sponsor allocation:', error);
-        throw error;
-      }
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sponsor-allocations'] });
       toast({
-        title: "Success",
-        description: "Sponsor allocation deleted successfully",
+        title: 'Success',
+        description: 'Sponsor allocation deleted successfully',
       });
     },
     onError: (error) => {
       console.error('Error deleting allocation:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete sponsor allocation",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to delete sponsor allocation',
+        variant: 'destructive',
       });
     },
   });
 
   return {
-    allocations,
+    allocations: allocations || [],
     isLoading,
+    error,
     createAllocation,
     updateAllocation,
     deleteAllocation,

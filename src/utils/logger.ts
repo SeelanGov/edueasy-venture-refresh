@@ -1,61 +1,61 @@
 
-enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
+interface LogLevel {
+  DEBUG: 'debug';
+  INFO: 'info';
+  WARN: 'warn';
+  ERROR: 'error';
 }
 
+const LOG_LEVELS: LogLevel = {
+  DEBUG: 'debug',
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error',
+};
+
 class Logger {
-  private level: LogLevel;
+  private isDevelopment = process.env.NODE_ENV === 'development';
+  private logLevel = this.isDevelopment ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO;
 
-  constructor() {
-    // Set log level based on environment - only allow warnings and errors in production
-    this.level = import.meta.env.PROD ? LogLevel.WARN : LogLevel.DEBUG;
+  private shouldLog(level: string): boolean {
+    const levels = [LOG_LEVELS.DEBUG, LOG_LEVELS.INFO, LOG_LEVELS.WARN, LOG_LEVELS.ERROR];
+    const currentIndex = levels.indexOf(this.logLevel as any);
+    const messageIndex = levels.indexOf(level as any);
+    return messageIndex >= currentIndex;
   }
 
-  private shouldLog(level: LogLevel): boolean {
-    return level >= this.level;
+  private formatMessage(level: string, message: string, ...args: any[]): string {
+    const timestamp = new Date().toISOString();
+    const prefix = `[${timestamp}] [${level.toUpperCase()}]`;
+    return `${prefix} ${message}`;
   }
 
-  private formatMessage(level: string, message: string, ...args: unknown[]): void {
-    if (import.meta.env.PROD) {
-      // In production, only log warnings and errors
-      if (level === 'WARN' || level === 'ERROR') {
-        const timestamp = new Date().toISOString();
-        const prefix = `[${timestamp}] [${level}]`;
-        console[level.toLowerCase() as 'warn' | 'error'](prefix, message, ...args);
-      }
-    } else {
-      // In development, log everything but with less noise
-      const timestamp = new Date().toLocaleTimeString();
-      const prefix = `[${timestamp}] [${level}]`;
-      console.log(prefix, message, ...args);
+  debug(message: string, ...args: any[]): void {
+    if (this.shouldLog(LOG_LEVELS.DEBUG)) {
+      console.debug(this.formatMessage(LOG_LEVELS.DEBUG, message), ...args);
     }
   }
 
-  debug(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.DEBUG)) {
-      this.formatMessage('DEBUG', message, ...args);
+  info(message: string, ...args: any[]): void {
+    if (this.shouldLog(LOG_LEVELS.INFO)) {
+      console.info(this.formatMessage(LOG_LEVELS.INFO, message), ...args);
     }
   }
 
-  info(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.INFO)) {
-      this.formatMessage('INFO', message, ...args);
+  warn(message: string, ...args: any[]): void {
+    if (this.shouldLog(LOG_LEVELS.WARN)) {
+      console.warn(this.formatMessage(LOG_LEVELS.WARN, message), ...args);
     }
   }
 
-  warn(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.WARN)) {
-      this.formatMessage('WARN', message, ...args);
+  error(message: string, ...args: any[]): void {
+    if (this.shouldLog(LOG_LEVELS.ERROR)) {
+      console.error(this.formatMessage(LOG_LEVELS.ERROR, message), ...args);
     }
   }
 
-  error(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.ERROR)) {
-      this.formatMessage('ERROR', message, ...args);
-    }
+  setLevel(level: string): void {
+    this.logLevel = level as any;
   }
 }
 
