@@ -3,39 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-
-export interface SubscriptionTier {
-  id: string;
-  name: string;
-  description: string;
-  price_monthly: number;
-  price_yearly: number;
-  max_applications: number;
-  max_documents?: number;
-  includes_verification?: boolean;
-  includes_ai_assistance?: boolean;
-  includes_priority_support?: boolean;
-}
-
-export interface UserSubscription {
-  id: string;
-  user_id: string;
-  tier_id: string;
-  tier?: SubscriptionTier;
-  start_date: string;
-  end_date?: string;
-  auto_renew: boolean;
-}
-
-export interface Transaction {
-  id: string;
-  user_id: string;
-  amount: number;
-  currency: string;
-  status: string;
-  transaction_type: string;
-  created_at: string;
-}
+import { SubscriptionTier, UserSubscription, Transaction } from '@/types/SubscriptionTypes';
 
 export function useSubscription() {
   const { user } = useAuth();
@@ -47,39 +15,39 @@ export function useSubscription() {
   // Mock data for subscription tiers
   const mockTiers: SubscriptionTier[] = [
     {
-      id: 'free',
-      name: 'Free',
+      id: 'starter',
+      name: 'Starter',
       description: 'Basic features to get started',
-      price_monthly: 0,
-      price_yearly: 0,
-      max_applications: 3,
+      price_once_off: 0,
+      max_applications: 1,
       max_documents: 5,
       includes_verification: false,
-      includes_ai_assistance: false,
+      includes_ai_assistance: true,
       includes_priority_support: false,
+      thandi_tier: 'basic',
     },
     {
-      id: 'standard',
-      name: 'Standard',
+      id: 'essential',
+      name: 'Essential',
       description: 'Enhanced features for serious students',
-      price_monthly: 99,
-      price_yearly: 990,
-      max_applications: 10,
+      price_once_off: 199,
+      max_applications: 3,
       max_documents: 20,
       includes_verification: true,
       includes_ai_assistance: true,
       includes_priority_support: false,
+      thandi_tier: 'guidance',
     },
     {
-      id: 'premium',
-      name: 'Premium',
-      description: 'All features with priority support',
-      price_monthly: 199,
-      price_yearly: 1990,
-      max_applications: -1, // Unlimited
+      id: 'pro-ai',
+      name: 'Pro + AI',
+      description: 'All features with advanced AI guidance',
+      price_once_off: 300,
+      max_applications: 6,
       includes_verification: true,
       includes_ai_assistance: true,
       includes_priority_support: true,
+      thandi_tier: 'advanced',
     },
   ];
 
@@ -103,14 +71,19 @@ export function useSubscription() {
         .eq('active', true)
         .single();
 
-      if (subscription) {
-        const tier = mockTiers.find(t => t.name.toLowerCase() === subscription.plan.toLowerCase());
-        setUserSubscription({
-          ...subscription,
-          tier_id: tier?.id || 'free',
-          tier,
-          auto_renew: true,
-        });
+      if (subscription && user?.id) {
+        const tier = mockTiers.find(t => t.name.toLowerCase() === subscription.plan?.toLowerCase());
+        if (tier && subscription.created_at) {
+          setUserSubscription({
+            id: subscription.id,
+            user_id: user.id,
+            tier_id: tier.id,
+            tier,
+            purchase_date: subscription.created_at,
+            is_active: subscription.active || false,
+            payment_method: 'card',
+          });
+        }
       }
 
       // Load transactions
@@ -120,11 +93,16 @@ export function useSubscription() {
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
-      if (userTransactions) {
+      if (userTransactions && user?.id) {
         setTransactions(userTransactions.map(t => ({
-          ...t,
-          transaction_type: 'subscription_payment',
+          id: t.id,
+          user_id: user.id,
+          amount: t.amount,
           currency: 'ZAR',
+          status: t.status,
+          transaction_type: 'subscription_payment',
+          payment_method: t.payment_method,
+          created_at: t.created_at || new Date().toISOString(),
         })));
       }
 
@@ -143,8 +121,8 @@ export function useSubscription() {
   const subscribeToPlan = async (
     tierId: string,
     paymentMethod: string,
-    autoRenew: boolean,
-    billingCycle: 'monthly' | 'yearly'
+    autoRenew: boolean = false,
+    billingCycle: 'once-off' = 'once-off'
   ) => {
     if (!user) return false;
 
@@ -152,7 +130,7 @@ export function useSubscription() {
       const tier = tiers.find(t => t.id === tierId);
       if (!tier) return false;
 
-      const amount = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
+      const amount = tier.price_once_off;
 
       // Create payment record
       const { error: paymentError } = await supabase

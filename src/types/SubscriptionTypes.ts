@@ -13,6 +13,7 @@ export interface SubscriptionTier {
   includes_career_guidance?: boolean;
   includes_auto_fill?: boolean;
   includes_nsfas_guidance?: boolean;
+  thandi_tier: 'basic' | 'guidance' | 'advanced';
 }
 
 export enum SubscriptionTierName {
@@ -61,4 +62,29 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
 
 export function getSubscriptionPrice(tier: SubscriptionTier): number {
   return tier.price_once_off;
+}
+
+export function getThandiCapabilities(tierName: SubscriptionTierName) {
+  switch (tierName) {
+    case SubscriptionTierName.STARTER:
+      return {
+        tier: 'basic' as const,
+        features: ['Basic Q&A', 'Application help', 'General guidance']
+      };
+    case SubscriptionTierName.ESSENTIAL:
+      return {
+        tier: 'guidance' as const,
+        features: ['Application guidance', 'Deadline management', 'Document help', 'NSFAS guidance']
+      };
+    case SubscriptionTierName.PRO_AI:
+      return {
+        tier: 'advanced' as const,
+        features: ['Career counseling', 'Personalized recommendations', 'Interview prep', 'Program matching']
+      };
+    default:
+      return {
+        tier: 'basic' as const,
+        features: ['Basic Q&A']
+      };
+  }
 }
