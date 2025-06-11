@@ -42,14 +42,14 @@ export function PremiumFeature({
 
     // Access logic based on tier hierarchy
     switch (requiredTier) {
-      case SubscriptionTierName.FREE:
-        return true; // All tiers have access to FREE features
-      case SubscriptionTierName.STANDARD:
+      case SubscriptionTierName.STARTER:
+        return true; // All tiers have access to STARTER features
+      case SubscriptionTierName.ESSENTIAL:
         return (
-          tierName === SubscriptionTierName.STANDARD || tierName === SubscriptionTierName.PREMIUM
+          tierName === SubscriptionTierName.ESSENTIAL || tierName === SubscriptionTierName.PRO_AI
         );
-      case SubscriptionTierName.PREMIUM:
-        return tierName === SubscriptionTierName.PREMIUM;
+      case SubscriptionTierName.PRO_AI:
+        return tierName === SubscriptionTierName.PRO_AI;
       default:
         return false;
     }
@@ -57,7 +57,7 @@ export function PremiumFeature({
 
   // Navigate to subscription page
   const handleUpgrade = () => {
-    navigate('/subscription');
+    navigate('/pricing');
   };
 
   // If user has access, show the feature

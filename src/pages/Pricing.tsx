@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, Bot } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PatternBorder } from "@/components/PatternBorder";
 import { Typography } from "@/components/ui/typography";
@@ -13,14 +13,16 @@ const Pricing = () => {
       name: "Starter",
       price: "R0",
       priceType: "Once-Off",
-      description: "Get started with basic application tools",
+      description: "Get started with basic application tools and Thandi",
       features: [
         "1 application (any institution)",
+        "Basic Thandi AI chat support",
         "Basic APS calculator",
         "Application deadline alerts",
         "Program browsing",
         "Community support"
       ],
+      thandiFeatures: ["Basic Q&A about applications", "General guidance"],
       buttonText: "Get Started",
       popular: false
     },
@@ -29,15 +31,17 @@ const Pricing = () => {
       name: "Essential",
       price: "R199",
       priceType: "Once-Off",
-      description: "Everything you need for multiple applications",
+      description: "Everything you need with enhanced Thandi guidance",
       features: [
         "Up to 3 applications",
+        "Thandi AI guidance & support",
         "Document management system", 
         "Form auto-fill technology",
         "NSFAS guidance & tracking",
         "Email support",
         "Branded application PDFs"
       ],
+      thandiFeatures: ["Application guidance", "Deadline management", "Document help", "NSFAS assistance"],
       buttonText: "Choose Essential",
       popular: true
     },
@@ -46,15 +50,17 @@ const Pricing = () => {
       name: "Pro + AI",
       price: "R300",
       priceType: "Once-Off", 
-      description: "Complete package with AI-powered guidance",
+      description: "Complete package with advanced Thandi career guidance",
       features: [
         "Up to 6 applications",
-        "Career guidance with Thandi AI",
+        "Advanced Thandi career counseling",
         "Document reviews & feedback",
         "Priority processing queue",
         "Application success insights",
-        "Personalized career roadmap"
+        "Personalized career roadmap",
+        "Interview preparation"
       ],
+      thandiFeatures: ["Career counseling", "Personalized recommendations", "Interview prep", "Program matching"],
       buttonText: "Choose Pro + AI",
       popular: false
     }
@@ -74,6 +80,12 @@ const Pricing = () => {
           <Typography variant="lead" className="max-w-2xl mx-auto">
             Pay once for the entire application season - no monthly fees, no surprises
           </Typography>
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <Bot className="h-6 w-6 text-cap-teal" />
+            <Typography variant="body" className="text-cap-teal font-semibold">
+              All plans include Thandi AI Assistant with increasing capabilities
+            </Typography>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -98,7 +110,7 @@ const Pricing = () => {
               </CardHeader>
 
               <CardContent>
-                <ul className="space-y-3">
+                <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-center">
                       <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
@@ -106,6 +118,20 @@ const Pricing = () => {
                     </li>
                   ))}
                 </ul>
+
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Bot className="h-4 w-4 text-cap-teal" />
+                    <Typography variant="small" className="font-semibold text-cap-teal">
+                      Thandi AI Capabilities
+                    </Typography>
+                  </div>
+                  <ul className="space-y-1">
+                    {plan.thandiFeatures.map((feature, idx) => (
+                      <li key={idx} className="text-xs text-blue-700">• {feature}</li>
+                    ))}
+                  </ul>
+                </div>
               </CardContent>
 
               <CardFooter>
