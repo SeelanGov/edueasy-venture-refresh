@@ -4,50 +4,58 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PatternBorder } from "@/components/PatternBorder";
+import { Typography } from "@/components/ui/typography";
 
 const Pricing = () => {
   const plans = [
     {
-      name: "Basic",
-      price: "Free",
-      description: "Perfect for getting started with your education journey",
+      id: "starter",
+      name: "Starter",
+      price: "R0",
+      priceType: "Once-Off",
+      description: "Get started with basic application tools",
       features: [
-        "Profile creation and completion",
-        "Basic application assistance",
-        "Access to educational resources",
+        "1 application (any institution)",
+        "Basic APS calculator",
+        "Application deadline alerts",
+        "Program browsing",
         "Community support"
       ],
       buttonText: "Get Started",
       popular: false
     },
     {
-      name: "Premium",
-      price: "R99/month",
-      description: "Enhanced support and personalized guidance",
+      id: "essential",
+      name: "Essential",
+      price: "R199",
+      priceType: "Once-Off",
+      description: "Everything you need for multiple applications",
       features: [
-        "Everything in Basic",
-        "Priority application processing",
-        "One-on-one mentorship sessions",
-        "Advanced career guidance",
-        "Document review and feedback",
-        "Interview preparation"
+        "Up to 3 applications",
+        "Document management system", 
+        "Form auto-fill technology",
+        "NSFAS guidance & tracking",
+        "Email support",
+        "Branded application PDFs"
       ],
-      buttonText: "Choose Premium",
+      buttonText: "Choose Essential",
       popular: true
     },
     {
-      name: "Institution",
-      price: "Custom",
-      description: "Tailored solutions for educational institutions",
+      id: "pro-ai",
+      name: "Pro + AI",
+      price: "R300",
+      priceType: "Once-Off", 
+      description: "Complete package with AI-powered guidance",
       features: [
-        "Bulk student management",
-        "Custom branding",
-        "Analytics and reporting",
-        "API access",
-        "Dedicated support team",
-        "Training and onboarding"
+        "Up to 6 applications",
+        "Career guidance with Thandi AI",
+        "Document reviews & feedback",
+        "Priority processing queue",
+        "Application success insights",
+        "Personalized career roadmap"
       ],
-      buttonText: "Contact Sales",
+      buttonText: "Choose Pro + AI",
       popular: false
     }
   ];
@@ -60,12 +68,12 @@ const Pricing = () => {
 
       <div className="container mx-auto py-20 px-4">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <Typography variant="h1" className="mb-4">
             Choose Your Plan
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Select the perfect plan to support your educational journey and career goals
-          </p>
+          </Typography>
+          <Typography variant="lead" className="max-w-2xl mx-auto">
+            Pay once for the entire application season - no monthly fees, no surprises
+          </Typography>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -85,6 +93,7 @@ const Pricing = () => {
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
                 <div className="text-3xl font-bold text-cap-teal mb-2">{plan.price}</div>
+                <Typography variant="small" className="text-gray-500">{plan.priceType}</Typography>
                 <CardDescription>{plan.description}</CardDescription>
               </CardHeader>
 
@@ -100,7 +109,7 @@ const Pricing = () => {
               </CardContent>
 
               <CardFooter>
-                <Link to="/register" className="w-full">
+                <Link to={plan.id === 'starter' ? '/register' : `/checkout?plan=${plan.id}`} className="w-full">
                   <Button 
                     className={`w-full ${plan.popular ? 'bg-cap-teal hover:bg-cap-teal/90' : 'bg-gray-900 hover:bg-gray-800'} text-white`}
                   >
@@ -113,12 +122,27 @@ const Pricing = () => {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">
-            All plans include our core features and 24/7 support
-          </p>
-          <p className="text-sm text-gray-500">
-            Prices are in South African Rand (ZAR). No hidden fees or setup costs.
-          </p>
+          <Typography variant="p" className="text-gray-600 mb-4">
+            Need personalized guidance? Book a 1-on-1 session with our experts
+          </Typography>
+          <Typography variant="small" className="text-gray-500">
+            All plans include lifetime access for the application season. Pay with card, airtime, or at any service provider.
+          </Typography>
+        </div>
+
+        <div className="mt-8 text-center">
+          <Card className="max-w-md mx-auto bg-blue-50 border-blue-200">
+            <CardContent className="pt-6">
+              <Typography variant="h4" className="mb-2">1-on-1 Expert Sessions</Typography>
+              <Typography variant="large" className="text-blue-600 mb-2">R600 per session</Typography>
+              <Typography variant="small" className="text-gray-600 mb-4">
+                Career coaching, interview prep, application reviews
+              </Typography>
+              <Button variant="outline" className="w-full">
+                Book Consultation
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
 

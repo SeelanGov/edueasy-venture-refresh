@@ -3,19 +3,22 @@ export interface SubscriptionTier {
   id: string;
   name: string;
   description: string;
-  price_monthly: number;
-  price_yearly: number;
+  price_once_off: number;
   max_applications: number;
   max_documents?: number;
   includes_verification?: boolean;
   includes_ai_assistance?: boolean;
   includes_priority_support?: boolean;
+  includes_document_reviews?: boolean;
+  includes_career_guidance?: boolean;
+  includes_auto_fill?: boolean;
+  includes_nsfas_guidance?: boolean;
 }
 
 export enum SubscriptionTierName {
-  FREE = 'Free',
-  STANDARD = 'Standard',
-  PREMIUM = 'Premium',
+  STARTER = 'Starter',
+  ESSENTIAL = 'Essential',
+  PRO_AI = 'Pro + AI',
 }
 
 export interface UserSubscription {
@@ -23,9 +26,9 @@ export interface UserSubscription {
   user_id: string;
   tier_id: string;
   tier?: SubscriptionTier;
-  start_date: string;
-  end_date?: string;
-  auto_renew: boolean;
+  purchase_date: string;
+  is_active: boolean;
+  payment_method?: string;
 }
 
 export interface Transaction {
@@ -35,6 +38,17 @@ export interface Transaction {
   currency: string;
   status: string;
   transaction_type: string;
+  payment_method: string;
+  created_at: string;
+}
+
+export interface ConsultationBooking {
+  id: string;
+  user_id: string;
+  session_type: string;
+  amount: number;
+  status: string;
+  scheduled_date?: string;
   created_at: string;
 }
 
@@ -42,13 +56,9 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
   return new Intl.NumberFormat('en-ZA', {
     style: 'currency',
     currency: currency,
-  }).format(amount / 100);
+  }).format(amount);
 }
 
-export function getSubscriptionPrice(tier: SubscriptionTier, billingCycle: 'monthly' | 'yearly'): number {
-  return billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
-}
-
-export function getYearlySavings(monthlyPrice: number, yearlyPrice: number): number {
-  return (monthlyPrice * 12) - yearlyPrice;
+export function getSubscriptionPrice(tier: SubscriptionTier): number {
+  return tier.price_once_off;
 }
