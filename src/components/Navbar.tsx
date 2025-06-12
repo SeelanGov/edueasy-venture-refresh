@@ -28,6 +28,11 @@ export const Navbar = () => {
     setIsOpen(false);
   };
 
+  const handleAuthNavigation = () => {
+    navigate('/register');
+    setIsOpen(false);
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4">
@@ -50,6 +55,12 @@ export const Navbar = () => {
             <Link to="/pricing" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Pricing
             </Link>
+            <Link to="/career-guidance" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+              Career Guidance
+            </Link>
+            <Link to="/consultations" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+              Consultations
+            </Link>
             <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
             </Link>
@@ -62,12 +73,9 @@ export const Navbar = () => {
             <Link to="/faqs" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               FAQs
             </Link>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
-            >
-              Contact
-            </button>
+            <Button onClick={handleAuthNavigation} className="bg-cap-teal hover:bg-cap-teal/90">
+              Get Started
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -122,6 +130,20 @@ export const Navbar = () => {
                 PRICING
               </Link>
               <Link
+                to="/career-guidance"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                CAREER GUIDANCE
+              </Link>
+              <Link
+                to="/consultations"
+                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                CONSULTATIONS
+              </Link>
+              <Link
                 to="/institutions"
                 className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
@@ -141,12 +163,12 @@ export const Navbar = () => {
               >
                 FAQS
               </Link>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+              <Button 
+                onClick={handleAuthNavigation}
+                className="bg-cap-teal hover:bg-cap-teal/90 text-xl font-medium px-8 py-3"
               >
-                CONTACT
-              </button>
+                GET STARTED
+              </Button>
             </div>
           </div>
         )}
