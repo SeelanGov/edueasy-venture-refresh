@@ -24,6 +24,7 @@ import ConsultationsPage from "./pages/ConsultationsPage";
 import FAQPage from "./components/support/FAQPage";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
+import UILockAdmin from "./pages/UILockAdmin";
 
 const queryClient = new QueryClient();
 
@@ -96,6 +97,14 @@ const App = () => (
                 element={
                   <AdminAuthGuard>
                     <PartnerDashboard />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/ui-lock"
+                element={
+                  <AdminAuthGuard>
+                    <UILockAdmin />
                   </AdminAuthGuard>
                 }
               />
