@@ -67,7 +67,7 @@ export function useSubscription() {
       const { data: subscription } = await supabase
         .from('user_plans')
         .select('*')
-        .eq('user_id', user?.id)
+        .eq('user_id', user?.id || '')
         .eq('active', true)
         .single();
 
@@ -90,7 +90,7 @@ export function useSubscription() {
       const { data: userTransactions } = await supabase
         .from('payments')
         .select('*')
-        .eq('user_id', user?.id)
+        .eq('user_id', user?.id || '')
         .order('created_at', { ascending: false });
 
       if (userTransactions && user?.id) {
@@ -120,9 +120,7 @@ export function useSubscription() {
 
   const subscribeToPlan = async (
     tierId: string,
-    paymentMethod: string,
-    autoRenew: boolean = false,
-    billingCycle: 'once-off' = 'once-off'
+    paymentMethod: string
   ) => {
     if (!user) return false;
 
@@ -205,10 +203,10 @@ export function useSubscription() {
   };
 
   const toggleAutoRenew = async () => {
-    // This would update auto-renewal settings
+    // Since we're using once-off payments, this is not applicable
     toast({
-      title: 'Success',
-      description: 'Auto-renewal settings updated',
+      title: 'Info',
+      description: 'Auto-renewal is not applicable for once-off payments',
     });
   };
 

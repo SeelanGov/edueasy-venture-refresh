@@ -10,12 +10,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, X } from 'lucide-react';
-import { SubscriptionTier, formatCurrency, getYearlySavings } from '@/types/SubscriptionTypes';
+import { SubscriptionTier, formatCurrency } from '@/types/SubscriptionTypes';
 
 interface SubscriptionTierCardProps {
   tier: SubscriptionTier;
   isCurrentTier?: boolean;
-  billingCycle: 'monthly' | 'yearly';
   onSelectTier: (tierId: string) => void;
   disabled?: boolean;
 }
@@ -23,12 +22,10 @@ interface SubscriptionTierCardProps {
 export function SubscriptionTierCard({
   tier,
   isCurrentTier = false,
-  billingCycle,
   onSelectTier,
   disabled = false,
 }: SubscriptionTierCardProps) {
-  const price = billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly;
-  const yearlySavings = getYearlySavings(tier.price_monthly, tier.price_yearly);
+  const price = tier.price_once_off;
 
   return (
     <Card
@@ -49,12 +46,10 @@ export function SubscriptionTierCard({
         <div className="space-y-2">
           <div className="flex items-baseline">
             <span className="text-3xl font-bold">{formatCurrency(price)}</span>
-            <span className="text-muted-foreground ml-2">
-              /{billingCycle === 'monthly' ? 'month' : 'year'}
-            </span>
+            <span className="text-muted-foreground ml-2">once-off</span>
           </div>
-          {billingCycle === 'yearly' && tier.price_yearly > 0 && (
-            <p className="text-sm text-green-600">Save {formatCurrency(yearlySavings)} per year</p>
+          {tier.price_once_off === 0 && (
+            <p className="text-sm text-green-600">Free forever</p>
           )}
         </div>
 
@@ -71,13 +66,13 @@ export function SubscriptionTierCard({
           className="w-full"
           variant={isCurrentTier ? 'outline' : 'default'}
           onClick={() => onSelectTier(tier.id)}
-          disabled={disabled || (isCurrentTier && tier.name !== 'Free')}
+          disabled={disabled || (isCurrentTier && tier.name !== 'Starter')}
         >
           {isCurrentTier
-            ? tier.name === 'Free'
+            ? tier.name === 'Starter'
               ? 'Upgrade'
               : 'Current Plan'
-            : tier.price_monthly === 0
+            : tier.price_once_off === 0
               ? 'Select'
               : 'Subscribe'}
         </Button>
