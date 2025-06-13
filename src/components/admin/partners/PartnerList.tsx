@@ -14,10 +14,11 @@ interface Partner {
   type: string;
   tier: string;
   status: string;
-  contact_email: string;
-  contact_phone: string;
-  contact_person: string;
-  annual_investment: number;
+  contact_email: string | null;
+  contact_phone: string | null;
+  phone: string | null;
+  contact_person: string | null;
+  annual_investment: number | null;
   created_at: string;
 }
 
@@ -51,7 +52,7 @@ export const PartnerList = () => {
 
   const filteredPartners = partners.filter(partner => {
     const matchesSearch = partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         partner.contact_email.toLowerCase().includes(searchTerm.toLowerCase());
+                         (partner.contact_email && partner.contact_email.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesType = filterType === 'all' || partner.type === filterType;
     const matchesTier = filterTier === 'all' || partner.tier === filterTier;
     return matchesSearch && matchesType && matchesTier;
@@ -164,13 +165,13 @@ export const PartnerList = () => {
                     {partner.contact_email}
                   </div>
                 )}
-                {partner.contact_phone && (
+                {(partner.contact_phone || partner.phone) && (
                   <div className="flex items-center gap-1 text-sm text-gray-600">
                     <Phone className="h-3 w-3" />
-                    {partner.contact_phone}
+                    {partner.contact_phone || partner.phone}
                   </div>
                 )}
-                {partner.annual_investment > 0 && (
+                {partner.annual_investment && partner.annual_investment > 0 && (
                   <p className="text-sm font-medium text-green-600">
                     Annual: R{partner.annual_investment.toLocaleString()}
                   </p>

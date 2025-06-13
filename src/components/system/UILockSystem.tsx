@@ -206,7 +206,7 @@ export const UILockSystem = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-medium">{snapshot.name}</h4>
-                    {snapshot.isLocked && <Badge variant="destructive" size="sm">LOCKED</Badge>}
+                    {snapshot.isLocked && <Badge variant="destructive">LOCKED</Badge>}
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Created: {new Date(snapshot.timestamp).toLocaleString()}

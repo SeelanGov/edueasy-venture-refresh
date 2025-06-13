@@ -11,11 +11,11 @@ interface TierConfig {
   tier: string;
   name: string;
   annual_fee: number;
-  max_applications: number;
-  api_rate_limit: number;
+  max_applications: number | null;
+  api_rate_limit: number | null;
   features: string[];
-  support_level: string;
-  active: boolean;
+  support_level: string | null;
+  active: boolean | null;
 }
 
 export const TiersManager = () => {
@@ -34,7 +34,17 @@ export const TiersManager = () => {
         .order('annual_fee', { ascending: true });
 
       if (error) throw error;
-      setTiers(data || []);
+      
+      // Transform the data to match our interface
+      const transformedData = (data || []).map(item => ({
+        ...item,
+        features: Array.isArray(item.features) ? item.features : [],
+        active: item.active ?? true,
+        max_applications: item.max_applications ?? null,
+        api_rate_limit: item.api_rate_limit ?? null
+      }));
+      
+      setTiers(transformedData);
     } catch (error) {
       console.error('Error fetching tiers:', error);
     } finally {
@@ -42,17 +52,18 @@ export const TiersManager = () => {
     }
   };
 
-  const toggleTierStatus = async (tierId: string, currentStatus: boolean) => {
+  const toggleTierStatus = async (tierId: string, currentStatus: boolean | null) => {
     try {
+      const newStatus = !currentStatus;
       const { error } = await supabase
         .from('partner_tier_config')
-        .update({ active: !currentStatus })
+        .update({ active: newStatus })
         .eq('id', tierId);
 
       if (error) throw error;
       
       setTiers(prev => prev.map(tier => 
-        tier.id === tierId ? { ...tier, active: !currentStatus } : tier
+        tier.id === tierId ? { ...tier, active: newStatus } : tier
       ));
     } catch (error) {
       console.error('Error updating tier status:', error);
@@ -94,7 +105,7 @@ export const TiersManager = () => {
                     </Badge>
                     {tier.name}
                   </CardTitle>
-                  <CardDescription>{tier.support_level} Support</CardDescription>
+                  <CardDescription>{tier.support_level || 'Standard'} Support</CardDescription>
                 </div>
                 <Button
                   variant="ghost"
@@ -208,7 +219,7 @@ export const TiersManager = () => {
                   <td className="p-2 font-medium">Support Level</td>
                   {tiers.map((tier) => (
                     <td key={tier.id} className="text-center p-2">
-                      {tier.support_level}
+                      {tier.support_level || 'Standard'}
                     </td>
                   ))}
                 </tr>

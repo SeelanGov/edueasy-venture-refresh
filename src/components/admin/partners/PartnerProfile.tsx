@@ -14,15 +14,16 @@ interface Partner {
   type: string;
   tier: string;
   status: string;
-  contact_email: string;
-  contact_phone: string;
-  contact_person: string;
-  website: string;
-  annual_investment: number;
-  contract_start_date: string;
-  contract_end_date: string;
-  integration_status: string;
-  notes: string;
+  contact_email: string | null;
+  contact_phone: string | null;
+  phone: string | null;
+  contact_person: string | null;
+  website: string | null;
+  annual_investment: number | null;
+  contract_start_date: string | null;
+  contract_end_date: string | null;
+  integration_status: string | null;
+  notes: string | null;
   created_at: string;
 }
 
@@ -31,8 +32,8 @@ interface Payment {
   amount: number;
   status: string;
   payment_date: string;
-  due_date: string;
-  invoice_number: string;
+  due_date: string | null;
+  invoice_number: string | null;
 }
 
 export const PartnerProfile = () => {
@@ -49,6 +50,8 @@ export const PartnerProfile = () => {
   }, [id]);
 
   const fetchPartnerData = async () => {
+    if (!id) return;
+    
     try {
       // Fetch partner details
       const { data: partnerData, error: partnerError } = await supabase
@@ -76,7 +79,9 @@ export const PartnerProfile = () => {
     }
   };
 
-  const updatePartnerTier = async (newTier: string) => {
+  const updatePartnerTier = async (newTier: 'basic' | 'standard' | 'premium') => {
+    if (!id) return;
+    
     try {
       const { error } = await supabase
         .from('partners')
@@ -149,11 +154,11 @@ export const PartnerProfile = () => {
                     </a>
                   </div>
                 )}
-                {partner.contact_phone && (
+                {(partner.contact_phone || partner.phone) && (
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-gray-400" />
-                    <a href={`tel:${partner.contact_phone}`} className="text-blue-600 hover:underline">
-                      {partner.contact_phone}
+                    <a href={`tel:${partner.contact_phone || partner.phone}`} className="text-blue-600 hover:underline">
+                      {partner.contact_phone || partner.phone}
                     </a>
                   </div>
                 )}
@@ -209,7 +214,7 @@ export const PartnerProfile = () => {
             </CardHeader>
             <CardContent>
               <div className="flex gap-2">
-                {['basic', 'standard', 'premium'].map((tier) => (
+                {(['basic', 'standard', 'premium'] as const).map((tier) => (
                   <Button
                     key={tier}
                     variant={partner.tier === tier ? 'default' : 'outline'}
@@ -242,6 +247,11 @@ export const PartnerProfile = () => {
                         <p className="text-sm text-gray-500">
                           {payment.invoice_number} • {new Date(payment.payment_date).toLocaleDateString()}
                         </p>
+                        {payment.due_date && (
+                          <p className="text-sm text-gray-500">
+                            Due: {new Date(payment.due_date).toLocaleDateString()}
+                          </p>
+                        )}
                       </div>
                       <Badge className={payment.status === 'paid' ? 'bg-green-100 text-green-800' : 
                                        payment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
