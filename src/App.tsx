@@ -25,6 +25,10 @@ import FAQPage from "./components/support/FAQPage";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
 import UILockAdmin from "./pages/UILockAdmin";
+import { PartnerCRMLayout } from "./components/admin/partners/PartnerCRMLayout";
+import { PartnerList } from "./components/admin/partners/PartnerList";
+import { PartnerProfile } from "./components/admin/partners/PartnerProfile";
+import { TiersManager } from "./components/admin/partners/TiersManager";
 
 const queryClient = new QueryClient();
 
@@ -108,6 +112,20 @@ const App = () => (
                   </AdminAuthGuard>
                 }
               />
+              
+              {/* Partner CRM Admin routes */}
+              <Route
+                path="/admin/partners"
+                element={
+                  <AdminAuthGuard>
+                    <PartnerCRMLayout />
+                  </AdminAuthGuard>
+                }
+              >
+                <Route index element={<PartnerList />} />
+                <Route path=":id" element={<PartnerProfile />} />
+                <Route path="tiers" element={<TiersManager />} />
+              </Route>
               
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
