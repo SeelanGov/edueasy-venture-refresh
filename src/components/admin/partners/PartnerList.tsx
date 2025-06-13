@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -46,7 +45,7 @@ export const PartnerList = () => {
       // Transform data to match Partner interface
       const transformedData = (data || []).map(item => ({
         ...item,
-        contact_phone: item.phone || item.contact_phone // Map phone to contact_phone
+        contact_phone: item.phone // Map phone to contact_phone
       }));
       
       setPartners(transformedData);
