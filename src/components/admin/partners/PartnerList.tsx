@@ -15,7 +15,7 @@ interface Partner {
   tier: string;
   status: string;
   contact_email: string | null;
-  contact_phone: string | null;
+  contact_phone?: string | null; // Made optional
   phone: string | null;
   contact_person: string | null;
   annual_investment: number | null;
@@ -42,7 +42,14 @@ export const PartnerList = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPartners(data || []);
+      
+      // Transform data to match Partner interface
+      const transformedData = (data || []).map(item => ({
+        ...item,
+        contact_phone: item.phone || item.contact_phone // Map phone to contact_phone
+      }));
+      
+      setPartners(transformedData);
     } catch (error) {
       console.error('Error fetching partners:', error);
     } finally {

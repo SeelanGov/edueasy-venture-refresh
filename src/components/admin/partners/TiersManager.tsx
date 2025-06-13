@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 interface TierConfig {
   id: string;
@@ -38,7 +39,7 @@ export const TiersManager = () => {
       // Transform the data to match our interface
       const transformedData = (data || []).map(item => ({
         ...item,
-        features: Array.isArray(item.features) ? item.features : [],
+        features: transformJsonToStringArray(item.features),
         active: item.active ?? true,
         max_applications: item.max_applications ?? null,
         api_rate_limit: item.api_rate_limit ?? null
@@ -50,6 +51,16 @@ export const TiersManager = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to transform Json array to string array
+  const transformJsonToStringArray = (jsonFeatures: Json): string[] => {
+    if (Array.isArray(jsonFeatures)) {
+      return jsonFeatures
+        .filter((item): item is string => typeof item === 'string')
+        .map(String);
+    }
+    return [];
   };
 
   const toggleTierStatus = async (tierId: string, currentStatus: boolean | null) => {

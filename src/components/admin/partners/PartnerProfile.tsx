@@ -15,7 +15,7 @@ interface Partner {
   tier: string;
   status: string;
   contact_email: string | null;
-  contact_phone: string | null;
+  contact_phone?: string | null; // Made optional
   phone: string | null;
   contact_person: string | null;
   website: string | null;
@@ -61,7 +61,14 @@ export const PartnerProfile = () => {
         .single();
 
       if (partnerError) throw partnerError;
-      setPartner(partnerData);
+      
+      // Transform data to match Partner interface
+      const transformedPartner = {
+        ...partnerData,
+        contact_phone: partnerData.phone || partnerData.contact_phone // Map phone to contact_phone
+      };
+      
+      setPartner(transformedPartner);
 
       // Fetch payment history
       const { data: paymentsData, error: paymentsError } = await supabase
