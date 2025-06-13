@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,8 @@ import Pricing from "./pages/Pricing";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import MeetThandi from "./pages/MeetThandi";
 import Institutions from "./pages/Institutions";
+import InstitutionDetail from "./pages/InstitutionDetail";
+import PartnerInquiry from "./pages/PartnerInquiry";
 import SponsorshipsPage from "./pages/SponsorshipsPage";
 import CareerGuidancePage from "./pages/CareerGuidancePage";
 import ConsultationsPage from "./pages/ConsultationsPage";
@@ -46,6 +47,8 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/meet-thandi" element={<MeetThandi />} />
               <Route path="/institutions" element={<Institutions />} />
+              <Route path="/institutions/:id" element={<InstitutionDetail />} />
+              <Route path="/partner-inquiry" element={<PartnerInquiry />} />
               <Route path="/faqs" element={<FAQPage />} />
               <Route path="/sponsorships" element={<SponsorshipsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
