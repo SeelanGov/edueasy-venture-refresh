@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SponsorMetrics } from '@/components/admin/sponsors/SponsorMetrics';
 import { SponsorAllocationsTable } from '@/components/admin/sponsors/SponsorAllocationsTable';
@@ -88,14 +87,12 @@ const SponsorsPage = () => {
             allocations={allocations}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            loading={allocationsLoading}
           />
         </>
       )}
       {tab === 'sponsors' && (
         <SponsorListTable
           sponsors={sponsorList}
-          loading={sponsorsLoading}
           onView={(id: string) => navigate(`/admin/sponsors/${id}`)}
         />
       )}
@@ -110,4 +107,3 @@ const SponsorsPage = () => {
 };
 
 export default SponsorsPage;
-
