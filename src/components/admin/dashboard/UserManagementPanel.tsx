@@ -7,6 +7,7 @@ import { toast } from '@/hooks/use-toast';
 import { Download, Check, X, Search } from "lucide-react";
 import { exportToCsv } from '@/utils/exportToCsv';
 import { UserProfileModal } from './UserProfileModal';
+import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
 
 interface DatabaseUser {
   id: string;
@@ -36,6 +37,7 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
   const [searchText, setSearchText] = useState('');
   const [openProfileModal, setOpenProfileModal] = useState(false);
   const [profileUser, setProfileUser] = useState<DatabaseUser | null>(null);
+  const { logAdminAction } = useAuditLogging();
 
   // Apply search, trackingId filter, and verification filter
   const filteredUsers = users.filter((userRec) => {
@@ -52,7 +54,7 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
     return matchesTrackingId && matchesSearch && matchesVerification;
   });
 
-  // Manual verify toggle
+  // Manual verify toggle with audit logging
   async function handleToggleVerified(user: DatabaseUser) {
     const newStatus = !user.id_verified;
     const { error } = await supabase
@@ -68,6 +70,26 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
       });
       return;
     }
+
+    // Log admin action for audit trail
+    try {
+      await logAdminAction({
+        action: newStatus ? "USER_VERIFIED" : "USER_UNVERIFIED",
+        target_type: "user",
+        target_id: user.id,
+        details: {
+          user_name: user.full_name,
+          tracking_id: user.tracking_id,
+          previous_status: user.id_verified,
+          new_status: newStatus,
+        },
+        reason: `Manual ${newStatus ? "verification" : "unverification"} by admin`
+      });
+    } catch (auditError) {
+      console.error("Failed to log admin action:", auditError);
+      // Don't fail the main operation if audit logging fails
+    }
+
     toast({
       title: "Success",
       description: `User ${user.tracking_id || "N/A"} marked as ${newStatus ? "Verified" : "Unverified"}`,
@@ -169,8 +191,6 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
                   <p className="text-xs text-gray-400 truncate">
                     Profile: {userData.profile_status || 'incomplete'} • Reg: {new Date(userData.created_at).toLocaleDateString()}
                   </p>
-                  {/* UUID hidden in export UI, shown only in internal debug */}
-                  {/* <p className="text-xs text-gray-300 truncate">UUID: {userData.id}</p> */}
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <Button
