@@ -13,7 +13,9 @@ import {
   XCircle,
   Eye,
   Download,
-  MessageSquare
+  MessageSquare,
+  Check,
+  X
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DocumentVerificationPanel } from '@/components/admin/dashboard/DocumentVerificationPanel';
