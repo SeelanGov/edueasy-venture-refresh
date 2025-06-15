@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const CommunitySection = () => {
-  // Updated with the new attached image for the community section
-  const imagePath = '/lovable-uploads/e534efbe-1249-4226-bd6e-453b925adf62.png';
+  // Use the newly provided screenshot as the community image
+  const imagePath = '/lovable-uploads/0ab22138-1d58-414a-bfbd-cd040c78c5a6.png';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
@@ -99,4 +98,3 @@ export const CommunitySection = () => {
     </section>
   );
 };
-
