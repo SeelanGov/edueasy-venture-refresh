@@ -6,10 +6,31 @@ import { Badge } from '@/components/ui/badge';
 import { Building2, MapPin, Users, ArrowRight, Star, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useInstitutions } from '@/hooks/useInstitutions';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/components/ui/use-toast';
 
 const Institutions = () => {
   const navigate = useNavigate();
   const { institutions, loading, error } = useInstitutions();
+
+  // Added for correct apply/status-aware behavior:
+  const { user } = useAuth();
+
+  // UX: Instead of navigating to register always, use same logic as homepage 'Start Application'
+  const handleStartApplication = () => {
+    if (!user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please register an account to start your application.',
+        variant: 'destructive',
+      });
+      console.log("Redirecting unauthenticated user to /register from Institutions");
+      navigate('/register', { state: { from: '/apply' } });
+      return;
+    }
+    console.log("Authenticated user, navigating to /apply from Institutions");
+    navigate('/apply');
+  };
 
   if (loading) {
     return (
@@ -63,11 +84,12 @@ const Institutions = () => {
             >
               Become a Partner Institution
             </Button>
+            {/* Remove Apply as a Student button and replace with "Start Application" if appropriate */}
             <Button 
               variant="outline"
-              onClick={() => navigate('/register')}
+              onClick={handleStartApplication}
             >
-              Apply as a Student
+              Start Application
             </Button>
           </div>
         </div>
@@ -241,3 +263,4 @@ const Institutions = () => {
 };
 
 export default Institutions;
+
