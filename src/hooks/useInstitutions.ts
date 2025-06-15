@@ -5,20 +5,20 @@ import { supabase } from '@/integrations/supabase/client';
 export interface Institution {
   id: string;
   name: string;
-  short_name?: string;
+  short_name?: string | null;
   type: string;
-  location?: string;
-  student_count?: string;
-  established?: string;
-  ranking?: string;
-  programs?: string;
-  description?: string;
-  website?: string;
-  email?: string;
-  phone?: string;
-  province?: string;
+  location?: string | null;
+  student_count?: string | null;
+  established?: string | null;
+  ranking?: string | null;
+  programs?: string | null;
+  description?: string | null;
+  website?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  province?: string | null;
   active: boolean;
-  partner_id?: string;
+  partner_id?: string | null;
 }
 
 export const useInstitutions = () => {
@@ -40,7 +40,8 @@ export const useInstitutions = () => {
 
         if (fetchError) throw fetchError;
         
-        setInstitutions(data || []);
+        // Type assertion since we know the structure matches our interface
+        setInstitutions(data as Institution[] || []);
       } catch (err) {
         console.error('Error fetching institutions:', err);
         setError('Failed to load institutions');

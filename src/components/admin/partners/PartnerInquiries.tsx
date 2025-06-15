@@ -36,15 +36,22 @@ export const PartnerInquiries = () => {
 
   const fetchInquiries = async () => {
     try {
+      // Try to fetch from partner_inquiries table
       const { data, error } = await supabase
-        .from('partner_inquiries')
+        .from('partner_inquiries' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setInquiries(data || []);
+      if (error) {
+        console.error('Error fetching inquiries:', error);
+        // Set empty array if table doesn't exist yet
+        setInquiries([]);
+      } else {
+        setInquiries(data as PartnerInquiry[] || []);
+      }
     } catch (error) {
       console.error('Error fetching inquiries:', error);
+      setInquiries([]);
     } finally {
       setLoading(false);
     }
@@ -53,7 +60,7 @@ export const PartnerInquiries = () => {
   const updateInquiryStatus = async (id: string, status: string) => {
     try {
       const { error } = await supabase
-        .from('partner_inquiries')
+        .from('partner_inquiries' as any)
         .update({ status })
         .eq('id', id);
 
