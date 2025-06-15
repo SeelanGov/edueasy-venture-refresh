@@ -7,8 +7,8 @@ import { ImpactStats } from '@/components/sponsorships/ImpactStats';
 import { TestimonialsSection } from '@/components/sponsorships/TestimonialsSection';
 import { FAQCollapsible } from '@/components/sponsorships/FAQCollapsible';
 
-const heroImage =
-  "/lovable-uploads/photo-1488590528505-98d2b5aba04b";
+// Local hero image for the hero section
+const heroImage = "/lovable-uploads/photo-1488590528505-98d2b5aba04b";
 
 const SponsorshipsPage = () => {
   const navigate = useNavigate();
@@ -36,13 +36,15 @@ const SponsorshipsPage = () => {
             <Button
               className="w-full md:w-auto text-white bg-cap-teal hover:bg-cap-teal/90 shadow-lg"
               size="lg"
-              onClick={() => navigate("/sponsorships/apply")}>
+              onClick={() => navigate("/sponsorships/apply")}
+            >
               Apply for Sponsorship
             </Button>
             <Button
               className="w-full md:w-auto bg-cap-coral hover:bg-cap-coral/90 text-white shadow-lg"
               size="lg"
-              onClick={() => navigate("/sponsors/register")}>
+              onClick={() => navigate("/sponsors/register")}
+            >
               Become a Sponsor
             </Button>
           </div>
@@ -77,3 +79,4 @@ const SponsorshipsPage = () => {
 };
 
 export default SponsorshipsPage;
+
