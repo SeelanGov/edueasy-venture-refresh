@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import supabase for registration (assume import path for client)
@@ -59,7 +58,7 @@ const PartnerRegister: React.FC = () => {
       return;
     }
 
-    // 2. Create partner record with 'pending_payment' status
+    // 2. Create partner record with 'pending' status (restrict dashboard)
     // Only run this if registration succeeded
     if (data.user) {
       // Save partner info in partners table.
@@ -69,7 +68,7 @@ const PartnerRegister: React.FC = () => {
         contact_email: form.email,
         phone: null,
         website: null,
-        status: 'pending_payment', // restrict dashboard
+        status: 'pending', // valid value per schema
         created_by: data.user.id,
       });
 
@@ -160,4 +159,3 @@ const PartnerRegister: React.FC = () => {
 };
 
 export default PartnerRegister;
-
