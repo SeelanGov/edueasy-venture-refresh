@@ -1,12 +1,12 @@
 
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
 import { AnalyticsFilters } from './AnalyticsFilters';
 import { AnalyticsStatCards } from './AnalyticsStatCards';
 import { AnalyticsTabs } from './AnalyticsTabs';
 import { AnalyticsLoadingState } from './charts/AnalyticsLoadingState';
 import { AnalyticsErrorState } from './charts/AnalyticsErrorState';
+import { AnalyticsHeader } from './AnalyticsHeader';
+import { AnalyticsKeyboardShortcuts } from './AnalyticsKeyboardShortcuts';
 import { useDocumentAnalytics } from '@/hooks/analytics';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -64,31 +64,26 @@ export const AnalyticsDashboard = () => {
     const encodedUri = encodeURI(csv);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'document-analytics.csv');
+    link.setAttribute('download', `document-analytics-${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <div className="container mx-auto max-w-7xl py-8 px-4">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Document Analytics Dashboard</h1>
-          <p className="text-muted-foreground">
-            Monitor document verification performance and trends
-          </p>
-        </div>
-        <div className="flex items-center gap-4 mt-4 lg:mt-0">
-          <Button variant="outline" onClick={refreshAnalytics} disabled={loading}>
-            Refresh Data
-          </Button>
-          <Button variant="outline" onClick={handleExportData} disabled={loading || !analytics}>
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
-      </div>
+    <div className="container mx-auto max-w-7xl py-6 px-4 space-y-6">
+      <AnalyticsKeyboardShortcuts
+        onRefresh={refreshAnalytics}
+        onExport={handleExportData}
+        onResetFilters={resetFilters}
+      />
+
+      <AnalyticsHeader
+        onRefresh={refreshAnalytics}
+        onExport={handleExportData}
+        loading={loading}
+        hasData={!!analytics}
+      />
 
       <AnalyticsFilters
         filters={filters}
@@ -103,10 +98,10 @@ export const AnalyticsDashboard = () => {
       ) : loading ? (
         <AnalyticsLoadingState />
       ) : analytics ? (
-        <>
+        <div className="space-y-6">
           <AnalyticsStatCards analytics={analytics} />
           <AnalyticsTabs analytics={analytics} />
-        </>
+        </div>
       ) : (
         <div className="text-center py-12">
           <p className="text-muted-foreground">
