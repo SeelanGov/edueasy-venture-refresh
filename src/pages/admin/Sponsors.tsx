@@ -1,34 +1,39 @@
 
-import React, { useState, useMemo } from 'react';
-import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
+import React, { useState } from 'react';
 import { SponsorMetrics } from '@/components/admin/sponsors/SponsorMetrics';
 import { SponsorAllocationsTable } from '@/components/admin/sponsors/SponsorAllocationsTable';
 import { SponsorFormModal } from '@/components/admin/sponsors/SponsorFormModal';
 import { SponsorListTable } from '@/components/admin/sponsors/SponsorListTable';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { Sponsor } from '@/types/SponsorTypes';
+import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
+import { useSponsors } from '@/hooks/useSponsors';
 
 const SponsorsPage = () => {
-  const { allocations, loading, createAllocation, updateAllocation, deleteAllocation } = useSponsorAllocations();
+  // Allocations management via data hook
+  const {
+    allocations,
+    loading: allocationsLoading,
+    createAllocation,
+    updateAllocation,
+    deleteAllocation,
+    fetchAllocations,
+  } = useSponsorAllocations();
+
+  // Sponsors management via query hook
+  const {
+    data: sponsorList = [],
+    isLoading: sponsorsLoading,
+    refetch: refetchSponsors,
+  } = useSponsors();
+
   const [tab, setTab] = useState<'allocations' | 'sponsors'>('allocations');
   const [modalOpen, setModalOpen] = useState(false);
   const [editAlloc, setEditAlloc] = useState<any>(null);
-  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const navigate = useNavigate();
 
-  // Load sponsors on demand
-  React.useEffect(() => {
-    if (tab === 'sponsors' && sponsors.length === 0) {
-      supabase.from('partners').select('*').eq('type', 'sponsor').then(({ data }) => {
-        setSponsors((data as Sponsor[]) || []);
-      });
-    }
-  }, [tab, sponsors.length]);
-
   // Metrics (basic stats)
-  const totalSponsors = useMemo(() => sponsors.length, [sponsors]);
-  const activeSponsors = useMemo(() => sponsors.filter(s => s.status === 'active').length, [sponsors]);
+  const totalSponsors = sponsorList.length;
+  const activeSponsors = sponsorList.filter(s => s.status === 'active').length;
   const totalAllocations = allocations.length;
   const activeAllocations = allocations.filter(a => a.status === 'active').length;
 
@@ -43,6 +48,7 @@ const SponsorsPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure to delete this allocation?')) {
       await deleteAllocation(id);
+      fetchAllocations();
     }
   };
   const handleSave = async (values: any) => {
@@ -52,6 +58,7 @@ const SponsorsPage = () => {
       await createAllocation(values);
     }
     setModalOpen(false);
+    fetchAllocations();
   };
 
   return (
@@ -81,12 +88,14 @@ const SponsorsPage = () => {
             allocations={allocations}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            loading={allocationsLoading}
           />
         </>
       )}
       {tab === 'sponsors' && (
         <SponsorListTable
-          sponsors={sponsors}
+          sponsors={sponsorList}
+          loading={sponsorsLoading}
           onView={(id: string) => navigate(`/admin/sponsors/${id}`)}
         />
       )}
@@ -101,3 +110,4 @@ const SponsorsPage = () => {
 };
 
 export default SponsorsPage;
+
