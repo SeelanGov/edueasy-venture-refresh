@@ -1,77 +1,66 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
+import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
 
-export interface Document {
+export interface DocumentWithUserInfo {
   id: string;
+  user_id: string;
   file_path: string;
   document_type: string | null;
   verification_status: string | null;
   created_at: string;
-  user_id: string | null;
-  application_id: string;
   rejection_reason: string | null;
-}
-
-export interface DocumentWithUserInfo extends Document {
   user_name: string;
   user_email: string;
 }
 
-export const useDocumentsManagement = () => {
+export function useDocumentsManagement() {
   const [documents, setDocuments] = useState<DocumentWithUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const pageSize = 10;
+  const pageSize = 20;
+  const { logAdminAction } = useAuditLogging();
 
   const fetchDocuments = async () => {
     setLoading(true);
-    setError(null);
-
     try {
-      // First get the total count
-      const { count, error: countError } = await supabase
+      const startIndex = (currentPage - 1) * pageSize;
+      
+      // Get total count
+      const { count } = await supabase
         .from('documents')
-        .select('id', { count: 'exact', head: true });
-
-      if (countError) throw countError;
-
+        .select('*', { count: 'exact', head: true });
+      
       setTotalCount(count || 0);
 
-      // Fetch documents with pagination
-      const from = (currentPage - 1) * pageSize;
-      const to = from + pageSize - 1;
-
-      // Fetch documents with user info
+      // Get paginated documents with user info
       const { data, error } = await supabase
         .from('documents')
-        .select(
-          `
+        .select(`
           *,
           users:user_id (
             full_name,
-            email
+            email,
+            contact_email
           )
-        `
-        )
+        `)
         .order('created_at', { ascending: false })
-        .range(from, to);
+        .range(startIndex, startIndex + pageSize - 1);
 
       if (error) throw error;
 
-      // Transform the data to include user info
-      const docsWithUserInfo = data.map((doc: any) => ({
+      const documentsWithUserInfo = data?.map(doc => ({
         ...doc,
-        user_name: doc.users?.full_name || 'Unknown',
-        user_email: doc.users?.email || 'Unknown',
-      }));
+        user_name: doc.users?.full_name || 'Unknown User',
+        user_email: doc.users?.email || doc.users?.contact_email || 'No email'
+      })) || [];
 
-      setDocuments(docsWithUserInfo);
-    } catch (err: any) {
-      console.error('Error fetching documents:', err);
-      setError(err.message);
+      setDocuments(documentsWithUserInfo);
+    } catch (error) {
+      console.error('Error fetching documents:', error);
       toast({
         title: 'Error',
         description: 'Failed to load documents',
@@ -82,35 +71,46 @@ export const useDocumentsManagement = () => {
     }
   };
 
-  const updateDocumentStatus = async (id: string, status: string, rejectionReason?: string) => {
+  const updateDocumentStatus = async (
+    documentId: string, 
+    status: string, 
+    rejectionReason?: string
+  ) => {
     try {
-      const updateData: {
-        verification_status: string;
-        rejection_reason?: string | null;
-      } = {
-        verification_status: status,
-      };
-
-      // Add or clear rejection reason based on status
-      if (status === 'rejected' || status === 'request_resubmission') {
-        updateData.rejection_reason = rejectionReason || null;
-      } else if (status === 'approved') {
-        updateData.rejection_reason = null;
-      }
-
-      const { error } = await supabase.from('documents').update(updateData).eq('id', id);
+      const { error } = await supabase
+        .from('documents')
+        .update({
+          verification_status: status,
+          rejection_reason: rejectionReason || null,
+          verified_at: status === 'approved' ? new Date().toISOString() : null,
+        })
+        .eq('id', documentId);
 
       if (error) throw error;
 
-      // Refresh documents
-      fetchDocuments();
+      // Log admin action for audit trail
+      await logAdminAction({
+        action: `DOCUMENT_${status.toUpperCase()}`,
+        target_type: "document",
+        target_id: documentId,
+        details: {
+          new_status: status,
+          rejection_reason: rejectionReason,
+          verified_at: status === 'approved' ? new Date().toISOString() : null,
+        },
+        reason: rejectionReason
+      });
 
       toast({
-        title: 'Status updated',
-        description: `Document status changed to ${status}`,
+        title: 'Success',
+        description: `Document ${status} successfully`,
+        variant: 'default',
       });
-    } catch (err: any) {
-      console.error('Error updating document status:', err);
+
+      // Refresh the documents list
+      fetchDocuments();
+    } catch (error) {
+      console.error('Error updating document status:', error);
       toast({
         title: 'Error',
         description: 'Failed to update document status',
@@ -119,23 +119,21 @@ export const useDocumentsManagement = () => {
     }
   };
 
-  const getDocumentUrl = async (filePath: string) => {
+  const getDocumentUrl = async (filePath: string): Promise<string | null> => {
     try {
-      const { data, error } = await supabase.storage
-        .from('user_documents')
-        .createSignedUrl(filePath, 60); // URL valid for 60 seconds
+      const { data } = await supabase.storage
+        .from('documents')
+        .createSignedUrl(filePath, 300); // 5 minutes
 
-      if (error) throw error;
-      return data.signedUrl;
+      return data?.signedUrl || null;
     } catch (error) {
-      console.error('Error creating signed URL:', error);
-      toast({
-        title: 'Error',
-        description: 'Could not generate document link',
-        variant: 'destructive',
-      });
+      console.error('Error getting document URL:', error);
       return null;
     }
+  };
+
+  const refreshDocuments = () => {
+    fetchDocuments();
   };
 
   useEffect(() => {
@@ -145,13 +143,12 @@ export const useDocumentsManagement = () => {
   return {
     documents,
     loading,
-    error,
     updateDocumentStatus,
     getDocumentUrl,
-    refreshDocuments: fetchDocuments,
-    currentPage,
-    setCurrentPage,
+    refreshDocuments,
     totalCount,
     pageSize,
+    currentPage,
+    setCurrentPage,
   };
-};
+}

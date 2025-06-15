@@ -1,192 +1,362 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { toast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { DashboardLayout } from "@/components/DashboardLayout";
+import { useDocumentsManagement, DocumentWithUserInfo } from "@/hooks/useDocumentsManagement";
+import { Spinner } from "@/components/Spinner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { 
-  Users, 
-  FileText, 
-  AlertCircle, 
+  FileIcon, 
+  ExternalLinkIcon, 
   CheckCircle, 
-  XCircle,
-  Eye,
-  Download,
-  MessageSquare,
-  Check,
-  X
-} from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DocumentVerificationPanel } from '@/components/admin/dashboard/DocumentVerificationPanel';
-import { UserManagementPanel } from '@/components/admin/dashboard/UserManagementPanel';
-import { ApplicationListPanel } from '@/components/admin/dashboard/ApplicationListPanel';
-import { makeUserMap } from '@/utils/admin/userLookup';
-import { AdminDashboardStats } from "@/components/admin/dashboard/AdminDashboardStats";
-import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
-
-interface DatabaseUser {
-  id: string;
-  created_at: string;
-  full_name: string | null;
-  id_number: string | null;
-  email: string | null;
-  phone_number: string | null;
-  contact_email: string | null;
-  emergency_contact_name: string | null;
-  emergency_contact_phone: string | null;
-  profile_status: string | null;
-  tracking_id: string | null;
-  id_verified?: boolean | null; // <-- Fix: Add missing property
-}
-
-interface Document {
-  id: string;
-  user_id: string;
-  file_path: string;
-  document_type: string | null;
-  verification_status: string | null;
-  created_at: string;
-  rejection_reason: string | null;
-}
-
-interface Application {
-  id: string;
-  user_id: string;
-  university: string | null;
-  program: string | null;
-  status: string | null;
-  created_at: string;
-  grade12_results: string | null;
-}
+  XCircle, 
+  AlertCircle,
+  RefreshCw,
+  BarChart,
+  Shield
+} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { AdminAuthGuard } from "@/components/AdminAuthGuard";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminActivityLog } from "@/components/admin/audit/AdminActivityLog";
 
 const AdminDashboard = () => {
-  // Use custom hook
-  const { users, documents, applications, loading, refreshData } = useAdminDashboardData();
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
-  const [trackingIdSearch, setTrackingIdSearch] = useState('');
-  const userMap = makeUserMap(users);
+  const { user } = useAuth();
+  const { documents, loading, updateDocumentStatus, getDocumentUrl, refreshDocuments, totalCount, pageSize, currentPage, setCurrentPage } = useDocumentsManagement();
+  const [selectedDocument, setSelectedDocument] = useState<DocumentWithUserInfo | null>(null);
+  const [tabValue, setTabValue] = useState("documents");
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const totalPages = Math.ceil(totalCount / pageSize);
+  
+  // Filter documents based on the selected tab
+  const filteredDocuments = documents.filter(doc => {
+    if (tabValue === "documents") return true;
+    return doc.verification_status === tabValue;
+  });
 
-  // Counts for stats
-  const verifiedUsersCount = users.filter(u => u.id_verified).length;
-  const unverifiedUsersCount = users.filter(u => !u.id_verified).length;
-  const pendingDocumentsCount = documents.filter(doc => doc.verification_status === 'pending').length;
-  const totalApplicationsCount = applications.length;
-
-  const updateDocumentStatus = async (documentId: string, status: string, rejectionReason?: string) => {
-    try {
-      const updateData: any = { verification_status: status };
-      if (rejectionReason) {
-        updateData.rejection_reason = rejectionReason;
-      }
-
-      const { error } = await supabase
-        .from('documents')
-        .update(updateData)
-        .eq('id', documentId);
-
-      if (error) throw error;
-
-      toast({
-        title: 'Success',
-        description: `Document ${status} successfully`,
-      });
-
-      refreshData(); // Refresh data
-    } catch (error) {
-      console.error('Error updating document:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update document status',
-        variant: 'destructive',
-      });
+  const getStatusBadgeVariant = (status: string | null) => {
+    switch (status) {
+      case "approved":
+        return "default";
+      case "rejected":
+        return "destructive";
+      case "request_resubmission":
+        return "outline";
+      case "pending":
+        return "secondary";
+      default:
+        return "secondary";
     }
   };
 
   const getStatusBadge = (status: string | null) => {
-    switch (status) {
-      case 'approved':
-        return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
-      case 'rejected':
-        return <Badge className="bg-red-100 text-red-800">Rejected</Badge>;
-      case 'pending':
-      default:
-        return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
+    let statusText = status ? status.charAt(0).toUpperCase() + status.slice(1) : "Unknown";
+    if (status === "request_resubmission") statusText = "Needs Resubmission";
+    
+    const variant = getStatusBadgeVariant(status);
+    
+    return (
+      <Badge variant={variant} className={status === "request_resubmission" ? "border-amber-500 text-amber-500" : ""}>
+        {variant === "default" && <CheckCircle className="h-3 w-3 mr-1" />}
+        {variant === "destructive" && <XCircle className="h-3 w-3 mr-1" />}
+        {variant === "secondary" && <AlertCircle className="h-3 w-3 mr-1" />}
+        {status === "request_resubmission" && <RefreshCw className="h-3 w-3 mr-1" />}
+        {statusText}
+      </Badge>
+    );
+  };
+
+  const handleViewDocument = async (doc: DocumentWithUserInfo) => {
+    setSelectedDocument(doc);
+    setRejectionReason(doc.rejection_reason || "");
+  };
+
+  const handleOpenDocument = async (filePath: string) => {
+    const url = await getDocumentUrl(filePath);
+    if (url) {
+      window.open(url, "_blank");
     }
   };
 
-  const getPendingDocumentsCount = () => {
-    return documents.filter(doc => doc.verification_status === 'pending').length;
+  const handleUpdateStatus = async (id: string, status: string) => {
+    setIsSubmitting(true);
+    try {
+      if (status === "rejected" || status === "request_resubmission") {
+        await updateDocumentStatus(id, status, rejectionReason);
+      } else {
+        await updateDocumentStatus(id, status);
+      }
+      setSelectedDocument(null);
+      setRejectionReason("");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const getCompletedProfilesCount = () => {
-    return users.filter(user => user.profile_status === 'complete').length;
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
   };
-
-  const getTotalApplicationsCount = () => {
-    return applications.length;
-  };
-
-  const filteredUsers = users.filter((userRec) =>
-    trackingIdSearch
-      ? (userRec.tracking_id || '').toLowerCase().includes(trackingIdSearch.toLowerCase())
-      : true
-  );
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Loading admin dashboard...</div>
-      </div>
-    );
-  }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-gray-600 mt-2">Manage users, documents, and applications</p>
-      </div>
+    <AdminAuthGuard>
+      <DashboardLayout>
+        <div className="container mx-auto max-w-7xl py-8 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Link to="/admin/analytics">
+              <Card className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Analytics Dashboard</CardTitle>
+                  <CardDescription>View document verification analytics</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">View metrics and reports</span>
+                    <BarChart className="h-6 w-6 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            {/* Additional admin cards can be added here */}
+          </div>
+          
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+            <Button onClick={refreshDocuments} variant="outline" size="sm">
+              Refresh
+            </Button>
+          </div>
 
-      {/* Stats Cards */}
-      <AdminDashboardStats
-        totalUsers={users.length}
-        verifiedUsers={verifiedUsersCount}
-        unverifiedUsers={unverifiedUsersCount}
-        pendingDocuments={pendingDocumentsCount}
-        totalApplications={totalApplicationsCount}
-      />
+          <Tabs defaultValue="documents" value={tabValue} onValueChange={setTabValue} className="mb-6">
+            <TabsList>
+              <TabsTrigger value="documents">Document Verification</TabsTrigger>
+              <TabsTrigger value="audit">Admin Activity Log</TabsTrigger>
+            </TabsList>
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="documents" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="applications">Applications</TabsTrigger>
-        </TabsList>
+            <TabsContent value="documents" className="mt-6">
+              <Tabs defaultValue="all" className="mb-6">
+                <TabsList>
+                  <TabsTrigger value="all">All Documents</TabsTrigger>
+                  <TabsTrigger value="pending">Pending</TabsTrigger>
+                  <TabsTrigger value="approved">Approved</TabsTrigger>
+                  <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                  <TabsTrigger value="request_resubmission">Need Resubmission</TabsTrigger>
+                </TabsList>
+              </Tabs>
 
-        <TabsContent value="documents" className="space-y-4">
-          <DocumentVerificationPanel 
-            documents={documents} 
-            updateDocumentStatus={updateDocumentStatus}
-            userMap={userMap}
-          />
-        </TabsContent>
+              {loading ? (
+                <div className="flex justify-center py-12">
+                  <Spinner size="lg" />
+                </div>
+              ) : (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                  <Table>
+                    <TableCaption>List of documents requiring verification</TableCaption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Document Type</TableHead>
+                        <TableHead>User</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredDocuments.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-6">
+                            No documents found
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filteredDocuments.map((doc) => (
+                          <TableRow key={doc.id}>
+                            <TableCell className="font-medium">
+                              {doc.document_type || "Unknown"}
+                            </TableCell>
+                            <TableCell>
+                              <div>{doc.user_name}</div>
+                              <div className="text-xs text-gray-500">{doc.user_email}</div>
+                            </TableCell>
+                            <TableCell>
+                              {getStatusBadge(doc.verification_status)}
+                              {doc.rejection_reason && (
+                                <div className="text-xs text-gray-500 mt-1 truncate max-w-[200px]" title={doc.rejection_reason}>
+                                  Reason: {doc.rejection_reason}
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {new Date(doc.created_at).toLocaleDateString()}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex space-x-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleOpenDocument(doc.file_path)}
+                                >
+                                  <FileIcon className="h-4 w-4 mr-1" /> View
+                                </Button>
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => handleViewDocument(doc)}
+                                    >
+                                      Verify
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-md">
+                                    <DialogHeader>
+                                      <DialogTitle>Verify Document</DialogTitle>
+                                    </DialogHeader>
+                                    
+                                    {selectedDocument && (
+                                      <div className="space-y-4">
+                                        <div>
+                                          <h3 className="font-medium">Document Details</h3>
+                                          <p><span className="font-semibold">Type:</span> {selectedDocument.document_type || "Unknown"}</p>
+                                          <p><span className="font-semibold">User:</span> {selectedDocument.user_name}</p>
+                                          <p><span className="font-semibold">Status:</span> {selectedDocument.verification_status}</p>
+                                          <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="mt-2"
+                                            onClick={() => handleOpenDocument(selectedDocument.file_path)}
+                                          >
+                                            <FileIcon className="h-4 w-4 mr-1" /> Open Document <ExternalLinkIcon className="h-4 w-4 ml-1" />
+                                          </Button>
+                                        </div>
+                                        
+                                        <div className="space-y-2">
+                                          <Label htmlFor="rejection-reason">Reason (for rejection or resubmission request)</Label>
+                                          <Textarea
+                                            id="rejection-reason"
+                                            placeholder="Enter a reason for rejection or resubmission request..."
+                                            value={rejectionReason}
+                                            onChange={(e) => setRejectionReason(e.target.value)}
+                                            rows={3}
+                                          />
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-3 gap-2 pt-4 border-t">
+                                          <Button
+                                            variant="destructive"
+                                            disabled={isSubmitting}
+                                            onClick={() => handleUpdateStatus(selectedDocument.id, "rejected")}
+                                            className="w-full"
+                                          >
+                                            <XCircle className="h-4 w-4 mr-2" /> Reject
+                                          </Button>
+                                          
+                                          <Button
+                                            variant="outline"
+                                            disabled={isSubmitting}
+                                            className="w-full border-amber-500 text-amber-700 hover:bg-amber-50"
+                                            onClick={() => handleUpdateStatus(selectedDocument.id, "request_resubmission")}
+                                          >
+                                            <RefreshCw className="h-4 w-4 mr-2" /> Request Resubmission
+                                          </Button>
+                                          
+                                          <Button
+                                            variant="default"
+                                            disabled={isSubmitting}
+                                            className="w-full bg-green-600 hover:bg-green-700"
+                                            onClick={() => handleUpdateStatus(selectedDocument.id, "approved")}
+                                          >
+                                            <CheckCircle className="h-4 w-4 mr-2" /> Approve
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </DialogContent>
+                                </Dialog>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                  
+                  {totalPages > 1 && (
+                    <div className="py-4 flex justify-center">
+                      <Pagination>
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                          
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const pageNum = currentPage <= 3 
+                              ? i + 1 
+                              : currentPage >= totalPages - 2 
+                                ? totalPages - 4 + i 
+                                : currentPage - 2 + i;
+                            
+                            if (pageNum <= 0 || pageNum > totalPages) return null;
+                            
+                            return (
+                              <PaginationItem key={pageNum}>
+                                <PaginationLink 
+                                  isActive={pageNum === currentPage}
+                                  onClick={() => handlePageChange(pageNum)}
+                                >
+                                  {pageNum}
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+                          })}
+                          
+                          <PaginationItem>
+                            <PaginationNext 
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                    </div>
+                  )}
+                </div>
+              )}
+            </TabsContent>
 
-        <TabsContent value="users" className="space-y-4">
-          <UserManagementPanel 
-            users={users}
-            trackingIdSearch={trackingIdSearch}
-            setTrackingIdSearch={setTrackingIdSearch}
-            refreshUsers={refreshData}
-          />
-        </TabsContent>
-
-        <TabsContent value="applications" className="space-y-4">
-          <ApplicationListPanel applications={applications} userMap={userMap} />
-        </TabsContent>
-      </Tabs>
-    </div>
+            <TabsContent value="audit" className="mt-6">
+              <AdminActivityLog />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </DashboardLayout>
+    </AdminAuthGuard>
   );
 };
 
