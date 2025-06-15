@@ -411,6 +411,54 @@ export type Database = {
           },
         ]
       }
+      partner_inquiries: {
+        Row: {
+          contact_email: string
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          id: string
+          institution_name: string
+          institution_type: string
+          interested_tier: string | null
+          message: string | null
+          status: string | null
+          student_count: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          contact_email: string
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          institution_name: string
+          institution_type: string
+          interested_tier?: string | null
+          message?: string | null
+          status?: string | null
+          student_count?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          institution_name?: string
+          institution_type?: string
+          interested_tier?: string | null
+          message?: string | null
+          status?: string | null
+          student_count?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       partner_notes: {
         Row: {
           created_at: string
