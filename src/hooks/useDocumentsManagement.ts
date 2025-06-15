@@ -58,15 +58,20 @@ export function useDocumentsManagement() {
 
       if (error) throw error;
 
-      // Transform the data with proper type checking
+      // Transform the data with proper type checking and null handling
       const documentsWithUserInfo: DocumentWithUserInfo[] = (data || [])
         .filter(doc => doc.user_id) // Filter out documents without user_id
         .map(doc => {
           // Type guard to ensure users data exists and has the right structure
           const userData = doc.users as any;
           return {
-            ...doc,
+            id: doc.id,
             user_id: doc.user_id as string,
+            file_path: doc.file_path,
+            document_type: doc.document_type,
+            verification_status: doc.verification_status,
+            created_at: doc.created_at || new Date().toISOString(), // Handle null created_at
+            rejection_reason: doc.rejection_reason,
             user_name: userData?.full_name || 'Unknown User',
             user_email: userData?.email || userData?.contact_email || 'No email'
           };
