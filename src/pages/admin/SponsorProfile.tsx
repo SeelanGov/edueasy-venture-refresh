@@ -2,20 +2,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { SponsorAllocation } from '@/types/SponsorTypes';
+import { SponsorAllocation, Sponsor } from '@/types/SponsorTypes';
 
 const SponsorProfile = () => {
-  const { id } = useParams();
-  const [sponsor, setSponsor] = useState(null);
+  const { id } = useParams<{ id: string }>();
+  const [sponsor, setSponsor] = useState<Sponsor | null>(null);
   const [allocations, setAllocations] = useState<SponsorAllocation[]>([]);
 
   useEffect(() => {
+    if (!id) return;
     // Load sponsor profile and allocations
     supabase.from('partners').select('*').eq('id', id).maybeSingle().then(({ data }) => {
-      setSponsor(data || null);
+      setSponsor((data as Sponsor) || null);
     });
     supabase.from('sponsor_allocations').select('*').eq('sponsor_id', id).then(({ data }) => {
-      setAllocations(data || []);
+      setAllocations((data as SponsorAllocation[]) || []);
     });
   }, [id]);
 
@@ -29,7 +30,9 @@ const SponsorProfile = () => {
         <div className="text-gray-600"><strong>Email:</strong> {sponsor.email}</div>
         <div className="text-gray-600"><strong>Phone:</strong> {sponsor.phone || '-'}</div>
         <div className="text-gray-600"><strong>Contact Person:</strong> {sponsor.contact_person || '-'}</div>
-        <div className="text-gray-600"><strong>Website:</strong> <a href={sponsor.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{sponsor.website}</a></div>
+        <div className="text-gray-600"><strong>Website:</strong> {sponsor.website
+          ? <a href={sponsor.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{sponsor.website}</a>
+          : '-'}</div>
       </div>
       <h2 className="text-2xl font-semibold mb-2 mt-6">Student Allocations</h2>
       <table className="min-w-full border rounded">

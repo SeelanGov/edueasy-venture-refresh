@@ -7,20 +7,21 @@ import { SponsorFormModal } from '@/components/admin/sponsors/SponsorFormModal';
 import { SponsorListTable } from '@/components/admin/sponsors/SponsorListTable';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { Sponsor } from '@/types/SponsorTypes';
 
 const SponsorsPage = () => {
   const { allocations, loading, createAllocation, updateAllocation, deleteAllocation } = useSponsorAllocations();
   const [tab, setTab] = useState<'allocations' | 'sponsors'>('allocations');
   const [modalOpen, setModalOpen] = useState(false);
-  const [editAlloc, setEditAlloc] = useState(null);
-  const [sponsors, setSponsors] = useState([]);
+  const [editAlloc, setEditAlloc] = useState<any>(null);
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const navigate = useNavigate();
 
   // Load sponsors on demand
   React.useEffect(() => {
     if (tab === 'sponsors' && sponsors.length === 0) {
       supabase.from('partners').select('*').eq('type', 'sponsor').then(({ data }) => {
-        setSponsors(data || []);
+        setSponsors((data as Sponsor[]) || []);
       });
     }
   }, [tab, sponsors.length]);
@@ -35,16 +36,16 @@ const SponsorsPage = () => {
     setEditAlloc(null);
     setModalOpen(true);
   };
-  const handleEdit = (alloc) => {
+  const handleEdit = (alloc: any) => {
     setEditAlloc(alloc);
     setModalOpen(true);
   };
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure to delete this allocation?')) {
       await deleteAllocation(id);
     }
   };
-  const handleSave = async (values) => {
+  const handleSave = async (values: any) => {
     if (editAlloc) {
       await updateAllocation(editAlloc.id, values);
     } else {
@@ -86,7 +87,7 @@ const SponsorsPage = () => {
       {tab === 'sponsors' && (
         <SponsorListTable
           sponsors={sponsors}
-          onView={id => navigate(`/admin/sponsors/${id}`)}
+          onView={(id: string) => navigate(`/admin/sponsors/${id}`)}
         />
       )}
       <SponsorFormModal
