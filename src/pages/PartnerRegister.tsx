@@ -58,17 +58,16 @@ const PartnerRegister: React.FC = () => {
       return;
     }
 
-    // 2. Create partner record with 'pending' status (restrict dashboard)
-    // Only run this if registration succeeded
+    // 2. Create partner record with required 'type' (use 'university' by default)
     if (data.user) {
-      // Save partner info in partners table.
       const { error: partnerError } = await supabase.from('partners').insert({
         name: form.instituteName,
+        type: "university", // REQUIRED: type is not nullable per schema
         email: form.email,
         contact_email: form.email,
         phone: null,
         website: null,
-        status: 'pending', // valid value per schema
+        status: 'pending',
         created_by: data.user.id,
       });
 
@@ -79,7 +78,6 @@ const PartnerRegister: React.FC = () => {
       }
 
       setSuccess('Account created! Please check your email to verify.');
-      // Redirect to dashboard after slight delay
       setTimeout(() => navigate('/partner/dashboard'), 1500);
     }
     setLoading(false);
