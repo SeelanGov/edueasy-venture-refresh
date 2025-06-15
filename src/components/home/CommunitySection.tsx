@@ -4,14 +4,14 @@ import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const CommunitySection = () => {
-  // New official community group photo
-  const imagePath = '/lovable-uploads/6739c361-94ae-4f3b-ab45-3e22e34af1ff.png';
+  // Updated with the new attached image for the community section
+  const imagePath = '/lovable-uploads/e534efbe-1249-4226-bd6e-453b925adf62.png';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          {/* Left Column - Community Group Photo Always Visible */}
+          {/* Left Column - Community Group Photo */}
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
