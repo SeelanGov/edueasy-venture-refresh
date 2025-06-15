@@ -6,9 +6,9 @@ export type SponsorNote = {
   id: string;
   partner_id: string;
   created_at: string;
-  created_by: string;
+  created_by?: string | null;
   note: string;
-  note_type?: string;
+  note_type?: string | null;
 };
 
 export const useSponsorNotes = (sponsorId: string | undefined) => {
@@ -31,17 +31,21 @@ export const useSponsorNotes = (sponsorId: string | undefined) => {
 export const useAddSponsorNote = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { partner_id: string, note: string, note_type?: string }) => {
+    mutationFn: async (input: Omit<SponsorNote, "id" | "created_at" | "created_by"> & { created_by?: string }) => {
+      const payload = {
+        ...input,
+        note_type: input.note_type ?? "general"
+      };
       const { data, error } = await supabase
         .from("partner_notes")
-        .insert([input])
+        .insert([payload])
         .select("*")
         .single();
       if (error) throw error;
       return data as SponsorNote;
     },
-    onSuccess: (_, vars) => {
-      queryClient.invalidateQueries({ queryKey: ["sponsorNotes", vars.partner_id] });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["sponsorNotes", variables.partner_id] });
     },
   });
 };
