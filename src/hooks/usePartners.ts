@@ -2,9 +2,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const VALID_PARTNER_TYPES = ["university", "tvet", "funder", "seta", "other", "sponsor"];
+// Step 1: Define the valid partner types as a type and an array
+export type PartnerType = "university" | "tvet" | "funder" | "seta" | "other" | "sponsor";
+const VALID_PARTNER_TYPES: PartnerType[] = ["university", "tvet", "funder", "seta", "other", "sponsor"];
 
-export const usePartners = ({ type, search }: { type?: string; search?: string }) => {
+// Step 2: Accept only the allowed types for `type`
+export const usePartners = ({ type, search }: { type?: PartnerType; search?: string }) => {
   const [partners, setPartners] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,7 +16,9 @@ export const usePartners = ({ type, search }: { type?: string; search?: string }
     const fetchPartners = async () => {
       setIsLoading(true);
       let query = supabase.from("partners").select("*");
-      if (type && VALID_PARTNER_TYPES.includes(type)) query = query.eq("type", type);
+      if (type && VALID_PARTNER_TYPES.includes(type)) {
+        query = query.eq("type", type as PartnerType);
+      }
       if (search)
         query = query.or(
           `name.ilike.%${search}%,email.ilike.%${search}%`
@@ -31,3 +36,4 @@ export const usePartners = ({ type, search }: { type?: string; search?: string }
 
   return { partners, isLoading };
 };
+
