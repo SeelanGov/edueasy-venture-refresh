@@ -29,6 +29,7 @@ interface DatabaseUser {
   emergency_contact_phone: string | null;
   profile_status: string | null;
   tracking_id: string | null;
+  id_verified?: boolean | null; // <-- Fix: Add missing property
 }
 
 interface Document {
