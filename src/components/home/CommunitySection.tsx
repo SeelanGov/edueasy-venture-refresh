@@ -1,48 +1,25 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 
 export const CommunitySection = () => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const imagePath = 'lovable-uploads/79d5be30-b5aa-4fc7-a655-097b5c751a7c.png';
-
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoaded(true);
-  };
+  // New official community group photo
+  const imagePath = '/lovable-uploads/6739c361-94ae-4f3b-ab45-3e22e34af1ff.png';
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-teal-50 to-orange-50">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          {/* Left Column - Image */}
+          {/* Left Column - Community Group Photo Always Visible */}
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
-              {!imageLoaded && !imageError && (
-                <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center">
-                  <div className="text-gray-500">Loading...</div>
-                </div>
-              )}
-
-              {imageError && (
-                <div className="w-full h-64 bg-gradient-to-br from-teal-50 to-orange-50 flex items-center justify-center">
-                  <div className="text-center p-4">
-                    <div className="text-2xl mb-2">🤝</div>
-                    <div className="text-gray-700 font-medium">Student Community</div>
-                    <div className="text-sm text-gray-500">Together We Achieve More</div>
-                  </div>
-                </div>
-              )}
-              
               <img
                 src={imagePath}
-                alt="Students collaborating and working together in community"
-                className={`w-full h-auto object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
-                onLoad={() => setImageLoaded(true)}
-                onError={handleImageError}
+                alt="Group of diverse South African students in community"
+                className="w-full h-64 md:h-96 object-cover rounded-xl border-4 border-white shadow-xl"
+                style={{ objectPosition: 'center center' }}
               />
             </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-500 opacity-20 rounded-full"></div>
@@ -122,3 +99,4 @@ export const CommunitySection = () => {
     </section>
   );
 };
+
