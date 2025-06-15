@@ -2,10 +2,12 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+type PartnerTier = "basic" | "standard" | "premium";
+
 export const useUpdatePartnerTier = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string|undefined>();
-  const updateTier = async (partnerId: string, newTier: string) => {
+  const updateTier = async (partnerId: string, newTier: PartnerTier) => {
     setIsUpdating(true);
     setError(undefined);
     const { error } = await supabase

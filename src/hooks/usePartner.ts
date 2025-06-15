@@ -8,13 +8,21 @@ export const usePartner = (id?: string) => {
 
   useEffect(() => {
     if (!id) return;
-    setIsLoading(true);
-    supabase.from("partners")
-      .select("*")
-      .eq("id", id)
-      .single()
-      .then(({ data }) => setPartner(data ?? null))
-      .finally(() => setIsLoading(false));
+    let isMounted = true;
+    const fetchPartner = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await supabase.from("partners")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (isMounted) setPartner(data ?? null);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+    fetchPartner();
+    return () => { isMounted = false; };
   }, [id]);
 
   return { partner, isLoading };
