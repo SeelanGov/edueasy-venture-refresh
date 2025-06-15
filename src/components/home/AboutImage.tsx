@@ -4,7 +4,8 @@ import { useState } from 'react';
 export const AboutImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const imagePath = 'lovable-uploads/5d3ceb5a-9a68-4269-88d7-d73c8fffa59d.png';
+  // Use the new uploaded image for the About EduEasy section
+  const imagePath = '/lovable-uploads/406bcd90-d00d-49f6-b0f2-0af152cc1707.png';
 
   const handleImageError = () => {
     setImageError(true);
