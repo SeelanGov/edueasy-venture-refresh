@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,8 +18,9 @@ interface PartnerInquiry {
   student_count: string | null;
   interested_tier: string | null;
   message: string | null;
-  status: string;
+  status: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 export const PartnerInquiries = () => {
@@ -78,12 +78,14 @@ export const PartnerInquiries = () => {
     const matchesSearch = inquiry.institution_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          inquiry.contact_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          inquiry.contact_email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || inquiry.status === filterStatus;
+    const inquiryStatus = inquiry.status || 'pending';
+    const matchesStatus = filterStatus === 'all' || inquiryStatus === filterStatus;
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
+  const getStatusColor = (status: string | null) => {
+    const actualStatus = status || 'pending';
+    switch (actualStatus) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'contacted': return 'bg-blue-100 text-blue-800';
       case 'converted': return 'bg-green-100 text-green-800';
@@ -105,7 +107,6 @@ export const PartnerInquiries = () => {
         </div>
       </div>
 
-      {/* Filters */}
       <Card>
         <CardContent className="p-4">
           <div className="flex gap-4 items-center">
@@ -133,7 +134,6 @@ export const PartnerInquiries = () => {
         </CardContent>
       </Card>
 
-      {/* Inquiries List */}
       <div className="grid grid-cols-1 gap-6">
         {filteredInquiries.map((inquiry) => (
           <Card key={inquiry.id} className="hover:shadow-lg transition-shadow">
@@ -146,7 +146,7 @@ export const PartnerInquiries = () => {
                   </CardDescription>
                 </div>
                 <Badge className={getStatusColor(inquiry.status)}>
-                  {inquiry.status}
+                  {inquiry.status || 'pending'}
                 </Badge>
               </div>
             </CardHeader>
@@ -199,7 +199,7 @@ export const PartnerInquiries = () => {
               )}
 
               <div className="flex gap-2">
-                {inquiry.status === 'pending' && (
+                {(!inquiry.status || inquiry.status === 'pending') && (
                   <>
                     <Button 
                       size="sm" 
