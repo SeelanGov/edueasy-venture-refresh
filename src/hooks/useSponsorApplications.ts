@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export function useSponsorApplications({ asSponsor = false } = {}) {
   const { user } = useAuth();
-  const [applications, setApplications] = useState([]);
+  const [applications, setApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetch = useCallback(async () => {
@@ -32,3 +32,4 @@ export function useSponsorApplications({ asSponsor = false } = {}) {
   useEffect(() => { fetch(); }, [fetch]);
   return { applications, loading, refresh: fetch };
 }
+
