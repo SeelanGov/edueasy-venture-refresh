@@ -25,16 +25,7 @@ const students: Student[] = [
   },
   {
     id: 2,
-    name: 'Sipho Ndlovu',
-    university: 'University of Pretoria',
-    program: 'Medicine',
-    // User image: Graduate blowing confetti (fits celebration, medicine achievement)
-    image: '/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png',
-    quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
-    achievement: 'Medical School Scholarship'
-  },
-  {
-    id: 3,
+    // SWAPPED: was "Sipho Ndlovu", now "Thandiwe Cele"
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
@@ -42,6 +33,17 @@ const students: Student[] = [
     image: '/lovable-uploads/d1178300-e92d-4476-8e5e-e4854c975f7c.png',
     quote: 'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: "Dean's List Honor Student"
+  },
+  {
+    id: 3,
+    // SWAPPED: was "Thandiwe Cele", now "Sipho Ndlovu"
+    name: 'Sipho Ndlovu',
+    university: 'University of Pretoria',
+    program: 'Medicine',
+    // User image: Graduate blowing confetti (fits celebration, medicine achievement)
+    image: '/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png',
+    quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
+    achievement: 'Medical School Scholarship'
   },
 ];
 
