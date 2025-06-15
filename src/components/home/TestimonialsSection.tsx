@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 import { StudentSuccessCard } from './StudentSuccessCard';
 
@@ -18,29 +17,27 @@ const students: Student[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    // User image: Smiling girl in South African attire
+    // Image: Smiling girl in South African attire – fits "Lerato" (girl's name)
     image: '/lovable-uploads/03a7ff84-fd7b-4d09-ba1e-4bd6c64a7f38.png',
     quote: 'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
   },
   {
     id: 2,
-    // SWAPPED: was "Sipho Ndlovu", now "Thandiwe Cele"
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    // User image: Group singing in uniforms
+    // Image: Group scene, use if Thandiwe (girl/woman) is in visible focus
     image: '/lovable-uploads/d1178300-e92d-4476-8e5e-e4854c975f7c.png',
     quote: 'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
     achievement: "Dean's List Honor Student"
   },
   {
     id: 3,
-    // SWAPPED: was "Thandiwe Cele", now "Sipho Ndlovu"
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    // User image: Graduate blowing confetti (fits celebration, medicine achievement)
+    // Image: Graduate blowing confetti (assign if it's a boy/man; fits "Sipho")
     image: '/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png',
     quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship'
