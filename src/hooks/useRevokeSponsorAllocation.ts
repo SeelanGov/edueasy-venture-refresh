@@ -11,7 +11,6 @@ export const useRevokeSponsorAllocation = () => {
         .delete()
         .eq("id", input.allocationId);
       if (error) throw error;
-      // Return allocationId for cache update
       return input;
     },
     onSuccess: (_, { sponsorId }) => {

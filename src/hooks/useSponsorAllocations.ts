@@ -29,13 +29,11 @@ export const useSponsorAllocations = (
     if (options.sponsorId) query = query.eq("sponsor_id", options.sponsorId);
     if (options.studentId) query = query.eq("student_id", options.studentId);
     if (options.status) query = query.eq("status", options.status);
-    // Simple search: by student_id or notes
     if (options.search) {
       query = query.or(
         `student_id.ilike.%${options.search}%,notes.ilike.%${options.search}%`
       );
     }
-
     // Pagination
     if (options.page && options.pageSize) {
       const from = (options.page - 1) * options.pageSize;
@@ -49,16 +47,27 @@ export const useSponsorAllocations = (
       if (error) throw error;
       setAllocations(data ?? []);
       setTotal(count ?? 0);
+      // ADDED: Logging for debugging
+      console.log("[useSponsorAllocations] fetch success", { data, count });
     } catch (err) {
       setError(
         (err as Error).message ? `Failed to fetch allocations: ${(err as Error).message}` : "Failed to fetch allocations"
       );
       setAllocations([]);
       setTotal(0);
+      // ADDED: Logging error for traceability
+      console.error("[useSponsorAllocations] fetch error", err);
     } finally {
       setLoading(false);
     }
-  }, [options.sponsorId, options.studentId, options.status, options.search, options.page, options.pageSize]);
+  }, [
+    options.sponsorId,
+    options.studentId,
+    options.status,
+    options.search,
+    options.page,
+    options.pageSize
+  ]);
 
   // Helper to coerce plan and notes to string or undefined
   const normalizeAllocationPayload = (

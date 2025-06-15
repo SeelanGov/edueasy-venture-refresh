@@ -15,12 +15,8 @@ export const useSponsors = (options: UseSponsorsOptions = {}) => {
     queryKey: ["sponsors", options],
     queryFn: async () => {
       let query = supabase.from("partners").select("*").eq("type", "sponsor");
-      if (options.search) {
-        query = query.ilike("name", `%${options.search}%`);
-      }
-      if (options.type) {
-        query = query.eq("organization_type", options.type);
-      }
+      if (options.search) query = query.ilike("name", `%${options.search}%`);
+      if (options.type) query = query.eq("organization_type", options.type);
       if (options.page && options.pageSize) {
         const from = (options.page - 1) * options.pageSize;
         const to = from + options.pageSize - 1;
@@ -30,5 +26,6 @@ export const useSponsors = (options: UseSponsorsOptions = {}) => {
       if (error) throw error;
       return (data as Sponsor[]) || [];
     },
+    // Add error/loading management via React Query's return values
   });
 };
