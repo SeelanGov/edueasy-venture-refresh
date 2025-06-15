@@ -9,7 +9,7 @@ import { useSponsors } from '@/hooks/useSponsors';
 import { toast } from '@/components/ui/use-toast';
 import { Spinner } from '@/components/Spinner';
 import { exportToCsv } from '@/utils/exportToCsv';
-import { FileExport } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 const SponsorsPage = () => {
   // Search & filter state
@@ -192,7 +192,7 @@ const SponsorsPage = () => {
               title="Export Allocations"
               type="button"
             >
-              <FileExport size={18} className="mr-1" />
+              <FileText size={18} className="mr-1" />
               Export CSV
             </button>
           </div>
@@ -221,7 +221,7 @@ const SponsorsPage = () => {
               title="Export Sponsors"
               type="button"
             >
-              <FileExport size={18} className="mr-1" />
+              <FileText size={18} className="mr-1" />
               Export CSV
             </button>
           </div>
