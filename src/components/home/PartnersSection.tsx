@@ -11,7 +11,7 @@ const universities = [
 
 export const PartnersSection = () => {
   // Use the uploaded image for the section illustration
-  const imagePath = "/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png";
+  const imagePath = "/lovable-uploads/ff2bcb31-3f70-423b-a4e0-4483fff9d5f6.png";
 
   return (
     <section className="py-20 px-4 md:py-24 bg-white relative">
@@ -35,7 +35,7 @@ export const PartnersSection = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-xl w-full max-w-sm group">
               <img
                 src={imagePath}
-                alt="Student using online platform"
+                alt="Confident graduate blowing confetti at camera, wearing cap and gown"
                 className="w-full h-auto object-cover object-center rounded-2xl transition duration-300 group-hover:scale-105 group-hover:contrast-105 group-hover:saturate-150"
                 style={{
                   maxHeight: 340,
