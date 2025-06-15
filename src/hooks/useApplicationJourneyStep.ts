@@ -31,9 +31,10 @@ export function useApplicationJourneyStep() {
 
       // 1. Personal Info: check full_name and id_number in users table
       let completed = [];
+      // FIX: Select all the needed fields!
       const { data: userData } = await supabase
         .from("users")
-        .select("full_name, id_number")
+        .select("full_name, id_number, phone_number, contact_email")
         .eq("id", user.id)
         .single();
       completed[0] = !!userData?.full_name && !!userData?.id_number;
