@@ -1,3 +1,4 @@
+
 import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
 import { DocumentTimelineChart } from '@/components/admin/analytics/DocumentTimelineChart';
 import { DocumentTypePerformanceChart } from '@/components/admin/analytics/DocumentTypePerformanceChart';
@@ -376,3 +377,4 @@ const AdminAnalytics = () => {
 };
 
 export default AdminAnalytics;
+
