@@ -34,6 +34,11 @@ import { PartnerInquiries } from "./components/admin/partners/PartnerInquiries";
 import Login from "./pages/Login";
 import SponsorsPage from '@/pages/admin/Sponsors';
 import SponsorProfile from '@/pages/admin/SponsorProfile';
+import SponsorRegister from "@/pages/sponsors/SponsorRegister";
+import SponsorLogin from "@/pages/sponsors/SponsorLogin";
+import SponsorDashboard from "@/pages/sponsors/SponsorDashboard";
+import ApplyForSponsorship from "@/pages/sponsorships/ApplyForSponsorship";
+import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipStatus";
 
 const queryClient = new QueryClient();
 
@@ -143,6 +148,14 @@ const App = () => (
               {/* Admin sponsor management routes */}
               <Route path="/admin/sponsors" element={<SponsorsPage />} />
               <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
+              
+              {/* Public sponsor ecosystem flows */}
+              <Route path="/sponsors/register" element={<SponsorRegister />} />
+              <Route path="/sponsors/login" element={<SponsorLogin />} />
+              <Route path="/sponsors/dashboard" element={<SponsorDashboard />} />
+
+              <Route path="/sponsorships/apply" element={<ApplyForSponsorship />} />
+              <Route path="/sponsorships/status" element={<StudentSponsorshipStatus />} />
               
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
