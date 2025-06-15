@@ -109,6 +109,18 @@ const PartnerInquiry = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <div className="relative w-full">
+        <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
+          <button
+            type="button"
+            className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
+            onClick={() => navigate('/')}
+          >
+            <span className="mr-2 text-lg">&#8592;</span>
+            Back to Home
+          </button>
+        </div>
+      </div>
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-6">

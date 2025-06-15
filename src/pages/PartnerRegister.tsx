@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import supabase for registration (assume import path for client)
@@ -85,7 +86,19 @@ const PartnerRegister: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
+      <div className="relative w-full">
+        <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
+          <button
+            type="button"
+            className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
+            onClick={() => navigate('/')}
+          >
+            <span className="mr-2 text-lg">&#8592;</span>
+            Back to Home
+          </button>
+        </div>
+      </div>
+      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">
           Partner Institute Registration
         </h1>
@@ -157,3 +170,4 @@ const PartnerRegister: React.FC = () => {
 };
 
 export default PartnerRegister;
+
