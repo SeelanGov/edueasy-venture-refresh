@@ -53,6 +53,7 @@ const registerFormSchema = z.object({
 });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
+export type { RegisterFormValues };
 
 export const RegisterForm = () => {
   const { signUp } = useAuth();
