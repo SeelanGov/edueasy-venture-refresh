@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SponsorMetrics } from '@/components/admin/sponsors/SponsorMetrics';
 import { SponsorAllocationsTable } from '@/components/admin/sponsors/SponsorAllocationsTable';
@@ -9,6 +8,8 @@ import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
 import { useSponsors } from '@/hooks/useSponsors';
 import { toast } from '@/components/ui/use-toast';
 import { Spinner } from '@/components/Spinner';
+import { exportToCsv } from '@/utils/exportToCsv';
+import { FileExport } from 'lucide-react';
 
 const SponsorsPage = () => {
   // Search & filter state
@@ -88,6 +89,48 @@ const SponsorsPage = () => {
     }
   };
 
+  // Export Handlers
+  const handleExportAllocations = () => {
+    if (allocations.length === 0) {
+      toast({ title: "No allocations to export", variant: "destructive" });
+      return;
+    }
+    exportToCsv(
+      allocations.map(a => ({
+        "Sponsor ID": a.sponsor_id,
+        "Student ID": a.student_id,
+        Status: a.status,
+        Plan: a.plan ?? "",
+        "Allocated On": a.allocated_on,
+        "Expires On": a.expires_on ?? "",
+        Notes: a.notes ?? "",
+      })),
+      "allocations.csv"
+    );
+    toast({ title: "Allocations exported!" });
+  };
+
+  const handleExportSponsors = () => {
+    if (!sponsorList || sponsorList.length === 0) {
+      toast({ title: "No sponsors to export", variant: "destructive" });
+      return;
+    }
+    exportToCsv(
+      sponsorList.map(s => ({
+        "ID": s.id,
+        Name: s.name,
+        Email: s.email,
+        Phone: s.phone ?? "",
+        "Contact Person": s.contact_person ?? "",
+        Status: s.status,
+        Tier: s.tier,
+        Website: s.website ?? "",
+      })),
+      "sponsors.csv"
+    );
+    toast({ title: "Sponsors exported!" });
+  };
+
   return (
     <div className="p-4 sm:p-8 max-w-screen-xl mx-auto">
       <h1 className="text-2xl sm:text-3xl font-bold mb-4">Sponsor Management</h1>
@@ -136,12 +179,21 @@ const SponsorsPage = () => {
       {/* Main Table Views */}
       {tab === 'allocations' && (
         <>
-          <div className="flex justify-end mb-2">
+          <div className="flex items-center justify-between mb-2">
             <button
               className="px-4 py-2 bg-cap-teal text-white rounded"
               onClick={handleAdd}
             >
               Add Allocation
+            </button>
+            <button
+              className="ml-2 inline-flex items-center gap-2 text-cap-teal hover:underline bg-white border border-cap-teal px-3 py-2 rounded shadow-sm text-sm"
+              onClick={handleExportAllocations}
+              title="Export Allocations"
+              type="button"
+            >
+              <FileExport size={18} className="mr-1" />
+              Export CSV
             </button>
           </div>
           {allocationsLoading ? (
@@ -162,6 +214,17 @@ const SponsorsPage = () => {
       )}
       {tab === 'sponsors' && (
         <>
+          <div className="flex justify-end mb-2">
+            <button
+              className="inline-flex items-center gap-2 text-cap-teal hover:underline bg-white border border-cap-teal px-3 py-2 rounded shadow-sm text-sm"
+              onClick={handleExportSponsors}
+              title="Export Sponsors"
+              type="button"
+            >
+              <FileExport size={18} className="mr-1" />
+              Export CSV
+            </button>
+          </div>
           {sponsorsLoading ? (
             <div className="py-24 flex items-center justify-center">
               <Spinner size="md" />
