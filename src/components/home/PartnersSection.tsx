@@ -1,13 +1,13 @@
 
 import { Typography } from '@/components/ui/typography';
 
-const partnerLogos = [
-  { name: 'University of Cape Town', logo: '/images/partner-logos/uct.webp' },
-  { name: 'University of Pretoria', logo: '/images/partner-logos/pretoria.webp' },
-  { name: 'University of Witwatersrand', logo: '/images/partner-logos/wits.webp' },
-  { name: 'Stellenbosch University', logo: '/images/partner-logos/stellenbosch.webp' },
-  { name: 'University of Johannesburg', logo: '/images/partner-logos/johannesburg.webp' },
-  { name: 'Rhodes University', logo: '/images/partner-logos/rhodes.webp' },
+const universities = [
+  "University of Cape Town",
+  "University of Pretoria",
+  "University of Witwatersrand",
+  "Stellenbosch University",
+  "University of Johannesburg",
+  "Rhodes University",
 ];
 
 export const PartnersSection = () => {
@@ -26,21 +26,16 @@ export const PartnersSection = () => {
           </Typography>
         </div>
 
-        {/* Partner Logos Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 max-w-6xl mx-auto mb-16">
-          {partnerLogos.map((partner, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex items-center justify-center hover:shadow-md hover:border-cap-teal/20 transition-all duration-300 group"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="h-12 w-auto object-contain filter transition-all duration-300 group-hover:scale-105"
-                title={partner.name}
-              />
-            </div>
-          ))}
+        {/* Collaboration Notice Instead of Logos */}
+        <div className="max-w-xl mx-auto mb-12 text-center">
+          <Typography variant="h4" className="mb-2 text-cap-coral font-semibold">
+            we will be collaborating
+          </Typography>
+          <ul className="list-disc list-inside text-gray-700 mt-4 text-lg text-left inline-block">
+            {universities.map((university) => (
+              <li key={university}>{university}</li>
+            ))}
+          </ul>
         </div>
 
         {/* Partnership Stats */}
@@ -75,3 +70,4 @@ export const PartnersSection = () => {
     </section>
   );
 };
+
