@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -64,15 +63,15 @@ export const HeroContent = () => {
           </Button>
         </div>
       </div>
-      {/* Right: Thandi Image */}
-      <div className="flex-1 flex justify-center w-full md:justify-end">
+      {/* Right: Removed Thandi Image for a cleaner look */}
+      {/* <div className="flex-1 flex justify-center w-full md:justify-end">
         <img
           src="/lovable-uploads/ea352049-18bb-49a0-b8e3-d00ae059e1f1.png"
           alt="Thandi, the EduEasy AI Education Assistant"
           className="max-w-xs w-full rounded-2xl object-cover shadow-xl border-4 border-white"
           style={{minWidth: 240}}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
