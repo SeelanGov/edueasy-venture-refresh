@@ -36,12 +36,18 @@ export function useDocumentsManagement() {
       
       setTotalCount(count || 0);
 
-      // Get paginated documents with user info
+      // Get paginated documents with user info - using proper join
       const { data, error } = await supabase
         .from('documents')
         .select(`
-          *,
-          users:user_id (
+          id,
+          user_id,
+          file_path,
+          document_type,
+          verification_status,
+          created_at,
+          rejection_reason,
+          users!inner (
             full_name,
             email,
             contact_email
@@ -52,11 +58,19 @@ export function useDocumentsManagement() {
 
       if (error) throw error;
 
-      const documentsWithUserInfo = data?.map(doc => ({
-        ...doc,
-        user_name: doc.users?.full_name || 'Unknown User',
-        user_email: doc.users?.email || doc.users?.contact_email || 'No email'
-      })) || [];
+      // Transform the data with proper type checking
+      const documentsWithUserInfo: DocumentWithUserInfo[] = (data || [])
+        .filter(doc => doc.user_id) // Filter out documents without user_id
+        .map(doc => {
+          // Type guard to ensure users data exists and has the right structure
+          const userData = doc.users as any;
+          return {
+            ...doc,
+            user_id: doc.user_id as string,
+            user_name: userData?.full_name || 'Unknown User',
+            user_email: userData?.email || userData?.contact_email || 'No email'
+          };
+        });
 
       setDocuments(documentsWithUserInfo);
     } catch (error) {
