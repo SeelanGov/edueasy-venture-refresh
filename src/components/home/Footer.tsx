@@ -26,7 +26,7 @@ const Footer = () => {
   return (
     <footer className="bg-cap-dark text-white py-16">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Company Info Section */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold text-cap-coral mb-4">EduEasy</h3>
@@ -71,6 +71,28 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
+                  For Institutions
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Student Services */}
+          <div>
+            <h4 className="text-lg font-semibold mb-6">Student Services</h4>
+            <ul className="space-y-3 text-gray-300">
+              <li>
+                <Link to="/career-guidance" className="hover:text-cap-coral transition-colors">
+                  Career Guidance
+                </Link>
+              </li>
+              <li>
+                <Link to="/consultations" className="hover:text-cap-coral transition-colors">
+                  Consultations
+                </Link>
+              </li>
+              <li>
                 <button 
                   onClick={() => scrollToSection('testimonials')}
                   className="hover:text-cap-coral transition-colors text-left"
@@ -84,40 +106,17 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('contact')}
-                  className="hover:text-cap-coral transition-colors text-left"
-                >
-                  Contact Us
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources & Partners */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6">Resources & Partners</h4>
-            <ul className="space-y-3 text-gray-300">
-              <li>
-                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
-                  University Partners
-                </Link>
-              </li>
-              <li>
-                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
-                  TVET Integration
-                </Link>
-              </li>
-              <li>
-                <Link to="/institutions" className="hover:text-cap-coral transition-colors">
-                  SETA Collaboration
-                </Link>
-              </li>
-              <li>
                 <Link to="/sponsorships" className="hover:text-cap-coral transition-colors">
                   Sponsorships
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          {/* Resources & Legal */}
+          <div>
+            <h4 className="text-lg font-semibold mb-6">Resources & Legal</h4>
+            <ul className="space-y-3 text-gray-300">
               <li>
                 <Link to="/partner-dashboard" className="hover:text-cap-coral transition-colors">
                   EduEasy Admin

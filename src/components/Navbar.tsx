@@ -55,23 +55,8 @@ export const Navbar = () => {
             <Link to="/pricing" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Pricing
             </Link>
-            <Link to="/career-guidance" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
-              Career Guidance
-            </Link>
-            <Link to="/consultations" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
-              Consultations
-            </Link>
             <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
-            </Link>
-            <button 
-              onClick={() => scrollToSection('testimonials')}
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
-            >
-              Success Stories
-            </button>
-            <Link to="/faqs" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
-              FAQs
             </Link>
             <Button onClick={handleAuthNavigation} className="bg-cap-teal hover:bg-cap-teal/90">
               Get Started
@@ -130,38 +115,11 @@ export const Navbar = () => {
                 PRICING
               </Link>
               <Link
-                to="/career-guidance"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                CAREER GUIDANCE
-              </Link>
-              <Link
-                to="/consultations"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                CONSULTATIONS
-              </Link>
-              <Link
                 to="/institutions"
                 className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 FOR INSTITUTIONS
-              </Link>
-              <button 
-                onClick={() => scrollToSection('testimonials')}
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
-              >
-                SUCCESS STORIES
-              </button>
-              <Link
-                to="/faqs"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                FAQS
               </Link>
               <Button 
                 onClick={handleAuthNavigation}
