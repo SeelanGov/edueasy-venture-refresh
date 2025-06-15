@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -33,7 +32,8 @@ const InstitutionDetail = () => {
 
         if (fetchError) throw fetchError;
         
-        setInstitution(data);
+        // Type assertion since we know the structure matches our interface
+        setInstitution(data as Institution);
       } catch (err) {
         console.error('Error fetching institution:', err);
         setError('Institution not found');
