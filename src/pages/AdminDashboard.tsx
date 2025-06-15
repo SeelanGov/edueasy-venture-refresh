@@ -22,6 +22,8 @@ import { DocumentVerificationPanel } from '@/components/admin/dashboard/Document
 import { UserManagementPanel } from '@/components/admin/dashboard/UserManagementPanel';
 import { ApplicationListPanel } from '@/components/admin/dashboard/ApplicationListPanel';
 import { makeUserMap } from '@/utils/admin/userLookup';
+import { AdminDashboardStats } from "@/components/admin/dashboard/AdminDashboardStats";
+import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
 
 interface DatabaseUser {
   id: string;
@@ -59,63 +61,17 @@ interface Application {
 }
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
-  const [users, setUsers] = useState<DatabaseUser[]>([]);
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Use custom hook
+  const { users, documents, applications, loading, refreshData } = useAdminDashboardData();
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [trackingIdSearch, setTrackingIdSearch] = useState('');
   const userMap = makeUserMap(users);
 
-  // NEW: Counts
+  // Counts for stats
   const verifiedUsersCount = users.filter(u => u.id_verified).length;
   const unverifiedUsersCount = users.filter(u => !u.id_verified).length;
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      // Fetch users with tracking_id
-      const { data: usersData, error: usersError } = await supabase
-        .from('users')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (usersError) throw usersError;
-      setUsers(usersData as DatabaseUser[]);
-
-      // Fetch documents
-      const { data: documentsData, error: documentsError } = await supabase
-        .from('documents')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (documentsError) throw documentsError;
-      setDocuments(documentsData as Document[]);
-
-      // Fetch applications
-      const { data: applicationsData, error: applicationsError } = await supabase
-        .from('applications')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (applicationsError) throw applicationsError;
-      setApplications(applicationsData as Application[]);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load admin dashboard data',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const pendingDocumentsCount = documents.filter(doc => doc.verification_status === 'pending').length;
+  const totalApplicationsCount = applications.length;
 
   const updateDocumentStatus = async (documentId: string, status: string, rejectionReason?: string) => {
     try {
@@ -136,7 +92,7 @@ const AdminDashboard = () => {
         description: `Document ${status} successfully`,
       });
 
-      fetchData(); // Refresh data
+      refreshData(); // Refresh data
     } catch (error) {
       console.error('Error updating document:', error);
       toast({
@@ -193,53 +149,13 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{users.length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Verified Users</CardTitle>
-            <Check className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{verifiedUsersCount}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unverified Users</CardTitle>
-            <X className="h-4 w-4 text-yellow-700" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{unverifiedUsersCount}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Documents</CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{getPendingDocumentsCount()}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{getTotalApplicationsCount()}</div>
-          </CardContent>
-        </Card>
-      </div>
+      <AdminDashboardStats
+        totalUsers={users.length}
+        verifiedUsers={verifiedUsersCount}
+        unverifiedUsers={unverifiedUsersCount}
+        pendingDocuments={pendingDocumentsCount}
+        totalApplications={totalApplicationsCount}
+      />
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="documents" className="space-y-4">
@@ -262,7 +178,7 @@ const AdminDashboard = () => {
             users={users}
             trackingIdSearch={trackingIdSearch}
             setTrackingIdSearch={setTrackingIdSearch}
-            refreshUsers={fetchData}
+            refreshUsers={refreshData}
           />
         </TabsContent>
 
