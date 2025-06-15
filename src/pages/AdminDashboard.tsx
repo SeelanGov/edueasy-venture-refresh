@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { useDocumentsManagement, DocumentWithUserInfo } from "@/hooks/useDocumentsManagement";
@@ -32,7 +33,7 @@ import {
   DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { AdminAuthGuard } from "@/components/AdminAuthGuard";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
