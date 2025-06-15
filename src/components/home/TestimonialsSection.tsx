@@ -18,7 +18,8 @@ const students: Student[] = [
     name: 'Lerato Mthembu',
     university: 'University of Cape Town',
     program: 'Computer Science',
-    image: 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png',
+    // User image: Smiling girl in South African attire
+    image: '/lovable-uploads/03a7ff84-fd7b-4d09-ba1e-4bd6c64a7f38.png',
     quote: 'EduEasy and Thandi helped me navigate the complex application process with confidence. The AI guidance was like having a personal mentor available 24/7.',
     achievement: 'Academic Excellence Award'
   },
@@ -27,7 +28,8 @@ const students: Student[] = [
     name: 'Sipho Ndlovu',
     university: 'University of Pretoria',
     program: 'Medicine',
-    image: 'lovable-uploads/79d5be30-b5aa-4fc7-a655-097b5c751a7c.png',
+    // User image: Graduate blowing confetti (fits celebration, medicine achievement)
+    image: '/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png',
     quote: 'From document verification to interview preparation, EduEasy supported me every step of the way. I felt prepared and confident throughout my journey.',
     achievement: 'Medical School Scholarship'
   },
@@ -36,9 +38,10 @@ const students: Student[] = [
     name: 'Thandiwe Cele',
     university: 'Stellenbosch University',
     program: 'Business Administration',
-    image: 'lovable-uploads/5d3ceb5a-9a68-4269-88d7-d73c8fffa59d.png',
+    // User image: Group singing in uniforms
+    image: '/lovable-uploads/d1178300-e92d-4476-8e5e-e4854c975f7c.png',
     quote: 'The cultural sensitivity and understanding that Thandi showed made all the difference. Finally, an AI that understands the South African student experience.',
-    achievement: 'Dean\'s List Honor Student'
+    achievement: "Dean's List Honor Student"
   },
 ];
 
