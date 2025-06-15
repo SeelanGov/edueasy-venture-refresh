@@ -62,7 +62,12 @@ const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) =>
         {partner.integration_status || "-"}
       </span>
       {partner.integration_status === "completed" && (
-        <Badge variant="success" className="ml-2">Integration Complete</Badge>
+        <Badge
+          variant="default"
+          className="ml-2 bg-green-100 text-green-800 border-green-200"
+        >
+          Integration Complete
+        </Badge>
       )}
       {partner.integration_status === "pending" && (
         <Badge variant="destructive" className="ml-2">Pending</Badge>
@@ -91,3 +96,4 @@ const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) =>
 );
 
 export default PartnerIntegrationChecklist;
+
