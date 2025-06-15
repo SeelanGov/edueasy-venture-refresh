@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,6 +43,7 @@ import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipSta
 import PartnersPage from "@/pages/admin/Partners";
 import PartnerProfilePage from "@/pages/admin/PartnerProfile";
 import VerificationRequired from "./pages/VerificationRequired";
+import { VerificationGuard } from "@/components/VerificationGuard"; // <-- Fix: import VerificationGuard
 
 const queryClient = new QueryClient();
 
@@ -198,3 +200,4 @@ const App = () => (
 );
 
 export default App;
+
