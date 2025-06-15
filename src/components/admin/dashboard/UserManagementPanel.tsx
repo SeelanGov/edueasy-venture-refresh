@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Download, Check, X, Search } from "lucide-react";
 import { exportToCsv } from '@/utils/exportToCsv';
+import { UserProfileModal } from './UserProfileModal';
 
 interface DatabaseUser {
   id: string;
@@ -34,7 +34,9 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
   const [showOnlyVerified, setShowOnlyVerified] = useState<null | boolean>(null);
   const [exporting, setExporting] = useState(false);
   const [searchText, setSearchText] = useState('');
-  
+  const [openProfileModal, setOpenProfileModal] = useState(false);
+  const [profileUser, setProfileUser] = useState<DatabaseUser | null>(null);
+
   // Apply search, trackingId filter, and verification filter
   const filteredUsers = users.filter((userRec) => {
     const matchesTrackingId = trackingIdSearch
@@ -88,95 +90,120 @@ export function UserManagementPanel({ users, trackingIdSearch, setTrackingIdSear
     setTimeout(() => setExporting(false), 500);
   }
 
+  function handleOpenProfile(user: DatabaseUser) {
+    setProfileUser(user);
+    setOpenProfileModal(true);
+  }
+
+  function handleCloseProfile() {
+    setOpenProfileModal(false);
+    setProfileUser(null);
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>User Management</CardTitle>
-        <CardDescription>View, verify, and export users (search by tracking ID, name, or status)</CardDescription>
-        <div className="mt-4 flex flex-col md:flex-row gap-2 items-start md:items-center">
-          <input
-            type="text"
-            placeholder="Search Tracking ID..."
-            value={trackingIdSearch}
-            onChange={e => setTrackingIdSearch(e.target.value)}
-            className="input input-bordered px-3 py-2 border rounded w-52"
-          />
-          <input
-            type="text"
-            placeholder="Search Name/Email..."
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
-            className="input input-bordered px-3 py-2 border rounded w-56"
-          />
-          <div className="flex gap-2 mt-2 md:mt-0">
-            <Button
-              type="button"
-              size="sm"
-              variant={showOnlyVerified === true ? "default" : "secondary"}
-              onClick={() => setShowOnlyVerified(showOnlyVerified === true ? null : true)}
-            >
-              <Check className="h-4 w-4 mr-1" /> Verified
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={showOnlyVerified === false ? "default" : "secondary"}
-              onClick={() => setShowOnlyVerified(showOnlyVerified === false ? null : false)}
-            >
-              <X className="h-4 w-4 mr-1" /> Unverified
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              onClick={handleExport}
-              disabled={exporting}
-              className="ml-4"
-            >
-              <Download className="h-4 w-4 mr-1" /> Export CSV
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {filteredUsers.map((userData) => (
-            <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex-1 min-w-0">
-                <p className="font-medium flex items-center gap-2">
-                  <span className="text-blue-700 font-mono">{userData.tracking_id || "N/A"}</span>
-                  {userData.id_verified ? (
-                    <Badge variant="default" className="bg-green-100 text-green-800 px-2">Verified</Badge>
-                  ) : (
-                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 px-2">Unverified</Badge>
-                  )}
-                </p>
-                <p className="text-sm text-gray-600 truncate">{userData.full_name || 'No name provided'}</p>
-                <p className="text-sm text-gray-600 truncate">{userData.email || userData.contact_email}</p>
-                <p className="text-xs text-gray-400 truncate">
-                  Profile: {userData.profile_status || 'incomplete'} • Reg: {new Date(userData.created_at).toLocaleDateString()}
-                </p>
-                {/* UUID hidden in export UI, shown only in internal debug */}
-                {/* <p className="text-xs text-gray-300 truncate">UUID: {userData.id}</p> */}
-              </div>
-              <div className="flex flex-col items-end gap-2">
-                <Button
-                  size="sm"
-                  variant={userData.id_verified ? "secondary" : "default"}
-                  onClick={() => handleToggleVerified(userData)}
-                  className={userData.id_verified ? "border-green-300" : "border-yellow-200"}
-                >
-                  {userData.id_verified ? <X className="h-4 w-4 mr-1" /> : <Check className="h-4 w-4 mr-1" />}
-                  {userData.id_verified ? "Mark Unverified" : "Mark Verified"}
-                </Button>
-              </div>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>User Management</CardTitle>
+          <CardDescription>View, verify, and export users (search by tracking ID, name, or status)</CardDescription>
+          <div className="mt-4 flex flex-col md:flex-row gap-2 items-start md:items-center">
+            <input
+              type="text"
+              placeholder="Search Tracking ID..."
+              value={trackingIdSearch}
+              onChange={e => setTrackingIdSearch(e.target.value)}
+              className="input input-bordered px-3 py-2 border rounded w-52"
+            />
+            <input
+              type="text"
+              placeholder="Search Name/Email..."
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              className="input input-bordered px-3 py-2 border rounded w-56"
+            />
+            <div className="flex gap-2 mt-2 md:mt-0">
+              <Button
+                type="button"
+                size="sm"
+                variant={showOnlyVerified === true ? "default" : "secondary"}
+                onClick={() => setShowOnlyVerified(showOnlyVerified === true ? null : true)}
+              >
+                <Check className="h-4 w-4 mr-1" /> Verified
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant={showOnlyVerified === false ? "default" : "secondary"}
+                onClick={() => setShowOnlyVerified(showOnlyVerified === false ? null : false)}
+              >
+                <X className="h-4 w-4 mr-1" /> Unverified
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={handleExport}
+                disabled={exporting}
+                className="ml-4"
+              >
+                <Download className="h-4 w-4 mr-1" /> Export CSV
+              </Button>
             </div>
-          ))}
-          {filteredUsers.length === 0 && (
-            <div className="py-6 text-center text-gray-500">No users found for the selected filters.</div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {filteredUsers.map((userData) => (
+              <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium flex items-center gap-2">
+                    <span className="text-blue-700 font-mono">{userData.tracking_id || "N/A"}</span>
+                    {userData.id_verified ? (
+                      <Badge variant="default" className="bg-green-100 text-green-800 px-2">Verified</Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 px-2">Unverified</Badge>
+                    )}
+                  </p>
+                  <p className="text-sm text-gray-600 truncate">{userData.full_name || 'No name provided'}</p>
+                  <p className="text-sm text-gray-600 truncate">{userData.email || userData.contact_email}</p>
+                  <p className="text-xs text-gray-400 truncate">
+                    Profile: {userData.profile_status || 'incomplete'} • Reg: {new Date(userData.created_at).toLocaleDateString()}
+                  </p>
+                  {/* UUID hidden in export UI, shown only in internal debug */}
+                  {/* <p className="text-xs text-gray-300 truncate">UUID: {userData.id}</p> */}
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  <Button
+                    size="sm"
+                    variant={userData.id_verified ? "secondary" : "default"}
+                    onClick={() => handleToggleVerified(userData)}
+                    className={userData.id_verified ? "border-green-300" : "border-yellow-200"}
+                  >
+                    {userData.id_verified ? <X className="h-4 w-4 mr-1" /> : <Check className="h-4 w-4 mr-1" />}
+                    {userData.id_verified ? "Mark Unverified" : "Mark Verified"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="mt-2"
+                    onClick={() => handleOpenProfile(userData)}
+                  >
+                    View Profile
+                  </Button>
+                </div>
+              </div>
+            ))}
+            {filteredUsers.length === 0 && (
+              <div className="py-6 text-center text-gray-500">No users found for the selected filters.</div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+      <UserProfileModal
+        user={profileUser}
+        open={openProfileModal}
+        onClose={handleCloseProfile}
+      />
+    </>
   );
 }
