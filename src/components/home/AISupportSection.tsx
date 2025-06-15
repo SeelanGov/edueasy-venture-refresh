@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 export const AISupportSection = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const imagePath = 'lovable-uploads/743e67a9-1875-4f9a-b6ff-df7aa3cfef06.png';
+  const imagePath = '/lovable-uploads/ea352049-18bb-49a0-b8e3-d00ae059e1f1.png';
 
   const handleImageError = () => {
     setImageError(true);
@@ -22,17 +22,14 @@ export const AISupportSection = () => {
             <div className="mb-6">
               <div className="w-16 h-1 bg-blue-600 rounded mb-4"></div>
             </div>
-
             <Typography variant="h2" className="mb-4 text-gray-800">
               Meet Thandi, Your AI Education Assistant
             </Typography>
-
             <Typography variant="body-lg" className="mb-6 text-gray-600">
               Get 24/7 personalized support from Thandi, our AI assistant designed specifically 
               for South African students. From application guidance to career advice, Thandi is 
               here to help you succeed.
             </Typography>
-
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
@@ -45,7 +42,6 @@ export const AISupportSection = () => {
                   Get instant help with forms, documents, and deadlines
                 </Typography>
               </div>
-
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
@@ -57,7 +53,6 @@ export const AISupportSection = () => {
                   Discover courses and careers that match your interests and goals
                 </Typography>
               </div>
-
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 rounded-full bg-purple-500"></div>
@@ -70,7 +65,6 @@ export const AISupportSection = () => {
                 </Typography>
               </div>
             </div>
-
             <div className="pt-6">
               <Button
                 size="lg"
@@ -80,9 +74,8 @@ export const AISupportSection = () => {
               </Button>
             </div>
           </div>
-
           {/* Right Column - Image */}
-          <div className="relative">
+          <div className="relative flex items-center justify-center">
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-200 rounded-full opacity-50"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
               {!imageLoaded && !imageError && (
@@ -90,7 +83,6 @@ export const AISupportSection = () => {
                   <div className="text-gray-500">Loading...</div>
                 </div>
               )}
-
               {imageError && (
                 <div className="w-full h-64 bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
                   <div className="text-center p-4">
@@ -100,11 +92,10 @@ export const AISupportSection = () => {
                   </div>
                 </div>
               )}
-              
               <img
                 src={imagePath}
-                alt="South African cultural heritage with traditional beadwork representing AI technology and tradition"
-                className={`w-full h-auto object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
+                alt="Thandi - AI Education Assistant"
+                className={`w-full h-64 object-cover rounded-xl ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
                 onLoad={() => setImageLoaded(true)}
                 onError={handleImageError}
               />
