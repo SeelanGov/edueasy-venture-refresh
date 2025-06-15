@@ -39,6 +39,8 @@ import SponsorLogin from "@/pages/sponsors/SponsorLogin";
 import SponsorDashboard from "@/pages/sponsors/SponsorDashboard";
 import ApplyForSponsorship from "@/pages/sponsorships/ApplyForSponsorship";
 import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipStatus";
+import PartnersPage from "@/pages/admin/Partners";
+import PartnerProfilePage from "@/pages/admin/PartnerProfile";
 
 const queryClient = new QueryClient();
 
@@ -129,10 +131,28 @@ const App = () => (
                   </AdminAuthGuard>
                 }
               />
-              
-              {/* Partner CRM Admin routes */}
+
+              {/* Enhanced Partner Management (new primary routes) */}
               <Route
                 path="/admin/partners"
+                element={
+                  <AdminAuthGuard>
+                    <PartnersPage />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/partners/:id"
+                element={
+                  <AdminAuthGuard>
+                    <PartnerProfilePage />
+                  </AdminAuthGuard>
+                }
+              />
+
+              {/* Legacy CRM routes, fallback (optionally keep for now) */}
+              <Route
+                path="/admin/partners-old"
                 element={
                   <AdminAuthGuard>
                     <PartnerCRMLayout />
@@ -144,7 +164,7 @@ const App = () => (
                 <Route path=":id" element={<PartnerProfile />} />
                 <Route path="tiers" element={<TiersManager />} />
               </Route>
-              
+
               {/* Admin sponsor management routes */}
               <Route path="/admin/sponsors" element={<SponsorsPage />} />
               <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
