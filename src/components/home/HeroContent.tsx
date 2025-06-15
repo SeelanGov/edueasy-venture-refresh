@@ -12,10 +12,12 @@ export const HeroContent = () => {
     if (!user) {
       toast({
         title: 'Authentication Required',
-        description: 'Please log in to start your application.',
+        description: 'Please register an account to start your application.',
         variant: 'destructive',
       });
-      navigate('/login', { state: { from: '/apply' } });
+      // Redirect to the registration page for new users
+      console.log("Redirecting unauthenticated user to /register from Start Application");
+      navigate('/register', { state: { from: '/apply' } });
       return;
     }
     navigate('/apply');
