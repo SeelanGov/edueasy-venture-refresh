@@ -32,6 +32,8 @@ import { PartnerProfile } from "./components/admin/partners/PartnerProfile";
 import { TiersManager } from "./components/admin/partners/TiersManager";
 import { PartnerInquiries } from "./components/admin/partners/PartnerInquiries";
 import Login from "./pages/Login";
+import SponsorsPage from '@/pages/admin/Sponsors';
+import SponsorProfile from '@/pages/admin/SponsorProfile';
 
 const queryClient = new QueryClient();
 
@@ -137,6 +139,10 @@ const App = () => (
                 <Route path=":id" element={<PartnerProfile />} />
                 <Route path="tiers" element={<TiersManager />} />
               </Route>
+              
+              {/* Admin sponsor management routes */}
+              <Route path="/admin/sponsors" element={<SponsorsPage />} />
+              <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
               
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
