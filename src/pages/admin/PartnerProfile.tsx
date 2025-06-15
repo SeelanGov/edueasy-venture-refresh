@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { usePartner } from "@/hooks/usePartner";
@@ -9,6 +8,7 @@ import PartnerPaymentHistory from "@/components/admin/partners/PartnerPaymentHis
 import PartnerIntegrationChecklist from "@/components/admin/partners/PartnerIntegrationChecklist";
 import NotesTimeline from "@/components/admin/partners/NotesTimeline";
 import { Spinner } from "@/components/Spinner";
+import { toast } from "@/components/ui/use-toast"; // show toast on error
 
 const TAB_HEADINGS = [
   { id: "details", label: "Details" },
@@ -25,6 +25,7 @@ const PartnerProfilePage: React.FC = () => {
   const { payments } = usePartnerPayments(id);
   const { notes } = usePartnerNotes(id);
 
+  // Display basic errors (if fetching fails and id not found)
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-24">
@@ -34,9 +35,14 @@ const PartnerProfilePage: React.FC = () => {
     );
   }
   if (!partner) {
+    toast({
+      title: "Partner not found",
+      description: "This partner either does not exist or could not be loaded.",
+      variant: "destructive",
+    });
     return (
-      <div className="p-8 text-center text-gray-400">
-        Partner not found.
+      <div className="p-8 text-center text-red-400">
+        Partner not found or unavailable.
       </div>
     );
   }
