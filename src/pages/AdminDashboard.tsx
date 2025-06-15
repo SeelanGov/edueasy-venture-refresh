@@ -16,6 +16,9 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DocumentVerificationPanel } from '@/components/admin/dashboard/DocumentVerificationPanel';
+import { UserManagementPanel } from '@/components/admin/dashboard/UserManagementPanel';
+import { ApplicationListPanel } from '@/components/admin/dashboard/ApplicationListPanel';
 
 interface DatabaseUser {
   id: string;
@@ -233,124 +236,19 @@ const AdminDashboard = () => {
         </TabsList>
 
         <TabsContent value="documents" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Document Verification</CardTitle>
-              <CardDescription>Review and verify uploaded documents</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {documents.map((doc) => (
-                  <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{doc.document_type || 'Unknown Type'}</p>
-                      <p className="text-sm text-gray-600">User: {doc.user_id}</p>
-                      <p className="text-sm text-gray-600">
-                        Uploaded: {new Date(doc.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {getStatusBadge(doc.verification_status)}
-                      {doc.verification_status === 'pending' && (
-                        <div className="flex space-x-2">
-                          <Button
-                            size="sm"
-                            onClick={() => updateDocumentStatus(doc.id, 'approved')}
-                            className="bg-green-600 hover:bg-green-700"
-                          >
-                            <CheckCircle className="h-4 w-4 mr-1" />
-                            Approve
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => updateDocumentStatus(doc.id, 'rejected', 'Document unclear')}
-                          >
-                            <XCircle className="h-4 w-4 mr-1" />
-                            Reject
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <DocumentVerificationPanel documents={documents} updateDocumentStatus={updateDocumentStatus} />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>User Management</CardTitle>
-              <CardDescription>View and manage registered users (search by tracking ID)</CardDescription>
-              <div className="mt-4">
-                <input
-                  type="text"
-                  placeholder="Search Tracking ID..."
-                  value={trackingIdSearch}
-                  onChange={e => setTrackingIdSearch(e.target.value)}
-                  className="input input-bordered px-3 py-2 border rounded w-72"
-                />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredUsers.map((userData) => (
-                  <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">Tracking ID: <span className="text-blue-700 font-mono">{userData.tracking_id || "N/A"}</span></p>
-                      <p className="text-sm text-gray-600">{userData.full_name || 'No name provided'}</p>
-                      <p className="text-sm text-gray-600">{userData.email || userData.contact_email}</p>
-                      <p className="text-xs text-gray-400">User UUID: {userData.id}</p>
-                      <p className="text-sm text-gray-600">
-                        Registered: {new Date(userData.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <Badge variant={userData.profile_status === 'complete' ? 'default' : 'secondary'}>
-                        {userData.profile_status || 'incomplete'}
-                      </Badge>
-                      <Badge variant={userData.id_verified ? 'default' : 'secondary'} className={userData.id_verified ? 'bg-green-200 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
-                        {userData.id_verified ? 'Verified' : 'Unverified'}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-                {filteredUsers.length === 0 && (
-                  <div className="py-6 text-center text-gray-500">No users found for this tracking ID.</div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <UserManagementPanel 
+            users={users}
+            trackingIdSearch={trackingIdSearch}
+            setTrackingIdSearch={setTrackingIdSearch}
+          />
         </TabsContent>
 
         <TabsContent value="applications" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Applications</CardTitle>
-              <CardDescription>Review submitted applications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {applications.map((app) => (
-                  <div key={app.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{app.university || 'University not specified'}</p>
-                      <p className="text-sm text-gray-600">Program: {app.program || 'Not specified'}</p>
-                      <p className="text-sm text-gray-600">User: {app.user_id}</p>
-                      <p className="text-sm text-gray-600">
-                        Submitted: {new Date(app.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {getStatusBadge(app.status)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <ApplicationListPanel applications={applications} />
         </TabsContent>
       </Tabs>
     </div>
