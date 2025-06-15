@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -50,6 +49,11 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
     }
   };
 
+  // TODO: Phase 5+ — After VerificationGuard,
+  // add logic here to detect sponsor allocation and activate plans.
+  // If sponsor_id exists and allocation is active -> auto activate plan.
+  // Otherwise, show payment/plan options. (Next PR)
+  
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {/* Tracking ID Card */}
@@ -150,4 +154,3 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
     </div>
   );
 };
-

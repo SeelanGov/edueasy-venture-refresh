@@ -71,7 +71,7 @@ const App = () => (
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/career-guidance" element={<CareerGuidancePage />} />
               <Route path="/consultations" element={<ConsultationsPage />} />
-              
+
               <Route
                 path="/register"
                 element={
@@ -80,13 +80,15 @@ const App = () => (
                   </AuthGuard>
                 }
               />
-              
-              {/* Protected routes */}
+
+              {/* Protected routes: only authenticated */}
               <Route
                 path="/dashboard"
                 element={
                   <AuthGuard>
-                    <Dashboard />
+                    <VerificationGuard>
+                      <Dashboard />
+                    </VerificationGuard>
                   </AuthGuard>
                 }
               />
@@ -102,7 +104,9 @@ const App = () => (
                 path="/profile-completion"
                 element={
                   <AuthGuard>
-                    <ProfileCompletion />
+                    <VerificationGuard>
+                      <ProfileCompletion />
+                    </VerificationGuard>
                   </AuthGuard>
                 }
               />
@@ -110,11 +114,13 @@ const App = () => (
                 path="/subscription"
                 element={
                   <AuthGuard>
-                    <SubscriptionPage />
+                    <VerificationGuard>
+                      <SubscriptionPage />
+                    </VerificationGuard>
                   </AuthGuard>
                 }
               />
-              
+
               {/* Admin routes */}
               <Route
                 path="/partner-dashboard"
@@ -169,7 +175,7 @@ const App = () => (
               {/* Admin sponsor management routes */}
               <Route path="/admin/sponsors" element={<SponsorsPage />} />
               <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
-              
+
               {/* Public sponsor ecosystem flows */}
               <Route path="/sponsors/register" element={<SponsorRegister />} />
               <Route path="/sponsors/login" element={<SponsorLogin />} />
@@ -177,7 +183,7 @@ const App = () => (
 
               <Route path="/sponsorships/apply" element={<ApplyForSponsorship />} />
               <Route path="/sponsorships/status" element={<StudentSponsorshipStatus />} />
-              
+
               {/* Verification required route (MUST be public for redirects) */}
               <Route path="/verification-required" element={<VerificationRequired />} />
               
