@@ -42,7 +42,7 @@ export const PartnersSection = () => {
                   imageRendering: "auto"
                 }}
                 loading="eager"
-                fetchpriority="high"
+                fetchPriority="high"
                 draggable={false}
               />
               {/* Add a soft overlay for crispness & contrast */}
