@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,23 +64,53 @@ export const RegisterForm = () => {
     },
   });
 
+  // NEW: call /verify-id before sign-up
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setRegistrationError(null);
+
     if (!consentPrivacy || !consentTerms) {
       setRegistrationError("You must agree to the Privacy Policy and Terms of Service.");
       return;
     }
+
     setIsLoading(true);
-    setRegistrationError(null);
+
     try {
       const data = form.getValues();
-      const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
-      if (!response) {
-        setRegistrationError("Registration is currently unavailable. Please try again later.");
+      // Call verify-id function with plain national_id (ID Number) and TEMP user_id (random for now)
+      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || "pensvamtfjtpsaoeflbx"}.functions.supabase.co/verify-id`;
+
+      const tmp_user_id = crypto.randomUUID();
+      const res = await fetch(edgeUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: tmp_user_id, // We do not yet have a user, but pass a temp and update after account creation
+          national_id: data.idNumber,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "ID Verification failed. Please check your ID number and try again.");
       }
+
+      // ID Verified! Now proceed to sign up
+      const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
+
+      if (response?.error) {
+        setRegistrationError(response.error);
+        return;
+      }
+
+      // Success—navigate after regular post-signup logic
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      setRegistrationError(message || "An unexpected error occurred. Please try again.");
+      // Edge function or network failure
+      setRegistrationError(
+        error instanceof Error ? error.message : "Failed to verify ID. Please try again later."
+      );
+      return;
     } finally {
       setIsLoading(false);
     }

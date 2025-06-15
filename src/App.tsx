@@ -177,6 +177,9 @@ const App = () => (
               <Route path="/sponsorships/apply" element={<ApplyForSponsorship />} />
               <Route path="/sponsorships/status" element={<StudentSponsorshipStatus />} />
               
+              {/* Verification required route (MUST be public for redirects) */}
+              <Route path="/verification-required" element={<VerificationRequired />} />
+              
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
