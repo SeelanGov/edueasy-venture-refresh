@@ -2,11 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Bot } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PatternBorder } from "@/components/PatternBorder";
 import { Typography } from "@/components/ui/typography";
+import React from "react";
 
 const Pricing = () => {
+  const navigate = useNavigate();
   const plans = [
     {
       id: "starter",
@@ -70,6 +72,18 @@ const Pricing = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="relative w-full">
         <PatternBorder position="top" />
+      </div>
+
+      {/* Back to Home Button */}
+      <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/")}
+          className="px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
+        >
+          <span className="mr-2 text-lg">&#8592;</span>
+          Back to Home
+        </Button>
       </div>
 
       <div className="container mx-auto py-20 px-4">
@@ -180,3 +194,4 @@ const Pricing = () => {
 };
 
 export default Pricing;
+
