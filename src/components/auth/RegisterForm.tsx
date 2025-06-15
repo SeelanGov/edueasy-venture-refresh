@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,22 +7,6 @@ import { Link, useLocation } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Spinner } from "@/components/Spinner";
 import { useAuth } from "@/hooks/useAuth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -36,7 +21,11 @@ import { PasswordField } from "./register/PasswordField";
 import { ConfirmPasswordField } from "./register/ConfirmPasswordField";
 import { ConsentCheckboxes } from "./register/ConsentCheckboxes";
 
-// Schema definition moved to the form component
+// IMPORTANT: Import the shadcn/ui Form provider to wrap around the form
+import {
+  Form,
+} from "@/components/ui/form";
+
 const registerFormSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   idNumber: z
@@ -112,39 +101,43 @@ export const RegisterForm = () => {
             <AlertDescription>{registrationError}</AlertDescription>
           </Alert>
         )}
-        <form onSubmit={handleRegister} className="space-y-4">
-          <FullNameField control={form.control} isLoading={isLoading} />
-          <IdNumberField control={form.control} isLoading={isLoading} />
-          <EmailField control={form.control} isLoading={isLoading} />
-          <GenderField control={form.control} isLoading={isLoading} />
-          <PasswordField control={form.control} isLoading={isLoading} />
-          <ConfirmPasswordField control={form.control} isLoading={isLoading} />
-          <ConsentCheckboxes
-            consentPrivacy={consentPrivacy}
-            consentTerms={consentTerms}
-            setConsentPrivacy={setConsentPrivacy}
-            setConsentTerms={setConsentTerms}
-          />
-          <Button
-            type="submit"
-            className="w-full bg-cap-coral hover:bg-cap-coral/90"
-            disabled={isLoading}
-          >
-            {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-            {isLoading ? "Signing up..." : "Sign Up"}
-          </Button>
-          <div className="text-center mt-4">
-            <p className="text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-cap-teal hover:underline font-medium"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
-        </form>
+
+        {/* Wrap the form fields in the Form provider */}
+        <Form {...form}>
+          <form onSubmit={handleRegister} className="space-y-4">
+            <FullNameField control={form.control} isLoading={isLoading} />
+            <IdNumberField control={form.control} isLoading={isLoading} />
+            <EmailField control={form.control} isLoading={isLoading} />
+            <GenderField control={form.control} isLoading={isLoading} />
+            <PasswordField control={form.control} isLoading={isLoading} />
+            <ConfirmPasswordField control={form.control} isLoading={isLoading} />
+            <ConsentCheckboxes
+              consentPrivacy={consentPrivacy}
+              consentTerms={consentTerms}
+              setConsentPrivacy={setConsentPrivacy}
+              setConsentTerms={setConsentTerms}
+            />
+            <Button
+              type="submit"
+              className="w-full bg-cap-coral hover:bg-cap-coral/90"
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
+              {isLoading ? "Signing up..." : "Sign Up"}
+            </Button>
+            <div className="text-center mt-4">
+              <p className="text-sm text-gray-600">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-cap-teal hover:underline font-medium"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   );
