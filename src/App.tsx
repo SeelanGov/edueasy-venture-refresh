@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -30,6 +31,7 @@ import { PartnerCRMLayout } from "./components/admin/partners/PartnerCRMLayout";
 import { PartnerList } from "./components/admin/partners/PartnerList";
 import { PartnerProfile } from "./components/admin/partners/PartnerProfile";
 import { TiersManager } from "./components/admin/partners/TiersManager";
+import { PartnerInquiries } from "./components/admin/partners/PartnerInquiries";
 
 const queryClient = new QueryClient();
 
@@ -126,6 +128,7 @@ const App = () => (
                 }
               >
                 <Route index element={<PartnerList />} />
+                <Route path="inquiries" element={<PartnerInquiries />} />
                 <Route path=":id" element={<PartnerProfile />} />
                 <Route path="tiers" element={<TiersManager />} />
               </Route>

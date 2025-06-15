@@ -8,9 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Building2, CheckCircle, Users, BarChart3, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@/components/ui/typography';
+import { usePartnerInquiry } from '@/hooks/usePartnerInquiry';
 
 const PartnerInquiry = () => {
   const navigate = useNavigate();
+  const { submitInquiry, isSubmitting, isSubmitted } = usePartnerInquiry();
   const [formData, setFormData] = useState({
     institutionName: '',
     institutionType: '',
@@ -23,18 +25,9 @@ const PartnerInquiry = () => {
     message: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    await submitInquiry(formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

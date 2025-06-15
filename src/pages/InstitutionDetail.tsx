@@ -1,33 +1,80 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Building2, Mail, Phone, Globe, Users, GraduationCap, CheckCircle, Star } from 'lucide-react';
+import { ArrowLeft, Building2, Mail, Phone, Globe, Users, GraduationCap, CheckCircle, Star, Loader2 } from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
+import { supabase } from '@/integrations/supabase/client';
+import { Institution } from '@/hooks/useInstitutions';
 
 const InstitutionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [institution, setInstitution] = useState<Institution | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data - this would come from the database in a real implementation
-  const institution = {
-    id: "1",
-    name: "University of Cape Town",
-    type: "University",
-    location: "Cape Town, Western Cape",
-    programs: "Medicine, Engineering, Business, Law",
-    description: "The University of Cape Town is a public research university located in Cape Town, South Africa. It is one of the oldest universities in South Africa and is consistently ranked as the top university in Africa.",
-    email: "info@uct.ac.za",
-    phone: "+27 21 650 9111",
-    website: "https://www.uct.ac.za",
-    studentCount: "29,000+",
-    established: "1829",
-    ranking: "#1 in Africa",
-    partnerTier: "Premium",
-    isPartner: true
-  };
+  useEffect(() => {
+    const fetchInstitution = async () => {
+      if (!id) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const { data, error: fetchError } = await supabase
+          .from('institutions')
+          .select('*')
+          .eq('id', id)
+          .eq('active', true)
+          .single();
+
+        if (fetchError) throw fetchError;
+        
+        setInstitution(data);
+      } catch (err) {
+        console.error('Error fetching institution:', err);
+        setError('Institution not found');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInstitution();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin text-cap-teal" />
+          <Typography variant="p">Loading institution details...</Typography>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !institution) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Card className="max-w-md w-full mx-4">
+          <CardContent className="p-8 text-center">
+            <Typography variant="h3" className="text-red-600 mb-2">
+              Institution Not Found
+            </Typography>
+            <Typography variant="p" className="text-gray-600 mb-4">
+              {error || 'The institution you are looking for does not exist.'}
+            </Typography>
+            <Button onClick={() => navigate('/institutions')}>
+              Back to Institutions
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const benefits = [
     "AI-powered student matching",
@@ -79,8 +126,8 @@ const InstitutionDetail = () => {
                 </Typography>
                 <div className="flex items-center gap-2 mt-2">
                   <Badge variant="outline">{institution.type}</Badge>
-                  <Badge variant="outline">{institution.location}</Badge>
-                  {institution.isPartner && (
+                  {institution.location && <Badge variant="outline">{institution.location}</Badge>}
+                  {institution.partner_id && (
                     <Badge className="bg-green-100 text-green-800">
                       EduEasy Partner
                     </Badge>
@@ -93,7 +140,10 @@ const InstitutionDetail = () => {
               <Button variant="outline" onClick={() => navigate('/register')}>
                 Apply as Student
               </Button>
-              <Button className="bg-cap-teal hover:bg-cap-teal/90">
+              <Button 
+                className="bg-cap-teal hover:bg-cap-teal/90"
+                onClick={() => navigate('/partner-inquiry')}
+              >
                 Become a Partner
               </Button>
             </div>
@@ -112,44 +162,54 @@ const InstitutionDetail = () => {
               </CardHeader>
               <CardContent>
                 <Typography variant="p" className="text-gray-600 mb-6">
-                  {institution.description}
+                  {institution.description || `${institution.name} is a leading educational institution in ${institution.province || 'South Africa'}.`}
                 </Typography>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-cap-teal">{institution.studentCount}</div>
-                    <div className="text-sm text-gray-500">Students</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-cap-teal">{institution.established}</div>
-                    <div className="text-sm text-gray-500">Established</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-cap-teal">{institution.ranking}</div>
-                    <div className="text-sm text-gray-500">Ranking</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-cap-teal">{institution.partnerTier}</div>
-                    <div className="text-sm text-gray-500">Partner Tier</div>
-                  </div>
+                  {institution.student_count && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-cap-teal">{institution.student_count}</div>
+                      <div className="text-sm text-gray-500">Students</div>
+                    </div>
+                  )}
+                  {institution.established && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-cap-teal">{institution.established}</div>
+                      <div className="text-sm text-gray-500">Established</div>
+                    </div>
+                  )}
+                  {institution.ranking && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-cap-teal">{institution.ranking}</div>
+                      <div className="text-sm text-gray-500">Ranking</div>
+                    </div>
+                  )}
+                  {institution.partner_id && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-cap-teal">Partner</div>
+                      <div className="text-sm text-gray-500">Status</div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
 
             {/* Programs */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5" />
-                  Popular Programs
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Typography variant="p" className="text-gray-600">
-                  <strong>Available Programs:</strong> {institution.programs}
-                </Typography>
-              </CardContent>
-            </Card>
+            {institution.programs && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <GraduationCap className="h-5 w-5" />
+                    Popular Programs
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Typography variant="p" className="text-gray-600">
+                    <strong>Available Programs:</strong> {institution.programs}
+                  </Typography>
+                </CardContent>
+              </Card>
+            )}
 
             {/* EduEasy Partnership Benefits */}
             <Card>
@@ -209,38 +269,46 @@ const InstitutionDetail = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-gray-400" />
-                  <a href={`mailto:${institution.email}`} className="text-blue-600 hover:underline">
-                    {institution.email}
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-gray-400" />
-                  <a href={`tel:${institution.phone}`} className="text-blue-600 hover:underline">
-                    {institution.phone}
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-gray-400" />
-                  <a href={institution.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                    Visit Website
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
+            {(institution.email || institution.phone || institution.website) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contact Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {institution.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-gray-400" />
+                      <a href={`mailto:${institution.email}`} className="text-blue-600 hover:underline">
+                        {institution.email}
+                      </a>
+                    </div>
+                  )}
+                  {institution.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-gray-400" />
+                      <a href={`tel:${institution.phone}`} className="text-blue-600 hover:underline">
+                        {institution.phone}
+                      </a>
+                    </div>
+                  )}
+                  {institution.website && (
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-gray-400" />
+                      <a href={institution.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                        Visit Website
+                      </a>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Partnership CTA */}
             <Card className="bg-gradient-to-br from-cap-teal to-cap-teal/80 text-white">
               <CardHeader>
                 <CardTitle className="text-white">Ready to Partner?</CardTitle>
                 <CardDescription className="text-white/90">
-                  Join over 50+ institutions already using EduEasy
+                  Join other institutions already using EduEasy
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
