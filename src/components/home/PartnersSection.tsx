@@ -11,6 +11,9 @@ const universities = [
 ];
 
 export const PartnersSection = () => {
+  // Use the uploaded image for the section illustration
+  const imagePath = "/lovable-uploads/9bcfb947-1a2e-46e9-8991-96d07dfdebf1.png";
+
   return (
     <section className="py-20 px-4 md:py-24 bg-white relative">
       <div className="container mx-auto">
@@ -26,16 +29,31 @@ export const PartnersSection = () => {
           </Typography>
         </div>
 
-        {/* Collaboration Notice Instead of Logos */}
-        <div className="max-w-xl mx-auto mb-12 text-center">
-          <Typography variant="h4" className="mb-2 text-cap-coral font-semibold">
-            we will be collaborating
-          </Typography>
-          <ul className="list-disc list-inside text-gray-700 mt-4 text-lg text-left inline-block">
-            {universities.map((university) => (
-              <li key={university}>{university}</li>
-            ))}
-          </ul>
+        {/* Section as Grid: Image (left) + Collaboration message (right) */}
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-4xl mx-auto mb-12">
+          {/* Image Illustration */}
+          <div className="w-full flex justify-center md:justify-end">
+            <div className="rounded-xl overflow-hidden shadow-lg w-full max-w-sm">
+              <img
+                src={imagePath}
+                alt="Student using online platform"
+                className="w-full h-auto object-cover"
+                style={{ maxHeight: 320 }}
+                loading="lazy"
+              />
+            </div>
+          </div>
+          {/* Collaboration Notice and Universities List */}
+          <div className="text-center md:text-left">
+            <Typography variant="h4" className="mb-2 text-cap-coral font-semibold">
+              we will be collaborating
+            </Typography>
+            <ul className="list-disc list-inside text-gray-700 mt-4 text-lg text-left inline-block">
+              {universities.map((university) => (
+                <li key={university}>{university}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Partnership Stats */}
