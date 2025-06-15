@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { usePartners } from "@/hooks/usePartners";
+import { usePartners, PartnerType } from "@/hooks/usePartners";
 import PartnerCard from "@/components/admin/partners/PartnerCard";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,7 @@ const PARTNER_TYPES = [
 ];
 
 const PartnersPage: React.FC = () => {
-  const [typeFilter, setTypeFilter] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<PartnerType | undefined>(undefined);
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
   const { partners, isLoading } = usePartners({ type: typeFilter, search });
@@ -37,8 +36,11 @@ const PartnersPage: React.FC = () => {
           className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64"
         />
         <select
-          value={typeFilter}
-          onChange={e => setTypeFilter(e.target.value)}
+          value={typeFilter || ""}
+          onChange={e => {
+            const val = e.target.value;
+            setTypeFilter(val === "" ? undefined : (val as PartnerType));
+          }}
           className="rounded border border-gray-300 px-3 py-2 text-sm w-44"
         >
           {PARTNER_TYPES.map(t =>
