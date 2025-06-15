@@ -1,50 +1,82 @@
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { Building2, Users, Settings, CreditCard } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useLocation, Link } from 'react-router-dom';
+import { Building2, Users, Settings, Mail, BarChart3 } from 'lucide-react';
 
 export const PartnerCRMLayout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
 
   const navItems = [
-    { path: '/admin/partners', label: 'All Partners', icon: Building2 },
-    { path: '/admin/partners/tiers', label: 'Tier Management', icon: Settings },
-    { path: '/admin/partners/payments', label: 'Payments', icon: CreditCard },
+    {
+      label: 'Partners',
+      icon: <Building2 className="h-4 w-4" />,
+      path: '/admin/partners',
+      active: location.pathname === '/admin/partners'
+    },
+    {
+      label: 'Inquiries',
+      icon: <Mail className="h-4 w-4" />,
+      path: '/admin/partners/inquiries',
+      active: location.pathname === '/admin/partners/inquiries'
+    },
+    {
+      label: 'Tiers',
+      icon: <Settings className="h-4 w-4" />,
+      path: '/admin/partners/tiers',
+      active: location.pathname === '/admin/partners/tiers'
+    },
+    {
+      label: 'Analytics',
+      icon: <BarChart3 className="h-4 w-4" />,
+      path: '/admin/partners/analytics',
+      active: location.pathname === '/admin/partners/analytics'
+    }
   ];
 
   return (
-    <div className="flex h-full">
-      {/* Sidebar */}
-      <div className="w-64 bg-white border-r border-gray-200 p-6">
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900">Partner CRM</h2>
-          <p className="text-sm text-gray-600">Manage institutional partnerships</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white shadow-sm border-b">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-900">Partner CRM</h1>
+            <Button variant="outline" onClick={() => navigate('/partner-dashboard')}>
+              Back to Dashboard
+            </Button>
+          </div>
         </div>
-        
-        <nav className="space-y-2">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link key={item.path} to={item.path}>
-                <Button
-                  variant={isActive ? "default" : "ghost"}
-                  className="w-full justify-start"
-                >
-                  <item.icon className="h-4 w-4 mr-2" />
-                  {item.label}
-                </Button>
-              </Link>
-            );
-          })}
-        </nav>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-50">
-        <Outlet />
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar Navigation */}
+          <div className="lg:col-span-1">
+            <Card>
+              <CardContent className="p-4">
+                <nav className="space-y-2">
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.path}
+                      variant={item.active ? "default" : "ghost"}
+                      className="w-full justify-start"
+                      onClick={() => navigate(item.path)}
+                    >
+                      {item.icon}
+                      <span className="ml-2">{item.label}</span>
+                    </Button>
+                  ))}
+                </nav>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </div>
   );
