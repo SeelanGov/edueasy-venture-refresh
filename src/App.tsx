@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,6 +31,7 @@ import { PartnerList } from "./components/admin/partners/PartnerList";
 import { PartnerProfile } from "./components/admin/partners/PartnerProfile";
 import { TiersManager } from "./components/admin/partners/TiersManager";
 import { PartnerInquiries } from "./components/admin/partners/PartnerInquiries";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +46,11 @@ const App = () => (
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
+              <Route path="/login" element={
+                <AuthGuard requiresAuth={false}>
+                  <Login />
+                </AuthGuard>
+              } />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/meet-thandi" element={<MeetThandi />} />
               <Route path="/institutions" element={<Institutions />} />
