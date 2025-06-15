@@ -1,8 +1,7 @@
-
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
-import { ChevronLeft, ChevronRight, LogOut, Moon, Sun, Shield, Building2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LogOut, Moon, Sun, Shield, Building2, ChartBarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AdminNavSection } from './AdminNavSection';
@@ -35,20 +34,27 @@ export const DashboardSidebar = ({
     return location.pathname === path;
   };
 
-  // Add UI Lock admin item and Partner CRM if user is admin
-  const enhancedAdminNavItems = isAdmin ? [
-    ...adminNavItems,
-    {
-      name: 'Partner CRM',
-      path: '/admin/partners',
-      icon: <Building2 className="h-5 w-5" />,
-    },
-    {
-      name: 'UI Lock System',
-      path: '/admin/ui-lock',
-      icon: <Shield className="h-5 w-5" />,
-    }
-  ] : adminNavItems;
+  // Add UI Lock admin item, Partner CRM, and Analytics for admin users
+  const enhancedAdminNavItems = isAdmin
+    ? [
+        {
+          name: 'Analytics',
+          path: '/admin/analytics',
+          icon: <ChartBarIcon className="h-5 w-5" />,
+        },
+        ...adminNavItems,
+        {
+          name: 'Partner CRM',
+          path: '/admin/partners',
+          icon: <Building2 className="h-5 w-5" />,
+        },
+        {
+          name: 'UI Lock System',
+          path: '/admin/ui-lock',
+          icon: <Shield className="h-5 w-5" />,
+        },
+      ]
+    : adminNavItems;
 
   return (
     <div

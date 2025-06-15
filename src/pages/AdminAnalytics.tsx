@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from 'react';
 import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
 import { DocumentTimelineChart } from '@/components/admin/analytics/DocumentTimelineChart';
 import { DocumentTypePerformanceChart } from '@/components/admin/analytics/DocumentTypePerformanceChart';
@@ -22,19 +23,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDocumentAnalytics } from '@/hooks/analytics';
 import { supabase } from '@/integrations/supabase/client';
 import { ChartBarIcon, Download } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 const AdminAnalytics = () => {
   const { analytics, loading, error, filters, updateFilters, resetFilters, refreshAnalytics } =
     useDocumentAnalytics();
-
   const [documentTypes, setDocumentTypes] = useState<string[]>([]);
   const [institutions, setInstitutions] = useState<{ id: string; name: string }[]>([]);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // Pull unique document types and institutions for filtering
   useEffect(() => {
     const fetchMetadata = async () => {
-      // Fetch distinct document types
+      // Document types
       const { data: typeData } = await supabase
         .from('documents')
         .select('document_type')
@@ -44,34 +44,24 @@ const AdminAnalytics = () => {
         const validTypes: string[] = typeData
           .map((d) => d.document_type)
           .filter((type): type is string => type !== null && typeof type === 'string');
-        const uniqueTypes: string[] = Array.from(new Set(validTypes)).sort();
-        setDocumentTypes(uniqueTypes);
+        setDocumentTypes(Array.from(new Set(validTypes)).sort());
       }
 
-      // Fetch institutions
+      // Institutions
       const { data: institutionData } = await supabase
         .from('institutions')
         .select('id, name')
         .order('name');
-
-      if (institutionData) {
-        setInstitutions(institutionData);
-      }
+      if (institutionData) setInstitutions(institutionData);
     };
-
     fetchMetadata();
   }, []);
 
+  // --- Export analytics as CSV ---
   const handleExportData = () => {
     if (!analytics) return;
-
-    // Create CSV data
     let csv = 'data:text/csv;charset=utf-8,';
-
-    // Headers
     csv += 'Metric,Value\r\n';
-
-    // Data rows
     csv += `Total Documents,${analytics.totalDocuments}\r\n`;
     csv += `Approved Documents,${analytics.approvedDocuments}\r\n`;
     csv += `Rejected Documents,${analytics.rejectedDocuments}\r\n`;
@@ -79,8 +69,6 @@ const AdminAnalytics = () => {
     csv += `Resubmission Requested,${analytics.resubmissionRequestedDocuments}\r\n`;
     csv += `Pass Rate,${analytics.passRate.toFixed(2)}%\r\n`;
     csv += `Fail Rate,${analytics.failRate.toFixed(2)}%\r\n`;
-
-    // Create and trigger download
     const encodedUri = encodeURI(csv);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
@@ -126,7 +114,7 @@ const AdminAnalytics = () => {
               </Button>
             </div>
           </div>
-
+          {/* Analytics Filters */}
           <AnalyticsFilters
             filters={filters}
             onUpdateFilters={updateFilters}
@@ -134,13 +122,13 @@ const AdminAnalytics = () => {
             documentTypes={documentTypes}
             institutions={institutions}
           />
-
           {loading ? (
             <div className="flex justify-center py-12">
               <Spinner size="lg" />
             </div>
           ) : analytics ? (
             <>
+              {/* Stat Cards */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-6">
                 <StatCard
                   title="Total Documents"
@@ -163,7 +151,7 @@ const AdminAnalytics = () => {
                   description={`${((analytics.pendingDocuments / (analytics.totalDocuments || 1)) * 100).toFixed(1)}% of total`}
                 />
               </div>
-
+              {/* Tabs for different data visualizations */}
               <Tabs
                 defaultValue="overview"
                 value={activeTab}
@@ -176,6 +164,7 @@ const AdminAnalytics = () => {
                   <TabsTrigger value="data">Data Tables</TabsTrigger>
                 </TabsList>
 
+                {/* OVERVIEW: Distribution and Rejection Reason Charts */}
                 <TabsContent value="overview" className="space-y-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <Card>
@@ -219,7 +208,6 @@ const AdminAnalytics = () => {
                         />
                       </CardContent>
                     </Card>
-
                     <Card>
                       <CardHeader>
                         <CardTitle>Top Rejection Reasons</CardTitle>
@@ -231,7 +219,7 @@ const AdminAnalytics = () => {
                     </Card>
                   </div>
                 </TabsContent>
-
+                {/* CHARTS: Timeline and Document Type Breakdown */}
                 <TabsContent value="charts" className="space-y-6">
                   <Card>
                     <CardHeader>
@@ -242,7 +230,6 @@ const AdminAnalytics = () => {
                       <DocumentTimelineChart data={analytics.documentsByDate} />
                     </CardContent>
                   </Card>
-
                   <Card>
                     <CardHeader>
                       <CardTitle>Document Type Performance</CardTitle>
@@ -255,7 +242,7 @@ const AdminAnalytics = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
+                {/* DATA TABLES: Detailed breakdowns */}
                 <TabsContent value="data" className="space-y-6">
                   <Card>
                     <CardHeader>
@@ -301,7 +288,6 @@ const AdminAnalytics = () => {
                       </Table>
                     </CardContent>
                   </Card>
-
                   <Card>
                     <CardHeader>
                       <CardTitle>Document Type Breakdown</CardTitle>
@@ -337,7 +323,6 @@ const AdminAnalytics = () => {
                                 type.approved + type.rejected + type.request_resubmission;
                               const passRate =
                                 processed > 0 ? (type.approved / processed) * 100 : 0;
-
                               return (
                                 <TableRow key={type.type}>
                                   <TableCell>
@@ -377,4 +362,3 @@ const AdminAnalytics = () => {
 };
 
 export default AdminAnalytics;
-
