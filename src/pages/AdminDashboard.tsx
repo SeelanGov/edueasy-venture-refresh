@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DocumentVerificationPanel } from '@/components/admin/dashboard/DocumentVerificationPanel';
 import { UserManagementPanel } from '@/components/admin/dashboard/UserManagementPanel';
 import { ApplicationListPanel } from '@/components/admin/dashboard/ApplicationListPanel';
+import { makeUserMap } from '@/utils/admin/userLookup';
 
 interface DatabaseUser {
   id: string;
@@ -65,6 +66,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [trackingIdSearch, setTrackingIdSearch] = useState('');
+  const userMap = makeUserMap(users);
 
   // NEW: Counts
   const verifiedUsersCount = users.filter(u => u.id_verified).length;
@@ -248,7 +250,11 @@ const AdminDashboard = () => {
         </TabsList>
 
         <TabsContent value="documents" className="space-y-4">
-          <DocumentVerificationPanel documents={documents} updateDocumentStatus={updateDocumentStatus} />
+          <DocumentVerificationPanel 
+            documents={documents} 
+            updateDocumentStatus={updateDocumentStatus}
+            userMap={userMap}
+          />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-4">
@@ -261,7 +267,7 @@ const AdminDashboard = () => {
         </TabsContent>
 
         <TabsContent value="applications" className="space-y-4">
-          <ApplicationListPanel applications={applications} />
+          <ApplicationListPanel applications={applications} userMap={userMap} />
         </TabsContent>
       </Tabs>
     </div>
