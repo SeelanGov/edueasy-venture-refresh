@@ -1,65 +1,86 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { SponsorAllocation, Sponsor } from '@/types/SponsorTypes';
+import { useSponsor } from '@/hooks/useSponsor';
+import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
+import { useSponsorNotes } from '@/hooks/useSponsorNotes';
+import { useSponsorPayments } from '@/hooks/useSponsorPayments';
+import SponsorNoteTimeline from '@/components/sponsor/SponsorNoteTimeline';
+import SponsorPaymentHistory from '@/components/sponsor/SponsorPaymentHistory';
+import SponsorStudentTable from '@/components/sponsor/SponsorStudentTable';
+import { Spinner } from '@/components/Spinner';
 
 const SponsorProfile = () => {
   const { id } = useParams<{ id: string }>();
-  const [sponsor, setSponsor] = useState<Sponsor | null>(null);
-  const [allocations, setAllocations] = useState<SponsorAllocation[]>([]);
+  const { data: sponsor, isLoading: sponsorLoading } = useSponsor(id);
+  const { allocations, loading: allocationsLoading } = useSponsorAllocations({ sponsorId: id });
+  const { data: notes = [], isLoading: notesLoading } = useSponsorNotes(id);
+  const { data: payments = [], isLoading: paymentsLoading } = useSponsorPayments(id);
 
-  useEffect(() => {
-    if (!id) return;
-    // Load sponsor profile and allocations
-    supabase.from('partners').select('*').eq('id', id).maybeSingle().then(({ data }) => {
-      setSponsor((data as Sponsor) || null);
-    });
-    supabase.from('sponsor_allocations').select('*').eq('sponsor_id', id).then(({ data }) => {
-      setAllocations((data as SponsorAllocation[]) || []);
-    });
-  }, [id]);
-
-  if (!sponsor) return <div className="p-8">Loading sponsor profile...</div>;
+  if (sponsorLoading || allocationsLoading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Spinner size="md" />
+        <span className="ml-3 text-gray-500">Loading sponsor profile…</span>
+      </div>
+    );
+  }
+  if (!sponsor) {
+    return (
+      <div className="p-8 text-center text-gray-400">
+        Sponsor not found.
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-2">{sponsor.name || sponsor.id}</h1>
-      <div className="mb-4">
-        <div className="text-gray-600"><strong>Status:</strong> {sponsor.status}</div>
-        <div className="text-gray-600"><strong>Email:</strong> {sponsor.email}</div>
-        <div className="text-gray-600"><strong>Phone:</strong> {sponsor.phone || '-'}</div>
-        <div className="text-gray-600"><strong>Contact Person:</strong> {sponsor.contact_person || '-'}</div>
-        <div className="text-gray-600"><strong>Website:</strong> {sponsor.website
-          ? <a href={sponsor.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{sponsor.website}</a>
-          : '-'}</div>
-      </div>
-      <h2 className="text-2xl font-semibold mb-2 mt-6">Student Allocations</h2>
-      <table className="min-w-full border rounded">
-        <thead>
-          <tr>
-            <th className="px-3 py-2">Student ID</th>
-            <th className="px-3 py-2">Status</th>
-            <th className="px-3 py-2">Plan</th>
-            <th className="px-3 py-2">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allocations.map(a => (
-            <tr key={a.id}>
-              <td className="px-3 py-2">{a.student_id}</td>
-              <td className="px-3 py-2">{a.status}</td>
-              <td className="px-3 py-2">{a.plan || '-'}</td>
-              <td className="px-3 py-2">{a.notes || '-'}</td>
-            </tr>
-          ))}
-          {allocations.length === 0 && <tr><td colSpan={4} className="text-center text-gray-400 py-8">No allocations found</td></tr>}
-        </tbody>
-      </table>
-      <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-2">Notes & Payment History</h3>
-        <div className="text-gray-500">(Enhance this section with partner_notes and payment history)</div>
-      </div>
+    <div className="p-4 sm:p-8 max-w-4xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">{sponsor.name}</h1>
+      <section className="mb-6">
+        <div className="flex flex-col gap-1 text-gray-600">
+          <span><strong>Status:</strong> {sponsor.status}</span>
+          <span><strong>Email:</strong> {sponsor.email}</span>
+          <span><strong>Phone:</strong> {sponsor.phone || '-'}</span>
+          <span><strong>Contact Person:</strong> {sponsor.contact_person || '-'}</span>
+          <span>
+            <strong>Website:</strong>{" "}
+            {sponsor.website
+              ? <a href={sponsor.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{sponsor.website}</a>
+              : "-"}
+          </span>
+        </div>
+      </section>
+
+      {/* Student Allocations */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-2 mt-6">Student Allocations</h2>
+        <SponsorStudentTable allocations={allocations} />
+      </section>
+
+      {/* CRM Tabs: Notes & Payment History */}
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Activity Log</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Sponsor Notes */}
+          <div>
+            <h3 className="font-semibold mb-1">Sponsor Notes</h3>
+            {notesLoading ? (
+              <div className="text-gray-400 py-8 text-center">Loading notes…</div>
+            ) : (
+              <SponsorNoteTimeline notes={notes} />
+            )}
+          </div>
+          {/* Payment History */}
+          <div>
+            <h3 className="font-semibold mb-1">Payment History</h3>
+            {paymentsLoading ? (
+              <div className="text-gray-400 py-8 text-center">Loading payments…</div>
+            ) : (
+              <SponsorPaymentHistory payments={payments} />
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
