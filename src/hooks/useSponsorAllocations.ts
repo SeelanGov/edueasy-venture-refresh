@@ -28,12 +28,25 @@ export const useSponsorAllocations = () => {
     }
   }, []);
 
-  const createAllocation = async (data: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>) => {
+  // Helper to coerce plan and notes to string or undefined
+  const normalizeAllocationPayload = (
+    data: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>
+  ) => ({
+    ...data,
+    plan: data.plan ?? '', // never null/undefined
+    notes: data.notes ?? '', // never null/undefined
+    expires_on: data.expires_on === '' ? undefined : data.expires_on,
+  });
+
+  const createAllocation = async (
+    data: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>
+  ) => {
     setLoading(true);
     try {
+      const payload = normalizeAllocationPayload(data);
       const { data: inserted, error } = await supabase
         .from('sponsor_allocations')
-        .insert(data)
+        .insert(payload)
         .select('*')
         .single();
       if (error) throw error;
@@ -50,9 +63,15 @@ export const useSponsorAllocations = () => {
   const updateAllocation = async (id: string, updates: Partial<SponsorAllocation>) => {
     setLoading(true);
     try {
+      const payload = {
+        ...updates,
+        plan: updates.plan ?? '',
+        notes: updates.notes ?? '',
+        expires_on: updates.expires_on === '' ? undefined : updates.expires_on,
+      };
       const { data: updated, error } = await supabase
         .from('sponsor_allocations')
-        .update(updates)
+        .update(payload)
         .eq('id', id)
         .select('*')
         .single();
