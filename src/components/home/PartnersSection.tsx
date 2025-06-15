@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 
 const universities = [
@@ -31,16 +30,25 @@ export const PartnersSection = () => {
 
         {/* Section as Grid: Image (left) + Collaboration message (right) */}
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-4xl mx-auto mb-12">
-          {/* Image Illustration */}
+          {/* Image Illustration with enhanced quality */}
           <div className="w-full flex justify-center md:justify-end">
-            <div className="rounded-xl overflow-hidden shadow-lg w-full max-w-sm">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl w-full max-w-sm group">
               <img
                 src={imagePath}
                 alt="Student using online platform"
-                className="w-full h-auto object-cover"
-                style={{ maxHeight: 320 }}
-                loading="lazy"
+                className="w-full h-auto object-cover object-center rounded-2xl transition duration-300 group-hover:scale-105 group-hover:contrast-105 group-hover:saturate-150"
+                style={{
+                  maxHeight: 340,
+                  imageRendering: "auto"
+                }}
+                loading="eager"
+                fetchpriority="high"
+                draggable={false}
               />
+              {/* Add a soft overlay for crispness & contrast */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-cap-teal/10 pointer-events-none" />
+              {/* Optional: Add a border for extra sharpness */}
+              <div className="absolute inset-0 rounded-2xl border border-teal-200/60 pointer-events-none" />
             </div>
           </div>
           {/* Collaboration Notice and Universities List */}
@@ -88,4 +96,3 @@ export const PartnersSection = () => {
     </section>
   );
 };
-
