@@ -7,6 +7,8 @@ import { SponsorListTable } from '@/components/admin/sponsors/SponsorListTable';
 import { useNavigate } from 'react-router-dom';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
 import { useSponsors } from '@/hooks/useSponsors';
+import { toast } from '@/components/ui/use-toast';
+import { Spinner } from '@/components/Spinner';
 
 const SponsorsPage = () => {
   // Search & filter state
@@ -49,25 +51,48 @@ const SponsorsPage = () => {
   };
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure to delete this allocation?')) {
-      await deleteAllocation(id);
+      const res = await deleteAllocation(id);
       fetchAllocations();
+      if (res) {
+        toast({
+          title: "Allocation deleted successfully",
+        });
+      } else {
+        toast({
+          title: "Delete failed",
+          variant: "destructive",
+        });
+      }
     }
   };
   const handleSave = async (values: any) => {
-    if (editAlloc) {
-      await updateAllocation(editAlloc.id, values);
-    } else {
-      await createAllocation(values);
+    try {
+      if (editAlloc) {
+        await updateAllocation(editAlloc.id, values);
+        toast({
+          title: "Allocation updated",
+        });
+      } else {
+        await createAllocation(values);
+        toast({
+          title: "Allocation created",
+        });
+      }
+      setModalOpen(false);
+      fetchAllocations();
+    } catch (err) {
+      toast({
+        title: "Operation failed",
+        variant: "destructive"
+      });
     }
-    setModalOpen(false);
-    fetchAllocations();
   };
 
   return (
-    <div className="p-8 max-w-screen-xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Sponsor Management</h1>
+    <div className="p-4 sm:p-8 max-w-screen-xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Sponsor Management</h1>
       {/* Tab navigation */}
-      <div className="space-x-2 flex mb-6">
+      <div className="space-x-2 flex mb-4 sm:mb-6">
         <button className={tab === 'allocations' ? 'font-bold underline' : ''} onClick={() => setTab('allocations')}>Student Allocations</button>
         <button className={tab === 'sponsors' ? 'font-bold underline' : ''} onClick={() => setTab('sponsors')}>Sponsors List</button>
       </div>
@@ -78,19 +103,18 @@ const SponsorsPage = () => {
           placeholder="Search sponsor name or email"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded border border-gray-300 px-3 py-2 text-sm w-64"
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64"
         />
         <select
           value={typeFilter}
           onChange={e => setTypeFilter(e.target.value)}
-          className="rounded border border-gray-300 px-3 py-2 text-sm"
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-auto"
         >
           <option value="">All Types</option>
           <option value="corporate">Corporate</option>
           <option value="foundation">Foundation</option>
           <option value="government">Government</option>
           <option value="individual">Individual</option>
-          {/* Add other types as required */}
         </select>
         {tab === 'sponsors' && (
           <button
@@ -121,27 +145,37 @@ const SponsorsPage = () => {
             </button>
           </div>
           {allocationsLoading ? (
-            <div className="py-16 text-center text-gray-400">Loading allocations…</div>
+            <div className="py-24 flex items-center justify-center">
+              <Spinner size="md" />
+              <span className="ml-3 text-gray-500">Loading allocations…</span>
+            </div>
           ) : (
-            <SponsorAllocationsTable
-              allocations={allocations}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+            <div className="overflow-x-auto">
+              <SponsorAllocationsTable
+                allocations={allocations}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </div>
           )}
         </>
       )}
       {tab === 'sponsors' && (
         <>
           {sponsorsLoading ? (
-            <div className="py-16 text-center text-gray-400">Loading sponsors…</div>
+            <div className="py-24 flex items-center justify-center">
+              <Spinner size="md" />
+              <span className="ml-3 text-gray-500">Loading sponsors…</span>
+            </div>
           ) : sponsorList.length === 0 ? (
             <div className="py-16 text-center text-gray-400">No sponsors found. Try different search/filters.</div>
           ) : (
-            <SponsorListTable
-              sponsors={sponsorList}
-              onView={(id: string) => navigate(`/admin/sponsors/${id}`)}
-            />
+            <div className="overflow-x-auto">
+              <SponsorListTable
+                sponsors={sponsorList}
+                onView={(id: string) => navigate(`/admin/sponsors/${id}`)}
+              />
+            </div>
           )}
         </>
       )}
