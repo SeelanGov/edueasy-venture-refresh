@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -29,6 +28,7 @@ interface DatabaseUser {
   emergency_contact_name: string | null;
   emergency_contact_phone: string | null;
   profile_status: string | null;
+  tracking_id: string | null;
 }
 
 interface Document {
@@ -58,6 +58,7 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [trackingIdSearch, setTrackingIdSearch] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -66,7 +67,7 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch users
+      // Fetch users with tracking_id
       const { data: usersData, error: usersError } = await supabase
         .from('users')
         .select('*')
@@ -157,6 +158,12 @@ const AdminDashboard = () => {
   const getTotalApplicationsCount = () => {
     return applications.length;
   };
+
+  const filteredUsers = users.filter((userRec) =>
+    trackingIdSearch
+      ? (userRec.tracking_id || '').toLowerCase().includes(trackingIdSearch.toLowerCase())
+      : true
+  );
 
   if (loading) {
     return (
@@ -275,27 +282,43 @@ const AdminDashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle>User Management</CardTitle>
-              <CardDescription>View and manage registered users</CardDescription>
+              <CardDescription>View and manage registered users (search by tracking ID)</CardDescription>
+              <div className="mt-4">
+                <input
+                  type="text"
+                  placeholder="Search Tracking ID..."
+                  value={trackingIdSearch}
+                  onChange={e => setTrackingIdSearch(e.target.value)}
+                  className="input input-bordered px-3 py-2 border rounded w-72"
+                />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {users.map((userData) => (
+                {filteredUsers.map((userData) => (
                   <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
-                      <p className="font-medium">{userData.full_name || 'No name provided'}</p>
+                      <p className="font-medium">Tracking ID: <span className="text-blue-700 font-mono">{userData.tracking_id || "N/A"}</span></p>
+                      <p className="text-sm text-gray-600">{userData.full_name || 'No name provided'}</p>
                       <p className="text-sm text-gray-600">{userData.email || userData.contact_email}</p>
-                      <p className="text-sm text-gray-600">ID: {userData.id_number || 'Not provided'}</p>
+                      <p className="text-xs text-gray-400">User UUID: {userData.id}</p>
                       <p className="text-sm text-gray-600">
                         Registered: {new Date(userData.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col items-end gap-1">
                       <Badge variant={userData.profile_status === 'complete' ? 'default' : 'secondary'}>
                         {userData.profile_status || 'incomplete'}
+                      </Badge>
+                      <Badge variant={userData.id_verified ? 'default' : 'secondary'} className={userData.id_verified ? 'bg-green-200 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                        {userData.id_verified ? 'Verified' : 'Unverified'}
                       </Badge>
                     </div>
                   </div>
                 ))}
+                {filteredUsers.length === 0 && (
+                  <div className="py-6 text-center text-gray-500">No users found for this tracking ID.</div>
+                )}
               </div>
             </CardContent>
           </Card>
