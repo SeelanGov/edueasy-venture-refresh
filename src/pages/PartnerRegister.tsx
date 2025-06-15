@@ -1,5 +1,8 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// Import supabase for registration (assume import path for client)
+import { supabase } from '@/integrations/supabase/client';
 
 const PartnerRegister: React.FC = () => {
   const navigate = useNavigate();
@@ -8,19 +11,27 @@ const PartnerRegister: React.FC = () => {
     username: '',
     password: '',
     confirmPassword: '',
+    email: '',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    if (!form.instituteName || !form.username || !form.password || !form.confirmPassword) {
+    if (
+      !form.instituteName ||
+      !form.username ||
+      !form.password ||
+      !form.confirmPassword ||
+      !form.email
+    ) {
       setError('All fields are required.');
       return;
     }
@@ -28,9 +39,51 @@ const PartnerRegister: React.FC = () => {
       setError('Passwords do not match.');
       return;
     }
-    // Simulate registration success
-    setSuccess('Registration successful! You can now log in.');
-    setTimeout(() => navigate('/partner/login'), 1500);
+
+    setLoading(true);
+
+    // 1. Create user account
+    const { error: signUpError, data } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          username: form.username,
+        },
+      },
+    });
+
+    if (signUpError) {
+      setError(signUpError.message || 'Error creating account.');
+      setLoading(false);
+      return;
+    }
+
+    // 2. Create partner record with 'pending_payment' status
+    // Only run this if registration succeeded
+    if (data.user) {
+      // Save partner info in partners table.
+      const { error: partnerError } = await supabase.from('partners').insert({
+        name: form.instituteName,
+        email: form.email,
+        contact_email: form.email,
+        phone: null,
+        website: null,
+        status: 'pending_payment', // restrict dashboard
+        created_by: data.user.id,
+      });
+
+      if (partnerError) {
+        setError(partnerError.message || 'Failed to complete registration. Contact support.');
+        setLoading(false);
+        return;
+      }
+
+      setSuccess('Account created! Please check your email to verify.');
+      // Redirect to dashboard after slight delay
+      setTimeout(() => navigate('/partner/dashboard'), 1500);
+    }
+    setLoading(false);
   };
 
   return (
@@ -59,6 +112,15 @@ const PartnerRegister: React.FC = () => {
             required
           />
           <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="border border-border rounded px-3 py-2 bg-background text-foreground"
+            required
+          />
+          <input
             type="password"
             name="password"
             placeholder="Password"
@@ -80,9 +142,10 @@ const PartnerRegister: React.FC = () => {
           {success && <div className="text-green-500 text-sm">{success}</div>}
           <button
             type="submit"
+            disabled={loading}
             className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <div className="mt-4 text-center text-sm">
@@ -97,3 +160,4 @@ const PartnerRegister: React.FC = () => {
 };
 
 export default PartnerRegister;
+
