@@ -238,3 +238,29 @@ BEGIN
     EXECUTE FUNCTION check_subscription_limits();
   END IF;
 END $$;
+
+-- PHASE 5: TRIGGER TO SET USERS.CURRENT_PLAN ON SPONSOR ALLOCATION
+
+-- Function: set_sponsored_plan_on_allocation
+CREATE OR REPLACE FUNCTION public.set_sponsored_plan_on_allocation()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF (TG_OP = 'INSERT' AND NEW.status = 'active') OR
+     (TG_OP = 'UPDATE' AND NEW.status = 'active' AND (OLD.status IS DISTINCT FROM NEW.status)) THEN
+    -- Update the student's current_plan to 'sponsored'
+    UPDATE public.users
+    SET current_plan = 'sponsored'
+    WHERE id = NEW.student_id;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Drop old trigger if exists to avoid conflicts
+DROP TRIGGER IF EXISTS set_sponsored_plan_on_allocation_trigger ON public.sponsor_allocations;
+
+-- Create the trigger for both inserts and updates
+CREATE TRIGGER set_sponsored_plan_on_allocation_trigger
+AFTER INSERT OR UPDATE ON public.sponsor_allocations
+FOR EACH ROW
+EXECUTE FUNCTION public.set_sponsored_plan_on_allocation();
