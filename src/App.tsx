@@ -41,6 +41,7 @@ import ApplyForSponsorship from "@/pages/sponsorships/ApplyForSponsorship";
 import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipStatus";
 import PartnersPage from "@/pages/admin/Partners";
 import PartnerProfilePage from "@/pages/admin/PartnerProfile";
+import VerificationRequired from "./pages/VerificationRequired";
 
 const queryClient = new QueryClient();
 
