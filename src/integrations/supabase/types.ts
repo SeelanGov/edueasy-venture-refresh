@@ -48,6 +48,57 @@ export type Database = {
         }
         Relationships: []
       }
+      application_fee_sponsorships: {
+        Row: {
+          created_at: string
+          id: string
+          paid_at: string | null
+          payment_reference: string | null
+          payment_status: string
+          sponsor_application_id: string
+          sponsor_id: string
+          sponsored_amount: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          sponsor_application_id: string
+          sponsor_id: string
+          sponsored_amount: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          sponsor_application_id?: string
+          sponsor_id?: string
+          sponsored_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_fee_sponsorships_sponsor_application_id_fkey"
+            columns: ["sponsor_application_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "application_fee_sponsorships_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       applications: {
         Row: {
           created_at: string | null
@@ -904,6 +955,83 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sponsor_applications: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          purpose: string | null
+          requested_amount: number
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          purpose?: string | null
+          requested_amount: number
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          purpose?: string | null
+          requested_amount?: number
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_applications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsors: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          organization_type: string | null
+          password_hash: string | null
+          phone: string | null
+          updated_at: string
+          verified_status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          organization_type?: string | null
+          password_hash?: string | null
+          phone?: string | null
+          updated_at?: string
+          verified_status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          organization_type?: string | null
+          password_hash?: string | null
+          phone?: string | null
+          updated_at?: string
+          verified_status?: string
+        }
+        Relationships: []
       }
       sponsorships: {
         Row: {

@@ -50,6 +50,39 @@ const Index = () => {
         </div>
       </div>
 
+      {/* Scholarships & Sponsorships quick access */}
+      <div className="bg-gradient-to-b from-white to-gray-50 py-12">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800">Scholarships & Sponsorships</h2>
+          <div className="flex flex-col md:flex-row justify-center gap-4">
+            <button
+              className="px-8 py-3 rounded-full bg-cap-teal text-white font-bold hover:bg-cap-teal/90 transition"
+              onClick={() => navigate("/sponsorships/apply")}
+            >
+              Apply for Sponsorship
+            </button>
+            <button
+              className="px-8 py-3 rounded-full bg-cap-coral text-white font-bold hover:bg-cap-coral/90 transition"
+              onClick={() => navigate("/sponsorships/status")}
+            >
+              My Sponsorship Status
+            </button>
+            <button
+              className="px-8 py-3 rounded-full bg-green-700 text-white font-bold hover:bg-green-800 transition"
+              onClick={() => navigate("/sponsors/register")}
+            >
+              Sponsor Register
+            </button>
+            <button
+              className="px-8 py-3 rounded-full bg-blue-700 text-white font-bold hover:bg-blue-800 transition"
+              onClick={() => navigate("/sponsors/login")}
+            >
+              Sponsor Login
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Journey Map Demo Section */}
       <div className="bg-gray-50 py-24 relative overflow-hidden">
         {/* Background dots pattern */}
