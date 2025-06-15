@@ -54,10 +54,14 @@ const MeetThandi = () => {
             </div>
             
             <div className="flex justify-center">
-              <div className="w-64 h-64 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                <Typography variant="h1" className="text-white">
-                  🤖
-                </Typography>
+              <div className="w-64 h-64 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center relative overflow-hidden shadow-lg">
+                {/* Thandi's actual portrait inside the circle */}
+                <img
+                  src="/lovable-uploads/ea352049-18bb-49a0-b8e3-d00ae059e1f1.png"
+                  alt="Thandi, the AI Assistant"
+                  className="w-48 h-48 object-cover rounded-full border-4 border-white shadow-lg"
+                  style={{ objectPosition: 'top center' }}
+                />
               </div>
             </div>
           </div>
@@ -74,3 +78,4 @@ const MeetThandi = () => {
 };
 
 export default MeetThandi;
+
