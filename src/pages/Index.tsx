@@ -1,4 +1,3 @@
-
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/home/Hero';
 import { AboutSection } from '@/components/home/AboutSection';
@@ -10,8 +9,11 @@ import Footer from '@/components/home/Footer';
 import { JourneyMapDemo } from '@/components/demo/JourneyMapDemo';
 import { CommunitySection } from '@/components/home/CommunitySection';
 import { AISupportSection } from '@/components/home/AISupportSection';
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header */}
@@ -27,6 +29,26 @@ const Index = () => {
       <HowItWorks />
       <CommunitySection />
       <AboutSection />
+
+      {/* Partner With EduEasy Section (Add navigation to button) */}
+      <div className="bg-gradient-to-b from-white to-gray-50 py-12">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800">Partner With EduEasy</h2>
+          <div className="max-w-2xl mx-auto rounded-xl overflow-hidden shadow-xl">
+            {/* You can optionally keep the image here */}
+            {/* <img src="/images/some-partner-image.png" alt="Partner Institutions" className="w-full h-auto object-cover" /> */}
+          </div>
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto">
+            Join our network of leading educational institutions and help students achieve their academic goals through streamlined applications.
+          </p>
+          <button
+            className="mt-8 px-8 py-3 rounded-full bg-cap-teal text-white font-bold hover:bg-cap-teal/90 transition"
+            onClick={() => navigate("/institutions")}
+          >
+            Become a Partner
+          </button>
+        </div>
+      </div>
 
       {/* Journey Map Demo Section */}
       <div className="bg-gray-50 py-24 relative overflow-hidden">
