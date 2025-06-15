@@ -39,7 +39,7 @@ export const HeroContent = () => {
         className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight"
       >
         <span className="text-primary">EduEasy</span> <br />
-        Online and Offline Education Support
+        Education Support
       </Typography>
 
       <Typography variant="body-lg" className="text-gray-600 max-w-lg">
