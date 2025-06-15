@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,9 +8,11 @@ import { Application } from '@/types/ApplicationTypes';
 import { DocumentVerificationNotice } from './DocumentVerificationNotice';
 import { useApplications } from '@/hooks/useApplications';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Sparkles, Copy } from 'lucide-react';
+import { Sparkles, Copy, Medal } from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PersonalizedDashboardProps {
   applications: Application[];
@@ -36,7 +39,35 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
     navigate('/apply');
   };
 
-  const isSubscribed = currentSubscription && currentSubscription.is_active;
+  // SPONSOR ALLOCATION LOGIC (new!)
+  // Query for an active sponsor allocation for this user, if they are sponsored
+  const sponsoreeId = user?.id;
+  const { data: sponsorAllocation, isLoading: sponsorLoading } = useQuery({
+    queryKey: ['sponsor_allocation', sponsoreeId],
+    queryFn: async () => {
+      if (!sponsoreeId) return null;
+      // Only fetch if user has a sponsor_id on their profile
+      const sponsorId = (user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id;
+      if (!sponsorId) return null;
+      const { data, error } = await supabase
+        .from('sponsor_allocations')
+        .select('*')
+        .eq('student_id', sponsoreeId)
+        .eq('sponsor_id', sponsorId)
+        .eq('status', 'active')
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!sponsoreeId && ((user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id),
+    staleTime: 2 * 60 * 1000,
+  });
+
+  // Derived: determine if user is sponsored
+  const hasSponsorAllocation = sponsorAllocation && sponsorAllocation.status === 'active';
+
+  // Use regular subscription logic if not sponsored
+  const isSubscribed = (currentSubscription && currentSubscription.is_active) || hasSponsorAllocation;
 
   const handleCopyTrackingId = () => {
     if (trackingId) {
@@ -92,20 +123,36 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
           </CardTitle>
           <CardDescription>
             {isSubscribed
-              ? 'Enjoy your premium access.'
+              ? (
+                hasSponsorAllocation
+                  ? 'Your plan is sponsored — enjoy premium access!'
+                  : 'Enjoy your premium access.'
+              )
               : 'Start your journey to success with EduEasy.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <Typography variant="body" className="text-white/80">
             {isSubscribed
-              ? 'You have access to all premium features. Make the most of your subscription!'
+              ? (
+                hasSponsorAllocation
+                  ? 'You have a sponsor-provided premium plan. All premium features are unlocked for you. Thank your sponsor for their support of your education journey!'
+                  : 'You have access to all premium features. Make the most of your subscription!'
+              )
               : 'Complete your profile and start applying to your dream institutions today.'}
           </Typography>
-          {!isSubscribed && (
-            <Button variant="secondary" onClick={() => navigate('/subscription')}>
-              Upgrade Now <Sparkles className="ml-2 h-4 w-4" />
-            </Button>
+          {/* If sponsored, show a medal and sponsor info. Otherwise normal upgrade logic. */}
+          {hasSponsorAllocation ? (
+            <div className="flex items-center gap-2 mt-2">
+              <Medal className="h-6 w-6 text-yellow-400" />
+              <span className="text-lg font-semibold text-yellow-100">Sponsored Plan Active</span>
+            </div>
+          ) : (
+            !isSubscribed && (
+              <Button variant="secondary" onClick={() => navigate('/subscription')}>
+                Upgrade Now <Sparkles className="ml-2 h-4 w-4" />
+              </Button>
+            )
           )}
         </CardContent>
       </Card>
