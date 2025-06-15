@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Label } from '@/components/ui/label';
@@ -12,8 +13,9 @@ import {
 import { AnalyticsFilters as AnalyticsFiltersType } from '@/hooks/analytics/types';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, X } from 'lucide-react';
 import { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface AnalyticsFiltersProps {
   filters: AnalyticsFiltersType;
@@ -34,122 +36,159 @@ export const AnalyticsFilters = ({
   const [endDateOpen, setEndDateOpen] = useState(false);
 
   const handleStartDateSelect = (date: Date | undefined) => {
-    onUpdateFilters({
-      startDate: date || null,
-    });
+    onUpdateFilters({ startDate: date || null });
     setStartDateOpen(false);
   };
 
   const handleEndDateSelect = (date: Date | undefined) => {
-    onUpdateFilters({
-      endDate: date || null,
-    });
+    onUpdateFilters({ endDate: date || null });
     setEndDateOpen(false);
   };
 
+  const hasActiveFilters = 
+    filters.startDate || 
+    filters.endDate || 
+    filters.documentType || 
+    filters.institutionId;
+
   return (
-    <div className="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
-      <div className="space-y-2">
-        <Label htmlFor="start-date">Start Date</Label>
-        <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                'w-[200px] justify-start text-left font-normal',
-                !filters.startDate && 'text-muted-foreground',
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {filters.startDate ? (
-                format(filters.startDate, 'PPP')
-              ) : (
-                <span>Pick a start date</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={filters.startDate || undefined}
-              onSelect={handleStartDateSelect}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+    <Card className="mb-6">
+      <CardContent className="p-4">
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium">Filters</h3>
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onResetFilters}
+                className="h-8 px-2 text-xs"
+              >
+                <X className="h-3 w-3 mr-1" />
+                Clear All
+              </Button>
+            )}
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Start Date */}
+            <div className="space-y-2">
+              <Label htmlFor="start-date" className="text-xs font-medium">
+                Start Date
+              </Label>
+              <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      'w-full justify-start text-left font-normal text-xs',
+                      !filters.startDate && 'text-muted-foreground',
+                    )}
+                    size="sm"
+                  >
+                    <CalendarIcon className="mr-2 h-3 w-3" />
+                    {filters.startDate ? (
+                      format(filters.startDate, 'MMM dd, yyyy')
+                    ) : (
+                      <span>Pick start date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={filters.startDate || undefined}
+                    onSelect={handleStartDateSelect}
+                    initialFocus
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="end-date">End Date</Label>
-        <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                'w-[200px] justify-start text-left font-normal',
-                !filters.endDate && 'text-muted-foreground',
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {filters.endDate ? format(filters.endDate, 'PPP') : <span>Pick an end date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={filters.endDate || undefined}
-              onSelect={handleEndDateSelect}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+            {/* End Date */}
+            <div className="space-y-2">
+              <Label htmlFor="end-date" className="text-xs font-medium">
+                End Date
+              </Label>
+              <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      'w-full justify-start text-left font-normal text-xs',
+                      !filters.endDate && 'text-muted-foreground',
+                    )}
+                    size="sm"
+                  >
+                    <CalendarIcon className="mr-2 h-3 w-3" />
+                    {filters.endDate ? (
+                      format(filters.endDate, 'MMM dd, yyyy')
+                    ) : (
+                      <span>Pick end date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={filters.endDate || undefined}
+                    onSelect={handleEndDateSelect}
+                    initialFocus
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="document-type">Document Type</Label>
-        <Select
-          value={filters.documentType || ''}
-          onValueChange={(value) => onUpdateFilters({ documentType: value || null })}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All Types" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All Types</SelectItem>
-            {documentTypes.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+            {/* Document Type */}
+            <div className="space-y-2">
+              <Label htmlFor="document-type" className="text-xs font-medium">
+                Document Type
+              </Label>
+              <Select
+                value={filters.documentType || ''}
+                onValueChange={(value) => onUpdateFilters({ documentType: value || null })}
+              >
+                <SelectTrigger className="w-full text-xs" size="sm">
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Types</SelectItem>
+                  {documentTypes.map((type) => (
+                    <SelectItem key={type} value={type} className="text-xs">
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="institution">Institution</Label>
-        <Select
-          value={filters.institutionId || ''}
-          onValueChange={(value) => onUpdateFilters({ institutionId: value || null })}
-        >
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="All Institutions" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All Institutions</SelectItem>
-            {institutions.map((institution) => (
-              <SelectItem key={institution.id} value={institution.id}>
-                {institution.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex items-end">
-        <Button onClick={onResetFilters} variant="outline">
-          Reset Filters
-        </Button>
-      </div>
-    </div>
+            {/* Institution */}
+            <div className="space-y-2">
+              <Label htmlFor="institution" className="text-xs font-medium">
+                Institution
+              </Label>
+              <Select
+                value={filters.institutionId || ''}
+                onValueChange={(value) => onUpdateFilters({ institutionId: value || null })}
+              >
+                <SelectTrigger className="w-full text-xs" size="sm">
+                  <SelectValue placeholder="All Institutions" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Institutions</SelectItem>
+                  {institutions.map((institution) => (
+                    <SelectItem key={institution.id} value={institution.id} className="text-xs">
+                      {institution.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
