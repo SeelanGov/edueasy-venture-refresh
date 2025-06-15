@@ -37,7 +37,7 @@ export const PartnerInquiries = () => {
   const fetchInquiries = async () => {
     try {
       const { data, error } = await supabase
-        .from('partner_inquiries')
+        .from('partner_inquiries' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -45,8 +45,8 @@ export const PartnerInquiries = () => {
         console.error('Error fetching inquiries:', error);
         setInquiries([]);
       } else {
-        // Properly handle the data without type casting
-        setInquiries(data || []);
+        // Type assertion since we know the structure matches our interface
+        setInquiries((data as PartnerInquiry[]) || []);
       }
     } catch (error) {
       console.error('Error fetching inquiries:', error);
@@ -59,7 +59,7 @@ export const PartnerInquiries = () => {
   const updateInquiryStatus = async (id: string, status: string) => {
     try {
       const { error } = await supabase
-        .from('partner_inquiries')
+        .from('partner_inquiries' as any)
         .update({ status })
         .eq('id', id);
 

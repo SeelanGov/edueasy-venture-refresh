@@ -25,7 +25,7 @@ export const usePartnerInquiry = () => {
       
       // Direct table insert to partner_inquiries table
       const { error } = await supabase
-        .from('partner_inquiries')
+        .from('partner_inquiries' as any)
         .insert({
           institution_name: data.institutionName,
           institution_type: data.institutionType,
