@@ -4,6 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Spinner } from '@/components/Spinner';
 
+const BackToHomeBtn = ({ className = "" }: { className?: string }) => {
+  const navigate = useNavigate();
+  return (
+    <div className={`relative w-full ${className}`}>
+      <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
+        <button
+          type="button"
+          className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
+          onClick={() => navigate('/')}
+        >
+          <span className="mr-2 text-lg">&#8592;</span>
+          Back to Home
+        </button>
+      </div>
+    </div>
+  )
+};
+
 const PartnerDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [partner, setPartner] = useState<any>(null);
@@ -38,6 +56,7 @@ const PartnerDashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
+        <BackToHomeBtn />
         <Spinner size="lg" />
       </div>
     );
@@ -45,7 +64,8 @@ const PartnerDashboard: React.FC = () => {
 
   if (!partner) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background-subtle">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
+        <BackToHomeBtn />
         <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
           <h1 className="text-xl font-bold mb-4 text-center text-primary">No Partner Profile Found</h1>
           <p className="mb-4 text-center text-muted">Please register as a partner.</p>
@@ -63,7 +83,8 @@ const PartnerDashboard: React.FC = () => {
   // Pending payment: force to checkout
   if (partner.status !== 'active') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background-subtle">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
+        <BackToHomeBtn />
         <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-xl text-center">
           <h1 className="text-2xl font-bold mb-2 text-primary">Complete Your Subscription</h1>
           <p className="mb-4 text-foreground-muted">
@@ -90,6 +111,7 @@ const PartnerDashboard: React.FC = () => {
   // Access granted: show actual dashboard
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
+      <BackToHomeBtn />
       <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-2xl">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">Partner Dashboard</h1>
         <p className="mb-4 text-foreground-muted text-center">
