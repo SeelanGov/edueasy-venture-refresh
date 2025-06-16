@@ -1,9 +1,9 @@
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import type { DocumentsByDate } from '@/hooks/analytics/types';
+import type { DocumentDateData } from '@/hooks/analytics/types';
 
 interface DocumentTimelineChartProps {
-  data: DocumentsByDate[];
+  data: DocumentDateData[];
 }
 
 export const DocumentTimelineChart = ({ data }: DocumentTimelineChartProps) => {
