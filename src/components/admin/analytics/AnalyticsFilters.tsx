@@ -150,7 +150,7 @@ export const AnalyticsFilters = ({
                 value={filters.documentType || ''}
                 onValueChange={(value) => onUpdateFilters({ documentType: value || null })}
               >
-                <SelectTrigger className="w-full text-xs" size="sm">
+                <SelectTrigger className="w-full text-xs">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
@@ -173,7 +173,7 @@ export const AnalyticsFilters = ({
                 value={filters.institutionId || ''}
                 onValueChange={(value) => onUpdateFilters({ institutionId: value || null })}
               >
-                <SelectTrigger className="w-full text-xs" size="sm">
+                <SelectTrigger className="w-full text-xs">
                   <SelectValue placeholder="All Institutions" />
                 </SelectTrigger>
                 <SelectContent>
