@@ -1,34 +1,62 @@
 
+import { FileText, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown } from 'lucide-react';
 import { StatCard } from './StatCard';
-import { ChartBarIcon } from 'lucide-react';
-import { DocumentAnalytics } from '@/hooks/analytics/types';
+import type { DocumentAnalytics } from '@/hooks/analytics/types';
 
 interface AnalyticsStatCardsProps {
   analytics: DocumentAnalytics;
 }
 
 export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
+  const calculateTrend = (current: number, total: number) => {
+    if (total === 0) return null;
+    const percentage = (current / total) * 100;
+    return {
+      value: Math.round(percentage),
+      positive: percentage > 50,
+    };
+  };
+
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-6">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
         title="Total Documents"
-        value={analytics.totalDocuments}
-        icon={<ChartBarIcon />}
+        value={analytics.totalDocuments.toLocaleString()}
+        icon={<FileText className="h-4 w-4" />}
+        description="All submitted documents"
       />
+      
       <StatCard
         title="Approved"
-        value={analytics.approvedDocuments}
-        description={`${analytics.passRate.toFixed(1)}% Pass Rate`}
+        value={analytics.approvedDocuments.toLocaleString()}
+        icon={<CheckCircle className="h-4 w-4" />}
+        description={`${analytics.passRate.toFixed(1)}% pass rate`}
+        trend={{
+          value: Math.round(analytics.passRate),
+          positive: analytics.passRate > 70,
+        }}
+        className="border-green-200"
       />
+      
       <StatCard
         title="Rejected"
-        value={analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments}
-        description={`${analytics.failRate.toFixed(1)}% Fail Rate`}
+        value={(analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments).toLocaleString()}
+        icon={<XCircle className="h-4 w-4" />}
+        description={`${analytics.failRate.toFixed(1)}% rejection rate`}
+        trend={{
+          value: Math.round(analytics.failRate),
+          positive: analytics.failRate < 30,
+        }}
+        className="border-red-200"
       />
+      
       <StatCard
         title="Pending Review"
-        value={analytics.pendingDocuments}
+        value={analytics.pendingDocuments.toLocaleString()}
+        icon={<Clock className="h-4 w-4" />}
         description={`${((analytics.pendingDocuments / (analytics.totalDocuments || 1)) * 100).toFixed(1)}% of total`}
+        trend={calculateTrend(analytics.pendingDocuments, analytics.totalDocuments)}
+        className="border-yellow-200"
       />
     </div>
   );
