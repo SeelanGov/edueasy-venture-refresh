@@ -1,9 +1,9 @@
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import type { DocumentsByType } from '@/hooks/analytics/types';
+import type { DocumentTypeData } from '@/hooks/analytics/types';
 
 interface DocumentTypePerformanceChartProps {
-  data: DocumentsByType[];
+  data: DocumentTypeData[];
 }
 
 export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps) => {

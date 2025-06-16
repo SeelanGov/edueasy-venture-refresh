@@ -1,3 +1,4 @@
+
 export interface AnalyticsFilters {
   startDate: Date | null;
   endDate: Date | null;
@@ -37,3 +38,7 @@ export interface DocumentAnalytics {
   documentsByDate: DocumentDateData[];
   documentsByType: DocumentTypeData[];
 }
+
+// Additional type aliases for backwards compatibility
+export type DocumentsByDate = DocumentDateData;
+export type DocumentsByType = DocumentTypeData;

@@ -1,5 +1,5 @@
 
-import { FileText, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { StatCard } from './StatCard';
 import type { DocumentAnalytics } from '@/hooks/analytics/types';
 
@@ -9,7 +9,7 @@ interface AnalyticsStatCardsProps {
 
 export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
   const calculateTrend = (current: number, total: number) => {
-    if (total === 0) return null;
+    if (total === 0) return undefined;
     const percentage = (current / total) * 100;
     return {
       value: Math.round(percentage),
