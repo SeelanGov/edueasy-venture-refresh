@@ -1,38 +1,64 @@
 
-interface Props {
+interface ConsentCheckboxesProps {
   consentPrivacy: boolean;
   consentTerms: boolean;
-  setConsentPrivacy: (v: boolean) => void;
-  setConsentTerms: (v: boolean) => void;
+  setConsentPrivacy: (value: boolean) => void;
+  setConsentTerms: (value: boolean) => void;
 }
+
 export const ConsentCheckboxes = ({
   consentPrivacy,
   consentTerms,
   setConsentPrivacy,
-  setConsentTerms,
-}: Props) => (
-  <div className="flex flex-col gap-2 my-4">
-    <label className="flex items-center gap-2">
-      <input
-        type="checkbox"
-        checked={consentPrivacy}
-        onChange={(e) => setConsentPrivacy(e.target.checked)}
-      />
-      I agree to the{" "}
-      <a href="/privacy-policy.html" target="_blank" className="underline">
-        Privacy Policy
-      </a>
-    </label>
-    <label className="flex items-center gap-2">
-      <input
-        type="checkbox"
-        checked={consentTerms}
-        onChange={(e) => setConsentTerms(e.target.checked)}
-      />
-      I agree to the{" "}
-      <a href="/terms-of-service.html" target="_blank" className="underline">
-        Terms of Service
-      </a>
-    </label>
-  </div>
-);
+  setConsentTerms
+}: ConsentCheckboxesProps) => {
+  return (
+    <div className="flex flex-col gap-3 my-4 p-4 bg-gray-50 rounded-lg">
+      <div className="text-sm font-medium text-gray-700 mb-2">
+        Required Agreements
+      </div>
+      
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={consentPrivacy}
+          onChange={(e) => setConsentPrivacy(e.target.checked)}
+          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
+        />
+        <span className="text-sm text-gray-600">
+          I agree to the{" "}
+          <a
+            href="/privacy-policy.html"
+            target="_blank"
+            className="text-cap-teal underline hover:text-cap-teal/80"
+            rel="noopener noreferrer"
+          >
+            Privacy Policy
+          </a>{" "}
+          and consent to the processing of my personal information for identity verification and educational services.
+        </span>
+      </label>
+      
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={consentTerms}
+          onChange={(e) => setConsentTerms(e.target.checked)}
+          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
+        />
+        <span className="text-sm text-gray-600">
+          I agree to the{" "}
+          <a
+            href="/terms-of-service.html"
+            target="_blank"
+            className="text-cap-teal underline hover:text-cap-teal/80"
+            rel="noopener noreferrer"
+          >
+            Terms of Service
+          </a>{" "}
+          and understand the platform's educational application services.
+        </span>
+      </label>
+    </div>
+  );
+};

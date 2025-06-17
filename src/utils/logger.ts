@@ -1,61 +1,57 @@
 
-enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
+type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+
+interface LogEntry {
+  timestamp: string;
+  level: LogLevel;
+  message: string;
+  data?: any;
 }
 
 class Logger {
-  private level: LogLevel;
+  private isDevelopment = import.meta.env.DEV;
 
-  constructor() {
-    // Set log level based on environment - only allow warnings and errors in production
-    this.level = import.meta.env.PROD ? LogLevel.WARN : LogLevel.DEBUG;
+  private formatMessage(level: LogLevel, message: string, data?: any): LogEntry {
+    return {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+      data
+    };
   }
 
-  private shouldLog(level: LogLevel): boolean {
-    return level >= this.level;
-  }
-
-  private formatMessage(level: string, message: string, ...args: unknown[]): void {
-    if (import.meta.env.PROD) {
-      // In production, only log warnings and errors
-      if (level === 'WARN' || level === 'ERROR') {
-        const timestamp = new Date().toISOString();
-        const prefix = `[${timestamp}] [${level}]`;
-        console[level.toLowerCase() as 'warn' | 'error'](prefix, message, ...args);
-      }
-    } else {
-      // In development, log everything but with less noise
-      const timestamp = new Date().toLocaleTimeString();
-      const prefix = `[${timestamp}] [${level}]`;
-      console.log(prefix, message, ...args);
+  debug(message: string, data?: any) {
+    if (this.isDevelopment) {
+      const entry = this.formatMessage('debug', message, data);
+      console.debug(`[${entry.timestamp}] DEBUG: ${entry.message}`, entry.data || '');
     }
   }
 
-  debug(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.DEBUG)) {
-      this.formatMessage('DEBUG', message, ...args);
+  info(message: string, data?: any) {
+    const entry = this.formatMessage('info', message, data);
+    console.info(`[${entry.timestamp}] INFO: ${entry.message}`, entry.data || '');
+  }
+
+  warn(message: string, data?: any) {
+    const entry = this.formatMessage('warn', message, data);
+    console.warn(`[${entry.timestamp}] WARN: ${entry.message}`, entry.data || '');
+  }
+
+  error(message: string, error?: any) {
+    const entry = this.formatMessage('error', message, error);
+    console.error(`[${entry.timestamp}] ERROR: ${entry.message}`, entry.data || '');
+    
+    // In production, you might want to send errors to a logging service
+    if (!this.isDevelopment && error) {
+      // Example: Send to error tracking service
+      // this.sendToErrorService(entry);
     }
   }
 
-  info(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.INFO)) {
-      this.formatMessage('INFO', message, ...args);
-    }
-  }
-
-  warn(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.WARN)) {
-      this.formatMessage('WARN', message, ...args);
-    }
-  }
-
-  error(message: string, ...args: unknown[]): void {
-    if (this.shouldLog(LogLevel.ERROR)) {
-      this.formatMessage('ERROR', message, ...args);
-    }
+  // Future enhancement: send critical errors to Supabase
+  private async sendToErrorService(entry: LogEntry) {
+    // Implementation for sending to external logging service
+    // Could integrate with Supabase system_error_logs table
   }
 }
 

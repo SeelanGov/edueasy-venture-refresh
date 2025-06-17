@@ -1488,27 +1488,33 @@ export type Database = {
       }
       verification_logs: {
         Row: {
+          attempt_number: number | null
           created_at: string | null
           error_message: string | null
           id: string
+          ip_address: unknown | null
           national_id_last4: string | null
           result: string
           user_id: string | null
           verification_method: string | null
         }
         Insert: {
+          attempt_number?: number | null
           created_at?: string | null
           error_message?: string | null
           id?: string
+          ip_address?: unknown | null
           national_id_last4?: string | null
           result: string
           user_id?: string | null
           verification_method?: string | null
         }
         Update: {
+          attempt_number?: number | null
           created_at?: string | null
           error_message?: string | null
           id?: string
+          ip_address?: unknown | null
           national_id_last4?: string | null
           result?: string
           user_id?: string | null
@@ -1523,6 +1529,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      verification_rate_limits: {
+        Row: {
+          attempt_count: number | null
+          blocked_until: string | null
+          created_at: string | null
+          first_attempt_at: string | null
+          id: string
+          ip_address: unknown | null
+          last_attempt_at: string | null
+          user_identifier: string | null
+        }
+        Insert: {
+          attempt_count?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          first_attempt_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          last_attempt_at?: string | null
+          user_identifier?: string | null
+        }
+        Update: {
+          attempt_count?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          first_attempt_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          last_attempt_at?: string | null
+          user_identifier?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -1554,6 +1593,10 @@ export type Database = {
         Args: { table_name: string; record_id: string }
         Returns: boolean
       }
+      decrypt_national_id: {
+        Args: { encrypted_id: string; user_requesting?: string }
+        Returns: string
+      }
       generate_tracking_id: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1571,6 +1614,16 @@ export type Database = {
           message_count: number
           avg_confidence: number
         }[]
+      }
+      handle_verification_success: {
+        Args: {
+          p_user_id: string
+          p_email: string
+          p_full_name: string
+          p_national_id: string
+          p_phone_number?: string
+        }
+        Returns: Json
       }
       is_admin: {
         Args: { user_uuid?: string }
