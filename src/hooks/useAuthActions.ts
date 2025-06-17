@@ -1,55 +1,163 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
 import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
 
+interface VerificationResult {
+  verified: boolean;
+  error?: string;
+  blocked_until?: string;
+  attempts?: number;
+}
+
 export const useAuthActions = () => {
-  const signUp = async (email: string, password: string, fullName: string, idNumber: string) => {
+  
+  const verifyIdentity = async (
+    email: string, 
+    nationalId: string, 
+    fullName: string, 
+    phoneNumber?: string
+  ): Promise<VerificationResult> => {
     try {
+      const edgeUrl = `https://pensvamtfjtpsaoeflbx.functions.supabase.co/verify-id`;
+      
+      const response = await fetch(edgeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          national_id: nationalId,
+          full_name: fullName,
+          phone_number: phoneNumber
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          return {
+            verified: false,
+            error: result.error,
+            blocked_until: result.blocked_until,
+            attempts: result.attempts
+          };
+        }
+        return {
+          verified: false,
+          error: result.error || 'Verification failed'
+        };
+      }
+
+      return { verified: true };
+    } catch (error) {
+      logger.error('Identity verification error:', error);
+      return {
+        verified: false,
+        error: 'Network error during verification. Please try again.'
+      };
+    }
+  };
+
+  const signUp = async (
+    email: string, 
+    password: string, 
+    fullName: string, 
+    idNumber: string,
+    gender: string,
+    phoneNumber?: string
+  ) => {
+    try {
+      // Step 1: Verify identity first
+      logger.debug('Starting identity verification for:', email);
+      const verificationResult = await verifyIdentity(email, idNumber, fullName, phoneNumber);
+      
+      if (!verificationResult.verified) {
+        logger.error('Identity verification failed:', verificationResult.error);
+        return { 
+          user: null, 
+          session: null, 
+          error: verificationResult.error,
+          blocked_until: verificationResult.blocked_until,
+          attempts: verificationResult.attempts
+        };
+      }
+
+      logger.debug('Identity verified successfully, creating account...');
+
+      // Step 2: Create Supabase Auth user
       const redirectUrl = `${window.location.origin}/`;
       
-      const { data, error } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: redirectUrl,
           data: {
             full_name: fullName,
-            id_number: idNumber
+            id_verified: true,
+            phone_number: phoneNumber,
+            gender: gender
           }
         }
       });
 
-      if (error) {
-        throw error;
+      if (authError) {
+        logger.error('Auth signup error:', authError);
+        throw authError;
       }
 
-      // Create user profile
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert([
-            {
-              id: data.user.id,
-              full_name: fullName,
-              id_number: idNumber,
-              email: email,
-              profile_status: 'incomplete'
-            }
-          ]);
+      if (!authData.user) {
+        throw new Error('User creation failed - no user returned');
+      }
 
-        if (profileError) {
-          logger.error('Error creating user profile:', profileError);
+      logger.debug('Auth user created:', authData.user.id);
+
+      // Step 3: Call database function to handle verification success
+      const { data: dbResult, error: dbError } = await supabase.rpc(
+        'handle_verification_success',
+        {
+          p_user_id: authData.user.id,
+          p_email: email,
+          p_full_name: fullName,
+          p_national_id: idNumber,
+          p_phone_number: phoneNumber
         }
+      );
+
+      if (dbError) {
+        logger.error('Database setup error:', dbError);
+        // Try to clean up auth user if DB fails
+        await supabase.auth.admin.deleteUser(authData.user.id);
+        throw new Error('Account setup failed. Please try again.');
       }
+
+      logger.debug('User profile created successfully:', dbResult);
+
+      // Step 4: Update verification logs with actual user ID
+      await supabase
+        .from('verification_logs')
+        .update({ user_id: authData.user.id })
+        .eq('national_id_last4', idNumber.slice(-4))
+        .eq('result', 'verified')
+        .is('user_id', null)
+        .order('created_at', { ascending: false })
+        .limit(1);
 
       toast({
         title: "Registration successful!",
-        description: "Please check your email to verify your account."
+        description: `Account created with starter plan. Tracking ID: ${dbResult.tracking_id}`
       });
 
-      return { user: data.user, session: data.session, error: null };
+      return { 
+        user: authData.user, 
+        session: authData.session, 
+        error: null,
+        tracking_id: dbResult.tracking_id
+      };
+
     } catch (error: any) {
       const message = error.message || 'Registration failed';
       logger.error('Sign up failed:', error);
@@ -139,6 +247,7 @@ export const useAuthActions = () => {
   };
 
   return {
+    verifyIdentity,
     signUp,
     signIn,
     resetPassword,
