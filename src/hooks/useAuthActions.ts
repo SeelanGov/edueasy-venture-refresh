@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
 import { toast } from '@/components/ui/use-toast';
@@ -8,6 +9,13 @@ interface VerificationResult {
   error?: string;
   blocked_until?: string;
   attempts?: number;
+}
+
+interface DatabaseResult {
+  success: boolean;
+  tracking_id: string;
+  user_id: string;
+  plan: string;
 }
 
 export const useAuthActions = () => {
@@ -134,7 +142,13 @@ export const useAuthActions = () => {
         throw new Error('Account setup failed. Please try again.');
       }
 
-      logger.debug('User profile created successfully:', dbResult);
+      if (!dbResult) {
+        throw new Error('Database function returned null result');
+      }
+
+      // Type assertion for the database result
+      const result = dbResult as DatabaseResult;
+      logger.debug('User profile created successfully:', result);
 
       // Step 4: Update verification logs with actual user ID
       await supabase
@@ -148,14 +162,14 @@ export const useAuthActions = () => {
 
       toast({
         title: "Registration successful!",
-        description: `Account created with starter plan. Tracking ID: ${dbResult.tracking_id}`
+        description: `Account created with starter plan. Tracking ID: ${result.tracking_id}`
       });
 
       return { 
         user: authData.user, 
         session: authData.session, 
         error: null,
-        tracking_id: dbResult.tracking_id
+        tracking_id: result.tracking_id
       };
 
     } catch (error: any) {
