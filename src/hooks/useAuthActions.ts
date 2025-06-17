@@ -146,8 +146,8 @@ export const useAuthActions = () => {
         throw new Error('Database function returned null result');
       }
 
-      // Type assertion for the database result
-      const result = dbResult as DatabaseResult;
+      // Type assertion for the database result with unknown first
+      const result = dbResult as unknown as DatabaseResult;
       logger.debug('User profile created successfully:', result);
 
       // Step 4: Update verification logs with actual user ID
