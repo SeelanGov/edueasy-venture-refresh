@@ -1137,6 +1137,63 @@ export type Database = {
           },
         ]
       }
+      subscription_tiers: {
+        Row: {
+          created_at: string | null
+          description: string
+          id: string
+          includes_ai_assistance: boolean | null
+          includes_auto_fill: boolean | null
+          includes_career_guidance: boolean | null
+          includes_document_reviews: boolean | null
+          includes_nsfas_guidance: boolean | null
+          includes_priority_support: boolean | null
+          includes_verification: boolean | null
+          max_applications: number
+          max_documents: number | null
+          name: string
+          price_once_off: number
+          thandi_tier: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          id?: string
+          includes_ai_assistance?: boolean | null
+          includes_auto_fill?: boolean | null
+          includes_career_guidance?: boolean | null
+          includes_document_reviews?: boolean | null
+          includes_nsfas_guidance?: boolean | null
+          includes_priority_support?: boolean | null
+          includes_verification?: boolean | null
+          max_applications: number
+          max_documents?: number | null
+          name: string
+          price_once_off?: number
+          thandi_tier: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          id?: string
+          includes_ai_assistance?: boolean | null
+          includes_auto_fill?: boolean | null
+          includes_career_guidance?: boolean | null
+          includes_document_reviews?: boolean | null
+          includes_nsfas_guidance?: boolean | null
+          includes_priority_support?: boolean | null
+          includes_verification?: boolean | null
+          max_applications?: number
+          max_documents?: number | null
+          name?: string
+          price_once_off?: number
+          thandi_tier?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       system_error_logs: {
         Row: {
           action: string | null
@@ -1413,6 +1470,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          payment_method: string | null
+          purchase_date: string
+          tier_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          payment_method?: string | null
+          purchase_date?: string
+          tier_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          payment_method?: string | null
+          purchase_date?: string
+          tier_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_tier_id_fkey"
+            columns: ["tier_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_tiers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
