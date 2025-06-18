@@ -8,16 +8,65 @@ import logger from '@/utils/logger';
 export const usePlanManagement = () => {
   const [loading, setLoading] = useState(false);
 
+  // Mock data for subscription tiers until types are updated
+  const mockTiers: SubscriptionTier[] = [
+    {
+      id: 'starter',
+      name: 'Starter',
+      description: 'Get started with basic features',
+      price_once_off: 0,
+      max_applications: 1,
+      max_documents: 5,
+      includes_verification: false,
+      includes_ai_assistance: true,
+      includes_priority_support: false,
+      includes_document_reviews: false,
+      includes_career_guidance: false,
+      includes_auto_fill: false,
+      includes_nsfas_guidance: false,
+      thandi_tier: 'basic',
+    },
+    {
+      id: 'essential',
+      name: 'Essential',
+      description: 'Enhanced features for serious students',
+      price_once_off: 199,
+      max_applications: 3,
+      max_documents: 20,
+      includes_verification: true,
+      includes_ai_assistance: true,
+      includes_priority_support: false,
+      includes_document_reviews: false,
+      includes_career_guidance: false,
+      includes_auto_fill: true,
+      includes_nsfas_guidance: true,
+      thandi_tier: 'guidance',
+    },
+    {
+      id: 'pro-ai',
+      name: 'Pro + AI',
+      description: 'All features with advanced AI guidance',
+      price_once_off: 300,
+      max_applications: 6,
+      includes_verification: true,
+      includes_ai_assistance: true,
+      includes_priority_support: true,
+      includes_document_reviews: true,
+      includes_career_guidance: true,
+      includes_auto_fill: true,
+      includes_nsfas_guidance: true,
+      thandi_tier: 'advanced',
+    },
+  ];
+
   const getUserPlan = async (userId: string): Promise<UserSubscription | null> => {
     try {
-      const { data, error } = await supabase
-        .from('user_subscriptions')
-        .select(`
-          *,
-          tier:subscription_tiers(*)
-        `)
+      // First try to get from user_plans table (existing structure)
+      const { data: userPlan, error } = await supabase
+        .from('user_plans')
+        .select('*')
         .eq('user_id', userId)
-        .eq('is_active', true)
+        .eq('active', true)
         .single();
 
       if (error && error.code !== 'PGRST116') {
@@ -25,7 +74,23 @@ export const usePlanManagement = () => {
         throw error;
       }
 
-      return data || null;
+      if (userPlan) {
+        // Map to our subscription structure
+        const tier = mockTiers.find(t => t.name.toLowerCase() === userPlan.plan?.toLowerCase());
+        if (tier) {
+          return {
+            id: userPlan.id,
+            user_id: userId,
+            tier_id: tier.id,
+            tier,
+            purchase_date: userPlan.created_at || new Date().toISOString(),
+            is_active: userPlan.active || false,
+            payment_method: 'card',
+          };
+        }
+      }
+
+      return null;
     } catch (error) {
       logger.error('Failed to get user plan:', error);
       return null;
@@ -34,57 +99,33 @@ export const usePlanManagement = () => {
 
   const getAvailablePlans = async (): Promise<SubscriptionTier[]> => {
     try {
-      const { data, error } = await supabase
-        .from('subscription_tiers')
-        .select('*')
-        .order('price_once_off', { ascending: true });
-
-      if (error) {
-        logger.error('Error fetching available plans:', error);
-        throw error;
-      }
-
-      return data || [];
+      // Return mock tiers for now
+      return mockTiers;
     } catch (error) {
       logger.error('Failed to get available plans:', error);
-      return [];
+      return mockTiers;
     }
   };
 
   const upgradePlan = async (userId: string, tierName: string): Promise<boolean> => {
     setLoading(true);
     try {
-      // Get the tier details
-      const { data: tier, error: tierError } = await supabase
-        .from('subscription_tiers')
-        .select('*')
-        .eq('name', tierName)
-        .single();
-
-      if (tierError || !tier) {
+      const tier = mockTiers.find(t => t.name === tierName);
+      if (!tier) {
         throw new Error('Plan not found');
       }
 
-      // Deactivate current subscription
-      await supabase
-        .from('user_subscriptions')
-        .update({ is_active: false })
-        .eq('user_id', userId)
-        .eq('is_active', true);
-
-      // Create new subscription
-      const { error: subscriptionError } = await supabase
-        .from('user_subscriptions')
-        .insert({
+      // Update or insert into user_plans table
+      const { error } = await supabase
+        .from('user_plans')
+        .upsert({
           user_id: userId,
-          tier_id: tier.id,
-          is_active: true,
-          purchase_date: new Date().toISOString(),
-          payment_method: 'upgrade'
+          plan: tierName,
+          active: true,
         });
 
-      if (subscriptionError) {
-        throw subscriptionError;
+      if (error) {
+        throw error;
       }
 
       toast({
@@ -108,27 +149,12 @@ export const usePlanManagement = () => {
 
   const assignStarterPlan = async (userId: string): Promise<boolean> => {
     try {
-      // Get starter tier
-      const { data: starterTier, error: tierError } = await supabase
-        .from('subscription_tiers')
-        .select('*')
-        .eq('name', 'Starter')
-        .single();
-
-      if (tierError || !starterTier) {
-        logger.error('Starter tier not found:', tierError);
-        return false;
-      }
-
-      // Create subscription
       const { error } = await supabase
-        .from('user_subscriptions')
-        .insert({
+        .from('user_plans')
+        .upsert({
           user_id: userId,
-          tier_id: starterTier.id,
-          is_active: true,
-          purchase_date: new Date().toISOString(),
-          payment_method: 'registration'
+          plan: 'Starter',
+          active: true,
         });
 
       if (error) {
@@ -167,9 +193,9 @@ export const usePlanManagement = () => {
       }
 
       if (action === 'document' && userPlan.tier.max_documents) {
-        // Check document limits
+        // Check document limits using existing documents table
         const { count, error } = await supabase
-          .from('user_documents')
+          .from('documents')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', userId);
 
