@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -105,10 +104,10 @@ export const useAuthOperations = () => {
       // If rememberMe is true, we'll manually set a longer session
       if (rememberMe && data.session) {
         // This is just for logging the preference, actual implementation is handled by Supabase
-        logger.debug('Remember me enabled: setting longer session persistence');
+        logger.debug('Remember me enabled - setting longer session persistence');
       }
 
-      logger.debug('Signin successful:', !!data?.user, data?.user?.id);
+      logger.debug(`Signin successful for user: ${data?.user?.id}`);
       // Navigation is now handled in Login component
       return { user: data.user, session: data.session };
     } catch (error) {
