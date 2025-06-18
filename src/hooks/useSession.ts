@@ -19,7 +19,7 @@ export const useSession = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, currentSession) => {
-      logger.debug('Auth state changed:', event, !!currentSession, currentSession?.user?.id);
+      logger.debug(`Auth state changed: ${event} - Session exists: ${!!currentSession} - User ID: ${currentSession?.user?.id}`);
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -51,7 +51,7 @@ export const useSession = () => {
           return;
         }
 
-        logger.debug('Initial session check:', !!data.session, data.session?.user?.id);
+        logger.debug(`Initial session check - Session exists: ${!!data.session} - User ID: ${data.session?.user?.id}`);
         setSession(data.session);
         setUser(data.session?.user ?? null);
         setLoading(false);
