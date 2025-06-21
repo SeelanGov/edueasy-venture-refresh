@@ -8,12 +8,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Logo } from '@/components/Logo';
-import { PatternBorder } from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { PageLayout } from '@/components/layout/PageLayout';
 
 const resetPasswordSchema = z
   .object({
@@ -87,27 +86,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cap-dark text-white">
-      {/* Header with Pattern */}
-      <div className="relative w-full">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            height: '180px',
-          }}
-        />
-        <div className="relative z-10 pt-6 flex justify-center">
-          <Link to="/">
-            <Logo />
-          </Link>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 pt-24 pb-16">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <PageLayout
+      title="Reset Your Password"
+      subtitle="Enter your new password to regain access to your account"
+      gradient={true}
+    >
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="bg-cap-teal p-6 text-white text-center">
             <h2 className="text-2xl font-bold">Reset Your Password</h2>
             <p className="mt-2 text-sm opacity-90">Enter your new password below</p>
@@ -198,17 +183,12 @@ const ResetPassword = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-white hover:text-cap-coral">
+          <Link to="/" className="text-gray-600 hover:text-cap-teal">
             ← Back to Home
           </Link>
         </div>
       </div>
-
-      {/* Bottom Pattern */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <PatternBorder position="bottom" />
-      </div>
-    </div>
+    </PageLayout>
   );
 };
 
