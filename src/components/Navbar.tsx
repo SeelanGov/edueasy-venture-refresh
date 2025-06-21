@@ -58,7 +58,10 @@ export const Navbar = () => {
             <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
             </Link>
-            <Button onClick={handleAuthNavigation} className="bg-cap-teal hover:bg-cap-teal/90">
+            <Button 
+              onClick={handleAuthNavigation} 
+              className="bg-cap-teal hover:bg-cap-teal/90 text-white font-medium px-6 py-2 min-w-[120px] h-10"
+            >
               Get Started
             </Button>
           </div>
@@ -69,7 +72,7 @@ export const Navbar = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700"
+              className="text-gray-700 hover:bg-gray-100"
             >
               <Menu className="h-6 w-6" />
             </Button>
@@ -78,8 +81,9 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="fixed inset-0 bg-white z-50 flex flex-col p-6">
-            <div className="flex justify-between items-center mb-8">
+          <div className="fixed inset-0 bg-white z-50 flex flex-col">
+            {/* Mobile Header */}
+            <div className="flex justify-between items-center p-6 border-b border-gray-200">
               <Link to="/" onClick={() => setIsOpen(false)}>
                 <Logo layout="horizontal" size="medium" />
               </Link>
@@ -87,46 +91,51 @@ export const Navbar = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
-                className="text-gray-700"
+                className="text-gray-700 hover:bg-gray-100"
               >
                 <X className="h-6 w-6" />
               </Button>
             </div>
             
-            <div className="flex flex-col space-y-8 items-center justify-center flex-1 text-gray-800">
+            {/* Mobile Menu Items */}
+            <div className="flex flex-col px-6 py-8 space-y-6 bg-white min-h-screen">
               <button 
                 onClick={() => scrollToSection('how-it-works')}
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium text-left py-3 border-b border-gray-100"
               >
-                HOW IT WORKS
+                How It Works
               </button>
               <Link
                 to="/meet-thandi"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
                 onClick={() => setIsOpen(false)}
               >
-                MEET THANDI
+                Meet Thandi
               </Link>
               <Link
                 to="/pricing"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
                 onClick={() => setIsOpen(false)}
               >
-                PRICING
+                Pricing
               </Link>
               <Link
                 to="/institutions"
-                className="text-gray-700 hover:text-cap-teal transition-colors text-xl font-medium"
+                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
                 onClick={() => setIsOpen(false)}
               >
-                FOR INSTITUTIONS
+                For Institutions
               </Link>
-              <Button 
-                onClick={handleAuthNavigation}
-                className="bg-cap-teal hover:bg-cap-teal/90 text-xl font-medium px-8 py-3"
-              >
-                GET STARTED
-              </Button>
+              
+              {/* Mobile CTA Button */}
+              <div className="pt-6">
+                <Button 
+                  onClick={handleAuthNavigation}
+                  className="bg-cap-teal hover:bg-cap-teal/90 text-white font-medium w-full py-4 text-lg rounded-lg shadow-sm"
+                >
+                  Get Started
+                </Button>
+              </div>
             </div>
           </div>
         )}
