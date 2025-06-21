@@ -1,7 +1,7 @@
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { AlertTriangle, ArrowUpRight, CreditCard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface PlanLimitWarningProps {
@@ -16,29 +16,49 @@ export const PlanLimitWarning = ({
   currentCount, 
   maxAllowed, 
   planName 
-}: PlanLimitWarningProps) => {
+}: PlanLimitWar
+ningProps) => {
   const isAtLimit = currentCount >= maxAllowed;
   const isNearLimit = currentCount >= maxAllowed - 1;
 
   if (!isNearLimit) return null;
 
   return (
-    <Alert variant={isAtLimit ? 'destructive' : 'default'} className="mb-4">
-      <AlertTriangle className="h-4 w-4" />
+    <Alert 
+      variant={isAtLimit ? 'destructive' : 'default'} 
+      className={`mb-4 border-l-4 ${
+        isAtLimit 
+          ? 'border-l-red-500 bg-red-50 border-red-200' 
+          : 'border-l-cap-teal bg-blue-50 border-blue-200'
+      }`}
+    >
+      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-red-500' : 'text-cap-teal'}`} />
       <AlertDescription className="flex items-center justify-between">
-        <div>
-          {isAtLimit ? (
-            <span>
-              You've reached your {limitType} limit ({currentCount}/{maxAllowed}) on the {planName} plan.
-            </span>
-          ) : (
-            <span>
-              You're nearly at your {limitType} limit ({currentCount}/{maxAllowed}) on the {planName} plan.
-            </span>
-          )}
+        <div className="flex-1">
+          <div className={`font-medium ${isAtLimit ? 'text-red-800' : 'text-gray-800'} mb-1`}>
+            {isAtLimit ? 'Limit Reached' : 'Approaching Limit'}
+          </div>
+          <div className={`text-sm ${isAtLimit ? 'text-red-700' : 'text-gray-600'}`}>
+            {isAtLimit ? (
+              <>
+                You've reached your {limitType} limit ({currentCount}/{maxAllowed}) on the{' '}
+                <span className="font-medium">{planName}</span> plan.
+              </>
+            ) : (
+              <>
+                You're nearly at your {limitType} limit ({currentCount}/{maxAllowed}) on the{' '}
+                <span className="font-medium">{planName}</span> plan.
+              </>
+            )}
+          </div>
         </div>
-        <Button asChild size="sm" variant="outline">
-          <Link to="/subscription" className="flex items-center gap-1">
+        <Button 
+          asChild 
+          size="sm" 
+          className="bg-cap-teal hover:bg-cap-teal/90 text-white ml-4 shadow-sm"
+        >
+          <Link to="/subscription" className="flex items-center gap-2">
+            <CreditCard className="h-3 w-3" />
             Upgrade Plan
             <ArrowUpRight className="h-3 w-3" />
           </Link>

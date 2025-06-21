@@ -8,6 +8,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { UserSubscription } from '@/types/SubscriptionTypes';
 import { Spinner } from '@/components/Spinner';
 import { formatCurrency } from '@/types/SubscriptionTypes';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { CreditCard, Star, Shield } from 'lucide-react';
 
 const Subscription = () => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
@@ -37,71 +39,88 @@ const Subscription = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner size="lg" />
-      </div>
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Spinner size="lg" />
+        </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Choose Your Education Plan
-            </h1>
-            <p className="text-lg text-gray-600">
-              Unlock your potential with the right plan for your educational journey
-            </p>
-          </div>
-
-          {currentSubscription && (
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+    <PageLayout
+      title="Choose Your Education Plan"
+      subtitle="Unlock your potential with the right plan for your educational journey"
+    >
+      <div className="max-w-6xl mx-auto space-y-8">
+        {currentSubscription && (
+          <Card className="bg-white shadow-sm border border-gray-100">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="flex items-center justify-between text-gray-800">
+                <div className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-cap-teal" />
                   <span>Current Plan</span>
-                  <Badge variant="secondary">{currentSubscription.tier?.name}</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600">Plan</p>
-                    <p className="font-semibold">{currentSubscription.tier?.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Price Paid</p>
-                    <p className="font-semibold">
-                      {currentSubscription.tier ? formatCurrency(currentSubscription.tier.price_once_off) : 'Free'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Applications Remaining</p>
-                    <p className="font-semibold">
-                      {currentSubscription.tier?.max_applications || 'Unlimited'}
-                    </p>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+                <Badge variant="secondary" className="bg-cap-teal/10 text-cap-teal border-cap-teal/20">
+                  {currentSubscription.tier?.name}
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Plan Type</p>
+                  <p className="font-semibold text-gray-800">{currentSubscription.tier?.name}</p>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Price Paid</p>
+                  <p className="font-semibold text-gray-800">
+                    {currentSubscription.tier ? formatCurrency(currentSubscription.tier.price_once_off) : 'Free'}
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-1">Applications Remaining</p>
+                  <p className="font-semibold text-gray-800">
+                    {currentSubscription.tier?.max_applications || 'Unlimited'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-center mb-6">Available Plans</h2>
-            <PlanSelector 
-              currentPlan={currentSubscription?.tier?.name}
-              onPlanSelect={() => loadCurrentPlan()}
-            />
+        <div className="space-y-6">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Available Plans</h2>
+            <p className="text-gray-600">Choose the plan that best fits your educational goals</p>
           </div>
-
-          <div className="text-center text-sm text-gray-500">
-            <p>All plans include secure document storage and basic support.</p>
-            <p>Upgrade or downgrade anytime. Changes take effect immediately.</p>
-          </div>
+          
+          <PlanSelector 
+            currentPlan={currentSubscription?.tier?.name}
+            onPlanSelect={() => loadCurrentPlan()}
+          />
         </div>
+
+        <Card className="bg-white shadow-sm border border-gray-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center space-x-8 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4 text-cap-teal" />
+                <span>Secure document storage included</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="h-4 w-4 text-cap-teal" />
+                <span>24/7 basic support</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-4 w-4 text-cap-teal" />
+                <span>Upgrade or downgrade anytime</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
