@@ -16,8 +16,7 @@ export const PlanLimitWarning = ({
   currentCount, 
   maxAllowed, 
   planName 
-}: PlanLimitWar
-ningProps) => {
+}: PlanLimitWarningProps) => {
   const isAtLimit = currentCount >= maxAllowed;
   const isNearLimit = currentCount >= maxAllowed - 1;
 
