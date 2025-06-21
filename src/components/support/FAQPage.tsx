@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const faqs = [
@@ -7,7 +8,7 @@ const faqs = [
   },
   {
     q: 'How do I contact support?',
-    a: 'Click the Help button at the bottom right or email support@edueasy.com.',
+    a: 'Click the Help button at the bottom right or email info@edueasy.co.',
   },
   // Add more FAQs here
 ];
