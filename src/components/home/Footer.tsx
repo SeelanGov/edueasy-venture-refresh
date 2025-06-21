@@ -37,10 +37,7 @@ const Footer = () => {
             <div className="space-y-2">
               <h4 className="text-lg font-semibold mb-3">Contact Us</h4>
               <p className="text-gray-300">
-                <strong>Email:</strong> info@edueasy.co.za
-              </p>
-              <p className="text-gray-300">
-                <strong>Phone:</strong> +27 21 123 4567
+                <strong>Email:</strong> info@edueasy.co
               </p>
               <p className="text-gray-300">
                 <strong>Address:</strong> Cape Town, South Africa
