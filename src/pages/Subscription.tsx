@@ -39,7 +39,7 @@ const Subscription = () => {
 
   if (loading) {
     return (
-      <PageLayout>
+      <PageLayout gradient={true}>
         <div className="flex items-center justify-center min-h-[400px]">
           <Spinner size="lg" />
         </div>
@@ -51,6 +51,7 @@ const Subscription = () => {
     <PageLayout
       title="Choose Your Education Plan"
       subtitle="Unlock your potential with the right plan for your educational journey"
+      gradient={true}
     >
       <div className="max-w-6xl mx-auto space-y-8">
         {currentSubscription && (
