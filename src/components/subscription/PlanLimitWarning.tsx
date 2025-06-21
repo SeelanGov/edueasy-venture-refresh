@@ -25,10 +25,10 @@ export const PlanLimitWarning = ({
   return (
     <Alert 
       variant={isAtLimit ? 'destructive' : 'default'} 
-      className={`mb-4 border-l-4 ${
+      className={`mb-4 border-l-4 bg-white shadow-sm ${
         isAtLimit 
-          ? 'border-l-red-500 bg-red-50 border-red-200' 
-          : 'border-l-cap-teal bg-blue-50 border-blue-200'
+          ? 'border-l-red-500 border-red-200' 
+          : 'border-l-cap-teal border-blue-200'
       }`}
     >
       <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-red-500' : 'text-cap-teal'}`} />
