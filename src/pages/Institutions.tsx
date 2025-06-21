@@ -8,15 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import { useInstitutions } from '@/hooks/useInstitutions';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/components/ui/use-toast';
+import { PageLayout } from '@/components/layout/PageLayout';
 
 const Institutions = () => {
   const navigate = useNavigate();
   const { institutions, loading, error } = useInstitutions();
-
-  // Added for correct apply/status-aware behavior:
   const { user } = useAuth();
 
-  // UX: Instead of navigating to register always, use same logic as homepage 'Start Application'
   const handleStartApplication = () => {
     if (!user) {
       toast({
@@ -34,68 +32,65 @@ const Institutions = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <Loader2 className="h-6 w-6 animate-spin text-cap-teal" />
-          <Typography variant="p">Loading institutions...</Typography>
+      <PageLayout gradient={true}>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-6 w-6 animate-spin text-cap-teal" />
+            <Typography variant="p">Loading institutions...</Typography>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md w-full mx-4">
-          <CardContent className="p-8 text-center">
-            <Typography variant="h3" className="text-red-600 mb-2">
-              Error Loading Institutions
-            </Typography>
-            <Typography variant="p" className="text-gray-600 mb-4">
-              {error}
-            </Typography>
-            <Button onClick={() => window.location.reload()}>
-              Try Again
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <PageLayout gradient={true}>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Card className="max-w-md w-full mx-4 bg-white shadow-sm border border-gray-100">
+            <CardContent className="p-8 text-center">
+              <Typography variant="h3" className="text-red-600 mb-2">
+                Error Loading Institutions
+              </Typography>
+              <Typography variant="p" className="text-gray-600 mb-4">
+                {error}
+              </Typography>
+              <Button onClick={() => window.location.reload()} className="bg-cap-coral hover:bg-cap-coral/90">
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Building2 className="h-8 w-8 text-cap-teal" />
-            <Typography variant="h1" className="mb-0">
-              Partner Institutions
-            </Typography>
-          </div>
-          <Typography variant="lead" className="text-gray-600 mb-6">
-            Discover the universities and colleges in our network
-          </Typography>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/partner-inquiry')}
-              className="bg-cap-teal hover:bg-cap-teal/90"
-            >
-              Become a Partner Institution
-            </Button>
-            {/* Remove Apply as a Student button and replace with "Start Application" if appropriate */}
-            <Button 
-              variant="outline"
-              onClick={handleStartApplication}
-            >
-              Start Application
-            </Button>
-          </div>
+    <PageLayout
+      title="Partner Institutions"
+      subtitle="Discover the universities and colleges in our network"
+      gradient={true}
+    >
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            onClick={() => navigate('/partner-inquiry')}
+            className="bg-cap-teal hover:bg-cap-teal/90"
+          >
+            Become a Partner Institution
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={handleStartApplication}
+            className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+          >
+            Start Application
+          </Button>
         </div>
 
         {/* Partner Benefits Banner */}
-        <Card className="mb-8 bg-gradient-to-r from-cap-teal to-cap-teal/80 text-white">
+        <Card className="bg-gradient-to-r from-cap-teal to-cap-teal/80 text-white shadow-lg">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div>
@@ -119,10 +114,10 @@ const Institutions = () => {
 
         {/* Institutions Grid */}
         {institutions.length === 0 ? (
-          <Card>
+          <Card className="bg-white shadow-sm border border-gray-100">
             <CardContent className="p-12 text-center">
               <Building2 className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <Typography variant="h3" className="mb-2">
+              <Typography variant="h3" className="mb-2 text-gray-800">
                 No Institutions Available
               </Typography>
               <Typography variant="p" className="text-gray-600 mb-6">
@@ -141,7 +136,7 @@ const Institutions = () => {
             {institutions.map((institution) => (
               <Card 
                 key={institution.id} 
-                className="hover:shadow-lg transition-all duration-200 cursor-pointer group"
+                className="hover:shadow-lg transition-all duration-200 cursor-pointer group bg-white shadow-sm border border-gray-100"
                 onClick={() => navigate(`/institutions/${institution.id}`)}
               >
                 <CardHeader>
@@ -158,23 +153,23 @@ const Institutions = () => {
                     </div>
                   </div>
                   
-                  <CardTitle className="group-hover:text-cap-teal transition-colors">
+                  <CardTitle className="group-hover:text-cap-teal transition-colors text-gray-800">
                     {institution.name}
                   </CardTitle>
                   
                   <CardDescription className="space-y-2">
-                    <div className="flex items-center gap-1 text-sm">
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
                       <MapPin className="h-3 w-3" />
                       {institution.type} • {institution.location || institution.province}
                     </div>
                     {institution.student_count && (
-                      <div className="flex items-center gap-1 text-sm">
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
                         <Users className="h-3 w-3" />
                         {institution.student_count} students
                       </div>
                     )}
                     {institution.ranking && (
-                      <div className="flex items-center gap-1 text-sm">
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
                         <Star className="h-3 w-3" />
                         {institution.ranking}
                       </div>
@@ -213,6 +208,7 @@ const Institutions = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
+                          className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate('/partner-inquiry');
@@ -230,10 +226,10 @@ const Institutions = () => {
         )}
 
         {/* Call to Action Section */}
-        <div className="mt-12 text-center">
-          <Card className="max-w-2xl mx-auto">
+        <div className="text-center">
+          <Card className="max-w-2xl mx-auto bg-white shadow-sm border border-gray-100">
             <CardContent className="p-8">
-              <Typography variant="h3" className="mb-4">
+              <Typography variant="h3" className="mb-4 text-gray-800">
                 Don't See Your Institution?
               </Typography>
               <Typography variant="p" className="text-gray-600 mb-6">
@@ -250,6 +246,7 @@ const Institutions = () => {
                 <Button 
                   variant="outline"
                   onClick={() => navigate('/consultations')}
+                  className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
                 >
                   Schedule a Demo
                 </Button>
@@ -258,9 +255,8 @@ const Institutions = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
 export default Institutions;
-
