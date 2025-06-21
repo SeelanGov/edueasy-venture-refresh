@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
-import { AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { AlertCircle, Shield } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
 
@@ -92,15 +92,18 @@ const ResetPassword = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="bg-cap-teal p-6 text-white text-center">
-            <h2 className="text-2xl font-bold">Reset Your Password</h2>
-            <p className="mt-2 text-sm opacity-90">Enter your new password below</p>
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
+          <div className="bg-gradient-to-r from-cap-teal to-cap-teal/90 p-6 text-white text-center">
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Shield className="h-6 w-6" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Create New Password</h2>
+            <p className="text-white/90 text-sm">Choose a strong, secure password</p>
           </div>
 
           <div className="p-6">
             {isVerifying ? (
-              <div className="flex justify-center py-8">
+              <div className="flex justify-center items-center py-8">
                 <Spinner size="lg" />
                 <p className="ml-3 text-gray-600">Verifying your link...</p>
               </div>
@@ -108,7 +111,7 @@ const ResetPassword = () => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {error && (
-                    <Alert variant="destructive">
+                    <Alert variant="destructive" className="border-red-200 bg-red-50">
                       <AlertCircle className="h-4 w-4" />
                       <AlertTitle>Error</AlertTitle>
                       <AlertDescription>{error}</AlertDescription>
@@ -123,11 +126,11 @@ const ResetPassword = () => {
                         <FormLabel className="text-gray-700">New Password</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="******"
+                            placeholder="Enter your new password"
                             type="password"
                             {...field}
                             disabled={isLoading}
-                            className="text-gray-900"
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
                           />
                         </FormControl>
                         <FormMessage />
@@ -143,11 +146,11 @@ const ResetPassword = () => {
                         <FormLabel className="text-gray-700">Confirm New Password</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="******"
+                            placeholder="Confirm your new password"
                             type="password"
                             {...field}
                             disabled={isLoading}
-                            className="text-gray-900"
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
                           />
                         </FormControl>
                         <FormMessage />
@@ -157,7 +160,7 @@ const ResetPassword = () => {
 
                   <Button
                     type="submit"
-                    className="w-full bg-cap-coral hover:bg-cap-coral/90"
+                    className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white shadow-sm"
                     disabled={isLoading}
                   >
                     {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
@@ -167,14 +170,14 @@ const ResetPassword = () => {
               </Form>
             ) : (
               <div className="text-center py-8">
-                <Alert variant="destructive" className="mb-6">
+                <Alert variant="destructive" className="mb-6 border-red-200 bg-red-50">
                   <AlertCircle className="h-4 w-4" />
                   <AlertTitle>Invalid Reset Link</AlertTitle>
                   <AlertDescription>
                     {error || 'This password reset link is invalid or has expired.'}
                   </AlertDescription>
                 </Alert>
-                <Link to="/forgot-password" className="text-cap-teal hover:underline font-medium">
+                <Link to="/forgot-password" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                   Request a new reset link
                 </Link>
               </div>
@@ -183,7 +186,7 @@ const ResetPassword = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal">
+          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>
