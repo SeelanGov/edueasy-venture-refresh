@@ -51,6 +51,7 @@ export const FAQPage: React.FC = () => {
     <PageLayout
       title="Frequently Asked Questions"
       subtitle="Find answers to common questions about EduEasy and our services"
+      gradient={true}
     >
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Category Filter */}
