@@ -1,5 +1,5 @@
+
 import { Logo } from '@/components/Logo';
-import { PatternBorder } from '@/components/PatternBorder';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import { PageLayout } from '@/components/layout/PageLayout';
 
 const loginFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -96,26 +97,13 @@ const Login = () => {
   }, [form]);
 
   return (
-    <div className="min-h-screen bg-cap-dark text-white">
-      <div className="relative w-full">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('/lovable-uploads/1a15c77d-652c-4d03-bf21-33ccffe40f5b.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            height: '180px',
-          }}
-        />
-        <div className="relative z-10 pt-6 flex justify-center">
-          <Link to="/">
-            <Logo />
-          </Link>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 pt-24 pb-16">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <PageLayout
+      title="Welcome Back"
+      subtitle="Sign in to continue your educational journey with EduEasy"
+      gradient={true}
+    >
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="bg-cap-teal p-6 text-white text-center">
             <h2 className="text-2xl font-bold">Login to Your Account</h2>
             <p className="mt-2 text-sm opacity-90">Access your EduEasy dashboard</p>
@@ -217,16 +205,12 @@ const Login = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-white hover:text-cap-coral">
+          <Link to="/" className="text-gray-600 hover:text-cap-teal">
             ← Back to Home
           </Link>
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0">
-        <PatternBorder position="bottom" />
-      </div>
-    </div>
+    </PageLayout>
   );
 };
 
