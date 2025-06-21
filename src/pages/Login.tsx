@@ -75,7 +75,6 @@ const Login = () => {
       }
 
       console.log('Login successful, navigating to:', from);
-      // Navigation will happen in the useEffect when user state updates
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       console.error('Login error:', error);
@@ -103,17 +102,20 @@ const Login = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="bg-cap-teal p-6 text-white text-center">
-            <h2 className="text-2xl font-bold">Login to Your Account</h2>
-            <p className="mt-2 text-sm opacity-90">Access your EduEasy dashboard</p>
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
+          <div className="bg-gradient-to-r from-cap-teal to-cap-teal/90 p-6 text-white text-center">
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Logo size="small" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Welcome Back</h2>
+            <p className="text-white/90 text-sm">Access your EduEasy dashboard</p>
           </div>
 
           <div className="p-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 {error && (
-                  <Alert variant="destructive">
+                  <Alert variant="destructive" className="border-red-200 bg-red-50">
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
@@ -143,18 +145,18 @@ const Login = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="******"
+                          placeholder="Enter your password"
                           type="password"
                           {...field}
                           disabled={isLoading}
-                          className="text-gray-900"
+                          className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
                         />
                       </FormControl>
                       <FormMessage />
                       <div className="text-right">
                         <Link
                           to="/forgot-password"
-                          className="text-sm text-cap-teal hover:underline"
+                          className="text-sm text-cap-teal hover:text-cap-teal/80 hover:underline"
                         >
                           Forgot password?
                         </Link>
@@ -184,7 +186,7 @@ const Login = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-cap-coral hover:bg-cap-coral/90"
+                  className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white shadow-sm"
                   disabled={isLoading}
                 >
                   {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
@@ -194,7 +196,7 @@ const Login = () => {
                 <div className="text-center mt-4">
                   <p className="text-sm text-gray-600">
                     Don't have an account?{' '}
-                    <Link to="/register" className="text-cap-teal hover:underline font-medium">
+                    <Link to="/register" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                       Sign up
                     </Link>
                   </p>
@@ -205,7 +207,7 @@ const Login = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal">
+          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

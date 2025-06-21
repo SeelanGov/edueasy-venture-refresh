@@ -13,12 +13,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { Logo } from '@/components/Logo';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -60,33 +61,36 @@ const ForgotPassword = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="bg-cap-teal p-6 text-white text-center">
-            <h2 className="text-2xl font-bold">Reset Your Password</h2>
-            <p className="mt-2 text-sm opacity-90">We'll send you a link to reset your password</p>
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
+          <div className="bg-gradient-to-r from-cap-teal to-cap-teal/90 p-6 text-white text-center">
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Mail className="h-6 w-6" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Reset Password</h2>
+            <p className="text-white/90 text-sm">We'll send you a secure reset link</p>
           </div>
 
           <div className="p-6">
             {isSubmitted ? (
               <div className="text-center py-8">
-                <div className="bg-green-50 text-green-800 p-4 rounded-md mb-6">
-                  <h3 className="font-medium text-lg">Check your email</h3>
-                  <p className="mt-2 text-sm">
+                <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-md mb-6">
+                  <h3 className="font-medium text-lg mb-2">Check your email</h3>
+                  <p className="text-sm">
                     If an account exists with this email, we've sent a link to reset your password.
                   </p>
                 </div>
                 <Link
                   to="/login"
-                  className="text-cap-teal hover:underline font-medium inline-flex items-center"
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium inline-flex items-center gap-2"
                 >
-                  <ArrowLeft className="h-4 w-4 mr-2" /> Back to Login
+                  <ArrowLeft className="h-4 w-4" /> Back to Login
                 </Link>
               </div>
             ) : (
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {error && (
-                    <Alert variant="destructive">
+                    <Alert variant="destructive" className="border-red-200 bg-red-50">
                       <AlertCircle className="h-4 w-4" />
                       <AlertTitle>Error</AlertTitle>
                       <AlertDescription>{error}</AlertDescription>
@@ -98,14 +102,14 @@ const ForgotPassword = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700">Email</FormLabel>
+                        <FormLabel className="text-gray-700">Email Address</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="your.email@example.com"
                             type="email"
                             {...field}
                             disabled={isLoading}
-                            className="text-gray-900"
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
                           />
                         </FormControl>
                         <FormMessage />
@@ -115,7 +119,7 @@ const ForgotPassword = () => {
 
                   <Button
                     type="submit"
-                    className="w-full bg-cap-coral hover:bg-cap-coral/90"
+                    className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white shadow-sm"
                     disabled={isLoading}
                   >
                     {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
@@ -125,7 +129,7 @@ const ForgotPassword = () => {
                   <div className="text-center mt-4">
                     <p className="text-sm text-gray-600">
                       Remember your password?{' '}
-                      <Link to="/login" className="text-cap-teal hover:underline font-medium">
+                      <Link to="/login" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                         Sign in
                       </Link>
                     </p>
@@ -137,7 +141,7 @@ const ForgotPassword = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal">
+          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>
