@@ -140,12 +140,12 @@ export function ConsultationBookingForm({
   if (showPayment && formData) {
     return (
       <div className="space-y-4">
-        <div className="bg-muted p-4 rounded-md mb-4">
-          <h3 className="font-medium mb-2">Booking Summary</h3>
-          <p className="text-sm">Date: {format(formData.date, 'PPP')}</p>
-          <p className="text-sm">Time: {format(formData.date, 'p')}</p>
-          <p className="text-sm">Duration: {formData.duration} minutes</p>
-          {formData.notes && <p className="text-sm mt-2">Notes: {formData.notes}</p>}
+        <div className="bg-gray-50 p-4 rounded-md mb-4 border border-gray-100">
+          <h3 className="font-medium mb-2 text-gray-800">Booking Summary</h3>
+          <p className="text-sm text-gray-600">Date: {format(formData.date, 'PPP')}</p>
+          <p className="text-sm text-gray-600">Time: {format(formData.date, 'p')}</p>
+          <p className="text-sm text-gray-600">Duration: {formData.duration} minutes</p>
+          {formData.notes && <p className="text-sm text-gray-600 mt-2">Notes: {formData.notes}</p>}
         </div>
 
         <PaymentForm
@@ -167,15 +167,15 @@ export function ConsultationBookingForm({
           name="bookingDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date</FormLabel>
+              <FormLabel className="text-gray-700">Date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
+                        'w-full pl-3 text-left font-normal border-gray-200 hover:border-cap-teal',
+                        !field.value && 'text-gray-500',
                       )}
                     >
                       {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
@@ -198,7 +198,7 @@ export function ConsultationBookingForm({
                   />
                 </PopoverContent>
               </Popover>
-              <FormDescription>Select a weekday for your consultation.</FormDescription>
+              <FormDescription className="text-gray-600">Select a weekday for your consultation.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -209,10 +209,10 @@ export function ConsultationBookingForm({
           name="timeSlot"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Time</FormLabel>
+              <FormLabel className="text-gray-700">Time</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-200 focus:border-cap-teal">
                     <SelectValue placeholder="Select a time slot" />
                   </SelectTrigger>
                 </FormControl>
@@ -220,14 +220,14 @@ export function ConsultationBookingForm({
                   {timeSlots.map((time) => (
                     <SelectItem key={time} value={time}>
                       <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className="mr-2 h-4 w-4 text-cap-teal" />
                         <span>{time}</span>
                       </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>Choose a time that works for you.</FormDescription>
+              <FormDescription className="text-gray-600">Choose a time that works for you.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -238,10 +238,10 @@ export function ConsultationBookingForm({
           name="duration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
+              <FormLabel className="text-gray-700">Duration</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-200 focus:border-cap-teal">
                     <SelectValue placeholder="Select duration" />
                   </SelectTrigger>
                 </FormControl>
@@ -253,7 +253,7 @@ export function ConsultationBookingForm({
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>Longer sessions allow for more in-depth guidance.</FormDescription>
+              <FormDescription className="text-gray-600">Longer sessions allow for more in-depth guidance.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -264,15 +264,15 @@ export function ConsultationBookingForm({
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes (Optional)</FormLabel>
+              <FormLabel className="text-gray-700">Notes (Optional)</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Add any specific topics or questions you'd like to discuss"
-                  className="resize-none"
+                  className="resize-none border-gray-200 focus:border-cap-teal"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
+              <FormDescription className="text-gray-600">
                 Help us prepare for your consultation by providing additional details.
               </FormDescription>
               <FormMessage />
@@ -281,10 +281,20 @@ export function ConsultationBookingForm({
         />
 
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={onCancel}
+            className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+          >
             Cancel
           </Button>
-          <Button type="submit">Continue to Payment</Button>
+          <Button 
+            type="submit"
+            className="bg-cap-coral hover:bg-cap-coral/90 text-white"
+          >
+            Continue to Payment
+          </Button>
         </div>
       </form>
     </Form>

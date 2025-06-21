@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { PremiumFeature } from '@/components/subscription/PremiumFeature';
 import { SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Calendar, Clock, Video, Users, Star } from 'lucide-react';
+import { PageLayout } from '@/components/layout/PageLayout';
 
 const ConsultationsPage = () => {
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
@@ -53,180 +54,185 @@ const ConsultationsPage = () => {
   ];
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold">Expert Consultations</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Book one-on-one sessions with our education and career experts
-        </p>
-      </div>
+    <PageLayout
+      title="Expert Consultations"
+      subtitle="Book one-on-one sessions with our education and career experts"
+      gradient={true}
+    >
+      <div className="max-w-6xl mx-auto space-y-8">
+        <PremiumFeature
+          title="Expert Consultations"
+          description="Available for Essential and Pro + AI subscribers"
+          requiredTier={SubscriptionTierName.ESSENTIAL}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sessionTypes.map((session) => (
+              <Card key={session.id} className="bg-white shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-lg text-gray-800">{session.title}</CardTitle>
+                    <Badge className="bg-cap-teal text-white">{session.price}</Badge>
+                  </div>
+                  <CardDescription className="flex items-center gap-2 text-gray-600">
+                    <Clock className="h-4 w-4" />
+                    {session.duration}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    {session.description}
+                  </p>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm text-gray-700">What's included:</h4>
+                    <ul className="space-y-1">
+                      {session.features.map((feature, index) => (
+                        <li key={index} className="text-xs text-gray-600 flex items-center gap-2">
+                          <Star className="h-3 w-3 text-cap-teal" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-      <PremiumFeature
-        title="Expert Consultations"
-        description="Available for Essential and Pro + AI subscribers"
-        requiredTier={SubscriptionTierName.ESSENTIAL}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sessionTypes.map((session) => (
-            <Card key={session.id} className="relative">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{session.title}</CardTitle>
-                  <Badge variant="secondary">{session.price}</Badge>
+                  <Button 
+                    className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white"
+                    onClick={() => setSelectedSession(session.id)}
+                  >
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Book Session
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </PremiumFeature>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="bg-white shadow-sm border border-gray-100">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-gray-800">
+                <Users className="h-5 w-5 text-cap-teal" />
+                Our Experts
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                Meet our team of education and career professionals
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-4 p-4 border border-gray-100 rounded-lg bg-gray-50">
+                <div className="w-12 h-12 bg-cap-teal/10 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-cap-teal" />
                 </div>
-                <CardDescription className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  {session.duration}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {session.description}
-                </p>
-                
-                <div className="space-y-2">
-                  <h4 className="font-medium text-sm">What's included:</h4>
-                  <ul className="space-y-1">
-                    {session.features.map((feature, index) => (
-                      <li key={index} className="text-xs text-muted-foreground flex items-center gap-2">
-                        <Star className="h-3 w-3" />
-                        {feature}
-                      </li>
+                <div>
+                  <h4 className="font-medium text-gray-800">Dr. Sarah Johannesburg</h4>
+                  <p className="text-sm text-gray-600">Career Counselor, 15+ years experience</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="h-3 w-3 fill-current text-yellow-500" />
                     ))}
-                  </ul>
+                  </div>
                 </div>
+              </div>
+              
+              <div className="flex items-center gap-4 p-4 border border-gray-100 rounded-lg bg-gray-50">
+                <div className="w-12 h-12 bg-cap-teal/10 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-cap-teal" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">Prof. Michael Cape Town</h4>
+                  <p className="text-sm text-gray-600">Admissions Expert, Former University Dean</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="h-3 w-3 fill-current text-yellow-500" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                <Button 
-                  className="w-full"
-                  onClick={() => setSelectedSession(session.id)}
-                >
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Book Session
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+          <Card className="bg-white shadow-sm border border-gray-100">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-gray-800">
+                <Video className="h-5 w-5 text-cap-teal" />
+                How It Works
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                Simple steps to book and attend your consultation
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-cap-teal text-white rounded-full flex items-center justify-center text-sm font-medium">
+                  1
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">Choose Your Session</h4>
+                  <p className="text-sm text-gray-600">
+                    Select the type of consultation that best fits your needs
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-cap-teal text-white rounded-full flex items-center justify-center text-sm font-medium">
+                  2
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">Book Your Time</h4>
+                  <p className="text-sm text-gray-600">
+                    Pick a convenient time slot and complete your booking
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-cap-teal text-white rounded-full flex items-center justify-center text-sm font-medium">
+                  3
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">Attend Your Session</h4>
+                  <p className="text-sm text-gray-600">
+                    Join via video call and get personalized guidance
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </PremiumFeature>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Our Experts
-            </CardTitle>
-            <CardDescription>
-              Meet our team of education and career professionals
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4 p-4 border rounded-lg">
-              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                <Users className="h-6 w-6" />
+        {selectedSession && (
+          <Card className="border-cap-teal bg-white shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-gray-800">Booking Confirmation</CardTitle>
+              <CardDescription className="text-gray-600">
+                You selected: {sessionTypes.find(s => s.id === selectedSession)?.title}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                This feature will be available soon. You can contact us directly to book your session.
+              </p>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setSelectedSession(null)}
+                  className="bg-cap-coral hover:bg-cap-coral/90"
+                >
+                  Back to Sessions
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+                >
+                  Contact Support
+                </Button>
               </div>
-              <div>
-                <h4 className="font-medium">Dr. Sarah Johannesburg</h4>
-                <p className="text-sm text-muted-foreground">Career Counselor, 15+ years experience</p>
-                <div className="flex items-center gap-1 mt-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="h-3 w-3 fill-current text-yellow-500" />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4 p-4 border rounded-lg">
-              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                <Users className="h-6 w-6" />
-              </div>
-              <div>
-                <h4 className="font-medium">Prof. Michael Cape Town</h4>
-                <p className="text-sm text-muted-foreground">Admissions Expert, Former University Dean</p>
-                <div className="flex items-center gap-1 mt-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="h-3 w-3 fill-current text-yellow-500" />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Video className="h-5 w-5" />
-              How It Works
-            </CardTitle>
-            <CardDescription>
-              Simple steps to book and attend your consultation
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                1
-              </div>
-              <div>
-                <h4 className="font-medium">Choose Your Session</h4>
-                <p className="text-sm text-muted-foreground">
-                  Select the type of consultation that best fits your needs
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                2
-              </div>
-              <div>
-                <h4 className="font-medium">Book Your Time</h4>
-                <p className="text-sm text-muted-foreground">
-                  Pick a convenient time slot and complete your booking
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                3
-              </div>
-              <div>
-                <h4 className="font-medium">Attend Your Session</h4>
-                <p className="text-sm text-muted-foreground">
-                  Join via video call and get personalized guidance
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
-
-      {selectedSession && (
-        <Card className="border-primary">
-          <CardHeader>
-            <CardTitle>Booking Confirmation</CardTitle>
-            <CardDescription>
-              You selected: {sessionTypes.find(s => s.id === selectedSession)?.title}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              This feature will be available soon. You can contact us directly to book your session.
-            </p>
-            <div className="flex gap-2">
-              <Button onClick={() => setSelectedSession(null)}>
-                Back to Sessions
-              </Button>
-              <Button variant="outline">
-                Contact Support
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+    </PageLayout>
   );
 };
 

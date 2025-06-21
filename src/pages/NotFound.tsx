@@ -19,7 +19,7 @@ const NotFound = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto text-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8 border border-gray-100">
           <div className="mb-6">
             <div className="text-6xl font-bold text-cap-teal mb-4">404</div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Oops! Page not found</h2>
@@ -29,7 +29,7 @@ const NotFound = () => {
           </div>
 
           <div className="space-y-4">
-            <Button asChild className="w-full bg-cap-coral hover:bg-cap-coral/90">
+            <Button asChild className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white">
               <Link to="/" className="flex items-center justify-center gap-2">
                 <Home className="h-4 w-4" />
                 Go Home
@@ -48,7 +48,7 @@ const NotFound = () => {
         <div className="text-center">
           <button 
             onClick={() => window.history.back()}
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back
