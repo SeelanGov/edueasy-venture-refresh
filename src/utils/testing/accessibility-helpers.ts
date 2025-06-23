@@ -1,4 +1,3 @@
-
 // Accessibility testing utilities
 export interface AccessibilityCheckResult {
   passed: boolean;
@@ -58,7 +57,7 @@ export const checkAccessibility = (
     
     let hasLabel = false;
     if (isFormElementWithLabels(input)) {
-      hasLabel = input.labels && input.labels.length > 0;
+      hasLabel = Boolean(input.labels && input.labels.length > 0);
     }
     
     if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy) {
