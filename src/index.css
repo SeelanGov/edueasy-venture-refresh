@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -338,7 +339,7 @@
   h4,
   h5,
   h6 {
-    @apply font-heading tracking-tight;
+    @apply font-semibold tracking-tight;
   }
 
   /* Enhanced typography utilities */
