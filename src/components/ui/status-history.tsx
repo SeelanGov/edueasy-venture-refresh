@@ -4,7 +4,7 @@ import { StatusBadge, type ExtendedStatusType } from './status-badge';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 
-interface StatusHistoryEntry {
+export interface StatusHistoryEntry {
   id: string;
   status: ExtendedStatusType;
   timestamp: Date;

@@ -126,9 +126,12 @@ export const typography = {
   },
 } as const;
 
-export type StatusType = keyof typeof statusColors;
-export type ColorScale = keyof typeof colors;
-export type SpacingScale = keyof typeof spacing;
+// Status style interface
+export interface StatusStyle {
+  bg: string;
+  text: string;
+  border: string;
+}
 
 // Extended status type for application-specific statuses
 export type ExtendedStatusType = StatusType | 'approved' | 'rejected' | 'submitted' | 'under-review' | 'resubmission-required';
