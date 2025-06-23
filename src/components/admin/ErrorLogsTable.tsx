@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   Table,
@@ -7,7 +8,6 @@ import {
   TableBody,
   TableCell,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { StatusBadge } from '@/components/ui/status-badge';
 import {
   AlertCircle,
   AlertOctagon,
@@ -104,19 +105,11 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
   };
 
   const filteredErrors = errors.filter((error) => {
-    // Filter by resolved status
     if (!filter.showResolved && error.is_resolved) return false;
-
-    // Filter by severity if specified
     if (filter.severity && error.severity !== filter.severity) return false;
-
-    // Filter by category if specified
     if (filter.category && error.category !== filter.category) return false;
-
-    // Filter by component if specified
     if (filter.component && error.component !== filter.component) return false;
 
-    // Filter by search term
     if (filter.search) {
       const searchLower = filter.search.toLowerCase();
       const matchesMessage = error.message.toLowerCase().includes(searchLower);
@@ -131,85 +124,45 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'INFO':
-        return <Info className="h-4 w-4 text-blue-500" />;
+        return <Info className="h-4 w-4 text-info" />;
       case 'WARNING':
-        return <AlertTriangle className="h-4 w-4 text-amber-500" />;
+        return <AlertTriangle className="h-4 w-4 text-warning" />;
       case 'ERROR':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-error" />;
       case 'CRITICAL':
-        return <AlertOctagon className="h-4 w-4 text-red-600" />;
+        return <AlertOctagon className="h-4 w-4 text-error-dark" />;
       default:
         return <AlertCircle className="h-4 w-4" />;
     }
   };
 
-  const getSeverityBadge = (severity: string) => {
+  const getSeverityStatus = (severity: string) => {
     switch (severity) {
       case 'INFO':
-        return (
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-            Info
-          </Badge>
-        );
+        return 'info';
       case 'WARNING':
-        return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-            Warning
-          </Badge>
-        );
+        return 'warning';
       case 'ERROR':
-        return (
-          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-            Error
-          </Badge>
-        );
+        return 'error';
       case 'CRITICAL':
-        return <Badge variant="destructive">Critical</Badge>;
+        return 'error';
       default:
-        return <Badge variant="outline">Unknown</Badge>;
+        return 'info';
     }
   };
 
-  const getCategoryBadge = (category: string) => {
+  const getCategoryStatus = (category: string) => {
     switch (category) {
       case 'NETWORK':
-        return (
-          <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-            Network
-          </Badge>
-        );
       case 'DATABASE':
-        return (
-          <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200">
-            Database
-          </Badge>
-        );
       case 'AUTHENTICATION':
-        return (
-          <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-200">
-            Auth
-          </Badge>
-        );
+        return 'error';
       case 'VALIDATION':
-        return (
-          <Badge variant="outline" className="bg-teal-50 text-teal-700 border-teal-200">
-            Validation
-          </Badge>
-        );
+        return 'warning';
       case 'FILE':
-        return (
-          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
-            File
-          </Badge>
-        );
-      case 'UNKNOWN':
-        return (
-          <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
-            Unknown
-          </Badge>
-        );
+        return 'info';
       default:
-        return <Badge variant="outline">Other</Badge>;
+        return 'pending';
     }
   };
 
@@ -219,7 +172,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">System Error Logs</h2>
+        <h2 className="text-xl font-bold text-gray-800">System Error Logs</h2>
         <Button
           variant="outline"
           size="sm"
@@ -318,7 +271,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
             onChange={(e) => setFilter((prev) => ({ ...prev, showResolved: e.target.checked }))}
             className="mr-2"
           />
-          <label htmlFor="show-resolved" className="text-sm">
+          <label htmlFor="show-resolved" className="text-sm text-gray-700">
             Show Resolved
           </label>
         </div>
@@ -331,7 +284,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
       ) : filteredErrors.length === 0 ? (
         <div className="text-center py-8 text-gray-500">No error logs matching your criteria</div>
       ) : (
-        <div className="border rounded-md">
+        <div className="border rounded-md border-gray-200">
           <Table>
             <TableHeader>
               <TableRow>
@@ -356,30 +309,32 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                     <TableCell className="text-center">{getSeverityIcon(error.severity)}</TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium">
+                        <div className="font-medium text-gray-800">
                           {error.message}
                           {error.is_resolved && (
-                            <Badge
-                              variant="outline"
-                              className="ml-2 bg-green-50 text-green-700 border-green-200"
-                            >
-                              <Check className="h-3 w-3 mr-1" /> Resolved
-                            </Badge>
+                            <StatusBadge status="success" className="ml-2">
+                              <Check className="h-3 w-3 mr-1" />
+                              Resolved
+                            </StatusBadge>
                           )}
                         </div>
                         <div className="text-xs text-gray-500 mt-1 flex gap-2">
-                          {getSeverityBadge(error.severity)}
-                          {getCategoryBadge(error.category)}
+                          <StatusBadge status={getSeverityStatus(error.severity)}>
+                            {error.severity.charAt(0) + error.severity.slice(1).toLowerCase()}
+                          </StatusBadge>
+                          <StatusBadge status={getCategoryStatus(error.category)}>
+                            {error.category.charAt(0) + error.category.slice(1).toLowerCase()}
+                          </StatusBadge>
                           {error.action && (
                             <span className="text-gray-600">Action: {error.action}</span>
                           )}
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>{error.component || 'Unknown'}</TableCell>
+                    <TableCell className="text-gray-700">{error.component || 'Unknown'}</TableCell>
                     <TableCell className="flex items-center gap-2">
                       <div>
-                        <div className="text-sm">
+                        <div className="text-sm text-gray-800">
                           {format(new Date(error.occurred_at), 'dd MMM yyyy')}
                         </div>
                         <div className="text-xs text-gray-500">
@@ -410,11 +365,11 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                   {expandedRows[error.id] && (
                     <TableRow className={error.is_resolved ? 'bg-gray-50' : ''}>
                       <TableCell colSpan={5}>
-                        <div className="p-4 space-y-4">
+                        <div className="p-4 space-y-4 bg-gray-50 rounded-md">
                           {error.details && (
                             <div>
-                              <h4 className="text-sm font-semibold mb-1">Details:</h4>
-                              <pre className="text-xs bg-gray-100 p-2 rounded overflow-auto max-h-32">
+                              <h4 className="text-sm font-semibold mb-1 text-gray-800">Details:</h4>
+                              <pre className="text-xs bg-white p-2 rounded overflow-auto max-h-32 border border-gray-200">
                                 {JSON.stringify(error.details, null, 2)}
                               </pre>
                             </div>
@@ -422,15 +377,15 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
 
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                              <p>
+                              <p className="text-gray-700">
                                 <span className="font-medium">Error ID:</span> {error.id}
                               </p>
                               {error.user_id && (
-                                <p>
+                                <p className="text-gray-700">
                                   <span className="font-medium">User ID:</span> {error.user_id}
                                 </p>
                               )}
-                              <p>
+                              <p className="text-gray-700">
                                 <span className="font-medium">Occurred At:</span>{' '}
                                 {format(new Date(error.occurred_at), 'PPpp')}
                               </p>
@@ -439,20 +394,20 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                             {error.is_resolved && (
                               <div>
                                 {error.resolved_at && (
-                                  <p>
+                                  <p className="text-gray-700">
                                     <span className="font-medium">Resolved At:</span>{' '}
                                     {format(new Date(error.resolved_at), 'PPpp')}
                                   </p>
                                 )}
                                 {error.resolved_by && (
-                                  <p>
+                                  <p className="text-gray-700">
                                     <span className="font-medium">Resolved By:</span>{' '}
                                     {error.resolved_by}
                                   </p>
                                 )}
                                 {error.resolution_notes && (
                                   <div>
-                                    <p className="font-medium">Resolution Notes:</p>
+                                    <p className="font-medium text-gray-800">Resolution Notes:</p>
                                     <p className="text-gray-600">{error.resolution_notes}</p>
                                   </div>
                                 )}
@@ -465,7 +420,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                               <div className="mb-2">
                                 <label
                                   htmlFor={`resolution-${error.id}`}
-                                  className="text-sm font-medium block mb-1"
+                                  className="text-sm font-medium block mb-1 text-gray-800"
                                 >
                                   Resolution Notes:
                                 </label>
@@ -478,18 +433,18 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                                       [error.id]: e.target.value,
                                     }))
                                   }
-                                  className="w-full p-2 border rounded-md text-sm resize-none"
+                                  className="w-full p-2 border border-gray-300 rounded-md text-sm resize-none focus:border-primary focus:ring-1 focus:ring-primary"
                                   rows={2}
                                   placeholder="Describe how this error was resolved..."
                                 />
                               </div>
 
                               <Button
-                                variant="default"
+                                variant="primary"
                                 size="sm"
                                 onClick={() => handleResolve(error.id)}
                                 disabled={resolvingIds.includes(error.id)}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-success hover:bg-success-dark"
                               >
                                 {resolvingIds.includes(error.id) ? (
                                   <>

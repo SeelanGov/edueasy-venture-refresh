@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/hooks/useAuth';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, AlertTriangle, Upload } from 'lucide-react';
@@ -18,22 +19,22 @@ export const DocumentVerificationNotice = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'verified':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 text-success" />;
       case 'rejected':
-        return <AlertTriangle className="h-5 w-5 text-red-500" />;
+        return <AlertTriangle className="h-5 w-5 text-error" />;
       default:
-        return <Upload className="h-5 w-5 text-yellow-500" />;
+        return <Upload className="h-5 w-5 text-warning" />;
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusBadgeType = (status: string) => {
     switch (status) {
       case 'verified':
-        return 'Verified';
+        return 'success';
       case 'rejected':
-        return 'Rejected';
+        return 'error';
       default:
-        return 'Pending';
+        return 'pending';
     }
   };
 
@@ -45,39 +46,43 @@ export const DocumentVerificationNotice = () => {
   }
 
   return (
-    <Card className="mb-6 border-yellow-200 bg-yellow-50">
+    <Card className="mb-6 border-warning-light bg-warning-light">
       <CardHeader>
-        <CardTitle className="flex items-center text-yellow-800">
+        <CardTitle className="flex items-center text-warning-dark">
           <AlertTriangle className="h-5 w-5 mr-2" />
           Document Verification Required
         </CardTitle>
-        <CardDescription className="text-yellow-700">
+        <CardDescription className="text-warning-dark">
           Please upload and verify the required documents to continue with your applications.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           {pendingDocs.map((doc, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border">
+            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
-                <span className="ml-3 font-medium">{doc.name}</span>
+                <span className="ml-3 font-medium text-gray-800">{doc.name}</span>
               </div>
-              <span className="text-sm text-yellow-600">{getStatusText(doc.status)}</span>
+              <StatusBadge status={getStatusBadgeType(doc.status)}>
+                {doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
+              </StatusBadge>
             </div>
           ))}
           {rejectedDocs.map((doc, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-red-200">
+            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-error-light">
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
-                <span className="ml-3 font-medium">{doc.name}</span>
+                <span className="ml-3 font-medium text-gray-800">{doc.name}</span>
               </div>
-              <span className="text-sm text-red-600">{getStatusText(doc.status)}</span>
+              <StatusBadge status={getStatusBadgeType(doc.status)}>
+                {doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
+              </StatusBadge>
             </div>
           ))}
         </div>
         <div className="mt-4">
-          <Button size="sm" className="bg-yellow-600 hover:bg-yellow-700">
+          <Button size="sm" variant="primary" className="bg-warning hover:bg-warning-dark">
             Upload Documents
           </Button>
         </div>

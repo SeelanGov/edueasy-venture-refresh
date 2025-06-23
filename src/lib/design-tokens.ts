@@ -49,28 +49,41 @@ export const colors = {
     light: 'hsl(217, 91%, 90%)',
     dark: 'hsl(217, 91%, 45%)',
   },
+  // Gray scale (standard gray palette)
+  gray: {
+    50: '#f9fafb',
+    100: '#f3f4f6',
+    200: '#e5e7eb',
+    300: '#d1d5db',
+    400: '#9ca3af',
+    500: '#6b7280',
+    600: '#4b5563',
+    700: '#374151',
+    800: '#1f2937',
+    900: '#111827',
+  }
 } as const;
 
 export const statusColors = {
   success: {
-    bg: 'bg-green-50',
-    text: 'text-green-700',
-    border: 'border-green-200',
+    bg: 'bg-success-light',
+    text: 'text-success-dark',
+    border: 'border-success',
   },
   warning: {
-    bg: 'bg-yellow-50',
-    text: 'text-yellow-700',
-    border: 'border-yellow-200',
+    bg: 'bg-warning-light',
+    text: 'text-warning-dark',
+    border: 'border-warning',
   },
   error: {
-    bg: 'bg-red-50',
-    text: 'text-red-700',
-    border: 'border-red-200',
+    bg: 'bg-error-light',
+    text: 'text-error-dark',
+    border: 'border-error',
   },
   info: {
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
+    bg: 'bg-info-light',
+    text: 'text-info-dark',
+    border: 'border-info',
   },
   pending: {
     bg: 'bg-gray-50',
