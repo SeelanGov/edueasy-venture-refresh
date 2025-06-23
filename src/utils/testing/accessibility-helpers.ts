@@ -13,6 +13,13 @@ export interface AccessibilityIssue {
   suggestion?: string;
 }
 
+// Type guard to check if element is a form element with labels
+const isFormElementWithLabels = (element: Element): element is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement => {
+  return element instanceof HTMLInputElement || 
+         element instanceof HTMLTextAreaElement || 
+         element instanceof HTMLSelectElement;
+};
+
 // Check for common accessibility issues
 export const checkAccessibility = (
   element: HTMLElement | null,
@@ -46,9 +53,13 @@ export const checkAccessibility = (
   // Check for missing form labels
   const inputs = element.querySelectorAll('input, textarea, select');
   inputs.forEach((input, index) => {
-    const hasLabel = input.labels && input.labels.length > 0;
     const hasAriaLabel = input.getAttribute('aria-label');
     const hasAriaLabelledBy = input.getAttribute('aria-labelledby');
+    
+    let hasLabel = false;
+    if (isFormElementWithLabels(input)) {
+      hasLabel = input.labels && input.labels.length > 0;
+    }
     
     if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy) {
       issues.push({
