@@ -1,3 +1,4 @@
+
 // Design System Tokens
 export const colors = {
   // Brand colors
@@ -132,6 +133,9 @@ export interface StatusStyle {
   text: string;
   border: string;
 }
+
+// Base status type
+export type StatusType = 'success' | 'error' | 'warning' | 'info' | 'pending';
 
 // Extended status type for application-specific statuses
 export type ExtendedStatusType = StatusType | 'approved' | 'rejected' | 'submitted' | 'under-review' | 'resubmission-required';
