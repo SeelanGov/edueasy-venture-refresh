@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { Card, CardContent } from '@/components/ui/card';
 import { Logo } from '@/components/Logo';
 
 const Register = () => {
@@ -12,7 +13,7 @@ const Register = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
+        <Card className="shadow-lg overflow-hidden border border-gray-100">
           <div className="bg-gradient-to-r from-cap-teal to-cap-teal/90 p-6 text-white text-center">
             <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
               <Logo size="small" />
@@ -21,7 +22,7 @@ const Register = () => {
             <p className="text-white/90 text-sm">Start your educational journey today</p>
           </div>
 
-          <div className="p-6">
+          <CardContent className="p-6">
             <RegisterForm />
             
             <div className="text-center mt-4">
@@ -32,8 +33,8 @@ const Register = () => {
                 </Link>
               </p>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         <div className="mt-8 text-center">
           <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">

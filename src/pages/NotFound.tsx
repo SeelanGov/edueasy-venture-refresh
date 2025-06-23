@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 
 const NotFound = () => {
@@ -19,37 +20,39 @@ const NotFound = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto text-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8 border border-gray-100">
-          <div className="mb-6">
-            <div className="text-6xl font-bold text-cap-teal mb-4">404</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">Oops! Page not found</h2>
-            <p className="text-gray-600">
-              The page you're trying to access doesn't exist or may have been moved.
-            </p>
-          </div>
+        <Card className="shadow-lg mb-8 border border-gray-100">
+          <CardContent className="p-8">
+            <div className="mb-6">
+              <div className="text-6xl font-bold text-cap-teal mb-4">404</div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Oops! Page not found</h2>
+              <p className="text-gray-600">
+                The page you're trying to access doesn't exist or may have been moved.
+              </p>
+            </div>
 
-          <div className="space-y-4">
-            <Button asChild className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white">
-              <Link to="/" className="flex items-center justify-center gap-2">
-                <Home className="h-4 w-4" />
-                Go Home
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" className="w-full border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal">
-              <Link to="/dashboard" className="flex items-center justify-center gap-2">
-                <Search className="h-4 w-4" />
-                Go to Dashboard
-              </Link>
-            </Button>
-          </div>
-        </div>
+            <div className="space-y-4">
+              <Button asChild variant="primary" className="w-full">
+                <Link to="/" className="flex items-center justify-center gap-2">
+                  <Home className="h-4 w-4" />
+                  Go Home
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/dashboard" className="flex items-center justify-center gap-2">
+                  <Search className="h-4 w-4" />
+                  Go to Dashboard
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="text-center">
           <Button
             variant="ghost"
             onClick={() => window.history.back()}
-            className="text-gray-600 hover:text-cap-teal hover: inline-flex items-center gap-2"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back

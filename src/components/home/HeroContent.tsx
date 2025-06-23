@@ -48,16 +48,19 @@ export const HeroContent = () => {
         </Typography>
         <div className="flex flex-wrap gap-4 pt-4">
           <Button
+            variant="primary"
             size="lg"
-            className="bg-cap-teal hover:bg-cap-teal/90 text-white rounded-full px-8"
+            rounded="full"
+            className="px-8"
             onClick={handleStartWithThandi}
           >
             Start with Thandi
           </Button>
           <Button
-            size="lg"
             variant="outline"
-            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal rounded-full px-8"
+            size="lg"
+            rounded="full"
+            className="px-8"
             onClick={handleStartApplication}
           >
             Start Application

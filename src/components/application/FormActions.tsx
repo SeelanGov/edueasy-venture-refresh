@@ -43,7 +43,7 @@ export const FormActions = ({
         variant="outline"
         onClick={() => navigate('/dashboard')}
         disabled={isSubmitting || isSaving}
-        className="md:py-6 md:px-6 md:text-base border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
+        className="md:py-6 md:px-6 md:text-base"
         aria-label="Cancel and return to dashboard"
       >
         Cancel
@@ -52,9 +52,10 @@ export const FormActions = ({
       {onSaveDraft && (
         <Button
           type="button"
-          className="bg-cap-coral hover:bg-cap-coral/90 text-white md:py-6 md:px-6 md:text-base"
+          variant="secondary"
           onClick={onSaveDraft}
           disabled={isSubmitting || isSaving}
+          className="md:py-6 md:px-6 md:text-base"
           aria-busy={isSaving}
           aria-live="polite"
         >
@@ -74,8 +75,9 @@ export const FormActions = ({
 
       <Button
         type="submit"
-        className="bg-cap-teal hover:bg-cap-teal/90 text-white md:py-6 md:px-8 md:text-base"
+        variant="primary"
         disabled={isSubmitting || isSaving}
+        className="md:py-6 md:px-8 md:text-base"
         aria-busy={isSubmitting}
         aria-live="assertive"
       >

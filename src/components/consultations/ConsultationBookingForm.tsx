@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { PaymentForm } from '@/components/subscription/PaymentForm';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -139,13 +140,17 @@ export function ConsultationBookingForm({
   if (showPayment && formData) {
     return (
       <div className="space-y-4">
-        <div className="bg-gray-50 p-4 rounded-md mb-4 border border-gray-100">
-          <h3 className="font-medium mb-2 text-gray-800">Booking Summary</h3>
-          <p className="text-sm text-gray-600">Date: {format(formData.date, 'PPP')}</p>
-          <p className="text-sm text-gray-600">Time: {format(formData.date, 'p')}</p>
-          <p className="text-sm text-gray-600">Duration: {formData.duration} minutes</p>
-          {formData.notes && <p className="text-sm text-gray-600 mt-2">Notes: {formData.notes}</p>}
-        </div>
+        <Card className="border border-gray-100">
+          <CardHeader>
+            <h3 className="font-medium text-gray-800">Booking Summary</h3>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="text-sm text-gray-600">Date: {format(formData.date, 'PPP')}</p>
+            <p className="text-sm text-gray-600">Time: {format(formData.date, 'p')}</p>
+            <p className="text-sm text-gray-600">Duration: {formData.duration} minutes</p>
+            {formData.notes && <p className="text-sm text-gray-600">Notes: {formData.notes}</p>}
+          </CardContent>
+        </Card>
 
         <PaymentForm
           amount={consultationPrice * (formData.duration / 30)} // Price scales with duration
@@ -171,9 +176,9 @@ export function ConsultationBookingForm({
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={'outline'}
+                      variant="outline"
                       className={cn(
-                        'w-full pl-3 text-left font-normal border-gray-200 hover:border-cap-teal',
+                        'w-full pl-3 text-left font-normal',
                         !field.value && 'text-gray-500',
                       )}
                     >
@@ -189,9 +194,9 @@ export function ConsultationBookingForm({
                     onSelect={field.onChange}
                     disabled={
                       (date) =>
-                        date < new Date() || // Can't book in the past
-                        date.getDay() === 0 || // No Sundays
-                        date.getDay() === 6 // No Saturdays
+                        date < new Date() ||
+                        date.getDay() === 0 ||
+                        date.getDay() === 6
                     }
                     initialFocus
                   />
@@ -284,13 +289,12 @@ export function ConsultationBookingForm({
             type="button" 
             variant="outline" 
             onClick={onCancel}
-            className="border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
           >
             Cancel
           </Button>
           <Button 
             type="submit"
-            className="bg-cap-teal hover:bg-cap-teal/90 text-white"
+            variant="primary"
           >
             Continue to Payment
           </Button>

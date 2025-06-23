@@ -67,7 +67,7 @@ const ConsultationsPage = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sessionTypes.map((session) => (
-              <Card key={session.id} className="bg-white shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+              <Card key={session.id} className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg text-gray-800">{session.title}</CardTitle>
@@ -96,7 +96,8 @@ const ConsultationsPage = () => {
                   </div>
 
                   <Button 
-                    className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white"
+                    variant="primary"
+                    className="w-full"
                     onClick={() => setSelectedSession(session.id)}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
@@ -203,7 +204,7 @@ const ConsultationsPage = () => {
         </div>
 
         {selectedSession && (
-          <Card className="border-cap-teal bg-white shadow-sm">
+          <Card className="border-cap-teal shadow-sm">
             <CardHeader>
               <CardTitle className="text-gray-800">Booking Confirmation</CardTitle>
               <CardDescription className="text-gray-600">
@@ -217,13 +218,12 @@ const ConsultationsPage = () => {
               <div className="flex gap-2">
                 <Button 
                   onClick={() => setSelectedSession(null)}
-                  className="bg-cap-coral hover:bg-cap-coral/90 text-white"
+                  variant="secondary"
                 >
                   Back to Sessions
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal"
                 >
                   Contact Support
                 </Button>
