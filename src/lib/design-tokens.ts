@@ -49,7 +49,7 @@ export const colors = {
     light: 'hsl(217, 91%, 90%)',
     dark: 'hsl(217, 91%, 45%)',
   },
-  // Gray scale (standard gray palette)
+  // Consistent gray scale
   gray: {
     50: '#f9fafb',
     100: '#f3f4f6',
@@ -102,4 +102,31 @@ export const spacing = {
   '3xl': '4rem',
 } as const;
 
+// Typography scale
+export const typography = {
+  fontSizes: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    base: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+    '3xl': '1.875rem',
+    '4xl': '2.25rem',
+  },
+  fontWeights: {
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+  },
+  lineHeights: {
+    tight: '1.25',
+    normal: '1.5',
+    relaxed: '1.75',
+  },
+} as const;
+
 export type StatusType = keyof typeof statusColors;
+export type ColorScale = keyof typeof colors;
+export type SpacingScale = keyof typeof spacing;

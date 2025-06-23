@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,6 +7,8 @@ import { AddressForm } from './address/AddressForm';
 import { AddressFormValues } from './address/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 interface AddressInfoStepProps {
   onComplete: () => void;
@@ -22,6 +25,7 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
     if (!user) return;
     setIsSubmitting(true);
     setError(null);
+    
     try {
       // Save data to Supabase
       const { error: dbError } = await supabase.from('addresses').insert({
@@ -33,7 +37,9 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
         province: data.province,
         postal_code: data.postalCode,
       });
+      
       if (dbError) throw dbError;
+      
       // Save to store
       setAddressInfo({
         addressType: data.addressType,
@@ -43,6 +49,7 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
         province: data.province,
         postalCode: data.postalCode,
       });
+      
       onComplete();
     } catch (err) {
       const parsed = parseError(err);
@@ -56,6 +63,13 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Address Information</h2>
+      
+      {error && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <AddressForm
         initialValues={addressInfo}
@@ -63,11 +77,6 @@ export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) =>
         isSubmitting={isSubmitting}
         onBack={onBack}
       />
-      {error && (
-        <div className="text-red-500 p-2 mb-2 text-center" role="alert">
-          {error}
-        </div>
-      )}
     </div>
   );
 };
