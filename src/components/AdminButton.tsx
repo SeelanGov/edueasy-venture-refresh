@@ -4,12 +4,22 @@ import { Button } from '@/components/ui/button';
 
 type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline' | 'destructive' | 'ghost';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
 };
 
-const AdminButton: React.FC<AdminButtonProps> = ({ children, className, ...props }) => {
+const AdminButton: React.FC<AdminButtonProps> = ({ 
+  children, 
+  className, 
+  variant = 'primary',
+  size = 'default',
+  ...props 
+}) => {
   return (
     <Button
-      className={`bg-admin hover:bg-admin-hover active:bg-admin-active text-admin-foreground ${className || ''}`}
+      variant={variant}
+      size={size}
+      className={className}
       {...props}
     >
       {children}

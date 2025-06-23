@@ -18,7 +18,7 @@ const CareerGuidancePage = () => {
     >
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="bg-white shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+          <Card className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-gray-800">
                 <Bot className="h-5 w-5 text-cap-teal" />
@@ -32,7 +32,7 @@ const CareerGuidancePage = () => {
               <p className="text-sm text-gray-600 mb-4">
                 Get basic career information and general guidance about different fields of study.
               </p>
-              <Button className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white">
+              <Button variant="primary" className="w-full">
                 Chat with Thandi
               </Button>
             </CardContent>
@@ -43,7 +43,7 @@ const CareerGuidancePage = () => {
             description="Detailed career assessments with personalized recommendations"
             requiredTier={SubscriptionTierName.ESSENTIAL}
           >
-            <Card className="bg-white shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+            <Card className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-800">
                   <TrendingUp className="h-5 w-5 text-cap-teal" />
@@ -54,7 +54,7 @@ const CareerGuidancePage = () => {
                 <p className="text-sm text-gray-600 mb-4">
                   Take comprehensive assessments to discover your ideal career path.
                 </p>
-                <Button className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white">
+                <Button variant="secondary" className="w-full">
                   Start Assessment
                 </Button>
               </CardContent>
@@ -66,7 +66,7 @@ const CareerGuidancePage = () => {
             description="One-on-one sessions with career experts"
             requiredTier={SubscriptionTierName.PRO_AI}
           >
-            <Card className="bg-white shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+            <Card className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-800">
                   <Users className="h-5 w-5 text-cap-teal" />
@@ -77,7 +77,7 @@ const CareerGuidancePage = () => {
                 <p className="text-sm text-gray-600 mb-4">
                   Book sessions with career counselors for personalized guidance.
                 </p>
-                <Button className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white">
+                <Button variant="secondary" className="w-full">
                   Book Session
                 </Button>
               </CardContent>
@@ -86,7 +86,7 @@ const CareerGuidancePage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="bg-white shadow-sm border border-gray-100">
+          <Card className="shadow-sm border border-gray-100">
             <CardHeader>
               <CardTitle className="text-gray-800">Career Resources</CardTitle>
               <CardDescription className="text-gray-600">
@@ -115,7 +115,7 @@ const CareerGuidancePage = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white shadow-sm border border-gray-100">
+          <Card className="shadow-sm border border-gray-100">
             <CardHeader>
               <CardTitle className="text-gray-800">Success Stories</CardTitle>
               <CardDescription className="text-gray-600">
