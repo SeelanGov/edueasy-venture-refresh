@@ -79,6 +79,23 @@ export default tseslint.config(
       'prefer-const': 'error',
       eqeqeq: ['error', 'smart'],
 
+      // Design System Rules - Prevent violations
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/bg-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
+          message: 'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.'
+        },
+        {
+          selector: 'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/text-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
+          message: 'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.'
+        },
+        {
+          selector: 'JSXElement[openingElement.name.name="button"]:not([openingElement.attributes.0.name.name="type"]):not([openingElement.attributes.0.value.value="button"])',
+          message: 'Use Button component from @/components/ui/button instead of raw <button> elements.'
+        }
+      ],
+
       // Prettier integration
       'prettier/prettier': ['warn', {}, { usePrettierrc: true }],
     },
