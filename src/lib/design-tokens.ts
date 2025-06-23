@@ -1,4 +1,3 @@
-
 // Design System Tokens
 export const colors = {
   // Brand colors
@@ -130,3 +129,52 @@ export const typography = {
 export type StatusType = keyof typeof statusColors;
 export type ColorScale = keyof typeof colors;
 export type SpacingScale = keyof typeof spacing;
+
+// Extended status type for application-specific statuses
+export type ExtendedStatusType = StatusType | 'approved' | 'rejected' | 'submitted' | 'under-review' | 'resubmission-required';
+
+// Enhanced status colors with extended types
+export const extendedStatusColors: Record<ExtendedStatusType, StatusStyle> = {
+  ...statusColors,
+  approved: statusColors.success,
+  rejected: statusColors.error,
+  submitted: {
+    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    text: 'text-blue-700 dark:text-blue-300',
+    border: 'border-blue-200 dark:border-blue-800',
+  },
+  'under-review': {
+    bg: 'bg-amber-50 dark:bg-amber-950/30',
+    text: 'text-amber-700 dark:text-amber-300',
+    border: 'border-amber-200 dark:border-amber-800',
+  },
+  'resubmission-required': {
+    bg: 'bg-orange-50 dark:bg-orange-950/30',
+    text: 'text-orange-700 dark:text-orange-300',
+    border: 'border-orange-200 dark:border-orange-800',
+  },
+};
+
+// Status priority levels for sorting and filtering
+export const statusPriority: Record<ExtendedStatusType, number> = {
+  error: 1,
+  rejected: 2,
+  'resubmission-required': 3,
+  warning: 4,
+  pending: 5,
+  'under-review': 6,
+  submitted: 7,
+  info: 8,
+  approved: 9,
+  success: 10,
+};
+
+// Helper function to get status priority
+export const getStatusPriority = (status: ExtendedStatusType): number => {
+  return statusPriority[status] || 0;
+};
+
+// Helper function to sort statuses by priority
+export const sortByStatusPriority = (statuses: ExtendedStatusType[]): ExtendedStatusType[] => {
+  return statuses.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
+};
