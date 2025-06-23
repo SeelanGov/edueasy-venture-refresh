@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import { SponsorAllocation } from '@/types/SponsorTypes';
 
 interface SponsorFormModalProps {
@@ -116,13 +117,20 @@ export const SponsorFormModal: React.FC<SponsorFormModalProps> = ({
           </div>
         </div>
         <div className="mt-6 flex gap-2 justify-end">
-          <button className="px-4 py-1 rounded bg-gray-200" onClick={onClose}>Cancel</button>
-          <button
-            className="px-4 py-1 rounded bg-cap-teal text-white"
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            aria-label="Cancel changes"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
             onClick={() => onSave(values)}
+            aria-label="Save allocation"
           >
             Save
-          </button>
+          </Button>
         </div>
       </div>
     </div>

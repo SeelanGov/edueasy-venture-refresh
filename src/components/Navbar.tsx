@@ -43,12 +43,14 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <button 
+            <Button 
+              variant="ghost"
               onClick={() => scrollToSection('how-it-works')}
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
+              className="text-gray-700 hover:text-cap-teal font-medium"
+              aria-label="Navigate to How It Works section"
             >
               How It Works
-            </button>
+            </Button>
             <Link to="/meet-thandi" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Meet Thandi
             </Link>
@@ -59,8 +61,10 @@ export const Navbar = () => {
               For Institutions
             </Link>
             <Button 
+              variant="primary"
               onClick={handleAuthNavigation} 
-              className="bg-cap-teal hover:bg-cap-teal/90 text-white font-medium px-6 py-2 min-w-[120px] h-10"
+              className="font-medium px-6 py-2 min-w-[120px] h-10"
+              aria-label="Get started with registration"
             >
               Get Started
             </Button>
@@ -73,6 +77,8 @@ export const Navbar = () => {
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:bg-gray-100"
+              aria-label="Toggle mobile menu"
+              aria-expanded={isOpen}
             >
               <Menu className="h-6 w-6" />
             </Button>
@@ -92,6 +98,7 @@ export const Navbar = () => {
                 size="icon"
                 onClick={() => setIsOpen(false)}
                 className="text-gray-700 hover:bg-gray-100"
+                aria-label="Close mobile menu"
               >
                 <X className="h-6 w-6" />
               </Button>
@@ -99,12 +106,13 @@ export const Navbar = () => {
             
             {/* Mobile Menu Items */}
             <div className="flex flex-col px-6 py-8 space-y-6 bg-white min-h-screen">
-              <button 
+              <Button 
+                variant="ghost"
                 onClick={() => scrollToSection('how-it-works')}
-                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium text-left py-3 border-b border-gray-100"
+                className="text-gray-800 hover:text-cap-teal text-lg font-medium text-left py-3 border-b border-gray-100 justify-start"
               >
                 How It Works
-              </button>
+              </Button>
               <Link
                 to="/meet-thandi"
                 className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
@@ -130,8 +138,10 @@ export const Navbar = () => {
               {/* Mobile CTA Button */}
               <div className="pt-6">
                 <Button 
+                  variant="primary"
                   onClick={handleAuthNavigation}
-                  className="bg-cap-teal hover:bg-cap-teal/90 text-white font-medium w-full py-4 text-lg rounded-lg shadow-sm"
+                  className="font-medium w-full py-4 text-lg rounded-lg shadow-sm"
+                  aria-label="Get started with registration"
                 >
                   Get Started
                 </Button>
