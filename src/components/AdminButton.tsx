@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+interface AdminButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'destructive' | 'ghost';
   size?: 'default' | 'sm' | 'lg' | 'icon';
-};
+  className?: string;
+}
 
 const AdminButton: React.FC<AdminButtonProps> = ({ 
   children, 
@@ -19,7 +21,7 @@ const AdminButton: React.FC<AdminButtonProps> = ({
     <Button
       variant={variant}
       size={size}
-      className={className}
+      className={cn('font-semibold', className)}
       {...props}
     >
       {children}
@@ -27,4 +29,5 @@ const AdminButton: React.FC<AdminButtonProps> = ({
   );
 };
 
+export { AdminButton };
 export default AdminButton;
