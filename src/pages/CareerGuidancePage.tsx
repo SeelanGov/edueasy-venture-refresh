@@ -32,7 +32,7 @@ const CareerGuidancePage = () => {
               <p className="text-sm text-gray-600 mb-4">
                 Get basic career information and general guidance about different fields of study.
               </p>
-              <Button className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white">
+              <Button className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white">
                 Chat with Thandi
               </Button>
             </CardContent>
