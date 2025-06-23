@@ -96,7 +96,7 @@ const ConsultationsPage = () => {
                   </div>
 
                   <Button 
-                    className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white"
+                    className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white"
                     onClick={() => setSelectedSession(session.id)}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
@@ -217,13 +217,13 @@ const ConsultationsPage = () => {
               <div className="flex gap-2">
                 <Button 
                   onClick={() => setSelectedSession(null)}
-                  className="bg-cap-coral hover:bg-cap-coral/90"
+                  className="bg-cap-coral hover:bg-cap-coral/90 text-white"
                 >
                   Back to Sessions
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+                  className="border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal"
                 >
                   Contact Support
                 </Button>

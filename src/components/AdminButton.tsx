@@ -1,14 +1,19 @@
-// Using type instead of empty interface
-type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const AdminButton: React.FC<AdminButtonProps> = ({ children, ...props }) => {
+import React from 'react';
+import { Button } from '@/components/ui/button';
+
+type AdminButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: React.ReactNode;
+};
+
+const AdminButton: React.FC<AdminButtonProps> = ({ children, className, ...props }) => {
   return (
-    <button
+    <Button
+      className={`bg-admin hover:bg-admin-hover active:bg-admin-active text-admin-foreground ${className || ''}`}
       {...props}
-      className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${props.className}`}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 

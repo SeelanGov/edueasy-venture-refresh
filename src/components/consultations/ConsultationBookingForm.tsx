@@ -1,4 +1,3 @@
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
@@ -285,13 +284,13 @@ export function ConsultationBookingForm({
             type="button" 
             variant="outline" 
             onClick={onCancel}
-            className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+            className="border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
           >
             Cancel
           </Button>
           <Button 
             type="submit"
-            className="bg-cap-coral hover:bg-cap-coral/90 text-white"
+            className="bg-cap-teal hover:bg-cap-teal/90 text-white"
           >
             Continue to Payment
           </Button>

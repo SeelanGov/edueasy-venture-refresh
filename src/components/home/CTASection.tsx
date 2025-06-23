@@ -21,7 +21,6 @@ export const CTASection = () => {
   return (
     <section className="py-20 px-4 md:py-24 bg-gradient-to-r from-gray-50 to-blue-50">
       <div className="relative overflow-hidden">
-        {/* Background dot pattern */}
         <div
           className="absolute right-0 top-0 h-64 w-1/3 opacity-10"
           style={{
@@ -91,7 +90,7 @@ export const CTASection = () => {
                   {user ? (
                     <Button
                       size="lg"
-                      className="w-full md:w-auto bg-cap-teal text-white hover:bg-cap-teal/90 text-lg py-6 md:py-7 md:px-10"
+                      className="w-full md:w-auto bg-cap-teal hover:bg-cap-teal/90 text-white text-lg py-6 md:py-7 md:px-10"
                       onClick={() => navigate('/profile-completion')}
                     >
                       Complete Your Profile
@@ -100,7 +99,7 @@ export const CTASection = () => {
                     <>
                       <Button
                         size="lg"
-                        className="w-full md:w-auto bg-cap-teal text-white hover:bg-cap-teal/90 text-lg py-6 md:py-7 md:px-10"
+                        className="w-full md:w-auto bg-cap-teal hover:bg-cap-teal/90 text-white text-lg py-6 md:py-7 md:px-10"
                         onClick={handleStartApplication}
                       >
                         Register & Complete Profile
@@ -109,7 +108,7 @@ export const CTASection = () => {
                         <Button
                           size="lg"
                           variant="outline"
-                          className="w-full border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal text-lg py-6 md:py-7 md:px-10"
+                          className="w-full border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal text-lg py-6 md:py-7 md:px-10"
                         >
                           Already Have Account? Login
                         </Button>
@@ -125,7 +124,7 @@ export const CTASection = () => {
 
               <div className="mt-10 text-center">
                 <Link to="/profile-demo">
-                  <Button variant="link" className="text-cap-teal underline md:text-lg">
+                  <Button variant="ghost" className="text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal md:text-lg">
                     View Profile Demo
                   </Button>
                 </Link>

@@ -29,14 +29,14 @@ const NotFound = () => {
           </div>
 
           <div className="space-y-4">
-            <Button asChild className="w-full bg-cap-coral hover:bg-cap-coral/90 text-white">
+            <Button asChild className="w-full bg-cap-teal hover:bg-cap-teal/90 text-white">
               <Link to="/" className="flex items-center justify-center gap-2">
                 <Home className="h-4 w-4" />
                 Go Home
               </Link>
             </Button>
             
-            <Button asChild variant="outline" className="w-full border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal">
+            <Button asChild variant="outline" className="w-full border-cap-teal text-cap-teal hover:bg-cap-teal/10 hover:border-cap-teal">
               <Link to="/dashboard" className="flex items-center justify-center gap-2">
                 <Search className="h-4 w-4" />
                 Go to Dashboard
@@ -46,13 +46,14 @@ const NotFound = () => {
         </div>
 
         <div className="text-center">
-          <button 
+          <Button
+            variant="ghost"
             onClick={() => window.history.back()}
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
+            className="text-gray-600 hover:text-cap-teal hover: inline-flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back
-          </button>
+          </Button>
         </div>
       </div>
     </PageLayout>

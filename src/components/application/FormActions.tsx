@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
@@ -10,7 +11,7 @@ interface FormActionsProps {
   isSaving?: boolean;
   onSaveDraft?: () => void;
   className?: string;
-  formId?: string; // For ARIA association
+  formId?: string;
 }
 
 export const FormActions = ({
@@ -42,7 +43,7 @@ export const FormActions = ({
         variant="outline"
         onClick={() => navigate('/dashboard')}
         disabled={isSubmitting || isSaving}
-        className="md:py-6 md:px-6 md:text-base keyboard-focus-only"
+        className="md:py-6 md:px-6 md:text-base border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
         aria-label="Cancel and return to dashboard"
       >
         Cancel
@@ -51,10 +52,9 @@ export const FormActions = ({
       {onSaveDraft && (
         <Button
           type="button"
-          variant="secondary"
+          className="bg-cap-coral hover:bg-cap-coral/90 text-white md:py-6 md:px-6 md:text-base"
           onClick={onSaveDraft}
           disabled={isSubmitting || isSaving}
-          className="md:py-6 md:px-6 md:text-base keyboard-focus-only"
           aria-busy={isSaving}
           aria-live="polite"
         >
@@ -74,7 +74,7 @@ export const FormActions = ({
 
       <Button
         type="submit"
-        className="bg-primary hover:bg-primary/90 text-primary-foreground md:py-6 md:px-8 md:text-base keyboard-focus-only"
+        className="bg-cap-teal hover:bg-cap-teal/90 text-white md:py-6 md:px-8 md:text-base"
         disabled={isSubmitting || isSaving}
         aria-busy={isSubmitting}
         aria-live="assertive"
