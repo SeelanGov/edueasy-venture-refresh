@@ -15,6 +15,9 @@ interface PageLayoutProps {
   headerClassName?: string;
   showGradient?: boolean;
   actions?: React.ReactNode;
+  // Backward compatibility props
+  gradient?: boolean;
+  containerClassName?: string;
 }
 
 export const PageLayout: React.FC<PageLayoutProps> = ({
@@ -28,7 +31,14 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   headerClassName,
   showGradient = true,
   actions,
+  // Backward compatibility props
+  gradient,
+  containerClassName,
 }) => {
+  // Use backward compatibility props if provided
+  const shouldShowGradient = gradient !== undefined ? gradient : showGradient;
+  const finalContentClassName = containerClassName || contentClassName;
+
   return (
     <div className={cn('min-h-screen bg-background', className)}>
       {/* Header with optional gradient */}
@@ -36,7 +46,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         <div
           className={cn(
             'relative py-8 px-4 md:px-8',
-            showGradient && 'bg-gradient-to-r from-primary/5 to-secondary/5',
+            shouldShowGradient && 'bg-gradient-to-r from-primary/5 to-secondary/5',
             headerClassName
           )}
         >
@@ -82,7 +92,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         className={cn(
           'container mx-auto max-w-7xl px-4 md:px-8',
           title || subtitle ? 'py-8' : 'py-12',
-          contentClassName
+          finalContentClassName
         )}
       >
         {children}
