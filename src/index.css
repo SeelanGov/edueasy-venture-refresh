@@ -362,19 +362,19 @@
   }
 
   .state-pending {
-    @apply bg-info-light text-info border border-info/30;
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
   }
 
   .state-success {
-    @apply bg-success-light text-success border-success/30;
+    @apply bg-green-50 text-green-700 border-green-200;
   }
 
   .state-warning {
-    @apply bg-warning-light text-warning border-warning/30;
+    @apply bg-yellow-50 text-yellow-700 border-yellow-200;
   }
 
   .state-error {
-    @apply bg-error-light text-red-600 border-red-300;
+    @apply bg-red-50 text-red-700 border-red-200;
   }
 }
 
@@ -433,11 +433,11 @@
   }
 
   .hover-lift {
-    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-hover;
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
   }
 
   .card-interactive {
-    @apply transition-all duration-200 hover:shadow-hover hover:-translate-y-0.5;
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
   }
 
   /* Journey map specific utilities */
@@ -446,7 +446,7 @@
   }
 
   .milestone-active {
-    @apply bg-cap-teal text-white shadow-md;
+    @apply bg-teal-600 text-white shadow-md;
   }
 
   .milestone-completed {
