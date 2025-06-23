@@ -1,13 +1,10 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { statusColors, type StatusType } from '@/lib/design-tokens';
+import { statusColors, extendedStatusColors, type StatusType, type ExtendedStatusType } from '@/lib/design-tokens';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle, AlertCircle, Clock, FileText, Eye, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, Clock, FileText, Eye, RefreshCw, type LucideIcon } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
-
-// Expanded status types for application-specific needs
-export type ExtendedStatusType = StatusType | 'approved' | 'rejected' | 'submitted' | 'under-review' | 'resubmission-required';
 
 const statusBadgeVariants = cva(
   'inline-flex items-center gap-1 font-medium transition-all duration-200',
@@ -39,7 +36,7 @@ interface StatusBadgeProps extends VariantProps<typeof statusBadgeVariants> {
   'aria-label'?: string;
 }
 
-const statusIcons = {
+const statusIcons: Record<ExtendedStatusType, LucideIcon> = {
   success: CheckCircle,
   error: XCircle,
   warning: AlertCircle,
@@ -50,16 +47,6 @@ const statusIcons = {
   submitted: FileText,
   'under-review': Eye,
   'resubmission-required': RefreshCw,
-} as const;
-
-// Extended status colors for new status types
-const extendedStatusColors = {
-  ...statusColors,
-  approved: statusColors.success,
-  rejected: statusColors.error,
-  submitted: statusColors.info,
-  'under-review': statusColors.warning,
-  'resubmission-required': statusColors.warning,
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ 
@@ -72,7 +59,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   'aria-label': ariaLabel,
   ...props
 }) => {
-  const statusStyle = extendedStatusColors[status as keyof typeof extendedStatusColors] || statusColors.info;
+  const statusStyle = extendedStatusColors[status] || statusColors.info;
   const IconComponent = statusIcons[status];
   
   return (
@@ -104,3 +91,4 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
 };
 
 export default StatusBadge;
+export type { ExtendedStatusType };
