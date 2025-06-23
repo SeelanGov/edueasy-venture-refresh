@@ -5,6 +5,7 @@ import { useApplications } from '@/hooks/useApplications';
 import { DocumentVerificationNotice } from '@/components/dashboard/DocumentVerificationNotice';
 import { PersonalizedDashboard } from '@/components/dashboard/PersonalizedDashboard';
 import { Application } from '@/types/ApplicationTypes';
+import { PageLayout } from '@/components/layout/PageLayout';
 
 // ADDED: Import JourneyMap and journey hook
 import { JourneyMap } from '@/components/journey/JourneyMap';
@@ -18,7 +19,13 @@ const Dashboard = () => {
 
   return (
     <DashboardLayoutWithThandi>
-      <div className="container mx-auto px-4 py-6">
+      <PageLayout 
+        title="Dashboard"
+        subtitle={`Welcome back, ${user?.email?.split('@')[0] || 'Student'}!`}
+        gradient={false}
+        className="min-h-full"
+        containerClassName="px-4 py-6"
+      >
         {/* Journey Map UX added */}
         <div className="mb-8">
           <JourneyMap
@@ -26,12 +33,13 @@ const Dashboard = () => {
             currentStep={journeyLoading ? 0 : currentStep}
           />
         </div>
+        
         {/* Add the document verification notices */}
         <DocumentVerificationNotice />
 
         {/* Personalized Dashboard */}
         <PersonalizedDashboard applications={applications} loading={loading} />
-      </div>
+      </PageLayout>
     </DashboardLayoutWithThandi>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { useDocumentsManagement, DocumentWithUserInfo } from "@/hooks/useDocumentsManagement";
@@ -41,6 +40,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminActivityLog } from "@/components/admin/audit/AdminActivityLog";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -124,7 +124,12 @@ const AdminDashboard = () => {
   return (
     <AdminAuthGuard>
       <DashboardLayout>
-        <div className="container mx-auto max-w-7xl py-8 px-4">
+        <PageLayout
+          title="Admin Dashboard"
+          subtitle="Manage document verification and system administration"
+          gradient={false}
+          containerClassName="max-w-7xl py-8"
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Link to="/admin/analytics">
               <Card className="hover:shadow-md transition-shadow">
@@ -145,7 +150,6 @@ const AdminDashboard = () => {
           </div>
           
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
             <Button onClick={refreshDocuments} variant="outline" size="sm">
               Refresh
             </Button>
@@ -285,7 +289,7 @@ const AdminDashboard = () => {
                                           </Button>
                                           
                                           <Button
-                                            variant="default"
+                                            variant="primary"
                                             disabled={isSubmitting}
                                             className="w-full bg-green-600 hover:bg-green-700"
                                             onClick={() => handleUpdateStatus(selectedDocument.id, "approved")}
@@ -355,7 +359,7 @@ const AdminDashboard = () => {
               <AdminActivityLog />
             </TabsContent>
           </Tabs>
-        </div>
+        </PageLayout>
       </DashboardLayout>
     </AdminAuthGuard>
   );
