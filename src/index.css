@@ -374,7 +374,7 @@
   }
 
   .state-error {
-    @apply bg-error-light text-destructive border-destructive/30;
+    @apply bg-error-light text-red-600 border-red-300;
   }
 }
 
