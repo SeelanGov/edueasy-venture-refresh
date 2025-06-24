@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -7,8 +6,8 @@ import { ImpactStats } from '@/components/sponsorships/ImpactStats';
 import { TestimonialsSection } from '@/components/sponsorships/TestimonialsSection';
 import { FAQCollapsible } from '@/components/sponsorships/FAQCollapsible';
 
-// Local hero image for the hero section
-const heroImage = "/lovable-uploads/photo-1488590528505-98d2b5aba04b";
+// Updated hero image for the sponsorship page
+const heroImage = "/lovable-uploads/627f1a36-dcfa-4632-9754-386f9262dac6.png";
 
 const SponsorshipsPage = () => {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const SponsorshipsPage = () => {
           <div className="rounded-xl overflow-hidden shadow-lg border-2 border-cap-teal/20 bg-white">
             <img
               src={heroImage}
-              alt="African students using a laptop"
+              alt="African students receiving mentorship"
               className="w-full h-56 sm:h-64 object-cover object-center"
             />
           </div>
@@ -79,4 +78,3 @@ const SponsorshipsPage = () => {
 };
 
 export default SponsorshipsPage;
-
