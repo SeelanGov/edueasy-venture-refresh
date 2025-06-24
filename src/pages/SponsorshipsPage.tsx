@@ -1,3 +1,4 @@
+
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { TestimonialsSection } from '@/components/sponsorships/TestimonialsSecti
 import { FAQCollapsible } from '@/components/sponsorships/FAQCollapsible';
 
 // Updated hero image for the sponsorship page
-const heroImage = "/lovable-uploads/627f1a36-dcfa-4632-9754-386f9262dac6.png";
+const heroImage = "/lovable-uploads/decd8110-6ac2-48dc-a70d-85c81cf17629.png";
 
 const SponsorshipsPage = () => {
   const navigate = useNavigate();
