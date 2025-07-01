@@ -53,7 +53,7 @@ export const Hero = () => {
           {/* Left Column - Text */}
           <div className="text-left space-y-6">
             <div className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
-              Education Made Simple
+              Building Since 2024
             </div>
             
             <Typography 
@@ -90,8 +90,11 @@ export const Hero = () => {
               </Button>
             </div>
             
-            {/* Enhanced Statistics */}
+            {/* Our 2025 Vision */}
             <div className="pt-6">
+              <Typography variant="h4" className="text-gray-700 mb-4 text-center">
+                Our 2025 Vision
+              </Typography>
               <StatisticsGrid
                 selectedStats={['applicationSuccessRate', 'partnerInstitutions', 'ai247Support']}
                 variant="compact"

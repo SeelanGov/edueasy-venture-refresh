@@ -1,4 +1,6 @@
+
 import { Typography } from '@/components/ui/typography';
+import { StatisticsGrid } from './StatisticsGrid';
 
 const universities = [
   "University of Cape Town",
@@ -21,10 +23,10 @@ export const PartnersSection = () => {
             <div className="w-16 h-1 md:w-20 md:h-1.5 bg-cap-coral rounded"></div>
           </div>
           <Typography variant="h2" className="mb-4 md:text-4xl text-gray-900">
-            Trusted Educational Partners
+            Building Educational Partnerships
           </Typography>
           <Typography variant="body-lg" className="max-w-3xl mx-auto text-gray-600 md:text-xl">
-            We collaborate with South Africa's leading universities and institutions to provide seamless application experiences
+            We're working to collaborate with South Africa's leading universities and institutions
           </Typography>
         </div>
 
@@ -54,7 +56,7 @@ export const PartnersSection = () => {
           {/* Collaboration Notice and Universities List */}
           <div className="text-center md:text-left">
             <Typography variant="h4" className="mb-2 text-cap-coral font-semibold">
-              we will be collaborating
+              we are working to collaborate with
             </Typography>
             <ul className="list-disc list-inside text-gray-700 mt-4 text-lg text-left inline-block">
               {universities.map((university) => (
@@ -64,20 +66,24 @@ export const PartnersSection = () => {
           </div>
         </div>
 
-        {/* Partnership Stats */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
-          <div className="text-center p-6 bg-gradient-to-br from-cap-teal/5 to-cap-teal/10 rounded-xl border border-cap-teal/10">
-            <div className="text-3xl font-bold text-cap-teal mb-2">15+</div>
-            <div className="text-gray-700 font-medium">Partner Universities</div>
+        {/* Partnership Goals */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <Typography variant="h3" className="text-cap-coral mb-2">
+              Our Partnership Goals for 2025
+            </Typography>
+            <Typography variant="body" className="text-gray-600 max-w-2xl mx-auto">
+              Building towards these targets to better serve South African students
+            </Typography>
           </div>
-          <div className="text-center p-6 bg-gradient-to-br from-cap-coral/5 to-cap-coral/10 rounded-xl border border-cap-coral/10">
-            <div className="text-3xl font-bold text-cap-coral mb-2">100+</div>
-            <div className="text-gray-700 font-medium">Programs Available</div>
-          </div>
-          <div className="text-center p-6 bg-gradient-to-br from-cap-teal/5 to-cap-teal/10 rounded-xl border border-cap-teal/10">
-            <div className="text-3xl font-bold text-cap-teal mb-2">98%</div>
-            <div className="text-gray-700 font-medium">Integration Success</div>
-          </div>
+          
+          <StatisticsGrid
+            selectedStats={['partnerInstitutions', 'successfulApplications', 'applicationSuccessRate']}
+            variant="default"
+            columns={3}
+            className="max-w-4xl mx-auto"
+            animateOnScroll={true}
+          />
         </div>
 
         {/* Call to Action for Institutions */}
@@ -86,7 +92,7 @@ export const PartnersSection = () => {
             Partner With EduEasy
           </Typography>
           <Typography variant="body-lg" className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join our network of leading educational institutions and help students achieve their academic goals through streamlined applications.
+            Join our growing network of educational institutions and help students achieve their academic goals through streamlined applications.
           </Typography>
           <button className="bg-cap-teal text-white px-8 py-3 rounded-lg font-semibold hover:bg-cap-teal/90 transition-colors shadow-sm">
             Become a Partner
