@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -43,7 +42,9 @@ import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipSta
 import PartnersPage from "@/pages/admin/Partners";
 import PartnerProfilePage from "@/pages/admin/PartnerProfile";
 import VerificationRequired from "./pages/VerificationRequired";
-import { VerificationGuard } from "@/components/VerificationGuard"; // <-- Fix: import VerificationGuard
+import { VerificationGuard } from "@/components/VerificationGuard";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import { PrivacyPolicyRedirect } from "@/components/PrivacyPolicyRedirect";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <PrivacyPolicyRedirect />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -73,6 +75,7 @@ const App = () => (
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/career-guidance" element={<CareerGuidancePage />} />
               <Route path="/consultations" element={<ConsultationsPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
               <Route
                 path="/register"
@@ -200,4 +203,3 @@ const App = () => (
 );
 
 export default App;
-

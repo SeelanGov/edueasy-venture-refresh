@@ -1,4 +1,3 @@
-
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react';
 
@@ -148,14 +147,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="/privacy-policy.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 inline-flex items-center gap-1"
+                <Link 
+                  to="/privacy-policy"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
-                  Privacy Policy <ExternalLink className="h-3 w-3" />
-                </a>
+                  Privacy Policy
+                </Link>
               </li>
               <li>
                 <a 

@@ -28,10 +28,8 @@ export const ConsentCheckboxes = ({
         <span className="text-sm text-gray-600">
           I agree to the{" "}
           <a
-            href="/privacy-policy.html"
-            target="_blank"
+            href="/privacy-policy"
             className="text-cap-teal underline hover:text-cap-teal/80"
-            rel="noopener noreferrer"
           >
             Privacy Policy
           </a>{" "}
