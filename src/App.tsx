@@ -45,6 +45,8 @@ import VerificationRequired from "./pages/VerificationRequired";
 import { VerificationGuard } from "@/components/VerificationGuard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { PrivacyPolicyRedirect } from "@/components/PrivacyPolicyRedirect";
+import TermsOfService from "./pages/TermsOfService";
+import { TermsOfServiceRedirect } from "@/components/TermsOfServiceRedirect";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,7 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <PrivacyPolicyRedirect />
+            <TermsOfServiceRedirect />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -76,6 +79,7 @@ const App = () => (
               <Route path="/career-guidance" element={<CareerGuidancePage />} />
               <Route path="/consultations" element={<ConsultationsPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
 
               <Route
                 path="/register"

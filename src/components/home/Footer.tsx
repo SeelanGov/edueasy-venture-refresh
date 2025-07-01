@@ -155,14 +155,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="/terms-of-service.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 inline-flex items-center gap-1"
+                <Link 
+                  to="/terms-of-service"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
-                  Terms of Service <ExternalLink className="h-3 w-3" />
-                </a>
+                  Terms of Service
+                </Link>
               </li>
             </ul>
           </div>
