@@ -4,8 +4,8 @@ import { useState } from 'react';
 export const HeroImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  // Updated image path from user-upload
-  const heroImagePath = '/lovable-uploads/3ef1dcb3-da64-453e-8755-32432c212523.png';
+  // Updated to use the correct hero image path
+  const heroImagePath = '/lovable-uploads/46445c0e-8ece-4596-82c1-1a451393622d.png';
 
   const handleImageError = () => {
     setImageError(true);
@@ -29,14 +29,14 @@ export const HeroImage = () => {
             <div className="text-center p-4">
               <div className="text-2xl mb-2">🎓</div>
               <div className="text-gray-700 font-medium">EduEasy Platform</div>
-              <div className="text-sm text-gray-500">Empowering Student Success</div>
+              <div className="text-sm text-gray-500">Empowering SA Youth, Online and Offline</div>
             </div>
           </div>
         )}
         
         <img
           src={heroImagePath}
-          alt="Group of South African students celebrating in front of a school building"
+          alt="South African students celebrating success - Empowering SA Youth, Online and Offline"
           className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
           onLoad={() => setImageLoaded(true)}
           onError={handleImageError}
