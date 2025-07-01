@@ -40,19 +40,23 @@ export const StatisticCard = ({
   const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let timer: NodeJS.Timeout;
+    let timer2: NodeJS.Timeout | undefined;
+
+    timer = setTimeout(() => {
       setIsVisible(true);
       if (animateCount) {
-        // Simple animation for counting effect
-        const timer2 = setTimeout(() => {
+        timer2 = setTimeout(() => {
           setAnimatedValue(value);
         }, 200);
-        return () => clearTimeout(timer2);
       }
     }, delay);
 
     return () => {
       clearTimeout(timer);
+      if (timer2) {
+        clearTimeout(timer2);
+      }
     };
   }, [value, animateCount, delay]);
 
