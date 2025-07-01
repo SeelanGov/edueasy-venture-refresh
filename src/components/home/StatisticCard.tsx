@@ -1,0 +1,135 @@
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle, Users, Award, School, Bot } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface StatisticCardProps {
+  value: string;
+  label: string;
+  description?: string;
+  linkTo?: string;
+  icon?: string;
+  variant?: 'default' | 'compact' | 'featured';
+  animateCount?: boolean;
+  delay?: number;
+}
+
+const iconMap = {
+  CheckCircle,
+  Users,
+  Award,
+  School,
+  Bot
+};
+
+export const StatisticCard = ({
+  value,
+  label,
+  description,
+  linkTo,
+  icon = 'CheckCircle',
+  variant = 'default',
+  animateCount = true,
+  delay = 0
+}: StatisticCardProps) => {
+  const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+  const [animatedValue, setAnimatedValue] = useState('0');
+  
+  const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+      if (animateCount) {
+        // Simple animation for counting effect
+        const timer2 = setTimeout(() => {
+          setAnimatedValue(value);
+        }, 200);
+        return () => clearTimeout(timer2);
+      }
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [value, animateCount, delay]);
+
+  const handleClick = () => {
+    if (linkTo) {
+      navigate(linkTo);
+    }
+  };
+
+  const cardClasses = cn(
+    "group relative overflow-hidden rounded-xl border transition-all duration-300",
+    "hover:shadow-lg hover:-translate-y-1",
+    linkTo && "cursor-pointer hover:border-cap-teal/50",
+    variant === 'compact' && "p-4",
+    variant === 'default' && "p-6",
+    variant === 'featured' && "p-8",
+    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+  );
+
+  const iconClasses = cn(
+    "mb-3 transition-colors duration-300",
+    "group-hover:text-cap-teal",
+    variant === 'compact' && "w-6 h-6",
+    variant === 'default' && "w-8 h-8",
+    variant === 'featured' && "w-10 h-10"
+  );
+
+  const valueClasses = cn(
+    "font-bold transition-all duration-500",
+    "group-hover:text-cap-teal",
+    variant === 'compact' && "text-2xl",
+    variant === 'default' && "text-3xl",
+    variant === 'featured' && "text-4xl"
+  );
+
+  return (
+    <div 
+      className={cardClasses}
+      onClick={handleClick}
+      role={linkTo ? "button" : "article"}
+      tabIndex={linkTo ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (linkTo && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+    >
+      <div className="relative z-10">
+        <IconComponent className={iconClasses} />
+        
+        <div className={valueClasses}>
+          {animateCount && !isVisible ? '0' : animatedValue || value}
+        </div>
+        
+        <div className={cn(
+          "font-medium text-gray-600 mt-1",
+          variant === 'compact' && "text-sm",
+          variant === 'default' && "text-base",
+          variant === 'featured' && "text-lg"
+        )}>
+          {label}
+        </div>
+        
+        {description && variant !== 'compact' && (
+          <p className="text-gray-500 text-sm mt-2">
+            {description}
+          </p>
+        )}
+        
+        {linkTo && (
+          <div className="mt-3 text-cap-teal text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+            Learn more →
+          </div>
+        )}
+      </div>
+      
+      {/* Hover gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cap-teal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    </div>
+  );
+};
