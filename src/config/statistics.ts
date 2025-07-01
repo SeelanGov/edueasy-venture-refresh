@@ -1,39 +1,69 @@
 
 export const EDUEASY_STATISTICS = {
   applicationSuccessRate: {
-    value: "93%",
-    label: "Application Success Rate",
-    description: "Students who successfully get accepted",
+    value: "90%+",
+    label: "Target Success Rate",
+    description: "Our goal for student acceptance rates",
     linkTo: "/institutions",
-    icon: "CheckCircle"
+    icon: "Target",
+    isTarget: true
   },
   studentsSupported: {
-    value: "1,200+",
-    label: "Students Supported",
-    description: "Young South Africans guided to success",
+    value: "100+",
+    label: "Students to Support",
+    description: "Building our community of South African students",
     linkTo: "/testimonials",
-    icon: "Users"
+    icon: "Users",
+    isTarget: true
   },
   scholarshipsSecured: {
-    value: "R45M+",
-    label: "Scholarships Secured",
-    description: "Financial support provided to students",
+    value: "R5M+",
+    label: "Funding Goal",
+    description: "Target financial support for students",
     linkTo: "/sponsorships",
-    icon: "Award"
+    icon: "TrendingUp",
+    isTarget: true
   },
   partnerInstitutions: {
-    value: "50+",
-    label: "Partner Institutions",
-    description: "Universities and colleges in our network",
+    value: "15+",
+    label: "Partner Network Goal",
+    description: "Building relationships with top institutions",
     linkTo: "/institutions",
-    icon: "School"
+    icon: "Flag",
+    isTarget: true
   },
   ai247Support: {
     value: "24/7",
     label: "AI Support",
     description: "Thandi is always available to help",
     linkTo: "/meet-thandi",
-    icon: "Bot"
+    icon: "Bot",
+    isTarget: false
+  },
+  // Additional honest statistics
+  successfulApplications: {
+    value: "500+",
+    label: "Applications Goal",
+    description: "Target successful applications by 2025",
+    linkTo: "/dashboard",
+    icon: "Target",
+    isTarget: true
+  },
+  documentApproval: {
+    value: "95%+",
+    label: "Document Success Target",
+    description: "Our goal for document verification",
+    linkTo: "/profile-completion",
+    icon: "CheckCircle",
+    isTarget: true
+  },
+  studentSatisfaction: {
+    value: "4.8/5",
+    label: "Satisfaction Goal",
+    description: "Target student experience rating",
+    linkTo: "/testimonials",
+    icon: "Award",
+    isTarget: true
   }
 } as const;
 

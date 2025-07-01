@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Users, Award, School, Bot } from 'lucide-react';
+import { CheckCircle, Users, Award, School, Bot, Target, TrendingUp, Flag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface StatisticCardProps {
@@ -13,6 +13,7 @@ interface StatisticCardProps {
   variant?: 'default' | 'compact' | 'featured';
   animateCount?: boolean;
   delay?: number;
+  isTarget?: boolean;
 }
 
 const iconMap = {
@@ -20,7 +21,10 @@ const iconMap = {
   Users,
   Award,
   School,
-  Bot
+  Bot,
+  Target,
+  TrendingUp,
+  Flag
 };
 
 export const StatisticCard = ({
@@ -31,7 +35,8 @@ export const StatisticCard = ({
   icon = 'CheckCircle',
   variant = 'default',
   animateCount = true,
-  delay = 0
+  delay = 0,
+  isTarget = false
 }: StatisticCardProps) => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
@@ -70,6 +75,7 @@ export const StatisticCard = ({
     "group relative overflow-hidden rounded-xl border transition-all duration-300",
     "hover:shadow-lg hover:-translate-y-1",
     linkTo && "cursor-pointer hover:border-cap-teal/50",
+    isTarget && "border-l-4 border-l-cap-coral/60",
     variant === 'compact' && "p-4",
     variant === 'default' && "p-6",
     variant === 'featured' && "p-8",
@@ -78,7 +84,7 @@ export const StatisticCard = ({
 
   const iconClasses = cn(
     "mb-3 transition-colors duration-300",
-    "group-hover:text-cap-teal",
+    isTarget ? "text-cap-coral group-hover:text-cap-coral/80" : "group-hover:text-cap-teal",
     variant === 'compact' && "w-6 h-6",
     variant === 'default' && "w-8 h-8",
     variant === 'featured' && "w-10 h-10"
@@ -86,7 +92,7 @@ export const StatisticCard = ({
 
   const valueClasses = cn(
     "font-bold transition-all duration-500",
-    "group-hover:text-cap-teal",
+    isTarget ? "text-cap-coral" : "group-hover:text-cap-teal",
     variant === 'compact' && "text-2xl",
     variant === 'default' && "text-3xl",
     variant === 'featured' && "text-4xl"
@@ -106,6 +112,12 @@ export const StatisticCard = ({
       }}
     >
       <div className="relative z-10">
+        {isTarget && (
+          <div className="absolute -top-2 -right-2 bg-cap-coral text-white text-xs px-2 py-1 rounded-full font-medium">
+            2025 Goal
+          </div>
+        )}
+        
         <IconComponent className={iconClasses} />
         
         <div className={valueClasses}>
@@ -135,7 +147,10 @@ export const StatisticCard = ({
       </div>
       
       {/* Hover gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cap-teal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+        isTarget ? "from-cap-coral/5 to-transparent" : "from-cap-teal/5 to-transparent"
+      )} />
     </div>
   );
 };

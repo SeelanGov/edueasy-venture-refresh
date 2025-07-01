@@ -1,6 +1,8 @@
+
 import { Typography } from '@/components/ui/typography';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
+import { StatisticsGrid } from './StatisticsGrid';
 
 interface StepProps {
   number: number;
@@ -125,41 +127,26 @@ export const HowItWorks = () => {
                 </div>
                 <div>
                   <Typography variant="h4" className="text-gray-800 mb-3">
-                    Students who use EduEasy are 3x more likely to secure university placement
+                    Building the Future of Student Applications in South Africa
                   </Typography>
-                  <Typography variant="body" className="text-gray-600">
-                    Our streamlined application process helps students apply to multiple
-                    institutions efficiently, increasing their chances of acceptance. The
-                    verification process ensures your documents meet all requirements before
-                    submission.
+                  <Typography variant="body" className="text-gray-600 mb-6">
+                    Our streamlined platform is designed to help students apply to multiple
+                    institutions efficiently. We're building toward these ambitious goals
+                    to better serve South African students.
                   </Typography>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <Typography variant="h3" className="text-primary font-bold">
-                        6,500+
-                      </Typography>
-                      <Typography variant="small" className="text-gray-500">
-                        Successful Applications
-                      </Typography>
-                    </div>
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <Typography variant="h3" className="text-primary font-bold">
-                        98%
-                      </Typography>
-                      <Typography variant="small" className="text-gray-500">
-                        Document Approval
-                      </Typography>
-                    </div>
-                    <div className="text-center p-4 rounded-lg bg-gray-50">
-                      <Typography variant="h3" className="text-primary font-bold">
-                        4.9/5
-                      </Typography>
-                      <Typography variant="small" className="text-gray-500">
-                        Student Satisfaction
-                      </Typography>
-                    </div>
+                  <div className="mb-4">
+                    <Typography variant="h4" className="text-cap-coral mb-3">
+                      Our 2025 Targets
+                    </Typography>
                   </div>
+
+                  <StatisticsGrid
+                    selectedStats={['successfulApplications', 'documentApproval', 'studentSatisfaction']}
+                    variant="compact"
+                    columns={3}
+                    animateOnScroll={true}
+                  />
                 </div>
               </div>
             </CardContent>

@@ -1,3 +1,4 @@
+
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react';
 
@@ -31,7 +32,7 @@ const Footer = () => {
             <div>
               <h3 className="text-2xl font-bold text-cap-coral mb-4">EduEasy</h3>
               <p className="text-gray-300 leading-relaxed">
-                Your trusted partner in education and career development. Connecting students with opportunities across South Africa.
+                Building the future of education and career development in South Africa. Connecting students with opportunities since 2024.
               </p>
             </div>
             
@@ -178,12 +179,12 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-center md:text-left">
-              &copy; 2024 EduEasy. All rights reserved. Empowering South African students since 2024.
+              &copy; 2024 EduEasy. All rights reserved. Building the future of South African education.
             </p>
             <div className="flex items-center space-x-6">
               <div className="flex items-center gap-2 text-gray-400">
                 <div className="w-2 h-2 bg-cap-teal rounded-full"></div>
-                <span className="text-sm">Trusted by 1000+ students</span>
+                <span className="text-sm">Growing our student community</span>
               </div>
             </div>
           </div>
