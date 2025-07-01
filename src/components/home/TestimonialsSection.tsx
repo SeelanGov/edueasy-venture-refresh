@@ -1,5 +1,6 @@
 import { Typography } from '@/components/ui/typography';
 import { StudentSuccessCard } from './StudentSuccessCard';
+import { StatisticsGrid } from './StatisticsGrid';
 
 interface Student {
   id: number;
@@ -67,20 +68,24 @@ export const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Success metrics section */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-teal-600 mb-2">95%</div>
-            <div className="text-gray-600">Application Success Rate</div>
+        {/* Enhanced Statistics Section */}
+        <div className="mt-16">
+          <div className="text-center mb-8">
+            <Typography variant="h3" className="text-gray-800 mb-2">
+              Making a Real Impact
+            </Typography>
+            <Typography variant="body" className="text-gray-600 max-w-2xl mx-auto">
+              Our commitment to South African students is reflected in these meaningful numbers
+            </Typography>
           </div>
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-orange-500 mb-2">2,500+</div>
-            <div className="text-gray-600">Students Supported</div>
-          </div>
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="text-3xl font-bold text-teal-600 mb-2">R75M+</div>
-            <div className="text-gray-600">Scholarships Secured</div>
-          </div>
+          
+          <StatisticsGrid
+            selectedStats={['applicationSuccessRate', 'studentsSupported', 'scholarshipsSecured']}
+            variant="featured"
+            columns={3}
+            className="max-w-4xl mx-auto"
+            animateOnScroll={true}
+          />
         </div>
       </div>
     </section>
