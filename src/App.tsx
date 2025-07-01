@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -47,6 +48,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { PrivacyPolicyRedirect } from "@/components/PrivacyPolicyRedirect";
 import TermsOfService from "./pages/TermsOfService";
 import { TermsOfServiceRedirect } from "@/components/TermsOfServiceRedirect";
+import RefundPolicy from "./pages/RefundPolicy";
+import { RefundPolicyRedirect } from "@/components/RefundPolicyRedirect";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +63,7 @@ const App = () => (
           <AuthProvider>
             <PrivacyPolicyRedirect />
             <TermsOfServiceRedirect />
+            <RefundPolicyRedirect />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -80,6 +84,7 @@ const App = () => (
               <Route path="/consultations" element={<ConsultationsPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
 
               <Route
                 path="/register"

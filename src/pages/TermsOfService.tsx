@@ -1,10 +1,9 @@
-
 import { Typography } from '@/components/ui/typography';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const TermsOfService = () => {
@@ -325,6 +324,43 @@ const TermsOfService = () => {
                     <p>
                       We may transfer your personal information to countries outside South Africa for processing or storage, subject to appropriate safeguards as outlined in our Privacy Notice.
                     </p>
+                  </div>
+                </section>
+
+                <Separator className="my-8" />
+
+                {/* Section 10: Payments and Fees */}
+                <section id="payments-fees" data-section="payments-fees" className="mb-12">
+                  <Typography variant="h2" className="text-cap-teal mb-6">10. PAYMENTS AND FEES</Typography>
+                  <div className="prose prose-gray max-w-none space-y-6">
+                    <Typography variant="h3" className="text-gray-800">10.1 Payment Terms</Typography>
+                    <p>
+                      Payment for Services must be made in advance using the payment methods available on our platform. All fees are quoted in South African Rand (ZAR) unless otherwise specified.
+                    </p>
+
+                    <Typography variant="h3" className="text-gray-800">10.2 Subscription Services</Typography>
+                    <p>
+                      Some Services are offered on a subscription basis with once-off payments. Subscription fees are non-refundable except as outlined in our Refund and Cancellation Policy.
+                    </p>
+
+                    <Typography variant="h3" className="text-gray-800">10.3 Price Changes</Typography>
+                    <p>
+                      We reserve the right to modify our pricing at any time. Price changes will not affect existing subscriptions until renewal.
+                    </p>
+
+                    <Typography variant="h3" className="text-gray-800">10.4 Refunds and Cancellations</Typography>
+                    <div className="bg-cap-teal/5 border border-cap-teal/20 rounded-lg p-6">
+                      <p>
+                        Our refund and cancellation procedures are governed by our comprehensive{" "}
+                        <Link 
+                          to="/refund-policy" 
+                          className="text-cap-teal hover:underline font-medium"
+                        >
+                          Refund and Cancellation Policy
+                        </Link>
+                        , which forms part of these Terms and Conditions. Please review this policy carefully to understand your rights and our procedures regarding refunds and cancellations.
+                      </p>
+                    </div>
                   </div>
                 </section>
 
