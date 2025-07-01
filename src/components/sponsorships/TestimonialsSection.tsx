@@ -1,6 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import { StatisticsGrid } from "@/components/home/StatisticsGrid";
 
 interface Student {
   id: number;
@@ -104,20 +105,22 @@ export function TestimonialsSection() {
         ))}
       </div>
 
-      {/* Success metrics section */}
-      <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-          <div className="text-3xl font-bold text-cap-teal mb-2">98%</div>
-          <div className="text-gray-600">Student Success Rate</div>
+      {/* Replace hardcoded metrics with StatisticsGrid */}
+      <div className="mb-8">
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold text-cap-teal mb-2">Our Sponsorship Goals for 2025</h3>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Building toward these ambitious targets to support more South African students
+          </p>
         </div>
-        <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-          <div className="text-3xl font-bold text-cap-coral mb-2">1,850+</div>
-          <div className="text-gray-600">Students Sponsored</div>
-        </div>
-        <div className="text-center p-6 bg-white rounded-xl shadow-md border border-gray-100">
-          <div className="text-3xl font-bold text-cap-teal mb-2">R45M+</div>
-          <div className="text-gray-600">Educational Support Provided</div>
-        </div>
+        
+        <StatisticsGrid
+          selectedStats={['studentsSupported', 'scholarshipsSecured', 'studentSatisfaction']}
+          variant="default"
+          columns={3}
+          className="max-w-4xl mx-auto"
+          animateOnScroll={true}
+        />
       </div>
     </section>
   );
