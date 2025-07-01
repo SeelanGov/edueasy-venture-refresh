@@ -4,10 +4,11 @@ import { useState } from 'react';
 export const HeroImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  // Updated to use the correct hero image path
-  const heroImagePath = '/lovable-uploads/46445c0e-8ece-4596-82c1-1a451393622d.png';
+  // Updated to use an existing image from the available uploads
+  const heroImagePath = '/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png';
 
   const handleImageError = () => {
+    console.log('Hero image failed to load:', heroImagePath);
     setImageError(true);
     setImageLoaded(true); // Stop loading state
   };
@@ -36,9 +37,12 @@ export const HeroImage = () => {
         
         <img
           src={heroImagePath}
-          alt="South African students celebrating success - Empowering SA Youth, Online and Offline"
+          alt="African student with traditional beaded jewelry - Celebrating African Excellence"
           className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
-          onLoad={() => setImageLoaded(true)}
+          onLoad={() => {
+            console.log('Hero image loaded successfully');
+            setImageLoaded(true);
+          }}
           onError={handleImageError}
         />
         
