@@ -51,7 +51,9 @@ export const StatisticCard = ({
       }
     }, delay);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [value, animateCount, delay]);
 
   const handleClick = () => {
