@@ -4,8 +4,8 @@ import { useState } from 'react';
 export const HeroImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  // Using an existing image file that actually exists in the project
-  const heroImagePath = '/lovable-uploads/dfdb235b-f897-4d34-b55e-36edff5dba13.png';
+  // Using the user's uploaded hero image
+  const heroImagePath = '/lovable-uploads/de7fc15f-45f8-4076-b06b-9f70babb5c8e.png';
 
   const handleImageError = () => {
     console.log('Hero image failed to load:', heroImagePath);
@@ -37,7 +37,7 @@ export const HeroImage = () => {
         
         <img
           src={heroImagePath}
-          alt="Students using EduEasy platform - Empowering education in South Africa"
+          alt="Empowering SA Youth, Online and Offline - Student studying with technology"
           className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
           onLoad={() => {
             console.log('Hero image loaded successfully');
