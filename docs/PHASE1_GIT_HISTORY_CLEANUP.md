@@ -1,4 +1,3 @@
-
 # Phase 1: Git History Cleanup Runbook
 
 ## Introduction
@@ -209,6 +208,7 @@ Perform a complete fresh clone test to ensure everything works:
 ```bash
 # Clone the repository fresh
 git clone https://github.com/SeelanGov/edueasy-venture-refresh.git test-clone
+# Note: The 'edueasy-venture-refresh' folder and submodule have been removed from the active codebase. Any references are now only historical or in documentation.
 cd test-clone
 
 # Install dependencies

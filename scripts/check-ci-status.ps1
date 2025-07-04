@@ -1,6 +1,7 @@
 # PowerShell script to check GitHub Actions workflow status
 param (
     [string]$RepoOwner = "SeelanGov",
+    # The above variable referred to the main repo. If you need to reference a nested or stale submodule, update or remove accordingly.
     [string]$RepoName = "edueasy-venture-refresh",
     [string]$WorkflowName = "CI/CD",
     [string]$Branch = "main",
