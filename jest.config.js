@@ -19,5 +19,4 @@ export default {
     }
   }
 };
-// Set rootDir to the nested edueasy-venture-refresh for correct alias resolution.
-// Set testEnvironment to jsdom for React, and map @/ to src/ for imports.
+// Jest configuration for React testing with TypeScript support

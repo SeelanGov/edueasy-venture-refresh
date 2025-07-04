@@ -208,7 +208,7 @@ Perform a complete fresh clone test to ensure everything works:
 
 ```bash
 # Clone the repository fresh
-git clone https://github.com/your-org/edueasy-venture-refresh.git test-clone
+git clone https://github.com/SeelanGov/edueasy-venture-refresh.git test-clone
 cd test-clone
 
 # Install dependencies
