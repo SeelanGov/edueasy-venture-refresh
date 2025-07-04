@@ -19,7 +19,7 @@
 
 ## Repository Status
 
-The repository is now clean and ready for Netlify deployment. All references to the `edueasy-venture-refresh` nested structure have been removed.
+The repository is now clean and ready for Netlify deployment. All references to the `edueasy-venture-refresh` nested structure have been removed, except for historical mentions in documentation. If the folder was present before, it has now been deleted.
 
 ## Next Steps
 
