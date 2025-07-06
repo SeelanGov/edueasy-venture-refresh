@@ -1548,9 +1548,12 @@ export type Database = {
           id: string
           id_number: string | null
           id_verified: boolean | null
+          last_query_date: string | null
           national_id_encrypted: string | null
           phone_number: string | null
           profile_status: string | null
+          query_count_today: number | null
+          query_limit: number | null
           referrer_partner_id: string | null
           sponsor_id: string | null
           tracking_id: string | null
@@ -1566,9 +1569,12 @@ export type Database = {
           id?: string
           id_number?: string | null
           id_verified?: boolean | null
+          last_query_date?: string | null
           national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          query_count_today?: number | null
+          query_limit?: number | null
           referrer_partner_id?: string | null
           sponsor_id?: string | null
           tracking_id?: string | null
@@ -1584,9 +1590,12 @@ export type Database = {
           id?: string
           id_number?: string | null
           id_verified?: boolean | null
+          last_query_date?: string | null
           national_id_encrypted?: string | null
           phone_number?: string | null
           profile_status?: string | null
+          query_count_today?: number | null
+          query_limit?: number | null
           referrer_partner_id?: string | null
           sponsor_id?: string | null
           tracking_id?: string | null

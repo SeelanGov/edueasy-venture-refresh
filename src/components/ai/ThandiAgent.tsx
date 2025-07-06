@@ -10,6 +10,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getThandiCapabilities, SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 interface Message {
   id: string;
@@ -39,7 +41,7 @@ export const ThandiAgent = ({}: ThandiAgentProps) => {
   const thandiCapabilities = getThandiCapabilities(currentTier);
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || !user) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -49,30 +51,126 @@ export const ThandiAgent = ({}: ThandiAgentProps) => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = inputMessage;
     setInputMessage('');
     setIsLoading(true);
 
-    // Simulate AI response based on tier
-    setTimeout(() => {
-      let response = '';
+    try {
+      // Get current session for auth token
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (thandiCapabilities.tier === 'basic') {
-        response = `I understand you're asking about "${inputMessage}". As a Starter user, I can help with basic questions about applications and general guidance. For more detailed help, consider upgrading to Essential or Pro + AI!`;
-      } else if (thandiCapabilities.tier === 'guidance') {
-        response = `Great question about "${inputMessage}"! With your Essential plan, I can provide detailed guidance on applications, deadlines, and document management. Let me help you with that...`;
+      if (sessionError || !session?.access_token) {
+        throw new Error('Please log in to use Thandi AI');
+      }
+
+      // Try calling the edge function first
+      const edgeResponse = await fetch(`https://pensvamtfjtpsaoeflex.supabase.co/functions/v1/thandi-openai`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: currentInput }),
+      });
+
+      let responseText = '';
+
+      if (edgeResponse.status === 429) {
+        // Rate limit exceeded - try fallback to direct OpenAI call
+        const fallbackApiKey = import.meta.env.VITE_OPENAI_API_KEY_FALLBACK;
+        
+        if (fallbackApiKey) {
+          const fallbackResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${fallbackApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'gpt-3.5-turbo',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are Thandi, a helpful AI assistant for EduEasy, specializing in South African university applications. You help students with application guidance, document requirements, and general education advice. Keep responses concise and helpful.'
+                },
+                {
+                  role: 'user',
+                  content: currentInput
+                }
+              ],
+              temperature: 0.7,
+              max_tokens: 500,
+            }),
+          });
+
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            responseText = fallbackData.choices[0].message.content;
+            
+            toast({
+              title: "Rate Limit Reached",
+              description: "You've reached your daily limit. Using fallback AI for this response.",
+              variant: "destructive",
+            });
+          } else {
+            throw new Error('Fallback AI also unavailable');
+          }
+        } else {
+          toast({
+            title: "Daily Limit Reached",
+            description: "You've used all 5 daily queries. Please try again tomorrow or upgrade your plan.",
+            variant: "destructive",
+          });
+          responseText = "I'm sorry, but you've reached your daily limit of 5 questions. Please try again tomorrow or consider upgrading to a premium plan for unlimited access.";
+        }
+      } else if (edgeResponse.ok) {
+        // Success from edge function
+        const data = await edgeResponse.json();
+        responseText = data.content;
+        
+        if (data.queries_remaining !== undefined) {
+          if (data.queries_remaining <= 1) {
+            toast({
+              title: "Almost at daily limit",
+              description: `Only ${data.queries_remaining} queries remaining today.`,
+            });
+          }
+        }
       } else {
-        response = `Excellent question about "${inputMessage}"! With your Pro + AI plan, I can provide comprehensive career counseling and personalized recommendations. Let me create a detailed response for you...`;
+        // Other error from edge function
+        const errorData = await edgeResponse.json();
+        throw new Error(errorData.message || 'Failed to get response from AI');
       }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response,
+        content: responseText,
         role: 'assistant',
         timestamp: new Date(),
       };
+      
       setMessages((prev) => [...prev, assistantMessage]);
+      
+    } catch (error: any) {
+      console.error('Error calling Thandi AI:', error);
+      
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: `Sorry, I'm having trouble responding right now. ${error.message || 'Please try again later.'}`,
+        role: 'assistant',
+        timestamp: new Date(),
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
+      
+      toast({
+        title: "Error",
+        description: error.message || "Failed to get AI response",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const getTierIcon = () => {
