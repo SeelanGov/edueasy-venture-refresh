@@ -1,0 +1,1479 @@
+[
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "active_applications",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "active_subscriptions",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "consultation_bookings",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "date",
+    "data_type": "DATE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "new_users",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "premium_conversions",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "referral_signups",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "revenue_daily",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "admin_stats",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "paid_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "payment_reference",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "payment_status",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "sponsor_application_id",
+    "data_type": "UUID REFERENCES sponsor_applications",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "sponsor_id",
+    "data_type": "UUID REFERENCES sponsors",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "sponsored_amount",
+    "data_type": "NUMERIC",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "application_fee_sponsorships",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "applications",
+    "column_name": "tier_level",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "assessment_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "assessment_type",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "is_premium",
+    "data_type": "BOOLEAN",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "recommendations",
+    "data_type": "JSONB",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "results",
+    "data_type": "JSONB",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "career_guidance",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "booking_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "consultant_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "duration_minutes",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "meeting_link",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "notes",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "payment_id",
+    "data_type": "UUID REFERENCES payments",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "status",
+    "data_type": "VARCHAR(20) DEFAULT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "consultation_bookings",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "completed_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "confidence_score",
+    "data_type": "DOUBLE PRECISION",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "document_id",
+    "data_type": "UUID REFERENCES public",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "document_type",
+    "data_type": "TEXT",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "failure_reason",
+    "data_type": "TEXT",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "status",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "verification_details",
+    "data_type": "JSONB",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "document_verification_logs",
+    "column_name": "verification_method",
+    "data_type": "TEXT",
+    "source_file": "20250510_document_verification.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "assigned_to",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "email",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "interest_type",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "message",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "name",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "organization",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "phone",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "source",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "status",
+    "data_type": "VARCHAR(20) DEFAULT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "leads",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "contact_email",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "contact_name",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "contact_phone",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "institution_name",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "institution_type",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "interested_tier",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "message",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "status",
+    "data_type": "text DEFAULT",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "student_count",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "partner_inquiries",
+    "column_name": "website",
+    "data_type": "text",
+    "source_file": "20250615100457-e0a54d85-6a1b-4e7c-a634-84a0db2756f4.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "is_refunded",
+    "data_type": "BOOLEAN",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "metadata",
+    "data_type": "JSONB",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "payment_method_details",
+    "data_type": "JSONB",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "payment_provider",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "provider_customer_id",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "provider_transaction_id",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "receipt_url",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "refund_reason",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "transaction_id",
+    "data_type": "UUID REFERENCES transactions",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "payments",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "profiles",
+    "column_name": "referral_code",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "profiles",
+    "column_name": "referred_by",
+    "data_type": "UUID REFERENCES auth.users(id)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "profiles",
+    "column_name": "verifications_limit",
+    "data_type": "INT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "profiles",
+    "column_name": "verifications_used",
+    "data_type": "INT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "referred_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "referrer_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "reward_amount",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "reward_claimed",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "status",
+    "data_type": "VARCHAR(20) DEFAULT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "referrals",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "allocated_on",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "expires_on",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "notes",
+    "data_type": "text",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "plan",
+    "data_type": "text",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "sponsor_id",
+    "data_type": "uuid REFERENCES partners",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "status",
+    "data_type": "text DEFAULT",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "student_id",
+    "data_type": "uuid",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_allocations",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "source_file": "20250615190752-405a57a3-3349-4b76-aa57-94f302a838ad.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "application_id",
+    "data_type": "UUID",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "purpose",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "requested_amount",
+    "data_type": "NUMERIC",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "status",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "student_id",
+    "data_type": "UUID REFERENCES users",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsor_applications",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "email",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "name",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "organization_type",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "password_hash",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "phone",
+    "data_type": "TEXT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsors",
+    "column_name": "verified_status",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250615193639-4a6a0896-740f-4dba-ada2-969eb20c2929.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "amount",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "benefits",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "contact_email",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "contact_name",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "contact_phone",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "description",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "end_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "is_active",
+    "data_type": "BOOLEAN",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "logo_url",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "organization_name",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "sponsorship_level",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "start_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "sponsorships",
+    "column_name": "website_url",
+    "data_type": "TEXT",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "description",
+    "data_type": "TEXT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_ai_assistance",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_auto_fill",
+    "data_type": "BOOLEAN",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_career_guidance",
+    "data_type": "BOOLEAN",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_document_reviews",
+    "data_type": "BOOLEAN",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_nsfas_guidance",
+    "data_type": "BOOLEAN",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_priority_support",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "includes_verification",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "max_applications",
+    "data_type": "INT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "max_documents",
+    "data_type": "INT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "name",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "price_monthly",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "price_once_off",
+    "data_type": "NUMERIC",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "price_yearly",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "thandi_tier",
+    "data_type": "TEXT CHECK",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "subscription_tiers",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "action",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "category",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "component",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "details",
+    "data_type": "JSONB",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "is_resolved",
+    "data_type": "BOOLEAN",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "message",
+    "data_type": "TEXT",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "occurred_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "resolution_notes",
+    "data_type": "TEXT",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "resolved_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "resolved_by",
+    "data_type": "UUID",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "severity",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "system_error_logs",
+    "column_name": "user_id",
+    "data_type": "UUID",
+    "source_file": "20250510101010_create_system_error_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_message_feedback",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615_thandi_training.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_message_feedback",
+    "column_name": "feedback_type",
+    "data_type": "TEXT CHECK",
+    "source_file": "20250615_thandi_training.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_message_feedback",
+    "column_name": "message_id",
+    "data_type": "UUID REFERENCES public",
+    "source_file": "20250615_thandi_training.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_message_feedback",
+    "column_name": "user_id",
+    "data_type": "UUID",
+    "source_file": "20250615_thandi_training.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "admin_id",
+    "data_type": "UUID",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "completed_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMPTZ",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "error_message",
+    "data_type": "TEXT",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "example_count",
+    "data_type": "INTEGER",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "examples",
+    "data_type": "JSONB",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "performance_after",
+    "data_type": "JSONB",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "performance_before",
+    "data_type": "JSONB",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "status",
+    "data_type": "TEXT DEFAULT",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "thandi_model_training_logs",
+    "column_name": "success",
+    "data_type": "BOOLEAN",
+    "source_file": "20250615_thandi_model_training_logs.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "amount",
+    "data_type": "DECIMAL(10",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "currency",
+    "data_type": "VARCHAR(3) DEFAULT",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "payment_method",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "payment_reference",
+    "data_type": "VARCHAR(100)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "status",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "subscription_id",
+    "data_type": "UUID REFERENCES user_subscriptions",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "transaction_type",
+    "data_type": "VARCHAR(20)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "transactions",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "feature_name",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "last_used",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "usage_count",
+    "data_type": "INTEGER",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "usage_metrics",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250530_revenue_and_premium_features.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "auto_renew",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "end_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "is_active",
+    "data_type": "BOOLEAN",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "payment_method",
+    "data_type": "VARCHAR(50)",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "purchase_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250618063344-f1749f87-4c53-405c-8541-1e1c005966f3.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "start_date",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "tier_id",
+    "data_type": "UUID REFERENCES subscription_tiers",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "updated_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_subscriptions",
+    "column_name": "user_id",
+    "data_type": "UUID REFERENCES auth",
+    "source_file": "20250529_subscription_schema.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_logs",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP",
+    "source_file": "20250615210808-e0770c4a-fc4b-42aa-9b61-d6a914636db7.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_logs",
+    "column_name": "national_id_last4",
+    "data_type": "TEXT",
+    "source_file": "20250615210808-e0770c4a-fc4b-42aa-9b61-d6a914636db7.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_logs",
+    "column_name": "result",
+    "data_type": "TEXT",
+    "source_file": "20250615210808-e0770c4a-fc4b-42aa-9b61-d6a914636db7.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_logs",
+    "column_name": "user_id",
+    "data_type": "UUID",
+    "source_file": "20250615210808-e0770c4a-fc4b-42aa-9b61-d6a914636db7.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "attempt_count",
+    "data_type": "INTEGER",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "blocked_until",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "created_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "first_attempt_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "ip_address",
+    "data_type": "INET",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "last_attempt_at",
+    "data_type": "TIMESTAMP WITH TIME ZONE",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "verification_rate_limits",
+    "column_name": "user_identifier",
+    "data_type": "TEXT",
+    "source_file": "20250617062157-75bb3547-3c2c-475b-b019-db4f83ac4cef.sql"
+  }
+]
