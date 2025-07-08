@@ -1,0 +1,125 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recognition of Prior Learning (RPL)</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Recognition of Prior Learning with EduEasy</h1>
+  <p>Have work experience but no formal qualifications? <strong>EduEasy</strong> and Thandi help you use <strong>Recognition of Prior Learning (RPL)</strong> to earn NQF qualifications—all in one place!</p>
+
+  <h2>What Is RPL?</h2>
+  <p>RPL validates your skills and experience from work or informal learning to award formal qualifications (NQF Levels 2–7). It’s perfect for adult learners or workers seeking career advancement.</p>
+
+  <h2>RPL Examples</h2>
+  <p>Here’s how RPL works in different sectors:</p>
+  <table>
+    <tr>
+      <th>Sector</th>
+      <th>Example</th>
+      <th>NQF Level</th>
+      <th>Provider</th>
+    </tr>
+    <tr>
+      <td>Construction</td>
+      <td>Experienced builder earning NQF 4</td>
+      <td>NQF 4</td>
+      <td><a href="https://www.ceta.org.za">CETA</a></td>
+    </tr>
+    <tr>
+      <td>Customer Service</td>
+      <td>Call centre worker earning NQF 4</td>
+      <td>NQF 4</td>
+      <td><a href="https://www.serviceseta.org.za">Services SETA</a></td>
+    </tr>
+    <tr>
+      <td>Management</td>
+      <td>Team leader earning NQF 5</td>
+      <td>NQF 5</td>
+      <td><a href="https://www.saqa.org.za">SAQA</a></td>
+    </tr>
+  </table>
+
+  <h2>Eligibility</h2>
+  <ul>
+    <li><strong>Experience</strong>: At least 3–5 years of relevant work or informal learning.</li>
+    <li><strong>Documents</strong>: Provide work records, references, or portfolios.</li>
+    <li><strong>Tip</strong>: Use Thandi’s RPL quiz to check if you qualify!</li>
+  </ul>
+
+  <h2>How to Apply with EduEasy</h2>
+  <p>Follow these steps:</p>
+  <ol>
+    <li><strong>Assess Eligibility</strong>: Take Thandi’s RPL quiz at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Gather Evidence</strong>: Upload work records, CV, or certificates to EduEasy’s secure platform.</li>
+    <li><strong>Apply</strong>: Submit via SAQA, SETAs, or EduEasy’s portal for select programs.</li>
+    <li><strong>Track with EduEasy</strong>: Monitor your RPL application for free. Upgrade to <strong>EduEasy Premium</strong> for priority support and funding alerts.</li>
+  </ol>
+
+  <h2>Funding Your RPL</h2>
+  <ul>
+    <li><strong>SETA Funding</strong>: Some SETAs cover RPL assessment costs.</li>
+    <li><strong>NSFAS</strong>: Funding may apply for further studies post-RPL. Apply at <a href="https://www.nsfas.org.za">nsfas.org.za</a>.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Take Thandi’s RPL quiz or join funding alerts at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your experience to RPL or funding options!</li>
+    <li>Check details at <a href="https://www.saqa.org.za">SAQA</a> or <a href="https://www.ceta.org.za">CETA</a>.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.saqa.org.za/recognition-prior-learning-rpl">SAQA</a>, <a href="https://www.dhet.gov.za/SitePages/RPL.aspx">DHET</a>, or <a href="https://www.serviceseta.org.za/rpl">Services SETA</a>.</p>
+</body>
+</html>

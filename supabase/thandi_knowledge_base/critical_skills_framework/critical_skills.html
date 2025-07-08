@@ -1,0 +1,158 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Critical and Scarce Skills List</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>High-Demand Careers with EduEasy</h1>
+  <p>South Africa needs skilled workers in healthcare, engineering, IT, agriculture, and more. <strong>EduEasy</strong> and Thandi help you explore <strong>critical and scarce skills</strong>, match them to your Matric, and connect to initiatives like PYEI—all in one place!</p>
+
+  <h2>What Are Critical and Scarce Skills?</h2>
+  <p>These are high-demand jobs prioritized by the government to grow the economy. Choosing these careers boosts your job prospects and aligns with programs like the Presidential Youth Employment Initiative (PYEI).</p>
+
+  <h2>Top Critical Skills</h2>
+  <p>Here are in-demand careers and their requirements:</p>
+  <table>
+    <tr>
+      <th>Career</th>
+      <th>Qualification</th>
+      <th>NQF Level</th>
+      <th>SETA</th>
+    </tr>
+    <tr>
+      <td>Registered Nurse</td>
+      <td>Bachelor of Nursing</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.hwseta.org.za">HWSETA</a></td>
+    </tr>
+    <tr>
+      <td>Electrician</td>
+      <td>NCV or NATED Diploma</td>
+      <td>NQF 4–6</td>
+      <td><a href="https://www.ewseta.org.za">EWSETA</a></td>
+    </tr>
+    <tr>
+      <td>Data Analyst</td>
+      <td>Bachelor’s in IT/Statistics</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.mict.org.za">MICT SETA</a></td>
+    </tr>
+    <tr>
+      <td>Mechanical Engineer</td>
+      <td>Bachelor’s in Engineering</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.ceta.org.za">CETA</a></td>
+    </tr>
+    <tr>
+      <td>Renewable Energy Technician</td>
+      <td>NCV or NATED Diploma</td>
+      <td>NQF 4–6</td>
+      <td><a href="https://www.ewseta.org.za">EWSETA</a></td>
+    </tr>
+    <tr>
+      <td>Civil Engineer</td>
+      <td>Bachelor’s in Civil Engineering</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.ceta.org.za">CETA</a></td>
+    </tr>
+    <tr>
+      <td>Agricultural Technician</td>
+      <td>Diploma in Agriculture</td>
+      <td>NQF 5–6</td>
+      <td><a href="https://www.agriseta.co.za">AGRISETA</a></td>
+    </tr>
+    <tr>
+      <td>Teacher</td>
+      <td>Bachelor of Education</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.dhet.gov.za">DHET</a></td>
+    </tr>
+    <tr>
+      <td>Cloud Computing Specialist</td>
+      <td>Bachelor’s in IT</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.mict.org.za">MICT SETA</a></td>
+    </tr>
+    <tr>
+      <td>Cybersecurity Analyst</td>
+      <td>Bachelor’s in Cybersecurity</td>
+      <td>NQF 7</td>
+      <td><a href="https://www.mict.org.za">MICT SETA</a></td>
+    </tr>
+  </table>
+
+  <h2>Government Initiatives</h2>
+  <ul>
+    <li><strong>Presidential Youth Employment Initiative (PYEI)</strong>: Offers training and jobs in critical skills. Sign up at <a href="https://www.sayouth.mobi">sayouth.mobi</a> via EduEasy.</li>
+    <li><strong>UIF Labour Activation</strong>: Funds training for unemployed youth. Explore with Thandi.</li>
+  </ul>
+
+  <h2>How to Prepare</h2>
+  <ul>
+    <li><strong>Match Your Matric</strong>: Careers like teaching need English (50%+). Take Thandi’s free career quiz to check your subjects.</li>
+    <li><strong>Choose a Path</strong>: Study at a university (NQF 7) or TVET college (NQF 4–6) via EduEasy.</li>
+    <li><strong>Get Funded</strong>: Apply for <a href="https://www.nsfas.org.za">NSFAS</a> with Thandi’s guidance.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Take Thandi’s career quiz or join job alerts at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your Matric to critical skills or PYEI opportunities!</li>
+    <li>Check the latest skills list at <a href="https://www.dhet.gov.za/SitePages/CriticalSkillsList.aspx">DHET</a> or <a href="https://www.labour.gov.za">DEL</a>.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.dhet.gov.za/SitePages/CriticalSkillsList.aspx">DHET</a>, <a href="https://www.labour.gov.za/labour-market-information">DEL</a>, <a href="https://www.sayouth.mobi">PYEI</a>, <a href="https://www.ceta.org.za">CETA</a>, <a href="https://www.agriseta.co.za">AGRISETA</a>, or <a href="https://www.ewseta.org.za">EWSETA</a>.</p>
+</body>
+</html>

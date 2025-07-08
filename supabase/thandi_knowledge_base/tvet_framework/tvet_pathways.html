@@ -1,0 +1,116 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TVET College Pathways</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Explore TVET Colleges with EduEasy</h1>
+  <p><strong>Technical and Vocational Education and Training (TVET)</strong> colleges offer practical, job-ready programs. With <strong>EduEasy</strong>, Thandi helps you choose programs, apply, and find funding—all in one place!</p>
+
+  <h2>What Are TVET Colleges?</h2>
+  <p>TVET colleges provide vocational training (NQF Levels 4–6) to prepare you for careers like plumbing, IT, or hospitality. They’re perfect if you want skills for jobs or further studies.</p>
+
+  <h2>Program Types</h2>
+  <p>TVETs offer two main programs:</p>
+  <table>
+    <tr>
+      <th>Program</th>
+      <th>Description</th>
+      <th>Career Examples</th>
+    </tr>
+    <tr>
+      <td>National Certificate (Vocational) - NCV</td>
+      <td>3-year program, equivalent to Matric (NQF 4)</td>
+      <td>Electrician, Office Administrator</td>
+    </tr>
+    <tr>
+      <td>NATED (N1–N6)</td>
+      <td>Diplomas after Matric, 18–24 months</td>
+      <td>Mechanical Engineer, Bookkeeper</td>
+    </tr>
+  </table>
+
+  <h2>Entry Requirements</h2>
+  <ul>
+    <li><strong>NCV</strong>: Grade 9 or higher (some colleges accept Grade 11).</li>
+    <li><strong>NATED</strong>: Matric (NQF 4) with specific subjects (e.g., Maths for Engineering).</li>
+    <li><strong>Tip</strong>: Use Thandi to check if your Matric subjects match TVET programs!</li>
+  </ul>
+
+  <h2>How to Apply with EduEasy</h2>
+  <p>Follow these steps:</p>
+  <ol>
+    <li><strong>Choose a Program</strong>: Explore options with Thandi’s help at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Gather Documents</strong>: Upload certified ID and Matric results to EduEasy’s secure platform.</li>
+    <li><strong>Apply</strong>: Submit applications via college websites or EduEasy’s portal for select colleges.</li>
+    <li><strong>Track with EduEasy</strong>: Monitor applications for free. Upgrade to <strong>EduEasy Premium</strong> for priority support.</li>
+  </ol>
+
+  <h2>Funding Your Studies</h2>
+  <ul>
+    <li><strong>NSFAS</strong>: Apply for funding at <a href="https://www.nsfas.org.za">nsfas.org.za</a> with Thandi’s guidance.</li>
+    <li><strong>Deadlines</strong>: NSFAS applications open September 2025, close December 2025.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Find TVET programs and apply at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your Matric to TVET programs or funding options!</li>
+    <li>Visit <a href="https://www.tvetcolleges.co.za">TVET Colleges SA</a> or <a href="https://www.dhet.gov.za">DHET</a> for more.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.dhet.gov.za/SitePages/TVETColleges.aspx">DHET</a>, <a href="https://www.tvetcolleges.co.za">TVET Colleges SA</a>, or <a href="https://www.nsfas.org.za">NSFAS</a>.</p>
+</body>
+</html>

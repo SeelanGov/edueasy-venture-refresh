@@ -1,0 +1,63 @@
+{
+  "id": "edu_future_work_trends",
+  "title": "Future Work Trends",
+  "language": "en",
+  "summary": "Explore South Africa’s future job trends with EduEasy. Learn about growing industries like AI and green energy, required skills, and how to prepare, guided by Thandi.",
+  "tags": ["Future Trends", "Careers", "Skills", "Green Economy", "AI", "Healthcare", "EduEasy"],
+  "source_links": [
+    "https://www.dhet.gov.za/SitePages/FutureSkills.aspx",
+    "https://www.labour.gov.za/labour-market-information",
+    "https://www.hsrc.ac.za/en/research-data/ktree-doc/23102",
+    "https://www.mict.org.za/skills-development"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.dhet.gov.za/SitePages/FutureSkills.aspx",
+      "title": "DHET Future Skills Outlook",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.labour.gov.za/labour-market-information",
+      "title": "DEL Labour Market Information",
+      "date": "2025-01"
+    },
+    {
+      "url": "https://www.hsrc.ac.za/en/research-data/ktree-doc/23102",
+      "title": "HSRC Skills Analysis",
+      "date": "2024-09"
+    },
+    {
+      "url": "https://www.mict.org.za/skills-development",
+      "title": "MICT SETA Skills Development",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "Future Trends": {
+      "Zulu": "Izitayela Zomsebenzi Wesikhathi Esizayo",
+      "Xhosa": "Iindlela Zomsebenzi Zexesha Elizayo"
+    },
+    "Skills": {
+      "Zulu": "Amakhono",
+      "Xhosa": "Izakhono"
+    },
+    "Career": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    },
+    "Job": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    }
+  },
+  "file_name": "future_work_trends.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["future trends", "careers", "skills", "green economy", "AI", "healthcare", "EduEasy"],
+    "priority_response": "EduEasy helps you prepare for future careers in AI, green energy, and more. Plan with Thandi at https://edueasy.co.za."
+  }
+}

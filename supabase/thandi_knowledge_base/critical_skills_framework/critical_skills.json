@@ -1,0 +1,107 @@
+{
+  "id": "edu_critical_skills",
+  "title": "Critical and Scarce Skills List",
+  "language": "en",
+  "summary": "Discover South Africa’s high-demand careers with EduEasy. Explore critical skills like nursing, engineering, and renewable energy, plus government initiatives like PYEI, guided by Thandi.",
+  "tags": ["Critical Skills", "Scarce Skills", "Careers", "Jobs", "Matric", "TVET", "University", "EduEasy", "PYEI", "DEL", "SETA"],
+  "source_links": [
+    "https://www.dhet.gov.za/SitePages/CriticalSkillsList.aspx",
+    "https://www.labour.gov.za/labour-market-information",
+    "https://www.sayouth.mobi",
+    "https://www.ceta.org.za",
+    "https://www.agriseta.co.za",
+    "https://www.ewseta.org.za",
+    "https://www.mict.org.za/skills-development",
+    "https://www.hwseta.org.za/scarce-skills"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.dhet.gov.za/SitePages/CriticalSkillsList.aspx",
+      "title": "DHET Critical Skills List",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.labour.gov.za/labour-market-information",
+      "title": "DEL Labour Market Information",
+      "date": "2025-01"
+    },
+    {
+      "url": "https://www.sayouth.mobi",
+      "title": "Presidential Youth Employment Initiative",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.ceta.org.za",
+      "title": "CETA Skills Development",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.agriseta.co.za",
+      "title": "AGRISETA Skills Development",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.ewseta.org.za",
+      "title": "EWSETA Skills Development",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.mict.org.za/skills-development",
+      "title": "MICT SETA Skills Development",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.hwseta.org.za/scarce-skills",
+      "title": "HWSETA Scarce Skills",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "Career": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    },
+    "Skills": {
+      "Zulu": "Amakhono",
+      "Xhosa": "Izakhono"
+    },
+    "Job": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    },
+    "Qualification": {
+      "Zulu": "Iziqu",
+      "Xhosa": "Iziqinisekiso"
+    },
+    "Employment": {
+      "Zulu": "Ukuqashwa",
+      "Xhosa": "Ingqesho"
+    },
+    "Training": {
+      "Zulu": "Ukuqeqesha",
+      "Xhosa": "Uqeqesho"
+    },
+    "Renewable Energy": {
+      "Zulu": "Amandla Avuselelekayo",
+      "Xhosa": "Amandla Ahlaziyekayo"
+    },
+    "Teaching": {
+      "Zulu": "Ukufundisa",
+      "Xhosa": "Ukufundisa"
+    },
+    "Initiative": {
+      "Zulu": "Isinyathelo",
+      "Xhosa": "Inyathelo"
+    }
+  },
+  "file_name": "critical_skills.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["critical skills", "scarce skills", "careers", "jobs", "qualifications", "EduEasy", "PYEI", "DEL", "SETA", "renewable energy", "teaching"],
+    "priority_response": "EduEasy helps you explore high-demand careers like nursing, engineering, or renewable energy. Take Thandi’s career quiz or join job alerts at https://edueasy.co.za."
+  }
+}

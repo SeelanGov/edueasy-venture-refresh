@@ -1,0 +1,57 @@
+{
+  "id": "edu_nsfas_application",
+  "title": "NSFAS Application Process",
+  "language": "en",
+  "summary": "The National Student Financial Aid Scheme (NSFAS) provides funding for South African students to study at universities or TVET colleges. Learn who qualifies, how to apply, and key deadlines.",
+  "tags": ["NSFAS", "Funding", "Application", "Financial Aid", "Matric", "TVET", "University"],
+  "source_links": [
+    "https://www.nsfas.org.za/content/eligibility.html",
+    "https://www.dhet.gov.za/SitePages/StudentFunding.aspx",
+    "https://www.cao.ac.za"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.nsfas.org.za/content/eligibility.html",
+      "title": "NSFAS Eligibility Criteria",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.dhet.gov.za/SitePages/StudentFunding.aspx",
+      "title": "DHET Student Funding",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.cao.ac.za",
+      "title": "Central Applications Office",
+      "date": "2024-10"
+    }
+  ],
+  "localized_terms": {
+    "Funding": {
+      "Zulu": "Uxhaso",
+      "Xhosa": "Inkxaso"
+    },
+    "Application": {
+      "Zulu": "Isicelo",
+      "Xhosa": "Isicelo"
+    },
+    "Matric": {
+      "Zulu": "Umatriki",
+      "Xhosa": "Imatriki"
+    },
+    "Financial Aid": {
+      "Zulu": "Usizo Lwezezimali",
+      "Xhosa": "Uncedo Lwezemali"
+    }
+  },
+  "file_name": "nsfas_application.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["NSFAS", "funding", "application", "financial aid", "bursary", "TVET", "university"],
+    "priority_response": "NSFAS funds university and TVET studies for eligible South African students. Apply online by December at https://www.nsfas.org.za."
+  }
+}

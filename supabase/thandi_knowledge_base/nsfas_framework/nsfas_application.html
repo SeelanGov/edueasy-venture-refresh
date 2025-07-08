@@ -1,0 +1,118 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSFAS Application Process</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Applying for NSFAS Funding</h1>
+  <p>The <strong>National Student Financial Aid Scheme (NSFAS)</strong> helps South African students from low-income families pay for university or TVET college studies. Here’s how to apply, who qualifies, and what you need to succeed!</p>
+
+  <h2>Who Can Apply?</h2>
+  <p>NSFAS funds students who meet these criteria:</p>
+  <table>
+    <tr>
+      <th>Requirement</th>
+      <th>Details</th>
+    </tr>
+    <tr>
+      <td>Citizenship</td>
+      <td>South African citizen or permanent resident</td>
+    </tr>
+    <tr>
+      <td>Income</td>
+      <td>Household income under R350,000 per year</td>
+    </tr>
+    <tr>
+      <td>Education</td>
+      <td>Passed Matric (NQF Level 4) or enrolled in TVET</td>
+    </tr>
+    <tr>
+      <td>Institution</td>
+      <td>Accepted at a public university or TVET college</td>
+    </tr>
+  </table>
+
+  <h2>How to Apply</h2>
+  <p>Follow these steps to apply for NSFAS:</p>
+  <ol>
+    <li><strong>Create a myNSFAS Account</strong>: Register at <a href="https://www.nsfas.org.za">www.nsfas.org.za</a>.</li>
+    <li><strong>Complete the Online Application</strong>: Fill in your details, including ID and income info.</li>
+    <li><strong>Submit Documents</strong>: Upload certified copies of your ID, Matric results, and parents’ income proof.</li>
+    <li><strong>Track Your Application</strong>: Check status updates on your myNSFAS portal.</li>
+  </ol>
+
+  <h2>Key Deadlines</h2>
+  <ul>
+    <li><strong>Applications Open</strong>: September 2025 (check exact date at <a href="https://www.nsfas.org.za">NSFAS</a>).</li>
+    <li><strong>Applications Close</strong>: December 2025 (usually mid-December).</li>
+  </ul>
+
+  <h2>Tips for Success</h2>
+  <ul>
+    <li><strong>Apply Early</strong>: Submit before the deadline to avoid delays.</li>
+    <li><strong>Double-Check Documents</strong>: Ensure all uploads are clear and certified.</li>
+    <li><strong>Get Help</strong>: Contact NSFAS at 08000 67327 or visit a NYDA center.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li>Apply for university or TVET via <a href="https://www.cao.ac.za">CAO</a> or directly.</li>
+    <li><strong>Ask Thandi</strong> about other funding options or career paths for your Matric!</li>
+    <li>Check <a href="https://www.nsfas.org.za">NSFAS</a> for updates on your application.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.nsfas.org.za/content/eligibility.html">NSFAS</a>, <a href="https://www.dhet.gov.za/SitePages/StudentFunding.aspx">DHET</a>, or <a href="https://www.cao.ac.za">CAO</a>.</p>
+</body>
+</html>

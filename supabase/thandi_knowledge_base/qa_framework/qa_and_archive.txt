@@ -1,0 +1,47 @@
+#!/bin/bash
+# Script to validate JSON schemas, check URLs, and ZIP knowledge base for OpenAI setup
+BASE_DIR="thandi_knowledge_base"
+MODULES=("saqa" "nsc" "nsfas" "university_application" "tvet_pathways" "critical_skills" "seta_learnerships" "bursaries_scholarships" "rpl" "future_work_trends")
+
+# Create/check folder structure
+for module in "${MODULES[@]}"; do
+  mkdir -p "$BASE_DIR/$module"
+  if [[ ! -f "$BASE_DIR/$module/$module.json" || ! -f "$BASE_DIR/$module/$module.html" ]]; then
+    echo "Error: Missing $module.json or $module.html in $BASE_DIR/$module"
+    exit 1
+  fi
+done
+
+# Validate JSON schemas (requires jq)
+for module in "${MODULES[@]}"; do
+  jq '.id, .title, .tags, .source_links, .localized_terms, .chatbot_priorities' "$BASE_DIR/$module/$module.json" > /dev/null
+  if [[ $? -eq 0 ]]; then
+    echo "$module.json is valid"
+  else
+    echo "Error: Invalid JSON in $module.json"
+    exit 1
+  fi
+done
+
+# Check URLs (requires curl)
+for module in "${MODULES[@]}"; do
+  urls=$(jq -r '.source_links[]' "$BASE_DIR/$module/$module.json")
+  for url in $urls; do
+    if curl --output /dev/null --silent --head --fail "$url"; then
+      echo "URL valid: $url"
+    else
+      echo "Warning: Broken URL in $module.json: $url"
+    fi
+  done
+done
+
+# Create ZIP archive
+zip -r thandi_knowledge_base.zip "$BASE_DIR/"
+echo "Knowledge base archived as thandi_knowledge_base.zip"
+
+# Generate Supabase upload commands
+echo "To upload to Supabase, run:"
+for module in "${MODULES[@]}"; do
+  echo "supabase storage upload public/thandi_knowledge_base/$module/$module.json $BASE_DIR/$module/$module.json"
+  echo "supabase storage upload public/thandi_knowledge_base/$module/$module.html $BASE_DIR/$module/$module.html"
+done

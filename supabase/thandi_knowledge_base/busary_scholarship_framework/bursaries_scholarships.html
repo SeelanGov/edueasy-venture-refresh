@@ -1,0 +1,132 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bursaries and Scholarships</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Bursaries and Scholarships with EduEasy</h1>
+  <p>Need funding for university or TVET studies? <strong>EduEasy</strong> and Thandi help you find government and university bursaries, apply, and track progress—all in one place!</p>
+
+  <h2>What Are Bursaries and Scholarships?</h2>
+  <p>Bursaries cover tuition, accommodation, or books, often requiring work-back agreements. Scholarships reward academic or other achievements and may not require repayment.</p>
+
+  <h2>Popular Funding Options</h2>
+  <p>Here are key bursaries and scholarships:</p>
+  <table>
+    <tr>
+      <th>Funding</th>
+      <th>Type</th>
+      <th>Eligibility</th>
+      <th>Source</th>
+    </tr>
+    <tr>
+      <td>NSFAS</td>
+      <td>Bursary</td>
+      <td>Household income < R350,000/year, SA citizen</td>
+      <td><a href="https://www.nsfas.org.za">NSFAS</a></td>
+    </tr>
+    <tr>
+      <td>Funza Lushaka</td>
+      <td>Bursary</td>
+      <td>Education students, commit to teaching</td>
+      <td><a href="https://www.education.gov.za">DHET</a></td>
+    </tr>
+    <tr>
+      <td>UCT Merit Bursary</td>
+      <td>Bursary</td>
+      <td>High academic performance, enrolled at UCT</td>
+      <td><a href="https://www.uct.ac.za">UCT</a></td>
+    </tr>
+    <tr>
+      <td>Wits Vice-Chancellor’s Scholarship</td>
+      <td>Scholarship</td>
+      <td>Top 10 matriculants, enrolled at Wits</td>
+      <td><a href="https://www.wits.ac.za">Wits</a></td>
+    </tr>
+  </table>
+
+  <h2>Eligibility</h2>
+  <ul>
+    <li><strong>Academic</strong>: Most require strong Matric results (e.g., 60%+ for NSFAS, 70%+ for scholarships).</li>
+    <li><strong>Financial Need</strong>: Bursaries like NSFAS need proof of income.</li>
+    <li><strong>Tip</strong>: Use Thandi’s funding quiz to match your profile to bursaries!</li>
+  </ul>
+
+  <h2>How to Apply with EduEasy</h2>
+  <p>Follow these steps:</p>
+  <ol>
+    <li><strong>Find Funding</strong>: Explore options with Thandi at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Gather Documents</strong>: Upload ID, Matric results, and income proof to EduEasy’s secure platform.</li>
+    <li><strong>Apply</strong>: Submit via funding websites or EduEasy’s portal for select programs.</li>
+    <li><strong>Track with EduEasy</strong>: Monitor applications for free. Upgrade to <strong>EduEasy Premium</strong> for priority support and funding alerts.</li>
+  </ol>
+
+  <h2>Key Deadlines</h2>
+  <ul>
+    <li><strong>NSFAS</strong>: Opens September 2025, closes December 2025.</li>
+    <li><strong>Funza Lushaka</strong>: Opens October 2025, closes February 2026.</li>
+    <li><strong>University Bursaries</strong>: Vary (e.g., UCT: November 2025).</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Take Thandi’s funding quiz or join funding alerts at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your Matric to funding options!</li>
+    <li>Check details at <a href="https://www.nsfas.org.za">NSFAS</a> or <a href="https://www.education.gov.za">DHET</a>.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.nsfas.org.za">NSFAS</a>, <a href="https://www.education.gov.za/Programmes/FunzaLushaka.aspx">Funza Lushaka</a>, <a href="https://www.uct.ac.za">UCT</a>, or <a href="https://www.wits.ac.za">Wits</a>.</p>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAQA National Qualifications Framework (NQF)</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Understanding the NQF in South Africa</h1>
+  <p>The <strong>National Qualifications Framework (NQF)</strong>, managed by SAQA, organizes South Africa’s qualifications into <strong>10 levels</strong>. It shows what your education can do for you, whether it’s getting a job, studying at a TVET college, or going to university. Let’s break it down to help you plan your future!</p>
+
+  <h2>What Are NQF Levels?</h2>
+  <p>The NQF groups qualifications from basic education to advanced degrees. Here’s a quick overview:</p>
+  <table>
+    <tr>
+      <th>NQF Level</th>
+      <th>Qualification</th>
+      <th>Example</th>
+    </tr>
+    <tr>
+      <td>1–4</td>
+      <td>High school education</td>
+      <td>Grade 9 (Level 1), Matric (Level 4)</td>
+    </tr>
+    <tr>
+      <td>5–6</td>
+      <td>TVET certificates/diplomas</td>
+      <td>National Certificate (Vocational)</td>
+    </tr>
+    <tr>
+      <td>7–8</td>
+      <td>University degrees</td>
+      <td>Bachelor’s degree (Level 7), Honours (Level 8)</td>
+    </tr>
+    <tr>
+      <td>9–10</td>
+      <td>Advanced degrees</td>
+      <td>Master’s (Level 9), PhD (Level 10)</td>
+    </tr>
+  </table>
+
+  <h2>Why Does the NQF Matter?</h2>
+  <ul>
+    <li><strong>Plan Your Studies</strong>: See which qualifications lead to your dream career. For example, engineering needs a Bachelor’s degree (NQF 7).</li>
+    <li><strong>Find Jobs</strong>: Employers check NQF levels to match your skills to their needs.</li>
+    <li><strong>Continue Studying</strong>: Universities and TVETs require specific NQF levels to enroll.</li>
+  </ul>
+
+  <h2>Examples for You</h2>
+  <ul>
+    <li><strong>Got Matric?</strong> You’re at NQF Level 4, ready for TVET diplomas or some university programs.</li>
+    <li><strong>Want to Teach?</strong> Aim for a Bachelor of Education (NQF 7).</li>
+    <li><strong>Have Work Experience?</strong> Use Recognition of Prior Learning (RPL) to earn NQF credits.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li>Visit <a href="https://www.saqa.org.za">SAQA’s website</a> to check your current NQF level.</li>
+    <li><strong>Ask Thandi</strong> to find careers or funding options that match your NQF level!</li>
+    <li>Contact your school, TVET, or <a href="https://www.umalusi.org.za">Umalusi</a> for Matric or RPL advice.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.saqa.org.za/national-qualifications-framework">SAQA</a>, <a href="https://www.dhet.gov.za/SitePages/NQF.aspx">DHET</a>, or <a href="https://www.umalusi.org.za">Umalusi</a>.</p>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "id": "edu_nsc_curriculum",
+  "title": "National Senior Certificate (NSC) Curriculum",
+  "language": "en",
+  "summary": "The National Senior Certificate (NSC) is your Matric qualification, earned by passing 7 subjects. Learn about subjects, pass requirements, and how to prepare for your future.",
+  "tags": ["NSC", "Matric", "Curriculum", "Subjects", "Education", "DBE", "Umalusi", "IEB", "Exams"],
+  "source_links": [
+    "https://www.education.gov.za/Curriculum/NationalCurriculumStatementGradesR-12.aspx",
+    "https://www.umalusi.org.za",
+    "https://www.ieb.co.za/programmes/nsc"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.education.gov.za/Curriculum/NationalCurriculumStatementGradesR-12.aspx",
+      "title": "DBE CAPS Curriculum",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.umalusi.org.za",
+      "title": "Umalusi Matric Certification",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.ieb.co.za/programmes/nsc",
+      "title": "IEB National Senior Certificate",
+      "date": "2024-10"
+    }
+  ],
+  "localized_terms": {
+    "Matric": {
+      "Zulu": "Umatriki",
+      "Xhosa": "Imatriki"
+    },
+    "Subjects": {
+      "Zulu": "Izifundo",
+      "Xhosa": "Izifundo"
+    },
+    "Exams": {
+      "Zulu": "Izivivinyo",
+      "Xhosa": "Iimviwo"
+    },
+    "Pass": {
+      "Zulu": "Ukuphasa",
+      "Xhosa": "Ukupasa"
+    }
+  },
+  "file_name": "nsc_curriculum.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["NSC", "Matric", "subjects", "exams", "curriculum", "pass requirements"],
+    "priority_response": "The NSC (Matric) requires passing 7 subjects, including your Home Language and four High Credit subjects. Learn more at https://www.education.gov.za."
+  }
+}
