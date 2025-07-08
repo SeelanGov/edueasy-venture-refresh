@@ -1,0 +1,11 @@
+Module,Issue,Fix,Status
+SAQA,Incomplete localized_terms for "Qualification",Added Zulu: "Iziqu", Xhosa: "Iziqinisekiso",Resolved
+NSC,Inconsistent CTA phrasing,Updated to "Take Thandi’s quiz" in HTML,Resolved
+NSFAS,Outdated URL (2024 link),Updated to https://www.nsfas.org.za/content/eligibility.html (2025),Resolved
+University Application,Missing CTA for application tracking,Added "Track with Thandi at https://edueasy.co.za",Resolved
+TVET Pathways,Missing term for "Pathway",Added Zulu: "Indlela", Xhosa: "Indlela",Resolved
+Critical Skills,Broken CETA link,Updated to https://www.ceta.org.za/learnerships (2025),Resolved
+SETA Learnerships,Incomplete chatbot_priorities keywords,Added "training" to keywords,Resolved
+Bursaries and Scholarships,Missing deadline for UCT bursary,Added "November 2025" to HTML,Resolved
+RPL,Missing term for "Portfolio",Added Zulu: "Iphothifoliyo", Xhosa: "Iphothifoliyo",Resolved
+Future Work Trends,Missing term for "Industry",Added Zulu: "Imboni", Xhosa: "Ishishini",Resolved

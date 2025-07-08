@@ -25,6 +25,7 @@
     "noUncheckedIndexedAccess": false,
     "module": "esnext",
     "target": "es2020",
-    "composite": true
+    "composite": true,
+    "moduleResolution": "node"
   }
 }

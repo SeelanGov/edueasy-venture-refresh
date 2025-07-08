@@ -1,0 +1,63 @@
+{
+  "id": "edu_rpl",
+  "title": "Recognition of Prior Learning (RPL)",
+  "language": "en",
+  "summary": "Discover Recognition of Prior Learning (RPL) with EduEasy. Validate your work experience or informal learning to earn formal qualifications, guided by Thandi.",
+  "tags": ["RPL", "Prior Learning", "Qualifications", "Experience", "SAQA", "SETA", "EduEasy"],
+  "source_links": [
+    "https://www.saqa.org.za/recognition-prior-learning-rpl",
+    "https://www.dhet.gov.za/SitePages/RPL.aspx",
+    "https://www.serviceseta.org.za/rpl",
+    "https://www.ceta.org.za/rpl"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.saqa.org.za/recognition-prior-learning-rpl",
+      "title": "SAQA Recognition of Prior Learning",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.dhet.gov.za/SitePages/RPL.aspx",
+      "title": "DHET RPL Overview",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.serviceseta.org.za/rpl",
+      "title": "Services SETA RPL",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.ceta.org.za/rpl",
+      "title": "CETA RPL",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "RPL": {
+      "Zulu": "Ukuqashelwa Kwemfundo Yangaphambili",
+      "Xhosa": "Ukwamkelwa Kwemfundo Yangaphambili"
+    },
+    "Experience": {
+      "Zulu": "Isipiliyoni",
+      "Xhosa": "Amava"
+    },
+    "Qualification": {
+      "Zulu": "Iziqu",
+      "Xhosa": "Iziqinisekiso"
+    },
+    "Application": {
+      "Zulu": "Isicelo",
+      "Xhosa": "Isicelo"
+    }
+  },
+  "file_name": "rpl.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["RPL", "prior learning", "experience", "qualifications", "EduEasy", "SAQA"],
+    "priority_response": "EduEasy helps you earn qualifications through RPL. Explore your options with Thandi at https://edueasy.co.za."
+  }
+}

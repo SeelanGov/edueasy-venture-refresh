@@ -1,0 +1,6 @@
+#!/bin/bash
+# Script to create folder structure and ZIP Thandi's knowledge base
+mkdir -p thandi_knowledge_base/{saqa,nsc,nsfas,university_application,tvet_pathways,critical_skills,seta_learnerships,bursaries_scholarships,rpl,future_work_trends}
+# Assuming files are already saved locally as per previous instructions
+zip -r thandi_knowledge_base.zip thandi_knowledge_base/
+echo "Knowledge base archived as thandi_knowledge_base.zip"
