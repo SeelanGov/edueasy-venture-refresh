@@ -162,23 +162,24 @@ const knowledgeModules = [
 ];
 
 async function uploadKnowledgeBase() {
-  console.log('🚀 Starting Thandi Knowledge Base Upload with Verification...\n');
+  console.log('🚀 Starting Knowledge Base Upload with IMMEDIATE VERIFICATION (Anti-Waste Protocol)...\n');
   
   let totalUploaded = 0;
   const results = [];
 
-  // Upload each module's files
+  // Upload each module's files with immediate verification
   for (const moduleData of knowledgeModules) {
     console.log(`📂 Processing module: ${moduleData.module}`);
     
     try {
       // Upload JSON file
       const jsonPath = `${moduleData.module}/${moduleData.module.replace('_framework', '')}.json`;
+      const jsonBuffer = Buffer.from(JSON.stringify(moduleData.jsonContent, null, 2), 'utf8');
       console.log(`  📤 Uploading JSON: ${jsonPath}`);
       
       const jsonUpload = await supabase.storage
         .from(STORAGE_BUCKET)
-        .upload(jsonPath, JSON.stringify(moduleData.jsonContent, null, 2), {
+        .upload(jsonPath, jsonBuffer, {
           contentType: 'application/json',
           upsert: true,
         });
@@ -187,18 +188,41 @@ async function uploadKnowledgeBase() {
         console.log(`    ❌ JSON upload failed: ${jsonUpload.error.message}`);
         results.push({ module: moduleData.module, success: false, error: jsonUpload.error.message });
         continue;
-      } else {
-        console.log(`    ✅ JSON uploaded successfully`);
-        totalUploaded++;
       }
+
+      console.log(`    ✅ JSON upload completed`);
+
+      // IMMEDIATE VERIFICATION - Anti-Waste Protocol
+      console.log(`    🔍 VERIFYING JSON upload for ${moduleData.module}...`);
+      const { data: jsonVerifyList, error: jsonListError } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .list(moduleData.module);
+
+      if (jsonListError || !jsonVerifyList || jsonVerifyList.length === 0) {
+        console.log(`    ❌ VERIFICATION FAILED - No files found in ${moduleData.module}:`, jsonListError?.message || 'Empty directory');
+        results.push({ module: moduleData.module, success: false, error: 'JSON verification failed - directory empty' });
+        continue;
+      }
+
+      const jsonFile = jsonVerifyList.find(file => file.name === `${moduleData.module.replace('_framework', '')}.json`);
+      if (!jsonFile) {
+        console.log(`    ❌ VERIFICATION FAILED - JSON file not found in ${moduleData.module}`);
+        console.log(`    📋 Found files:`, jsonVerifyList.map(f => f.name));
+        results.push({ module: moduleData.module, success: false, error: 'JSON file not found in verification' });
+        continue;
+      }
+
+      console.log(`    ✅ JSON VERIFIED - Found in storage: ${jsonFile.name} (${jsonFile.metadata?.size || 'unknown'} bytes)`);
+      totalUploaded++;
 
       // Upload HTML file
       const htmlPath = `${moduleData.module}/${moduleData.module.replace('_framework', '')}.html`;
+      const htmlBuffer = Buffer.from(moduleData.htmlContent, 'utf8');
       console.log(`  📤 Uploading HTML: ${htmlPath}`);
       
       const htmlUpload = await supabase.storage
         .from(STORAGE_BUCKET)
-        .upload(htmlPath, moduleData.htmlContent, {
+        .upload(htmlPath, htmlBuffer, {
           contentType: 'text/html',
           upsert: true,
         });
@@ -206,11 +230,78 @@ async function uploadKnowledgeBase() {
       if (htmlUpload.error) {
         console.log(`    ❌ HTML upload failed: ${htmlUpload.error.message}`);
         results.push({ module: moduleData.module, success: false, error: htmlUpload.error.message });
-      } else {
-        console.log(`    ✅ HTML uploaded successfully`);
-        totalUploaded++;
-        results.push({ module: moduleData.module, success: true });
+        continue;
       }
+
+      console.log(`    ✅ HTML upload completed`);
+
+      // IMMEDIATE VERIFICATION - Anti-Waste Protocol
+      console.log(`    🔍 VERIFYING HTML upload for ${moduleData.module}...`);
+      const { data: htmlVerifyList, error: htmlListError } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .list(moduleData.module);
+
+      if (htmlListError || !htmlVerifyList || htmlVerifyList.length === 0) {
+        console.log(`    ❌ VERIFICATION FAILED - No files found in ${moduleData.module}:`, htmlListError?.message || 'Empty directory');
+        results.push({ module: moduleData.module, success: false, error: 'HTML verification failed - directory empty' });
+        continue;
+      }
+
+      const htmlFile = htmlVerifyList.find(file => file.name === `${moduleData.module.replace('_framework', '')}.html`);
+      if (!htmlFile) {
+        console.log(`    ❌ VERIFICATION FAILED - HTML file not found in ${moduleData.module}`);
+        console.log(`    📋 Found files:`, htmlVerifyList.map(f => f.name));
+        results.push({ module: moduleData.module, success: false, error: 'HTML file not found in verification' });
+        continue;
+      }
+
+      console.log(`    ✅ HTML VERIFIED - Found in storage: ${htmlFile.name} (${htmlFile.metadata?.size || 'unknown'} bytes)`);
+      console.log(`    📊 Module complete: ${htmlVerifyList.length} files verified in ${moduleData.module}`);
+      totalUploaded++;
+
+      // Insert/update database record
+      console.log(`  📝 Updating database index for ${moduleData.module}...`);
+      const { data: dbData, error: dbError } = await supabase
+        .from('thandi_knowledge_index')
+        .upsert({
+          module: moduleData.module,
+          title: moduleData.jsonContent.title,
+          tags: moduleData.jsonContent.tags,
+          source_links: moduleData.jsonContent.source_links,
+          json_path: jsonPath,
+          html_path: htmlPath
+        }, {
+          onConflict: 'module'
+        });
+
+      if (dbError) {
+        console.log(`    ❌ Database update failed: ${dbError.message}`);
+        results.push({ module: moduleData.module, success: false, error: `DB error: ${dbError.message}` });
+        continue;
+      }
+
+      // IMMEDIATE DATABASE VERIFICATION - Anti-Waste Protocol
+      console.log(`    🔍 VERIFYING database record for ${moduleData.module}...`);
+      const { data: dbVerify, error: dbSelectError } = await supabase
+        .from('thandi_knowledge_index')
+        .select('id, module, title, json_path, html_path, tags')
+        .eq('module', moduleData.module)
+        .single();
+
+      if (dbSelectError || !dbVerify) {
+        console.log(`    ❌ DATABASE VERIFICATION FAILED for ${moduleData.module}:`, dbSelectError?.message || 'Record not found');
+        results.push({ module: moduleData.module, success: false, error: 'Database verification failed' });
+        continue;
+      }
+
+      console.log(`    ✅ DATABASE VERIFIED - Record exists:`, {
+        id: dbVerify.id.substring(0, 8) + '...',
+        module: dbVerify.module,
+        title: dbVerify.title,
+        tags_count: dbVerify.tags?.length || 0
+      });
+
+      results.push({ module: moduleData.module, success: true });
 
     } catch (error) {
       console.log(`  ❌ Error processing ${moduleData.module}: ${error.message}`);
