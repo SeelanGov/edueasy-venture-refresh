@@ -4,10 +4,10 @@ const path = require('path');
 console.log('🚀 Running Knowledge Base Upload with Verification...\n');
 
 try {
-  const scriptPath = path.join(__dirname, 'executeKnowledgeUpload.ts');
+  const scriptPath = path.join(__dirname, 'executeKnowledgeUpload.js');
   console.log(`📂 Executing: ${scriptPath}\n`);
   
-  execSync(`npx ts-node "${scriptPath}"`, { 
+  execSync(`node "${scriptPath}"`, {
     stdio: 'inherit',
     env: process.env 
   });

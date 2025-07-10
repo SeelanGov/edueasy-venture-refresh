@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
 // Direct Supabase configuration
 const SUPABASE_URL = 'https://pensvamtfjtpsaoefblx.supabase.co';
@@ -10,7 +10,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 // Knowledge modules based on the actual files we found
 const knowledgeModules = [
   {
-    module: 'busary_scholarship_framework',
+    module: 'bursary_scholarship_framework',
     jsonContent: {
       "id": "edu_bursaries_scholarships",
       "title": "Bursaries and Scholarships",
