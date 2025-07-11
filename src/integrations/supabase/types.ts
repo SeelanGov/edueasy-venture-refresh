@@ -53,6 +53,36 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_stats: {
+        Row: {
+          active_consultations: number | null
+          created_at: string | null
+          date: string
+          document_errors: number | null
+          paid_users: number | null
+          signups: number | null
+          transactions_count: number | null
+        }
+        Insert: {
+          active_consultations?: number | null
+          created_at?: string | null
+          date: string
+          document_errors?: number | null
+          paid_users?: number | null
+          signups?: number | null
+          transactions_count?: number | null
+        }
+        Update: {
+          active_consultations?: number | null
+          created_at?: string | null
+          date?: string
+          document_errors?: number | null
+          paid_users?: number | null
+          signups?: number | null
+          transactions_count?: number | null
+        }
+        Relationships: []
+      }
       application_fee_sponsorships: {
         Row: {
           created_at: string
@@ -244,6 +274,47 @@ export type Database = {
             columns: ["assessment_id"]
             isOneToOne: false
             referencedRelation: "career_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consultations: {
+        Row: {
+          consultant_notes: string | null
+          created_at: string | null
+          id: string
+          requested_date: string
+          status: string | null
+          topic: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          consultant_notes?: string | null
+          created_at?: string | null
+          id?: string
+          requested_date: string
+          status?: string | null
+          topic: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          consultant_notes?: string | null
+          created_at?: string | null
+          id?: string
+          requested_date?: string
+          status?: string | null
+          topic?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -456,6 +527,42 @@ export type Database = {
           type?: string
           updated_at?: string | null
           website?: string | null
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          interest_area: string | null
+          name: string
+          phone: string | null
+          source: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          interest_area?: string | null
+          name: string
+          phone?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          interest_area?: string | null
+          name?: string
+          phone?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1460,6 +1567,50 @@ export type Database = {
             columns: ["message_id"]
             isOneToOne: false
             referencedRelation: "thandi_interactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          payment_method: string | null
+          status: string | null
+          transaction_reference: string | null
+          type: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          payment_method?: string | null
+          status?: string | null
+          transaction_reference?: string | null
+          type: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          payment_method?: string | null
+          status?: string | null
+          transaction_reference?: string | null
+          type?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
