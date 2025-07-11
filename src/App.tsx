@@ -35,6 +35,7 @@ import { PartnerInquiries } from "./components/admin/partners/PartnerInquiries";
 import Login from "./pages/Login";
 import SponsorsPage from '@/pages/admin/Sponsors';
 import SponsorProfile from '@/pages/admin/SponsorProfile';
+import UserManagement from '@/pages/admin/UserManagement';
 import SponsorRegister from "@/pages/sponsors/SponsorRegister";
 import SponsorLogin from "@/pages/sponsors/SponsorLogin";
 import SponsorDashboard from "@/pages/sponsors/SponsorDashboard";
@@ -189,6 +190,16 @@ const App = () => (
               {/* Admin sponsor management routes */}
               <Route path="/admin/sponsors" element={<SponsorsPage />} />
               <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
+              
+              {/* Admin user management route */}
+              <Route 
+                path="/admin/users" 
+                element={
+                  <AdminAuthGuard>
+                    <UserManagement />
+                  </AdminAuthGuard>
+                } 
+              />
 
               {/* Public sponsor ecosystem flows */}
               <Route path="/sponsors/register" element={<SponsorRegister />} />
