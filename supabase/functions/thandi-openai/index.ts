@@ -21,9 +21,10 @@ serve(async (req) => {
     // 2. Enforce 5-query/day rate limit per user
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const { data: recentQueries, error: rateError } = await supabase
-      .from("user_queries")
+      .from("thandi_interactions")
       .select("id")
       .eq("user_id", user_id)
+      .eq("is_user", true)
       .gte("created_at", since);
 
     if (rateError) {
@@ -41,9 +42,7 @@ serve(async (req) => {
     const { data: modules, error: modErr } = await supabase
       .from("thandi_knowledge_index")
       .select("*")
-      .or(
-        `tags.cs.{${queryKeywords.join(",")}},module.cs.{${queryKeywords.join(",")}}`
-      );
+      .filter("tags", "ov", `{${queryKeywords.join(",")}}`);
 
     if (modErr) {
       console.error("Knowledge index query error:", modErr);
@@ -56,7 +55,7 @@ serve(async (req) => {
     if (!modules || modules.length === 0) {
       console.log("No matching modules found for keywords:", queryKeywords);
       // 8. Log the query even if no match
-      await supabase.from("user_queries").insert({ user_id, message });
+      await supabase.from("thandi_interactions").insert({ user_id, message, is_user: true });
       return new Response(
         JSON.stringify({
           reply:
@@ -110,7 +109,7 @@ serve(async (req) => {
     console.log("System prompt constructed:\n", systemPrompt);
 
     // 7. Log the query
-    await supabase.from("user_queries").insert({ user_id, message });
+    await supabase.from("thandi_interactions").insert({ user_id, message, is_user: true });
 
     // 6. Return a hardcoded GPT-style mock response
     const mockResponse = {
