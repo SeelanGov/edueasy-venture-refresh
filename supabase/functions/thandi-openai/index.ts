@@ -1,166 +1,143 @@
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
+// @ts-nocheck
+import { createClient } from "@supabase/supabase-js";
+import { serve } from "std/server";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL') as string;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+);
 
 serve(async (req) => {
-  // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
-  
   try {
-    // Get authorization header for user authentication
-    const authHeader = req.headers.get('Authorization')?.split(' ')[1];
-    if (!authHeader) {
-      return new Response('Unauthorized', { 
-        status: 401, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+    const { user_id, message } = await req.json();
+
+    // 1. Extract keywords (basic split, filter short words)
+    const queryKeywords = message
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((w) => w.length > 2);
+    console.log("Extracted keywords:", queryKeywords);
+
+    // 2. Enforce 5-query/day rate limit per user
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: recentQueries, error: rateError } = await supabase
+      .from("user_queries")
+      .select("id")
+      .eq("user_id", user_id)
+      .gte("created_at", since);
+
+    if (rateError) {
+      console.error("Rate limit check error:", rateError);
+    }
+    if ((recentQueries?.length || 0) >= 5) {
+      console.log("Rate limit enforced for user:", user_id);
+      return new Response(
+        JSON.stringify({ error: "Daily limit reached (5 queries/24h)" }),
+        { status: 429 }
+      );
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    
-    // Verify user authentication
-    const { data: user, error: authError } = await supabase.auth.getUser(authHeader);
-    if (authError || !user?.user) {
-      return new Response('Invalid token', { 
-        status: 401, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+    // 3. Query thandi_knowledge_index for matching modules
+    const { data: modules, error: modErr } = await supabase
+      .from("thandi_knowledge_index")
+      .select("*")
+      .or(
+        `tags.cs.{${queryKeywords.join(",")}},module.cs.{${queryKeywords.join(",")}}`
+      );
+
+    if (modErr) {
+      console.error("Knowledge index query error:", modErr);
+      return new Response(
+        JSON.stringify({ error: "Knowledge index query failed" }),
+        { status: 500 }
+      );
     }
 
-    // Get user's current usage and rate limits
-    const { data: usage, error: usageError } = await supabase
-      .from('users')
-      .select('query_count_today, query_limit, last_query_date')
-      .eq('id', user.user.id)
-      .single();
-      
-    if (usageError) {
-      console.error('Database error:', usageError);
-      return new Response('Database error', { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Check if we need to reset daily count
-    const today = new Date().toISOString().split('T')[0];
-    let currentCount = usage.query_count_today || 0;
-    
-    if (usage.last_query_date !== today) {
-      // Reset count for new day
-      await supabase
-        .from('users')
-        .update({ 
-          query_count_today: 0, 
-          last_query_date: today 
+    if (!modules || modules.length === 0) {
+      console.log("No matching modules found for keywords:", queryKeywords);
+      // 8. Log the query even if no match
+      await supabase.from("user_queries").insert({ user_id, message });
+      return new Response(
+        JSON.stringify({
+          reply:
+            "I couldn't find anything useful. Visit https://edueasy.co.za/resources for more help."
         })
-        .eq('id', user.user.id);
-      currentCount = 0;
-    }
-    
-    // Check rate limit
-    const queryLimit = usage.query_limit || 5;
-    if (currentCount >= queryLimit) {
-      return new Response('Rate limit exceeded', { 
-        status: 429, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      );
     }
 
-    // Get the user's message
-    const { message } = await req.json();
-    if (!message) {
-      return new Response('Message is required', { 
-        status: 400, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+    console.log("Matched modules:", modules.map((m) => m.module));
+
+    // 4. For each match, fetch the .json file from storage
+    const contentSnippets = [];
+    for (const module of modules) {
+      const path = `${module.module}/${module.json_path}`;
+      const { data: fileRes, error: fileErr } = await supabase.storage
+        .from("thandi-knowledge")
+        .download(path);
+
+      if (fileErr) {
+        console.error(`Error fetching file ${path}:`, fileErr);
+        continue;
+      }
+      if (!fileRes) {
+        console.warn(`File not found in storage: ${path}`);
+        continue;
+      }
+
+      const text = await fileRes.text();
+      try {
+        const json = JSON.parse(text);
+        // 5. Parse summaries or key info (intro, bullets, etc.)
+        const summary =
+          json.summary ||
+          json.intro ||
+          json.description ||
+          (JSON.stringify(json).slice(0, 200) + "...");
+        const bullets =
+          Array.isArray(json.bullets) && json.bullets.length
+            ? "\n- " + json.bullets.join("\n- ")
+            : "";
+        const snippet = `Module: ${module.title}\n${summary}${bullets}`;
+        contentSnippets.push(snippet);
+        console.log(`Fetched and parsed: ${path}`);
+      } catch (e) {
+        console.error(`Error parsing JSON from ${path}:`, e);
+      }
     }
 
-    // Call OpenAI API
-    const completion = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
+    // 6. Build system prompt
+    const systemPrompt = `You are Thandi, EduEasy’s AI assistant. Use the following educational module content to answer the user's question.\n\n${contentSnippets.join("\n\n")}`;
+    console.log("System prompt constructed:\n", systemPrompt);
+
+    // 7. Log the query
+    await supabase.from("user_queries").insert({ user_id, message });
+
+    // 6. Return a hardcoded GPT-style mock response
+    const mockResponse = {
+      data: {
+        choices: [
           {
-            role: 'system',
-            content: 'You are Thandi, a helpful AI assistant for EduEasy, specializing in South African university applications. You help students with application guidance, document requirements, and general education advice. Keep responses concise and helpful.'
-          },
-          {
-            role: 'user',
-            content: message
+            message: {
+              content:
+                "This is a mocked Thandi response based on retrieved knowledge."
+            }
           }
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
+        ]
+      }
+    };
+
+    return new Response(
+      JSON.stringify({
+        reply: mockResponse.data.choices[0].message.content,
+        context: contentSnippets
       }),
-    });
-
-    if (!completion.ok) {
-      const error = await completion.json();
-      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
-    }
-
-    const completionData = await completion.json();
-    const responseText = completionData.choices[0].message.content;
-
-    // Update user's query count
-    await supabase
-      .from('users')
-      .update({ 
-        query_count_today: currentCount + 1, 
-        last_query_date: today 
-      })
-      .eq('id', user.user.id);
-
-    // Log the interaction
-    await supabase.from('thandi_interactions').insert({
-      user_id: user.user.id,
-      message: message,
-      is_user: true,
-      response_type: 'ai'
-    });
-
-    await supabase.from('thandi_interactions').insert({
-      user_id: user.user.id,
-      message: responseText,
-      is_user: false,
-      response_type: 'ai'
-    });
-
-    console.log(`Processed query for user ${user.user.id}, count: ${currentCount + 1}/${queryLimit}`);
-
-    return new Response(JSON.stringify({ 
-      content: responseText,
-      queries_remaining: queryLimit - (currentCount + 1)
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-    
-  } catch (error) {
-    console.error('Error in thandi-openai function:', error);
-    
-    return new Response(JSON.stringify({ 
-      error: 'Server error', 
-      message: error.message 
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Unhandled error in edge function:", err);
+    return new Response(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500 }
+    );
   }
 });
