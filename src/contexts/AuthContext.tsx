@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface AuthContextType {
   user: User | null;
+  userType: string | null;
   loading: boolean;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string, fullName?: string, idNumber?: string) => Promise<{ error?: any }>;
@@ -17,12 +18,32 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchUserType = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('users')
+        .select('user_type')
+        .eq('id', userId)
+        .single();
+      setUserType(data?.user_type || 'student');
+    } catch (error) {
+      console.error('Error fetching user type:', error);
+      setUserType('student');
+    }
+  };
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserType(session.user.id);
+      } else {
+        setUserType(null);
+      }
       setLoading(false);
     });
 
@@ -31,6 +52,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserType(session.user.id);
+      } else {
+        setUserType(null);
+      }
       setLoading(false);
     });
 
@@ -87,6 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     user,
+    userType,
     loading,
     signOut,
     signUp,
