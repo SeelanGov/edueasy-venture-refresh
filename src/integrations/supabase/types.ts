@@ -142,6 +142,7 @@ export type Database = {
           institution_id: string | null
           program: string | null
           program_id: string | null
+          sponsor_id: string | null
           status: string | null
           university: string | null
           user_id: string
@@ -153,6 +154,7 @@ export type Database = {
           institution_id?: string | null
           program?: string | null
           program_id?: string | null
+          sponsor_id?: string | null
           status?: string | null
           university?: string | null
           user_id: string
@@ -164,6 +166,7 @@ export type Database = {
           institution_id?: string | null
           program?: string | null
           program_id?: string | null
+          sponsor_id?: string | null
           status?: string | null
           university?: string | null
           user_id?: string
@@ -181,6 +184,13 @@ export type Database = {
             columns: ["program_id"]
             isOneToOne: false
             referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
             referencedColumns: ["id"]
           },
           {
@@ -274,6 +284,47 @@ export type Database = {
             columns: ["assessment_id"]
             isOneToOne: false
             referencedRelation: "career_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consultants: {
+        Row: {
+          active: boolean | null
+          assigned_region: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          specialization: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean | null
+          assigned_region?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          specialization?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean | null
+          assigned_region?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          specialization?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -498,6 +549,7 @@ export type Database = {
           short_name: string | null
           type: string
           updated_at: string | null
+          user_id: string | null
           website: string | null
         }
         Insert: {
@@ -512,6 +564,7 @@ export type Database = {
           short_name?: string | null
           type: string
           updated_at?: string | null
+          user_id?: string | null
           website?: string | null
         }
         Update: {
@@ -526,9 +579,18 @@ export type Database = {
           short_name?: string | null
           type?: string
           updated_at?: string | null
+          user_id?: string | null
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "institutions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leads: {
         Row: {
@@ -1152,6 +1214,7 @@ export type Database = {
           password_hash: string | null
           phone: string | null
           updated_at: string
+          user_id: string | null
           verified_status: string
         }
         Insert: {
@@ -1163,6 +1226,7 @@ export type Database = {
           password_hash?: string | null
           phone?: string | null
           updated_at?: string
+          user_id?: string | null
           verified_status?: string
         }
         Update: {
@@ -1174,9 +1238,18 @@ export type Database = {
           password_hash?: string | null
           phone?: string | null
           updated_at?: string
+          user_id?: string | null
           verified_status?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sponsors_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sponsorships: {
         Row: {
@@ -1784,6 +1857,7 @@ export type Database = {
           sponsor_id: string | null
           tier_level: string | null
           tracking_id: string | null
+          user_type: string | null
         }
         Insert: {
           consent_given?: boolean | null
@@ -1807,6 +1881,7 @@ export type Database = {
           sponsor_id?: string | null
           tier_level?: string | null
           tracking_id?: string | null
+          user_type?: string | null
         }
         Update: {
           consent_given?: boolean | null
@@ -1830,6 +1905,7 @@ export type Database = {
           sponsor_id?: string | null
           tier_level?: string | null
           tracking_id?: string | null
+          user_type?: string | null
         }
         Relationships: [
           {
@@ -1940,6 +2016,14 @@ export type Database = {
           has_delete_policy: boolean
           recommendation: string
         }[]
+      }
+      assign_user_role: {
+        Args: {
+          p_user_id: string
+          p_user_type: string
+          p_additional_data?: Json
+        }
+        Returns: boolean
       }
       audit_rls_policies: {
         Args: { p_user_id?: string }

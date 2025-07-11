@@ -70,6 +70,7 @@ export interface Database {
           university: string;
           user_id: string;
           personal_statement: string;
+          sponsor_id?: string | null;
         };
         Insert: {
           created_at?: string;
@@ -82,6 +83,7 @@ export interface Database {
           university: string;
           user_id: string;
           personal_statement: string;
+          sponsor_id?: string | null;
         };
         Update: {
           created_at?: string;
@@ -94,6 +96,165 @@ export interface Database {
           university?: string;
           user_id?: string;
           personal_statement?: string;
+          sponsor_id?: string | null;
+        };
+      };
+      consultants: {
+        Row: {
+          id: string;
+          user_id: string;
+          full_name?: string | null;
+          specialization?: string | null;
+          assigned_region?: string | null;
+          active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          full_name?: string | null;
+          specialization?: string | null;
+          assigned_region?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          full_name?: string | null;
+          specialization?: string | null;
+          assigned_region?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      institutions: {
+        Row: {
+          id: string;
+          name: string;
+          type: string;
+          province?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          website?: string | null;
+          logo_url?: string | null;
+          short_name?: string | null;
+          active: boolean;
+          user_id?: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          type: string;
+          province?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          website?: string | null;
+          logo_url?: string | null;
+          short_name?: string | null;
+          active?: boolean;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          type?: string;
+          province?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          website?: string | null;
+          logo_url?: string | null;
+          short_name?: string | null;
+          active?: boolean;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      sponsors: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          phone?: string | null;
+          organization_type?: string | null;
+          verified_status: string;
+          user_id?: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          email: string;
+          phone?: string | null;
+          organization_type?: string | null;
+          verified_status?: string;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          email?: string;
+          phone?: string | null;
+          organization_type?: string | null;
+          verified_status?: string;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      users: {
+        Row: {
+          id: string;
+          email?: string | null;
+          full_name?: string | null;
+          id_number?: string | null;
+          phone_number?: string | null;
+          user_type: string;
+          tier_level?: string | null;
+          current_plan?: string | null;
+          profile_status?: string | null;
+          consent_given?: boolean | null;
+          id_verified?: boolean | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email?: string | null;
+          full_name?: string | null;
+          id_number?: string | null;
+          phone_number?: string | null;
+          user_type?: string;
+          tier_level?: string | null;
+          current_plan?: string | null;
+          profile_status?: string | null;
+          consent_given?: boolean | null;
+          id_verified?: boolean | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string | null;
+          full_name?: string | null;
+          id_number?: string | null;
+          phone_number?: string | null;
+          user_type?: string;
+          tier_level?: string | null;
+          current_plan?: string | null;
+          profile_status?: string | null;
+          consent_given?: boolean | null;
+          id_verified?: boolean | null;
+          created_at?: string;
         };
       };
       system_error_logs: {
@@ -183,6 +344,14 @@ export interface Database {
           message_count: number;
           avg_confidence: number;
         }>;
+      };
+      assign_user_role: {
+        Args: {
+          p_user_id: string;
+          p_user_type: string;
+          p_additional_data?: Record<string, unknown>;
+        };
+        Returns: boolean;
       };
     };
   };
