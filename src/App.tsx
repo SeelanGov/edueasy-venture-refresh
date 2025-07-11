@@ -51,6 +51,7 @@ import TermsOfService from "./pages/TermsOfService";
 import { TermsOfServiceRedirect } from "@/components/TermsOfServiceRedirect";
 import RefundPolicy from "./pages/RefundPolicy";
 import { RefundPolicyRedirect } from "@/components/RefundPolicyRedirect";
+import ApplicationForm from "./pages/ApplicationForm";
 
 const queryClient = new QueryClient();
 
@@ -131,6 +132,16 @@ const App = () => (
                   <AuthGuard>
                     <VerificationGuard>
                       <SubscriptionPage />
+                    </VerificationGuard>
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/apply"
+                element={
+                  <AuthGuard>
+                    <VerificationGuard>
+                      <ApplicationForm />
                     </VerificationGuard>
                   </AuthGuard>
                 }
