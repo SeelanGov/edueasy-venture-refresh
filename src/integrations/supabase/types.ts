@@ -1612,6 +1612,7 @@ export type Database = {
       }
       users: {
         Row: {
+          consent_given: boolean | null
           contact_email: string | null
           created_at: string
           current_plan: string | null
@@ -1630,9 +1631,11 @@ export type Database = {
           query_limit: number | null
           referrer_partner_id: string | null
           sponsor_id: string | null
+          tier_level: string | null
           tracking_id: string | null
         }
         Insert: {
+          consent_given?: boolean | null
           contact_email?: string | null
           created_at?: string
           current_plan?: string | null
@@ -1651,9 +1654,11 @@ export type Database = {
           query_limit?: number | null
           referrer_partner_id?: string | null
           sponsor_id?: string | null
+          tier_level?: string | null
           tracking_id?: string | null
         }
         Update: {
+          consent_given?: boolean | null
           contact_email?: string | null
           created_at?: string
           current_plan?: string | null
@@ -1672,6 +1677,7 @@ export type Database = {
           query_limit?: number | null
           referrer_partner_id?: string | null
           sponsor_id?: string | null
+          tier_level?: string | null
           tracking_id?: string | null
         }
         Relationships: [
