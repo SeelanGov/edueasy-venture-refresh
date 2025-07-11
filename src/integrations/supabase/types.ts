@@ -381,6 +381,39 @@ export type Database = {
         }
         Relationships: []
       }
+      email_verification_logs: {
+        Row: {
+          created_at: string | null
+          email: string
+          expires_at: string | null
+          id: string
+          status: string | null
+          user_id: string | null
+          verification_token: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+          verification_token: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          expires_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+          verification_token?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           active: boolean | null
@@ -1769,6 +1802,10 @@ export type Database = {
         Args: { encrypted_id: string; user_requesting?: string }
         Returns: string
       }
+      generate_email_verification_token: {
+        Args: { p_user_id: string }
+        Returns: string
+      }
       generate_tracking_id: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1820,6 +1857,10 @@ export type Database = {
           details: string
           test_session_id: string
         }[]
+      }
+      verify_email_token: {
+        Args: { p_token: string }
+        Returns: boolean
       }
     }
     Enums: {
