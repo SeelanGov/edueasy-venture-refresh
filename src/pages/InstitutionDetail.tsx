@@ -3,10 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Building2, Mail, Phone, Globe, Users, GraduationCap, CheckCircle, Star, Loader2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  Building2,
+  Mail,
+  Phone,
+  Globe,
+  GraduationCap,
+  CheckCircle,
+  Star,
+  Loader2,
+} from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
 import { supabase } from '@/integrations/supabase/client';
-import { Institution } from '@/hooks/useInstitutions';
+import type { Institution } from '@/hooks/useInstitutions';
 
 const InstitutionDetail = () => {
   const { id } = useParams();
@@ -22,7 +32,7 @@ const InstitutionDetail = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const { data, error: fetchError } = await supabase
           .from('institutions')
           .select('*')
@@ -31,7 +41,7 @@ const InstitutionDetail = () => {
           .single();
 
         if (fetchError) throw fetchError;
-        
+
         // Type assertion since we know the structure matches our interface
         setInstitution(data as Institution);
       } catch (err) {
@@ -67,9 +77,7 @@ const InstitutionDetail = () => {
             <Typography variant="p" className="text-gray-600 mb-4">
               {error || 'The institution you are looking for does not exist.'}
             </Typography>
-            <Button onClick={() => navigate('/institutions')}>
-              Back to Institutions
-            </Button>
+            <Button onClick={() => navigate('/institutions')}>Back to Institutions</Button>
           </CardContent>
         </Card>
       </div>
@@ -77,30 +85,41 @@ const InstitutionDetail = () => {
   }
 
   const benefits = [
-    "AI-powered student matching",
-    "Automated application processing",
-    "Real-time analytics dashboard",
-    "Student progress tracking",
-    "Integrated communication tools",
-    "Document verification system"
+    'AI-powered student matching',
+    'Automated application processing',
+    'Real-time analytics dashboard',
+    'Student progress tracking',
+    'Integrated communication tools',
+    'Document verification system',
   ];
 
   const tiers = [
     {
-      name: "Basic",
-      price: "R2,500",
-      features: ["Up to 100 applications/month", "Basic analytics", "Email support"]
+      name: 'Basic',
+      price: 'R2,500',
+      features: ['Up to 100 applications/month', 'Basic analytics', 'Email support'],
     },
     {
-      name: "Standard",
-      price: "R5,000",
-      features: ["Up to 500 applications/month", "Advanced analytics", "Priority support", "API access"]
+      name: 'Standard',
+      price: 'R5,000',
+      features: [
+        'Up to 500 applications/month',
+        'Advanced analytics',
+        'Priority support',
+        'API access',
+      ],
     },
     {
-      name: "Premium",
-      price: "R10,000",
-      features: ["Unlimited applications", "Custom analytics", "24/7 support", "Full API access", "Custom integrations"]
-    }
+      name: 'Premium',
+      price: 'R10,000',
+      features: [
+        'Unlimited applications',
+        'Custom analytics',
+        '24/7 support',
+        'Full API access',
+        'Custom integrations',
+      ],
+    },
   ];
 
   return (
@@ -114,7 +133,7 @@ const InstitutionDetail = () => {
               Back to Institutions
             </Button>
           </div>
-          
+
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-cap-teal rounded-lg flex items-center justify-center">
@@ -128,19 +147,17 @@ const InstitutionDetail = () => {
                   <Badge variant="outline">{institution.type}</Badge>
                   {institution.location && <Badge variant="outline">{institution.location}</Badge>}
                   {institution.partner_id && (
-                    <Badge className="bg-green-100 text-green-800">
-                      EduEasy Partner
-                    </Badge>
+                    <Badge className="bg-green-100 text-green-800">EduEasy Partner</Badge>
                   )}
                 </div>
               </div>
             </div>
-            
+
             <div className="flex gap-3">
               <Button variant="outline" onClick={() => navigate('/register')}>
                 Apply as Student
               </Button>
-              <Button 
+              <Button
                 className="bg-cap-teal hover:bg-cap-teal/90"
                 onClick={() => navigate('/partner-inquiry')}
               >
@@ -162,19 +179,24 @@ const InstitutionDetail = () => {
               </CardHeader>
               <CardContent>
                 <Typography variant="p" className="text-gray-600 mb-6">
-                  {institution.description || `${institution.name} is a leading educational institution in ${institution.province || 'South Africa'}.`}
+                  {institution.description ||
+                    `${institution.name} is a leading educational institution in ${institution.province || 'South Africa'}.`}
                 </Typography>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {institution.student_count && (
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-cap-teal">{institution.student_count}</div>
+                      <div className="text-2xl font-bold text-cap-teal">
+                        {institution.student_count}
+                      </div>
                       <div className="text-sm text-gray-500">Students</div>
                     </div>
                   )}
                   {institution.established && (
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-cap-teal">{institution.established}</div>
+                      <div className="text-2xl font-bold text-cap-teal">
+                        {institution.established}
+                      </div>
                       <div className="text-sm text-gray-500">Established</div>
                     </div>
                   )}
@@ -245,7 +267,10 @@ const InstitutionDetail = () => {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {tiers.map((tier, index) => (
-                    <div key={index} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div
+                      key={index}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
                       <div className="text-center mb-4">
                         <h3 className="font-semibold text-lg">{tier.name}</h3>
                         <div className="text-2xl font-bold text-cap-teal">{tier.price}</div>
@@ -278,7 +303,10 @@ const InstitutionDetail = () => {
                   {institution.email && (
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-gray-400" />
-                      <a href={`mailto:${institution.email}`} className="text-blue-600 hover:underline">
+                      <a
+                        href={`mailto:${institution.email}`}
+                        className="text-blue-600 hover:underline"
+                      >
                         {institution.email}
                       </a>
                     </div>
@@ -286,7 +314,10 @@ const InstitutionDetail = () => {
                   {institution.phone && (
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 text-gray-400" />
-                      <a href={`tel:${institution.phone}`} className="text-blue-600 hover:underline">
+                      <a
+                        href={`tel:${institution.phone}`}
+                        className="text-blue-600 hover:underline"
+                      >
                         {institution.phone}
                       </a>
                     </div>
@@ -294,7 +325,12 @@ const InstitutionDetail = () => {
                   {institution.website && (
                     <div className="flex items-center gap-2">
                       <Globe className="h-4 w-4 text-gray-400" />
-                      <a href={institution.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      <a
+                        href={institution.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
                         Visit Website
                       </a>
                     </div>
@@ -312,14 +348,14 @@ const InstitutionDetail = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button 
+                <Button
                   className="w-full bg-white text-cap-teal hover:bg-gray-100"
                   onClick={() => navigate('/partner-inquiry')}
                 >
                   Get Partnership Info
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full border-white text-white hover:bg-white hover:text-cap-teal"
                   onClick={() => navigate('/consultations')}
                 >
@@ -332,12 +368,10 @@ const InstitutionDetail = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Interested Student?</CardTitle>
-                <CardDescription>
-                  Apply to {institution.name} through EduEasy
-                </CardDescription>
+                <CardDescription>Apply to {institution.name} through EduEasy</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button 
+                <Button
                   className="w-full bg-cap-teal hover:bg-cap-teal/90"
                   onClick={() => navigate('/register')}
                 >

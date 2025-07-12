@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
-import { UserCheck, UserPlus, Info } from 'lucide-react';
+import { UserCheck, UserPlus } from 'lucide-react';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';

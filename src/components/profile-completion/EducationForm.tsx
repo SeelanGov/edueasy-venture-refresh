@@ -22,7 +22,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
-import { SubjectMark } from '@/hooks/useProfileCompletionStore';
+import type { SubjectMark } from '@/hooks/useProfileCompletionStore';
 import { GradeSubjectsTab } from './GradeSubjectsTab';
 
 // South African provinces

@@ -1,21 +1,20 @@
-import { useState } from 'react';
 import { validateFile } from '@/components/profile-completion/documents/documentUtils';
-import {
+import type {
   DocumentType,
-  RetryData,
   DocumentUploadState,
 } from '@/components/profile-completion/documents/types';
+
 import { compressImage } from '@/utils/imageCompression';
 import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
 export const useFileProcessing = (
   setDocumentState: (documentType: DocumentType, state: Partial<DocumentUploadState>) => void,
-  user?: { id?: string } | null
+  user?: { id?: string } | null,
 ) => {
   const processFile = async (
     file: File,
     documentType: DocumentType,
-    isResubmission: boolean = false
+    isResubmission: boolean = false,
   ): Promise<{ valid: boolean; file: File | null; error?: unknown }> => {
     // Validate file
     const validation = validateFile(file);
@@ -56,7 +55,7 @@ export const useFileProcessing = (
             userId: user?.id,
             severity: ErrorSeverity.WARNING,
             errorMessage: 'Failed to compress image, uploading original file',
-          }
+          },
         );
 
         if (compressedFile && !compressionError) {
@@ -84,7 +83,7 @@ export const useFileProcessing = (
   const handleRetry = (
     documentType: DocumentType,
     currentState: DocumentUploadState,
-    handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => void
+    handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => void,
   ) => {
     if (currentState.retryData && currentState.retryData.file) {
       // Create a fake event object with the existing file

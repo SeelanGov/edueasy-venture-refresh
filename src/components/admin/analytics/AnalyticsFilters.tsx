@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Label } from '@/components/ui/label';
@@ -10,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AnalyticsFilters as AnalyticsFiltersType } from '@/hooks/analytics/types';
+import type { AnalyticsFilters as AnalyticsFiltersType } from '@/hooks/analytics/types';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon, X } from 'lucide-react';
@@ -45,11 +44,8 @@ export const AnalyticsFilters = ({
     setEndDateOpen(false);
   };
 
-  const hasActiveFilters = 
-    filters.startDate || 
-    filters.endDate || 
-    filters.documentType || 
-    filters.institutionId;
+  const hasActiveFilters =
+    filters.startDate || filters.endDate || filters.documentType || filters.institutionId;
 
   return (
     <Card className="mb-6">
@@ -69,7 +65,7 @@ export const AnalyticsFilters = ({
               </Button>
             )}
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Start Date */}
             <div className="space-y-2">

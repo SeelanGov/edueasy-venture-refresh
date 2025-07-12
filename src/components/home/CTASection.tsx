@@ -1,10 +1,8 @@
-
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
-import { Typography } from '@/components/ui/typography';
 import { Card, CardContent } from '@/components/ui/card';
+import { Typography } from '@/components/ui/typography';
+import { useAuth } from '@/hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const CTASection = () => {
   const { user } = useAuth();
@@ -49,8 +47,8 @@ export const CTASection = () => {
                     variant="body-lg"
                     className="text-gray-600 mb-8 max-w-2xl mx-auto md:text-xl"
                   >
-                    Join thousands of students already on their path to success through South Africa's
-                    leading educational institutions.
+                    Join thousands of students already on their path to success through South
+                    Africa's leading educational institutions.
                   </Typography>
                 </div>
 
@@ -128,7 +126,10 @@ export const CTASection = () => {
 
                 <div className="mt-10 text-center">
                   <Link to="/profile-demo">
-                    <Button variant="ghost" className="text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal md:text-lg">
+                    <Button
+                      variant="ghost"
+                      className="text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal md:text-lg"
+                    >
                       View Profile Demo
                     </Button>
                   </Link>

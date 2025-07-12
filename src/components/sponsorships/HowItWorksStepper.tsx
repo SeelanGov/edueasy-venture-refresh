@@ -1,22 +1,21 @@
-
-import { Card, CardContent } from "@/components/ui/card";
-import { CircleCheck, BookOpen, Star } from "lucide-react";
+import { Card, CardContent } from '@/components/ui/card';
+import { CircleCheck, BookOpen, Star } from 'lucide-react';
 
 const steps = [
   {
     icon: BookOpen,
-    title: "Apply Online",
-    description: "Complete a simple application for sponsorship through EduEasy.",
+    title: 'Apply Online',
+    description: 'Complete a simple application for sponsorship through EduEasy.',
   },
   {
     icon: Star,
-    title: "Get Matched",
-    description: "We match students with registered sponsors transparently.",
+    title: 'Get Matched',
+    description: 'We match students with registered sponsors transparently.',
   },
   {
     icon: CircleCheck,
-    title: "Succeed Together",
-    description: "Move closer to your dream—track status and connect directly.",
+    title: 'Succeed Together',
+    description: 'Move closer to your dream—track status and connect directly.',
   },
 ];
 

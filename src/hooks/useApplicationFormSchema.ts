@@ -32,12 +32,12 @@ export const useApplicationFormSchema = () => {
       .optional()
       .refine(
         (file) => !file || (file instanceof File && file.size > 0),
-        'Please upload a valid file'
+        'Please upload a valid file',
       )
       .refine((file) => !file || file.size <= 5 * 1024 * 1024, 'File size must be less than 5MB')
       .refine(
         (file) => !file || ['application/pdf'].includes(file.type),
-        'Only PDF files are accepted'
+        'Only PDF files are accepted',
       ),
   });
 

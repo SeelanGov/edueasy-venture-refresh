@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -16,9 +15,17 @@ const CheckoutPage = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 
   const plans = {
-    'starter': { name: 'Starter', amount: 0, features: ['1 application', 'Basic tools'] },
-    'essential': { name: 'Essential', amount: 199, features: ['3 applications', 'Document management', 'Auto-fill', 'NSFAS guidance'] },
-    'pro-ai': { name: 'Pro + AI', amount: 300, features: ['6 applications', 'Thandi AI', 'Document reviews', 'Career guidance'] },
+    starter: { name: 'Starter', amount: 0, features: ['1 application', 'Basic tools'] },
+    essential: {
+      name: 'Essential',
+      amount: 199,
+      features: ['3 applications', 'Document management', 'Auto-fill', 'NSFAS guidance'],
+    },
+    'pro-ai': {
+      name: 'Pro + AI',
+      amount: 300,
+      features: ['6 applications', 'Thandi AI', 'Document reviews', 'Career guidance'],
+    },
   };
 
   const plan = plans[selectedPlan as keyof typeof plans] || plans['starter'];
@@ -45,7 +52,9 @@ const CheckoutPage = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="container mx-auto max-w-2xl">
         <div className="text-center mb-8">
-          <Typography variant="h1" className="mb-2">Complete Your Purchase</Typography>
+          <Typography variant="h1" className="mb-2">
+            Complete Your Purchase
+          </Typography>
           <Typography variant="p" className="text-gray-600">
             You're upgrading to {plan.name} - pay once for the entire application season
           </Typography>
@@ -122,15 +131,21 @@ const CheckoutPage = () => {
               <Calendar className="h-6 w-6" />
               <div className="text-left">
                 <div className="font-semibold">Payment Plan</div>
-                <div className="text-sm text-gray-500">R{Math.ceil(plan.amount / 4)}/week for 4 weeks</div>
+                <div className="text-sm text-gray-500">
+                  R{Math.ceil(plan.amount / 4)}/week for 4 weeks
+                </div>
               </div>
             </Button>
 
             {showQRCode && (
               <div className="mt-6 p-6 bg-gray-50 rounded-lg text-center">
-                <Typography variant="h4" className="mb-4">Scan QR Code to Pay</Typography>
+                <Typography variant="h4" className="mb-4">
+                  Scan QR Code to Pay
+                </Typography>
                 <div className="w-48 h-48 mx-auto bg-white rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center mb-4">
-                  <Typography variant="small" className="text-gray-500">QR Code Here</Typography>
+                  <Typography variant="small" className="text-gray-500">
+                    QR Code Here
+                  </Typography>
                 </div>
                 <Typography variant="small" className="text-gray-600 mb-2">
                   Scan with your banking app or present at participating stores

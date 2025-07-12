@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -26,9 +25,9 @@ export const AISupportSection = () => {
               Meet Thandi, Your AI Education Assistant
             </Typography>
             <Typography variant="body-lg" className="mb-6 text-gray-600">
-              Get 24/7 personalized support from Thandi, our AI assistant designed specifically 
-              for South African students. From application guidance to career advice, Thandi is 
-              here to help you succeed.
+              Get 24/7 personalized support from Thandi, our AI assistant designed specifically for
+              South African students. From application guidance to career advice, Thandi is here to
+              help you succeed.
             </Typography>
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
@@ -134,4 +133,3 @@ export const AISupportSection = () => {
     </section>
   );
 };
-

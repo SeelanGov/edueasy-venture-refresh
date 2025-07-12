@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Intent } from '@/hooks/useIntentManagement';
-import { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
+import type { Intent } from '@/hooks/useIntentManagement';
+import type { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
 import { TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

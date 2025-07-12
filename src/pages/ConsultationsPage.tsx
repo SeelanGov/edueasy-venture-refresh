@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,8 +21,8 @@ const ConsultationsPage = () => {
         'Personalized career assessment',
         'University program recommendations',
         'Study path planning',
-        'Career roadmap creation'
-      ]
+        'Career roadmap creation',
+      ],
     },
     {
       id: 'application-review',
@@ -35,8 +34,8 @@ const ConsultationsPage = () => {
         'Document review and feedback',
         'Application strategy optimization',
         'Interview preparation tips',
-        'Deadline management guidance'
-      ]
+        'Deadline management guidance',
+      ],
     },
     {
       id: 'interview-prep',
@@ -48,9 +47,9 @@ const ConsultationsPage = () => {
         'Mock interview sessions',
         'Question and answer practice',
         'Communication skills training',
-        'Confidence building techniques'
-      ]
-    }
+        'Confidence building techniques',
+      ],
+    },
   ];
 
   return (
@@ -67,7 +66,10 @@ const ConsultationsPage = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sessionTypes.map((session) => (
-              <Card key={session.id} className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
+              <Card
+                key={session.id}
+                className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200"
+              >
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg text-gray-800">{session.title}</CardTitle>
@@ -79,10 +81,8 @@ const ConsultationsPage = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-gray-600">
-                    {session.description}
-                  </p>
-                  
+                  <p className="text-sm text-gray-600">{session.description}</p>
+
                   <div className="space-y-2">
                     <h4 className="font-medium text-sm text-gray-700">What's included:</h4>
                     <ul className="space-y-1">
@@ -95,7 +95,7 @@ const ConsultationsPage = () => {
                     </ul>
                   </div>
 
-                  <Button 
+                  <Button
                     variant="primary"
                     className="w-full"
                     onClick={() => setSelectedSession(session.id)}
@@ -135,7 +135,7 @@ const ConsultationsPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-4 p-4 border border-gray-100 rounded-lg bg-gray-50">
                 <div className="w-12 h-12 bg-cap-teal/10 rounded-full flex items-center justify-center">
                   <Users className="h-6 w-6 text-cap-teal" />
@@ -175,7 +175,7 @@ const ConsultationsPage = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="w-8 h-8 bg-cap-teal text-white rounded-full flex items-center justify-center text-sm font-medium">
                   2
@@ -187,7 +187,7 @@ const ConsultationsPage = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="w-8 h-8 bg-cap-teal text-white rounded-full flex items-center justify-center text-sm font-medium">
                   3
@@ -208,25 +208,19 @@ const ConsultationsPage = () => {
             <CardHeader>
               <CardTitle className="text-gray-800">Booking Confirmation</CardTitle>
               <CardDescription className="text-gray-600">
-                You selected: {sessionTypes.find(s => s.id === selectedSession)?.title}
+                You selected: {sessionTypes.find((s) => s.id === selectedSession)?.title}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
-                This feature will be available soon. You can contact us directly to book your session.
+                This feature will be available soon. You can contact us directly to book your
+                session.
               </p>
               <div className="flex gap-2">
-                <Button 
-                  onClick={() => setSelectedSession(null)}
-                  variant="secondary"
-                >
+                <Button onClick={() => setSelectedSession(null)} variant="secondary">
                   Back to Sessions
                 </Button>
-                <Button 
-                  variant="outline"
-                >
-                  Contact Support
-                </Button>
+                <Button variant="outline">Contact Support</Button>
               </div>
             </CardContent>
           </Card>

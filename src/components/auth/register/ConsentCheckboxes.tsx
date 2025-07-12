@@ -1,4 +1,3 @@
-
 interface ConsentCheckboxesProps {
   consentPrivacy: boolean;
   consentTerms: boolean;
@@ -10,14 +9,12 @@ export const ConsentCheckboxes = ({
   consentPrivacy,
   consentTerms,
   setConsentPrivacy,
-  setConsentTerms
+  setConsentTerms,
 }: ConsentCheckboxesProps) => {
   return (
     <div className="flex flex-col gap-3 my-4 p-4 bg-gray-50 rounded-lg">
-      <div className="text-sm font-medium text-gray-700 mb-2">
-        Required Agreements
-      </div>
-      
+      <div className="text-sm font-medium text-gray-700 mb-2">Required Agreements</div>
+
       <label className="flex items-start gap-3 cursor-pointer">
         <input
           type="checkbox"
@@ -26,17 +23,15 @@ export const ConsentCheckboxes = ({
           className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
         />
         <span className="text-sm text-gray-600">
-          I agree to the{" "}
-          <a
-            href="/privacy-policy"
-            className="text-cap-teal underline hover:text-cap-teal/80"
-          >
+          I agree to the{' '}
+          <a href="/privacy-policy" className="text-cap-teal underline hover:text-cap-teal/80">
             Privacy Policy
-          </a>{" "}
-          and consent to the processing of my personal information for identity verification and educational services.
+          </a>{' '}
+          and consent to the processing of my personal information for identity verification and
+          educational services.
         </span>
       </label>
-      
+
       <label className="flex items-start gap-3 cursor-pointer">
         <input
           type="checkbox"
@@ -45,13 +40,10 @@ export const ConsentCheckboxes = ({
           className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
         />
         <span className="text-sm text-gray-600">
-          I agree to the{" "}
-          <a
-            href="/terms-of-service"
-            className="text-cap-teal underline hover:text-cap-teal/80"
-          >
+          I agree to the{' '}
+          <a href="/terms-of-service" className="text-cap-teal underline hover:text-cap-teal/80">
             Terms of Service
-          </a>{" "}
+          </a>{' '}
           and understand the platform's educational application services.
         </span>
       </label>

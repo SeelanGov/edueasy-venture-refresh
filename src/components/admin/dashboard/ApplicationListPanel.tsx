@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { makeUserMap, UserSummary } from '@/utils/admin/userLookup';
+import type { UserSummary } from '@/utils/admin/userLookup';
 
 interface Application {
   id: string;
@@ -46,7 +46,10 @@ export function ApplicationListPanel({ applications, userMap }: Props) {
                   <p className="font-medium">{app.university || 'University not specified'}</p>
                   <p className="text-sm text-gray-600">Program: {app.program || 'Not specified'}</p>
                   <p className="text-sm text-gray-600">
-                    User Tracking ID: <span className="text-blue-700 font-mono">{user?.tracking_id || app.user_id}</span>
+                    User Tracking ID:{' '}
+                    <span className="text-blue-700 font-mono">
+                      {user?.tracking_id || app.user_id}
+                    </span>
                   </p>
                   {user?.full_name && (
                     <p className="text-xs text-gray-500 truncate">Name: {user.full_name}</p>
@@ -55,9 +58,7 @@ export function ApplicationListPanel({ applications, userMap }: Props) {
                     Submitted: {new Date(app.created_at).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex items-center space-x-2">
-                  {getStatusBadge(app.status)}
-                </div>
+                <div className="flex items-center space-x-2">{getStatusBadge(app.status)}</div>
               </div>
             );
           })}

@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Session, User } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
@@ -19,7 +18,9 @@ export const useSession = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, currentSession) => {
-      logger.debug(`Auth state changed: ${event} - Session exists: ${!!currentSession} - User ID: ${currentSession?.user?.id}`);
+      logger.debug(
+        `Auth state changed: ${event} - Session exists: ${!!currentSession} - User ID: ${currentSession?.user?.id}`,
+      );
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -51,7 +52,9 @@ export const useSession = () => {
           return;
         }
 
-        logger.debug(`Initial session check - Session exists: ${!!data.session} - User ID: ${data.session?.user?.id}`);
+        logger.debug(
+          `Initial session check - Session exists: ${!!data.session} - User ID: ${data.session?.user?.id}`,
+        );
         setSession(data.session);
         setUser(data.session?.user ?? null);
         setLoading(false);

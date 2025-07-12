@@ -1,4 +1,3 @@
-
 export interface TrainingEntry {
   id: string;
   message_id: string;

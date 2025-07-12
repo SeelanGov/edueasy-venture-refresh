@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ChatMessage, TrainingFilters } from '@/types/TrainingTypes';
+import type { ChatMessage, TrainingFilters } from '@/types/TrainingTypes';
 
 export const useTrainingMessages = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -28,7 +28,7 @@ export const useTrainingMessages = () => {
 
       const { data: messages, error } = await query.range(
         filters.page * filters.limit,
-        (filters.page + 1) * filters.limit - 1
+        (filters.page + 1) * filters.limit - 1,
       );
 
       if (error) throw error;

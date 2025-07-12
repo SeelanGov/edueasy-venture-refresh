@@ -1,8 +1,6 @@
-
 import { useState } from 'react';
+import { useDocumentUploadManager, type VerificationResult } from './useDocumentUploadManager';
 import { useErrorRetry } from './useErrorRetry';
-import { useDocumentUploadManager, VerificationResult } from './useDocumentUploadManager';
-import { toast } from '@/components/ui/use-toast';
 
 interface DocumentUploadError {
   message: string;
@@ -15,7 +13,7 @@ export const useDocumentUploadWithErrorHandling = () => {
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [currentDocType, setCurrentDocType] = useState<string>('');
   const [currentAppId, setCurrentAppId] = useState<string>('');
-  
+
   const { processDocument, isProcessing, verificationResult } = useDocumentUploadManager();
 
   const uploadOperation = async (): Promise<void> => {
@@ -24,10 +22,10 @@ export const useDocumentUploadWithErrorHandling = () => {
     }
 
     setError(null);
-    
+
     try {
       const result = await processDocument(currentFile, currentDocType, currentAppId);
-      
+
       if (!result || !result.verificationResult?.success) {
         throw new Error(result?.verificationResult?.failureReason || 'Upload failed');
       }
@@ -37,7 +35,7 @@ export const useDocumentUploadWithErrorHandling = () => {
         message: errorMessage,
         retryable: !errorMessage.includes('invalid file') && !errorMessage.includes('unsupported'),
       };
-      
+
       setError(uploadError);
       throw err;
     }
@@ -52,7 +50,7 @@ export const useDocumentUploadWithErrorHandling = () => {
   const uploadWithErrorHandling = async (
     file: File,
     documentType: string,
-    applicationId: string
+    applicationId: string,
   ) => {
     setCurrentFile(file);
     setCurrentDocType(documentType);
@@ -62,7 +60,7 @@ export const useDocumentUploadWithErrorHandling = () => {
 
     try {
       const result = await processDocument(file, documentType, applicationId);
-      
+
       if (result?.verificationResult) {
         const convertedResult: VerificationResult = {
           success: result.verificationResult.success,
@@ -73,7 +71,7 @@ export const useDocumentUploadWithErrorHandling = () => {
           processingTimeMs: result.verificationResult.processingTimeMs,
           extractedFields: result.verificationResult.extractedFields,
         };
-        
+
         if (!convertedResult.success) {
           const uploadError: DocumentUploadError = {
             message: convertedResult.failureReason || 'Verification failed',
@@ -81,10 +79,10 @@ export const useDocumentUploadWithErrorHandling = () => {
           };
           setError(uploadError);
         }
-        
+
         return { ...result, verificationResult: convertedResult };
       }
-      
+
       return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
@@ -92,7 +90,7 @@ export const useDocumentUploadWithErrorHandling = () => {
         message: errorMessage,
         retryable: !errorMessage.includes('invalid file') && !errorMessage.includes('unsupported'),
       };
-      
+
       setError(uploadError);
       return null;
     }

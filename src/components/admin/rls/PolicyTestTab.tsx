@@ -1,10 +1,9 @@
-
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Shield } from 'lucide-react';
 import { PolicyTestConfiguration } from './PolicyTestConfiguration';
 import { PolicyTestResults } from './PolicyTestResults';
-import { RLSTestResult } from '@/utils/security/types';
+import type { RLSTestResult } from '@/utils/security/types';
 
 interface PolicyTestTabProps {
   testResults: RLSTestResult[] | null;

@@ -8,7 +8,7 @@ describe('SecurityInfoPanel', () => {
     render(
       <TooltipProvider>
         <SecurityInfoPanel badgeType="privacy" />
-      </TooltipProvider>
+      </TooltipProvider>,
     );
     expect(screen.getByText(/privacy security/i)).toBeInTheDocument();
     expect(screen.getByText(/your personal information is private/i)).toBeInTheDocument();

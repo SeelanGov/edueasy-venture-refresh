@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -14,10 +13,11 @@ const typographyVariants = cva('', {
       h5: 'scroll-m-20 text-lg font-semibold tracking-tight',
       p: 'leading-7 [&:not(:first-child)]:mt-6',
       'body-lg': 'text-lg leading-7',
-      'body': 'text-base leading-7',
+      body: 'text-base leading-7',
       'body-sm': 'text-sm leading-6',
       blockquote: 'mt-6 border-l-2 pl-6 italic',
-      'inline-code': 'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
+      'inline-code':
+        'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
       lead: 'text-xl text-muted-foreground',
       large: 'text-lg font-semibold',
       small: 'text-sm font-medium leading-none',
@@ -39,15 +39,12 @@ export interface TypographyProps
 const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, as, ...props }, ref) => {
     const Comp = as || getDefaultTag(variant) || 'p';
-    return React.createElement(
-      Comp,
-      {
-        className: cn(typographyVariants({ variant, className })),
-        ref,
-        ...props
-      }
-    );
-  }
+    return React.createElement(Comp, {
+      className: cn(typographyVariants({ variant, className })),
+      ref,
+      ...props,
+    });
+  },
 );
 Typography.displayName = 'Typography';
 

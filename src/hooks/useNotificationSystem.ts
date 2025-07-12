@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { Notification } from '@/types/Notification';
+import type { Notification } from '@/types/Notification';
 import { toast } from '@/components/ui/use-toast';
 
 export type { Notification } from '@/types/Notification';
@@ -29,7 +29,7 @@ export function useNotificationSystem() {
       if (error) throw error;
 
       // Map database data to our Notification type, handling null values
-      const mappedNotifications: Notification[] = (data || []).map(item => ({
+      const mappedNotifications: Notification[] = (data || []).map((item) => ({
         id: item.id,
         user_id: item.user_id,
         title: item.title,
@@ -41,7 +41,7 @@ export function useNotificationSystem() {
       }));
 
       setNotifications(mappedNotifications);
-      setUnreadCount(mappedNotifications.filter(n => !n.is_read).length);
+      setUnreadCount(mappedNotifications.filter((n) => !n.is_read).length);
     } catch (error) {
       console.error('Error fetching notifications:', error);
       toast({
@@ -63,12 +63,10 @@ export function useNotificationSystem() {
 
       if (error) throw error;
 
-      setNotifications(prev =>
-        prev.map(n =>
-          n.id === notificationId ? { ...n, is_read: true } : n
-        )
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, is_read: true } : n)),
       );
-      setUnreadCount(prev => Math.max(0, prev - 1));
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -86,9 +84,7 @@ export function useNotificationSystem() {
 
       if (error) throw error;
 
-      setNotifications(prev =>
-        prev.map(n => ({ ...n, is_read: true }))
-      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setUnreadCount(0);
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
@@ -107,11 +103,11 @@ export function useNotificationSystem() {
 
       if (error) throw error;
 
-      const notificationToDelete = notifications.find(n => n.id === notificationId);
-      setNotifications(prev => prev.filter(n => n.id !== notificationId));
+      const notificationToDelete = notifications.find((n) => n.id === notificationId);
+      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
 
       if (notificationToDelete && !notificationToDelete.is_read) {
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        setUnreadCount((prev) => Math.max(0, prev - 1));
       }
     } catch (error) {
       console.error('Error deleting notification:', error);
@@ -121,7 +117,7 @@ export function useNotificationSystem() {
   const deleteAllReadNotifications = async () => {
     if (!user?.id) return;
 
-    const readNotifications = notifications.filter(n => n.is_read);
+    const readNotifications = notifications.filter((n) => n.is_read);
     if (readNotifications.length === 0) return;
 
     try {
@@ -133,7 +129,7 @@ export function useNotificationSystem() {
 
       if (error) throw error;
 
-      setNotifications(prev => prev.filter(n => !n.is_read));
+      setNotifications((prev) => prev.filter((n) => !n.is_read));
     } catch (error) {
       console.error('Error deleting read notifications:', error);
     }

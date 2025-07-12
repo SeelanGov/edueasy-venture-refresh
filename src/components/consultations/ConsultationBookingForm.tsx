@@ -192,17 +192,16 @@ export function ConsultationBookingForm({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={
-                      (date) =>
-                        date < new Date() ||
-                        date.getDay() === 0 ||
-                        date.getDay() === 6
+                    disabled={(date) =>
+                      date < new Date() || date.getDay() === 0 || date.getDay() === 6
                     }
                     initialFocus
                   />
                 </PopoverContent>
               </Popover>
-              <FormDescription className="text-gray-600">Select a weekday for your consultation.</FormDescription>
+              <FormDescription className="text-gray-600">
+                Select a weekday for your consultation.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -231,7 +230,9 @@ export function ConsultationBookingForm({
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription className="text-gray-600">Choose a time that works for you.</FormDescription>
+              <FormDescription className="text-gray-600">
+                Choose a time that works for you.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -257,7 +258,9 @@ export function ConsultationBookingForm({
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription className="text-gray-600">Longer sessions allow for more in-depth guidance.</FormDescription>
+              <FormDescription className="text-gray-600">
+                Longer sessions allow for more in-depth guidance.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -285,17 +288,10 @@ export function ConsultationBookingForm({
         />
 
         <div className="flex justify-between">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={onCancel}
-          >
+          <Button type="button" variant="outline" onClick={onCancel}>
             Cancel
           </Button>
-          <Button 
-            type="submit"
-            variant="primary"
-          >
+          <Button type="submit" variant="primary">
             Continue to Payment
           </Button>
         </div>

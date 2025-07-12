@@ -1,13 +1,11 @@
-
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Star, Zap, Users } from 'lucide-react';
-import { SubscriptionTier } from '@/types/SubscriptionTypes';
-import { usePlanManagement } from '@/hooks/usePlanManagement';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
-import { formatCurrency } from '@/types/SubscriptionTypes';
+import { usePlanManagement } from '@/hooks/usePlanManagement';
+import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
+import { CheckCircle, Star, Users, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface PlanSelectorProps {
   onPlanSelect?: (tier: SubscriptionTier) => void;
@@ -38,7 +36,7 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
 
   const handleUpgrade = async (tier: SubscriptionTier) => {
     if (!user) return;
-    
+
     if (onPlanSelect) {
       onPlanSelect(tier);
     } else {
@@ -102,7 +100,10 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
         const isPopular = tier.name === 'Essential';
 
         return (
-          <Card key={tier.id} className={`relative bg-white shadow-sm transition-all duration-200 hover:shadow-md ${getPlanColor(tier.name)}`}>
+          <Card
+            key={tier.id}
+            className={`relative bg-white shadow-sm transition-all duration-200 hover:shadow-md ${getPlanColor(tier.name)}`}
+          >
             {isPopular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-cap-teal text-white shadow-sm">
@@ -114,7 +115,9 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
 
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center mb-2">
-                <div className={`p-2 rounded-lg ${isPopular ? 'bg-cap-teal text-white' : 'bg-gray-100 text-gray-600'}`}>
+                <div
+                  className={`p-2 rounded-lg ${isPopular ? 'bg-cap-teal text-white' : 'bg-gray-100 text-gray-600'}`}
+                >
                   {getPlanIcon(tier.name)}
                 </div>
               </div>
@@ -132,13 +135,17 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">{tier.max_applications} Application{tier.max_applications !== 1 ? 's' : ''}</span>
+                  <span className="text-sm text-gray-700">
+                    {tier.max_applications} Application{tier.max_applications !== 1 ? 's' : ''}
+                  </span>
                 </div>
-                
+
                 {tier.max_documents && (
                   <div className="flex items-center gap-3">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{tier.max_documents} Document Uploads</span>
+                    <span className="text-sm text-gray-700">
+                      {tier.max_documents} Document Uploads
+                    </span>
                   </div>
                 )}
 
@@ -193,14 +200,14 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
               </div>
 
               <div className="pt-4">
-                <Button 
+                <Button
                   onClick={() => handleUpgrade(tier)}
                   disabled={isCurrentPlan}
                   className={`w-full py-3 rounded-lg font-medium transition-all duration-200 ${
-                    isCurrentPlan 
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed' 
-                      : isPopular 
-                        ? 'bg-cap-teal hover:bg-cap-teal/90 text-white shadow-sm hover:shadow-md' 
+                    isCurrentPlan
+                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                      : isPopular
+                        ? 'bg-cap-teal hover:bg-cap-teal/90 text-white shadow-sm hover:shadow-md'
                         : 'bg-gray-900 hover:bg-gray-800 text-white'
                   }`}
                 >

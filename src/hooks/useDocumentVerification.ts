@@ -21,7 +21,7 @@ export const useDocumentVerification = () => {
     documentId: string,
     userId: string,
     documentType: string,
-    filePath: string
+    filePath: string,
   ) => {
     setIsVerifying(true);
     setVerificationResult(null);

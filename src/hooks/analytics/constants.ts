@@ -1,4 +1,4 @@
-import { AnalyticsFilters } from './types';
+import type { AnalyticsFilters } from './types';
 
 // Helper function to get date from N days ago
 const getDateDaysAgo = (days: number): Date => {

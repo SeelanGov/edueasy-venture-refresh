@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Control } from 'react-hook-form';
-import { AddressFormValues } from './types';
+import type { Control } from 'react-hook-form';
+import type { AddressFormValues } from './types';
 
 interface AddressTypeSelectorProps {
   control: Control<AddressFormValues>;

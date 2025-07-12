@@ -1,11 +1,10 @@
-
-import { useState } from "react";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Control } from "react-hook-form";
-import { RegisterFormValues } from "../RegisterForm";
-import { SecurityBadge } from "@/components/ui/SecurityBadge";
-import { Eye, EyeOff } from "lucide-react";
+import { useState } from 'react';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import type { Control } from 'react-hook-form';
+import type { RegisterFormValues } from '../RegisterForm';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface PasswordFieldProps {
   control: Control<RegisterFormValues>;
@@ -29,7 +28,7 @@ export const PasswordField = ({ control, isLoading }: PasswordFieldProps) => {
             <div className="relative">
               <Input
                 placeholder="******"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 {...field}
                 disabled={isLoading}
                 className="text-gray-900 pr-10"

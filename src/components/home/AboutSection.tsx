@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Typography } from '@/components/ui/typography';
 import { AboutContent } from './AboutContent';

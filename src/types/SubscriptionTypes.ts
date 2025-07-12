@@ -1,4 +1,3 @@
-
 export interface SubscriptionTier {
   id: string;
   name: string;
@@ -69,22 +68,32 @@ export function getThandiCapabilities(tierName: SubscriptionTierName) {
     case SubscriptionTierName.STARTER:
       return {
         tier: 'basic' as const,
-        features: ['Basic Q&A', 'Application help', 'General guidance']
+        features: ['Basic Q&A', 'Application help', 'General guidance'],
       };
     case SubscriptionTierName.ESSENTIAL:
       return {
         tier: 'guidance' as const,
-        features: ['Application guidance', 'Deadline management', 'Document help', 'NSFAS guidance']
+        features: [
+          'Application guidance',
+          'Deadline management',
+          'Document help',
+          'NSFAS guidance',
+        ],
       };
     case SubscriptionTierName.PRO_AI:
       return {
         tier: 'advanced' as const,
-        features: ['Career counseling', 'Personalized recommendations', 'Interview prep', 'Program matching']
+        features: [
+          'Career counseling',
+          'Personalized recommendations',
+          'Interview prep',
+          'Program matching',
+        ],
       };
     default:
       return {
         tier: 'basic' as const,
-        features: ['Basic Q&A']
+        features: ['Basic Q&A'],
       };
   }
 }

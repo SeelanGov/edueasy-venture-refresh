@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PlanSelector } from '@/components/subscription/PlanSelector';
 import { usePlanManagement } from '@/hooks/usePlanManagement';
 import { useAuth } from '@/hooks/useAuth';
-import { UserSubscription } from '@/types/SubscriptionTypes';
+import type { UserSubscription } from '@/types/SubscriptionTypes';
 import { Spinner } from '@/components/Spinner';
 import { formatCurrency } from '@/types/SubscriptionTypes';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -25,7 +24,7 @@ const Subscription = () => {
 
   const loadCurrentPlan = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const subscription = await getUserPlan(user.id);
@@ -62,7 +61,10 @@ const Subscription = () => {
                   <CreditCard className="h-5 w-5 text-cap-teal" />
                   <span>Current Plan</span>
                 </div>
-                <Badge variant="secondary" className="bg-cap-teal/10 text-cap-teal border-cap-teal/20">
+                <Badge
+                  variant="secondary"
+                  className="bg-cap-teal/10 text-cap-teal border-cap-teal/20"
+                >
                   {currentSubscription.tier?.name}
                 </Badge>
               </CardTitle>
@@ -76,7 +78,9 @@ const Subscription = () => {
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-600 mb-1">Price Paid</p>
                   <p className="font-semibold text-gray-800">
-                    {currentSubscription.tier ? formatCurrency(currentSubscription.tier.price_once_off) : 'Free'}
+                    {currentSubscription.tier
+                      ? formatCurrency(currentSubscription.tier.price_once_off)
+                      : 'Free'}
                   </p>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -95,8 +99,8 @@ const Subscription = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Available Plans</h2>
             <p className="text-gray-600">Choose the plan that best fits your educational goals</p>
           </div>
-          
-          <PlanSelector 
+
+          <PlanSelector
             currentPlan={currentSubscription?.tier?.name}
             onPlanSelect={() => loadCurrentPlan()}
           />

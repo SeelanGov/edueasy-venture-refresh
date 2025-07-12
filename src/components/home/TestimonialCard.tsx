@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Typography } from '@/components/ui/typography';
 
@@ -52,7 +51,7 @@ export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
                 </div>
               </div>
             )}
-            
+
             <img
               src={testimonial.image}
               alt={testimonial.name}
@@ -70,10 +69,13 @@ export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
         </div>
 
         <div className="flex-grow text-center lg:text-left">
-          <Typography variant="body-lg" className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700">
+          <Typography
+            variant="body-lg"
+            className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700"
+          >
             "{testimonial.quote}"
           </Typography>
-          
+
           <div className="space-y-2">
             <Typography variant="h4" className="font-semibold md:text-xl text-gray-900">
               {testimonial.name}

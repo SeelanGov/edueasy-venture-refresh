@@ -1,4 +1,3 @@
-
 // Define shared types for application form data
 export interface DraftFormData {
   grade12Results: string;

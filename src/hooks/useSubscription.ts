@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { SubscriptionTier, UserSubscription, Transaction } from '@/types/SubscriptionTypes';
+import type { SubscriptionTier, UserSubscription, Transaction } from '@/types/SubscriptionTypes';
 
 export function useSubscription() {
   const { user } = useAuth();
@@ -62,7 +61,7 @@ export function useSubscription() {
   const loadSubscriptionData = async () => {
     try {
       setTiers(mockTiers);
-      
+
       // Load user subscription
       const { data: subscription } = await supabase
         .from('user_plans')
@@ -72,7 +71,9 @@ export function useSubscription() {
         .single();
 
       if (subscription && user?.id) {
-        const tier = mockTiers.find(t => t.name.toLowerCase() === subscription.plan?.toLowerCase());
+        const tier = mockTiers.find(
+          (t) => t.name.toLowerCase() === subscription.plan?.toLowerCase(),
+        );
         if (tier && subscription.created_at) {
           setUserSubscription({
             id: subscription.id,
@@ -94,18 +95,19 @@ export function useSubscription() {
         .order('created_at', { ascending: false });
 
       if (userTransactions && user?.id) {
-        setTransactions(userTransactions.map(t => ({
-          id: t.id,
-          user_id: user.id,
-          amount: t.amount,
-          currency: 'ZAR',
-          status: t.status,
-          transaction_type: 'subscription_payment',
-          payment_method: t.payment_method,
-          created_at: t.created_at || new Date().toISOString(),
-        })));
+        setTransactions(
+          userTransactions.map((t) => ({
+            id: t.id,
+            user_id: user.id,
+            amount: t.amount,
+            currency: 'ZAR',
+            status: t.status,
+            transaction_type: 'subscription_payment',
+            payment_method: t.payment_method,
+            created_at: t.created_at || new Date().toISOString(),
+          })),
+        );
       }
-
     } catch (error) {
       console.error('Error loading subscription data:', error);
       toast({
@@ -118,39 +120,32 @@ export function useSubscription() {
     }
   };
 
-  const subscribeToPlan = async (
-    tierId: string,
-    paymentMethod: string
-  ) => {
+  const subscribeToPlan = async (tierId: string, paymentMethod: string) => {
     if (!user) return false;
 
     try {
-      const tier = tiers.find(t => t.id === tierId);
+      const tier = tiers.find((t) => t.id === tierId);
       if (!tier) return false;
 
       const amount = tier.price_once_off;
 
       // Create payment record
-      const { error: paymentError } = await supabase
-        .from('payments')
-        .insert({
-          user_id: user.id,
-          amount: amount * 100, // Convert to cents
-          plan: tier.name,
-          payment_method: paymentMethod,
-          status: 'paid',
-        });
+      const { error: paymentError } = await supabase.from('payments').insert({
+        user_id: user.id,
+        amount: amount * 100, // Convert to cents
+        plan: tier.name,
+        payment_method: paymentMethod,
+        status: 'paid',
+      });
 
       if (paymentError) throw paymentError;
 
       // Update user plan
-      const { error: planError } = await supabase
-        .from('user_plans')
-        .upsert({
-          user_id: user.id,
-          plan: tier.name,
-          active: true,
-        });
+      const { error: planError } = await supabase.from('user_plans').upsert({
+        user_id: user.id,
+        plan: tier.name,
+        active: true,
+      });
 
       if (planError) throw planError;
 

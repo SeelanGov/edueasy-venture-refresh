@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
@@ -29,7 +28,7 @@ export const FormActions = ({
       className={cn(
         'flex flex-col space-y-4 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-4',
         'md:mt-8 md:pt-2 md:border-t md:border-gray-200 dark:md:border-gray-700',
-        className
+        className,
       )}
       role="group"
       aria-labelledby={statusId}

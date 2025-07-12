@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { PersonalInfoForm } from './personal/PersonalInfoForm';
-import { PersonalInfoFormValues } from './personal/types';
+import type { PersonalInfoFormValues } from './personal/types';
 import { logError } from '@/utils/logging';
 import { parseError } from '@/utils/errorHandler';
 import { Card, CardContent } from '@/components/ui/card';

@@ -1,6 +1,5 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface VerificationLog {
   id: string;
@@ -19,10 +18,10 @@ export function useUserVerificationLogs(userId?: string) {
     if (!userId) return;
     setLoading(true);
     supabase
-      .from("verification_logs")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
+      .from('verification_logs')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (!error && data) {
           setLogs(data as VerificationLog[]);

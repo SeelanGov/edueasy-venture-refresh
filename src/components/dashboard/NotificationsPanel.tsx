@@ -12,7 +12,8 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { Notification, useNotificationSystem } from '@/hooks/useNotificationSystem';
+import type { Notification } from '@/hooks/useNotificationSystem';
+import { useNotificationSystem } from '@/hooks/useNotificationSystem';
 import { format, isThisMonth, isThisWeek, isToday, isYesterday } from 'date-fns';
 import { AlertCircle, Bell, Check, Clock, Filter, MessageSquare, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';

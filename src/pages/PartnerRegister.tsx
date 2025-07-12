@@ -1,4 +1,4 @@
-
+import { Button } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import supabase for registration (assume import path for client)
@@ -63,7 +63,7 @@ const PartnerRegister: React.FC = () => {
     if (data.user) {
       const { error: partnerError } = await supabase.from('partners').insert({
         name: form.instituteName,
-        type: "university", // REQUIRED: type is not nullable per schema
+        type: 'university', // REQUIRED: type is not nullable per schema
         email: form.email,
         contact_email: form.email,
         phone: null,
@@ -88,14 +88,15 @@ const PartnerRegister: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
       <div className="relative w-full">
         <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
             <span className="mr-2 text-lg">&#8592;</span>
             Back to Home
-          </button>
+          </Button>
         </div>
       </div>
       <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
@@ -150,19 +151,23 @@ const PartnerRegister: React.FC = () => {
           />
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-500 text-sm">{success}</div>}
-          <button
+          <Button
             type="submit"
             disabled={loading}
             className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
           >
-            {loading ? "Registering..." : "Register"}
-          </button>
+            {loading ? 'Registering...' : 'Register'}
+          </Button>
         </form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
-          <button className="text-primary underline" onClick={() => navigate('/partner/login')}>
+          <Button
+            variant="ghost"
+            className="text-primary underline p-0 h-auto font-normal"
+            onClick={() => navigate('/partner/login')}
+          >
             Log in
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -170,4 +175,3 @@ const PartnerRegister: React.FC = () => {
 };
 
 export default PartnerRegister;
-

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -98,18 +97,14 @@ const CareerGuidancePage = () => {
                 <BookOpen className="h-5 w-5 text-cap-teal" />
                 <div>
                   <h4 className="font-medium text-gray-800">Study Guides</h4>
-                  <p className="text-sm text-gray-600">
-                    Learn about different fields of study
-                  </p>
+                  <p className="text-sm text-gray-600">Learn about different fields of study</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 border border-gray-100 rounded-lg bg-gray-50">
                 <TrendingUp className="h-5 w-5 text-cap-teal" />
                 <div>
                   <h4 className="font-medium text-gray-800">Career Trends</h4>
-                  <p className="text-sm text-gray-600">
-                    Stay updated with industry trends
-                  </p>
+                  <p className="text-sm text-gray-600">Stay updated with industry trends</p>
                 </div>
               </div>
             </CardContent>
@@ -126,13 +121,15 @@ const CareerGuidancePage = () => {
               <div className="space-y-4">
                 <div className="p-4 border border-gray-100 rounded-lg bg-gray-50">
                   <p className="text-sm italic mb-2 text-gray-700">
-                    "Thandi helped me discover my passion for engineering. The career assessment was spot on!"
+                    "Thandi helped me discover my passion for engineering. The career assessment was
+                    spot on!"
                   </p>
                   <p className="text-xs text-gray-600">- Sarah, UCT Engineering Student</p>
                 </div>
                 <div className="p-4 border border-gray-100 rounded-lg bg-gray-50">
                   <p className="text-sm italic mb-2 text-gray-700">
-                    "The personalized recommendations helped me choose the right university and program."
+                    "The personalized recommendations helped me choose the right university and
+                    program."
                   </p>
                   <p className="text-xs text-gray-600">- Michael, Wits Business Student</p>
                 </div>

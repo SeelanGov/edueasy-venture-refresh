@@ -1,9 +1,7 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { useAuth } from '@/hooks/useAuth';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, AlertTriangle, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -38,8 +36,8 @@ export const DocumentVerificationNotice = () => {
     }
   };
 
-  const pendingDocs = documents.filter(doc => doc.status === 'pending' && doc.required);
-  const rejectedDocs = documents.filter(doc => doc.status === 'rejected');
+  const pendingDocs = documents.filter((doc) => doc.status === 'pending' && doc.required);
+  const rejectedDocs = documents.filter((doc) => doc.status === 'rejected');
 
   if (pendingDocs.length === 0 && rejectedDocs.length === 0) {
     return null;
@@ -59,7 +57,10 @@ export const DocumentVerificationNotice = () => {
       <CardContent>
         <div className="space-y-3">
           {pendingDocs.map((doc, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200"
+            >
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
                 <span className="ml-3 font-medium text-gray-800">{doc.name}</span>
@@ -70,7 +71,10 @@ export const DocumentVerificationNotice = () => {
             </div>
           ))}
           {rejectedDocs.map((doc, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-error-light">
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 bg-white rounded-lg border border-error-light"
+            >
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
                 <span className="ml-3 font-medium text-gray-800">{doc.name}</span>

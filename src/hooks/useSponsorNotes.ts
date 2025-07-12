@@ -1,6 +1,5 @@
-
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export type SponsorNote = {
   id: string;
@@ -13,14 +12,14 @@ export type SponsorNote = {
 
 export const useSponsorNotes = (sponsorId: string | undefined) => {
   return useQuery({
-    queryKey: ["sponsorNotes", sponsorId],
+    queryKey: ['sponsorNotes', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
       const { data, error } = await supabase
-        .from("partner_notes")
-        .select("*")
-        .eq("partner_id", sponsorId)
-        .order("created_at", { ascending: false });
+        .from('partner_notes')
+        .select('*')
+        .eq('partner_id', sponsorId)
+        .order('created_at', { ascending: false });
       if (error) throw error;
       return (data as SponsorNote[]) || [];
     },
@@ -31,21 +30,23 @@ export const useSponsorNotes = (sponsorId: string | undefined) => {
 export const useAddSponsorNote = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: Omit<SponsorNote, "id" | "created_at" | "created_by"> & { created_by?: string }) => {
+    mutationFn: async (
+      input: Omit<SponsorNote, 'id' | 'created_at' | 'created_by'> & { created_by?: string },
+    ) => {
       const payload = {
         ...input,
-        note_type: input.note_type ?? "general"
+        note_type: input.note_type ?? 'general',
       };
       const { data, error } = await supabase
-        .from("partner_notes")
+        .from('partner_notes')
         .insert([payload])
-        .select("*")
+        .select('*')
         .single();
       if (error) throw error;
       return data as SponsorNote;
     },
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["sponsorNotes", variables.partner_id] });
+      queryClient.invalidateQueries({ queryKey: ['sponsorNotes', variables.partner_id] });
     },
   });
 };

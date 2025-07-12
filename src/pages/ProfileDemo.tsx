@@ -1,4 +1,3 @@
-
 import { UserProfileCard } from '@/components/profile/UserProfileCard';
 
 const ProfileDemo = () => {

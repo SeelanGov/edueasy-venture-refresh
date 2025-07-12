@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +22,7 @@ const PartnerInquiry = () => {
     website: '',
     studentCount: '',
     interestedTier: '',
-    message: ''
+    message: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,48 +30,68 @@ const PartnerInquiry = () => {
     await submitInquiry(formData);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   const benefits = [
     {
       icon: <Users className="h-5 w-5" />,
-      title: "Streamlined Admissions",
-      description: "AI-powered application processing reduces manual work by 80%"
+      title: 'Streamlined Admissions',
+      description: 'AI-powered application processing reduces manual work by 80%',
     },
     {
       icon: <BarChart3 className="h-5 w-5" />,
-      title: "Real-time Analytics",
-      description: "Track application trends, student demographics, and conversion rates"
+      title: 'Real-time Analytics',
+      description: 'Track application trends, student demographics, and conversion rates',
     },
     {
       icon: <Shield className="h-5 w-5" />,
-      title: "Secure & Compliant",
-      description: "POPIA compliant with enterprise-grade security measures"
-    }
+      title: 'Secure & Compliant',
+      description: 'POPIA compliant with enterprise-grade security measures',
+    },
   ];
 
   const tiers = [
     {
-      name: "Basic",
-      price: "R2,500",
-      features: ["Up to 100 applications/month", "Basic analytics", "Email support", "Document verification"]
+      name: 'Basic',
+      price: 'R2,500',
+      features: [
+        'Up to 100 applications/month',
+        'Basic analytics',
+        'Email support',
+        'Document verification',
+      ],
     },
     {
-      name: "Standard",
-      price: "R5,000",
-      features: ["Up to 500 applications/month", "Advanced analytics", "Priority support", "API access", "Custom branding"],
-      popular: true
+      name: 'Standard',
+      price: 'R5,000',
+      features: [
+        'Up to 500 applications/month',
+        'Advanced analytics',
+        'Priority support',
+        'API access',
+        'Custom branding',
+      ],
+      popular: true,
     },
     {
-      name: "Premium",
-      price: "R10,000",
-      features: ["Unlimited applications", "Custom analytics", "24/7 support", "Full API access", "Custom integrations", "Dedicated account manager"]
-    }
+      name: 'Premium',
+      price: 'R10,000',
+      features: [
+        'Unlimited applications',
+        'Custom analytics',
+        '24/7 support',
+        'Full API access',
+        'Custom integrations',
+        'Dedicated account manager',
+      ],
+    },
   ];
 
   if (isSubmitted) {
@@ -90,14 +109,14 @@ const PartnerInquiry = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button 
+              <Button
                 className="w-full bg-cap-teal hover:bg-cap-teal/90"
                 onClick={() => navigate('/institutions')}
               >
                 Back to Institutions
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
                 onClick={() => navigate('/')}
               >
@@ -119,7 +138,11 @@ const PartnerInquiry = () => {
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Back Button */}
         <div className="flex items-center">
-          <Button variant="ghost" onClick={() => navigate(-1)} className="text-gray-600 hover:text-cap-teal hover:bg-cap-teal/10">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="text-gray-600 hover:text-cap-teal hover:bg-cap-teal/10"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -135,9 +158,10 @@ const PartnerInquiry = () => {
               Join Leading Educational Institutions
             </Typography>
             <Typography className="text-white/90 mb-6 max-w-2xl mx-auto">
-              Streamline your admissions process, reduce manual work by 80%, and connect with qualified students through our AI-powered platform.
+              Streamline your admissions process, reduce manual work by 80%, and connect with
+              qualified students through our AI-powered platform.
             </Typography>
-            <Button 
+            <Button
               variant="outline"
               className="border-white text-white hover:bg-white hover:text-cap-teal"
               onClick={() => navigate('/institutions')}
@@ -182,12 +206,10 @@ const PartnerInquiry = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {tiers.map((tier, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`p-4 rounded-lg border ${
-                      tier.popular 
-                        ? 'border-cap-teal bg-cap-teal/5' 
-                        : 'border-gray-200 bg-white'
+                      tier.popular ? 'border-cap-teal bg-cap-teal/5' : 'border-gray-200 bg-white'
                     }`}
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -195,9 +217,7 @@ const PartnerInquiry = () => {
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="font-semibold text-gray-800">{tier.name}</h3>
                           {tier.popular && (
-                            <Badge className="bg-cap-teal text-white text-xs">
-                              Most Popular
-                            </Badge>
+                            <Badge className="bg-cap-teal text-white text-xs">Most Popular</Badge>
                           )}
                         </div>
                         <div className="text-2xl font-bold text-cap-teal">{tier.price}/month</div>
@@ -205,7 +225,10 @@ const PartnerInquiry = () => {
                     </div>
                     <ul className="space-y-1">
                       {tier.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center gap-2 text-sm text-gray-600">
+                        <li
+                          key={featureIndex}
+                          className="flex items-center gap-2 text-sm text-gray-600"
+                        >
                           <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
                           {feature}
                         </li>
@@ -229,7 +252,9 @@ const PartnerInquiry = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Institution Name *</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Institution Name *
+                    </label>
                     <Input
                       name="institutionName"
                       value={formData.institutionName}
@@ -240,7 +265,9 @@ const PartnerInquiry = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Institution Type *</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Institution Type *
+                    </label>
                     <select
                       name="institutionType"
                       value={formData.institutionType}
@@ -259,7 +286,9 @@ const PartnerInquiry = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Contact Name *</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Contact Name *
+                    </label>
                     <Input
                       name="contactName"
                       value={formData.contactName}
@@ -270,7 +299,9 @@ const PartnerInquiry = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Contact Email *</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Contact Email *
+                    </label>
                     <Input
                       type="email"
                       name="contactEmail"
@@ -285,7 +316,9 @@ const PartnerInquiry = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Contact Phone</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Contact Phone
+                    </label>
                     <Input
                       name="contactPhone"
                       value={formData.contactPhone}
@@ -308,7 +341,9 @@ const PartnerInquiry = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Student Count</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Student Count
+                    </label>
                     <select
                       name="studentCount"
                       value={formData.studentCount}
@@ -323,7 +358,9 @@ const PartnerInquiry = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Interested Tier</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700">
+                      Interested Tier
+                    </label>
                     <select
                       name="interestedTier"
                       value={formData.interestedTier}
@@ -351,8 +388,8 @@ const PartnerInquiry = () => {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-cap-teal hover:bg-cap-teal/90"
                   disabled={isSubmitting}
                 >

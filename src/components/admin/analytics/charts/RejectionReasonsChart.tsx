@@ -1,4 +1,3 @@
-
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import type { RejectionReason } from '@/hooks/analytics/types';
 
@@ -15,11 +14,9 @@ export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
     );
   }
 
-  const formattedData = data.slice(0, 5).map(item => ({
+  const formattedData = data.slice(0, 5).map((item) => ({
     ...item,
-    reason: item.reason.length > 20 
-      ? `${item.reason.substring(0, 20)}...` 
-      : item.reason,
+    reason: item.reason.length > 20 ? `${item.reason.substring(0, 20)}...` : item.reason,
   }));
 
   return (
@@ -27,19 +24,8 @@ export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
       <BarChart data={formattedData} layout="horizontal">
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
-        <YAxis 
-          type="category" 
-          dataKey="reason" 
-          width={100}
-          fontSize={12}
-        />
-        <Tooltip 
-          formatter={(value, name, props) => [
-            value, 
-            'Count',
-            props.payload?.reason
-          ]}
-        />
+        <YAxis type="category" dataKey="reason" width={100} fontSize={12} />
+        <Tooltip formatter={(value, name, props) => [value, 'Count', props.payload?.reason]} />
         <Bar dataKey="count" fill="#ef4444" />
       </BarChart>
     </ResponsiveContainer>

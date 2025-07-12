@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -9,43 +8,50 @@ const faqs = [
   {
     q: 'How do I reset my password?',
     a: "Go to your profile settings and click 'Reset Password'. You'll receive an email with instructions to create a new password.",
-    category: 'Account'
+    category: 'Account',
   },
   {
     q: 'How do I contact support?',
     a: 'Click the Help button at the bottom right of any page, or email us directly at info@edueasy.co. We typically respond within 24 hours.',
-    category: 'Support'
+    category: 'Support',
   },
   {
     q: 'What documents do I need for applications?',
     a: 'You typically need your ID document, academic transcripts, and any certificates. Specific requirements vary by institution and program.',
-    category: 'Applications'
+    category: 'Applications',
   },
   {
     q: 'How does Thandi AI assistant work?',
     a: 'Thandi uses advanced AI to help you with application guidance, document preparation, and career advice. Simply ask questions in natural language.',
-    category: 'AI Assistant'
+    category: 'AI Assistant',
   },
   {
     q: 'Can I upgrade my plan anytime?',
     a: 'Yes, you can upgrade your plan at any time. Changes take effect immediately and you only pay the difference.',
-    category: 'Billing'
+    category: 'Billing',
   },
   {
     q: 'Is my personal information secure?',
     a: 'Absolutely. We use industry-standard encryption and security measures to protect your data. We never share your information without consent.',
-    category: 'Privacy'
-  }
+    category: 'Privacy',
+  },
 ];
 
-const categories = ['All', 'Account', 'Support', 'Applications', 'AI Assistant', 'Billing', 'Privacy'];
+const categories = [
+  'All',
+  'Account',
+  'Support',
+  'Applications',
+  'AI Assistant',
+  'Billing',
+  'Privacy',
+];
 
 export const FAQPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('All');
 
-  const filteredFaqs = selectedCategory === 'All' 
-    ? faqs 
-    : faqs.filter(faq => faq.category === selectedCategory);
+  const filteredFaqs =
+    selectedCategory === 'All' ? faqs : faqs.filter((faq) => faq.category === selectedCategory);
 
   return (
     <PageLayout
@@ -61,12 +67,13 @@ export const FAQPage: React.FC = () => {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
+                  variant={selectedCategory === category ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
-                  className={selectedCategory === category 
-                    ? "bg-cap-teal hover:bg-cap-teal/90 text-white" 
-                    : "border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
+                  className={
+                    selectedCategory === category
+                      ? 'bg-cap-teal hover:bg-cap-teal/90 text-white'
+                      : 'border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal'
                   }
                 >
                   {category}
@@ -79,7 +86,10 @@ export const FAQPage: React.FC = () => {
         {/* FAQ List */}
         <div className="space-y-4">
           {filteredFaqs.map((faq, idx) => (
-            <Card key={idx} className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+            <Card
+              key={idx}
+              className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-start gap-3 text-lg font-semibold text-gray-800">
                   <HelpCircle className="h-5 w-5 text-cap-teal mt-0.5 flex-shrink-0" />

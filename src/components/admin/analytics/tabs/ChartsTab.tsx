@@ -1,8 +1,7 @@
-
 import { ChartContainer } from '../charts/ChartContainer';
 import { DocumentTimelineChart } from '../DocumentTimelineChart';
 import { DocumentTypePerformanceChart } from '../DocumentTypePerformanceChart';
-import { DocumentAnalytics } from '@/hooks/analytics/types';
+import type { DocumentAnalytics } from '@/hooks/analytics/types';
 
 interface ChartsTabProps {
   analytics: DocumentAnalytics;
@@ -17,7 +16,7 @@ export const ChartsTab = ({ analytics }: ChartsTabProps) => {
       >
         <DocumentTimelineChart data={analytics.documentsByDate} />
       </ChartContainer>
-      
+
       <ChartContainer
         title="Document Type Performance"
         description="Approval and rejection rates by document type"

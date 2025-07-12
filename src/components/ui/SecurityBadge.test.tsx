@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { SecurityBadge, SecurityBadgeType, badgeConfig } from './SecurityBadge';
+import { SecurityBadge, badgeConfig, type SecurityBadgeType } from './SecurityBadge';
 import { TooltipProvider } from './tooltip';
 
 describe('SecurityBadge', () => {
@@ -10,7 +10,7 @@ describe('SecurityBadge', () => {
       render(
         <TooltipProvider>
           <SecurityBadge type={type} />
-        </TooltipProvider>
+        </TooltipProvider>,
       );
       const { label } = badgeConfig[type];
       expect(screen.getByText(label)).toBeInTheDocument();

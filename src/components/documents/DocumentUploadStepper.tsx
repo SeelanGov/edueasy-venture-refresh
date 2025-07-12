@@ -1,4 +1,3 @@
-
 import { ArrowRight, CheckCircle, CircleDashed } from 'lucide-react';
 
 export type Step = {

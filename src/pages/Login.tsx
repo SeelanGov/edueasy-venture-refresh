@@ -1,4 +1,3 @@
-
 import { Logo } from '@/components/Logo';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -196,7 +195,10 @@ const Login = () => {
                 <div className="text-center mt-4">
                   <p className="text-sm text-gray-600">
                     Don't have an account?{' '}
-                    <Link to="/register" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
+                    <Link
+                      to="/register"
+                      className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
+                    >
                       Sign up
                     </Link>
                   </p>
@@ -207,7 +209,10 @@ const Login = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
+          <Link
+            to="/"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
+          >
             ← Back to Home
           </Link>
         </div>

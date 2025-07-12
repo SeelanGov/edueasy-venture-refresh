@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardContent,
@@ -9,7 +8,8 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sponsorship, SponsorshipLevel, formatSponsorshipLevel } from '@/types/RevenueTypes';
+import type { Sponsorship } from '@/types/RevenueTypes';
+import { SponsorshipLevel, formatSponsorshipLevel } from '@/types/RevenueTypes';
 import { ExternalLink, Building, Calendar } from 'lucide-react';
 import { formatCurrency } from '@/types/SubscriptionTypes';
 
@@ -107,7 +107,9 @@ export function SponsorshipCard({
             variant="outline"
             size="sm"
             className="flex-1"
-            onClick={() => sponsorship.website_url && window.open(sponsorship.website_url, '_blank')}
+            onClick={() =>
+              sponsorship.website_url && window.open(sponsorship.website_url, '_blank')
+            }
           >
             Visit Website
             <ExternalLink className="ml-2 h-4 w-4" />

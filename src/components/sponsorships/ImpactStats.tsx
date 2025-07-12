@@ -1,5 +1,4 @@
-
-import { StatisticsGrid } from "@/components/home/StatisticsGrid";
+import { StatisticsGrid } from '@/components/home/StatisticsGrid';
 
 export function ImpactStats() {
   return (

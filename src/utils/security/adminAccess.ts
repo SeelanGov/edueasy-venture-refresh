@@ -34,7 +34,7 @@ export const verifyAdminAccess = async (userId: string | undefined): Promise<boo
             ? (error as { message: string }).message
             : String(error),
       },
-      false
+      false,
     );
 
     return false;

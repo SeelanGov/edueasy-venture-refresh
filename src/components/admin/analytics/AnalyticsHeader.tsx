@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Download, RefreshCw, Keyboard } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -20,7 +19,7 @@ export const AnalyticsHeader = ({
   return (
     <div className="space-y-4">
       <AnalyticsBreadcrumb />
-      
+
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Document Analytics Dashboard</h1>
@@ -28,7 +27,7 @@ export const AnalyticsHeader = ({
             Monitor document verification performance and trends
           </p>
         </div>
-        
+
         <div className="flex items-center gap-3 mt-4 lg:mt-0">
           <TooltipProvider>
             <Tooltip>

@@ -1,5 +1,4 @@
-
-import React from "react";
+import React from 'react';
 const NotesTimeline: React.FC<{ notes: any[] }> = ({ notes }) => (
   <div>
     <h3 className="font-semibold mb-2">Notes</h3>
@@ -11,7 +10,7 @@ const NotesTimeline: React.FC<{ notes: any[] }> = ({ notes }) => (
           <li key={i} className="bg-gray-50 border rounded p-2">
             <div className="text-sm">{note.note}</div>
             <div className="text-xs text-gray-400">
-              {note.created_at?.slice(0, 16)} by {note.created_by || "unknown"}
+              {note.created_at?.slice(0, 16)} by {note.created_by || 'unknown'}
             </div>
           </li>
         ))}

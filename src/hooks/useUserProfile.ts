@@ -1,14 +1,13 @@
-
 import { useState, useEffect } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
-import { UserProfile } from '@/types/UserProfile';
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import type { UserProfile } from '@/types/UserProfile';
 
 export const useUserProfile = (
   userId: string | undefined,
-  form: UseFormReturn<ApplicationFormValues>
+  form: UseFormReturn<ApplicationFormValues>,
 ) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 

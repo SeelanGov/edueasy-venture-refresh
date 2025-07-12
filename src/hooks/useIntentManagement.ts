@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Json } from '@/integrations/supabase/types';
 
 export interface Intent {
   id: string;
@@ -92,7 +91,7 @@ export const useIntentManagement = () => {
       description?: string;
       response_template?: string;
       sample_queries?: string[];
-    }
+    },
   ) => {
     try {
       const { error } = await supabase

@@ -1,4 +1,4 @@
-import { VerificationResult } from '@/hooks/useDocumentVerification';
+import type { VerificationResult } from '@/hooks/useDocumentVerification';
 
 export type DocumentType = 'idDocument' | 'proofOfResidence' | 'grade11Results' | 'grade12Results';
 

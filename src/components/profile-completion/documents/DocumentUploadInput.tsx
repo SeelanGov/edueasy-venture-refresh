@@ -1,4 +1,3 @@
-
 import { DocumentPreview } from '@/components/documents/DocumentPreview';
 import { DocumentUploadStepper } from '@/components/documents/DocumentUploadStepper';
 import { VerificationResultDisplay } from '@/components/documents/VerificationResultDisplay';
@@ -16,7 +15,7 @@ import { Progress } from '@/components/ui/progress';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertCircle, CheckCircle, RefreshCw, Upload } from 'lucide-react';
-import { DocumentUploadInputProps } from './types';
+import type { DocumentUploadInputProps } from './types';
 
 export const DocumentUploadInput = ({
   documentType,

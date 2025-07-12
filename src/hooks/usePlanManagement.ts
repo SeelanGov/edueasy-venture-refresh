@@ -1,8 +1,7 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
+import type { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
 import logger from '@/utils/logger';
 
 export const usePlanManagement = () => {
@@ -76,7 +75,7 @@ export const usePlanManagement = () => {
 
       if (userPlan) {
         // Map to our subscription structure
-        const tier = mockTiers.find(t => t.name.toLowerCase() === userPlan.plan?.toLowerCase());
+        const tier = mockTiers.find((t) => t.name.toLowerCase() === userPlan.plan?.toLowerCase());
         if (tier) {
           return {
             id: userPlan.id,
@@ -110,19 +109,17 @@ export const usePlanManagement = () => {
   const upgradePlan = async (userId: string, tierName: string): Promise<boolean> => {
     setLoading(true);
     try {
-      const tier = mockTiers.find(t => t.name === tierName);
+      const tier = mockTiers.find((t) => t.name === tierName);
       if (!tier) {
         throw new Error('Plan not found');
       }
 
       // Update or insert into user_plans table
-      const { error } = await supabase
-        .from('user_plans')
-        .upsert({
-          user_id: userId,
-          plan: tierName,
-          active: true,
-        });
+      const { error } = await supabase.from('user_plans').upsert({
+        user_id: userId,
+        plan: tierName,
+        active: true,
+      });
 
       if (error) {
         throw error;
@@ -149,13 +146,11 @@ export const usePlanManagement = () => {
 
   const assignStarterPlan = async (userId: string): Promise<boolean> => {
     try {
-      const { error } = await supabase
-        .from('user_plans')
-        .upsert({
-          user_id: userId,
-          plan: 'Starter',
-          active: true,
-        });
+      const { error } = await supabase.from('user_plans').upsert({
+        user_id: userId,
+        plan: 'Starter',
+        active: true,
+      });
 
       if (error) {
         logger.error('Failed to assign starter plan:', error);
@@ -170,7 +165,10 @@ export const usePlanManagement = () => {
     }
   };
 
-  const checkPlanLimits = async (userId: string, action: 'application' | 'document'): Promise<boolean> => {
+  const checkPlanLimits = async (
+    userId: string,
+    action: 'application' | 'document',
+  ): Promise<boolean> => {
     try {
       const userPlan = await getUserPlan(userId);
       if (!userPlan?.tier) {

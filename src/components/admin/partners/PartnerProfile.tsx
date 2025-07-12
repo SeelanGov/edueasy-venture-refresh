@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Building2, Mail, Phone, Globe, Calendar, CreditCard, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Globe, MessageSquare } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Partner {
@@ -50,7 +50,7 @@ export const PartnerProfile = () => {
 
   const fetchPartnerData = async () => {
     if (!id) return;
-    
+
     try {
       // Fetch partner details
       const { data: partnerData, error: partnerError } = await supabase
@@ -60,13 +60,13 @@ export const PartnerProfile = () => {
         .single();
 
       if (partnerError) throw partnerError;
-      
+
       // Transform data to match Partner interface
       const transformedPartner = {
         ...partnerData,
-        contact_phone: partnerData.phone // Map phone to contact_phone
+        contact_phone: partnerData.phone, // Map phone to contact_phone
       };
-      
+
       setPartner(transformedPartner);
 
       // Fetch payment history
@@ -87,16 +87,13 @@ export const PartnerProfile = () => {
 
   const updatePartnerTier = async (newTier: 'basic' | 'standard' | 'premium') => {
     if (!id) return;
-    
+
     try {
-      const { error } = await supabase
-        .from('partners')
-        .update({ tier: newTier })
-        .eq('id', id);
+      const { error } = await supabase.from('partners').update({ tier: newTier }).eq('id', id);
 
       if (error) throw error;
-      
-      setPartner(prev => prev ? { ...prev, tier: newTier } : null);
+
+      setPartner((prev) => (prev ? { ...prev, tier: newTier } : null));
     } catch (error) {
       console.error('Error updating partner tier:', error);
     }
@@ -122,9 +119,15 @@ export const PartnerProfile = () => {
           <h1 className="text-2xl font-bold text-gray-900">{partner.name}</h1>
           <p className="text-gray-600 capitalize">{partner.type} Partner</p>
         </div>
-        <Badge className={partner.tier === 'premium' ? 'bg-purple-100 text-purple-800' : 
-                          partner.tier === 'standard' ? 'bg-blue-100 text-blue-800' : 
-                          'bg-gray-100 text-gray-800'}>
+        <Badge
+          className={
+            partner.tier === 'premium'
+              ? 'bg-purple-100 text-purple-800'
+              : partner.tier === 'standard'
+                ? 'bg-blue-100 text-blue-800'
+                : 'bg-gray-100 text-gray-800'
+          }
+        >
           {partner.tier}
         </Badge>
       </div>
@@ -155,7 +158,10 @@ export const PartnerProfile = () => {
                 {partner.contact_email && (
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-gray-400" />
-                    <a href={`mailto:${partner.contact_email}`} className="text-blue-600 hover:underline">
+                    <a
+                      href={`mailto:${partner.contact_email}`}
+                      className="text-blue-600 hover:underline"
+                    >
                       {partner.contact_email}
                     </a>
                   </div>
@@ -163,7 +169,10 @@ export const PartnerProfile = () => {
                 {(partner.contact_phone || partner.phone) && (
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-gray-400" />
-                    <a href={`tel:${partner.contact_phone || partner.phone}`} className="text-blue-600 hover:underline">
+                    <a
+                      href={`tel:${partner.contact_phone || partner.phone}`}
+                      className="text-blue-600 hover:underline"
+                    >
                       {partner.contact_phone || partner.phone}
                     </a>
                   </div>
@@ -171,7 +180,12 @@ export const PartnerProfile = () => {
                 {partner.website && (
                   <div className="flex items-center gap-2">
                     <Globe className="h-4 w-4 text-gray-400" />
-                    <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    <a
+                      href={partner.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
                       {partner.website}
                     </a>
                   </div>
@@ -193,9 +207,15 @@ export const PartnerProfile = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Status</label>
-                  <Badge className={partner.status === 'active' ? 'bg-green-100 text-green-800' : 
-                                   partner.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                   'bg-red-100 text-red-800'}>
+                  <Badge
+                    className={
+                      partner.status === 'active'
+                        ? 'bg-green-100 text-green-800'
+                        : partner.status === 'pending'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-red-100 text-red-800'
+                    }
+                  >
                     {partner.status}
                   </Badge>
                 </div>
@@ -203,8 +223,10 @@ export const PartnerProfile = () => {
                   <div>
                     <label className="text-sm font-medium text-gray-500">Contract Period</label>
                     <p>
-                      {new Date(partner.contract_start_date).toLocaleDateString()} - 
-                      {partner.contract_end_date ? new Date(partner.contract_end_date).toLocaleDateString() : 'Ongoing'}
+                      {new Date(partner.contract_start_date).toLocaleDateString()} -
+                      {partner.contract_end_date
+                        ? new Date(partner.contract_end_date).toLocaleDateString()
+                        : 'Ongoing'}
                     </p>
                   </div>
                 )}
@@ -247,11 +269,15 @@ export const PartnerProfile = () => {
               ) : (
                 <div className="space-y-4">
                   {payments.map((payment) => (
-                    <div key={payment.id} className="flex justify-between items-center p-4 border rounded-lg">
+                    <div
+                      key={payment.id}
+                      className="flex justify-between items-center p-4 border rounded-lg"
+                    >
                       <div>
                         <p className="font-medium">R{payment.amount.toLocaleString()}</p>
                         <p className="text-sm text-gray-500">
-                          {payment.invoice_number} • {new Date(payment.payment_date).toLocaleDateString()}
+                          {payment.invoice_number} •{' '}
+                          {new Date(payment.payment_date).toLocaleDateString()}
                         </p>
                         {payment.due_date && (
                           <p className="text-sm text-gray-500">
@@ -259,9 +285,15 @@ export const PartnerProfile = () => {
                           </p>
                         )}
                       </div>
-                      <Badge className={payment.status === 'paid' ? 'bg-green-100 text-green-800' : 
-                                       payment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                       'bg-red-100 text-red-800'}>
+                      <Badge
+                        className={
+                          payment.status === 'paid'
+                            ? 'bg-green-100 text-green-800'
+                            : payment.status === 'pending'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-red-100 text-red-800'
+                        }
+                      >
                         {payment.status}
                       </Badge>
                     </div>
@@ -282,16 +314,20 @@ export const PartnerProfile = () => {
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Integration Status</label>
-                  <Badge className={partner.integration_status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                   partner.integration_status === 'in_progress' ? 'bg-blue-100 text-blue-800' : 
-                                   'bg-gray-100 text-gray-800'}>
+                  <Badge
+                    className={
+                      partner.integration_status === 'completed'
+                        ? 'bg-green-100 text-green-800'
+                        : partner.integration_status === 'in_progress'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-gray-100 text-gray-800'
+                    }
+                  >
                     {partner.integration_status || 'Not Started'}
                   </Badge>
                 </div>
                 <div className="pt-4">
-                  <Button variant="outline">
-                    Generate API Key
-                  </Button>
+                  <Button variant="outline">Generate API Key</Button>
                 </div>
               </div>
             </CardContent>

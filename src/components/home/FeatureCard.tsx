@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 
 interface FeatureCardProps {

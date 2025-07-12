@@ -1,9 +1,8 @@
-
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { RefreshCw } from 'lucide-react';
 import { PolicyAnalysis } from './PolicyAnalysis';
-import { RLSPolicyAnalysis } from '@/utils/security/types';
+import type { RLSPolicyAnalysis } from '@/utils/security/types';
 
 interface PolicyAnalysisTabProps {
   policyAnalysis: RLSPolicyAnalysis[];

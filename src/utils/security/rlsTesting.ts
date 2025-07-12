@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logSecurityEvent } from './logging';
-import { RLSPolicyTestResult, RLSTestResult, RLSPolicyAnalysis } from './types';
+import type { RLSPolicyTestResult, RLSTestResult, RLSPolicyAnalysis } from './types';
 
 /**
  * Utility for testing and validating Row Level Security (RLS) policies
@@ -61,7 +61,7 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
 export const testRLSPoliciesWithRole = async (
   userId: string | undefined,
   role: string = 'user',
-  scenario?: string
+  scenario?: string,
 ): Promise<RLSPolicyTestResult> => {
   if (!userId) {
     toast.error('User must be authenticated to test RLS policies');
@@ -92,7 +92,7 @@ export const testRLSPoliciesWithRole = async (
       userId,
       'TEST_RLS_POLICIES_WITH_ROLE',
       { role, scenario, results_count: transformedResults.length },
-      true
+      true,
     );
 
     return {
@@ -110,7 +110,7 @@ export const testRLSPoliciesWithRole = async (
       userId,
       'TEST_RLS_POLICIES_WITH_ROLE',
       { error: message, role, scenario },
-      false
+      false,
     );
 
     return {
@@ -131,7 +131,7 @@ export const testRLSPoliciesWithRole = async (
  * Analyze RLS policy coverage and get recommendations
  */
 export const analyzeRLSPolicies = async (
-  userId: string | undefined
+  userId: string | undefined,
 ): Promise<RLSPolicyAnalysis[]> => {
   if (!userId) {
     toast.error('User must be authenticated to analyze RLS policies');

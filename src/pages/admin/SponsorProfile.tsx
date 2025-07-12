@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSponsor } from '@/hooks/useSponsor';
@@ -26,11 +25,7 @@ const SponsorProfile = () => {
     );
   }
   if (!sponsor) {
-    return (
-      <div className="p-8 text-center text-gray-400">
-        Sponsor not found.
-      </div>
-    );
+    return <div className="p-8 text-center text-gray-400">Sponsor not found.</div>;
   }
 
   return (
@@ -38,15 +33,32 @@ const SponsorProfile = () => {
       <h1 className="text-2xl sm:text-3xl font-bold mb-4">{sponsor.name}</h1>
       <section className="mb-6">
         <div className="flex flex-col gap-1 text-gray-600">
-          <span><strong>Status:</strong> {sponsor.status}</span>
-          <span><strong>Email:</strong> {sponsor.email}</span>
-          <span><strong>Phone:</strong> {sponsor.phone || '-'}</span>
-          <span><strong>Contact Person:</strong> {sponsor.contact_person || '-'}</span>
           <span>
-            <strong>Website:</strong>{" "}
-            {sponsor.website
-              ? <a href={sponsor.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{sponsor.website}</a>
-              : "-"}
+            <strong>Status:</strong> {sponsor.status}
+          </span>
+          <span>
+            <strong>Email:</strong> {sponsor.email}
+          </span>
+          <span>
+            <strong>Phone:</strong> {sponsor.phone || '-'}
+          </span>
+          <span>
+            <strong>Contact Person:</strong> {sponsor.contact_person || '-'}
+          </span>
+          <span>
+            <strong>Website:</strong>{' '}
+            {sponsor.website ? (
+              <a
+                href={sponsor.website}
+                className="text-blue-600 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {sponsor.website}
+              </a>
+            ) : (
+              '-'
+            )}
           </span>
         </div>
       </section>

@@ -34,7 +34,7 @@ export const useTrainingEntries = () => {
           `
           *,
           intents:intent_id (intent_name)
-        `
+        `,
         )
         .in('message_id', messageIds);
 

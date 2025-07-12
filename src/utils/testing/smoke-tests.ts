@@ -1,6 +1,3 @@
-
-import { expect } from '@jest/globals';
-
 // Smoke test utilities for design system validation
 export interface SmokeTestCase {
   name: string;
@@ -43,31 +40,34 @@ export const CRITICAL_USER_FLOWS: SmokeTestCase[] = [
   },
 ];
 
-export const validateDesignSystemCompliance = (componentHtml: string): {
+export const validateDesignSystemCompliance = (
+  componentHtml: string,
+): {
   passed: boolean;
   violations: string[];
 } => {
   const violations: string[] = [];
-  
+
   // Check for hardcoded colors
-  const hardcodedColorRegex = /bg-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-\d+/g;
+  const hardcodedColorRegex =
+    /bg-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-\d+/g;
   const hardcodedColors = componentHtml.match(hardcodedColorRegex);
   if (hardcodedColors) {
     violations.push(`Found hardcoded colors: ${hardcodedColors.join(', ')}`);
   }
-  
+
   // Check for raw buttons
   const rawButtonRegex = /<button(?![^>]*Button)/g;
   const rawButtons = componentHtml.match(rawButtonRegex);
   if (rawButtons) {
     violations.push(`Found ${rawButtons.length} raw <button> elements`);
   }
-  
+
   // Check for missing design system components
   if (componentHtml.includes('className="border') && !componentHtml.includes('<Card')) {
     violations.push('Found manual card styling instead of Card component');
   }
-  
+
   return {
     passed: violations.length === 0,
     violations,
@@ -77,18 +77,18 @@ export const validateDesignSystemCompliance = (componentHtml: string): {
 export const runSmokeTest = async (testCase: SmokeTestCase): Promise<boolean> => {
   try {
     console.log(`Running smoke test: ${testCase.name}`);
-    
+
     // Mock implementation - in real scenario this would render the component
     // and verify all expected elements are present
     const mockComponentHtml = `<div data-testid="${testCase.component.toLowerCase()}">Mock component</div>`;
-    
+
     const compliance = validateDesignSystemCompliance(mockComponentHtml);
-    
+
     if (!compliance.passed) {
       console.error(`Smoke test failed for ${testCase.name}:`, compliance.violations);
       return false;
     }
-    
+
     console.log(`✅ Smoke test passed: ${testCase.name}`);
     return true;
   } catch (error) {

@@ -1,13 +1,4 @@
-
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface StatusData {
   status: string;
@@ -33,24 +24,19 @@ export const StatusDistributionChart = ({ data }: StatusDistributionChartProps) 
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="status" 
+          <XAxis
+            dataKey="status"
             tick={{ fontSize: 12 }}
             angle={-45}
             textAnchor="end"
             height={80}
           />
           <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip 
+          <Tooltip
             formatter={(value, label) => [value, label]}
             labelFormatter={(label) => `Status: ${label}`}
           />
-          <Bar 
-            dataKey="count" 
-            fill="#4f46e5" 
-            radius={[4, 4, 0, 0]}
-            name="Count"
-          />
+          <Bar dataKey="count" fill="#4f46e5" radius={[4, 4, 0, 0]} name="Count" />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Building2, Users, Settings, Mail, BarChart3 } from 'lucide-react';
+import { Building2, Settings, Mail, BarChart3 } from 'lucide-react';
 
 export const PartnerCRMLayout = () => {
   const navigate = useNavigate();
@@ -14,26 +13,26 @@ export const PartnerCRMLayout = () => {
       label: 'Partners',
       icon: <Building2 className="h-4 w-4" />,
       path: '/admin/partners',
-      active: location.pathname === '/admin/partners'
+      active: location.pathname === '/admin/partners',
     },
     {
       label: 'Inquiries',
       icon: <Mail className="h-4 w-4" />,
       path: '/admin/partners/inquiries',
-      active: location.pathname === '/admin/partners/inquiries'
+      active: location.pathname === '/admin/partners/inquiries',
     },
     {
       label: 'Tiers',
       icon: <Settings className="h-4 w-4" />,
       path: '/admin/partners/tiers',
-      active: location.pathname === '/admin/partners/tiers'
+      active: location.pathname === '/admin/partners/tiers',
     },
     {
       label: 'Analytics',
       icon: <BarChart3 className="h-4 w-4" />,
       path: '/admin/partners/analytics',
-      active: location.pathname === '/admin/partners/analytics'
-    }
+      active: location.pathname === '/admin/partners/analytics',
+    },
   ];
 
   return (
@@ -59,7 +58,7 @@ export const PartnerCRMLayout = () => {
                   {navItems.map((item) => (
                     <Button
                       key={item.path}
-                      variant={item.active ? "default" : "ghost"}
+                      variant={item.active ? 'default' : 'ghost'}
                       className="w-full justify-start"
                       onClick={() => navigate(item.path)}
                     >

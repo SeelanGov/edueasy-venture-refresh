@@ -1,8 +1,8 @@
-import React from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Building2, Users, BookOpen, BarChart3 } from "lucide-react";
+import React from 'react';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Building2, Users, BookOpen, BarChart3 } from 'lucide-react';
 
 const InstitutionDashboard = () => {
   return (
@@ -21,7 +21,8 @@ const InstitutionDashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              This dashboard is currently under development. Full institution management features will be available soon.
+              This dashboard is currently under development. Full institution management features
+              will be available soon.
             </p>
           </CardContent>
         </Card>
@@ -38,7 +39,7 @@ const InstitutionDashboard = () => {
               <p className="text-xs text-muted-foreground">Coming soon</p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Applications</CardTitle>
@@ -49,7 +50,7 @@ const InstitutionDashboard = () => {
               <p className="text-xs text-muted-foreground">Coming soon</p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Analytics</CardTitle>
@@ -80,9 +81,7 @@ const InstitutionDashboard = () => {
                 <li>Set up admission criteria</li>
               </ul>
             </div>
-            <Button disabled>
-              Complete Setup (Coming Soon)
-            </Button>
+            <Button disabled>Complete Setup (Coming Soon)</Button>
           </CardContent>
         </Card>
       </div>

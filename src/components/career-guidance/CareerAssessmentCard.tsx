@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardContent,
@@ -9,7 +8,8 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CareerGuidance, AssessmentType } from '@/types/RevenueTypes';
+import type { CareerGuidance } from '@/types/RevenueTypes';
+import { AssessmentType } from '@/types/RevenueTypes';
 import { formatDistanceToNow } from 'date-fns';
 import { FileText, Star, Calendar } from 'lucide-react';
 

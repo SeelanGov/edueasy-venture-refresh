@@ -1,6 +1,5 @@
-
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export type SponsorPayment = {
   id: string;
@@ -20,14 +19,14 @@ export type SponsorPayment = {
 
 export const useSponsorPayments = (sponsorId: string | undefined) => {
   return useQuery({
-    queryKey: ["sponsorPayments", sponsorId],
+    queryKey: ['sponsorPayments', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
       const { data, error } = await supabase
-        .from("partner_payments")
-        .select("*")
-        .eq("partner_id", sponsorId)
-        .order("payment_date", { ascending: false });
+        .from('partner_payments')
+        .select('*')
+        .eq('partner_id', sponsorId)
+        .order('payment_date', { ascending: false });
       if (error) throw error;
       return (data as SponsorPayment[]) || [];
     },

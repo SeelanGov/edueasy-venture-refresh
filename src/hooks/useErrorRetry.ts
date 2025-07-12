@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -18,10 +17,10 @@ interface UseErrorRetryReturn {
 
 export const useErrorRetry = (
   operation: () => Promise<void>,
-  options: RetryOptions = {}
+  options: RetryOptions = {},
 ): UseErrorRetryReturn => {
   const { maxRetries = 3, delay = 1000, backoff = true } = options;
-  
+
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -36,13 +35,13 @@ export const useErrorRetry = (
     }
 
     setIsRetrying(true);
-    
+
     try {
       const retryDelay = backoff ? delay * Math.pow(2, retryCount) : delay;
-      await new Promise(resolve => setTimeout(resolve, retryDelay));
-      
+      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+
       await operation();
-      
+
       // Reset retry count on success
       setRetryCount(0);
       toast({
@@ -52,14 +51,14 @@ export const useErrorRetry = (
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       const errorDetails = error instanceof Error ? error.stack : String(error);
-      
-      setRetryCount(prev => prev + 1);
+
+      setRetryCount((prev) => prev + 1);
       toast({
         title: `Retry failed (${retryCount + 1}/${maxRetries})`,
         description: errorMessage || 'An error occurred during retry',
         variant: 'destructive',
       });
-      
+
       console.error('Retry failed:', errorDetails || errorMessage);
     } finally {
       setIsRetrying(false);

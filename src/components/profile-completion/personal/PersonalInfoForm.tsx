@@ -1,4 +1,3 @@
-
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { GenderSelector } from './GenderSelector';
-import { PersonalInfoFormValues } from './types';
+import type { PersonalInfoFormValues } from './types';
 
 // South African ID validation
 const validateSAID = (id: string): boolean => {

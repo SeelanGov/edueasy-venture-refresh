@@ -1,7 +1,6 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { logSecurityEvent } from "@/utils/security/logging";
+import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { logSecurityEvent } from '@/utils/security/logging';
 
 export interface AuditLogEntry {
   id: string;
@@ -17,7 +16,7 @@ export interface AuditLogEntry {
 
 export interface AdminAction {
   action: string;
-  target_type: "document" | "user" | "system";
+  target_type: 'document' | 'user' | 'system';
   target_id: string;
   details: Record<string, any>;
   reason?: string;
@@ -30,15 +29,17 @@ export function useAuditLogging() {
   // Log admin action with enhanced tracking
   const logAdminAction = async (adminAction: AdminAction) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("User not authenticated");
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
 
       // Create detailed audit entry
       const auditEntry = {
         message: `Admin action: ${adminAction.action} on ${adminAction.target_type}`,
-        category: "ADMIN_ACTION",
-        severity: "INFO",
-        component: "AdminPanel",
+        category: 'ADMIN_ACTION',
+        severity: 'INFO',
+        component: 'AdminPanel',
         action: adminAction.action,
         user_id: user.id,
         details: {
@@ -47,28 +48,21 @@ export function useAuditLogging() {
           admin_id: user.id,
           timestamp: new Date().toISOString(),
           reason: adminAction.reason,
-          ...adminAction.details
-        }
+          ...adminAction.details,
+        },
       };
 
       // Insert into system_error_logs table for audit trail
-      const { error } = await supabase
-        .from("system_error_logs")
-        .insert(auditEntry);
+      const { error } = await supabase.from('system_error_logs').insert(auditEntry);
 
       if (error) throw error;
 
       // Also log as security event
-      await logSecurityEvent(
-        user.id,
-        adminAction.action,
-        auditEntry.details,
-        true
-      );
+      await logSecurityEvent(user.id, adminAction.action, auditEntry.details, true);
 
-      console.log("Admin action logged:", adminAction);
+      console.log('Admin action logged:', adminAction);
     } catch (error) {
-      console.error("Failed to log admin action:", error);
+      console.error('Failed to log admin action:', error);
       throw error;
     }
   };
@@ -78,13 +72,13 @@ export function useAuditLogging() {
     setLoading(true);
     try {
       let query = supabase
-        .from("system_error_logs")
-        .select("*")
-        .eq("category", "ADMIN_ACTION")
-        .order("occurred_at", { ascending: false });
+        .from('system_error_logs')
+        .select('*')
+        .eq('category', 'ADMIN_ACTION')
+        .order('occurred_at', { ascending: false });
 
       if (targetId && targetType) {
-        query = query.contains("details", { target_id: targetId, target_type: targetType });
+        query = query.contains('details', { target_id: targetId, target_type: targetType });
       }
 
       const { data, error } = await query.limit(100);
@@ -92,7 +86,7 @@ export function useAuditLogging() {
 
       setAuditLogs(data as AuditLogEntry[]);
     } catch (error) {
-      console.error("Failed to fetch audit logs:", error);
+      console.error('Failed to fetch audit logs:', error);
     } finally {
       setLoading(false);
     }
@@ -103,16 +97,16 @@ export function useAuditLogging() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from("system_error_logs")
-        .select("*")
-        .eq("category", "ADMIN_ACTION")
-        .order("occurred_at", { ascending: false })
+        .from('system_error_logs')
+        .select('*')
+        .eq('category', 'ADMIN_ACTION')
+        .order('occurred_at', { ascending: false })
         .limit(limit);
 
       if (error) throw error;
       setAuditLogs(data as AuditLogEntry[]);
     } catch (error) {
-      console.error("Failed to fetch recent activity:", error);
+      console.error('Failed to fetch recent activity:', error);
     } finally {
       setLoading(false);
     }
@@ -123,6 +117,6 @@ export function useAuditLogging() {
     loading,
     logAdminAction,
     fetchAuditLogs,
-    fetchRecentActivity
+    fetchRecentActivity,
   };
 }

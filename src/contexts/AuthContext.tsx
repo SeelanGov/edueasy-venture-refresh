@@ -1,6 +1,5 @@
-
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import React, { createContext, useEffect, useState } from 'react';
+import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface AuthContextType {
@@ -10,7 +9,12 @@ export interface AuthContextType {
   profileStatus: string | null;
   loading: boolean;
   signOut: () => Promise<void>;
-  signUp: (email: string, password: string, fullName?: string, idNumber?: string) => Promise<{ error?: any }>;
+  signUp: (
+    email: string,
+    password: string,
+    fullName?: string,
+    idNumber?: string,
+  ) => Promise<{ error?: any }>;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error?: any }>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
@@ -32,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .select('user_type, id_verified, profile_status')
         .eq('id', userId)
         .single();
-      
+
       setUserType(data?.user_type || 'student');
       setIsVerified(data?.id_verified || false);
       setProfileStatus(data?.profile_status || null);
@@ -87,9 +91,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       options: {
         data: {
           full_name: fullName,
-          id_number: idNumber
-        }
-      }
+          id_number: idNumber,
+        },
+      },
     });
     return { error };
   };

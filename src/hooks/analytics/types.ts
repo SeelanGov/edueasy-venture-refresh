@@ -1,4 +1,3 @@
-
 export interface AnalyticsFilters {
   startDate: Date | null;
   endDate: Date | null;

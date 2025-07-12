@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -31,7 +30,7 @@ export const useInstitutions = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const { data, error: fetchError } = await supabase
           .from('institutions')
           .select('*')
@@ -39,9 +38,9 @@ export const useInstitutions = () => {
           .order('name');
 
         if (fetchError) throw fetchError;
-        
+
         // Type assertion since we know the structure matches our interface
-        setInstitutions(data as Institution[] || []);
+        setInstitutions((data as Institution[]) || []);
       } catch (err) {
         console.error('Error fetching institutions:', err);
         setError('Failed to load institutions');

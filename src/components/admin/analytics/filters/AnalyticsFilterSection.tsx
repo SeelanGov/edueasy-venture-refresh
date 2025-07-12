@@ -1,5 +1,4 @@
-
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Label } from '@/components/ui/label';
 
 interface AnalyticsFilterSectionProps {
@@ -8,10 +7,10 @@ interface AnalyticsFilterSectionProps {
   className?: string;
 }
 
-export const AnalyticsFilterSection = ({ 
-  label, 
-  children, 
-  className = "space-y-2" 
+export const AnalyticsFilterSection = ({
+  label,
+  children,
+  className = 'space-y-2',
 }: AnalyticsFilterSectionProps) => {
   return (
     <div className={className}>

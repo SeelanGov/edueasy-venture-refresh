@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -72,8 +70,8 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           <details className="text-sm">
             <summary className="cursor-pointer font-medium">Error Details</summary>
             <pre className="mt-2 whitespace-pre-wrap text-xs">
-              {typeof error.details === 'string' 
-                ? error.details 
+              {typeof error.details === 'string'
+                ? error.details
                 : JSON.stringify(error.details, null, 2)}
             </pre>
           </details>
@@ -93,7 +91,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
       </CardHeader>
       <CardContent>
         {renderErrorDetails()}
-        
+
         <div className="flex gap-2 mt-4">
           {onRetry && (
             <Button onClick={onRetry} size="sm" variant="outline">

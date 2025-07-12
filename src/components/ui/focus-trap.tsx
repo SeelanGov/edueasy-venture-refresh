@@ -15,7 +15,7 @@ export function FocusTrap({ children, active = true, className }: FocusTrapProps
     if (!active || !containerRef.current) return;
 
     const elements = containerRef.current.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     setFocusableElements(Array.from(elements));
@@ -44,7 +44,7 @@ export function FocusTrap({ children, active = true, className }: FocusTrapProps
         }
       }
     },
-    [active, focusableElements]
+    [active, focusableElements],
   );
 
   // Focus the first element when trap becomes active

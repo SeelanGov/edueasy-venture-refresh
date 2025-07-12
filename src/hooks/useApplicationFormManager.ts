@@ -1,9 +1,7 @@
-
-import { useState, useCallback } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
+import type { ApplicationFormValues } from '@/types/ApplicationTypes';
 import { useAuth } from '@/hooks/useAuth';
 import { useNetwork } from '@/hooks/useNetwork';
 import { useForm } from 'react-hook-form';

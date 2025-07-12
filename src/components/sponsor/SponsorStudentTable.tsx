@@ -1,6 +1,6 @@
-
-import React from "react";
-import { SponsorAllocation } from "@/types/SponsorTypes";
+import { Button } from '@/components/ui/button';
+import type { SponsorAllocation } from '@/types/SponsorTypes';
+import React from 'react';
 
 interface SponsorStudentTableProps {
   allocations: SponsorAllocation[];
@@ -37,19 +37,41 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
           allocations.map((alloc) => (
             <tr key={alloc.id} className="border-t">
               <td className="px-3 py-2">{alloc.student_id}</td>
-              <td className="px-3 py-2">{alloc.allocated_on ? new Date(alloc.allocated_on).toLocaleDateString() : "-"}</td>
-              <td className="px-3 py-2">{alloc.expires_on ? new Date(alloc.expires_on).toLocaleDateString() : "-"}</td>
               <td className="px-3 py-2">
-                <span className={`px-2 py-1 rounded text-xs ${alloc.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-800"}`}>
+                {alloc.allocated_on ? new Date(alloc.allocated_on).toLocaleDateString() : '-'}
+              </td>
+              <td className="px-3 py-2">
+                {alloc.expires_on ? new Date(alloc.expires_on).toLocaleDateString() : '-'}
+              </td>
+              <td className="px-3 py-2">
+                <span
+                  className={`px-2 py-1 rounded text-xs ${alloc.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-800'}`}
+                >
                   {alloc.status}
                 </span>
               </td>
-              <td className="px-3 py-2">{alloc.plan || "-"}</td>
-              <td className="px-3 py-2">{alloc.notes || "-"}</td>
+              <td className="px-3 py-2">{alloc.plan || '-'}</td>
+              <td className="px-3 py-2">{alloc.notes || '-'}</td>
               {onEdit && (
                 <td className="px-3 py-2 flex gap-2">
-                  <button className="text-blue-700 underline text-xs" onClick={() => onEdit(alloc)}>Edit</button>
-                  {onDelete && <button className="text-red-500 underline text-xs" onClick={() => onDelete(alloc.id)}>Delete</button>}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-700 underline text-xs p-0 h-auto font-normal"
+                    onClick={() => onEdit(alloc)}
+                  >
+                    Edit
+                  </Button>
+                  {onDelete && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500 underline text-xs p-0 h-auto font-normal"
+                      onClick={() => onDelete(alloc.id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </td>
               )}
             </tr>

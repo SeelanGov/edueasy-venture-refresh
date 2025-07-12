@@ -1,4 +1,3 @@
-
 import { CheckCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import type { VerificationResult } from '@/hooks/useDocumentVerification';

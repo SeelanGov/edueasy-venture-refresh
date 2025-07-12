@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,7 +15,7 @@ export const HeroContent = () => {
         description: 'Please register an account to start your application.',
         variant: 'destructive',
       });
-      console.log("Redirecting unauthenticated user to /register from Start Application");
+      console.log('Redirecting unauthenticated user to /register from Start Application');
       navigate('/register', { state: { from: '/apply' } });
       return;
     }

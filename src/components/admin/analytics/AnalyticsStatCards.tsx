@@ -1,4 +1,3 @@
-
 import { FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { StatCard } from './StatCard';
 import type { DocumentAnalytics } from '@/hooks/analytics/types';
@@ -25,7 +24,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
         icon={<FileText className="h-4 w-4" />}
         description="All submitted documents"
       />
-      
+
       <StatCard
         title="Approved"
         value={analytics.approvedDocuments.toLocaleString()}
@@ -37,10 +36,12 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
         }}
         className="border-green-200"
       />
-      
+
       <StatCard
         title="Rejected"
-        value={(analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments).toLocaleString()}
+        value={(
+          analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments
+        ).toLocaleString()}
         icon={<XCircle className="h-4 w-4" />}
         description={`${analytics.failRate.toFixed(1)}% rejection rate`}
         trend={{
@@ -49,7 +50,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
         }}
         className="border-red-200"
       />
-      
+
       <StatCard
         title="Pending Review"
         value={analytics.pendingDocuments.toLocaleString()}

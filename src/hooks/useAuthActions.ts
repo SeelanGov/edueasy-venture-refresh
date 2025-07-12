@@ -1,6 +1,4 @@
-
 import { supabase } from '@/integrations/supabase/client';
-import { User, Session } from '@supabase/supabase-js';
 import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
 
@@ -19,16 +17,15 @@ interface DatabaseResult {
 }
 
 export const useAuthActions = () => {
-  
   const verifyIdentity = async (
-    email: string, 
-    nationalId: string, 
-    fullName: string, 
-    phoneNumber?: string
+    email: string,
+    nationalId: string,
+    fullName: string,
+    phoneNumber?: string,
   ): Promise<VerificationResult> => {
     try {
       const edgeUrl = `https://pensvamtfjtpsaoeflbx.functions.supabase.co/verify-id`;
-      
+
       const response = await fetch(edgeUrl, {
         method: 'POST',
         headers: {
@@ -38,7 +35,7 @@ export const useAuthActions = () => {
           email,
           national_id: nationalId,
           full_name: fullName,
-          phone_number: phoneNumber
+          phone_number: phoneNumber,
         }),
       });
 
@@ -50,12 +47,12 @@ export const useAuthActions = () => {
             verified: false,
             error: result.error,
             blocked_until: result.blocked_until,
-            attempts: result.attempts
+            attempts: result.attempts,
           };
         }
         return {
           verified: false,
-          error: result.error || 'Verification failed'
+          error: result.error || 'Verification failed',
         };
       }
 
@@ -64,32 +61,32 @@ export const useAuthActions = () => {
       logger.error('Identity verification error:', error);
       return {
         verified: false,
-        error: 'Network error during verification. Please try again.'
+        error: 'Network error during verification. Please try again.',
       };
     }
   };
 
   const signUp = async (
-    email: string, 
-    password: string, 
-    fullName: string, 
+    email: string,
+    password: string,
+    fullName: string,
     idNumber: string,
     gender: string,
-    phoneNumber?: string
+    phoneNumber?: string,
   ) => {
     try {
       // Step 1: Verify identity first
       logger.debug('Starting identity verification for:', email);
       const verificationResult = await verifyIdentity(email, idNumber, fullName, phoneNumber);
-      
+
       if (!verificationResult.verified) {
         logger.error('Identity verification failed:', verificationResult.error);
-        return { 
-          user: null, 
-          session: null, 
+        return {
+          user: null,
+          session: null,
           error: verificationResult.error,
           blocked_until: verificationResult.blocked_until,
-          attempts: verificationResult.attempts
+          attempts: verificationResult.attempts,
         };
       }
 
@@ -97,7 +94,7 @@ export const useAuthActions = () => {
 
       // Step 2: Create Supabase Auth user
       const redirectUrl = `${window.location.origin}/`;
-      
+
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -107,9 +104,9 @@ export const useAuthActions = () => {
             full_name: fullName,
             id_verified: true,
             phone_number: phoneNumber,
-            gender: gender
-          }
-        }
+            gender: gender,
+          },
+        },
       });
 
       if (authError) {
@@ -124,16 +121,13 @@ export const useAuthActions = () => {
       logger.debug('Auth user created:', authData.user.id);
 
       // Step 3: Call database function to handle verification success
-      const { data: dbResult, error: dbError } = await supabase.rpc(
-        'handle_verification_success',
-        {
-          p_user_id: authData.user.id,
-          p_email: email,
-          p_full_name: fullName,
-          p_national_id: idNumber,
-          p_phone_number: phoneNumber
-        }
-      );
+      const { data: dbResult, error: dbError } = await supabase.rpc('handle_verification_success', {
+        p_user_id: authData.user.id,
+        p_email: email,
+        p_full_name: fullName,
+        p_national_id: idNumber,
+        p_phone_number: phoneNumber,
+      });
 
       if (dbError) {
         logger.error('Database setup error:', dbError);
@@ -161,17 +155,16 @@ export const useAuthActions = () => {
         .limit(1);
 
       toast({
-        title: "Registration successful!",
-        description: `Account created with starter plan. Tracking ID: ${result.tracking_id}`
+        title: 'Registration successful!',
+        description: `Account created with starter plan. Tracking ID: ${result.tracking_id}`,
       });
 
-      return { 
-        user: authData.user, 
-        session: authData.session, 
+      return {
+        user: authData.user,
+        session: authData.session,
         error: null,
-        tracking_id: result.tracking_id
+        tracking_id: result.tracking_id,
       };
-
     } catch (error: any) {
       const message = error.message || 'Registration failed';
       logger.error('Sign up failed:', error);
@@ -209,7 +202,7 @@ export const useAuthActions = () => {
   const resetPassword = async (email: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`
+        redirectTo: `${window.location.origin}/reset-password`,
       });
 
       if (error) {
@@ -227,7 +220,7 @@ export const useAuthActions = () => {
   const updatePassword = async (newPassword: string): Promise<boolean> => {
     try {
       const { error } = await supabase.auth.updateUser({
-        password: newPassword
+        password: newPassword,
       });
 
       if (error) {
@@ -235,8 +228,8 @@ export const useAuthActions = () => {
       }
 
       toast({
-        title: "Password updated",
-        description: "Your password has been successfully updated."
+        title: 'Password updated',
+        description: 'Your password has been successfully updated.',
       });
 
       return true;
@@ -266,6 +259,6 @@ export const useAuthActions = () => {
     signIn,
     resetPassword,
     updatePassword,
-    signOut
+    signOut,
   };
 };

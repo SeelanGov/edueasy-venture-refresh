@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Plus, Filter, Building2, Mail, Phone } from 'lucide-react';
+import { Search, Plus, Building2, Mail, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,13 +41,13 @@ export const PartnerList = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
+
       // Transform data to match Partner interface
-      const transformedData = (data || []).map(item => ({
+      const transformedData = (data || []).map((item) => ({
         ...item,
-        contact_phone: item.phone // Map phone to contact_phone
+        contact_phone: item.phone, // Map phone to contact_phone
       }));
-      
+
       setPartners(transformedData);
     } catch (error) {
       console.error('Error fetching partners:', error);
@@ -56,9 +56,11 @@ export const PartnerList = () => {
     }
   };
 
-  const filteredPartners = partners.filter(partner => {
-    const matchesSearch = partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (partner.contact_email && partner.contact_email.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredPartners = partners.filter((partner) => {
+    const matchesSearch =
+      partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (partner.contact_email &&
+        partner.contact_email.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesType = filterType === 'all' || partner.type === filterType;
     const matchesTier = filterTier === 'all' || partner.tier === filterTier;
     return matchesSearch && matchesType && matchesTier;
@@ -66,19 +68,27 @@ export const PartnerList = () => {
 
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case 'basic': return 'bg-gray-100 text-gray-800';
-      case 'standard': return 'bg-blue-100 text-blue-800';
-      case 'premium': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'basic':
+        return 'bg-gray-100 text-gray-800';
+      case 'standard':
+        return 'bg-blue-100 text-blue-800';
+      case 'premium':
+        return 'bg-purple-100 text-purple-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'inactive': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'inactive':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -147,23 +157,17 @@ export const PartnerList = () => {
                   <Building2 className="h-5 w-5 text-gray-500" />
                   <CardTitle className="text-lg">{partner.name}</CardTitle>
                 </div>
-                <Badge className={getTierColor(partner.tier)}>
-                  {partner.tier}
-                </Badge>
+                <Badge className={getTierColor(partner.tier)}>{partner.tier}</Badge>
               </div>
               <CardDescription>
-                <Badge className={getStatusColor(partner.status)}>
-                  {partner.status}
-                </Badge>
+                <Badge className={getStatusColor(partner.status)}>{partner.status}</Badge>
                 <span className="ml-2 capitalize">{partner.type}</span>
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {partner.contact_person && (
-                  <p className="text-sm text-gray-600">
-                    Contact: {partner.contact_person}
-                  </p>
+                  <p className="text-sm text-gray-600">Contact: {partner.contact_person}</p>
                 )}
                 {partner.contact_email && (
                   <div className="flex items-center gap-1 text-sm text-gray-600">
@@ -184,9 +188,9 @@ export const PartnerList = () => {
                 )}
               </div>
               <div className="mt-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   className="w-full"
                   onClick={() => navigate(`/admin/partners/${partner.id}`)}
                 >

@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Menu, Moon, Sun } from 'lucide-react';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 
 interface DashboardHeaderProps {
   title: string;

@@ -1,4 +1,3 @@
-
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogEntry {
@@ -16,7 +15,7 @@ class Logger {
       timestamp: new Date().toISOString(),
       level,
       message,
-      data
+      data,
     };
   }
 
@@ -40,7 +39,7 @@ class Logger {
   error(message: string, error?: any) {
     const entry = this.formatMessage('error', message, error);
     console.error(`[${entry.timestamp}] ERROR: ${entry.message}`, entry.data || '');
-    
+
     // In production, you might want to send errors to a logging service
     if (!this.isDevelopment && error) {
       // Example: Send to error tracking service

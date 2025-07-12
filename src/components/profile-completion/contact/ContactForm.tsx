@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
-import { ContactFormValues } from './types';
+import type { ContactFormValues } from './types';
 import { EmergencyContactSection } from './EmergencyContactSection';
 
 // South African phone number validation

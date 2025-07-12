@@ -1,7 +1,8 @@
 import { parseError } from '@/utils/errorHandler';
 import { ErrorSeverity, logError } from '@/utils/errorLogging';
-import { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorDisplay, ErrorInfo as AppError } from './ErrorDisplay';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import type { ErrorInfo as AppError } from './ErrorDisplay';
+import { ErrorDisplay } from './ErrorDisplay';
 
 interface Props {
   children: ReactNode;
@@ -38,9 +39,9 @@ export class ErrorBoundary extends Component<Props, State> {
       timestamp: new Date(),
       details: {
         componentStack: reactErrorInfo.componentStack,
-      }
+      },
     };
-    
+
     // Log the error to our error logging system
     this.logErrorToSystem(error, errorInfo);
   }
@@ -97,7 +98,7 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) {
         return this.props.fallback;
       }
-      
+
       // Convert the error to our AppError format
       const appError: AppError = {
         message: this.state.error?.message || 'An unknown error occurred',
@@ -105,15 +106,11 @@ export class ErrorBoundary extends Component<Props, State> {
         component: this.props.component,
         timestamp: new Date(),
       };
-      
+
       // Otherwise render standard error display
       return (
         <div className="p-4">
-          <ErrorDisplay
-            error={appError}
-            onRetry={this.handleReset}
-            className="mb-4"
-          />
+          <ErrorDisplay error={appError} onRetry={this.handleReset} className="mb-4" />
         </div>
       );
     }
@@ -134,7 +131,7 @@ export const withErrorBoundary = <P extends object>(
   } = {},
 ) => {
   const { fallback, componentName, onReset } = options;
-  
+
   const WrappedComponent = (props: P) => {
     // Build props object conditionally to satisfy exactOptionalPropertyTypes
     const boundaryProps: {
@@ -153,10 +150,9 @@ export const withErrorBoundary = <P extends object>(
 
     return <ErrorBoundary {...boundaryProps} />;
   };
-  
+
   // Set display name for debugging
-  WrappedComponent.displayName = 
-    `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
-  
+  WrappedComponent.displayName = `withErrorBoundary(${componentName || Component.displayName || Component.name || 'Component'})`;
+
   return WrappedComponent;
 };

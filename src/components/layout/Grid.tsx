@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { spacing } from '@/lib/design-tokens';
+import type { spacing } from '@/lib/design-tokens';
 
 interface GridProps {
   children: React.ReactNode;
@@ -73,25 +72,25 @@ export const Grid: React.FC<GridProps> = ({
 
   const getColsClass = () => {
     const classes = ['grid'];
-    
+
     if (cols.default) classes.push(gridCols[cols.default as keyof typeof gridCols]);
     if (cols.sm) classes.push(`sm:${gridCols[cols.sm as keyof typeof gridCols]}`);
     if (cols.md) classes.push(`md:${gridCols[cols.md as keyof typeof gridCols]}`);
     if (cols.lg) classes.push(`lg:${gridCols[cols.lg as keyof typeof gridCols]}`);
     if (cols.xl) classes.push(`xl:${gridCols[cols.xl as keyof typeof gridCols]}`);
     if (cols['2xl']) classes.push(`2xl:${gridCols[cols['2xl'] as keyof typeof gridCols]}`);
-    
+
     return classes.join(' ');
   };
 
   return (
-    <Component 
+    <Component
       className={cn(
         getColsClass(),
         gridGaps[gap],
         alignItems[align],
         justifyItems[justify],
-        className
+        className,
       )}
     >
       {children}
@@ -170,7 +169,7 @@ export const Flex: React.FC<FlexProps> = ({
         justifyContent[justify],
         flexGaps[gap],
         flexWrap[wrap as keyof typeof flexWrap],
-        className
+        className,
       )}
     >
       {children}
@@ -197,7 +196,7 @@ export const Container: React.FC<ContainerProps> = ({
   const containerSizes = {
     sm: 'max-w-sm',
     md: 'max-w-md',
-    lg: 'max-w-lg', 
+    lg: 'max-w-lg',
     xl: 'max-w-7xl',
     '2xl': 'max-w-screen-2xl',
     full: 'max-w-full',
@@ -206,7 +205,7 @@ export const Container: React.FC<ContainerProps> = ({
   const containerPadding = {
     none: '',
     xs: 'px-2',
-    sm: 'px-3', 
+    sm: 'px-3',
     md: 'px-4 md:px-8',
     lg: 'px-6 md:px-12',
     xl: 'px-8 md:px-16',
@@ -216,12 +215,7 @@ export const Container: React.FC<ContainerProps> = ({
 
   return (
     <Component
-      className={cn(
-        'mx-auto w-full',
-        containerSizes[size],
-        containerPadding[padding],
-        className
-      )}
+      className={cn('mx-auto w-full', containerSizes[size], containerPadding[padding], className)}
     >
       {children}
     </Component>

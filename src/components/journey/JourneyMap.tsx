@@ -54,7 +54,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({ steps, currentStep, clas
                 key={index}
                 className={cn(
                   'w-1.5 h-1.5 rounded-full mt-0.25 z-10',
-                  currentStep >= index ? 'bg-white' : 'bg-gray-300'
+                  currentStep >= index ? 'bg-white' : 'bg-gray-300',
                 )}
               />
             ))}

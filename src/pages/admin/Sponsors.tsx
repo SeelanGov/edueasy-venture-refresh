@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { SponsorMetrics } from '@/components/admin/sponsors/SponsorMetrics';
 import { SponsorAllocationsTable } from '@/components/admin/sponsors/SponsorAllocationsTable';
 import { SponsorFormModal } from '@/components/admin/sponsors/SponsorFormModal';
 import { SponsorListTable } from '@/components/admin/sponsors/SponsorListTable';
-import { useNavigate } from 'react-router-dom';
+import { SponsorMetrics } from '@/components/admin/sponsors/SponsorMetrics';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
 import { useSponsors } from '@/hooks/useSponsors';
-import { toast } from '@/components/ui/use-toast';
-import { Spinner } from '@/components/Spinner';
 import { exportToCsv } from '@/utils/exportToCsv';
 import { FileText } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SponsorsPage = () => {
   // Search & filter state
@@ -38,9 +39,9 @@ const SponsorsPage = () => {
 
   // Metrics (basic stats)
   const totalSponsors = sponsorList.length;
-  const activeSponsors = sponsorList.filter(s => s.status === 'active').length;
+  const activeSponsors = sponsorList.filter((s) => s.status === 'active').length;
   const totalAllocations = allocations.length;
-  const activeAllocations = allocations.filter(a => a.status === 'active').length;
+  const activeAllocations = allocations.filter((a) => a.status === 'active').length;
 
   const handleAdd = () => {
     setEditAlloc(null);
@@ -56,12 +57,12 @@ const SponsorsPage = () => {
       fetchAllocations();
       if (res) {
         toast({
-          title: "Allocation deleted successfully",
+          title: 'Allocation deleted successfully',
         });
       } else {
         toast({
-          title: "Delete failed",
-          variant: "destructive",
+          title: 'Delete failed',
+          variant: 'destructive',
         });
       }
     }
@@ -71,20 +72,20 @@ const SponsorsPage = () => {
       if (editAlloc) {
         await updateAllocation(editAlloc.id, values);
         toast({
-          title: "Allocation updated",
+          title: 'Allocation updated',
         });
       } else {
         await createAllocation(values);
         toast({
-          title: "Allocation created",
+          title: 'Allocation created',
         });
       }
       setModalOpen(false);
       fetchAllocations();
     } catch (err) {
       toast({
-        title: "Operation failed",
-        variant: "destructive"
+        title: 'Operation failed',
+        variant: 'destructive',
       });
     }
   };
@@ -92,43 +93,43 @@ const SponsorsPage = () => {
   // Export Handlers
   const handleExportAllocations = () => {
     if (allocations.length === 0) {
-      toast({ title: "No allocations to export", variant: "destructive" });
+      toast({ title: 'No allocations to export', variant: 'destructive' });
       return;
     }
     exportToCsv(
-      allocations.map(a => ({
-        "Sponsor ID": a.sponsor_id,
-        "Student ID": a.student_id,
+      allocations.map((a) => ({
+        'Sponsor ID': a.sponsor_id,
+        'Student ID': a.student_id,
         Status: a.status,
-        Plan: a.plan ?? "",
-        "Allocated On": a.allocated_on,
-        "Expires On": a.expires_on ?? "",
-        Notes: a.notes ?? "",
+        Plan: a.plan ?? '',
+        'Allocated On': a.allocated_on,
+        'Expires On': a.expires_on ?? '',
+        Notes: a.notes ?? '',
       })),
-      "allocations.csv"
+      'allocations.csv',
     );
-    toast({ title: "Allocations exported!" });
+    toast({ title: 'Allocations exported!' });
   };
 
   const handleExportSponsors = () => {
     if (!sponsorList || sponsorList.length === 0) {
-      toast({ title: "No sponsors to export", variant: "destructive" });
+      toast({ title: 'No sponsors to export', variant: 'destructive' });
       return;
     }
     exportToCsv(
-      sponsorList.map(s => ({
-        "ID": s.id,
+      sponsorList.map((s) => ({
+        ID: s.id,
         Name: s.name,
         Email: s.email,
-        Phone: s.phone ?? "",
-        "Contact Person": s.contact_person ?? "",
+        Phone: s.phone ?? '',
+        'Contact Person': s.contact_person ?? '',
         Status: s.status,
         Tier: s.tier,
-        Website: s.website ?? "",
+        Website: s.website ?? '',
       })),
-      "sponsors.csv"
+      'sponsors.csv',
     );
-    toast({ title: "Sponsors exported!" });
+    toast({ title: 'Sponsors exported!' });
   };
 
   return (
@@ -136,8 +137,22 @@ const SponsorsPage = () => {
       <h1 className="text-2xl sm:text-3xl font-bold mb-4">Sponsor Management</h1>
       {/* Tab navigation */}
       <div className="space-x-2 flex mb-4 sm:mb-6">
-        <button className={tab === 'allocations' ? 'font-bold underline' : ''} onClick={() => setTab('allocations')}>Student Allocations</button>
-        <button className={tab === 'sponsors' ? 'font-bold underline' : ''} onClick={() => setTab('sponsors')}>Sponsors List</button>
+        <Button
+          className={tab === 'allocations' ? 'font-bold underline' : ''}
+          onClick={() => setTab('allocations')}
+          variant="ghost"
+          size="sm"
+        >
+          Student Allocations
+        </Button>
+        <Button
+          className={tab === 'sponsors' ? 'font-bold underline' : ''}
+          onClick={() => setTab('sponsors')}
+          variant="ghost"
+          size="sm"
+        >
+          Sponsors List
+        </Button>
       </div>
       {/* Search and Filter */}
       <div className="flex flex-wrap gap-2 mb-4">
@@ -150,7 +165,7 @@ const SponsorsPage = () => {
         />
         <select
           value={typeFilter}
-          onChange={e => setTypeFilter(e.target.value)}
+          onChange={(e) => setTypeFilter(e.target.value)}
           className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-auto"
         >
           <option value="">All Types</option>
@@ -160,13 +175,15 @@ const SponsorsPage = () => {
           <option value="individual">Individual</option>
         </select>
         {tab === 'sponsors' && (
-          <button
+          <Button
             className="bg-gray-200 text-xs rounded px-3 py-2 ml-2 opacity-60 cursor-not-allowed"
             disabled
             title="Bulk operations coming soon"
+            variant="outline"
+            size="sm"
           >
             Bulk Operations (soon)
-          </button>
+          </Button>
         )}
       </div>
       {/* Metrics */}
@@ -180,21 +197,20 @@ const SponsorsPage = () => {
       {tab === 'allocations' && (
         <>
           <div className="flex items-center justify-between mb-2">
-            <button
-              className="px-4 py-2 bg-cap-teal text-white rounded"
-              onClick={handleAdd}
-            >
+            <Button className="px-4 py-2 bg-cap-teal text-white rounded" onClick={handleAdd}>
               Add Allocation
-            </button>
-            <button
+            </Button>
+            <Button
               className="ml-2 inline-flex items-center gap-2 text-cap-teal hover:underline bg-white border border-cap-teal px-3 py-2 rounded shadow-sm text-sm"
               onClick={handleExportAllocations}
               title="Export Allocations"
               type="button"
+              variant="outline"
+              size="sm"
             >
               <FileText size={18} className="mr-1" />
               Export CSV
-            </button>
+            </Button>
           </div>
           {allocationsLoading ? (
             <div className="py-24 flex items-center justify-center">
@@ -215,15 +231,17 @@ const SponsorsPage = () => {
       {tab === 'sponsors' && (
         <>
           <div className="flex justify-end mb-2">
-            <button
+            <Button
               className="inline-flex items-center gap-2 text-cap-teal hover:underline bg-white border border-cap-teal px-3 py-2 rounded shadow-sm text-sm"
               onClick={handleExportSponsors}
               title="Export Sponsors"
               type="button"
+              variant="outline"
+              size="sm"
             >
               <FileText size={18} className="mr-1" />
               Export CSV
-            </button>
+            </Button>
           </div>
           {sponsorsLoading ? (
             <div className="py-24 flex items-center justify-center">
@@ -231,7 +249,9 @@ const SponsorsPage = () => {
               <span className="ml-3 text-gray-500">Loading sponsors…</span>
             </div>
           ) : sponsorList.length === 0 ? (
-            <div className="py-16 text-center text-gray-400">No sponsors found. Try different search/filters.</div>
+            <div className="py-16 text-center text-gray-400">
+              No sponsors found. Try different search/filters.
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <SponsorListTable

@@ -1,19 +1,19 @@
-
+import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 import { StatisticsGrid } from './StatisticsGrid';
 
 const universities = [
-  "University of Cape Town",
-  "University of Pretoria",
-  "University of Witwatersrand",
-  "Stellenbosch University",
-  "University of Johannesburg",
-  "Rhodes University",
+  'University of Cape Town',
+  'University of Pretoria',
+  'University of Witwatersrand',
+  'Stellenbosch University',
+  'University of Johannesburg',
+  'Rhodes University',
 ];
 
 export const PartnersSection = () => {
   // Use the uploaded image for the section illustration
-  const imagePath = "/lovable-uploads/ff2bcb31-3f70-423b-a4e0-4483fff9d5f6.png";
+  const imagePath = '/lovable-uploads/ff2bcb31-3f70-423b-a4e0-4483fff9d5f6.png';
 
   return (
     <section className="py-20 px-4 md:py-24 bg-white relative">
@@ -41,7 +41,7 @@ export const PartnersSection = () => {
                 className="w-full h-auto object-cover object-center rounded-2xl transition duration-300 group-hover:scale-105 group-hover:contrast-105 group-hover:saturate-150"
                 style={{
                   maxHeight: 340,
-                  imageRendering: "auto"
+                  imageRendering: 'auto',
                 }}
                 loading="eager"
                 fetchPriority="high"
@@ -76,9 +76,13 @@ export const PartnersSection = () => {
               Building towards these targets to better serve South African students
             </Typography>
           </div>
-          
+
           <StatisticsGrid
-            selectedStats={['partnerInstitutions', 'successfulApplications', 'applicationSuccessRate']}
+            selectedStats={[
+              'partnerInstitutions',
+              'successfulApplications',
+              'applicationSuccessRate',
+            ]}
             variant="default"
             columns={3}
             className="max-w-4xl mx-auto"
@@ -92,11 +96,12 @@ export const PartnersSection = () => {
             Partner With EduEasy
           </Typography>
           <Typography variant="body-lg" className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join our growing network of educational institutions and help students achieve their academic goals through streamlined applications.
+            Join our growing network of educational institutions and help students achieve their
+            academic goals through streamlined applications.
           </Typography>
-          <button className="bg-cap-teal text-white px-8 py-3 rounded-lg font-semibold hover:bg-cap-teal/90 transition-colors shadow-sm">
+          <Button className="bg-cap-teal text-white px-8 py-3 rounded-lg font-semibold hover:bg-cap-teal/90 transition-colors shadow-sm">
             Become a Partner
-          </button>
+          </Button>
         </div>
       </div>
     </section>

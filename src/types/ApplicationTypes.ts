@@ -1,4 +1,3 @@
-
 export interface Document {
   id: string;
   application_id: string;
@@ -41,8 +40,8 @@ export interface Application {
 }
 
 export interface EnrichedApplication extends Application {
-  institution?: { id: string; name: string; } | null;
-  program_detail?: { id: string; name: string; } | null;
+  institution?: { id: string; name: string } | null;
+  program_detail?: { id: string; name: string } | null;
 }
 
 export interface ApplicationFormValues {

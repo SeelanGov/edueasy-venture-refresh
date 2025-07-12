@@ -1,8 +1,7 @@
-
-import { ReactNode } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { Navigate, useLocation } from "react-router-dom";
-import { Spinner } from "@/components/Spinner";
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
+import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 interface VerificationGuardProps {
   children: ReactNode;
@@ -13,7 +12,7 @@ interface VerificationGuardProps {
  * Redirects user to /verification-required if not verified, or shows spinner if loading.
  */
 export const VerificationGuard = ({ children }: VerificationGuardProps) => {
-  const { user, userType, loading } = useAuth();
+  const { user, userType, loading, isVerified } = useAuth();
   const location = useLocation();
 
   // SSR safety + loading
@@ -36,8 +35,6 @@ export const VerificationGuard = ({ children }: VerificationGuardProps) => {
 
   // If not verified, redirect to verification-required
   // Use database-sourced verification status from AuthContext
-  const { isVerified } = useAuth();
-
   if (!isVerified) {
     return <Navigate to="/verification-required" state={{ from: location.pathname }} replace />;
   }

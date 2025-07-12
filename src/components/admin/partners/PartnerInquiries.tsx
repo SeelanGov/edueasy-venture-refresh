@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, Mail, Phone, Calendar, Filter } from 'lucide-react';
+import { Search, Mail, Phone, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,27 +57,23 @@ export const PartnerInquiries = () => {
 
   const updateInquiryStatus = async (id: string, status: string) => {
     try {
-      const { error } = await supabase
-        .from('partner_inquiries')
-        .update({ status })
-        .eq('id', id);
+      const { error } = await supabase.from('partner_inquiries').update({ status }).eq('id', id);
 
       if (error) throw error;
-      
-      setInquiries(prev => 
-        prev.map(inquiry => 
-          inquiry.id === id ? { ...inquiry, status } : inquiry
-        )
+
+      setInquiries((prev) =>
+        prev.map((inquiry) => (inquiry.id === id ? { ...inquiry, status } : inquiry)),
       );
     } catch (error) {
       console.error('Error updating inquiry status:', error);
     }
   };
 
-  const filteredInquiries = inquiries.filter(inquiry => {
-    const matchesSearch = inquiry.institution_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         inquiry.contact_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         inquiry.contact_email.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredInquiries = inquiries.filter((inquiry) => {
+    const matchesSearch =
+      inquiry.institution_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inquiry.contact_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inquiry.contact_email.toLowerCase().includes(searchTerm.toLowerCase());
     const inquiryStatus = inquiry.status || 'pending';
     const matchesStatus = filterStatus === 'all' || inquiryStatus === filterStatus;
     return matchesSearch && matchesStatus;
@@ -86,11 +82,16 @@ export const PartnerInquiries = () => {
   const getStatusColor = (status: string | null) => {
     const actualStatus = status || 'pending';
     switch (actualStatus) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'contacted': return 'bg-blue-100 text-blue-800';
-      case 'converted': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'contacted':
+        return 'bg-blue-100 text-blue-800';
+      case 'converted':
+        return 'bg-green-100 text-green-800';
+      case 'rejected':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -155,14 +156,20 @@ export const PartnerInquiries = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-gray-400" />
-                    <a href={`mailto:${inquiry.contact_email}`} className="text-blue-600 hover:underline">
+                    <a
+                      href={`mailto:${inquiry.contact_email}`}
+                      className="text-blue-600 hover:underline"
+                    >
                       {inquiry.contact_email}
                     </a>
                   </div>
                   {inquiry.contact_phone && (
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="h-4 w-4 text-gray-400" />
-                      <a href={`tel:${inquiry.contact_phone}`} className="text-blue-600 hover:underline">
+                      <a
+                        href={`tel:${inquiry.contact_phone}`}
+                        className="text-blue-600 hover:underline"
+                      >
                         {inquiry.contact_phone}
                       </a>
                     </div>
@@ -174,21 +181,31 @@ export const PartnerInquiries = () => {
                 </div>
                 <div className="space-y-2 text-sm">
                   {inquiry.student_count && (
-                    <p><strong>Students:</strong> {inquiry.student_count}</p>
+                    <p>
+                      <strong>Students:</strong> {inquiry.student_count}
+                    </p>
                   )}
                   {inquiry.interested_tier && (
-                    <p><strong>Interested Tier:</strong> {inquiry.interested_tier}</p>
+                    <p>
+                      <strong>Interested Tier:</strong> {inquiry.interested_tier}
+                    </p>
                   )}
                   {inquiry.website && (
-                    <p><strong>Website:</strong> 
-                      <a href={inquiry.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
+                    <p>
+                      <strong>Website:</strong>
+                      <a
+                        href={inquiry.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline ml-1"
+                      >
                         {inquiry.website}
                       </a>
                     </p>
                   )}
                 </div>
               </div>
-              
+
               {inquiry.message && (
                 <div className="mb-4">
                   <h4 className="font-medium text-sm text-gray-700 mb-2">Message:</h4>
@@ -201,14 +218,11 @@ export const PartnerInquiries = () => {
               <div className="flex gap-2">
                 {(!inquiry.status || inquiry.status === 'pending') && (
                   <>
-                    <Button 
-                      size="sm" 
-                      onClick={() => updateInquiryStatus(inquiry.id, 'contacted')}
-                    >
+                    <Button size="sm" onClick={() => updateInquiryStatus(inquiry.id, 'contacted')}>
                       Mark as Contacted
                     </Button>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline"
                       onClick={() => updateInquiryStatus(inquiry.id, 'rejected')}
                     >
@@ -217,16 +231,16 @@ export const PartnerInquiries = () => {
                   </>
                 )}
                 {inquiry.status === 'contacted' && (
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     variant="outline"
                     onClick={() => updateInquiryStatus(inquiry.id, 'converted')}
                   >
                     Mark as Converted
                   </Button>
                 )}
-                <Button 
-                  size="sm" 
+                <Button
+                  size="sm"
                   variant="ghost"
                   onClick={() => window.open(`mailto:${inquiry.contact_email}`, '_blank')}
                 >

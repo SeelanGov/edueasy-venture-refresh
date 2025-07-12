@@ -1,6 +1,5 @@
-
-import React from "react";
-import { Sponsor } from "@/types/SponsorTypes";
+import React from 'react';
+import type { Sponsor } from '@/types/SponsorTypes';
 
 interface SponsorCardProps {
   sponsor: Sponsor;
@@ -8,11 +7,11 @@ interface SponsorCardProps {
 }
 
 const tierColor: Record<string, string> = {
-  platinum: "bg-blue-100 text-blue-900",
-  gold: "bg-yellow-100 text-yellow-900",
-  silver: "bg-gray-100 text-gray-700",
-  bronze: "bg-orange-100 text-orange-900",
-  basic: "bg-slate-100 text-slate-600",
+  platinum: 'bg-blue-100 text-blue-900',
+  gold: 'bg-yellow-100 text-yellow-900',
+  silver: 'bg-gray-100 text-gray-700',
+  bronze: 'bg-orange-100 text-orange-900',
+  basic: 'bg-slate-100 text-slate-600',
 };
 
 export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor, onClick }) => (
@@ -27,15 +26,19 @@ export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor, onClick }) =>
       <div className="flex-1">
         <div className="font-semibold text-lg">{sponsor.name}</div>
         <div className="text-sm text-gray-500 truncate">{sponsor.email}</div>
-        <div className="text-xs text-gray-400">{sponsor.contact_person || "-"}</div>
+        <div className="text-xs text-gray-400">{sponsor.contact_person || '-'}</div>
       </div>
       <div>
-        <span className={`inline-block px-2 py-1 rounded ${tierColor[sponsor.tier] || "bg-gray-100 text-gray-700"} text-xs`}>
+        <span
+          className={`inline-block px-2 py-1 rounded ${tierColor[sponsor.tier] || 'bg-gray-100 text-gray-700'} text-xs`}
+        >
           {sponsor.tier}
         </span>
       </div>
       <div>
-        <span className={`px-2 py-1 rounded text-xs ${sponsor.status === "active" ? "bg-green-200 text-green-800" : "bg-gray-200 text-gray-700"}`}>
+        <span
+          className={`px-2 py-1 rounded text-xs ${sponsor.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-700'}`}
+        >
           {sponsor.status}
         </span>
       </div>

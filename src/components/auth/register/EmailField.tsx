@@ -1,9 +1,8 @@
-
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Control } from "react-hook-form";
-import { RegisterFormValues } from "../RegisterForm";
-import { SecurityBadge } from "@/components/ui/SecurityBadge";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import type { Control } from 'react-hook-form';
+import type { RegisterFormValues } from '../RegisterForm';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
 
 interface EmailFieldProps {
   control: Control<RegisterFormValues>;

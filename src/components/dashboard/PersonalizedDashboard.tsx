@@ -1,18 +1,16 @@
-
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { Link, useNavigate } from 'react-router-dom';
-import { Application } from '@/types/ApplicationTypes';
-import { DocumentVerificationNotice } from './DocumentVerificationNotice';
-import { useApplications } from '@/hooks/useApplications';
-import { useSubscription } from '@/hooks/useSubscription';
-import { Sparkles, Copy, Medal } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
-import { useQuery } from '@tanstack/react-query';
+import { useApplications } from '@/hooks/useApplications';
+import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
+import type { Application } from '@/types/ApplicationTypes';
+import { useQuery } from '@tanstack/react-query';
+import { Copy, Medal, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface PersonalizedDashboardProps {
   applications: Application[];
@@ -59,7 +57,8 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
       if (error) throw error;
       return data;
     },
-    enabled: !!sponsoreeId && ((user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id),
+    enabled:
+      !!sponsoreeId && ((user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id),
     staleTime: 2 * 60 * 1000,
   });
 
@@ -67,15 +66,16 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
   const hasSponsorAllocation = sponsorAllocation && sponsorAllocation.status === 'active';
 
   // Use regular subscription logic if not sponsored
-  const isSubscribed = (currentSubscription && currentSubscription.is_active) || hasSponsorAllocation;
+  const isSubscribed =
+    (currentSubscription && currentSubscription.is_active) || hasSponsorAllocation;
 
   const handleCopyTrackingId = () => {
     if (trackingId) {
       navigator.clipboard.writeText(trackingId);
       toast({
-        title: "Copied to clipboard!",
-        description: "Your tracking ID was copied.",
-        variant: "default",
+        title: 'Copied to clipboard!',
+        description: 'Your tracking ID was copied.',
+        variant: 'default',
       });
     }
   };
@@ -84,7 +84,7 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
   // add logic here to detect sponsor allocation and activate plans.
   // If sponsor_id exists and allocation is active -> auto activate plan.
   // Otherwise, show payment/plan options. (Next PR)
-  
+
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {/* Tracking ID Card */}
@@ -92,21 +92,21 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
         <Card className="col-span-1 md:col-span-2 lg:col-span-3 bg-gradient-to-tr from-green-100 to-cap-teal/10 border border-cap-teal text-cap-dark flex flex-col items-center justify-center shadow-md mb-2">
           <CardHeader className="flex flex-row items-center gap-2">
             <Sparkles className="h-5 w-5 text-cap-coral" />
-            <CardTitle className="text-xl font-semibold">
-              Your EduEasy Tracking ID
-            </CardTitle>
+            <CardTitle className="text-xl font-semibold">Your EduEasy Tracking ID</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-1">
             <div className="flex items-center text-2xl font-mono font-bold bg-white rounded px-3 py-1 border border-cap-coral/40">
               {trackingId}
-              <button
+              <Button
                 onClick={handleCopyTrackingId}
                 className="ml-2 hover:text-cap-coral transition"
                 title="Copy tracking ID"
                 type="button"
+                variant="ghost"
+                size="sm"
               >
                 <Copy className="h-5 w-5" />
-              </button>
+              </Button>
             </div>
             <CardDescription>
               Use this ID when contacting support or tracking your application status.
@@ -123,22 +123,18 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
           </CardTitle>
           <CardDescription>
             {isSubscribed
-              ? (
-                hasSponsorAllocation
-                  ? 'Your plan is sponsored — enjoy premium access!'
-                  : 'Enjoy your premium access.'
-              )
+              ? hasSponsorAllocation
+                ? 'Your plan is sponsored — enjoy premium access!'
+                : 'Enjoy your premium access.'
               : 'Start your journey to success with EduEasy.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <Typography variant="body" className="text-white/80">
             {isSubscribed
-              ? (
-                hasSponsorAllocation
-                  ? 'You have a sponsor-provided premium plan. All premium features are unlocked for you. Thank your sponsor for their support of your education journey!'
-                  : 'You have access to all premium features. Make the most of your subscription!'
-              )
+              ? hasSponsorAllocation
+                ? 'You have a sponsor-provided premium plan. All premium features are unlocked for you. Thank your sponsor for their support of your education journey!'
+                : 'You have access to all premium features. Make the most of your subscription!'
               : 'Complete your profile and start applying to your dream institutions today.'}
           </Typography>
           {/* If sponsored, show a medal and sponsor info. Otherwise normal upgrade logic. */}
@@ -193,9 +189,7 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
         </CardHeader>
         <CardContent>
           <p>A complete profile helps institutions get to know you better.</p>
-          <Button onClick={() => navigate('/profile-completion')}>
-            Complete Profile
-          </Button>
+          <Button onClick={() => navigate('/profile-completion')}>Complete Profile</Button>
         </CardContent>
       </Card>
     </div>

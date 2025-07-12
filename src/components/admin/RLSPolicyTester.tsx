@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,11 +24,11 @@ export const RLSPolicyTester = () => {
     try {
       const { data, error } = await supabase.rpc('test_rls_policies_with_role', {
         p_role: 'user',
-        p_scenario: 'test'
+        p_scenario: 'test',
       });
 
       if (error) throw error;
-      
+
       if (Array.isArray(data)) {
         setResults(data);
         toast.success('Test completed successfully');
@@ -61,7 +60,7 @@ export const RLSPolicyTester = () => {
             placeholder="Enter user ID to test with"
           />
         </div>
-        
+
         <div>
           <Label htmlFor="testQuery">Test Query</Label>
           <Textarea
@@ -72,11 +71,11 @@ export const RLSPolicyTester = () => {
             rows={4}
           />
         </div>
-        
+
         <Button onClick={runTest} disabled={loading}>
           {loading ? 'Running Test...' : 'Run Test'}
         </Button>
-        
+
         {results.length > 0 && (
           <div className="mt-4">
             <h3 className="font-semibold mb-2">Test Results:</h3>

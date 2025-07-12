@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -24,11 +23,14 @@ const Register = () => {
 
           <CardContent className="p-6">
             <RegisterForm />
-            
+
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
-                <Link to="/login" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
+                <Link
+                  to="/login"
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
+                >
                   Sign in
                 </Link>
               </p>
@@ -37,7 +39,10 @@ const Register = () => {
         </Card>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
+          <Link
+            to="/"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
+          >
             ← Back to Home
           </Link>
         </div>

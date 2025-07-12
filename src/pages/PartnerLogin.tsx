@@ -1,4 +1,4 @@
-
+import { Button } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,14 +26,15 @@ const PartnerLogin: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
       <div className="relative w-full">
         <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
             <span className="mr-2 text-lg">&#8592;</span>
             Back to Home
-          </button>
+          </Button>
         </div>
       </div>
       <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
@@ -58,18 +59,22 @@ const PartnerLogin: React.FC = () => {
             required
           />
           {error && <div className="text-red-500 text-sm">{error}</div>}
-          <button
+          <Button
             type="submit"
             className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
           >
             Log In
-          </button>
+          </Button>
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{' '}
-          <button className="text-primary underline" onClick={() => navigate('/partner/register')}>
+          <Button
+            variant="ghost"
+            className="text-primary underline p-0 h-auto font-normal"
+            onClick={() => navigate('/partner/register')}
+          >
             Register
-          </button>
+          </Button>
         </div>
       </div>
     </div>

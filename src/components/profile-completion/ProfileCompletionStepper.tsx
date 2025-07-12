@@ -1,4 +1,3 @@
-
 import { Check } from 'lucide-react';
 
 interface ProfileCompletionStepperProps {
@@ -18,15 +17,11 @@ export const ProfileCompletionStepper = ({ steps, currentStep }: ProfileCompleti
                   index < currentStep
                     ? 'bg-cap-teal text-white border-cap-teal'
                     : index === currentStep
-                    ? 'bg-white text-cap-teal border-cap-teal'
-                    : 'bg-white text-gray-400 border-gray-300'
+                      ? 'bg-white text-cap-teal border-cap-teal'
+                      : 'bg-white text-gray-400 border-gray-300'
                 }`}
               >
-                {index < currentStep ? (
-                  <Check className="w-5 h-5" />
-                ) : (
-                  <span>{index + 1}</span>
-                )}
+                {index < currentStep ? <Check className="w-5 h-5" /> : <span>{index + 1}</span>}
               </div>
               <span
                 className={`mt-2 text-xs font-medium text-center max-w-20 ${
@@ -38,9 +33,7 @@ export const ProfileCompletionStepper = ({ steps, currentStep }: ProfileCompleti
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`w-16 h-0.5 mx-4 ${
-                  index < currentStep ? 'bg-cap-teal' : 'bg-gray-300'
-                }`}
+                className={`w-16 h-0.5 mx-4 ${index < currentStep ? 'bg-cap-teal' : 'bg-gray-300'}`}
               />
             )}
           </div>

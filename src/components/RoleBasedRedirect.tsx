@@ -5,7 +5,7 @@ import { Spinner } from '@/components/Spinner';
 export const RoleBasedRedirect = () => {
   const { userType, loading } = useAuth();
 
-  console.log("RoleBasedRedirect:", { userType, loading });
+  console.log('RoleBasedRedirect:', { userType, loading });
 
   if (loading) {
     return (
@@ -21,19 +21,19 @@ export const RoleBasedRedirect = () => {
   // Route users to appropriate dashboards based on their role
   switch (userType) {
     case 'admin':
-      console.log("RoleBasedRedirect: Routing admin to admin dashboard");
+      console.log('RoleBasedRedirect: Routing admin to admin dashboard');
       return <Navigate to="/admin/dashboard" replace />;
     case 'sponsor':
-      console.log("RoleBasedRedirect: Routing sponsor to sponsor dashboard");
+      console.log('RoleBasedRedirect: Routing sponsor to sponsor dashboard');
       return <Navigate to="/sponsors/dashboard" replace />;
     case 'institution':
-      console.log("RoleBasedRedirect: Routing institution to institution dashboard");
+      console.log('RoleBasedRedirect: Routing institution to institution dashboard');
       return <Navigate to="/institutions/dashboard" replace />;
     case 'student':
-      console.log("RoleBasedRedirect: Routing student to main dashboard");
+      console.log('RoleBasedRedirect: Routing student to main dashboard');
       return <Navigate to="/dashboard" replace />;
     default:
-      console.log("RoleBasedRedirect: Unknown or null userType, redirecting to login");
+      console.log('RoleBasedRedirect: Unknown or null userType, redirecting to login');
       return <Navigate to="/login" replace />;
   }
 };

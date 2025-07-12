@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { X, ChevronRight } from 'lucide-react';
-import { MilestoneStatus } from './JourneyMilestone';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChevronRight, X } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import type { MilestoneStatus } from './JourneyMilestone';
 
 interface MilestoneDetailProps {
   title: string;
@@ -93,13 +93,15 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
             <CardTitle id="milestone-detail-title" className="text-base font-medium">
               {title}
             </CardTitle>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full p-1 h-auto"
               aria-label="Close details"
             >
               <X className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
           <div className="flex items-center mt-1">
             <span className="text-xs font-medium text-gray-500">Step {stepNumber}</span>

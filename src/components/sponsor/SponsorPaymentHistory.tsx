@@ -1,6 +1,5 @@
-
-import React from "react";
-import { SponsorPayment } from "@/hooks/useSponsorPayments";
+import React from 'react';
+import type { SponsorPayment } from '@/hooks/useSponsorPayments';
 
 interface SponsorPaymentHistoryProps {
   payments: SponsorPayment[];
@@ -30,15 +29,19 @@ export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ pa
           payments.map((payment) => (
             <tr key={payment.id}>
               <td className="px-3 py-2 font-semibold">R {payment.amount.toLocaleString()}</td>
-              <td className="px-3 py-2">{payment.payment_method || "-"}</td>
+              <td className="px-3 py-2">{payment.payment_method || '-'}</td>
               <td className="px-3 py-2">
-                <span className={`px-2 py-1 rounded text-xs ${payment.status === "paid" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-800"}`}>
+                <span
+                  className={`px-2 py-1 rounded text-xs ${payment.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-800'}`}
+                >
                   {payment.status}
                 </span>
               </td>
-              <td className="px-3 py-2">{payment.payment_date ? new Date(payment.payment_date).toLocaleDateString() : "-"}</td>
-              <td className="px-3 py-2">{payment.invoice_number || "-"}</td>
-              <td className="px-3 py-2">{payment.reference_number || "-"}</td>
+              <td className="px-3 py-2">
+                {payment.payment_date ? new Date(payment.payment_date).toLocaleDateString() : '-'}
+              </td>
+              <td className="px-3 py-2">{payment.invoice_number || '-'}</td>
+              <td className="px-3 py-2">{payment.reference_number || '-'}</td>
             </tr>
           ))
         )}

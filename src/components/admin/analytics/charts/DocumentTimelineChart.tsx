@@ -1,5 +1,13 @@
-
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import type { DocumentDateData } from '@/hooks/analytics/types';
 
 interface DocumentTimelineChartProps {
@@ -15,11 +23,11 @@ export const DocumentTimelineChart = ({ data }: DocumentTimelineChartProps) => {
     );
   }
 
-  const formattedData = data.map(item => ({
+  const formattedData = data.map((item) => ({
     ...item,
-    date: new Date(item.date).toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric' 
+    date: new Date(item.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
     }),
   }));
 
@@ -31,27 +39,9 @@ export const DocumentTimelineChart = ({ data }: DocumentTimelineChartProps) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line 
-          type="monotone" 
-          dataKey="approved" 
-          stroke="#22c55e" 
-          strokeWidth={2}
-          name="Approved"
-        />
-        <Line 
-          type="monotone" 
-          dataKey="rejected" 
-          stroke="#ef4444" 
-          strokeWidth={2}
-          name="Rejected"
-        />
-        <Line 
-          type="monotone" 
-          dataKey="pending" 
-          stroke="#f59e0b" 
-          strokeWidth={2}
-          name="Pending"
-        />
+        <Line type="monotone" dataKey="approved" stroke="#22c55e" strokeWidth={2} name="Approved" />
+        <Line type="monotone" dataKey="rejected" stroke="#ef4444" strokeWidth={2} name="Rejected" />
+        <Line type="monotone" dataKey="pending" stroke="#f59e0b" strokeWidth={2} name="Pending" />
       </LineChart>
     </ResponsiveContainer>
   );

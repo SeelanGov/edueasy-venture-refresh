@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ErrorDetails, ErrorHandlingConfig } from '@/types/errorTypes';
+import type { ErrorDetails, ErrorHandlingConfig } from '@/types/errorTypes';
 import { ErrorSeverity, logError } from '@/utils/errorLogging';
 import { ErrorCategory, parseError } from '@/utils/errorHandler';
 import { useAuth } from '@/hooks/useAuth';
@@ -36,7 +36,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
       component: string = 'Unknown',
       action: string = 'Unknown',
       severity: ErrorSeverity = ErrorSeverity.ERROR,
-      context: Record<string, any> = {}
+      context: Record<string, any> = {},
     ): Promise<string | null> => {
       // Parse error to standard format if needed
       const standardError =
@@ -95,8 +95,8 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
             prev.map((e) =>
               e.timestamp === errorDetails.timestamp
                 ? { ...e, reported: true, id: errorId as string }
-                : e
-            )
+                : e,
+            ),
           );
 
           // Increment report count
@@ -106,7 +106,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
 
       return errorId;
     },
-    [errorConfig, reportCount, user?.id]
+    [errorConfig, reportCount, user?.id],
   );
 
   /**
@@ -131,7 +131,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
       if (!severity) return errors.length;
       return errors.filter((error) => error.severity === severity).length;
     },
-    [errors]
+    [errors],
   );
 
   /**

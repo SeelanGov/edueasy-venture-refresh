@@ -1,5 +1,4 @@
-
-import { DocumentDateData, DocumentTypeData, RejectionReason } from './types';
+import type { DocumentDateData, DocumentTypeData, RejectionReason } from './types';
 import type { Database } from '@/integrations/supabase/types';
 
 type Document = Database['public']['Tables']['documents']['Row'];
@@ -10,7 +9,7 @@ export const processDocumentsByDate = (documents: Document[]): DocumentDateData[
 
   documents.forEach((doc) => {
     if (!doc.created_at) return; // Skip if no created_at date
-    
+
     const date = new Date(doc.created_at).toISOString().split('T')[0];
     const status = doc.verification_status || 'pending';
 
@@ -20,7 +19,8 @@ export const processDocumentsByDate = (documents: Document[]): DocumentDateData[
 
     const statusCounts = dateMap[date];
     if (status in statusCounts) {
-      statusCounts[status as keyof typeof statusCounts] = (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
+      statusCounts[status as keyof typeof statusCounts] =
+        (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
     }
   });
 
@@ -53,7 +53,8 @@ export const processDocumentsByType = (documents: Document[]): DocumentTypeData[
 
     const statusCounts = typeMap[type];
     if (status in statusCounts) {
-      statusCounts[status as keyof typeof statusCounts] = (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
+      statusCounts[status as keyof typeof statusCounts] =
+        (statusCounts[status as keyof typeof statusCounts] || 0) + 1;
     }
   });
 
@@ -74,7 +75,7 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
       (doc) =>
         doc.rejection_reason &&
         (doc.verification_status === 'rejected' ||
-          doc.verification_status === 'request_resubmission')
+          doc.verification_status === 'request_resubmission'),
     )
     .reduce<{ [key: string]: number }>((acc, doc) => {
       const reason = doc.rejection_reason || 'Unknown';
@@ -92,16 +93,16 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
 export const calculateAnalytics = (filteredDocuments: Document[]) => {
   const totalDocuments = filteredDocuments.length;
   const approvedDocuments = filteredDocuments.filter(
-    (doc) => doc.verification_status === 'approved'
+    (doc) => doc.verification_status === 'approved',
   ).length;
   const rejectedDocuments = filteredDocuments.filter(
-    (doc) => doc.verification_status === 'rejected'
+    (doc) => doc.verification_status === 'rejected',
   ).length;
   const pendingDocuments = filteredDocuments.filter(
-    (doc) => doc.verification_status === 'pending'
+    (doc) => doc.verification_status === 'pending',
   ).length;
   const resubmissionRequestedDocuments = filteredDocuments.filter(
-    (doc) => doc.verification_status === 'request_resubmission'
+    (doc) => doc.verification_status === 'request_resubmission',
   ).length;
 
   // Calculate pass/fail rates

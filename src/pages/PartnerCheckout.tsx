@@ -1,4 +1,4 @@
-
+import { Button } from '@/components/ui/button';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,18 +22,21 @@ const PartnerCheckout: React.FC = () => {
       <div className="relative w-full">
         {/* Back to Home Button */}
         <div className="container mx-auto px-4 mt-8 mb-0 flex items-center">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
             <span className="mr-2 text-lg">&#8592;</span>
             Back to Home
-          </button>
+          </Button>
         </div>
       </div>
       <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-lg mt-0">
-        <h1 className="text-2xl font-bold mb-4 text-primary text-center">Institution Subscription Payment</h1>
+        <h1 className="text-2xl font-bold mb-4 text-primary text-center">
+          Institution Subscription Payment
+        </h1>
         <p className="text-foreground-muted text-center mb-4">
           Please use one of the following methods to complete your institution’s payment. Once paid,
           allow up to 1 business day for verification.
@@ -72,17 +75,21 @@ const PartnerCheckout: React.FC = () => {
           </a>
         </div>
         <div className="mb-4">
-          <button
+          <Button
             className="bg-cap-teal text-white rounded-lg px-5 py-2 mr-2"
             onClick={() => navigate('/partner/dashboard')}
           >
             Back to Dashboard
-          </button>
+          </Button>
         </div>
         <div className="text-xs text-center text-gray-400">
-          Once you have paid, EduEasy will confirm your payment and unlock your full dashboard access.
+          Once you have paid, EduEasy will confirm your payment and unlock your full dashboard
+          access.
           <br />
-          Need urgent help? Email <a href="mailto:partners@edueasy.co.za" className="underline">partners@edueasy.co.za</a>
+          Need urgent help? Email{' '}
+          <a href="mailto:partners@edueasy.co.za" className="underline">
+            partners@edueasy.co.za
+          </a>
         </div>
       </div>
     </div>
@@ -90,4 +97,3 @@ const PartnerCheckout: React.FC = () => {
 };
 
 export default PartnerCheckout;
-

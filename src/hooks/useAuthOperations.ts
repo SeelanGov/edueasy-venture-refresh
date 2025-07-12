@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-import { User, Session, AuthError } from '@supabase/supabase-js';
-import { ApiError } from '@/types/common';
+import type { User, Session } from '@supabase/supabase-js';
+import type { ApiError } from '@/types/common';
 import logger from '@/utils/logger';
 
 export const useAuthOperations = () => {
@@ -14,7 +13,7 @@ export const useAuthOperations = () => {
     email: string,
     password: string,
     fullName: string,
-    idNumber: string
+    idNumber: string,
   ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
     try {
       logger.debug('Attempting signup for:', email);
@@ -86,7 +85,7 @@ export const useAuthOperations = () => {
   const signIn = async (
     email: string,
     password: string,
-    rememberMe = false
+    rememberMe = false,
   ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
     try {
       logger.debug('Attempting signin for:', email);

@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Shield, ArrowLeft } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Shield, ArrowLeft } from 'lucide-react';
 
 const Unauthorized = () => {
   const navigate = useNavigate();
@@ -14,24 +14,22 @@ const Unauthorized = () => {
             Access Denied
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            You don't have permission to access this page. Please contact your administrator if you believe this is an error.
+            You don't have permission to access this page. Please contact your administrator if you
+            believe this is an error.
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-3">
-          <Button 
+          <Button
             onClick={() => navigate(-1)}
-            variant="outline" 
+            variant="outline"
             className="w-full flex items-center justify-center"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
           </Button>
-          
-          <Button 
-            onClick={() => navigate('/')}
-            className="w-full"
-          >
+
+          <Button onClick={() => navigate('/')} className="w-full">
             Return to Homepage
           </Button>
         </div>

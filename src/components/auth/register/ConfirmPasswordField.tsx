@@ -1,10 +1,9 @@
-
-import { useState } from "react";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Control } from "react-hook-form";
-import { RegisterFormValues } from "../RegisterForm";
-import { Eye, EyeOff } from "lucide-react";
+import { useState } from 'react';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import type { Control } from 'react-hook-form';
+import type { RegisterFormValues } from '../RegisterForm';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface ConfirmPasswordFieldProps {
   control: Control<RegisterFormValues>;
@@ -25,7 +24,7 @@ export const ConfirmPasswordField = ({ control, isLoading }: ConfirmPasswordFiel
             <div className="relative">
               <Input
                 placeholder="******"
-                type={showConfirmPassword ? "text" : "password"}
+                type={showConfirmPassword ? 'text' : 'password'}
                 {...field}
                 disabled={isLoading}
                 className="text-gray-900 pr-10"

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import {
   Form,
   FormControl,
