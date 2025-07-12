@@ -1,8 +1,9 @@
 
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ExternalLink, Mail, MapPin, Phone, GraduationCap, Building2, DollarSign, FileCheck, Users } from 'lucide-react';
+import { ExternalLink, Mail, MapPin, Phone, GraduationCap, Building2, DollarSign, FileCheck, Users, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useAdminRole } from '@/hooks/useAdminRole';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
@@ -49,6 +50,7 @@ const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userType } = useAuth();
+  const { isAdmin } = useAdminRole();
 
   const scrollToSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -76,6 +78,14 @@ const Footer = () => {
       navigate(partner.route);
     }
     setIsPartnerModalOpen(false);
+  };
+
+  const handleAdminAccess = () => {
+    if (user && isAdmin) {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -231,6 +241,17 @@ const Footer = () => {
                   </div>
                 </DialogContent>
               </Dialog>
+              
+              <Button 
+                variant="outline" 
+                className="w-full justify-start bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-cap-teal"
+                onClick={handleAdminAccess}
+                data-testid="admin-access-button"
+              >
+                <Shield className="mr-2 h-4 w-4" />
+                EduEasy Admin
+              </Button>
+              
               <div className="space-y-2">
                 <Link 
                   to="/privacy-policy"
