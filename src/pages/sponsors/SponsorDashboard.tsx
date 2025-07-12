@@ -2,13 +2,14 @@
 import React from "react";
 import { useSponsorApplications } from "@/hooks/useSponsorApplications";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const SponsorDashboard = () => {
   const { applications, loading, refresh } = useSponsorApplications({ asSponsor: true });
-  const sponsor_id = localStorage.getItem("sponsor_id");
+  const { userType } = useAuth();
   const navigate = useNavigate();
 
-  if (!sponsor_id) {
+  if (userType !== 'sponsor') {
     return <div className="max-w-md mx-auto mt-16 p-8 bg-white rounded-xl shadow">
       <h2 className="text-2xl mb-4">Unauthenticated</h2>
       <p>Please <button className="text-cap-teal underline" onClick={() => navigate("/sponsors/login")}>Login</button> as sponsor.</p>
