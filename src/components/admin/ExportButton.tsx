@@ -1,13 +1,13 @@
-import React from 'react';
+import { Button } from '@/components/ui/button';
 
 interface ExportButtonProps {
   onExport: () => void;
 }
 
 export const ExportButton: React.FC<ExportButtonProps> = ({ onExport }) => (
-  <button className="btn btn-outline" onClick={onExport}>
+  <Button variant="outline" onClick={onExport}>
     Export CSV
-  </button>
+  </Button>
 );
 
 export default ExportButton;

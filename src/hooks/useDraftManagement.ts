@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
 
 // Define a simpler type for draft data that matches what we're collecting
@@ -22,7 +20,7 @@ export const useDraftManagement = (
   isOnline: boolean,
   documentFile: File | null,
   saveFormToStorage: (data: DraftFormData) => void,
-  setHasSavedDraft: (value: boolean) => void
+  setHasSavedDraft: (value: boolean) => void,
 ) => {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const { draftSchema } = useApplicationFormSchema();

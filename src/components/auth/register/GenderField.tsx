@@ -1,8 +1,13 @@
-
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Control } from "react-hook-form";
-import { RegisterFormValues } from "../RegisterForm";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import type { Control } from 'react-hook-form';
+import type { RegisterFormValues } from '../RegisterForm';
 
 interface GenderFieldProps {
   control: Control<RegisterFormValues>;
@@ -17,11 +22,7 @@ export const GenderField = ({ control, isLoading }: GenderFieldProps) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel className="text-gray-700">Gender *</FormLabel>
-          <Select 
-            onValueChange={field.onChange} 
-            defaultValue={field.value}
-            disabled={isLoading}
-          >
+          <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
             <FormControl>
               <SelectTrigger className="text-gray-900">
                 <SelectValue placeholder="Select your gender" />

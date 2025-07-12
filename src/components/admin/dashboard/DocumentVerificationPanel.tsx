@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle } from 'lucide-react';
-import { makeUserMap, UserSummary } from '@/utils/admin/userLookup';
+import type { UserSummary } from '@/utils/admin/userLookup';
 
 interface Document {
   id: string;
@@ -48,14 +48,15 @@ export function DocumentVerificationPanel({ documents, updateDocumentStatus, use
                 <div className="flex-1">
                   <p className="font-medium">{doc.document_type || 'Unknown Type'}</p>
                   <p className="text-sm text-gray-600">
-                    User Tracking ID: <span className="text-blue-700 font-mono">{user?.tracking_id || doc.user_id}</span>
+                    User Tracking ID:{' '}
+                    <span className="text-blue-700 font-mono">
+                      {user?.tracking_id || doc.user_id}
+                    </span>
                   </p>
-                  {user?.full_name && 
+                  {user?.full_name && (
                     <p className="text-xs text-gray-500 truncate">Name: {user.full_name}</p>
-                  }
-                  {user?.email && 
-                    <p className="text-xs text-gray-400 truncate">{user.email}</p>
-                  }
+                  )}
+                  {user?.email && <p className="text-xs text-gray-400 truncate">{user.email}</p>}
                   <p className="text-sm text-gray-600">
                     Uploaded: {new Date(doc.created_at).toLocaleDateString()}
                   </p>

@@ -61,7 +61,7 @@ export const compressImage = async (file: File): Promise<File> => {
             resolve(newFile);
           },
           file.type,
-          quality
+          quality,
         );
       };
 

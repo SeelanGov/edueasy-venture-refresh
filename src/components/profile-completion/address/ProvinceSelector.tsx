@@ -7,8 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Control } from 'react-hook-form';
-import { AddressFormValues } from './types';
+import type { Control } from 'react-hook-form';
+import type { AddressFormValues } from './types';
 
 // South African provinces
 const provinces = [

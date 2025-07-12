@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { z } from 'zod';
@@ -7,7 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { AlertCircle, Shield } from 'lucide-react';
@@ -177,7 +183,10 @@ const ResetPassword = () => {
                     {error || 'This password reset link is invalid or has expired.'}
                   </AlertDescription>
                 </Alert>
-                <Link to="/forgot-password" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
+                <Link
+                  to="/forgot-password"
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
+                >
                   Request a new reset link
                 </Link>
               </div>
@@ -186,7 +195,10 @@ const ResetPassword = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
+          <Link
+            to="/"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
+          >
             ← Back to Home
           </Link>
         </div>

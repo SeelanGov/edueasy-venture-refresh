@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { UILockSystem } from '@/components/system/UILockSystem';
 import { DashboardLayout } from '@/components/DashboardLayout';

@@ -93,7 +93,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
           statusColors.bg,
           statusColors.border,
           statusColors.text,
-          statusColors.animation
+          statusColors.animation,
         )}
         aria-label={`${title} - ${status}`}
         tabIndex={0}
@@ -110,7 +110,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
           status === 'active' && 'text-primary',
           status === 'completed' && 'text-green-600',
           status === 'pending' && 'text-gray-500',
-          status === 'error' && 'text-red-500'
+          status === 'error' && 'text-red-500',
         )}
       >
         {title}
@@ -123,7 +123,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
             'absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs',
             status === 'active' && 'bg-primary text-white',
             status === 'pending' && 'bg-gray-200 text-gray-600',
-            status === 'error' && 'bg-red-100 text-red-600'
+            status === 'error' && 'bg-red-100 text-red-600',
           )}
         >
           {stepNumber}

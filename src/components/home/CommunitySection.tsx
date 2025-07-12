@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -36,9 +35,9 @@ export const CommunitySection = () => {
             </Typography>
 
             <Typography variant="body-lg" className="mb-6 text-gray-600">
-              Connect with thousands of ambitious South African students who are transforming 
-              their futures through education. Share experiences, get support, and celebrate 
-              each other's successes.
+              Connect with thousands of ambitious South African students who are transforming their
+              futures through education. Share experiences, get support, and celebrate each other's
+              successes.
             </Typography>
 
             <div className="space-y-4">
@@ -99,4 +98,3 @@ export const CommunitySection = () => {
     </section>
   );
 };
-

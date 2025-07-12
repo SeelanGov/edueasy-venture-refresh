@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { CheckCircle, Info, XCircle } from 'lucide-react';
-import { Control, FieldValues, Path } from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form';
 
 interface EnhancedFormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   control: Control<TFieldValues>;

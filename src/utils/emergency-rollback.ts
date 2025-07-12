@@ -1,4 +1,3 @@
-
 // Emergency rollback utilities for design system deployment
 export const ROLLBACK_CONFIG = {
   // CSS classes to restore if emergency rollback is needed
@@ -12,35 +11,24 @@ export const ROLLBACK_CONFIG = {
     'text-green-600': 'text-success',
     'text-yellow-600': 'text-warning',
   },
-  
+
   // Components to disable if issues are detected
-  rollbackComponents: [
-    'Button',
-    'StatusBadge',
-    'Card',
-    'PageLayout',
-  ],
-  
+  rollbackComponents: ['Button', 'StatusBadge', 'Card', 'PageLayout'],
+
   // Critical pages that must work during rollback
-  criticalPages: [
-    '/login',
-    '/register', 
-    '/dashboard',
-    '/application-form',
-    '/admin',
-  ],
+  criticalPages: ['/login', '/register', '/dashboard', '/application-form', '/admin'],
 };
 
 export const initiateEmergencyRollback = (): void => {
   console.warn('🚨 EMERGENCY ROLLBACK INITIATED');
-  
+
   // Set feature flags to disable new design system
   localStorage.setItem('EMERGENCY_ROLLBACK', 'true');
   localStorage.setItem('VITE_ENABLE_NEW_DESIGN_SYSTEM', 'false');
   localStorage.setItem('VITE_ENABLE_NEW_BUTTONS', 'false');
   localStorage.setItem('VITE_ENABLE_NEW_COLORS', 'false');
   localStorage.setItem('VITE_ENABLE_NEW_LAYOUTS', 'false');
-  
+
   // Reload the page to apply rollback
   window.location.reload();
 };
@@ -55,6 +43,6 @@ export const clearEmergencyRollback = (): void => {
   localStorage.removeItem('VITE_ENABLE_NEW_BUTTONS');
   localStorage.removeItem('VITE_ENABLE_NEW_COLORS');
   localStorage.removeItem('VITE_ENABLE_NEW_LAYOUTS');
-  
+
   console.log('✅ Emergency rollback cleared');
 };

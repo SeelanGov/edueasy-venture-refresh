@@ -1,11 +1,10 @@
 
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ExternalLink, Mail, MapPin, Phone, GraduationCap, Building2, DollarSign, FileCheck, Users, Shield } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useAdminRole } from '@/hooks/useAdminRole';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
+import { Building2, DollarSign, FileCheck, GraduationCap, Mail, MapPin, Users } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const partnerTypes = [
   {
@@ -97,10 +96,11 @@ const Footer = () => {
             <div>
               <h3 className="text-2xl font-bold text-cap-coral mb-4">EduEasy</h3>
               <p className="text-gray-300 leading-relaxed">
-                Building the future of education and career development in South Africa. Connecting students with opportunities since 2024.
+                Building the future of education and career development in South Africa. Connecting
+                students with opportunities since 2024.
               </p>
             </div>
-            
+
             <div className="space-y-3">
               <h4 className="text-lg font-semibold mb-3">Contact Info</h4>
               <div className="flex items-center gap-3 text-gray-300">
@@ -119,32 +119,33 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6 text-white">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <button 
+                <Button
+                  variant="ghost"
                   onClick={() => scrollToSection('how-it-works')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
                 >
                   How It Works
-                </button>
+                </Button>
               </li>
               <li>
-                <Link 
-                  to="/meet-thandi" 
+                <Link
+                  to="/meet-thandi"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   Meet Thandi
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/pricing" 
+                <Link
+                  to="/pricing"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/institutions" 
+                <Link
+                  to="/institutions"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   For Institutions
@@ -158,40 +159,41 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6 text-white">Student Services</h4>
             <ul className="space-y-3">
               <li>
-                <Link 
-                  to="/career-guidance" 
+                <Link
+                  to="/career-guidance"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   Career Guidance
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/consultations" 
+                <Link
+                  to="/consultations"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   Consultations
                 </Link>
               </li>
               <li>
-                <button 
+                <Button
+                  variant="ghost"
                   onClick={() => scrollToSection('testimonials')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
                 >
                   Success Stories
-                </button>
+                </Button>
               </li>
               <li>
-                <Link 
-                  to="/faqs" 
+                <Link
+                  to="/faqs"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/sponsorships" 
+                <Link
+                  to="/sponsorships"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
                 >
                   Sponsorships
@@ -202,71 +204,41 @@ const Footer = () => {
 
           {/* Partner Access */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 text-white">Partner Access</h4>
-            <div className="space-y-4">
-              <Dialog open={isPartnerModalOpen} onOpenChange={setIsPartnerModalOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-cap-teal"
-                    data-testid="partner-access-trigger"
-                  >
-                    <Building2 className="mr-2 h-4 w-4" />
-                    Partner Login
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md md:max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Select Your Organization Type</DialogTitle>
-                  </DialogHeader>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    {partnerTypes.map((partner) => {
-                      const Icon = partner.icon;
-                      return (
-                        <Button
-                          key={partner.name}
-                          variant="outline"
-                          className="h-auto p-4 flex flex-col items-start text-left space-y-2 hover:bg-accent"
-                          onClick={() => handlePartnerSelect(partner)}
-                          data-testid={`partner-${partner.userType}`}
-                        >
-                          <div className="flex items-center space-x-2 w-full">
-                            <Icon className="h-5 w-5 text-primary" />
-                            <span className="font-semibold">{partner.name}</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground">{partner.description}</p>
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </DialogContent>
-              </Dialog>
-              
-              <Button 
-                variant="outline" 
-                className="w-full justify-start bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-cap-teal"
-                onClick={handleAdminAccess}
-                data-testid="admin-access-button"
-              >
-                <Shield className="mr-2 h-4 w-4" />
-                EduEasy Admin
-              </Button>
-              
-              <div className="space-y-2">
-                <Link 
+            <h4 className="text-lg font-semibold mb-6 text-white">Resources & Legal</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/partner-dashboard"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
+                  EduEasy Admin
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/privacy-policy"
                   className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
                 >
                   Privacy Policy
                 </Link>
-                <Link 
+              </li>
+              <li>
+                <Link
                   to="/terms-of-service"
                   className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
                 >
                   Terms of Service
                 </Link>
-              </div>
-            </div>
+              </li>
+              <li>
+                <Link
+                  to="/refund-policy"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
+                  Refund Policy
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -274,7 +246,8 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-center md:text-left">
-              &copy; 2024 EduEasy. All rights reserved. Building the future of South African education.
+              &copy; 2024 EduEasy. All rights reserved. Building the future of South African
+              education.
             </p>
             <div className="flex items-center space-x-6">
               <div className="flex items-center gap-2 text-gray-400">

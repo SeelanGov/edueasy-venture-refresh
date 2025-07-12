@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
-import { SubmitHandler } from 'react-hook-form';
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import type { SubmitHandler } from 'react-hook-form';
 
 /**
  * Hook for managing application submission functionality
@@ -16,7 +15,7 @@ export const useApplicationSubmission = (
   documentFile: File | null,
   saveFormToStorage: (data: ApplicationFormValues) => void,
   clearSavedForm: () => void,
-  hasSavedDraft: boolean
+  hasSavedDraft: boolean,
 ) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);

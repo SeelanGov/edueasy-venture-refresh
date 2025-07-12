@@ -1,11 +1,10 @@
-
 import { useMemo } from 'react';
-import { DocumentAnalytics } from './types';
+import type { DocumentAnalytics } from './types';
 
 export const useStatusDistributionData = (analytics: DocumentAnalytics | null) => {
   return useMemo(() => {
     if (!analytics) return [];
-    
+
     return [
       {
         status: 'Approved',
@@ -25,7 +24,8 @@ export const useStatusDistributionData = (analytics: DocumentAnalytics | null) =
       {
         status: 'Resubmission',
         count: analytics.resubmissionRequestedDocuments,
-        percentage: (analytics.resubmissionRequestedDocuments / (analytics.totalDocuments || 1)) * 100,
+        percentage:
+          (analytics.resubmissionRequestedDocuments / (analytics.totalDocuments || 1)) * 100,
       },
     ];
   }, [analytics]);
@@ -34,12 +34,12 @@ export const useStatusDistributionData = (analytics: DocumentAnalytics | null) =
 export const useDocumentTypeTableData = (analytics: DocumentAnalytics | null) => {
   return useMemo(() => {
     if (!analytics) return [];
-    
+
     return analytics.documentsByType.map((type) => {
       const total = type.approved + type.rejected + type.pending + type.request_resubmission;
       const processed = type.approved + type.rejected + type.request_resubmission;
       const passRate = processed > 0 ? (type.approved / processed) * 100 : 0;
-      
+
       return {
         ...type,
         total,

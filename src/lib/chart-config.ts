@@ -1,8 +1,7 @@
-
 // Chart configuration and utilities for consistent styling
 export const CHART_COLORS = {
   approved: '#10b981',
-  rejected: '#ef4444', 
+  rejected: '#ef4444',
   pending: '#f59e0b',
   request_resubmission: '#8b5cf6',
 } as const;
@@ -13,7 +12,7 @@ export const STATUS_CONFIG = {
     color: CHART_COLORS.approved,
   },
   rejected: {
-    label: 'Rejected', 
+    label: 'Rejected',
     color: CHART_COLORS.rejected,
   },
   pending: {

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuth } from '@/hooks/useAuth';

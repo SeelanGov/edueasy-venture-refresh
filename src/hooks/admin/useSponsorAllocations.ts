@@ -1,6 +1,5 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface SponsorAllocation {
   id: string;
@@ -20,10 +19,10 @@ export function useSponsorAllocations(userId?: string) {
     if (!userId) return;
     setLoading(true);
     supabase
-      .from("sponsor_allocations")
-      .select("*")
-      .eq("student_id", userId)
-      .order("allocated_on", { ascending: false })
+      .from('sponsor_allocations')
+      .select('*')
+      .eq('student_id', userId)
+      .order('allocated_on', { ascending: false })
       .then(({ data, error }) => {
         if (!error && data) {
           setAllocations(data as SponsorAllocation[]);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { DocumentUploadInput } from './DocumentUploadInput';
-import { DocumentType, DocumentUploadState, Step } from './types';
-import { VerificationResult } from '@/hooks/useDocumentVerification';
+import type { DocumentType, DocumentUploadState, Step } from './types';
+import type { VerificationResult } from '@/hooks/useDocumentVerification';
 
 interface DocumentUploadGridProps {
   documentStates: Record<DocumentType, DocumentUploadState>;

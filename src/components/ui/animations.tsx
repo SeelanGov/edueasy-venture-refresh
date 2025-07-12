@@ -44,7 +44,7 @@ export const FadeIn = ({
         direction !== 'none' && directionClasses[direction],
         'animate-in fade-in',
         durationClasses[duration],
-        className
+        className,
       )}
       style={delayStyle}
       {...props}
@@ -85,7 +85,7 @@ export const ScaleIn = ({
         'opacity-0 scale-95',
         'animate-in zoom-in',
         durationClasses[duration],
-        className
+        className,
       )}
       style={delayStyle}
       {...props}
@@ -108,7 +108,7 @@ export const AnimateOnScroll = ({
       className={cn(
         'opacity-0 translate-y-4 transition-all duration-700 ease-out',
         'data-[state=visible]:opacity-100 data-[state=visible]:translate-y-0',
-        className
+        className,
       )}
       data-state="hidden"
       {...props}

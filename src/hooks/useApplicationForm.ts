@@ -1,14 +1,11 @@
-
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
 import { useNetwork } from '@/hooks/useNetwork';
 import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
 import { useApplicationFormState } from '@/hooks/useApplicationFormState';
 import { useDraftManagement } from '@/hooks/useDraftManagement';
 import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
-import { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
+import type { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
 
 export const useApplicationForm = () => {
   const navigate = useNavigate();
@@ -26,7 +23,7 @@ export const useApplicationForm = () => {
       idNumber: form.getValues('idNumber') || '',
       university: data.university,
       program: data.program,
-      grade12Results: data.grade12Results
+      grade12Results: data.grade12Results,
     };
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
     saveFormToStorage(applicationFormData);
@@ -44,7 +41,7 @@ export const useApplicationForm = () => {
     isOnline,
     documentFile,
     saveFormToStorageWrapper,
-    setHasSavedDraft
+    setHasSavedDraft,
   );
 
   // Initialize application submission
@@ -58,7 +55,7 @@ export const useApplicationForm = () => {
     documentFile,
     saveFormToStorageWrapper,
     clearSavedForm,
-    hasSavedDraft
+    hasSavedDraft,
   );
 
   // Create a submit wrapper that calls the form's handleSubmit

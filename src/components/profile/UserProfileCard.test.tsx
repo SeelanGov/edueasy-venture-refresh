@@ -1,4 +1,3 @@
-
 import { render, screen, fireEvent } from '@testing-library/react';
 import { UserProfileCard } from './UserProfileCard';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -9,7 +8,7 @@ describe('UserProfileCard', () => {
     render(
       <TooltipProvider>
         <UserProfileCard />
-      </TooltipProvider>
+      </TooltipProvider>,
     );
     // Wait for profile to load
     const name = await screen.findByTestId('profile-name');
@@ -26,7 +25,7 @@ describe('UserProfileCard', () => {
     render(
       <TooltipProvider>
         <UserProfileCard />
-      </TooltipProvider>
+      </TooltipProvider>,
     );
     // Wait for profile to load
     await screen.findByTestId('profile-name');

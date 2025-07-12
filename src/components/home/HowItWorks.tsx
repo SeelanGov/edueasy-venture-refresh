@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
@@ -131,8 +130,8 @@ export const HowItWorks = () => {
                   </Typography>
                   <Typography variant="body" className="text-gray-600 mb-6">
                     Our streamlined platform is designed to help students apply to multiple
-                    institutions efficiently. We're building toward these ambitious goals
-                    to better serve South African students.
+                    institutions efficiently. We're building toward these ambitious goals to better
+                    serve South African students.
                   </Typography>
 
                   <div className="mb-4">
@@ -142,7 +141,11 @@ export const HowItWorks = () => {
                   </div>
 
                   <StatisticsGrid
-                    selectedStats={['successfulApplications', 'documentApproval', 'studentSatisfaction']}
+                    selectedStats={[
+                      'successfulApplications',
+                      'documentApproval',
+                      'studentSatisfaction',
+                    ]}
                     variant="compact"
                     columns={3}
                     animateOnScroll={true}

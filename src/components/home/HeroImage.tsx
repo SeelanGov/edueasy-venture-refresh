@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 export const HeroImage = () => {
@@ -17,7 +16,7 @@ export const HeroImage = () => {
     <div className="hidden md:block relative h-full">
       <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
       <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
-      
+
       <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
         {!imageLoaded && !imageError && (
           <div className="w-full h-64 bg-gray-200 animate-pulse rounded-xl flex items-center justify-center">
@@ -34,7 +33,7 @@ export const HeroImage = () => {
             </div>
           </div>
         )}
-        
+
         <img
           src={heroImagePath}
           alt="Empowering SA Youth, Online and Offline - Student studying with technology"
@@ -45,7 +44,7 @@ export const HeroImage = () => {
           }}
           onError={handleImageError}
         />
-        
+
         <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">
           <div className="flex items-center gap-2 text-primary">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

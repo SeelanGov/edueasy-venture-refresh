@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 
 export const AboutContent = () => {
@@ -9,9 +8,9 @@ export const AboutContent = () => {
       </Typography>
 
       <Typography variant="body-lg" className="mb-6">
-        EduEasy is your comprehensive gateway to higher education in South Africa. We combine 
-        cutting-edge AI technology with deep cultural understanding to support students from 
-        all backgrounds in achieving their academic dreams.
+        EduEasy is your comprehensive gateway to higher education in South Africa. We combine
+        cutting-edge AI technology with deep cultural understanding to support students from all
+        backgrounds in achieving their academic dreams.
       </Typography>
 
       <div className="space-y-4">
@@ -22,8 +21,8 @@ export const AboutContent = () => {
           <div className="ml-4">
             <Typography variant="h5">AI-Powered Guidance</Typography>
             <Typography variant="body" className="text-gray-700">
-              Thandi, our AI assistant, provides personalized support and guidance throughout 
-              your education journey.
+              Thandi, our AI assistant, provides personalized support and guidance throughout your
+              education journey.
             </Typography>
           </div>
         </div>
@@ -35,8 +34,8 @@ export const AboutContent = () => {
           <div className="ml-4">
             <Typography variant="h5">Cultural Understanding</Typography>
             <Typography variant="body" className="text-gray-700">
-              Built specifically for South African students, understanding local context, 
-              languages, and cultural nuances.
+              Built specifically for South African students, understanding local context, languages,
+              and cultural nuances.
             </Typography>
           </div>
         </div>
@@ -48,8 +47,8 @@ export const AboutContent = () => {
           <div className="ml-4">
             <Typography variant="h5">Comprehensive Support</Typography>
             <Typography variant="body" className="text-gray-700">
-              From application guidance to career counseling, we support you every step 
-              of the way to success.
+              From application guidance to career counseling, we support you every step of the way
+              to success.
             </Typography>
           </div>
         </div>

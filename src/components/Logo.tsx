@@ -1,4 +1,3 @@
-
 type LogoProps = {
   size?: 'small' | 'medium' | 'large';
   layout?: 'horizontal' | 'vertical';
@@ -80,7 +79,9 @@ export const Logo = ({ size = 'medium', layout = 'vertical', className = '' }: L
             <path d="M140 195V190H160V195" stroke="white" strokeWidth="2" />
           </svg>
         </div>
-        <div className={`font-heading font-bold text-gray-800 dark:text-white ${textSizeClasses[size]}`}>
+        <div
+          className={`font-heading font-bold text-gray-800 dark:text-white ${textSizeClasses[size]}`}
+        >
           EduEasy
         </div>
       </div>
@@ -149,7 +150,9 @@ export const Logo = ({ size = 'medium', layout = 'vertical', className = '' }: L
         </svg>
       </div>
       {size !== 'small' && (
-        <div className={`font-heading font-bold text-gray-800 dark:text-white text-center ${textSizeClasses[size]}`}>
+        <div
+          className={`font-heading font-bold text-gray-800 dark:text-white text-center ${textSizeClasses[size]}`}
+        >
           EduEasy
         </div>
       )}

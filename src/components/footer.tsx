@@ -1,10 +1,9 @@
-
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useAuth } from '@/hooks/useAuth';
+import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { GraduationCap, Building2, DollarSign, FileCheck, Users } from 'lucide-react';
 
 const partnerTypes = [
   {
@@ -50,11 +49,9 @@ export function Footer() {
   const navigate = useNavigate();
 
   const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
-    // If user is already logged in with this user type, redirect to dashboard
     if (user && userType === partner.userType) {
       navigate('/dashboard');
     } else {
-      // Navigate to registration/login flow
       navigate(partner.route);
     }
     setIsPartnerModalOpen(false);

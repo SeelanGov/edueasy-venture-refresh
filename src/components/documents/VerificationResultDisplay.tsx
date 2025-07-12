@@ -1,4 +1,3 @@
-
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
 import { VerifyingDocument } from './verification/VerifyingDocument';
 import { ApprovedDocument } from './verification/ApprovedDocument';

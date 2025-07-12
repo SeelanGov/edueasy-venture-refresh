@@ -17,7 +17,7 @@ export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeP
         'bg-warning/10 border border-warning/20 rounded-md p-4 mb-6',
         'dark:bg-warning/5 dark:border-warning/10',
         'md:p-5 md:mb-8 md:flex md:items-center md:justify-between',
-        className
+        className,
       )}
       role="alert"
       aria-live="polite"

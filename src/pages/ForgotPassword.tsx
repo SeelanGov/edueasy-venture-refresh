@@ -1,4 +1,3 @@
-
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -19,7 +18,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { Logo } from '@/components/Logo';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -129,7 +127,10 @@ const ForgotPassword = () => {
                   <div className="text-center mt-4">
                     <p className="text-sm text-gray-600">
                       Remember your password?{' '}
-                      <Link to="/login" className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
+                      <Link
+                        to="/login"
+                        className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
+                      >
                         Sign in
                       </Link>
                     </p>
@@ -141,7 +142,10 @@ const ForgotPassword = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
+          <Link
+            to="/"
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
+          >
             ← Back to Home
           </Link>
         </div>

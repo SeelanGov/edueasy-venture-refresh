@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { DocumentType } from '@/components/profile-completion/documents/types';
 
 // Define proper types for verification results
 interface VerificationResult {
@@ -29,7 +28,7 @@ export const useDocumentNotifications = () => {
         console.error('Failed to create resubmission notification:', error);
       }
     },
-    []
+    [],
   );
 
   // Show toast notification based on verification result
@@ -49,7 +48,7 @@ export const useDocumentNotifications = () => {
           `Document rejected: ${result.failureReason || 'Please try again with a clearer document'}`,
           {
             duration: 8000,
-          }
+          },
         );
       } else if (result.status === 'pending') {
         toast.info('Document is being reviewed by our team', {
@@ -57,7 +56,7 @@ export const useDocumentNotifications = () => {
         });
       }
     },
-    []
+    [],
   );
 
   return {

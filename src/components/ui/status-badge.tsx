@@ -1,9 +1,17 @@
-
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { statusColors, extendedStatusColors, type StatusType, type ExtendedStatusType } from '@/lib/design-tokens';
+import { statusColors, extendedStatusColors, type ExtendedStatusType } from '@/lib/design-tokens';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle, AlertCircle, Clock, FileText, Eye, RefreshCw, type LucideIcon } from 'lucide-react';
+import {
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Clock,
+  FileText,
+  Eye,
+  RefreshCw,
+  type LucideIcon,
+} from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const statusBadgeVariants = cva(
@@ -25,7 +33,7 @@ const statusBadgeVariants = cva(
       size: 'default',
       animation: 'none',
     },
-  }
+  },
 );
 
 interface StatusBadgeProps extends VariantProps<typeof statusBadgeVariants> {
@@ -49,9 +57,9 @@ const statusIcons: Record<ExtendedStatusType, LucideIcon> = {
   'resubmission-required': RefreshCw,
 };
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ 
-  status, 
-  children, 
+export const StatusBadge: React.FC<StatusBadgeProps> = ({
+  status,
+  children,
   className,
   showIcon = true,
   size,
@@ -61,7 +69,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
 }) => {
   const statusStyle = extendedStatusColors[status] || statusColors.info;
   const IconComponent = statusIcons[status];
-  
+
   return (
     <Badge
       className={cn(
@@ -70,18 +78,18 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
         statusStyle.text,
         statusStyle.border,
         'border',
-        className
+        className,
       )}
       aria-label={ariaLabel || `Status: ${status}`}
       role="status"
       {...props}
     >
       {showIcon && IconComponent && (
-        <IconComponent 
+        <IconComponent
           className={cn(
             'shrink-0',
-            size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4'
-          )} 
+            size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4',
+          )}
           aria-hidden="true"
         />
       )}

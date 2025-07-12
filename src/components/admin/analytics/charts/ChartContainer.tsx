@@ -1,5 +1,4 @@
-
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/Spinner';
 
@@ -12,13 +11,13 @@ interface ChartContainerProps {
   className?: string;
 }
 
-export const ChartContainer = ({ 
-  title, 
-  description, 
-  children, 
-  loading = false, 
+export const ChartContainer = ({
+  title,
+  description,
+  children,
+  loading = false,
   error = null,
-  className = '' 
+  className = '',
 }: ChartContainerProps) => {
   return (
     <Card className={className}>

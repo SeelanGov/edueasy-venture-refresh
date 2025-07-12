@@ -1,9 +1,8 @@
-
 import { ChartContainer } from '../charts/ChartContainer';
 import { StatusDistributionChart } from '../StatusDistributionChart';
 import { RejectionReasonsChart } from '../RejectionReasonsChart';
 import { useStatusDistributionData } from '@/hooks/analytics/useChartData';
-import { DocumentAnalytics } from '@/hooks/analytics/types';
+import type { DocumentAnalytics } from '@/hooks/analytics/types';
 
 interface OverviewTabProps {
   analytics: DocumentAnalytics;
@@ -20,7 +19,7 @@ export const OverviewTab = ({ analytics }: OverviewTabProps) => {
       >
         <StatusDistributionChart data={statusData} />
       </ChartContainer>
-      
+
       <ChartContainer
         title="Top Rejection Reasons"
         description="Most common causes for document rejection"

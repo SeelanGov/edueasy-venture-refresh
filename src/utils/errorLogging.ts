@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { StandardError } from './errorHandler';
+import type { StandardError } from './errorHandler';
 import { toast } from 'sonner';
 import logger from './logger';
 
@@ -18,7 +18,7 @@ export const logError = async (
   severity: ErrorSeverity = ErrorSeverity.ERROR,
   component: string = 'Unknown',
   action: string = 'Unknown',
-  userId?: string
+  userId?: string,
 ): Promise<string | null> => {
   try {
     logger.error(`Error in ${component}:`, error.message);
@@ -66,7 +66,7 @@ export const safeAsyncWithLogging = async <T>(
     showToast?: boolean;
     additionalData?: Record<string, unknown>;
     retryCount?: number;
-  }
+  },
 ): Promise<{ data: T | null; error: Error | null }> => {
   try {
     const data = await fn();
@@ -123,7 +123,7 @@ export const getCriticalErrorCount = async (): Promise<number> => {
  */
 export const resolveSystemError = async (
   errorId: string,
-  resolutionNotes: string
+  resolutionNotes: string,
 ): Promise<boolean> => {
   try {
     // Use direct table access instead of RPC function

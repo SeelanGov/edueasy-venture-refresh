@@ -7,8 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Control } from 'react-hook-form';
-import { PersonalInfoFormValues } from './types';
+import type { Control } from 'react-hook-form';
+import type { PersonalInfoFormValues } from './types';
 
 interface GenderSelectorProps {
   control: Control<PersonalInfoFormValues>;

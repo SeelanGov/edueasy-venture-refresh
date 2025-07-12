@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { UseFormReturn } from 'react-hook-form';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import type { UseFormReturn } from 'react-hook-form';
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 /**
  * Hook for loading draft applications from Supabase
@@ -10,7 +10,7 @@ export const useDraftLoading = (
   userId: string | undefined,
   isOnline: boolean,
   form: UseFormReturn<ApplicationFormValues>,
-  setHasSavedDraft: (value: boolean) => void
+  setHasSavedDraft: (value: boolean) => void,
 ) => {
   // Check for existing drafts
   useEffect(() => {

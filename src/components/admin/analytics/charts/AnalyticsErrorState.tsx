@@ -1,4 +1,3 @@
-
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +22,7 @@ export const AnalyticsErrorState = ({ error, onRetry }: AnalyticsErrorStateProps
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        
+
         <div className="text-center">
           <Button onClick={onRetry} variant="outline" className="gap-2">
             <RefreshCw className="h-4 w-4" />

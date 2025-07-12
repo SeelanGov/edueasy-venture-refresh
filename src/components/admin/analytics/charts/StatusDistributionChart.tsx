@@ -1,4 +1,3 @@
-
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 interface StatusDistributionChartProps {
@@ -19,7 +18,7 @@ export const StatusDistributionChart = ({
     { name: 'Rejected', value: rejected, color: '#ef4444' },
     { name: 'Pending', value: pending, color: '#f59e0b' },
     { name: 'Resubmission', value: resubmission, color: '#f97316' },
-  ].filter(item => item.value > 0);
+  ].filter((item) => item.value > 0);
 
   if (data.length === 0) {
     return (

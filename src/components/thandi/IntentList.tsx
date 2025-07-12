@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IntentWithStats } from '@/hooks/useIntentManagement';
+import type { IntentWithStats } from '@/hooks/useIntentManagement';
 import {
   Table,
   TableBody,
@@ -20,7 +20,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 
 interface IntentListProps {

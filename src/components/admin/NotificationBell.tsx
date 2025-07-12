@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ export const NotificationBell: React.FC = () => {
     { id: 1, message: '2 pending verifications' },
     { id: 2, message: '1 flagged issue' },
   ];
-  
+
   return (
     <div className="relative">
       <Button

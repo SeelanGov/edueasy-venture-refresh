@@ -1,6 +1,6 @@
-
+import { Button } from '@/components/ui/button';
+import type { Sponsor } from '@/types/SponsorTypes';
 import React from 'react';
-import { Sponsor } from '@/types/SponsorTypes';
 
 interface SponsorListTableProps {
   sponsors: Sponsor[];
@@ -28,20 +28,28 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, on
             <td className="px-3 py-2">{sponsor.phone || '-'}</td>
             <td className="px-3 py-2">{sponsor.contact_person || '-'}</td>
             <td className="px-3 py-2">
-              <span className={`px-2 py-1 rounded text-xs ${
-                sponsor.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-700'
-              }`}>{sponsor.status}</span>
+              <span
+                className={`px-2 py-1 rounded text-xs ${
+                  sponsor.status === 'active'
+                    ? 'bg-green-200 text-green-800'
+                    : 'bg-gray-200 text-gray-700'
+                }`}
+              >
+                {sponsor.status}
+              </span>
             </td>
             <td className="px-3 py-2">
-              <button className="text-cap-teal hover:underline" onClick={() => onView(sponsor.id)}>
+              <Button className="text-cap-teal hover:underline" variant="link" size="sm" onClick={() => onView(sponsor.id)}>
                 View
-              </button>
+              </Button>
             </td>
           </tr>
         ))}
         {sponsors.length === 0 && (
           <tr>
-            <td colSpan={6} className="text-center text-gray-400 py-8">No sponsors found.</td>
+            <td colSpan={6} className="text-center text-gray-400 py-8">
+              No sponsors found.
+            </td>
           </tr>
         )}
       </tbody>

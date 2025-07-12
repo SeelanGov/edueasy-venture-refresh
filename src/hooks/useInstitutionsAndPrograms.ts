@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Institution, Program } from '@/types/Institution';
+import type { Institution, Program } from '@/types/Institution';
 
 export const useInstitutionsAndPrograms = () => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -23,7 +22,7 @@ export const useInstitutionsAndPrograms = () => {
         if (error) throw error;
 
         // Map database data to our Institution type, handling null values
-        const mappedInstitutions: Institution[] = (data || []).map(item => ({
+        const mappedInstitutions: Institution[] = (data || []).map((item) => ({
           id: item.id,
           name: item.name,
           short_name: item.short_name || '',
@@ -61,7 +60,7 @@ export const useInstitutionsAndPrograms = () => {
         if (error) throw error;
 
         // Map database data to our Program type, handling null values
-        const mappedPrograms: Program[] = (data || []).map(item => ({
+        const mappedPrograms: Program[] = (data || []).map((item) => ({
           id: item.id,
           institution_id: item.institution_id,
           name: item.name,
@@ -88,7 +87,7 @@ export const useInstitutionsAndPrograms = () => {
 
   // Filter programs by selected institution
   const filteredPrograms = selectedInstitutionId
-    ? programs.filter(program => program.institution_id === selectedInstitutionId)
+    ? programs.filter((program) => program.institution_id === selectedInstitutionId)
     : [];
 
   return {

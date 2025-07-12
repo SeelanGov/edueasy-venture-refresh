@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { spacing } from '@/lib/design-tokens';
+import type { spacing } from '@/lib/design-tokens';
 
 interface SpacerProps {
   size?: keyof typeof spacing | 'auto';
@@ -23,7 +22,7 @@ export const Spacer: React.FC<SpacerProps> = ({
 }) => {
   const getSpacingClasses = () => {
     const classes: string[] = [];
-    
+
     // Base spacing
     if (size === 'auto') {
       if (direction === 'vertical') classes.push('flex-1');
@@ -39,9 +38,9 @@ export const Spacer: React.FC<SpacerProps> = ({
         '2xl': '3rem',
         '3xl': '4rem',
       };
-      
+
       const spacingValue = spacingMap[size];
-      
+
       if (direction === 'vertical') {
         classes.push(`h-[${spacingValue}]`);
       } else if (direction === 'horizontal') {
@@ -50,20 +49,20 @@ export const Spacer: React.FC<SpacerProps> = ({
         classes.push(`h-[${spacingValue}]`, `w-[${spacingValue}]`);
       }
     }
-    
+
     // Responsive spacing
     if (responsive) {
       Object.entries(responsive).forEach(([breakpoint, responsiveSize]) => {
         const responsiveSpacingValue = {
           xs: '0.5rem',
-          sm: '0.75rem', 
+          sm: '0.75rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
           '2xl': '3rem',
           '3xl': '4rem',
         }[responsiveSize];
-        
+
         if (direction === 'vertical') {
           classes.push(`${breakpoint}:h-[${responsiveSpacingValue}]`);
         } else if (direction === 'horizontal') {
@@ -71,25 +70,16 @@ export const Spacer: React.FC<SpacerProps> = ({
         } else {
           classes.push(
             `${breakpoint}:h-[${responsiveSpacingValue}]`,
-            `${breakpoint}:w-[${responsiveSpacingValue}]`
+            `${breakpoint}:w-[${responsiveSpacingValue}]`,
           );
         }
       });
     }
-    
+
     return classes.join(' ');
   };
 
-  return (
-    <div 
-      className={cn(
-        'flex-shrink-0',
-        getSpacingClasses(),
-        className
-      )}
-      aria-hidden="true"
-    />
-  );
+  return <div className={cn('flex-shrink-0', getSpacingClasses(), className)} aria-hidden="true" />;
 };
 
 // Convenience components

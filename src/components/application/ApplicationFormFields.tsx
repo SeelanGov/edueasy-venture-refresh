@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';

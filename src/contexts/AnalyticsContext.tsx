@@ -1,7 +1,6 @@
-
-import React, { createContext, useContext, ReactNode } from 'react';
 import { useDocumentAnalytics } from '@/hooks/analytics';
-import { AnalyticsFilters, DocumentAnalytics } from '@/hooks/analytics/types';
+import type { AnalyticsFilters, DocumentAnalytics } from '@/hooks/analytics/types';
+import { createContext, useContext, type ReactNode } from 'react';
 
 interface AnalyticsContextType {
   analytics: DocumentAnalytics | null;
@@ -23,11 +22,7 @@ interface AnalyticsProviderProps {
 export const AnalyticsProvider = ({ children, initialFilters }: AnalyticsProviderProps) => {
   const analyticsData = useDocumentAnalytics(initialFilters);
 
-  return (
-    <AnalyticsContext.Provider value={analyticsData}>
-      {children}
-    </AnalyticsContext.Provider>
-  );
+  return <AnalyticsContext.Provider value={analyticsData}>{children}</AnalyticsContext.Provider>;
 };
 
 export const useAnalyticsContext = () => {

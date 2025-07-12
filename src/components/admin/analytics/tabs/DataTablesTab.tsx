@@ -1,4 +1,3 @@
-
 import { ChartContainer } from '../charts/ChartContainer';
 import {
   Table,
@@ -9,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useDocumentTypeTableData } from '@/hooks/analytics/useChartData';
-import { DocumentAnalytics } from '@/hooks/analytics/types';
+import type { DocumentAnalytics } from '@/hooks/analytics/types';
 
 interface DataTablesTabProps {
   analytics: DocumentAnalytics;
@@ -47,7 +46,8 @@ export const DataTablesTab = ({ analytics }: DataTablesTabProps) => {
                   <TableCell className="text-right">
                     {(
                       (reason.count /
-                        (analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments || 1)) *
+                        (analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments ||
+                          1)) *
                       100
                     ).toFixed(1)}
                     %
@@ -58,11 +58,8 @@ export const DataTablesTab = ({ analytics }: DataTablesTabProps) => {
           </TableBody>
         </Table>
       </ChartContainer>
-      
-      <ChartContainer
-        title="Document Type Breakdown"
-        description="Statistics by document type"
-      >
+
+      <ChartContainer title="Document Type Breakdown" description="Statistics by document type">
         <Table>
           <TableHeader>
             <TableRow>

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 export const AboutImage = () => {
@@ -32,7 +31,7 @@ export const AboutImage = () => {
               </div>
             </div>
           )}
-          
+
           <img
             src={imagePath}
             alt="Students studying and using EduEasy platform with branding"

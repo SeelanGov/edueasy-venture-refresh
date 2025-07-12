@@ -3,11 +3,11 @@ import { playNotificationSound } from '@/utils/notificationSound';
 
 export const useNetworkStatus = () => {
   const [isOnline, setIsOnline] = useState(
-    typeof navigator !== 'undefined' ? navigator.onLine : true
+    typeof navigator !== 'undefined' ? navigator.onLine : true,
   );
   const [isRetrying, setIsRetrying] = useState(false);
   const [lastConnectedTime, setLastConnectedTime] = useState<Date | null>(
-    isOnline ? new Date() : null
+    isOnline ? new Date() : null,
   );
 
   // Update the online status and lastConnectedTime when it changes

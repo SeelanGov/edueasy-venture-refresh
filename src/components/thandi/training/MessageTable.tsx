@@ -1,5 +1,5 @@
-import { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
-import { Intent } from '@/hooks/useIntentManagement';
+import type { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
+import type { Intent } from '@/hooks/useIntentManagement';
 import {
   Table,
   TableBody,

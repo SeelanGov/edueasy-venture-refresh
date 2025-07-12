@@ -1,13 +1,12 @@
-
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle, RefreshCw, Phone, Mail, CheckCircle } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useAuthActions } from "@/hooks/useAuthActions";
-import { Spinner } from "@/components/Spinner";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertTriangle, RefreshCw, Phone, Mail, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useAuthActions } from '@/hooks/useAuthActions';
+import { Spinner } from '@/components/Spinner';
 
 const VerificationRequired = () => {
   const { user } = useAuth();
@@ -19,19 +18,19 @@ const VerificationRequired = () => {
 
   const handleRetryVerification = async () => {
     if (!user?.email || !user?.user_metadata) {
-      setRetryError("Missing user information. Please register again.");
+      setRetryError('Missing user information. Please register again.');
       return;
     }
 
     setIsRetrying(true);
     setRetryError(null);
-    
+
     try {
       const result = await verifyIdentity(
         user.email,
         user.user_metadata.id_number || '',
         user.user_metadata.full_name || '',
-        user.user_metadata.phone_number
+        user.user_metadata.phone_number,
       );
 
       if (result.verified) {
@@ -44,15 +43,15 @@ const VerificationRequired = () => {
         if (result.blocked_until) {
           const blockedDate = new Date(result.blocked_until);
           setRetryError(
-            `Too many verification attempts. Please try again after ${blockedDate.toLocaleString()}.`
+            `Too many verification attempts. Please try again after ${blockedDate.toLocaleString()}.`,
           );
         } else {
-          setRetryError(result.error || "Verification failed. Please check your ID number.");
+          setRetryError(result.error || 'Verification failed. Please check your ID number.');
         }
       }
     } catch (error) {
       console.error('Retry verification error:', error);
-      setRetryError("Network error during verification. Please try again later.");
+      setRetryError('Network error during verification. Please try again later.');
     } finally {
       setIsRetrying(false);
     }
@@ -69,13 +68,14 @@ const VerificationRequired = () => {
             Identity Verification Required
           </CardTitle>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           <div className="text-gray-600 text-center">
             <p className="mb-4">
-              Your identity needs to be verified before you can access your dashboard and apply for educational opportunities.
+              Your identity needs to be verified before you can access your dashboard and apply for
+              educational opportunities.
             </p>
-            
+
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left">
               <h4 className="font-medium text-blue-900 mb-2">Why do we verify identity?</h4>
               <ul className="text-sm text-blue-800 space-y-1">
@@ -105,7 +105,7 @@ const VerificationRequired = () => {
 
           {user?.email && (
             <div className="space-y-3">
-              <Button 
+              <Button
                 onClick={handleRetryVerification}
                 disabled={isRetrying || retrySuccess}
                 className="w-full bg-cap-teal hover:bg-cap-teal/90"
@@ -123,10 +123,8 @@ const VerificationRequired = () => {
                   </>
                 )}
               </Button>
-              
-              <div className="text-xs text-gray-500 text-center">
-                Registered as: {user.email}
-              </div>
+
+              <div className="text-xs text-gray-500 text-center">Registered as: {user.email}</div>
             </div>
           )}
 
@@ -140,7 +138,7 @@ const VerificationRequired = () => {
             <div className="text-sm text-gray-600 text-center">
               <p className="font-medium mb-2">Need help with verification?</p>
             </div>
-            
+
             <div className="grid grid-cols-1 gap-3">
               <Button variant="outline" size="sm" asChild className="justify-start">
                 <a href="mailto:support@edueasy.co.za" className="flex items-center">
@@ -148,7 +146,7 @@ const VerificationRequired = () => {
                   Email Support
                 </a>
               </Button>
-              
+
               <Button variant="outline" size="sm" asChild className="justify-start">
                 <a href="tel:+27123456789" className="flex items-center">
                   <Phone className="h-4 w-4 mr-2" />
@@ -156,10 +154,10 @@ const VerificationRequired = () => {
                 </a>
               </Button>
             </div>
-            
+
             <div className="text-xs text-gray-500 text-center leading-relaxed">
-              Our support team is available Monday to Friday, 8:00 AM to 5:00 PM (SAST).
-              Please have your registration email and the last 4 digits of your ID number ready.
+              Our support team is available Monday to Friday, 8:00 AM to 5:00 PM (SAST). Please have
+              your registration email and the last 4 digits of your ID number ready.
             </div>
           </div>
         </CardContent>

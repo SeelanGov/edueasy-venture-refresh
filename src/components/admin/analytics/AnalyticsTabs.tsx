@@ -1,7 +1,13 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { ChartWrapper } from './charts/ChartWrapper';
 import { StatusDistributionChart } from './charts/StatusDistributionChart';
 import { DocumentTimelineChart } from './charts/DocumentTimelineChart';
@@ -97,9 +103,10 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
                   </TableRow>
                 ) : (
                   analytics.commonRejectionReasons.map((reason) => {
-                    const totalRejected = analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments;
+                    const totalRejected =
+                      analytics.rejectedDocuments + analytics.resubmissionRequestedDocuments;
                     const percentage = totalRejected > 0 ? (reason.count / totalRejected) * 100 : 0;
-                    
+
                     return (
                       <TableRow key={reason.reason}>
                         <TableCell className="font-medium">{reason.reason}</TableCell>
@@ -140,7 +147,8 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
                   </TableRow>
                 ) : (
                   analytics.documentsByType.map((type) => {
-                    const total = type.approved + type.rejected + type.pending + type.request_resubmission;
+                    const total =
+                      type.approved + type.rejected + type.pending + type.request_resubmission;
                     const processed = type.approved + type.rejected + type.request_resubmission;
                     const passRate = processed > 0 ? (type.approved / processed) * 100 : 0;
 
@@ -156,7 +164,15 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
                         </TableCell>
                         <TableCell className="text-right text-yellow-600">{type.pending}</TableCell>
                         <TableCell className="text-right">
-                          <span className={passRate >= 70 ? 'text-green-600' : passRate >= 50 ? 'text-yellow-600' : 'text-red-600'}>
+                          <span
+                            className={
+                              passRate >= 70
+                                ? 'text-green-600'
+                                : passRate >= 50
+                                  ? 'text-yellow-600'
+                                  : 'text-red-600'
+                            }
+                          >
                             {passRate.toFixed(1)}%
                           </span>
                         </TableCell>

@@ -1,4 +1,3 @@
-
 import { useLocation, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -37,7 +36,7 @@ const NotFound = () => {
                   Go Home
                 </Link>
               </Button>
-              
+
               <Button asChild variant="outline" className="w-full">
                 <Link to="/dashboard" className="flex items-center justify-center gap-2">
                   <Search className="h-4 w-4" />

@@ -1,11 +1,10 @@
-
-import React, { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 const SponsorLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,19 +23,19 @@ const SponsorLogin = () => {
 
       // Check if user is a sponsor
       const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("user_type")
-        .eq("id", data.user.id)
+        .from('users')
+        .select('user_type')
+        .eq('id', data.user.id)
         .single();
 
       if (userError || userData?.user_type !== 'sponsor') {
         await supabase.auth.signOut();
-        throw new Error("Invalid sponsor credentials");
+        throw new Error('Invalid sponsor credentials');
       }
 
-      navigate("/sponsors/dashboard");
+      navigate('/sponsors/dashboard');
     } catch (err: any) {
-      setError(err.message || "Login error");
+      setError(err.message || 'Login error');
     } finally {
       setLoading(false);
     }
@@ -46,10 +45,28 @@ const SponsorLogin = () => {
     <div className="max-w-md mx-auto mt-16 p-8 bg-white rounded-xl shadow">
       <h2 className="text-2xl mb-4">Sponsor Login</h2>
       <form className="space-y-4" onSubmit={handleLogin}>
-        <input className="input" required placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} />
-        <input className="input" required placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        <button type="submit" className="w-full bg-cap-teal text-white py-2 rounded" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
+        <input
+          className="input"
+          required
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="input"
+          required
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="w-full bg-cap-teal text-white py-2 rounded"
+          disabled={loading}
+        >
+          {loading ? 'Logging in...' : 'Login'}
         </button>
         {error && <div className="text-red-500">{error}</div>}
       </form>

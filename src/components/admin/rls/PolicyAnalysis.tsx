@@ -1,8 +1,7 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
-import { RLSPolicyAnalysis } from '@/utils/security/types';
+import type { RLSPolicyAnalysis } from '@/utils/security/types';
 import { AlertCircle, CheckCircle, ShieldAlert, AlertTriangle } from 'lucide-react';
 
 interface PolicyAnalysisProps {
@@ -42,7 +41,7 @@ export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps) => {
   const overallScore =
     analysis.length > 0
       ? Math.round(
-          analysis.reduce((sum, table) => sum + calculateSecurityScore(table), 0) / analysis.length
+          analysis.reduce((sum, table) => sum + calculateSecurityScore(table), 0) / analysis.length,
         )
       : 0;
 

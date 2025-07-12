@@ -1,7 +1,6 @@
-
-import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 export function useSponsorApplications({ asSponsor = false } = {}) {
   const { user } = useAuth();
@@ -15,33 +14,31 @@ export function useSponsorApplications({ asSponsor = false } = {}) {
     if (asSponsor) {
       // Get sponsor record for authenticated user
       const { data: sponsorData, error: sponsorError } = await supabase
-        .from("sponsors")
-        .select("id")
-        .eq("user_id", user.id)
+        .from('sponsors')
+        .select('id')
+        .eq('user_id', user.id)
         .single();
-      
-      if (sponsorError || !sponsorData) { 
-        console.log("No sponsor record found for user:", user.id);
-        setApplications([]); 
-        setLoading(false); 
-        return; 
+
+      if (sponsorError || !sponsorData) {
+        console.log('No sponsor record found for user:', user.id);
+        setApplications([]);
+        setLoading(false);
+        return;
       }
-      
+
       resp = await supabase
-        .from("application_fee_sponsorships")
-        .select("*, sponsor_applications(*, student_id), sponsor_id")
-        .eq("sponsor_id", sponsorData.id);
+        .from('application_fee_sponsorships')
+        .select('*, sponsor_applications(*, student_id), sponsor_id')
+        .eq('sponsor_id', sponsorData.id);
     } else {
-      resp = await supabase
-        .from("sponsor_applications")
-        .select("*")
-        .eq("student_id", user.id);
+      resp = await supabase.from('sponsor_applications').select('*').eq('student_id', user.id);
     }
     setApplications(resp.data || []);
     setLoading(false);
   }, [user, asSponsor]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
   return { applications, loading, refresh: fetch };
 }
-

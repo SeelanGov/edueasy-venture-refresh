@@ -34,7 +34,7 @@ export const useUserType = () => {
           .single();
 
         if (error) throw error;
-        
+
         setUserType(data?.user_type || 'student');
         setProfile(data);
       } catch (err) {
@@ -62,6 +62,6 @@ export const useUserType = () => {
     isConsultant,
     isInstitution,
     isSponsor,
-    isStudent
+    isStudent,
   };
 };

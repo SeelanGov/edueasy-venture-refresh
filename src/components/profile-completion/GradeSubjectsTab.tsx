@@ -1,11 +1,10 @@
-
 import React from 'react';
-import { SubjectMark } from '@/hooks/useProfileCompletionStore';
+import type { SubjectMark } from '@/hooks/useProfileCompletionStore';
 import { SubjectEntry } from './SubjectEntry';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 
 interface EducationFormData {
   province: string;

@@ -1,5 +1,4 @@
-
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -15,14 +14,7 @@ interface StatCardProps {
   className?: string;
 }
 
-export const StatCard = ({
-  title,
-  value,
-  icon,
-  description,
-  trend,
-  className,
-}: StatCardProps) => {
+export const StatCard = ({ title, value, icon, description, trend, className }: StatCardProps) => {
   return (
     <Card className={cn('transition-all hover:shadow-md', className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -42,9 +34,7 @@ export const StatCard = ({
               <span
                 className={cn(
                   'ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium',
-                  trend.positive
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
+                  trend.positive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
                 )}
               >
                 {trend.positive ? '+' : '-'}

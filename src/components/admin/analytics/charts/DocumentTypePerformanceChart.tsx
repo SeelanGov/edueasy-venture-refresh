@@ -1,5 +1,13 @@
-
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import type { DocumentTypeData } from '@/hooks/analytics/types';
 
 interface DocumentTypePerformanceChartProps {
@@ -15,7 +23,7 @@ export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceCh
     );
   }
 
-  const formattedData = data.map(item => ({
+  const formattedData = data.map((item) => ({
     type: item.type.replace(/([A-Z])/g, ' $1').trim(),
     approved: item.approved,
     rejected: item.rejected + item.request_resubmission,
@@ -26,13 +34,7 @@ export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceCh
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={formattedData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="type" 
-          angle={-45}
-          textAnchor="end"
-          height={80}
-          fontSize={12}
-        />
+        <XAxis dataKey="type" angle={-45} textAnchor="end" height={80} fontSize={12} />
         <YAxis />
         <Tooltip />
         <Legend />

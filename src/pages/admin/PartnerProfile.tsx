@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { usePartner } from "@/hooks/usePartner";
-import { usePartnerPayments } from "@/hooks/usePartnerPayments";
-import { usePartnerNotes } from "@/hooks/usePartnerNotes";
-import PartnerStatusBadge from "@/components/admin/partners/PartnerStatusBadge";
-import PartnerPaymentHistory from "@/components/admin/partners/PartnerPaymentHistory";
-import PartnerIntegrationChecklist from "@/components/admin/partners/PartnerIntegrationChecklist";
-import NotesTimeline from "@/components/admin/partners/NotesTimeline";
-import { Spinner } from "@/components/Spinner";
-import { toast } from "@/components/ui/use-toast"; // show toast on error
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { usePartner } from '@/hooks/usePartner';
+import { usePartnerPayments } from '@/hooks/usePartnerPayments';
+import { usePartnerNotes } from '@/hooks/usePartnerNotes';
+import PartnerStatusBadge from '@/components/admin/partners/PartnerStatusBadge';
+import PartnerPaymentHistory from '@/components/admin/partners/PartnerPaymentHistory';
+import PartnerIntegrationChecklist from '@/components/admin/partners/PartnerIntegrationChecklist';
+import NotesTimeline from '@/components/admin/partners/NotesTimeline';
+import { Spinner } from '@/components/Spinner';
+import { toast } from '@/components/ui/use-toast'; // show toast on error
 
 const TAB_HEADINGS = [
-  { id: "details", label: "Details" },
-  { id: "integration", label: "Integration" },
-  { id: "payments", label: "Payments" },
-  { id: "notes", label: "Notes" },
-  { id: "settings", label: "Settings" },
+  { id: 'details', label: 'Details' },
+  { id: 'integration', label: 'Integration' },
+  { id: 'payments', label: 'Payments' },
+  { id: 'notes', label: 'Notes' },
+  { id: 'settings', label: 'Settings' },
 ];
 
 const PartnerProfilePage: React.FC = () => {
-  const { id = "" } = useParams<{ id: string }>();
-  const [tab, setTab] = useState("details");
+  const { id = '' } = useParams<{ id: string }>();
+  const [tab, setTab] = useState('details');
   const { partner, isLoading } = usePartner(id);
   const { payments } = usePartnerPayments(id);
   const { notes } = usePartnerNotes(id);
@@ -36,15 +36,11 @@ const PartnerProfilePage: React.FC = () => {
   }
   if (!partner) {
     toast({
-      title: "Partner not found",
-      description: "This partner either does not exist or could not be loaded.",
-      variant: "destructive",
+      title: 'Partner not found',
+      description: 'This partner either does not exist or could not be loaded.',
+      variant: 'destructive',
     });
-    return (
-      <div className="p-8 text-center text-red-400">
-        Partner not found or unavailable.
-      </div>
-    );
+    return <div className="p-8 text-center text-red-400">Partner not found or unavailable.</div>;
   }
 
   return (
@@ -54,10 +50,10 @@ const PartnerProfilePage: React.FC = () => {
         <PartnerStatusBadge status={partner.status} tier={partner.tier} type={partner.type} />
       </div>
       <div className="flex gap-3 mb-6">
-        {TAB_HEADINGS.map(t => (
+        {TAB_HEADINGS.map((t) => (
           <button
             key={t.id}
-            className={`rounded px-3 py-2 text-sm ${tab === t.id ? "bg-cap-teal/10 font-bold underline" : "hover:bg-gray-100"}`}
+            className={`rounded px-3 py-2 text-sm ${tab === t.id ? 'bg-cap-teal/10 font-bold underline' : 'hover:bg-gray-100'}`}
             onClick={() => setTab(t.id)}
           >
             {t.label}
@@ -65,23 +61,42 @@ const PartnerProfilePage: React.FC = () => {
         ))}
       </div>
       <div>
-        {tab === "details" && (
+        {tab === 'details' && (
           <section className="mb-6">
             <div className="flex flex-col gap-1 text-gray-600">
-              <div><strong>Email:</strong> {partner.email}</div>
-              <div><strong>Phone:</strong> {partner.phone || "-"}</div>
-              <div><strong>Type:</strong> {partner.type}</div>
-              <div><strong>Tier:</strong> {partner.tier}</div>
-              <div><strong>Status:</strong> <PartnerStatusBadge status={partner.status} tier={partner.tier} type={partner.type} /></div>
-              <div><strong>Integration:</strong> {partner.integration_status || "-"}</div>
+              <div>
+                <strong>Email:</strong> {partner.email}
+              </div>
+              <div>
+                <strong>Phone:</strong> {partner.phone || '-'}
+              </div>
+              <div>
+                <strong>Type:</strong> {partner.type}
+              </div>
+              <div>
+                <strong>Tier:</strong> {partner.tier}
+              </div>
+              <div>
+                <strong>Status:</strong>{' '}
+                <PartnerStatusBadge
+                  status={partner.status}
+                  tier={partner.tier}
+                  type={partner.type}
+                />
+              </div>
+              <div>
+                <strong>Integration:</strong> {partner.integration_status || '-'}
+              </div>
             </div>
           </section>
         )}
-        {tab === "integration" && <PartnerIntegrationChecklist partner={partner} />}
-        {tab === "payments" && <PartnerPaymentHistory payments={payments} />}
-        {tab === "notes" && <NotesTimeline notes={notes} />}
-        {tab === "settings" && (
-          <div className="rounded border p-4 text-gray-500 italic">Settings editing not implemented yet.</div>
+        {tab === 'integration' && <PartnerIntegrationChecklist partner={partner} />}
+        {tab === 'payments' && <PartnerPaymentHistory payments={payments} />}
+        {tab === 'notes' && <NotesTimeline notes={notes} />}
+        {tab === 'settings' && (
+          <div className="rounded border p-4 text-gray-500 italic">
+            Settings editing not implemented yet.
+          </div>
         )}
       </div>
     </div>

@@ -36,73 +36,86 @@ export const useDocumentUploadManager = () => {
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const [documentStates, setDocumentStates] = useState<Record<string, DocumentUploadState>>({});
   const [isVerifying, setIsVerifying] = useState(false);
-  
+
   const form = useForm();
   const { uploadDocument, uploading } = useDocumentUpload();
   const { verifyDocument } = useDocumentVerification();
 
-  const getDocumentState = useCallback((documentType: string): DocumentUploadState => {
-    return documentStates[documentType] || {
-      uploaded: false,
-      uploading: false,
-      verificationTriggered: false,
-      progress: 0,
-      error: null,
-    };
-  }, [documentStates]);
+  const getDocumentState = useCallback(
+    (documentType: string): DocumentUploadState => {
+      return (
+        documentStates[documentType] || {
+          uploaded: false,
+          uploading: false,
+          verificationTriggered: false,
+          progress: 0,
+          error: null,
+        }
+      );
+    },
+    [documentStates],
+  );
 
-  const processDocument = useCallback(async (
-    file: File,
-    documentType: string,
-    applicationId: string,
-    isResubmission: boolean = false
-  ) => {
-    setIsProcessing(true);
-    setVerificationResult(undefined);
+  const processDocument = useCallback(
+    async (
+      file: File,
+      documentType: string,
+      applicationId: string,
+      isResubmission: boolean = false,
+    ) => {
+      setIsProcessing(true);
+      setVerificationResult(undefined);
 
-    try {
-      // Upload document with correct arguments (file, documentType, applicationId)
-      const uploadResult = await uploadDocument(file, documentType, applicationId);
-      
-      if (!uploadResult) {
-        throw new Error('Failed to upload document');
+      try {
+        // Upload document with correct arguments (file, documentType, applicationId)
+        const uploadResult = await uploadDocument(file, documentType, applicationId);
+
+        if (!uploadResult) {
+          throw new Error('Failed to upload document');
+        }
+
+        // Verify document with all required arguments
+        setIsVerifying(true);
+        const result = await verifyDocument(
+          uploadResult.id,
+          documentType,
+          uploadResult.file_path,
+          'automatic',
+        );
+
+        // Convert verification result to our interface
+        const convertedResult: VerificationResult = {
+          success: result?.status === 'approved',
+          status: result?.status || 'pending',
+          confidence: result?.confidence,
+          failureReason: result?.failureReason || undefined,
+          validationResults: result?.validationResults,
+          processingTimeMs: result?.processingTimeMs,
+          extractedFields: result?.extractedFields,
+        };
+
+        setVerificationResult(convertedResult);
+
+        return {
+          uploadResult,
+          verificationResult: convertedResult,
+        };
+      } catch (error) {
+        console.error('Error processing document:', error);
+        const errorResult: VerificationResult = {
+          success: false,
+          status: 'pending',
+          failureReason: error instanceof Error ? error.message : 'Unknown error',
+        };
+        setVerificationResult(errorResult);
+        return null;
+      } finally {
+        setIsProcessing(false);
+        setIsVerifying(false);
       }
-
-      // Verify document with all required arguments
-      setIsVerifying(true);
-      const result = await verifyDocument(uploadResult.id, documentType, uploadResult.file_path, 'automatic');
-      
-      // Convert verification result to our interface
-      const convertedResult: VerificationResult = {
-        success: result?.status === 'approved',
-        status: result?.status || 'pending',
-        confidence: result?.confidence,
-        failureReason: result?.failureReason || undefined,
-        validationResults: result?.validationResults,
-        processingTimeMs: result?.processingTimeMs,
-        extractedFields: result?.extractedFields,
-      };
-      
-      setVerificationResult(convertedResult);
-      
-      return {
-        uploadResult,
-        verificationResult: convertedResult,
-      };
-    } catch (error) {
-      console.error('Error processing document:', error);
-      const errorResult: VerificationResult = {
-        success: false,
-        status: 'pending',
-        failureReason: error instanceof Error ? error.message : 'Unknown error',
-      };
-      setVerificationResult(errorResult);
-      return null;
-    } finally {
-      setIsProcessing(false);
-      setIsVerifying(false);
-    }
-  }, [uploadDocument, verifyDocument]);
+    },
+    [uploadDocument, verifyDocument],
+  );
 
   const handleFileChange = useCallback((file: File, documentType: string) => {
     console.log('File changed:', file.name, 'for type:', documentType);
@@ -127,7 +140,7 @@ export const useDocumentUploadManager = () => {
   }, []);
 
   const checkCompletion = useCallback(() => {
-    return Object.values(documentStates).every(state => state.uploaded);
+    return Object.values(documentStates).every((state) => state.uploaded);
   }, [documentStates]);
 
   return {

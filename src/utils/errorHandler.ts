@@ -93,7 +93,7 @@ export const parseError = (error: unknown): AppError => {
 export const handleError = (
   error: unknown,
   userMessage?: string,
-  showToast: boolean = true
+  showToast: boolean = true,
 ): AppError => {
   const standardError = parseError(error);
 
@@ -101,7 +101,7 @@ export const handleError = (
   console.error(
     `[${standardError.category.toUpperCase()}]`,
     standardError.message,
-    standardError.originalError
+    standardError.originalError,
   );
 
   // Show toast notification if requested
@@ -122,7 +122,7 @@ export const handleError = (
 export async function safeAsync<T>(
   asyncFn: () => Promise<T>,
   errorMessage?: string,
-  showToast: boolean = true
+  showToast: boolean = true,
 ): Promise<{ data: T | null; error: AppError | null }> {
   try {
     const result = await asyncFn();

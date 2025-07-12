@@ -1,6 +1,5 @@
-
-import React from "react";
-import { SponsorNote } from "@/hooks/useSponsorNotes";
+import React from 'react';
+import type { SponsorNote } from '@/hooks/useSponsorNotes';
 
 interface SponsorNoteTimelineProps {
   notes: SponsorNote[];
@@ -19,9 +18,11 @@ export const SponsorNoteTimeline: React.FC<SponsorNoteTimelineProps> = ({ notes 
           </span>
           <div className="flex items-center mb-1">
             <span className="text-xs text-gray-500">
-              {note.created_at ? new Date(note.created_at).toLocaleString() : ""}
+              {note.created_at ? new Date(note.created_at).toLocaleString() : ''}
             </span>
-            <span className="ml-2 text-xs text-muted-foreground">{note.note_type || "General"}</span>
+            <span className="ml-2 text-xs text-muted-foreground">
+              {note.note_type || 'General'}
+            </span>
           </div>
           <div className="text-sm font-medium text-gray-800">{note.note}</div>
         </li>

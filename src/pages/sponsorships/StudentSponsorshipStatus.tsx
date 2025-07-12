@@ -1,6 +1,5 @@
-
-import React from "react";
-import { useSponsorApplications } from "@/hooks/useSponsorApplications";
+import React from 'react';
+import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 
 const StudentSponsorshipStatus = () => {
   const { applications, loading } = useSponsorApplications({ asSponsor: false });
@@ -8,7 +7,9 @@ const StudentSponsorshipStatus = () => {
   return (
     <div className="max-w-3xl mx-auto mt-10">
       <h2 className="text-2xl mb-4">My Sponsorship Applications</h2>
-      {loading ? <div>Loading...</div> : (
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
         <table className="min-w-full border rounded">
           <thead>
             <tr>
@@ -26,12 +27,16 @@ const StudentSponsorshipStatus = () => {
                 <td className="px-2 py-1">{row.requested_amount}</td>
                 <td className="px-2 py-1">{row.status}</td>
                 <td className="px-2 py-1">{row.purpose}</td>
-                <td className="px-2 py-1">{row.created_at ? new Date(row.created_at).toLocaleString() : "-"}</td>
+                <td className="px-2 py-1">
+                  {row.created_at ? new Date(row.created_at).toLocaleString() : '-'}
+                </td>
               </tr>
             ))}
             {applications.length === 0 && (
               <tr>
-                <td colSpan={5} className="text-center text-gray-400 py-4">No sponsorship applications found.</td>
+                <td colSpan={5} className="text-center text-gray-400 py-4">
+                  No sponsorship applications found.
+                </td>
               </tr>
             )}
           </tbody>

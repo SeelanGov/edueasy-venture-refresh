@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 
@@ -22,37 +21,56 @@ const MeetThandi = () => {
                 24/7 Support for Your Educational Journey
               </Typography>
               <Typography variant="p" className="text-gray-600 mb-6">
-                Thandi is designed to help South African students navigate their educational paths. 
-                From university applications to career guidance, she's here to support you every step of the way.
+                Thandi is designed to help South African students navigate their educational paths.
+                From university applications to career guidance, she's here to support you every
+                step of the way.
               </Typography>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">✓</div>
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">
+                    ✓
+                  </div>
                   <div>
-                    <Typography variant="h4" className="text-sm font-semibold">Application Assistance</Typography>
-                    <Typography variant="small" className="text-gray-600">Get help with university applications and requirements</Typography>
+                    <Typography variant="h4" className="text-sm font-semibold">
+                      Application Assistance
+                    </Typography>
+                    <Typography variant="small" className="text-gray-600">
+                      Get help with university applications and requirements
+                    </Typography>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">✓</div>
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">
+                    ✓
+                  </div>
                   <div>
-                    <Typography variant="h4" className="text-sm font-semibold">Career Guidance</Typography>
-                    <Typography variant="small" className="text-gray-600">Discover career paths that match your interests and skills</Typography>
+                    <Typography variant="h4" className="text-sm font-semibold">
+                      Career Guidance
+                    </Typography>
+                    <Typography variant="small" className="text-gray-600">
+                      Discover career paths that match your interests and skills
+                    </Typography>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">✓</div>
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm">
+                    ✓
+                  </div>
                   <div>
-                    <Typography variant="h4" className="text-sm font-semibold">Study Resources</Typography>
-                    <Typography variant="small" className="text-gray-600">Access study materials and educational resources</Typography>
+                    <Typography variant="h4" className="text-sm font-semibold">
+                      Study Resources
+                    </Typography>
+                    <Typography variant="small" className="text-gray-600">
+                      Access study materials and educational resources
+                    </Typography>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-center">
               <div className="w-64 h-64 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center relative overflow-hidden shadow-lg">
                 {/* Thandi's actual portrait inside the circle */}
@@ -65,7 +83,7 @@ const MeetThandi = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="text-center mt-8">
             <Button size="lg" className="bg-primary hover:bg-primary/90">
               Start Chatting with Thandi
@@ -78,4 +96,3 @@ const MeetThandi = () => {
 };
 
 export default MeetThandi;
-

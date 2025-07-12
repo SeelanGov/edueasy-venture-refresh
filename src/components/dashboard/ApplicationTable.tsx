@@ -1,22 +1,29 @@
-
-import { Spinner } from "@/components/Spinner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Spinner } from '@/components/Spinner';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { toast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import type { Application, EnrichedApplication } from "@/types/ApplicationTypes";
-import { AlertCircle, CheckCircle, ExternalLinkIcon, FileIcon, PlusIcon, RefreshCw, XCircle } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import type { Application, EnrichedApplication } from '@/types/ApplicationTypes';
+import {
+  AlertCircle,
+  CheckCircle,
+  ExternalLinkIcon,
+  FileIcon,
+  PlusIcon,
+  RefreshCw,
+  XCircle,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ApplicationTableProps {
   applications: Application[];
@@ -34,39 +41,39 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
           applications.map(async (app) => {
             let institutionData = null;
             let programData = null;
-            
+
             if (app.institution_id) {
               const { data: instData } = await supabase
-                .from("institutions")
-                .select("id, name")
-                .eq("id", app.institution_id)
+                .from('institutions')
+                .select('id, name')
+                .eq('id', app.institution_id)
                 .single();
               institutionData = instData;
             }
-            
+
             if (app.program_id) {
               const { data: progData } = await supabase
-                .from("programs")
-                .select("id, name")
-                .eq("id", app.program_id)
+                .from('programs')
+                .select('id, name')
+                .eq('id', app.program_id)
                 .single();
               programData = progData;
             }
-            
+
             return {
               ...app,
               institution: institutionData,
-              program_detail: programData
+              program_detail: programData,
             } as EnrichedApplication;
-          })
+          }),
         );
-        
+
         setEnrichedApplications(enriched);
       } catch (error) {
-        console.error("Error fetching application details:", error);
+        console.error('Error fetching application details:', error);
       }
     };
-    
+
     if (applications.length > 0) {
       fetchDetails();
     }
@@ -75,43 +82,43 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
   const getStatusBadgeClass = (status: string | null = 'draft') => {
     const statusValue = status || 'draft';
     switch (statusValue.toLowerCase()) {
-      case "draft":
-        return "bg-yellow-100 text-yellow-800";
-      case "submitted":
-        return "bg-blue-100 text-blue-800";
-      case "reviewed":
-        return "bg-green-100 text-green-800";
+      case 'draft':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'submitted':
+        return 'bg-blue-100 text-blue-800';
+      case 'reviewed':
+        return 'bg-green-100 text-green-800';
       default:
-        return "bg-gray-100 text-gray-800";
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getVerificationBadge = (status: string | null) => {
     if (!status) return null;
-    
+
     switch (status.toLowerCase()) {
-      case "approved":
+      case 'approved':
         return (
           <Badge variant="default" className="bg-green-500 hover:bg-green-600">
             <CheckCircle className="h-3 w-3 mr-1" />
             Verified
           </Badge>
         );
-      case "rejected":
+      case 'rejected':
         return (
           <Badge variant="destructive">
             <XCircle className="h-3 w-3 mr-1" />
             Rejected
           </Badge>
         );
-      case "pending":
+      case 'pending':
         return (
           <Badge variant="outline" className="border-amber-500 text-amber-500">
             <AlertCircle className="h-3 w-3 mr-1" />
             Pending
           </Badge>
         );
-      case "request_resubmission":
+      case 'request_resubmission':
         return (
           <Badge variant="outline" className="border-orange-500 text-orange-500">
             <RefreshCw className="h-3 w-3 mr-1" />
@@ -119,28 +126,24 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
           </Badge>
         );
       default:
-        return (
-          <Badge variant="outline">
-            Unknown
-          </Badge>
-        );
+        return <Badge variant="outline">Unknown</Badge>;
     }
   };
 
   const getDocumentUrl = async (filePath: string) => {
     try {
       const { data, error } = await supabase.storage
-        .from("user_documents")
+        .from('user_documents')
         .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 
       if (error) throw error;
       return data.signedUrl;
     } catch (error) {
-      console.error("Error creating signed URL:", error);
+      console.error('Error creating signed URL:', error);
       toast({
-        title: "Error",
-        description: "Could not generate document link",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Could not generate document link',
+        variant: 'destructive',
       });
       return null;
     }
@@ -149,7 +152,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
   const handleDocumentClick = async (filePath: string) => {
     const url = await getDocumentUrl(filePath);
     if (url) {
-      window.open(url, "_blank");
+      window.open(url, '_blank');
     }
   };
 
@@ -181,42 +184,38 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
         {enrichedApplications.map((app) => (
           <TableRow key={app.id}>
             <TableCell className="font-medium">
-              {app.institution?.name || app.university || "Not specified"}
+              {app.institution?.name || app.university || 'Not specified'}
             </TableCell>
+            <TableCell>{app.program_detail?.name || app.program || 'Not specified'}</TableCell>
             <TableCell>
-              {app.program_detail?.name || app.program || "Not specified"}
-            </TableCell>
-            <TableCell>
-              <span 
+              <span
                 className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status)}`}
               >
                 {app.status || 'draft'}
               </span>
             </TableCell>
             <TableCell>
-                {app.documents && app.documents.length > 0 ? (
+              {app.documents && app.documents.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   {app.documents.map((doc) => (
-                  <div key={doc.id} className="flex items-center justify-between">
-                    <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs justify-start"
-                    onClick={() => handleDocumentClick(doc.file_path)}
-                    >
-                    <FileIcon className="h-3 w-3 mr-1" />
-                    <span className="truncate">{doc.document_type || "Document"}</span>
-                    <ExternalLinkIcon className="h-3 w-3 ml-1" />
-                    </Button>
-                    <div className="ml-2">
-                    {getVerificationBadge(doc.verification_status)}
+                    <div key={doc.id} className="flex items-center justify-between">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs justify-start"
+                        onClick={() => handleDocumentClick(doc.file_path)}
+                      >
+                        <FileIcon className="h-3 w-3 mr-1" />
+                        <span className="truncate">{doc.document_type || 'Document'}</span>
+                        <ExternalLinkIcon className="h-3 w-3 ml-1" />
+                      </Button>
+                      <div className="ml-2">{getVerificationBadge(doc.verification_status)}</div>
                     </div>
-                  </div>
                   ))}
                 </div>
-                ) : (
+              ) : (
                 <span className="text-gray-500 text-xs">No documents</span>
-                )}
+              )}
             </TableCell>
             <TableCell className="text-gray-500">
               {app.created_at ? new Date(app.created_at).toLocaleDateString() : 'N/A'}

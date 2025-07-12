@@ -1,13 +1,13 @@
 import { supabase } from '@/integrations/supabase/client';
 import { verifyAdminAccess } from './adminAccess';
 import { testRLSPolicies } from './rlsTesting';
-import { SecurityAuditResult } from './types';
+import type { SecurityAuditResult } from './types';
 
 /**
  * Check for security issues in the application
  */
 export const performSecurityAudit = async (
-  userId: string | undefined
+  userId: string | undefined,
 ): Promise<SecurityAuditResult> => {
   if (!userId) return { success: false, issues: [] };
 

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StatusBadge, type ExtendedStatusType } from './status-badge';
 import { cn } from '@/lib/utils';
@@ -36,11 +35,11 @@ export const StatusHistory: React.FC<StatusHistoryProps> = ({
       <h4 className="text-sm font-medium text-foreground">Status History</h4>
       <div className="space-y-2">
         {displayEntries.map((entry, index) => (
-          <div 
+          <div
             key={entry.id}
             className={cn(
               'flex items-start gap-3 p-3 rounded-md border',
-              index === 0 ? 'bg-muted/30' : 'bg-background'
+              index === 0 ? 'bg-muted/30' : 'bg-background',
             )}
           >
             <div className="flex-shrink-0">
@@ -48,7 +47,7 @@ export const StatusHistory: React.FC<StatusHistoryProps> = ({
                 {entry.status.charAt(0).toUpperCase() + entry.status.slice(1).replace('-', ' ')}
               </StatusBadge>
             </div>
-            
+
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 text-sm">
                 {showTimestamps && (
@@ -57,16 +56,12 @@ export const StatusHistory: React.FC<StatusHistoryProps> = ({
                   </time>
                 )}
                 {showUpdatedBy && entry.updatedBy && (
-                  <span className="text-muted-foreground">
-                    by {entry.updatedBy}
-                  </span>
+                  <span className="text-muted-foreground">by {entry.updatedBy}</span>
                 )}
               </div>
-              
+
               {showNotes && entry.note && (
-                <p className="mt-1 text-sm text-foreground">
-                  {entry.note}
-                </p>
+                <p className="mt-1 text-sm text-foreground">{entry.note}</p>
               )}
             </div>
           </div>

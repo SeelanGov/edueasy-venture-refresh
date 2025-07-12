@@ -1,4 +1,3 @@
-
 // Testing utilities index
 export {
   validateComponentProps,
@@ -6,7 +5,7 @@ export {
   validateColorContrast,
   generateDesignSystemReport,
   type ValidationResult,
-  type ComponentValidationOptions
+  type ComponentValidationOptions,
 } from './design-system-validator';
 
 export {
@@ -15,7 +14,7 @@ export {
   createButtonTestScenarios,
   createStatusBadgeTestScenarios,
   type TestScenario,
-  type ComponentTestSuite
+  type ComponentTestSuite,
 } from './component-tester';
 
 export {
@@ -23,14 +22,14 @@ export {
   generateAccessibilityReport,
   simulateKeyboardNavigation,
   type AccessibilityCheckResult,
-  type AccessibilityIssue
+  type AccessibilityIssue,
 } from './accessibility-helpers';
 
 // Re-export existing testing utilities
 export { VISUAL_DIFF_CONFIG, generateVisualDiffReport } from './visual-diff-config';
-export { 
-  CRITICAL_USER_FLOWS, 
-  validateDesignSystemCompliance, 
+export {
+  CRITICAL_USER_FLOWS,
+  validateDesignSystemCompliance,
   runSmokeTest,
-  type SmokeTestCase 
+  type SmokeTestCase,
 } from './smoke-tests';

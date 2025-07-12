@@ -1,16 +1,15 @@
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
 import { Check, X } from 'lucide-react';
-import { SubscriptionTier, formatCurrency } from '@/types/SubscriptionTypes';
 
 interface SubscriptionTierCardProps {
   tier: SubscriptionTier;
@@ -48,17 +47,27 @@ export function SubscriptionTierCard({
             <span className="text-3xl font-bold">{formatCurrency(price)}</span>
             <span className="text-muted-foreground ml-2">once-off</span>
           </div>
-          {tier.price_once_off === 0 && (
-            <p className="text-sm text-green-600">Free forever</p>
-          )}
+          {tier.price_once_off === 0 && <p className="text-sm text-green-600">Free forever</p>}
         </div>
 
         <div className="space-y-2">
           <FeatureItem feature={`${tier.max_applications} applications`} included={true} />
-          <FeatureItem feature={`${tier.max_documents || 'Unlimited'} document uploads`} included={true} />
-          <FeatureItem feature="Document verification" included={tier.includes_verification || false} />
-          <FeatureItem feature="AI career guidance" included={tier.includes_ai_assistance || false} />
-          <FeatureItem feature="Priority support" included={tier.includes_priority_support || false} />
+          <FeatureItem
+            feature={`${tier.max_documents || 'Unlimited'} document uploads`}
+            included={true}
+          />
+          <FeatureItem
+            feature="Document verification"
+            included={tier.includes_verification || false}
+          />
+          <FeatureItem
+            feature="AI career guidance"
+            included={tier.includes_ai_assistance || false}
+          />
+          <FeatureItem
+            feature="Priority support"
+            included={tier.includes_priority_support || false}
+          />
         </div>
       </CardContent>
       <CardFooter>

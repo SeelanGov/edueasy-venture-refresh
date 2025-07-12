@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -131,7 +130,7 @@ export const useCareerGuidance = () => {
     assessmentType: AssessmentType,
     results: Record<string, any>,
     recommendations: Record<string, any>,
-    isPremium: boolean = false
+    isPremium: boolean = false,
   ) => {
     if (!user) return null;
 
@@ -187,7 +186,10 @@ export const useCareerGuidance = () => {
     }
   };
 
-  const submitAssessmentResponses = async (assessmentId: string, responses: Record<string, any>) => {
+  const submitAssessmentResponses = async (
+    assessmentId: string,
+    responses: Record<string, any>,
+  ) => {
     if (!user) return null;
 
     try {
@@ -212,7 +214,7 @@ export const useCareerGuidance = () => {
         .single();
 
       if (error) throw error;
-      
+
       await fetchAssessments();
       toast({
         title: 'Success',
@@ -248,8 +250,14 @@ export const useCareerGuidance = () => {
       const mockGuidance = {
         career_paths: ['Software Engineer', 'Data Scientist', 'Product Manager'],
         skills_to_develop: ['JavaScript', 'Python', 'Machine Learning'],
-        next_steps: ['Complete online courses', 'Build portfolio projects', 'Network with professionals'],
-        premium_insights: isPremium ? ['Detailed salary ranges', 'Industry contacts', 'Personalized mentoring'] : null,
+        next_steps: [
+          'Complete online courses',
+          'Build portfolio projects',
+          'Network with professionals',
+        ],
+        premium_insights: isPremium
+          ? ['Detailed salary ranges', 'Industry contacts', 'Personalized mentoring']
+          : null,
       };
 
       const { data, error } = await supabase
@@ -267,7 +275,7 @@ export const useCareerGuidance = () => {
         .single();
 
       if (error) throw error;
-      
+
       await fetchGuidance();
       toast({
         title: 'Success',

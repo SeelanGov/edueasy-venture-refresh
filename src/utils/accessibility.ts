@@ -7,7 +7,7 @@ import * as React from 'react';
  */
 export function announceToScreenReader(
   message: string,
-  priority: 'polite' | 'assertive' = 'polite'
+  priority: 'polite' | 'assertive' = 'polite',
 ) {
   if (typeof document === 'undefined') return;
 

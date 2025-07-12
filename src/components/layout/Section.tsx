@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -29,16 +28,8 @@ export const Section: React.FC<SectionProps> = ({
   };
 
   return (
-    <section
-      className={cn(
-        sizeClasses[size],
-        backgroundClasses[background],
-        className
-      )}
-    >
-      <div className="container mx-auto max-w-7xl px-4 md:px-8">
-        {children}
-      </div>
+    <section className={cn(sizeClasses[size], backgroundClasses[background], className)}>
+      <div className="container mx-auto max-w-7xl px-4 md:px-8">{children}</div>
     </section>
   );
 };

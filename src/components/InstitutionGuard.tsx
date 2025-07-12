@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
@@ -11,7 +11,7 @@ export const InstitutionGuard = ({ children }: InstitutionGuardProps) => {
   const { userType, loading } = useAuth();
   const location = useLocation();
 
-  console.log("InstitutionGuard check:", { userType, loading, path: location.pathname });
+  console.log('InstitutionGuard check:', { userType, loading, path: location.pathname });
 
   if (loading) {
     return (
@@ -25,10 +25,10 @@ export const InstitutionGuard = ({ children }: InstitutionGuardProps) => {
   }
 
   if (userType !== 'institution') {
-    console.log("InstitutionGuard: Access denied - user is not an institution");
+    console.log('InstitutionGuard: Access denied - user is not an institution');
     return <Navigate to="/unauthorized" replace />;
   }
 
-  console.log("InstitutionGuard: Access granted for institution");
+  console.log('InstitutionGuard: Access granted for institution');
   return <>{children}</>;
 };

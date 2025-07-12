@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
-import { AddressFormValues } from './types';
+import type { AddressFormValues } from './types';
 import { ProvinceSelector } from './ProvinceSelector';
 import { AddressTypeSelector } from './AddressTypeSelector';
 

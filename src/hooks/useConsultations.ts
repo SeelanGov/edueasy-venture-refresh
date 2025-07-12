@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { ConsultationBooking, ConsultationStatus } from '@/types/RevenueTypes';
+import type { ConsultationBooking } from '@/types/RevenueTypes';
 import { toast } from '@/components/ui/use-toast';
 
 export function useConsultations() {
@@ -65,7 +64,7 @@ export function useConsultations() {
     bookingDate: Date,
     durationMinutes: number,
     notes?: string,
-    paymentId?: string
+    paymentId?: string,
   ) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');

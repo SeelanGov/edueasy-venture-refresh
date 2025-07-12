@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -21,15 +20,10 @@ interface ResponsiveProps {
   className?: string;
 }
 
-export const Responsive: React.FC<ResponsiveProps> = ({
-  children,
-  show,
-  hide,
-  className,
-}) => {
+export const Responsive: React.FC<ResponsiveProps> = ({ children, show, hide, className }) => {
   const getResponsiveClasses = () => {
     const classes: string[] = [];
-    
+
     // Handle show breakpoints
     if (show) {
       if (show.sm === false) classes.push('hidden sm:block');
@@ -38,7 +32,7 @@ export const Responsive: React.FC<ResponsiveProps> = ({
       if (show.xl === false) classes.push('hidden xl:block');
       if (show['2xl'] === false) classes.push('hidden 2xl:block');
     }
-    
+
     // Handle hide breakpoints
     if (hide) {
       if (hide.sm === true) classes.push('sm:hidden');
@@ -47,15 +41,11 @@ export const Responsive: React.FC<ResponsiveProps> = ({
       if (hide.xl === true) classes.push('xl:hidden');
       if (hide['2xl'] === true) classes.push('2xl:hidden');
     }
-    
+
     return classes.join(' ');
   };
 
-  return (
-    <div className={cn(getResponsiveClasses(), className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(getResponsiveClasses(), className)}>{children}</div>;
 };
 
 // Utility components for common responsive patterns
@@ -65,11 +55,7 @@ interface ShowOnlyProps {
   className?: string;
 }
 
-export const ShowOnly: React.FC<ShowOnlyProps> = ({
-  children,
-  breakpoint,
-  className,
-}) => {
+export const ShowOnly: React.FC<ShowOnlyProps> = ({ children, breakpoint, className }) => {
   const breakpointClasses = {
     sm: 'hidden sm:block md:hidden',
     md: 'hidden md:block lg:hidden',
@@ -78,11 +64,7 @@ export const ShowOnly: React.FC<ShowOnlyProps> = ({
     '2xl': 'hidden 2xl:block',
   };
 
-  return (
-    <div className={cn(breakpointClasses[breakpoint], className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(breakpointClasses[breakpoint], className)}>{children}</div>;
 };
 
 interface HideOnProps {
@@ -91,11 +73,7 @@ interface HideOnProps {
   className?: string;
 }
 
-export const HideOn: React.FC<HideOnProps> = ({
-  children,
-  breakpoint,
-  className,
-}) => {
+export const HideOn: React.FC<HideOnProps> = ({ children, breakpoint, className }) => {
   const breakpointClasses = {
     sm: 'sm:hidden',
     md: 'md:hidden',
@@ -104,9 +82,5 @@ export const HideOn: React.FC<HideOnProps> = ({
     '2xl': '2xl:hidden',
   };
 
-  return (
-    <div className={cn(breakpointClasses[breakpoint], className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(breakpointClasses[breakpoint], className)}>{children}</div>;
 };

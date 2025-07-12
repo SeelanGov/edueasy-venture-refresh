@@ -5,7 +5,13 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { Users, Shield, UserCheck, Building2, Heart } from 'lucide-react';
 
@@ -61,9 +67,9 @@ export default function UserManagement() {
 
       if (rolesError) throw rolesError;
 
-      const usersWithRoles = usersData.map(user => ({
+      const usersWithRoles = usersData.map((user) => ({
         ...user,
-        roles: rolesData.filter(role => role.user_id === user.id).map(r => r.role)
+        roles: rolesData.filter((role) => role.user_id === user.id).map((r) => r.role),
       }));
 
       setUsers(usersWithRoles);
@@ -141,9 +147,12 @@ export default function UserManagement() {
 
       <div className="grid gap-4">
         {users.map((userData) => {
-          const IconComponent = UserTypeIcons[userData.user_type as keyof typeof UserTypeIcons] || Users;
-          const badgeColor = UserTypeBadgeColors[userData.user_type as keyof typeof UserTypeBadgeColors] || 'default';
-          
+          const IconComponent =
+            UserTypeIcons[userData.user_type as keyof typeof UserTypeIcons] || Users;
+          const badgeColor =
+            UserTypeBadgeColors[userData.user_type as keyof typeof UserTypeBadgeColors] ||
+            'default';
+
           return (
             <Card key={userData.id}>
               <CardHeader className="pb-3">
@@ -151,17 +160,13 @@ export default function UserManagement() {
                   <div className="flex items-center gap-3">
                     <IconComponent className="h-5 w-5" />
                     <div>
-                      <CardTitle className="text-lg">
-                        {userData.full_name || 'No name'}
-                      </CardTitle>
+                      <CardTitle className="text-lg">{userData.full_name || 'No name'}</CardTitle>
                       <p className="text-sm text-muted-foreground">{userData.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant={badgeColor}>
-                      {userData.user_type || 'student'}
-                    </Badge>
-                    {userData.roles.map(role => (
+                    <Badge variant={badgeColor}>{userData.user_type || 'student'}</Badge>
+                    {userData.roles.map((role) => (
                       <Badge key={role} variant="outline">
                         {role}
                       </Badge>

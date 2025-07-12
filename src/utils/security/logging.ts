@@ -9,7 +9,7 @@ export const logSecurityEvent = async (
   userId: string | undefined,
   action: string,
   details: Json,
-  success: boolean
+  success: boolean,
 ) => {
   try {
     await supabase.from('system_error_logs').insert({

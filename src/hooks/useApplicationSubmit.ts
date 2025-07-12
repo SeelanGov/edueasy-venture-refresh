@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // This hook is now simplified as most functionality has moved to useApplicationForm
 export const useApplicationSubmit = (
   userId: string | undefined,
   isOnline: boolean,
   saveFormToStorage: (data: ApplicationFormValues) => void,
-  clearSavedForm: () => void
+  clearSavedForm: () => void,
 ) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -8,8 +8,8 @@ import {
   FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Control } from 'react-hook-form';
-import { ContactFormValues } from './types';
+import type { Control } from 'react-hook-form';
+import type { ContactFormValues } from './types';
 
 interface EmergencyContactSectionProps {
   control: Control<ContactFormValues>;

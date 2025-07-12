@@ -1,4 +1,3 @@
-
 import { Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -28,21 +27,14 @@ export const StudentSuccessCard = ({ student }: StudentSuccessCardProps) => {
         {/* Student Photo */}
         <div className="flex justify-center mb-4">
           <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-teal-100">
-            <img 
-              src={student.image} 
-              alt={student.name}
-              className="w-full h-full object-cover"
-            />
+            <img src={student.image} alt={student.name} className="w-full h-full object-cover" />
           </div>
         </div>
 
         {/* 5-Star Rating */}
         <div className="flex justify-center mb-4">
           {[...Array(5)].map((_, index) => (
-            <Star 
-              key={index} 
-              className="w-4 h-4 text-yellow-400 fill-current"
-            />
+            <Star key={index} className="w-4 h-4 text-yellow-400 fill-current" />
           ))}
         </div>
 

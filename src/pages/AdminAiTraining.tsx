@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { DashboardLayout } from '@/components/DashboardLayout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useIntentManagement, IntentWithStats } from '@/hooks/useIntentManagement';
-import { useTrainingData } from '@/hooks/useTrainingData';
-import { IntentList } from '@/components/thandi/IntentList';
+import { Spinner } from '@/components/Spinner';
 import { IntentForm } from '@/components/thandi/IntentForm';
+import { IntentList } from '@/components/thandi/IntentList';
 import { MessageTraining } from '@/components/thandi/MessageTraining';
 import { Card } from '@/components/ui/card';
-import { Spinner } from '@/components/Spinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIntentManagement, type IntentWithStats } from '@/hooks/useIntentManagement';
+import { useTrainingData } from '@/hooks/useTrainingData';
+import { useState } from 'react';
 
 const AdminAiTraining = () => {
   const [activeTab, setActiveTab] = useState('messages');

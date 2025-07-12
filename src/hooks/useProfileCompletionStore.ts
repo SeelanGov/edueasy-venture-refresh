@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { DocumentInfo } from '@/types/ApplicationTypes';
+import type { DocumentInfo } from '@/types/ApplicationTypes';
 
 interface PersonalInfo {
   fullName: string;
@@ -179,6 +179,6 @@ export const useProfileCompletionStore = create<ProfileCompletionState>()(
           },
         };
       },
-    }
-  )
+    },
+  ),
 );

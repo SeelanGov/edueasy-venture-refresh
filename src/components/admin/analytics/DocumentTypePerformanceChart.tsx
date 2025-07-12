@@ -1,6 +1,6 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from 'recharts';
-import { DocumentTypeData } from '@/hooks/analytics';
+import type { DocumentTypeData } from '@/hooks/analytics';
 import { formatDisplayName, STATUS_CONFIG } from '@/lib/chart-config';
 import { useMemo } from 'react';
 

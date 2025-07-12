@@ -1,22 +1,22 @@
-
-import React, { useState, useCallback } from "react";
-import { usePartners, PartnerType } from "@/hooks/usePartners";
-import PartnerCard from "@/components/admin/partners/PartnerCard";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast"; // Show toast notifications
+import React, { useState, useCallback } from 'react';
+import type { PartnerType } from '@/hooks/usePartners';
+import { usePartners } from '@/hooks/usePartners';
+import PartnerCard from '@/components/admin/partners/PartnerCard';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+// Show toast notifications
 
 const PARTNER_TYPES = [
-  { value: "", label: "All Types" },
-  { value: "university", label: "University" },
-  { value: "tvet", label: "TVET" },
-  { value: "funder", label: "Funder" },
-  { value: "seta", label: "SETA" },
+  { value: '', label: 'All Types' },
+  { value: 'university', label: 'University' },
+  { value: 'tvet', label: 'TVET' },
+  { value: 'funder', label: 'Funder' },
+  { value: 'seta', label: 'SETA' },
 ];
 
 const PartnersPage: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<PartnerType | undefined>(undefined);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const navigate = useNavigate();
   const { partners, isLoading } = usePartners({ type: typeFilter, search });
 
@@ -36,8 +36,12 @@ const PartnersPage: React.FC = () => {
       <h1 className="text-2xl sm:text-3xl font-bold mb-5">Institution & Partner Management</h1>
       {/* Tabs */}
       <div className="flex space-x-3 mb-4">
-        <Button variant="outline" className="font-bold">Partner List</Button>
-        <Button variant="outline" className="opacity-50 cursor-not-allowed" disabled>Onboarding (soon)</Button>
+        <Button variant="outline" className="font-bold">
+          Partner List
+        </Button>
+        <Button variant="outline" className="opacity-50 cursor-not-allowed" disabled>
+          Onboarding (soon)
+        </Button>
       </div>
       {/* Filters */}
       <div className="flex gap-2 mb-4">
@@ -49,16 +53,18 @@ const PartnersPage: React.FC = () => {
           className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64"
         />
         <select
-          value={typeFilter || ""}
-          onChange={e => {
+          value={typeFilter || ''}
+          onChange={(e) => {
             const val = e.target.value;
-            setTypeFilter(val === "" ? undefined : (val as PartnerType));
+            setTypeFilter(val === '' ? undefined : (val as PartnerType));
           }}
           className="rounded border border-gray-300 px-3 py-2 text-sm w-44"
         >
-          {PARTNER_TYPES.map(t =>
-            <option key={t.value} value={t.value}>{t.label}</option>
-          )}
+          {PARTNER_TYPES.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
+          ))}
         </select>
       </div>
       {/* Partner List */}
@@ -70,19 +76,21 @@ const PartnersPage: React.FC = () => {
       ) : hasError ? (
         <div className="py-16 text-center">
           <div className="text-red-500 font-bold">Failed to load partners</div>
-          <Button className="mt-2" onClick={() => window.location.reload()}>Retry</Button>
+          <Button className="mt-2" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
         </div>
       ) : !partners.length ? (
         <div className="py-16 text-center text-gray-400">No partners found.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-          {partners.map(partner =>
+          {partners.map((partner) => (
             <PartnerCard
               key={partner.id}
               partner={partner}
               onClick={() => navigate(`/admin/partners/${partner.id}`)}
             />
-          )}
+          ))}
         </div>
       )}
     </div>

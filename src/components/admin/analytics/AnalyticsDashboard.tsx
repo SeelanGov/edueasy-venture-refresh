@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { AnalyticsFilters } from './AnalyticsFilters';
 import { AnalyticsStatCards } from './AnalyticsStatCards';
@@ -43,14 +42,14 @@ export const AnalyticsDashboard = () => {
         console.error('Error fetching metadata:', err);
       }
     };
-    
+
     fetchMetadata();
   }, []);
 
   // Export analytics data as CSV
   const handleExportData = () => {
     if (!analytics) return;
-    
+
     let csv = 'data:text/csv;charset=utf-8,';
     csv += 'Metric,Value\r\n';
     csv += `Total Documents,${analytics.totalDocuments}\r\n`;
@@ -60,11 +59,14 @@ export const AnalyticsDashboard = () => {
     csv += `Resubmission Requested,${analytics.resubmissionRequestedDocuments}\r\n`;
     csv += `Pass Rate,${analytics.passRate.toFixed(2)}%\r\n`;
     csv += `Fail Rate,${analytics.failRate.toFixed(2)}%\r\n`;
-    
+
     const encodedUri = encodeURI(csv);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `document-analytics-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute(
+      'download',
+      `document-analytics-${new Date().toISOString().split('T')[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -104,9 +106,7 @@ export const AnalyticsDashboard = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">
-            No data available. Try adjusting your filters.
-          </p>
+          <p className="text-muted-foreground">No data available. Try adjusting your filters.</p>
         </div>
       )}
     </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -47,7 +46,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
           className={cn(
             'relative py-8 px-4 md:px-8',
             shouldShowGradient && 'bg-gradient-to-r from-primary/5 to-secondary/5',
-            headerClassName
+            headerClassName,
           )}
         >
           <div className="container mx-auto max-w-7xl">
@@ -70,18 +69,10 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                       {title}
                     </h1>
                   )}
-                  {subtitle && (
-                    <p className="mt-2 text-lg text-muted-foreground">
-                      {subtitle}
-                    </p>
-                  )}
+                  {subtitle && <p className="mt-2 text-lg text-muted-foreground">{subtitle}</p>}
                 </div>
               </div>
-              {actions && (
-                <div className="flex items-center gap-2">
-                  {actions}
-                </div>
-              )}
+              {actions && <div className="flex items-center gap-2">{actions}</div>}
             </div>
           </div>
         </div>
@@ -92,7 +83,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         className={cn(
           'container mx-auto max-w-7xl px-4 md:px-8',
           title || subtitle ? 'py-8' : 'py-12',
-          finalContentClassName
+          finalContentClassName,
         )}
       >
         {children}

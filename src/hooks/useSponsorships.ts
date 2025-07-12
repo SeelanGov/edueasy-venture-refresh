@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { Sponsorship, SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
+import type { Sponsorship } from '@/types/RevenueTypes';
+import { SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
 
 export const useSponsorships = () => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
@@ -40,18 +40,18 @@ export const useSponsorships = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
+
       // Convert database format to our type format with proper type casting
-      const convertedData: Sponsorship[] = (data || []).map(item => ({
+      const convertedData: Sponsorship[] = (data || []).map((item) => ({
         ...item,
         logo_url: item.logo_url || undefined,
         website_url: item.website_url || undefined,
         expires_at: item.expires_at || undefined,
         status: item.status as SponsorshipStatus,
         sponsorship_level: item.sponsorship_level as SponsorshipLevel,
-        requirements: item.requirements as Record<string, any> | null
+        requirements: item.requirements as Record<string, any> | null,
       }));
-      
+
       setSponsorships(convertedData);
     } catch (err) {
       console.error('Error fetching sponsorships:', err);
@@ -66,7 +66,9 @@ export const useSponsorships = () => {
     }
   };
 
-  const createSponsorship = async (sponsorshipData: Omit<Sponsorship, 'id' | 'created_at' | 'updated_at'>) => {
+  const createSponsorship = async (
+    sponsorshipData: Omit<Sponsorship, 'id' | 'created_at' | 'updated_at'>,
+  ) => {
     if (!user) {
       toast({
         title: 'Authentication required',
@@ -123,18 +125,18 @@ export const useSponsorships = () => {
         sponsorship_level: SponsorshipLevel.BRONZE,
         start_date: new Date().toISOString(),
         end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-        is_active: false
+        is_active: false,
       };
 
       const result = await createSponsorship(sponsorshipData);
-      
+
       if (result) {
         toast({
           title: 'Inquiry Submitted',
           description: 'Thank you for your interest! We will contact you soon.',
         });
       }
-      
+
       return result;
     } catch (err) {
       console.error('Error submitting sponsorship inquiry:', err);
@@ -177,10 +179,7 @@ export const useSponsorships = () => {
 
   const deleteSponsorship = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('sponsorships')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('sponsorships').delete().eq('id', id);
 
       if (error) throw error;
 

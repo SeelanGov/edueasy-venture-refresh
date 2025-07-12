@@ -1,4 +1,3 @@
-
 // Design System Tokens
 export const colors = {
   // Brand colors
@@ -61,7 +60,7 @@ export const colors = {
     700: '#374151',
     800: '#1f2937',
     900: '#111827',
-  }
+  },
 } as const;
 
 export const statusColors = {
@@ -138,7 +137,13 @@ export interface StatusStyle {
 export type StatusType = 'success' | 'error' | 'warning' | 'info' | 'pending';
 
 // Extended status type for application-specific statuses
-export type ExtendedStatusType = StatusType | 'approved' | 'rejected' | 'submitted' | 'under-review' | 'resubmission-required';
+export type ExtendedStatusType =
+  | StatusType
+  | 'approved'
+  | 'rejected'
+  | 'submitted'
+  | 'under-review'
+  | 'resubmission-required';
 
 // Enhanced status colors with extended types
 export const extendedStatusColors: Record<ExtendedStatusType, StatusStyle> = {

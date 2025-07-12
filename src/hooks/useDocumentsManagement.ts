@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -28,18 +27,19 @@ export function useDocumentsManagement() {
     setLoading(true);
     try {
       const startIndex = (currentPage - 1) * pageSize;
-      
+
       // Get total count
       const { count } = await supabase
         .from('documents')
         .select('*', { count: 'exact', head: true });
-      
+
       setTotalCount(count || 0);
 
       // Get paginated documents with user info - using proper join
       const { data, error } = await supabase
         .from('documents')
-        .select(`
+        .select(
+          `
           id,
           user_id,
           file_path,
@@ -52,7 +52,8 @@ export function useDocumentsManagement() {
             email,
             contact_email
           )
-        `)
+        `,
+        )
         .order('created_at', { ascending: false })
         .range(startIndex, startIndex + pageSize - 1);
 
@@ -60,8 +61,8 @@ export function useDocumentsManagement() {
 
       // Transform the data with proper type checking and null handling
       const documentsWithUserInfo: DocumentWithUserInfo[] = (data || [])
-        .filter(doc => doc.user_id) // Filter out documents without user_id
-        .map(doc => {
+        .filter((doc) => doc.user_id) // Filter out documents without user_id
+        .map((doc) => {
           // Type guard to ensure users data exists and has the right structure
           const userData = doc.users as any;
           return {
@@ -73,7 +74,7 @@ export function useDocumentsManagement() {
             created_at: doc.created_at || new Date().toISOString(), // Handle null created_at
             rejection_reason: doc.rejection_reason,
             user_name: userData?.full_name || 'Unknown User',
-            user_email: userData?.email || userData?.contact_email || 'No email'
+            user_email: userData?.email || userData?.contact_email || 'No email',
           };
         });
 
@@ -91,9 +92,9 @@ export function useDocumentsManagement() {
   };
 
   const updateDocumentStatus = async (
-    documentId: string, 
-    status: string, 
-    rejectionReason?: string
+    documentId: string,
+    status: string,
+    rejectionReason?: string,
   ) => {
     try {
       const { error } = await supabase
@@ -110,14 +111,14 @@ export function useDocumentsManagement() {
       // Log admin action for audit trail
       await logAdminAction({
         action: `DOCUMENT_${status.toUpperCase()}`,
-        target_type: "document",
+        target_type: 'document',
         target_id: documentId,
         details: {
           new_status: status,
           rejection_reason: rejectionReason,
           verified_at: status === 'approved' ? new Date().toISOString() : null,
         },
-        reason: rejectionReason
+        reason: rejectionReason,
       });
 
       toast({
@@ -140,9 +141,7 @@ export function useDocumentsManagement() {
 
   const getDocumentUrl = async (filePath: string): Promise<string | null> => {
     try {
-      const { data } = await supabase.storage
-        .from('documents')
-        .createSignedUrl(filePath, 300); // 5 minutes
+      const { data } = await supabase.storage.from('documents').createSignedUrl(filePath, 300); // 5 minutes
 
       return data?.signedUrl || null;
     } catch (error) {

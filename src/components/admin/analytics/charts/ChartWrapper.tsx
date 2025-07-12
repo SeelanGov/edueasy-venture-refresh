@@ -1,5 +1,4 @@
-
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/Spinner';
 
@@ -12,21 +11,19 @@ interface ChartWrapperProps {
   className?: string;
 }
 
-export const ChartWrapper = ({ 
-  title, 
-  children, 
+export const ChartWrapper = ({
+  title,
+  children,
   description,
   loading = false,
   error = null,
-  className = ''
+  className = '',
 }: ChartWrapperProps) => {
   return (
     <>
       <CardHeader className={className}>
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         {loading ? (
@@ -39,9 +36,7 @@ export const ChartWrapper = ({
             <p className="text-sm">Error loading chart: {error}</p>
           </div>
         ) : (
-          <div className="h-[300px] w-full">
-            {children}
-          </div>
+          <div className="h-[300px] w-full">{children}</div>
         )}
       </CardContent>
     </>

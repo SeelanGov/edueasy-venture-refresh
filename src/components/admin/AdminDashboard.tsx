@@ -1,17 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Users, 
-  GraduationCap, 
-  FileText, 
+import {
+  Users,
+  GraduationCap,
+  FileText,
   AlertCircle,
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -47,7 +46,7 @@ export const AdminDashboard = () => {
     totalUsers: 0,
     totalApplications: 0,
     pendingDocuments: 0,
-    completedApplications: 0
+    completedApplications: 0,
   });
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState<any[]>([]);
@@ -86,7 +85,7 @@ export const AdminDashboard = () => {
         totalUsers: usersData?.[0]?.count || 0,
         totalApplications: applicationsData?.[0]?.count || 0,
         pendingDocuments: pendingDocsData?.[0]?.count || 0,
-        completedApplications: completedAppsData?.[0]?.count || 0
+        completedApplications: completedAppsData?.[0]?.count || 0,
       });
     } catch (error) {
       console.error('Error fetching admin stats:', error);
@@ -122,9 +121,9 @@ export const AdminDashboard = () => {
         .limit(100);
 
       if (error) throw error;
-      
+
       // Transform the data to match ErrorLogEntry interface
-      const transformedData = (data || []).map(item => ({
+      const transformedData = (data || []).map((item) => ({
         id: item.id,
         message: item.message,
         category: item.category,
@@ -137,9 +136,9 @@ export const AdminDashboard = () => {
         is_resolved: item.is_resolved,
         resolved_at: item.resolved_at,
         resolved_by: item.resolved_by,
-        resolution_notes: item.resolution_notes
+        resolution_notes: item.resolution_notes,
       }));
-      
+
       setErrorLogs(transformedData);
     } catch (error) {
       console.error('Error fetching error logs:', error);
@@ -156,12 +155,12 @@ export const AdminDashboard = () => {
         .update({
           is_resolved: true,
           resolved_at: new Date().toISOString(),
-          resolution_notes: notes
+          resolution_notes: notes,
         })
         .eq('id', id);
 
       if (error) throw error;
-      
+
       toast.success('Error marked as resolved');
       await fetchErrorLogs();
       return true;
@@ -281,7 +280,7 @@ export const AdminDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ErrorLogsTable 
+              <ErrorLogsTable
                 errors={errorLogs}
                 loading={errorLogsLoading}
                 onRefresh={fetchErrorLogs}

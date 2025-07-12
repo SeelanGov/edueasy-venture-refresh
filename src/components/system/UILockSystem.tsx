@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,7 +37,7 @@ export const UILockSystem = () => {
 
   const initializeUIState = () => {
     const today = new Date().toISOString().split('T')[0];
-    
+
     // Create the initial lock snapshot
     const lockSnapshot: UISnapshot = {
       id: `ui-lock-${Date.now()}`,
@@ -47,19 +46,67 @@ export const UILockSystem = () => {
       isLocked: true,
       componentCount: 47, // Based on current component count
       routeCount: 15, // Based on current routes
-      description: 'Locked state with once-off pricing model, career guidance, and consultations'
+      description: 'Locked state with once-off pricing model, career guidance, and consultations',
     };
 
     // Component inventory based on current structure
     const componentInventory: ComponentInventory[] = [
-      { name: 'App', path: 'src/App.tsx', lastModified: today, dependencies: ['AuthProvider', 'QueryClient'], locked: true },
-      { name: 'Navbar', path: 'src/components/Navbar.tsx', lastModified: today, dependencies: ['Logo', 'Button'], locked: true },
-      { name: 'CareerGuidancePage', path: 'src/pages/CareerGuidancePage.tsx', lastModified: today, dependencies: ['PremiumFeature'], locked: true },
-      { name: 'ConsultationsPage', path: 'src/pages/ConsultationsPage.tsx', lastModified: today, dependencies: ['PremiumFeature'], locked: true },
-      { name: 'SubscriptionPage', path: 'src/pages/SubscriptionPage.tsx', lastModified: today, dependencies: ['SubscriptionTierCard'], locked: true },
-      { name: 'PremiumFeature', path: 'src/components/subscription/PremiumFeature.tsx', lastModified: today, dependencies: ['useSubscription'], locked: true },
-      { name: 'SubscriptionTierCard', path: 'src/components/subscription/SubscriptionTierCard.tsx', lastModified: today, dependencies: [], locked: true },
-      { name: 'useSubscription', path: 'src/hooks/useSubscription.ts', lastModified: today, dependencies: ['useAuth'], locked: true }
+      {
+        name: 'App',
+        path: 'src/App.tsx',
+        lastModified: today,
+        dependencies: ['AuthProvider', 'QueryClient'],
+        locked: true,
+      },
+      {
+        name: 'Navbar',
+        path: 'src/components/Navbar.tsx',
+        lastModified: today,
+        dependencies: ['Logo', 'Button'],
+        locked: true,
+      },
+      {
+        name: 'CareerGuidancePage',
+        path: 'src/pages/CareerGuidancePage.tsx',
+        lastModified: today,
+        dependencies: ['PremiumFeature'],
+        locked: true,
+      },
+      {
+        name: 'ConsultationsPage',
+        path: 'src/pages/ConsultationsPage.tsx',
+        lastModified: today,
+        dependencies: ['PremiumFeature'],
+        locked: true,
+      },
+      {
+        name: 'SubscriptionPage',
+        path: 'src/pages/SubscriptionPage.tsx',
+        lastModified: today,
+        dependencies: ['SubscriptionTierCard'],
+        locked: true,
+      },
+      {
+        name: 'PremiumFeature',
+        path: 'src/components/subscription/PremiumFeature.tsx',
+        lastModified: today,
+        dependencies: ['useSubscription'],
+        locked: true,
+      },
+      {
+        name: 'SubscriptionTierCard',
+        path: 'src/components/subscription/SubscriptionTierCard.tsx',
+        lastModified: today,
+        dependencies: [],
+        locked: true,
+      },
+      {
+        name: 'useSubscription',
+        path: 'src/hooks/useSubscription.ts',
+        lastModified: today,
+        dependencies: ['useAuth'],
+        locked: true,
+      },
     ];
 
     setSnapshots([lockSnapshot]);
@@ -68,7 +115,7 @@ export const UILockSystem = () => {
     setIsLockActive(true);
 
     toast({
-      title: "UI Lock System Initialized",
+      title: 'UI Lock System Initialized',
       description: `Created lock snapshot: ${lockSnapshot.name}`,
     });
   };
@@ -82,25 +129,25 @@ export const UILockSystem = () => {
       isLocked: false,
       componentCount: components.length,
       routeCount: 15,
-      description: 'Manual snapshot'
+      description: 'Manual snapshot',
     };
 
-    setSnapshots(prev => [newSnapshot, ...prev]);
-    
+    setSnapshots((prev) => [newSnapshot, ...prev]);
+
     toast({
-      title: "Snapshot Created",
+      title: 'Snapshot Created',
       description: `New UI snapshot saved: ${newSnapshot.name}`,
     });
   };
 
   const lockSnapshot = (snapshot: UISnapshot) => {
     const updatedSnapshot = { ...snapshot, isLocked: true };
-    setSnapshots(prev => prev.map(s => s.id === snapshot.id ? updatedSnapshot : s));
+    setSnapshots((prev) => prev.map((s) => (s.id === snapshot.id ? updatedSnapshot : s)));
     setCurrentLock(updatedSnapshot);
     setIsLockActive(true);
 
     toast({
-      title: "Snapshot Locked",
+      title: 'Snapshot Locked',
       description: `UI state locked to: ${snapshot.name}`,
     });
   };
@@ -108,19 +155,19 @@ export const UILockSystem = () => {
   const unlockUI = () => {
     setIsLockActive(false);
     setCurrentLock(null);
-    
+
     toast({
-      title: "UI Unlocked",
-      description: "UI editing is now enabled",
+      title: 'UI Unlocked',
+      description: 'UI editing is now enabled',
     });
   };
 
   const restoreSnapshot = (snapshot: UISnapshot) => {
     // In a real implementation, this would restore the UI state
     toast({
-      title: "Snapshot Restored",
+      title: 'Snapshot Restored',
       description: `UI restored to: ${snapshot.name}`,
-      variant: "default"
+      variant: 'default',
     });
   };
 
@@ -137,27 +184,28 @@ export const UILockSystem = () => {
       <Card className={`border-2 ${isLockActive ? 'border-red-500' : 'border-green-500'}`}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            {isLockActive ? <Lock className="h-5 w-5 text-red-500" /> : <Unlock className="h-5 w-5 text-green-500" />}
+            {isLockActive ? (
+              <Lock className="h-5 w-5 text-red-500" />
+            ) : (
+              <Unlock className="h-5 w-5 text-green-500" />
+            )}
             Lock Status
           </CardTitle>
-          <CardDescription>
-            Current UI state and lock configuration
-          </CardDescription>
+          <CardDescription>Current UI state and lock configuration</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">
-                Status: {isLockActive ? (
+                Status:{' '}
+                {isLockActive ? (
                   <Badge variant="destructive">LOCKED</Badge>
                 ) : (
                   <Badge variant="default">UNLOCKED</Badge>
                 )}
               </p>
               {currentLock && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  Locked to: {currentLock.name}
-                </p>
+                <p className="text-sm text-muted-foreground mt-1">Locked to: {currentLock.name}</p>
               )}
             </div>
             {isLockActive ? (
@@ -180,8 +228,8 @@ export const UILockSystem = () => {
                 <span className="font-medium text-red-800">UI Editing Disabled</span>
               </div>
               <p className="text-sm text-red-700">
-                The UI is currently locked to prevent accidental changes. 
-                Components: {currentLock.componentCount} | Routes: {currentLock.routeCount}
+                The UI is currently locked to prevent accidental changes. Components:{' '}
+                {currentLock.componentCount} | Routes: {currentLock.routeCount}
               </p>
             </div>
           )}
@@ -195,14 +243,15 @@ export const UILockSystem = () => {
             <History className="h-5 w-5" />
             UI Snapshots
           </CardTitle>
-          <CardDescription>
-            Available UI state snapshots and restore points
-          </CardDescription>
+          <CardDescription>Available UI state snapshots and restore points</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {snapshots.map((snapshot) => (
-              <div key={snapshot.id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div
+                key={snapshot.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-medium">{snapshot.name}</h4>
@@ -239,14 +288,15 @@ export const UILockSystem = () => {
       <Card>
         <CardHeader>
           <CardTitle>Component Inventory</CardTitle>
-          <CardDescription>
-            Current components and their lock status
-          </CardDescription>
+          <CardDescription>Current components and their lock status</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
             {components.map((component, index) => (
-              <div key={index} className="flex items-center justify-between py-2 border-b last:border-b-0">
+              <div
+                key={index}
+                className="flex items-center justify-between py-2 border-b last:border-b-0"
+              >
                 <div>
                   <p className="font-medium">{component.name}</p>
                   <p className="text-sm text-muted-foreground">{component.path}</p>
@@ -274,9 +324,7 @@ export const UILockSystem = () => {
       <Card>
         <CardHeader>
           <CardTitle>System Status</CardTitle>
-          <CardDescription>
-            Current system configuration and backup status
-          </CardDescription>
+          <CardDescription>Current system configuration and backup status</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

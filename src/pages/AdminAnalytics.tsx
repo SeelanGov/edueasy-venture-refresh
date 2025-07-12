@@ -1,4 +1,3 @@
-
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { AnalyticsDashboard } from '@/components/admin/analytics/AnalyticsDashboard';

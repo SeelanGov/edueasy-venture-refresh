@@ -1,4 +1,3 @@
-
 import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { TestimonialsSection } from '@/components/sponsorships/TestimonialsSecti
 import { FAQCollapsible } from '@/components/sponsorships/FAQCollapsible';
 
 // Updated hero image for the sponsorship page
-const heroImage = "/lovable-uploads/decd8110-6ac2-48dc-a70d-85c81cf17629.png";
+const heroImage = '/lovable-uploads/decd8110-6ac2-48dc-a70d-85c81cf17629.png';
 
 const SponsorshipsPage = () => {
   const navigate = useNavigate();
@@ -18,11 +17,15 @@ const SponsorshipsPage = () => {
       {/* HERO SECTION */}
       <div className="container max-w-4xl mx-auto px-4 pt-14 pb-10 md:pb-16 text-center relative">
         <div className="flex flex-col items-center gap-6">
-          <Typography variant="h1" className="font-extrabold tablet-heading text-cap-teal drop-shadow mb-2">
+          <Typography
+            variant="h1"
+            className="font-extrabold tablet-heading text-cap-teal drop-shadow mb-2"
+          >
             The EduEasy Sponsor Ecosystem
           </Typography>
           <Typography variant="lead" className="text-gray-600 mb-2 max-w-2xl mx-auto">
-            Connecting students in need with individuals and organizations that care.<br />
+            Connecting students in need with individuals and organizations that care.
+            <br />
             Find or provide financial assistance for education—<strong>securely and simply</strong>.
           </Typography>
           <div className="rounded-xl overflow-hidden shadow-lg border-2 border-cap-teal/20 bg-white">
@@ -36,14 +39,14 @@ const SponsorshipsPage = () => {
             <Button
               className="w-full md:w-auto text-white bg-cap-teal hover:bg-cap-teal/90 shadow-lg"
               size="lg"
-              onClick={() => navigate("/sponsorships/apply")}
+              onClick={() => navigate('/sponsorships/apply')}
             >
               Apply for Sponsorship
             </Button>
             <Button
               className="w-full md:w-auto bg-cap-coral hover:bg-cap-coral/90 text-white shadow-lg"
               size="lg"
-              onClick={() => navigate("/sponsors/register")}
+              onClick={() => navigate('/sponsors/register')}
             >
               Become a Sponsor
             </Button>

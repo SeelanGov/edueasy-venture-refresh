@@ -1,28 +1,27 @@
-
-import { ReactNode, useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { Spinner } from '@/components/Spinner';
-import { Button } from '@/components/ui/button';
-import { useTheme } from '@/hooks/useTheme';
-import {
-  BookOpen,
-  Briefcase,
-  Building,
-  ChevronLeft,
-  ChevronRight,
-  ClipboardList,
-  Home,
-  LogOut,
-  Menu,
-  Moon,
-  Sun,
-  User,
-  Video,
-  X,
-} from 'lucide-react';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
 import { Logo } from '@/components/Logo';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
+import {
+    BookOpen,
+    Briefcase,
+    Building,
+    ChevronLeft,
+    ChevronRight,
+    ClipboardList,
+    Home,
+    LogOut,
+    Menu,
+    Moon,
+    Sun,
+    User,
+    Video,
+    X,
+} from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface MobileFriendlyDashboardLayoutProps {
   children: ReactNode;

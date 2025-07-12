@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 
 // Common South African high school subjects
 const commonSubjects = [

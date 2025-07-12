@@ -1,4 +1,4 @@
-import { DocumentFileValidation } from './types';
+import type { DocumentFileValidation } from './types';
 
 export const validateFile = (file: File): DocumentFileValidation => {
   const maxSizeInBytes = 1024 * 1024; // 1MB

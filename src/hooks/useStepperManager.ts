@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { DocumentUploadState } from '@/components/profile-completion/documents/types';
-import { VerificationResult } from '@/hooks/useDocumentVerification';
+import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
+import type { VerificationResult } from '@/hooks/useDocumentVerification';
 
 export const useStepperManager = (
   currentDocumentType: string | null,
@@ -8,7 +8,7 @@ export const useStepperManager = (
   setUploadSteps: (steps: Record<string, unknown>[]) => void,
   setCurrentStep: (step: number) => void,
   isVerifying: boolean,
-  verificationResult?: VerificationResult
+  verificationResult?: VerificationResult,
 ) => {
   // Update steps based on current document upload process
   useEffect(() => {

@@ -1,13 +1,5 @@
-
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Users, 
-  FileText, 
-  AlertCircle, 
-  Check,
-  X
-} from 'lucide-react';
+import { Users, FileText, AlertCircle, Check, X } from 'lucide-react';
 
 interface Props {
   totalUsers: number;

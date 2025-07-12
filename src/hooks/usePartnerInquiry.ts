@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -22,22 +21,20 @@ export const usePartnerInquiry = () => {
   const submitInquiry = async (data: PartnerInquiryData) => {
     try {
       setIsSubmitting(true);
-      
+
       // Direct table insert to partner_inquiries table
-      const { error } = await supabase
-        .from('partner_inquiries')
-        .insert({
-          institution_name: data.institutionName,
-          institution_type: data.institutionType,
-          contact_name: data.contactName,
-          contact_email: data.contactEmail,
-          contact_phone: data.contactPhone,
-          website: data.website,
-          student_count: data.studentCount,
-          interested_tier: data.interestedTier,
-          message: data.message,
-        });
-      
+      const { error } = await supabase.from('partner_inquiries').insert({
+        institution_name: data.institutionName,
+        institution_type: data.institutionType,
+        contact_name: data.contactName,
+        contact_email: data.contactEmail,
+        contact_phone: data.contactPhone,
+        website: data.website,
+        student_count: data.studentCount,
+        interested_tier: data.interestedTier,
+        message: data.message,
+      });
+
       if (error) throw error;
 
       setIsSubmitted(true);

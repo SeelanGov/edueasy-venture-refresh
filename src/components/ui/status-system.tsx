@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StatusBadge, type ExtendedStatusType } from './status-badge';
 import { cn } from '@/lib/utils';
@@ -18,8 +17,15 @@ const statusConfigs: Record<ExtendedStatusType, StatusConfig> = {
   approved: { label: 'Approved', description: 'Application approved' },
   rejected: { label: 'Rejected', description: 'Application rejected' },
   submitted: { label: 'Submitted', description: 'Application submitted' },
-  'under-review': { label: 'Under Review', description: 'Currently being reviewed', showAnimation: true },
-  'resubmission-required': { label: 'Resubmission Required', description: 'Please resubmit with corrections' },
+  'under-review': {
+    label: 'Under Review',
+    description: 'Currently being reviewed',
+    showAnimation: true,
+  },
+  'resubmission-required': {
+    label: 'Resubmission Required',
+    description: 'Please resubmit with corrections',
+  },
 };
 
 interface StatusSystemProps {
@@ -44,7 +50,7 @@ export const StatusSystem: React.FC<StatusSystemProps> = ({
   const config = statusConfigs[status];
   const label = customLabel || config.label;
   const description = customDescription || config.description;
-  
+
   return (
     <div className={cn('flex flex-col gap-1', className)}>
       <StatusBadge
@@ -57,10 +63,12 @@ export const StatusSystem: React.FC<StatusSystemProps> = ({
         {label}
       </StatusBadge>
       {showDescription && description && (
-        <p className={cn(
-          'text-muted-foreground',
-          size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs'
-        )}>
+        <p
+          className={cn(
+            'text-muted-foreground',
+            size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs',
+          )}
+        >
           {description}
         </p>
       )}
@@ -69,7 +77,10 @@ export const StatusSystem: React.FC<StatusSystemProps> = ({
 };
 
 // Utility function for status transitions
-export const getStatusTransition = (fromStatus: ExtendedStatusType, toStatus: ExtendedStatusType): {
+export const getStatusTransition = (
+  fromStatus: ExtendedStatusType,
+  toStatus: ExtendedStatusType,
+): {
   isValid: boolean;
   message?: string;
 } => {

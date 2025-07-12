@@ -19,14 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 export default function SubscriptionPage() {
-  const {
-    loading,
-    tiers,
-    userSubscription,
-    transactions,
-    subscribeToPlan,
-    cancelSubscription,
-  } = useSubscription();
+  const { loading, tiers, userSubscription, transactions, subscribeToPlan, cancelSubscription } =
+    useSubscription();
 
   const [selectedTierId, setSelectedTierId] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -117,11 +111,8 @@ export default function SubscriptionPage() {
               </div>
               <div className="text-sm text-muted-foreground">
                 <p>
-                  Questions about refunds? See our{" "}
-                  <Link 
-                    to="/refund-policy" 
-                    className="text-cap-teal hover:underline font-medium"
-                  >
+                  Questions about refunds? See our{' '}
+                  <Link to="/refund-policy" className="text-cap-teal hover:underline font-medium">
                     Refund Policy
                   </Link>
                 </p>
@@ -147,18 +138,16 @@ export default function SubscriptionPage() {
         <h2 className="text-2xl font-bold">Subscription Plans</h2>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <p className="text-muted-foreground">
-            Choose the plan that best fits your needs. All plans are once-off payments with lifetime access.
+            Choose the plan that best fits your needs. All plans are once-off payments with lifetime
+            access.
           </p>
           <p className="text-sm text-muted-foreground">
-            <Link 
-              to="/refund-policy" 
-              className="text-cap-teal hover:underline"
-            >
+            <Link to="/refund-policy" className="text-cap-teal hover:underline">
               View Refund Policy
             </Link>
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {tiers.map((tier) => (
             <SubscriptionTierCard

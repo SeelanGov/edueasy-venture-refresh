@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { ErrorSeverity } from '@/utils/errorLogging';
+import type { ErrorSeverity } from '@/utils/errorLogging';
 import logger from '../utils/logger';
 
 export interface ErrorLogEntry {
@@ -94,7 +94,7 @@ export const useAdminErrorNotifications = () => {
 
       // Update local state
       setNotifications((prev) =>
-        prev.map((n) => (n.id === errorId ? { ...n, is_resolved: true } : n))
+        prev.map((n) => (n.id === errorId ? { ...n, is_resolved: true } : n)),
       );
 
       // Show success message
@@ -131,7 +131,7 @@ export const useAdminErrorNotifications = () => {
           toast('New system error detected', {
             description: 'Check the admin dashboard for details',
           });
-        }
+        },
       )
       .subscribe();
 

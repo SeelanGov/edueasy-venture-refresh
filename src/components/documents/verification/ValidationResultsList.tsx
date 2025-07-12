@@ -1,4 +1,3 @@
-
 import { CheckCircle, XCircle, ClipboardList } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
@@ -48,7 +47,7 @@ export const ValidationResultsList = ({
                         : ` ${typeof value === 'string' || typeof value === 'number' ? value : JSON.stringify(value)}`}
                     </span>
                   </div>
-                )
+                ),
             )}
           </div>
         </div>

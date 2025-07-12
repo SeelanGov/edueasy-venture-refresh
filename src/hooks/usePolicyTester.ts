@@ -8,7 +8,7 @@ import {
   analyzeRLSPolicies,
   getRegisteredPolicies,
 } from '@/utils/security';
-import { RLSTestResult, RLSPolicyAnalysis } from '@/utils/security/types';
+import type { RLSTestResult, RLSPolicyAnalysis } from '@/utils/security/types';
 
 export const usePolicyTester = () => {
   const { user } = useAuth();
@@ -66,7 +66,7 @@ export const usePolicyTester = () => {
     } catch (error: unknown) {
       console.error('Error running RLS tests:', error);
       toast.error(
-        `Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`
+        `Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`,
       );
     } finally {
       setIsLoading(false);
@@ -83,7 +83,7 @@ export const usePolicyTester = () => {
       const { results } = await testRLSPoliciesWithRole(
         user.id,
         selectedRole,
-        scenarioName || undefined
+        scenarioName || undefined,
       );
 
       setTestResults(results || []);
@@ -96,7 +96,7 @@ export const usePolicyTester = () => {
     } catch (error: unknown) {
       console.error('Error running RLS tests:', error);
       toast.error(
-        `Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`
+        `Error running RLS tests: ${error instanceof Error ? error.message : String(error)}`,
       );
     } finally {
       setIsLoading(false);
@@ -120,7 +120,7 @@ export const usePolicyTester = () => {
     } catch (error: unknown) {
       console.error('Error refreshing policy data:', error);
       toast.error(
-        `Error refreshing data: ${error instanceof Error ? error.message : String(error)}`
+        `Error refreshing data: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   };

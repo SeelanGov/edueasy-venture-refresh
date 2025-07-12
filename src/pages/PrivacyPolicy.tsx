@@ -1,11 +1,10 @@
-
-import { Typography } from '@/components/ui/typography';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
+import { Typography } from '@/components/ui/typography';
 import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
@@ -15,14 +14,14 @@ const PrivacyPolicy = () => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('[data-section]');
       let current = '';
-      
+
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         if (rect.top <= 100) {
           current = section.getAttribute('data-section') || '';
         }
       });
-      
+
       setActiveSection(current);
     };
 
@@ -46,12 +45,12 @@ const PrivacyPolicy = () => {
     { id: 'data-security', title: '6. Data Security' },
     { id: 'data-retention', title: '7. Data Retention' },
     { id: 'privacy-rights', title: '8. Your Privacy Rights' },
-    { id: 'childrens-privacy', title: '9. Children\'s Privacy' },
+    { id: 'childrens-privacy', title: "9. Children's Privacy" },
     { id: 'cookies-tracking', title: '10. Cookies and Tracking Technologies' },
     { id: 'third-party-websites', title: '11. Third-Party Websites' },
     { id: 'policy-changes', title: '12. Changes to This Privacy Notice' },
     { id: 'contact-us', title: '13. Contact Us' },
-    { id: 'complaints', title: '14. Complaints' }
+    { id: 'complaints', title: '14. Complaints' },
   ];
 
   return (
@@ -91,10 +90,12 @@ const PrivacyPolicy = () => {
           <div className="hidden lg:block w-80 flex-shrink-0">
             <Card className="sticky top-24">
               <CardContent className="p-6">
-                <Typography variant="h4" className="mb-4">Table of Contents</Typography>
+                <Typography variant="h4" className="mb-4">
+                  Table of Contents
+                </Typography>
                 <nav className="space-y-2">
                   {sections.map((section) => (
-                    <button
+                    <Button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
                       className={`block w-full text-left px-3 py-2 rounded text-sm transition-colors ${
@@ -102,9 +103,11 @@ const PrivacyPolicy = () => {
                           ? 'bg-cap-teal text-white'
                           : 'hover:bg-gray-100 text-gray-700'
                       }`}
+                      variant="ghost"
+                      size="sm"
                     >
                       {section.title}
-                    </button>
+                    </Button>
                   ))}
                 </nav>
               </CardContent>
@@ -117,13 +120,21 @@ const PrivacyPolicy = () => {
               <CardContent className="p-8">
                 {/* Section 1: Introduction */}
                 <section id="introduction" data-section="introduction" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">1. INTRODUCTION</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    1. INTRODUCTION
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
                     <p>
-                      EduEasy, operated by CAP (South Africa) ("we", "us", "our", or "EduEasy"), respects your privacy and is committed to protecting your personal information. This Privacy Notice explains how we collect, use, disclose, and safeguard your information when you use our platform and services.
+                      EduEasy, operated by CAP (South Africa) ("we", "us", "our", or "EduEasy"),
+                      respects your privacy and is committed to protecting your personal
+                      information. This Privacy Notice explains how we collect, use, disclose, and
+                      safeguard your information when you use our platform and services.
                     </p>
                     <p>
-                      This Notice applies to all information collected through our website (www.edueasy.co), mobile application, USSD service, SMS service, call center interactions, and any related services, sales, marketing, or events (collectively, the "Services").
+                      This Notice applies to all information collected through our website
+                      (www.edueasy.co), mobile application, USSD service, SMS service, call center
+                      interactions, and any related services, sales, marketing, or events
+                      (collectively, the "Services").
                     </p>
                   </div>
                 </section>
@@ -131,26 +142,42 @@ const PrivacyPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 2: Information We Collect */}
-                <section id="information-we-collect" data-section="information-we-collect" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">2. INFORMATION WE COLLECT</Typography>
+                <section
+                  id="information-we-collect"
+                  data-section="information-we-collect"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    2. INFORMATION WE COLLECT
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-6">
                     <p>
                       We collect personal information that you voluntarily provide to us when you:
                     </p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Register on our platform.</li>
-                      <li>Express interest in obtaining information about us or our products and Services.</li>
+                      <li>
+                        Express interest in obtaining information about us or our products and
+                        Services.
+                      </li>
                       <li>Participate in activities on our Services.</li>
-                      <li>Apply to educational institutions or funding opportunities through our platform.</li>
+                      <li>
+                        Apply to educational institutions or funding opportunities through our
+                        platform.
+                      </li>
                     </ul>
 
-                    <Typography variant="h3" className="text-gray-800 mt-8 mb-4">2.1 Personal Information</Typography>
+                    <Typography variant="h3" className="text-gray-800 mt-8 mb-4">
+                      2.1 Personal Information
+                    </Typography>
                     <p>Depending on how you interact with our Services, we may collect:</p>
-                    
+
                     <div className="grid md:grid-cols-2 gap-6 mt-6">
                       <Card className="border-l-4 border-l-cap-teal">
                         <CardContent className="p-4">
-                          <Typography variant="h4" className="mb-3 text-cap-teal">Identity Information</Typography>
+                          <Typography variant="h4" className="mb-3 text-cap-teal">
+                            Identity Information
+                          </Typography>
                           <ul className="text-sm space-y-1">
                             <li>• Full name</li>
                             <li>• Date of birth</li>
@@ -164,7 +191,9 @@ const PrivacyPolicy = () => {
 
                       <Card className="border-l-4 border-l-cap-coral">
                         <CardContent className="p-4">
-                          <Typography variant="h4" className="mb-3 text-cap-coral">Contact Information</Typography>
+                          <Typography variant="h4" className="mb-3 text-cap-coral">
+                            Contact Information
+                          </Typography>
                           <ul className="text-sm space-y-1">
                             <li>• Email address</li>
                             <li>• Telephone number</li>
@@ -176,7 +205,9 @@ const PrivacyPolicy = () => {
 
                       <Card className="border-l-4 border-l-blue-500">
                         <CardContent className="p-4">
-                          <Typography variant="h4" className="mb-3 text-blue-600">Education Information</Typography>
+                          <Typography variant="h4" className="mb-3 text-blue-600">
+                            Education Information
+                          </Typography>
                           <ul className="text-sm space-y-1">
                             <li>• Academic records and transcripts</li>
                             <li>• Qualifications</li>
@@ -189,7 +220,9 @@ const PrivacyPolicy = () => {
 
                       <Card className="border-l-4 border-l-green-500">
                         <CardContent className="p-4">
-                          <Typography variant="h4" className="mb-3 text-green-600">Financial Information</Typography>
+                          <Typography variant="h4" className="mb-3 text-green-600">
+                            Financial Information
+                          </Typography>
                           <ul className="text-sm space-y-1">
                             <li>• Household income information</li>
                             <li>• Banking details (for funding disbursements)</li>
@@ -199,9 +232,14 @@ const PrivacyPolicy = () => {
                       </Card>
                     </div>
 
-                    <Typography variant="h3" className="text-gray-800 mt-8 mb-4">2.2 Information Collected Through Automated Technologies</Typography>
+                    <Typography variant="h3" className="text-gray-800 mt-8 mb-4">
+                      2.2 Information Collected Through Automated Technologies
+                    </Typography>
                     <p>
-                      When you use our Services, we may use cookies, server logs, web beacons, and other similar technologies to collect device and usage information, browser characteristics, operating system details, language preferences, and information about how you interact with our Services.
+                      When you use our Services, we may use cookies, server logs, web beacons, and
+                      other similar technologies to collect device and usage information, browser
+                      characteristics, operating system details, language preferences, and
+                      information about how you interact with our Services.
                     </p>
                   </div>
                 </section>
@@ -209,10 +247,18 @@ const PrivacyPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 3: How We Use Your Information */}
-                <section id="how-we-use-information" data-section="how-we-use-information" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">3. HOW WE USE YOUR INFORMATION</Typography>
+                <section
+                  id="how-we-use-information"
+                  data-section="how-we-use-information"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    3. HOW WE USE YOUR INFORMATION
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-6">
-                    <Typography variant="h3" className="text-gray-800">3.1 Core Service Provision</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      3.1 Core Service Provision
+                    </Typography>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Processing university, TVET, and SETA applications</li>
                       <li>Matching you with appropriate funding opportunities</li>
@@ -221,7 +267,9 @@ const PrivacyPolicy = () => {
                       <li>Managing your account and providing customer support</li>
                     </ul>
 
-                    <Typography variant="h3" className="text-gray-800">3.2 Business Operations</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      3.2 Business Operations
+                    </Typography>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Improving our Services</li>
                       <li>Marketing and communicating with you about our Services</li>
@@ -229,7 +277,9 @@ const PrivacyPolicy = () => {
                       <li>Complying with legal obligations</li>
                     </ul>
 
-                    <Typography variant="h3" className="text-gray-800">3.3 Legal Bases for Processing</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      3.3 Legal Bases for Processing
+                    </Typography>
                     <p>We process your information based on:</p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Your consent</li>
@@ -244,7 +294,9 @@ const PrivacyPolicy = () => {
 
                 {/* Section 8: Your Privacy Rights */}
                 <section id="privacy-rights" data-section="privacy-rights" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">8. YOUR PRIVACY RIGHTS</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    8. YOUR PRIVACY RIGHTS
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
                     <p>Under POPIA, you have the right to:</p>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
@@ -284,7 +336,8 @@ const PrivacyPolicy = () => {
                       </ul>
                     </div>
                     <p className="mt-4">
-                      To exercise any of these rights, please contact us using the details provided below.
+                      To exercise any of these rights, please contact us using the details provided
+                      below.
                     </p>
                   </div>
                 </section>
@@ -293,18 +346,37 @@ const PrivacyPolicy = () => {
 
                 {/* Section 13: Contact Us */}
                 <section id="contact-us" data-section="contact-us" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">13. CONTACT US</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    13. CONTACT US
+                  </Typography>
                   <div className="prose prose-gray max-w-none">
                     <p>
-                      If you have questions or comments about this Privacy Notice, your personal information, our use and disclosure practices, or your consent choices, please contact us at:
+                      If you have questions or comments about this Privacy Notice, your personal
+                      information, our use and disclosure practices, or your consent choices, please
+                      contact us at:
                     </p>
                     <Card className="bg-cap-teal/5 border-cap-teal/20 mt-6">
                       <CardContent className="p-6">
                         <div className="space-y-3">
-                          <div><strong>Information Officer:</strong> Vuyile Mpaka</div>
-                          <div><strong>Email:</strong> <a href="mailto:info@edueasy.co" className="text-cap-teal hover:underline">info@edueasy.co</a></div>
-                          <div><strong>Phone:</strong> [Phone number to be updated]</div>
-                          <div><strong>Address:</strong> 268 Oxford Street, Belgravia, East London, Eastern Cape, 5200</div>
+                          <div>
+                            <strong>Information Officer:</strong> Vuyile Mpaka
+                          </div>
+                          <div>
+                            <strong>Email:</strong>{' '}
+                            <a
+                              href="mailto:info@edueasy.co"
+                              className="text-cap-teal hover:underline"
+                            >
+                              info@edueasy.co
+                            </a>
+                          </div>
+                          <div>
+                            <strong>Phone:</strong> [Phone number to be updated]
+                          </div>
+                          <div>
+                            <strong>Address:</strong> 268 Oxford Street, Belgravia, East London,
+                            Eastern Cape, 5200
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -315,22 +387,38 @@ const PrivacyPolicy = () => {
 
                 {/* Section 14: Complaints */}
                 <section id="complaints" data-section="complaints" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">14. COMPLAINTS</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    14. COMPLAINTS
+                  </Typography>
                   <div className="prose prose-gray max-w-none">
                     <p>
-                      If you have a complaint about how we handle your personal information, please contact our Information Officer. If you are not satisfied with our response, you have the right to lodge a complaint with the Information Regulator:
+                      If you have a complaint about how we handle your personal information, please
+                      contact our Information Officer. If you are not satisfied with our response,
+                      you have the right to lodge a complaint with the Information Regulator:
                     </p>
                     <Card className="mt-6">
                       <CardContent className="p-6">
-                        <Typography variant="h4" className="mb-4">The Information Regulator (South Africa)</Typography>
+                        <Typography variant="h4" className="mb-4">
+                          The Information Regulator (South Africa)
+                        </Typography>
                         <div className="space-y-2 text-sm">
-                          <div><strong>Physical Address:</strong> JD House, 27 Stiemens Street, Braamfontein, Johannesburg, 2001</div>
-                          <div><strong>Postal Address:</strong> P.O. Box 31533, Braamfontein, Johannesburg, 2017</div>
-                          <div><strong>Email:</strong> inforeg@justice.gov.za / complaints.IR@justice.gov.za</div>
-                          <div><strong>Website:</strong> 
-                            <a 
-                              href="https://www.justice.gov.za/inforeg" 
-                              target="_blank" 
+                          <div>
+                            <strong>Physical Address:</strong> JD House, 27 Stiemens Street,
+                            Braamfontein, Johannesburg, 2001
+                          </div>
+                          <div>
+                            <strong>Postal Address:</strong> P.O. Box 31533, Braamfontein,
+                            Johannesburg, 2017
+                          </div>
+                          <div>
+                            <strong>Email:</strong> inforeg@justice.gov.za /
+                            complaints.IR@justice.gov.za
+                          </div>
+                          <div>
+                            <strong>Website:</strong>
+                            <a
+                              href="https://www.justice.gov.za/inforeg"
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="text-cap-teal hover:underline ml-2 inline-flex items-center gap-1"
                             >
@@ -349,7 +437,9 @@ const PrivacyPolicy = () => {
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="text-sm text-gray-600">
                       <p>This Privacy Policy is effective as of March 11, 2025</p>
-                      <p className="mt-1">© 2024 EduEasy (CAP South Africa). All rights reserved.</p>
+                      <p className="mt-1">
+                        © 2024 EduEasy (CAP South Africa). All rights reserved.
+                      </p>
                     </div>
                     <Button
                       onClick={() => navigate('/')}

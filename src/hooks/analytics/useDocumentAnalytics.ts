@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { AnalyticsFilters, DocumentAnalytics } from './types';
+import type { AnalyticsFilters, DocumentAnalytics } from './types';
 import { DEFAULT_FILTERS } from './constants';
 import {
   processDocumentsByDate,
@@ -55,7 +55,7 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
       let filteredDocuments = documents || [];
       if (filters.institutionId) {
         filteredDocuments = filteredDocuments.filter(
-          (doc) => doc.applications?.institution_id === filters.institutionId
+          (doc) => doc.applications?.institution_id === filters.institutionId,
         );
       }
 

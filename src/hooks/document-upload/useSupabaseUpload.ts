@@ -1,9 +1,8 @@
-
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
-import { DocumentType } from '@/components/profile-completion/documents/types';
-import { DocumentInfo } from '@/types/ApplicationTypes';
+import type { DocumentType } from '@/components/profile-completion/documents/types';
+import type { DocumentInfo } from '@/types/ApplicationTypes';
 import logger from '@/utils/logger';
 
 // Extended interface with index signature
@@ -18,7 +17,7 @@ export const useSupabaseUpload = (
   setDocuments: (docs: DocumentsStore) => void,
   form: {
     setValue: (field: string, value: any) => void;
-  }
+  },
 ) => {
   const uploadToSupabase = useCallback(
     async (
@@ -26,7 +25,7 @@ export const useSupabaseUpload = (
       documentType: DocumentType,
       userId: string,
       applicationId: string | undefined,
-      isResubmission: boolean = false
+      isResubmission: boolean = false,
     ) => {
       setDocumentState(documentType, { uploading: true, progress: 0, error: null });
 
@@ -99,14 +98,14 @@ export const useSupabaseUpload = (
           size: file.size,
           uploadedAt: new Date().toISOString(),
           path: filePath,
-          documentId: documentId
+          documentId: documentId,
         };
-        
+
         const updatedDocuments: DocumentsStore = {
           ...documents,
           [documentType]: docInfo,
         };
-        
+
         if (applicationId) {
           updatedDocuments.applicationId = applicationId;
         }
@@ -122,11 +121,11 @@ export const useSupabaseUpload = (
         return { success: false };
       }
     },
-    [setDocumentState, setDocuments, form, documents]
+    [setDocumentState, setDocuments, form, documents],
   );
 
   return { uploadToSupabase };
 };
 
 // Import the type so that it's available in this file
-import { DocumentUploadState } from '@/hooks/useDocumentUploadManager';
+import type { DocumentUploadState } from '@/hooks/useDocumentUploadManager';

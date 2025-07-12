@@ -1,7 +1,17 @@
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
-import { ChevronLeft, ChevronRight, LogOut, Moon, Sun, Shield, Building2, ChartBarIcon, Users } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  Moon,
+  Sun,
+  Shield,
+  Building2,
+  ChartBarIcon,
+  Users,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AdminNavSection } from './AdminNavSection';

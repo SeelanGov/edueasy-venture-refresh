@@ -1,11 +1,10 @@
-
-import { Typography } from '@/components/ui/typography';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Typography } from '@/components/ui/typography';
+import { ArrowLeft, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RefundPolicy = () => {
   const navigate = useNavigate();
@@ -15,14 +14,14 @@ const RefundPolicy = () => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('[data-section]');
       let current = '';
-      
+
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         if (rect.top <= 100) {
           current = section.getAttribute('data-section') || '';
         }
       });
-      
+
       setActiveSection(current);
     };
 
@@ -46,7 +45,7 @@ const RefundPolicy = () => {
     { id: 'non-refundable-items', title: '6. Non-Refundable Items' },
     { id: 'dispute-resolution', title: '7. Dispute Resolution' },
     { id: 'policy-changes', title: '8. Changes to This Policy' },
-    { id: 'contact-information', title: '9. Contact Information' }
+    { id: 'contact-information', title: '9. Contact Information' },
   ];
 
   return (
@@ -86,10 +85,12 @@ const RefundPolicy = () => {
           <div className="hidden lg:block w-80 flex-shrink-0">
             <Card className="sticky top-24">
               <CardContent className="p-6">
-                <Typography variant="h4" className="mb-4">Table of Contents</Typography>
+                <Typography variant="h4" className="mb-4">
+                  Table of Contents
+                </Typography>
                 <nav className="space-y-2">
                   {sections.map((section) => (
-                    <button
+                    <Button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
                       className={`block w-full text-left px-3 py-2 rounded text-sm transition-colors ${
@@ -97,9 +98,11 @@ const RefundPolicy = () => {
                           ? 'bg-cap-teal text-white'
                           : 'hover:bg-gray-100 text-gray-700'
                       }`}
+                      variant="ghost"
+                      size="sm"
                     >
                       {section.title}
-                    </button>
+                    </Button>
                   ))}
                 </nav>
               </CardContent>
@@ -112,10 +115,16 @@ const RefundPolicy = () => {
               <CardContent className="p-8">
                 {/* Section 1: Introduction */}
                 <section id="introduction" data-section="introduction" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">1. INTRODUCTION</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    1. INTRODUCTION
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
                     <p>
-                      This Refund and Cancellation Policy forms part of the Terms and Conditions of EduEasy, operated by CAP (South Africa) (Registration Number: 2025/120934/07) ("we", "us", "our", or "EduEasy"). This policy has been developed in accordance with the Electronic Communications and Transactions Act 25 of 2002 (ECTA) and other applicable South African consumer protection laws.
+                      This Refund and Cancellation Policy forms part of the Terms and Conditions of
+                      EduEasy, operated by CAP (South Africa) (Registration Number: 2025/120934/07)
+                      ("we", "us", "our", or "EduEasy"). This policy has been developed in
+                      accordance with the Electronic Communications and Transactions Act 25 of 2002
+                      (ECTA) and other applicable South African consumer protection laws.
                     </p>
                   </div>
                 </section>
@@ -124,9 +133,14 @@ const RefundPolicy = () => {
 
                 {/* Section 2: Scope */}
                 <section id="scope" data-section="scope" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">2. SCOPE</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    2. SCOPE
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
-                    <p>This policy applies to all paid services offered by EduEasy, including but not limited to:</p>
+                    <p>
+                      This policy applies to all paid services offered by EduEasy, including but not
+                      limited to:
+                    </p>
                     <div className="grid md:grid-cols-2 gap-4 mt-6">
                       <Card className="border-l-4 border-l-cap-teal">
                         <CardContent className="p-4">
@@ -155,23 +169,38 @@ const RefundPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 3: Cooling-Off Period */}
-                <section id="cooling-off-period" data-section="cooling-off-period" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">3. COOLING-OFF PERIOD</Typography>
+                <section
+                  id="cooling-off-period"
+                  data-section="cooling-off-period"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    3. COOLING-OFF PERIOD
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-6">
-                    <Typography variant="h3" className="text-gray-800">3.1 Statutory Cooling-Off Period</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      3.1 Statutory Cooling-Off Period
+                    </Typography>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                       <p>
-                        In accordance with Section 44 of the Electronic Communications and Transactions Act (ECTA), you have the right to cancel any electronic transaction without reason or penalty within <strong>7 (seven) days</strong> after the date of receipt of the goods or conclusion of the agreement for services.
+                        In accordance with Section 44 of the Electronic Communications and
+                        Transactions Act (ECTA), you have the right to cancel any electronic
+                        transaction without reason or penalty within <strong>7 (seven) days</strong>{' '}
+                        after the date of receipt of the goods or conclusion of the agreement for
+                        services.
                       </p>
                     </div>
 
-                    <Typography variant="h3" className="text-gray-800">3.2 Exceptions to the Cooling-Off Period</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      3.2 Exceptions to the Cooling-Off Period
+                    </Typography>
                     <p>The cooling-off period does not apply to:</p>
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <ul className="grid md:grid-cols-2 gap-2 text-sm">
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                          Financial services, including banking, insurance, investment services, or financial advice
+                          Financial services, including banking, insurance, investment services, or
+                          financial advice
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
@@ -191,7 +220,8 @@ const RefundPolicy = () => {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                          Accommodation, transport, catering, or leisure services scheduled for a specific date or period
+                          Accommodation, transport, catering, or leisure services scheduled for a
+                          specific date or period
                         </li>
                       </ul>
                     </div>
@@ -201,13 +231,21 @@ const RefundPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 4: Cancellation Procedures */}
-                <section id="cancellation-procedures" data-section="cancellation-procedures" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">4. CANCELLATION PROCEDURES</Typography>
+                <section
+                  id="cancellation-procedures"
+                  data-section="cancellation-procedures"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    4. CANCELLATION PROCEDURES
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-6">
                     <div className="grid md:grid-cols-3 gap-6">
                       <Card className="border-l-4 border-l-cap-teal">
                         <CardContent className="p-6">
-                          <Typography variant="h3" className="text-cap-teal mb-4">4.1 Subscription Services</Typography>
+                          <Typography variant="h3" className="text-cap-teal mb-4">
+                            4.1 Subscription Services
+                          </Typography>
                           <ul className="text-sm space-y-2">
                             <li>• Cancel anytime via account settings or customer support</li>
                             <li>• Takes effect at end of current billing cycle</li>
@@ -218,7 +256,9 @@ const RefundPolicy = () => {
 
                       <Card className="border-l-4 border-l-cap-coral">
                         <CardContent className="p-6">
-                          <Typography variant="h3" className="text-cap-coral mb-4">4.2 One-Time Services</Typography>
+                          <Typography variant="h3" className="text-cap-coral mb-4">
+                            4.2 One-Time Services
+                          </Typography>
                           <ul className="text-sm space-y-2">
                             <li>• Full refund if service not yet performed</li>
                             <li>• Partial refund if service is in progress</li>
@@ -229,7 +269,9 @@ const RefundPolicy = () => {
 
                       <Card className="border-l-4 border-l-blue-500">
                         <CardContent className="p-6">
-                          <Typography variant="h3" className="text-blue-600 mb-4">4.3 Application Processing</Typography>
+                          <Typography variant="h3" className="text-blue-600 mb-4">
+                            4.3 Application Processing
+                          </Typography>
                           <ul className="text-sm space-y-2">
                             <li>• 100% refund: Before processing begins</li>
                             <li>• 80% refund: After processing, before submission</li>
@@ -245,9 +287,13 @@ const RefundPolicy = () => {
 
                 {/* Section 5: Refund Procedures */}
                 <section id="refund-procedures" data-section="refund-procedures" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">5. REFUND PROCEDURES</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    5. REFUND PROCEDURES
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-6">
-                    <Typography variant="h3" className="text-gray-800">5.1 Refund Eligibility</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      5.1 Refund Eligibility
+                    </Typography>
                     <p>You may be eligible for a refund in the following circumstances:</p>
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <ul className="space-y-2 text-sm">
@@ -274,40 +320,69 @@ const RefundPolicy = () => {
                       </ul>
                     </div>
 
-                    <Typography variant="h3" className="text-gray-800">5.2 Refund Process</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      5.2 Refund Process
+                    </Typography>
                     <p>To request a refund:</p>
                     <div className="bg-cap-teal/5 border border-cap-teal/20 rounded-lg p-6">
                       <ol className="space-y-3 text-sm">
                         <li className="flex gap-3">
-                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">1</span>
-                          <span>Log in to your EduEasy account and navigate to the "Billing" or "Payments" section.</span>
+                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            1
+                          </span>
+                          <span>
+                            Log in to your EduEasy account and navigate to the "Billing" or
+                            "Payments" section.
+                          </span>
                         </li>
                         <li className="flex gap-3">
-                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">2</span>
+                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            2
+                          </span>
                           <span>Select the transaction for which you are requesting a refund.</span>
                         </li>
                         <li className="flex gap-3">
-                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">3</span>
-                          <span>Complete the refund request form with all required information.</span>
+                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            3
+                          </span>
+                          <span>
+                            Complete the refund request form with all required information.
+                          </span>
                         </li>
                         <li className="flex gap-3">
-                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">4</span>
+                          <span className="bg-cap-teal text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            4
+                          </span>
                           <span>Submit your request.</span>
                         </li>
                       </ol>
                       <p className="mt-4 text-sm">
-                        Alternatively, email our customer support at <a href="mailto:info@edueasy.co" className="text-cap-teal hover:underline">info@edueasy.co</a> with your refund request, including your account details and the reason for the refund.
+                        Alternatively, email our customer support at{' '}
+                        <a href="mailto:info@edueasy.co" className="text-cap-teal hover:underline">
+                          info@edueasy.co
+                        </a>{' '}
+                        with your refund request, including your account details and the reason for
+                        the refund.
                       </p>
                     </div>
 
-                    <Typography variant="h3" className="text-gray-800">5.3 Refund Timeframe</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      5.3 Refund Timeframe
+                    </Typography>
                     <p>
-                      We aim to process all valid refund requests within <strong>7-10 business days</strong> of approval. The actual time for the funds to reflect in your account may vary depending on your payment method and financial institution.
+                      We aim to process all valid refund requests within{' '}
+                      <strong>7-10 business days</strong> of approval. The actual time for the funds
+                      to reflect in your account may vary depending on your payment method and
+                      financial institution.
                     </p>
 
-                    <Typography variant="h3" className="text-gray-800">5.4 Refund Methods</Typography>
+                    <Typography variant="h3" className="text-gray-800">
+                      5.4 Refund Methods
+                    </Typography>
                     <p>
-                      Refunds will be issued using the same payment method used for the original transaction whenever possible. If this is not possible, we will contact you to arrange an alternative refund method.
+                      Refunds will be issued using the same payment method used for the original
+                      transaction whenever possible. If this is not possible, we will contact you to
+                      arrange an alternative refund method.
                     </p>
                   </div>
                 </section>
@@ -315,8 +390,14 @@ const RefundPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 6: Non-Refundable Items */}
-                <section id="non-refundable-items" data-section="non-refundable-items" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">6. NON-REFUNDABLE ITEMS</Typography>
+                <section
+                  id="non-refundable-items"
+                  data-section="non-refundable-items"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    6. NON-REFUNDABLE ITEMS
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
                     <p>The following are generally non-refundable:</p>
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
@@ -327,7 +408,8 @@ const RefundPolicy = () => {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></span>
-                          Fees for applications that have already been submitted to educational institutions or funding providers
+                          Fees for applications that have already been submitted to educational
+                          institutions or funding providers
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></span>
@@ -335,7 +417,8 @@ const RefundPolicy = () => {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></span>
-                          Any fees where the non-refundable nature was clearly communicated before purchase
+                          Any fees where the non-refundable nature was clearly communicated before
+                          purchase
                         </li>
                       </ul>
                     </div>
@@ -345,23 +428,50 @@ const RefundPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 7: Dispute Resolution */}
-                <section id="dispute-resolution" data-section="dispute-resolution" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">7. DISPUTE RESOLUTION</Typography>
+                <section
+                  id="dispute-resolution"
+                  data-section="dispute-resolution"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    7. DISPUTE RESOLUTION
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
-                    <p>If you are dissatisfied with our decision regarding your refund or cancellation request:</p>
+                    <p>
+                      If you are dissatisfied with our decision regarding your refund or
+                      cancellation request:
+                    </p>
                     <div className="bg-cap-coral/5 border border-cap-coral/20 rounded-lg p-6">
                       <ol className="space-y-3 text-sm">
                         <li className="flex gap-3">
-                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">1</span>
+                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            1
+                          </span>
                           <span>Contact our customer support team to explain your concerns.</span>
                         </li>
                         <li className="flex gap-3">
-                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">2</span>
-                          <span>If the issue remains unresolved, escalate the matter to our management team by emailing <a href="mailto:info@edueasy.co" className="text-cap-coral hover:underline">info@edueasy.co</a></span>
+                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            2
+                          </span>
+                          <span>
+                            If the issue remains unresolved, escalate the matter to our management
+                            team by emailing{' '}
+                            <a
+                              href="mailto:info@edueasy.co"
+                              className="text-cap-coral hover:underline"
+                            >
+                              info@edueasy.co
+                            </a>
+                          </span>
                         </li>
                         <li className="flex gap-3">
-                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">3</span>
-                          <span>If you remain dissatisfied, you may refer the matter to the relevant South African consumer protection authorities.</span>
+                          <span className="bg-cap-coral text-white rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0">
+                            3
+                          </span>
+                          <span>
+                            If you remain dissatisfied, you may refer the matter to the relevant
+                            South African consumer protection authorities.
+                          </span>
                         </li>
                       </ol>
                     </div>
@@ -372,10 +482,15 @@ const RefundPolicy = () => {
 
                 {/* Section 8: Policy Changes */}
                 <section id="policy-changes" data-section="policy-changes" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">8. CHANGES TO THIS POLICY</Typography>
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    8. CHANGES TO THIS POLICY
+                  </Typography>
                   <div className="prose prose-gray max-w-none space-y-4">
                     <p>
-                      We reserve the right to modify this Refund and Cancellation Policy at any time. Any changes will be effective immediately upon posting the updated policy on our website. We encourage you to review this policy regularly to stay informed about our refund and cancellation procedures.
+                      We reserve the right to modify this Refund and Cancellation Policy at any
+                      time. Any changes will be effective immediately upon posting the updated
+                      policy on our website. We encourage you to review this policy regularly to
+                      stay informed about our refund and cancellation procedures.
                     </p>
                   </div>
                 </section>
@@ -383,19 +498,47 @@ const RefundPolicy = () => {
                 <Separator className="my-8" />
 
                 {/* Section 9: Contact Information */}
-                <section id="contact-information" data-section="contact-information" className="mb-12">
-                  <Typography variant="h2" className="text-cap-teal mb-6">9. CONTACT INFORMATION</Typography>
+                <section
+                  id="contact-information"
+                  data-section="contact-information"
+                  className="mb-12"
+                >
+                  <Typography variant="h2" className="text-cap-teal mb-6">
+                    9. CONTACT INFORMATION
+                  </Typography>
                   <div className="prose prose-gray max-w-none">
                     <p>
-                      If you have any questions about this Refund and Cancellation Policy, please contact us at:
+                      If you have any questions about this Refund and Cancellation Policy, please
+                      contact us at:
                     </p>
                     <Card className="bg-cap-teal/5 border-cap-teal/20 mt-6">
                       <CardContent className="p-6">
                         <div className="space-y-3">
-                          <div><strong>Customer Support:</strong> <a href="mailto:info@edueasy.co" className="text-cap-teal hover:underline">info@edueasy.co</a></div>
-                          <div><strong>Refund Queries:</strong> <a href="mailto:info@edueasy.co" className="text-cap-teal hover:underline">info@edueasy.co</a></div>
-                          <div><strong>Phone:</strong> TBC</div>
-                          <div><strong>Address:</strong> 268 Oxford Street, Belgravia, East London, Eastern Cape, 5200</div>
+                          <div>
+                            <strong>Customer Support:</strong>{' '}
+                            <a
+                              href="mailto:info@edueasy.co"
+                              className="text-cap-teal hover:underline"
+                            >
+                              info@edueasy.co
+                            </a>
+                          </div>
+                          <div>
+                            <strong>Refund Queries:</strong>{' '}
+                            <a
+                              href="mailto:info@edueasy.co"
+                              className="text-cap-teal hover:underline"
+                            >
+                              info@edueasy.co
+                            </a>
+                          </div>
+                          <div>
+                            <strong>Phone:</strong> TBC
+                          </div>
+                          <div>
+                            <strong>Address:</strong> 268 Oxford Street, Belgravia, East London,
+                            Eastern Cape, 5200
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -407,9 +550,12 @@ const RefundPolicy = () => {
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="text-sm text-gray-600">
                       <p>This Refund and Cancellation Policy is effective as of March 11, 2025</p>
-                      <p className="mt-1">© 2024 EduEasy (CAP South Africa). All rights reserved.</p>
+                      <p className="mt-1">
+                        © 2024 EduEasy (CAP South Africa). All rights reserved.
+                      </p>
                       <p className="mt-2 font-medium">
-                        By using our Services, you acknowledge that you have read, understood, and agree to be bound by this Refund and Cancellation Policy.
+                        By using our Services, you acknowledge that you have read, understood, and
+                        agree to be bound by this Refund and Cancellation Policy.
                       </p>
                     </div>
                     <Button

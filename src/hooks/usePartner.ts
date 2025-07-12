@@ -1,6 +1,5 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export const usePartner = (id?: string) => {
   const [partner, setPartner] = useState<any | null>(null);
@@ -12,17 +11,16 @@ export const usePartner = (id?: string) => {
     const fetchPartner = async () => {
       setIsLoading(true);
       try {
-        const { data } = await supabase.from("partners")
-          .select("*")
-          .eq("id", id)
-          .single();
+        const { data } = await supabase.from('partners').select('*').eq('id', id).single();
         if (isMounted) setPartner(data ?? null);
       } finally {
         if (isMounted) setIsLoading(false);
       }
     };
     fetchPartner();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   return { partner, isLoading };

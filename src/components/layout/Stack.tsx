@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { spacing } from '@/lib/design-tokens';
+import type { spacing } from '@/lib/design-tokens';
 
 interface StackProps {
   children: React.ReactNode;
@@ -46,7 +45,7 @@ export const Stack: React.FC<StackProps> = ({
   };
 
   const childrenArray = React.Children.toArray(children);
-  
+
   return (
     <Component
       className={cn(
@@ -54,23 +53,17 @@ export const Stack: React.FC<StackProps> = ({
         stackDirection[direction],
         stackSpacing[space],
         alignItems[align],
-        className
+        className,
       )}
     >
-      {divider ? (
-        childrenArray.map((child, index) => (
-          <React.Fragment key={index}>
-            {child}
-            {index < childrenArray.length - 1 && (
-              <div className="flex-shrink-0">
-                {divider}
-              </div>
-            )}
-          </React.Fragment>
-        ))
-      ) : (
-        children
-      )}
+      {divider
+        ? childrenArray.map((child, index) => (
+            <React.Fragment key={index}>
+              {child}
+              {index < childrenArray.length - 1 && <div className="flex-shrink-0">{divider}</div>}
+            </React.Fragment>
+          ))
+        : children}
     </Component>
   );
 };

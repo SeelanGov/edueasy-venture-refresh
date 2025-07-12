@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 export const recordBelongsToUser = async (
   tableName: string,
   recordId: string,
-  userId: string | undefined
+  userId: string | undefined,
 ): Promise<boolean> => {
   if (!userId || !recordId) return false;
 

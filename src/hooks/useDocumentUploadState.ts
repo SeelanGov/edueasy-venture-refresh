@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { DocumentType, DocumentUploadState } from '@/components/profile-completion/documents/types';
-import { VerificationResult } from '@/hooks/useDocumentVerification';
+import { useState } from 'react';
+import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
 
 export const useDocumentUploadState = () => {
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);

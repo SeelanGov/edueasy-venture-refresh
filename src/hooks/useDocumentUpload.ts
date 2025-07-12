@@ -16,7 +16,7 @@ export const useDocumentUpload = () => {
   const uploadDocument = async (
     file: File,
     documentType: string,
-    applicationId: string
+    applicationId: string,
   ): Promise<DocumentUploadResult | null> => {
     if (!user?.id) {
       toast({

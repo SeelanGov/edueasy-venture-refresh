@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfileCompletionStore, type SubjectMark } from '@/hooks/useProfileCompletionStore';
 import { supabase } from '@/integrations/supabase/client';
-import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
-import { EducationForm, EducationFormValues } from './EducationForm';
-import { SubjectMark } from '@/hooks/useProfileCompletionStore';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { EducationForm, type EducationFormValues } from './EducationForm';
 
 interface EducationHistoryStepProps {
   onComplete: () => void;

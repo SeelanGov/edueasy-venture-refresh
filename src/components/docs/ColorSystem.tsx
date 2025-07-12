@@ -27,7 +27,7 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
       <div
         className={cn(
           'h-16 rounded-md mb-2 flex items-center justify-center cursor-pointer',
-          className
+          className,
         )}
         onClick={copyToClipboard}
         title={`Click to copy: ${variable}`}

@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { ContactForm } from './contact/ContactForm';
-import { ContactFormValues } from './contact/types';
+import type { ContactFormValues } from './contact/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
 

@@ -1,44 +1,44 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Link, useLocation } from "react-router-dom";
-import { AlertCircle } from "lucide-react";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Link, useLocation } from 'react-router-dom';
+import { AlertCircle } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/Spinner";
-import { useAuth } from "@/hooks/useAuth";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { SecurityInfoPanel } from "@/components/ui/SecurityInfoPanel";
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 
 // Refactored atomic fields
-import { FullNameField } from "./register/FullNameField";
-import { IdNumberField } from "./register/IdNumberField";
-import { EmailField } from "./register/EmailField";
-import { GenderField } from "./register/GenderField";
-import { PasswordField } from "./register/PasswordField";
-import { ConfirmPasswordField } from "./register/ConfirmPasswordField";
-import { ConsentCheckboxes } from "./register/ConsentCheckboxes";
+import { FullNameField } from './register/FullNameField';
+import { IdNumberField } from './register/IdNumberField';
+import { EmailField } from './register/EmailField';
+import { GenderField } from './register/GenderField';
+import { PasswordField } from './register/PasswordField';
+import { ConfirmPasswordField } from './register/ConfirmPasswordField';
+import { ConsentCheckboxes } from './register/ConsentCheckboxes';
 
 // IMPORTANT: Import the shadcn/ui Form provider to wrap around the form
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from '@/components/ui/form';
 
-const registerFormSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  idNumber: z
-    .string()
-    .length(13, "ID Number must be exactly 13 digits")
-    .regex(/^\d+$/, "ID Number must contain only digits"),
-  gender: z.string().min(1, "Please select your gender"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const registerFormSchema = z
+  .object({
+    fullName: z.string().min(2, 'Name must be at least 2 characters'),
+    idNumber: z
+      .string()
+      .length(13, 'ID Number must be exactly 13 digits')
+      .regex(/^\d+$/, 'ID Number must contain only digits'),
+    gender: z.string().min(1, 'Please select your gender'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
 export type { RegisterFormValues };
@@ -50,17 +50,17 @@ export const RegisterForm = () => {
   const [consentPrivacy, setConsentPrivacy] = useState(false);
   const [consentTerms, setConsentTerms] = useState(false);
   const location = useLocation();
-  const from = location.state?.from || "/profile-completion";
+  const from = location.state?.from || '/profile-completion';
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      fullName: "",
-      idNumber: "",
-      gender: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      fullName: '',
+      idNumber: '',
+      gender: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
@@ -70,7 +70,7 @@ export const RegisterForm = () => {
     setRegistrationError(null);
 
     if (!consentPrivacy || !consentTerms) {
-      setRegistrationError("You must agree to the Privacy Policy and Terms of Service.");
+      setRegistrationError('You must agree to the Privacy Policy and Terms of Service.');
       return;
     }
 
@@ -79,12 +79,12 @@ export const RegisterForm = () => {
     try {
       const data = form.getValues();
       // Call verify-id function with plain national_id (ID Number) and TEMP user_id (random for now)
-      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || "pensvamtfjtpsaoeflbx"}.functions.supabase.co/verify-id`;
+      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'pensvamtfjtpsaoeflbx'}.functions.supabase.co/verify-id`;
 
       const tmp_user_id = crypto.randomUUID();
       const res = await fetch(edgeUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: tmp_user_id, // We do not yet have a user, but pass a temp and update after account creation
           national_id: data.idNumber,
@@ -93,7 +93,9 @@ export const RegisterForm = () => {
 
       const result = await res.json();
       if (!res.ok) {
-        throw new Error(result.error || "ID Verification failed. Please check your ID number and try again.");
+        throw new Error(
+          result.error || 'ID Verification failed. Please check your ID number and try again.',
+        );
       }
 
       // ID Verified! Now proceed to sign up
@@ -108,7 +110,7 @@ export const RegisterForm = () => {
     } catch (error: unknown) {
       // Edge function or network failure
       setRegistrationError(
-        error instanceof Error ? error.message : "Failed to verify ID. Please try again later."
+        error instanceof Error ? error.message : 'Failed to verify ID. Please try again later.',
       );
       return;
     } finally {
@@ -152,15 +154,12 @@ export const RegisterForm = () => {
               disabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-              {isLoading ? "Signing up..." : "Sign Up"}
+              {isLoading ? 'Signing up...' : 'Sign Up'}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="text-cap-teal hover:underline font-medium"
-                >
+                Already have an account?{' '}
+                <Link to="/login" className="text-cap-teal hover:underline font-medium">
                   Sign in
                 </Link>
               </p>

@@ -1,4 +1,3 @@
-
 export type SponsorAllocation = {
   id: string;
   sponsor_id: string;

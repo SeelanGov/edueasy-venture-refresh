@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Form } from '@/components/ui/form';
@@ -10,7 +9,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThandiAgent } from '@/components/ai/ThandiAgent';
 import { useApplicationFormManager } from '@/hooks/useApplicationFormManager';
 import { SkipToContent } from '@/components/ui/skip-to-content';
-import { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 import { PageLayout } from '@/components/layout/PageLayout';
 
 const ApplicationForm = () => {
@@ -61,9 +59,9 @@ const ApplicationForm = () => {
               You have a saved draft application that has been loaded.
             </div>
           )}
-          
+
           <Separator className="mb-6 md:mb-8" />
-          
+
           <OfflineNotice isOnline={isOnline} onSyncNow={handleSyncNow} />
 
           <Form {...form}>

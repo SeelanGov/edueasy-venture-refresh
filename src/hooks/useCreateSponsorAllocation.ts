@@ -1,7 +1,6 @@
-
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { SponsorAllocation } from "@/types/SponsorTypes";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import type { SponsorAllocation } from '@/types/SponsorTypes';
 
 type SponsorAllocationInsert = {
   sponsor_id: string;
@@ -19,20 +18,20 @@ export const useCreateSponsorAllocation = () => {
     mutationFn: async (input: SponsorAllocationInsert) => {
       const payload = {
         ...input,
-        plan: input.plan ?? "",
-        notes: input.notes ?? "",
+        plan: input.plan ?? '',
+        notes: input.notes ?? '',
         expires_on: input.expires_on ?? null,
       };
       const { data, error } = await supabase
-        .from("sponsor_allocations")
+        .from('sponsor_allocations')
         .insert([payload])
-        .select("*")
+        .select('*')
         .single();
       if (error) throw error;
       return data as SponsorAllocation;
     },
     onSuccess: (_, allocation) => {
-      queryClient.invalidateQueries({ queryKey: ["sponsorAllocations", allocation.sponsor_id] });
+      queryClient.invalidateQueries({ queryKey: ['sponsorAllocations', allocation.sponsor_id] });
     },
   });
 };

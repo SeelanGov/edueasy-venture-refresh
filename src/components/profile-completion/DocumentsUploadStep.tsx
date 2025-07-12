@@ -1,13 +1,16 @@
-
-import React from 'react';
-import { DocumentStepperCard } from './documents/DocumentStepperCard';
-import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
-import { DocumentFormActions } from './documents/DocumentFormActions';
 import { useDocumentUploadManager } from '@/hooks/useDocumentUploadManager';
-import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
-import type { Step, DocumentUploadState as ComponentDocumentUploadState, DocumentType } from './documents/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
+import React from 'react';
+import { DocumentFormActions } from './documents/DocumentFormActions';
+import { DocumentStepperCard } from './documents/DocumentStepperCard';
+import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
+import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
+import type {
+    DocumentUploadState as ComponentDocumentUploadState,
+    DocumentType,
+    Step,
+} from './documents/types';
 
 interface DocumentsUploadStepProps {
   onComplete: () => void;
@@ -29,7 +32,6 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     handleResubmit,
     handleSubmit,
     checkCompletion,
-    documentStates,
   } = useDocumentUploadManager();
 
   const [error, setError] = React.useState<string | null>(null);
@@ -78,7 +80,10 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleFileChange to match expected signature
-  const handleFileChangeWrapper = (e: React.ChangeEvent<HTMLInputElement>, documentType: DocumentType) => {
+  const handleFileChangeWrapper = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    documentType: DocumentType,
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileChange(file, documentType);
@@ -86,12 +91,12 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleRetry to match expected signature
-  const handleRetryWrapper = (documentType: DocumentType, state: ComponentDocumentUploadState) => {
-    handleRetry(documentType);
+  const handleRetryWrapper = (_documentType: DocumentType, _state: ComponentDocumentUploadState) => {
+    handleRetry(_documentType);
   };
 
   // Wrapper for handleResubmit to match expected signature
-  const handleResubmitWrapper = () => {
+  const handleResubmitWrapper = (_type: string) => {
     handleResubmit();
   };
 
@@ -117,7 +122,9 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
 
         <DocumentUploadGrid
           documentStates={componentDocumentStates}
-          getDocumentState={(documentType: string) => convertDocumentState(getDocumentState(documentType))}
+          getDocumentState={(documentType: string) =>
+            convertDocumentState(getDocumentState(documentType))
+          }
           handleFileChange={handleFileChangeWrapper}
           handleRetry={handleRetryWrapper}
           handleVerify={handleVerify}

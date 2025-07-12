@@ -1,15 +1,16 @@
 import { Navbar } from '@/components/Navbar';
-import { Hero } from '@/components/home/Hero';
-import { AboutSection } from '@/components/home/AboutSection';
-import { HowItWorks } from '@/components/home/HowItWorks';
-import { TestimonialsSection } from '@/components/home/TestimonialsSection';
-import { PartnersSection } from '@/components/home/PartnersSection';
-import { CTASection } from '@/components/home/CTASection';
-import Footer from '@/components/home/Footer';
 import { JourneyMapDemo } from '@/components/demo/JourneyMapDemo';
-import { CommunitySection } from '@/components/home/CommunitySection';
 import { AISupportSection } from '@/components/home/AISupportSection';
-import { useNavigate } from "react-router-dom";
+import { AboutSection } from '@/components/home/AboutSection';
+import { CTASection } from '@/components/home/CTASection';
+import { CommunitySection } from '@/components/home/CommunitySection';
+import Footer from '@/components/home/Footer';
+import { Hero } from '@/components/home/Hero';
+import { HowItWorks } from '@/components/home/HowItWorks';
+import { PartnersSection } from '@/components/home/PartnersSection';
+import { TestimonialsSection } from '@/components/home/TestimonialsSection';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -33,20 +34,23 @@ const Index = () => {
       {/* Partner With EduEasy Section (Add navigation to button) */}
       <div className="bg-gradient-to-b from-white to-gray-50 py-12">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800">Partner With EduEasy</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800">
+            Partner With EduEasy
+          </h2>
           <div className="max-w-2xl mx-auto rounded-xl overflow-hidden shadow-xl">
             {/* You can optionally keep the image here */}
             {/* <img src="/images/some-partner-image.png" alt="Partner Institutions" className="w-full h-auto object-cover" /> */}
           </div>
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto">
-            Join our network of leading educational institutions and help students achieve their academic goals through streamlined applications.
+            Join our network of leading educational institutions and help students achieve their
+            academic goals through streamlined applications.
           </p>
-          <button
+          <Button
             className="mt-8 px-8 py-3 rounded-full bg-cap-teal text-white font-bold hover:bg-cap-teal/90 transition"
-            onClick={() => navigate("/institutions")}
+            onClick={() => navigate('/institutions')}
           >
             Become a Partner
-          </button>
+          </Button>
         </div>
       </div>
 

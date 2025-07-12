@@ -1,9 +1,8 @@
-
-import { Button } from "@/components/ui/button";
-import { X, Menu } from "lucide-react";
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Logo } from "./Logo";
+import { Button } from '@/components/ui/button';
+import { X, Menu } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Logo } from './Logo';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +42,7 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Button 
+            <Button
               variant="ghost"
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-700 hover:text-cap-teal font-medium"
@@ -51,18 +50,27 @@ export const Navbar = () => {
             >
               How It Works
             </Button>
-            <Link to="/meet-thandi" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+            <Link
+              to="/meet-thandi"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
+            >
               Meet Thandi
             </Link>
-            <Link to="/pricing" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+            <Link
+              to="/pricing"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
+            >
               Pricing
             </Link>
-            <Link to="/institutions" className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
+            <Link
+              to="/institutions"
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
+            >
               For Institutions
             </Link>
-            <Button 
+            <Button
               variant="primary"
-              onClick={handleAuthNavigation} 
+              onClick={handleAuthNavigation}
               className="font-medium px-6 py-2 min-w-[120px] h-10"
               aria-label="Get started with registration"
             >
@@ -103,10 +111,10 @@ export const Navbar = () => {
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            
+
             {/* Mobile Menu Items */}
             <div className="flex flex-col px-6 py-8 space-y-6 bg-white min-h-screen">
-              <Button 
+              <Button
                 variant="ghost"
                 onClick={() => scrollToSection('how-it-works')}
                 className="text-gray-800 hover:text-cap-teal text-lg font-medium text-left py-3 border-b border-gray-100 justify-start"
@@ -134,10 +142,10 @@ export const Navbar = () => {
               >
                 For Institutions
               </Link>
-              
+
               {/* Mobile CTA Button */}
               <div className="pt-6">
-                <Button 
+                <Button
                   variant="primary"
                   onClick={handleAuthNavigation}
                   className="font-medium w-full py-4 text-lg rounded-lg shadow-sm"
