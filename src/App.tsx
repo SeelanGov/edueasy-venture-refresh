@@ -216,8 +216,16 @@ const App = () => (
               />
 
               {/* Admin sponsor management routes */}
-              <Route path="/admin/sponsors" element={<SponsorsPage />} />
-              <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
+              <Route path="/admin/sponsors" element={
+                <AdminAuthGuard>
+                  <SponsorsPage />
+                </AdminAuthGuard>
+              } />
+              <Route path="/admin/sponsors/:id" element={
+                <AdminAuthGuard>
+                  <SponsorProfile />
+                </AdminAuthGuard>
+              } />
               
               {/* Admin user management route */}
               <Route 
