@@ -1,6 +1,6 @@
 
 import { ReactNode } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { Spinner } from "@/components/Spinner";
 
@@ -13,7 +13,7 @@ interface VerificationGuardProps {
  * Redirects user to /verification-required if not verified, or shows spinner if loading.
  */
 export const VerificationGuard = ({ children }: VerificationGuardProps) => {
-  const { user, loading } = useAuth();
+  const { user, userType, loading } = useAuth();
   const location = useLocation();
 
   // SSR safety + loading
@@ -28,6 +28,11 @@ export const VerificationGuard = ({ children }: VerificationGuardProps) => {
 
   // If not logged in, let regular AuthGuard handle
   if (!user) return null;
+
+  // Admin bypass - skip verification for admin users
+  if (userType === 'admin') {
+    return <>{children}</>;
+  }
 
   // If not verified, redirect to verification-required
   // id_verified comes as a boolean custom claim in user.user_metadata if mapped properly
