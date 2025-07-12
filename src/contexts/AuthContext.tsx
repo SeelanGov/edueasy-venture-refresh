@@ -6,6 +6,8 @@ import { supabase } from '@/integrations/supabase/client';
 export interface AuthContextType {
   user: User | null;
   userType: string | null;
+  isVerified: boolean | null;
+  profileStatus: string | null;
   loading: boolean;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string, fullName?: string, idNumber?: string) => Promise<{ error?: any }>;
@@ -19,19 +21,26 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
+  const [isVerified, setIsVerified] = useState<boolean | null>(null);
+  const [profileStatus, setProfileStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserType = async (userId: string) => {
+  const fetchUserProfile = async (userId: string) => {
     try {
       const { data } = await supabase
         .from('users')
-        .select('user_type')
+        .select('user_type, id_verified, profile_status')
         .eq('id', userId)
         .single();
+      
       setUserType(data?.user_type || 'student');
+      setIsVerified(data?.id_verified || false);
+      setProfileStatus(data?.profile_status || null);
     } catch (error) {
-      console.error('Error fetching user type:', error);
+      console.error('Error fetching user profile:', error);
       setUserType('student');
+      setIsVerified(false);
+      setProfileStatus(null);
     }
   };
 
@@ -40,9 +49,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchUserType(session.user.id);
+        fetchUserProfile(session.user.id);
       } else {
         setUserType(null);
+        setIsVerified(null);
+        setProfileStatus(null);
       }
       setLoading(false);
     });
@@ -53,9 +64,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchUserType(session.user.id);
+        fetchUserProfile(session.user.id);
       } else {
         setUserType(null);
+        setIsVerified(null);
+        setProfileStatus(null);
       }
       setLoading(false);
     });
@@ -114,6 +127,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     user,
     userType,
+    isVerified,
+    profileStatus,
     loading,
     signOut,
     signUp,

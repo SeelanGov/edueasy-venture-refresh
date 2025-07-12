@@ -35,8 +35,8 @@ export const VerificationGuard = ({ children }: VerificationGuardProps) => {
   }
 
   // If not verified, redirect to verification-required
-  // id_verified comes as a boolean custom claim in user.user_metadata if mapped properly
-  const isVerified = (user as any)?.user_metadata?.id_verified === true || (user as any)?.id_verified === true;
+  // Use database-sourced verification status from AuthContext
+  const { isVerified } = useAuth();
 
   if (!isVerified) {
     return <Navigate to="/verification-required" state={{ from: location.pathname }} replace />;
