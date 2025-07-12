@@ -42,6 +42,8 @@ import UserManagement from '@/pages/admin/UserManagement';
 import SponsorRegister from "@/pages/sponsors/SponsorRegister";
 import SponsorLogin from "@/pages/sponsors/SponsorLogin";
 import SponsorDashboard from "@/pages/sponsors/SponsorDashboard";
+import InstitutionDashboard from "@/pages/institutions/InstitutionDashboard";
+import AdminDashboard from "@/pages/AdminDashboard";
 import Unauthorized from "@/pages/Unauthorized";
 import ApplyForSponsorship from "@/pages/sponsorships/ApplyForSponsorship";
 import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipStatus";
@@ -203,6 +205,16 @@ const App = () => (
                 <Route path="tiers" element={<TiersManager />} />
               </Route>
 
+              {/* Admin dashboard route */}
+              <Route 
+                path="/admin/dashboard" 
+                element={
+                  <AdminAuthGuard>
+                    <AdminDashboard />
+                  </AdminAuthGuard>
+                } 
+              />
+
               {/* Admin sponsor management routes */}
               <Route path="/admin/sponsors" element={<SponsorsPage />} />
               <Route path="/admin/sponsors/:id" element={<SponsorProfile />} />
@@ -233,6 +245,18 @@ const App = () => (
 
               <Route path="/sponsorships/apply" element={<ApplyForSponsorship />} />
               <Route path="/sponsorships/status" element={<StudentSponsorshipStatus />} />
+
+              {/* Institution dashboard route */}
+              <Route 
+                path="/institutions/dashboard" 
+                element={
+                  <AuthGuard>
+                    <InstitutionGuard>
+                      <InstitutionDashboard />
+                    </InstitutionGuard>
+                  </AuthGuard>
+                } 
+              />
 
               {/* Verification required route (MUST be public for redirects) */}
               <Route path="/verification-required" element={<VerificationRequired />} />

@@ -15,17 +15,25 @@ const SponsorLogin = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase
-        .from("sponsors")
-        .select("*")
-        .eq("email", email)
-        .eq("password_hash", password)
-        .maybeSingle();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (!data || error) throw new Error("Invalid email or password");
+      if (error) throw error;
 
-      // For PoC: Store sponsor ID in localStorage
-      localStorage.setItem("sponsor_id", data.id);
+      // Check if user is a sponsor
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("user_type")
+        .eq("id", data.user.id)
+        .single();
+
+      if (userError || userData?.user_type !== 'sponsor') {
+        await supabase.auth.signOut();
+        throw new Error("Invalid sponsor credentials");
+      }
+
       navigate("/sponsors/dashboard");
     } catch (err: any) {
       setError(err.message || "Login error");
