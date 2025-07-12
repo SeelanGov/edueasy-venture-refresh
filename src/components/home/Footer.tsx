@@ -1,10 +1,54 @@
 
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react';
+import { ExternalLink, Mail, MapPin, Phone, GraduationCap, Building2, DollarSign, FileCheck, Users } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+
+const partnerTypes = [
+  {
+    name: 'TVET Colleges',
+    description: 'Technical and Vocational Education Training institutions',
+    icon: GraduationCap,
+    route: '/institutions/register',
+    userType: 'institution'
+  },
+  {
+    name: 'Universities',
+    description: 'Higher education institutions',
+    icon: Building2,
+    route: '/institutions/register',
+    userType: 'institution'
+  },
+  {
+    name: 'Bursary Sponsors',
+    description: 'Organizations providing financial support',
+    icon: DollarSign,
+    route: '/sponsors/register',
+    userType: 'sponsor'
+  },
+  {
+    name: 'NSFAS',
+    description: 'National Student Financial Aid Scheme',
+    icon: FileCheck,
+    route: '/nsfas/register',
+    userType: 'nsfas'
+  },
+  {
+    name: 'Guidance Counselors',
+    description: 'Career and educational guidance professionals',
+    icon: Users,
+    route: '/counselors/register',
+    userType: 'counselor'
+  }
+];
 
 const Footer = () => {
+  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, userType } = useAuth();
 
   const scrollToSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -21,6 +65,17 @@ const Footer = () => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  };
+
+  const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
+    // If user is already logged in with this user type, redirect to dashboard
+    if (user && userType === partner.userType) {
+      navigate('/dashboard');
+    } else {
+      // Navigate to registration/login flow
+      navigate(partner.route);
+    }
+    setIsPartnerModalOpen(false);
   };
 
   return (
@@ -135,43 +190,62 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources & Legal */}
+          {/* Partner Access */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 text-white">Resources & Legal</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link 
-                  to="/partner-dashboard" 
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
-                  EduEasy Admin
-                </Link>
-              </li>
-              <li>
+            <h4 className="text-lg font-semibold mb-6 text-white">Partner Access</h4>
+            <div className="space-y-4">
+              <Dialog open={isPartnerModalOpen} onOpenChange={setIsPartnerModalOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-cap-teal"
+                    data-testid="partner-access-trigger"
+                  >
+                    <Building2 className="mr-2 h-4 w-4" />
+                    Partner Login
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md md:max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Select Your Organization Type</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {partnerTypes.map((partner) => {
+                      const Icon = partner.icon;
+                      return (
+                        <Button
+                          key={partner.name}
+                          variant="outline"
+                          className="h-auto p-4 flex flex-col items-start text-left space-y-2 hover:bg-accent"
+                          onClick={() => handlePartnerSelect(partner)}
+                          data-testid={`partner-${partner.userType}`}
+                        >
+                          <div className="flex items-center space-x-2 w-full">
+                            <Icon className="h-5 w-5 text-primary" />
+                            <span className="font-semibold">{partner.name}</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{partner.description}</p>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <div className="space-y-2">
                 <Link 
                   to="/privacy-policy"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
                 >
                   Privacy Policy
                 </Link>
-              </li>
-              <li>
                 <Link 
                   to="/terms-of-service"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
                 >
                   Terms of Service
                 </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/refund-policy"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
-                  Refund Policy
-                </Link>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
 
