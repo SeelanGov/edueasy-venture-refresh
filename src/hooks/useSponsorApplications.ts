@@ -13,12 +13,24 @@ export function useSponsorApplications({ asSponsor = false } = {}) {
     setLoading(true);
     let resp;
     if (asSponsor) {
-      const sponsor_id = localStorage.getItem("sponsor_id");
-      if (!sponsor_id) { setApplications([]); setLoading(false); return; }
+      // Get sponsor record for authenticated user
+      const { data: sponsorData, error: sponsorError } = await supabase
+        .from("sponsors")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+      
+      if (sponsorError || !sponsorData) { 
+        console.log("No sponsor record found for user:", user.id);
+        setApplications([]); 
+        setLoading(false); 
+        return; 
+      }
+      
       resp = await supabase
         .from("application_fee_sponsorships")
         .select("*, sponsor_applications(*, student_id), sponsor_id")
-        .eq("sponsor_id", sponsor_id);
+        .eq("sponsor_id", sponsorData.id);
     } else {
       resp = await supabase
         .from("sponsor_applications")
