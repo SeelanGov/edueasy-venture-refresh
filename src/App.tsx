@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthGuard } from "@/components/AuthGuard";
 import { AdminAuthGuard } from "@/components/AdminAuthGuard";
+import { SponsorGuard } from "@/components/SponsorGuard";
+import { InstitutionGuard } from "@/components/InstitutionGuard";
+import { RoleBasedRedirect } from "@/components/RoleBasedRedirect";
 import { GlobalErrorBoundary } from "@/components/error-handling/GlobalErrorBoundary";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
@@ -39,6 +42,7 @@ import UserManagement from '@/pages/admin/UserManagement';
 import SponsorRegister from "@/pages/sponsors/SponsorRegister";
 import SponsorLogin from "@/pages/sponsors/SponsorLogin";
 import SponsorDashboard from "@/pages/sponsors/SponsorDashboard";
+import Unauthorized from "@/pages/Unauthorized";
 import ApplyForSponsorship from "@/pages/sponsorships/ApplyForSponsorship";
 import StudentSponsorshipStatus from "@/pages/sponsorships/StudentSponsorshipStatus";
 import PartnersPage from "@/pages/admin/Partners";
@@ -68,7 +72,8 @@ const App = () => (
             <RefundPolicyRedirect />
             <Routes>
               {/* Public routes */}
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<RoleBasedRedirect />} />
+              <Route path="/home" element={<Index />} />
               <Route path="/login" element={
                 <AuthGuard requiresAuth={false}>
                   <Login />
@@ -214,14 +219,26 @@ const App = () => (
 
               {/* Public sponsor ecosystem flows */}
               <Route path="/sponsors/register" element={<SponsorRegister />} />
-              <Route path="/sponsors/login" element={<SponsorLogin />} />
-              <Route path="/sponsors/dashboard" element={<SponsorDashboard />} />
+          <Route path="/sponsors/login" element={<SponsorLogin />} />
+          <Route 
+            path="/sponsors/dashboard" 
+            element={
+              <AuthGuard>
+                <SponsorGuard>
+                  <SponsorDashboard />
+                </SponsorGuard>
+              </AuthGuard>
+            } 
+          />
 
               <Route path="/sponsorships/apply" element={<ApplyForSponsorship />} />
               <Route path="/sponsorships/status" element={<StudentSponsorshipStatus />} />
 
               {/* Verification required route (MUST be public for redirects) */}
               <Route path="/verification-required" element={<VerificationRequired />} />
+              
+              {/* Access denied */}
+              <Route path="/unauthorized" element={<Unauthorized />} />
               
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
