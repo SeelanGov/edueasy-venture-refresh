@@ -1,7 +1,7 @@
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
 import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { Spinner } from '@/components/Spinner';
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -11,13 +11,6 @@ interface AuthGuardProps {
 export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
-
-  console.log('AuthGuard rendering:', {
-    loading,
-    user: !!user,
-    userID: user?.id,
-    path: location.pathname,
-  });
 
   // If authentication is still loading, show spinner
   if (loading) {
@@ -33,7 +26,6 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
 
   // Handle authentication rules
   if (requiresAuth && !user) {
-    console.log('User not authenticated, redirecting to login from:', location.pathname);
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
@@ -43,11 +35,9 @@ export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => 
     user &&
     (location.pathname === '/login' || location.pathname === '/register')
   ) {
-    console.log('User already authenticated, redirecting to dashboard');
     const targetPath = location.state?.from || '/dashboard';
     return <Navigate to={targetPath} replace />;
   }
 
-  console.log('AuthGuard passing through - user authenticated:', user?.id);
   return <>{children}</>;
 };

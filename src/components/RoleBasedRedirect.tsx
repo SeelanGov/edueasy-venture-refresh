@@ -1,11 +1,9 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
+import { Navigate } from 'react-router-dom';
 
 export const RoleBasedRedirect = () => {
   const { userType, loading } = useAuth();
-
-  console.log('RoleBasedRedirect:', { userType, loading });
 
   if (loading) {
     return (
@@ -21,25 +19,18 @@ export const RoleBasedRedirect = () => {
   // Route users to appropriate dashboards based on their role
   switch (userType) {
     case 'admin':
-      console.log('RoleBasedRedirect: Routing admin to admin dashboard');
       return <Navigate to="/admin/dashboard" replace />;
     case 'sponsor':
-      console.log('RoleBasedRedirect: Routing sponsor to sponsor dashboard');
       return <Navigate to="/sponsors/dashboard" replace />;
     case 'institution':
-      console.log('RoleBasedRedirect: Routing institution to institution dashboard');
       return <Navigate to="/institutions/dashboard" replace />;
     case 'nsfas':
-      console.log('RoleBasedRedirect: Routing NSFAS user to dashboard');
       return <Navigate to="/dashboard" replace />;
     case 'consultant':
-      console.log('RoleBasedRedirect: Routing consultant to dashboard');
       return <Navigate to="/dashboard" replace />;
     case 'student':
-      console.log('RoleBasedRedirect: Routing student to main dashboard');
       return <Navigate to="/dashboard" replace />;
     default:
-      console.log('RoleBasedRedirect: Unknown or null userType, redirecting to login');
       return <Navigate to="/login" replace />;
   }
 };

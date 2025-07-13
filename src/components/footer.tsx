@@ -45,7 +45,7 @@ const partnerTypes = [
     icon: Users,
     route: '/counselors/register',
     loginRoute: '/counselors/login',
-    userType: 'counselor'
+    userType: 'consultant'
   },
   {
     name: 'Students',

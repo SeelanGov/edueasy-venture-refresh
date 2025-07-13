@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const CounselorLogin: React.FC = () => {
@@ -40,7 +40,7 @@ const CounselorLogin: React.FC = () => {
         .eq('id', data.user.id)
         .single();
 
-      if (userError || userData?.user_type !== 'counselor') {
+      if (userError || userData?.user_type !== 'consultant') {
         await supabase.auth.signOut();
         throw new Error('Invalid counselor credentials');
       }
