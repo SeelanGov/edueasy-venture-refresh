@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,21 +25,74 @@ const SponsorRegister = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    
     try {
-      // Simulate password hash for PoC (real app: hash server side)
-      const { error } = await supabase.from('sponsors').insert([
+      // Step 1: Create user account with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            name: form.name,
+            user_type: 'sponsor',
+          },
+        },
+      });
+
+      if (authError) throw authError;
+
+      if (!authData.user) {
+        throw new Error('Failed to create user account');
+      }
+
+      // Step 2: Create sponsor profile in sponsors table (without password)
+      const { error: profileError } = await supabase.from('sponsors').insert([
         {
+          id: authData.user.id, // Link to auth user
           email: form.email,
           name: form.name,
           phone: form.phone,
           organization_type: form.organization_type,
-          password_hash: form.password, // Do NOT do this in production
+          // NO PASSWORD STORED - Supabase Auth handles this securely
         },
       ]);
-      if (error) throw error;
+
+      if (profileError) {
+        // If profile creation fails, clean up the auth user
+        await supabase.auth.signOut();
+        throw profileError;
+      }
+
+      // Step 3: Create user record in users table
+      const { error: userError } = await supabase.from('users').insert([
+        {
+          id: authData.user.id,
+          email: form.email,
+          user_type: 'sponsor',
+          name: form.name,
+        },
+      ]);
+
+      if (userError) {
+        // If user record creation fails, clean up
+        await supabase.auth.signOut();
+        await supabase.from('sponsors').delete().eq('id', authData.user.id);
+        throw userError;
+      }
+
       setRegistered(true);
+      toast({
+        title: 'Registration Successful',
+        description: 'Your sponsor account has been created successfully.',
+        variant: 'default',
+      });
     } catch (err: any) {
       setError(err.message || 'Error registering sponsor');
+      toast({
+        title: 'Registration Failed',
+        description: err.message || 'Error registering sponsor',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -108,6 +162,7 @@ const SponsorRegister = () => {
           required
           type="password"
           placeholder="Password"
+          minLength={6}
         />
         <Button
           type="submit"

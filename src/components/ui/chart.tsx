@@ -32,6 +32,30 @@ function useChart() {
   return context;
 }
 
+// Sanitize CSS color values to prevent XSS
+const sanitizeColor = (color: string): string => {
+  // Only allow valid CSS color formats
+  const validColorRegex = /^(#[0-9A-Fa-f]{3,6}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)|hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)|hsla\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*,\s*[\d.]+\s*\)|transparent|inherit|initial|unset|currentColor)$/;
+  
+  if (!validColorRegex.test(color)) {
+    return 'transparent'; // Fallback to safe default
+  }
+  
+  return color;
+};
+
+// Sanitize CSS property names to prevent XSS
+const sanitizePropertyName = (name: string): string => {
+  // Only allow valid CSS custom property names
+  const validPropertyRegex = /^[a-zA-Z][a-zA-Z0-9-]*$/;
+  
+  if (!validPropertyRegex.test(name)) {
+    return 'color-fallback'; // Fallback to safe default
+  }
+  
+  return name;
+};
+
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & {
@@ -68,25 +92,48 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null;
   }
 
+  // Generate CSS styles safely without dangerouslySetInnerHTML
+  const generateStyles = () => {
+    const baseStyles: Record<string, string> = {};
+    const darkStyles: Record<string, string> = {};
+    
+    Object.entries(THEMES).forEach(([theme, prefix]) => {
+      colorConfig.forEach(([key, itemConfig]) => {
+        const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
+        if (color) {
+          const sanitizedKey = sanitizePropertyName(key);
+          const sanitizedColor = sanitizeColor(color);
+          const propertyName = `--color-${sanitizedKey}`;
+          
+          if (theme === 'dark') {
+            darkStyles[propertyName] = sanitizedColor;
+          } else {
+            baseStyles[propertyName] = sanitizedColor;
+          }
+        }
+      });
+    });
+    
+    return { baseStyles, darkStyles };
+  };
+
+  const { baseStyles, darkStyles } = generateStyles();
+
   return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join('\n')}
-}
-`,
-          )
-          .join('\n'),
-      }}
-    />
+    <style>
+      {`[data-chart="${id}"] {`}
+      {Object.entries(baseStyles).map(([property, value]) => 
+        `${property}: ${value};`
+      ).join('\n')}
+      {`}`}
+      {Object.keys(darkStyles).length > 0 && `
+        .dark [data-chart="${id}"] {
+          ${Object.entries(darkStyles).map(([property, value]) => 
+            `${property}: ${value};`
+          ).join('\n')}
+        }
+      `}
+    </style>
   );
 };
 
@@ -326,10 +373,11 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
 }
 
 export {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartStyle,
-  ChartTooltip,
-  ChartTooltipContent,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartStyle,
+    ChartTooltip,
+    ChartTooltipContent
 };
+
