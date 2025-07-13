@@ -22,10 +22,7 @@ export const HeroContent = () => {
   };
 
   const handleStartWithThandi = () => {
-    toast({
-      title: 'Thandi AI Assistant',
-      description: 'Meet Thandi, your personal education assistant!',
-    });
+    navigate('/meet-thandi');
   };
 
   return (
