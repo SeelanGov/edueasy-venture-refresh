@@ -44,7 +44,7 @@ export const StatisticCard = ({
   const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
 
   useEffect(() => {
-    const timer: NodeJS.Timeout;
+    let timer: NodeJS.Timeout;
     let timer2: NodeJS.Timeout | undefined;
 
     timer = setTimeout(() => {
