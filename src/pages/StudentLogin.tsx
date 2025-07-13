@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const StudentLogin: React.FC = () => {
@@ -40,9 +40,11 @@ const StudentLogin: React.FC = () => {
         .eq('id', data.user.id)
         .single();
 
-      if (userError) {
-        // If no user record exists, it's likely a new user - allow login
-        console.log('No user record found, treating as student');
+      if (userError || !userData) {
+        // If no user record found, treat as student (default behavior)
+        toast.success('Login successful!');
+        navigate('/dashboard');
+        return;
       } else if (userData?.user_type && userData.user_type !== 'student') {
         await supabase.auth.signOut();
         throw new Error('Please use the appropriate login page for your account type');
