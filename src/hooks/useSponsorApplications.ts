@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useSponsorApplications({ asSponsor = false } = {}) {
   const { user } = useAuth();
@@ -20,7 +20,7 @@ export function useSponsorApplications({ asSponsor = false } = {}) {
         .single();
 
       if (sponsorError || !sponsorData) {
-        console.log('No sponsor record found for user:', user.id);
+  
         setApplications([]);
         setLoading(false);
         return;

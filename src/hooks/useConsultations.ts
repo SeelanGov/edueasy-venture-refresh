@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import type { ConsultationBooking } from '@/types/RevenueTypes';
-import { toast } from '@/components/ui/use-toast';
+import { useEffect, useState } from 'react';
 
 export function useConsultations() {
   const { user } = useAuth();
@@ -34,7 +34,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
       setBookings([]);
     } catch (error) {
       handleError(error, 'Failed to fetch consultation bookings');
@@ -50,7 +49,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
       setCurrentBooking(null);
     } catch (error) {
       handleError(error, 'Failed to fetch booking details');
@@ -76,7 +74,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Created',
@@ -105,7 +102,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Updated',
@@ -134,7 +130,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Cancelled',
@@ -163,7 +158,6 @@ export function useConsultations() {
       setError(null);
 
       // TODO: Implement when consultation_bookings table is created
-      console.log('Consultation bookings table not yet implemented');
 
       toast({
         title: 'Booking Rescheduled',

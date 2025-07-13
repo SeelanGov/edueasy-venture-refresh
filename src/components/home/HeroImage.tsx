@@ -7,7 +7,6 @@ export const HeroImage = () => {
   const heroImagePath = '/lovable-uploads/de7fc15f-45f8-4076-b06b-9f70babb5c8e.png';
 
   const handleImageError = () => {
-    console.log('Hero image failed to load:', heroImagePath);
     setImageError(true);
     setImageLoaded(true); // Stop loading state
   };
@@ -39,7 +38,6 @@ export const HeroImage = () => {
           alt="Empowering SA Youth, Online and Offline - Student studying with technology"
           className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
           onLoad={() => {
-            console.log('Hero image loaded successfully');
             setImageLoaded(true);
           }}
           onError={handleImageError}

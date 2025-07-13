@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { SponsorAllocation } from '@/types/SponsorTypes';
+import { useCallback, useEffect, useState } from 'react';
 
 // Filtering/search/pagination options
 export interface SponsorAllocationsOptions {
@@ -44,7 +44,7 @@ export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}) =
       setAllocations(data ?? []);
       setTotal(count ?? 0);
       // ADDED: Logging for debugging
-      console.log('[useSponsorAllocations] fetch success', { data, count });
+
     } catch (err) {
       setError(
         (err as Error).message
