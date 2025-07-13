@@ -1,7 +1,7 @@
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
 import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { Spinner } from '@/components/Spinner';
 
 interface SponsorGuardProps {
   children: ReactNode;
@@ -10,8 +10,6 @@ interface SponsorGuardProps {
 export const SponsorGuard = ({ children }: SponsorGuardProps) => {
   const { userType, loading } = useAuth();
   const location = useLocation();
-
-  console.log('SponsorGuard check:', { userType, loading, path: location.pathname });
 
   if (loading) {
     return (
@@ -25,10 +23,8 @@ export const SponsorGuard = ({ children }: SponsorGuardProps) => {
   }
 
   if (userType !== 'sponsor') {
-    console.log('SponsorGuard: Access denied - user is not a sponsor');
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
-  console.log('SponsorGuard: Access granted for sponsor');
   return <>{children}</>;
 };

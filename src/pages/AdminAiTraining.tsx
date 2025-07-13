@@ -19,7 +19,7 @@ const AdminAiTraining = () => {
     loading: intentsLoading,
     selectedIntent,
     setSelectedIntent,
-    fetchIntents,
+    fetchIntents: _fetchIntents,
     createIntent,
     updateIntent,
     deleteIntent,
