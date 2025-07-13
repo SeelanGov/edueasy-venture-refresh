@@ -40,7 +40,7 @@ const CounselorLogin: React.FC = () => {
         .eq('id', data.user.id)
         .single();
 
-      if (userError || userData?.user_type !== 'consultant') {
+      if (userError || userData?.user_type !== 'counselor') {
         await supabase.auth.signOut();
         throw new Error('Invalid counselor credentials');
       }
