@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDocumentUpload } from './useDocumentUpload';
 import { useDocumentVerification } from './useDocumentVerification';
-import { useForm } from 'react-hook-form';
 
 export interface VerificationResult {
   success: boolean;
@@ -118,24 +118,22 @@ export const useDocumentUploadManager = () => {
   );
 
   const handleFileChange = useCallback((file: File, documentType: string) => {
-    console.log('File changed:', file.name, 'for type:', documentType);
     setCurrentDocumentType(documentType);
   }, []);
 
   const handleRetry = useCallback((documentType: string) => {
-    console.log('Retrying document:', documentType);
+    // Retry logic can be implemented here
   }, []);
 
   const handleVerify = useCallback((documentType: string) => {
-    console.log('Verifying document:', documentType);
+    // Verification trigger logic can be implemented here
   }, []);
 
   const handleResubmit = useCallback(() => {
-    console.log('Resubmitting document');
+    // Resubmission logic can be implemented here
   }, []);
 
   const handleSubmit = useCallback(async (data: Record<string, unknown>) => {
-    console.log('Submitting documents:', data);
     return true;
   }, []);
 
