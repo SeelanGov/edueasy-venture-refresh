@@ -16,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { useAuth } from '@/hooks/useAuth';
+import { secureGetItem, secureRemoveItem, secureSetItem, startSession } from '@/utils/security/localStorage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -63,13 +64,16 @@ const Login = () => {
     try {
       await signIn(data.email, data.password, data.rememberMe);
 
-      // Store rememberMe preference in localStorage if the user wants to be remembered
+      // Start secure session
+      startSession();
+
+      // Store rememberMe preference securely if the user wants to be remembered
       if (data.rememberMe) {
-        localStorage.setItem('rememberMe', 'true');
-        localStorage.setItem('rememberedEmail', data.email);
+        secureSetItem('rememberMe', 'true');
+        secureSetItem('rememberedEmail', data.email);
       } else {
-        localStorage.removeItem('rememberMe');
-        localStorage.removeItem('rememberedEmail');
+        secureRemoveItem('rememberMe');
+        secureRemoveItem('rememberedEmail');
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -82,8 +86,8 @@ const Login = () => {
 
   // Load remembered email if available
   useEffect(() => {
-    const rememberMe = localStorage.getItem('rememberMe');
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    const rememberMe = secureGetItem('rememberMe');
+    const rememberedEmail = secureGetItem('rememberedEmail');
 
     if (rememberMe && rememberedEmail) {
       form.setValue('email', rememberedEmail);
