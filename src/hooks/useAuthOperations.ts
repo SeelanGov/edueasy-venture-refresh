@@ -1,9 +1,9 @@
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-import type { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import type { ApiError } from '@/types/common';
 import logger from '@/utils/logger';
+import type { Session, User } from '@supabase/supabase-js';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const useAuthOperations = () => {
   const navigate = useNavigate();
@@ -189,7 +189,7 @@ export const useAuthOperations = () => {
         description: 'Your password has been updated successfully.',
       });
 
-      navigate('/dashboard');
+      navigate('/auth-redirect');
       return true;
     } catch (error) {
       const apiError = error as ApiError;

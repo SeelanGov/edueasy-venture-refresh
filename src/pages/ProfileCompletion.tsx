@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoStep';
-import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
-import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
-import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
-import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
-import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
-import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
-import { useAuth } from '@/hooks/useAuth';
+import { PageLayout } from '@/components/layout/PageLayout';
 import { PatternBorder } from '@/components/PatternBorder';
-import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
-import { toast } from '@/components/ui/use-toast';
+import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
+import { ContactInfoStep } from '@/components/profile-completion/ContactInfoStep';
+import { DocumentsUploadStep } from '@/components/profile-completion/DocumentsUploadStep';
+import { EducationHistoryStep } from '@/components/profile-completion/EducationHistoryStep';
+import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoStep';
+import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
+import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { AlertCircle } from 'lucide-react';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileCompletion = () => {
   const { user } = useAuth();
@@ -66,7 +66,7 @@ const ProfileCompletion = () => {
         title: 'Progress saved',
         description: 'Your progress has been saved. You can continue later.',
       });
-      navigate('/dashboard');
+      navigate('/auth-redirect');
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       console.error('Error saving progress:', error);

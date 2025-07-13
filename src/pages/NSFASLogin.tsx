@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const NSFASLogin: React.FC = () => {
@@ -46,7 +46,7 @@ const NSFASLogin: React.FC = () => {
       }
 
       toast.success('Successfully logged in!');
-      navigate('/dashboard');
+              navigate('/auth-redirect');
     } catch (err: any) {
       setError(err.message || 'Login error');
       toast.error(err.message || 'Login failed');

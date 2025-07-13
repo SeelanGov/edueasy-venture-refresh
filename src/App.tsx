@@ -13,6 +13,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { AuthProvider } from '@/contexts/AuthContext';
 import AdminDashboard from '@/pages/AdminDashboard';
+import CounselorLogin from '@/pages/CounselorLogin';
+import InstitutionLogin from '@/pages/InstitutionLogin';
+import NSFASLogin from '@/pages/NSFASLogin';
+import StudentLogin from '@/pages/StudentLogin';
 import Unauthorized from '@/pages/Unauthorized';
 import PartnerProfilePage from '@/pages/admin/PartnerProfile';
 import PartnersPage from '@/pages/admin/Partners';
@@ -26,10 +30,6 @@ import NSFASRegister from '@/pages/nsfas/NSFASRegister';
 import SponsorDashboard from '@/pages/sponsors/SponsorDashboard';
 import SponsorLogin from '@/pages/sponsors/SponsorLogin';
 import SponsorRegister from '@/pages/sponsors/SponsorRegister';
-import NSFASLogin from '@/pages/NSFASLogin';
-import InstitutionLogin from '@/pages/InstitutionLogin';
-import CounselorLogin from '@/pages/CounselorLogin';
-import StudentLogin from '@/pages/StudentLogin';
 import ApplyForSponsorship from '@/pages/sponsorships/ApplyForSponsorship';
 import StudentSponsorshipStatus from '@/pages/sponsorships/StudentSponsorshipStatus';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -79,9 +79,12 @@ const App = () => (
             <TermsOfServiceRedirect />
             <RefundPolicyRedirect />
             <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<RoleBasedRedirect />} />
+              {/* Public routes - Landing page should be accessible to everyone */}
+              <Route path="/" element={<Index />} />
               <Route path="/home" element={<Index />} />
+              
+              {/* Authentication redirect route - for authenticated users only */}
+              <Route path="/auth-redirect" element={<RoleBasedRedirect />} />
               <Route
                 path="/login"
                 element={

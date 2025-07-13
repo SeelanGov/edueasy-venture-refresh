@@ -69,9 +69,9 @@ const Footer = () => {
   };
 
   const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
-    // If user is already logged in with this user type, redirect to dashboard
+    // If user is already logged in with this user type, redirect to auth-redirect
     if (user && userType === partner.userType) {
-      navigate('/dashboard');
+      navigate('/auth-redirect');
     } else {
       // Navigate to registration/login flow
       navigate(partner.route);

@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
 export const RoleBasedRedirect = () => {
-  const { userType, loading } = useAuth();
+  const { user, userType, loading } = useAuth();
 
   if (loading) {
     return (
@@ -14,6 +14,11 @@ export const RoleBasedRedirect = () => {
         </div>
       </div>
     );
+  }
+
+  // If user is not authenticated, redirect to login
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
   // Route users to appropriate dashboards based on their role
@@ -31,6 +36,7 @@ export const RoleBasedRedirect = () => {
     case 'student':
       return <Navigate to="/dashboard" replace />;
     default:
+      // If userType is null or unknown, redirect to login
       return <Navigate to="/login" replace />;
   }
 };
