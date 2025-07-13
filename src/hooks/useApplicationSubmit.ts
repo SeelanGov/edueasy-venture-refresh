@@ -1,9 +1,9 @@
+import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
-import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 
 // This hook is now simplified as most functionality has moved to useApplicationForm
 export const useApplicationSubmit = (
@@ -98,8 +98,8 @@ export const useApplicationSubmit = (
         description: 'Your application has been submitted successfully',
       });
 
-      // Navigate to dashboard
-      navigate('/dashboard');
+          // Navigate to auth-redirect for role-based routing
+    navigate('/auth-redirect');
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       console.error('Application submission error:', err);

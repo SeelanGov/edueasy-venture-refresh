@@ -39,8 +39,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get the intended destination from location state, or default to dashboard
-  const from = location.state?.from || '/dashboard';
+  // Get the intended destination from location state, or default to auth-redirect
+  const from = location.state?.from || '/auth-redirect';
 
   useEffect(() => {
     // If user is already logged in, redirect them to the intended destination

@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { ApplicationFormValues } from '@/types/ApplicationTypes';
 import { useAuth } from '@/hooks/useAuth';
 import { useNetwork } from '@/hooks/useNetwork';
-import { useForm } from 'react-hook-form';
+import { supabase } from '@/integrations/supabase/client';
+import type { ApplicationFormValues } from '@/types/ApplicationTypes';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({
@@ -190,7 +190,7 @@ export const useApplicationFormManager = () => {
       });
 
       // Redirect to dashboard
-      navigate('/dashboard');
+      navigate('/auth-redirect');
     } catch (error) {
       console.error('Error submitting application:', error);
       toast({

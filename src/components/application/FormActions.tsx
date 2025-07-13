@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
-import { AlertTriangle, Save, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
+import { AlertTriangle, Save, Send } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormActionsProps {
   isSubmitting: boolean;
@@ -40,7 +40,7 @@ export const FormActions = ({
       <Button
         type="button"
         variant="outline"
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate('/auth-redirect')}
         disabled={isSubmitting || isSaving}
         className="md:py-6 md:px-6 md:text-base"
         aria-label="Cancel and return to dashboard"

@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
-import { useNavigate } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
   const { user } = useAuth();
@@ -66,7 +66,7 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
         title: 'Profile Complete',
         description: 'Your profile has been successfully completed!',
       });
-      navigate('/dashboard');
+      navigate('/auth-redirect');
     } catch (err) {
       const parsed = parseError(err);
       logError(parsed);

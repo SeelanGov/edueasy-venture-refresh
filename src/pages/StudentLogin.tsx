@@ -49,7 +49,7 @@ const StudentLogin: React.FC = () => {
       }
 
       toast.success('Successfully logged in!');
-      navigate('/dashboard');
+              navigate('/auth-redirect');
     } catch (err: any) {
       setError(err.message || 'Login error');
       toast.error(err.message || 'Login failed');

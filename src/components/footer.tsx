@@ -64,7 +64,7 @@ export function Footer() {
 
   const handlePartnerSelect = (partner: typeof partnerTypes[0], isLogin: boolean = false) => {
     if (user && userType === partner.userType) {
-      navigate('/dashboard');
+      navigate('/auth-redirect');
     } else {
       navigate(isLogin ? partner.loginRoute : partner.route);
     }
