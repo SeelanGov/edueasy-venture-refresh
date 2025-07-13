@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { handleError, ErrorCategory } from '@/utils/errorHandler';
+import { supabase } from '@/integrations/supabase/client';
+import { ErrorCategory, handleError } from '@/utils/errorHandler';
+import { useState } from 'react';
 
 export interface VerificationResult {
   status: 'approved' | 'rejected' | 'request_resubmission' | 'pending';
@@ -27,8 +27,8 @@ export const useDocumentVerification = () => {
     setVerificationResult(null);
 
     try {
-      console.log(`Starting verification for ${documentType} (ID: ${documentId})`);
-
+      // Starting verification process
+      
       // Get a signed URL for the document
       const { data: urlData, error: urlError } = await supabase.storage
         .from('user_documents')
@@ -48,8 +48,6 @@ export const useDocumentVerification = () => {
           category: ErrorCategory.FILE,
         };
       }
-
-      console.log('Signed URL generated, calling verification function');
 
       // Call the verification edge function
       const { data, error } = await supabase.functions.invoke('verify-document', {
@@ -84,11 +82,7 @@ export const useDocumentVerification = () => {
         };
       }
 
-      console.log('Verification completed with status:', data.status, {
-        confidence: data.confidence,
-        processingTime: data.processingTimeMs,
-      });
-
+      // Verification completed successfully
       const result: VerificationResult = {
         status: data.status,
         confidence: data.confidence,
