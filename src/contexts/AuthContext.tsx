@@ -31,11 +31,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('users')
         .select('user_type, id_verified, profile_status')
         .eq('id', userId)
         .single();
+
+      if (error) throw error;
 
       setUserType(data?.user_type || 'student');
       setIsVerified(data?.id_verified || false);
@@ -45,6 +47,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUserType('student');
       setIsVerified(false);
       setProfileStatus(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,8 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUserType(null);
         setIsVerified(null);
         setProfileStatus(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     // Listen for auth changes
@@ -73,8 +77,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUserType(null);
         setIsVerified(null);
         setProfileStatus(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
