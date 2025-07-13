@@ -132,7 +132,6 @@ export default function CounselorRegister() {
       });
 
     } catch (error: any) {
-      console.error('Registration error:', error);
       setRegistrationError(error.message || 'Failed to register counselor account');
     } finally {
       setIsLoading(false);

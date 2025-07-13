@@ -40,7 +40,7 @@ const partnerTypes = [
     description: 'Career and educational guidance professionals',
     icon: Users,
     route: '/counselors/register',
-    userType: 'counselor'
+    userType: 'consultant'
   }
 ];
 

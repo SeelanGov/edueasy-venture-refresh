@@ -124,7 +124,6 @@ export default function NSFASRegister() {
       });
 
     } catch (error: any) {
-      console.error('Registration error:', error);
       setRegistrationError(error.message || 'Failed to register NSFAS account');
     } finally {
       setIsLoading(false);
