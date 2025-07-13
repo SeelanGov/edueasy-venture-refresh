@@ -44,10 +44,20 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
             <td className="px-3 py-2">{alloc.plan || '-'}</td>
             <td className="px-3 py-2">{alloc.notes || '-'}</td>
             <td className="px-3 py-2 space-x-2">
-              <Button className="text-blue-600 hover:underline" variant="link" size="sm" onClick={() => onEdit(alloc)}>
+              <Button
+                className="text-blue-600 hover:underline"
+                variant="link"
+                size="sm"
+                onClick={() => onEdit(alloc)}
+              >
                 Edit
               </Button>
-              <Button className="text-red-500 hover:underline" variant="link" size="sm" onClick={() => onDelete(alloc.id)}>
+              <Button
+                className="text-red-500 hover:underline"
+                variant="link"
+                size="sm"
+                onClick={() => onDelete(alloc.id)}
+              >
                 Delete
               </Button>
             </td>

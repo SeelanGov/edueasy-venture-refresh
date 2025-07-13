@@ -8,27 +8,42 @@ import { z } from 'zod';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-const counselorRegisterSchema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  specialization: z.string().min(1, 'Please select a specialization'),
-  assignedRegion: z.string().min(1, 'Please select a region'),
-  organization: z.string().min(2, 'Organization name must be at least 2 characters'),
-  yearsOfExperience: z.string().min(1, 'Please select years of experience'),
-  contactEmail: z.string().email('Please enter a valid email address'),
-  contactPhone: z.string().min(10, 'Phone number must be at least 10 digits'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-});
+const counselorRegisterSchema = z
+  .object({
+    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+    specialization: z.string().min(1, 'Please select a specialization'),
+    assignedRegion: z.string().min(1, 'Please select a region'),
+    organization: z.string().min(2, 'Organization name must be at least 2 characters'),
+    yearsOfExperience: z.string().min(1, 'Please select years of experience'),
+    contactEmail: z.string().email('Please enter a valid email address'),
+    contactPhone: z.string().min(10, 'Phone number must be at least 10 digits'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type CounselorRegisterValues = z.infer<typeof counselorRegisterSchema>;
 
@@ -121,16 +136,16 @@ export default function CounselorRegister() {
 
       toast({
         title: 'Registration Successful',
-        description: 'Your counselor account has been created. Please check your email for verification.',
+        description:
+          'Your counselor account has been created. Please check your email for verification.',
       });
 
       // Navigate to login
-      navigate('/login', { 
-        state: { 
-          message: 'Counselor registration successful. Please check your email for verification.' 
-        } 
+      navigate('/login', {
+        state: {
+          message: 'Counselor registration successful. Please check your email for verification.',
+        },
       });
-
     } catch (error: any) {
       console.error('Registration error:', error);
       setRegistrationError(error.message || 'Failed to register counselor account');
@@ -166,7 +181,7 @@ export default function CounselorRegister() {
                 {/* Personal Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="fullName"
@@ -224,7 +239,7 @@ export default function CounselorRegister() {
                 {/* Professional Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Professional Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="specialization"
@@ -279,7 +294,7 @@ export default function CounselorRegister() {
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="contactEmail"
@@ -287,7 +302,11 @@ export default function CounselorRegister() {
                       <FormItem>
                         <FormLabel>Work Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="counselor@organization.co.za" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="counselor@organization.co.za"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -312,7 +331,7 @@ export default function CounselorRegister() {
                 {/* Account Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -388,4 +407,4 @@ export default function CounselorRegister() {
       </div>
     </div>
   );
-} 
+}

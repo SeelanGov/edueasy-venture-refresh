@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,36 +11,36 @@ const partnerTypes = [
     description: 'Technical and Vocational Education Training institutions',
     icon: GraduationCap,
     route: '/institutions/register',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Universities',
     description: 'Higher education institutions',
     icon: Building2,
     route: '/institutions/register',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Bursary Sponsors',
     description: 'Organizations providing financial support',
     icon: DollarSign,
     route: '/sponsors/register',
-    userType: 'sponsor'
+    userType: 'sponsor',
   },
   {
     name: 'NSFAS',
     description: 'National Student Financial Aid Scheme',
     icon: FileCheck,
     route: '/nsfas/register',
-    userType: 'nsfas'
+    userType: 'nsfas',
   },
   {
     name: 'Guidance Counselors',
     description: 'Career and educational guidance professionals',
     icon: Users,
     route: '/counselors/register',
-    userType: 'consultant'
-  }
+    userType: 'consultant',
+  },
 ];
 
 const Footer = () => {
@@ -68,7 +67,7 @@ const Footer = () => {
     }
   };
 
-  const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
+  const handlePartnerSelect = (partner: (typeof partnerTypes)[0]) => {
     // If user is already logged in with this user type, redirect to dashboard
     if (user && userType === partner.userType) {
       navigate('/dashboard');

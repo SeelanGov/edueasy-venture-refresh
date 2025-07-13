@@ -39,7 +39,12 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, on
               </span>
             </td>
             <td className="px-3 py-2">
-              <Button className="text-cap-teal hover:underline" variant="link" size="sm" onClick={() => onView(sponsor.id)}>
+              <Button
+                className="text-cap-teal hover:underline"
+                variant="link"
+                size="sm"
+                onClick={() => onView(sponsor.id)}
+              >
                 View
               </Button>
             </td>

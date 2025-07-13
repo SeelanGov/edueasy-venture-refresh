@@ -14,7 +14,11 @@ const SponsorDashboard = () => {
         <h2 className="text-2xl mb-4">Unauthenticated</h2>
         <p>
           Please{' '}
-          <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/sponsors/login')}>
+          <Button
+            className="text-cap-teal underline"
+            variant="link"
+            onClick={() => navigate('/sponsors/login')}
+          >
             Login
           </Button>{' '}
           as sponsor.

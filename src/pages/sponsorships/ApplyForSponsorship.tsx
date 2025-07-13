@@ -44,7 +44,9 @@ const ApplyForSponsorship = () => {
     return (
       <div className="max-w-md mx-auto mt-16 p-8 bg-white rounded-xl shadow">
         <h2 className="text-2xl mb-4">Sponsorship Requested!</h2>
-        <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/')}>Back to Home</Button>
+        <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/')}>
+          Back to Home
+        </Button>
       </div>
     );
   }
