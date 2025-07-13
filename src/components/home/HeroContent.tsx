@@ -3,26 +3,70 @@ import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 export const HeroContent = () => {
-  const { user } = useAuth();
+  const { user, userType, isVerified } = useAuth();
   const navigate = useNavigate();
 
   const handleStartApplication = () => {
     if (!user) {
       toast({
-        title: 'Authentication Required',
-        description: 'Please register an account to start your application.',
+        title: 'Registration Required',
+        description: 'Please create an account to start your application journey.',
         variant: 'destructive',
       });
-      navigate('/register', { state: { from: '/dashboard' } });
+      navigate('/register');
       return;
     }
+
+    if (!isVerified) {
+      toast({
+        title: 'Verification Required',
+        description: 'Please complete verification to access your dashboard.',
+        variant: 'destructive',
+      });
+      navigate('/verification-required');
+      return;
+    }
+
     navigate('/dashboard');
   };
 
-  const handleStartWithThandi = () => {
-    navigate('/meet-thandi');
+  const handleStartWithThandi = async () => {
+    if (!user) {
+      toast({
+        title: 'Registration Required',
+        description: 'Please create an account to chat with Thandi.',
+        variant: 'destructive',
+      });
+      navigate('/register');
+      return;
+    }
+
+    // Check user's tier to determine Thandi access level
+    try {
+      const { data: userSubscription } = await supabase
+        .from('user_subscriptions')
+        .select(`
+          tier_id,
+          subscription_tiers!inner(
+            name,
+            thandi_tier
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .single();
+
+      const thandiTier = userSubscription?.subscription_tiers?.thandi_tier || 'basic';
+      
+      // Allow access but show tier limitations in Meet Thandi page
+      navigate('/meet-thandi', { state: { thandiTier } });
+    } catch (error) {
+      // Default to basic tier if no subscription found
+      navigate('/meet-thandi', { state: { thandiTier: 'basic' } });
+    }
   };
 
   return (

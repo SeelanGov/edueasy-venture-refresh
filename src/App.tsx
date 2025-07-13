@@ -136,9 +136,7 @@ const App = () => (
                 path="/profile-completion"
                 element={
                   <AuthGuard>
-                    <VerificationGuard>
-                      <ProfileCompletion />
-                    </VerificationGuard>
+                    <ProfileCompletion />
                   </AuthGuard>
                 }
               />
