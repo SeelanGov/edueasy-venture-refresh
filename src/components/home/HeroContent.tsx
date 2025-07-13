@@ -15,10 +15,10 @@ export const HeroContent = () => {
         description: 'Please register an account to start your application.',
         variant: 'destructive',
       });
-      navigate('/register', { state: { from: '/profile-completion' } });
+      navigate('/register', { state: { from: '/dashboard' } });
       return;
     }
-    navigate('/profile-completion');
+    navigate('/dashboard');
   };
 
   const handleStartWithThandi = () => {
