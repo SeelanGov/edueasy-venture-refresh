@@ -28,7 +28,12 @@ export const Navbar = () => {
   };
 
   const handleAuthNavigation = () => {
-    navigate('/register', { state: { from: '/profile-completion' } });
+    navigate('/register');
+    setIsOpen(false);
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
     setIsOpen(false);
   };
 
@@ -68,14 +73,24 @@ export const Navbar = () => {
             >
               For Institutions
             </Link>
-            <Button
-              variant="primary"
-              onClick={handleAuthNavigation}
-              className="font-medium px-6 py-2 min-w-[120px] h-10"
-              aria-label="Get started with registration"
-            >
-              Get Started
-            </Button>
+            <div className="flex items-center space-x-3">
+              <Button
+                variant="ghost"
+                onClick={handleLogin}
+                className="text-gray-700 hover:text-cap-teal font-medium px-4 py-2 h-10"
+                aria-label="Login to your account"
+              >
+                Login
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleAuthNavigation}
+                className="font-medium px-6 py-2 min-w-[120px] h-10"
+                aria-label="Get started with registration"
+              >
+                Get Started
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -143,8 +158,16 @@ export const Navbar = () => {
                 For Institutions
               </Link>
 
-              {/* Mobile CTA Button */}
-              <div className="pt-6">
+              {/* Mobile CTA Buttons */}
+              <div className="pt-6 space-y-3">
+                <Button
+                  variant="ghost"
+                  onClick={handleLogin}
+                  className="font-medium w-full py-4 text-lg rounded-lg border border-gray-300"
+                  aria-label="Login to your account"
+                >
+                  Login
+                </Button>
                 <Button
                   variant="primary"
                   onClick={handleAuthNavigation}
