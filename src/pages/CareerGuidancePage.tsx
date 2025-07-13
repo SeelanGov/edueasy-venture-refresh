@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { PremiumFeature } from '@/components/subscription/PremiumFeature';
-import { SubscriptionTierName } from '@/types/SubscriptionTypes';
-import { Bot, TrendingUp, Users, BookOpen } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { PremiumFeature } from '@/components/subscription/PremiumFeature';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SubscriptionTierName } from '@/types/SubscriptionTypes';
+import { BookOpen, Bot, TrendingUp, Users } from 'lucide-react';
+import { useState } from 'react';
 
 const CareerGuidancePage = () => {
-  const [activeTab, setActiveTab] = useState('assessment');
+  const [_activeTab, _setActiveTab] = useState('assessment');
 
   return (
     <PageLayout

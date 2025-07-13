@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import path from "path";
 import { componentTagger } from "lovable-tagger";
+import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -25,6 +25,11 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
   },
   build: {
     rollupOptions: {
@@ -60,8 +65,8 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-toggle-group',
             '@radix-ui/react-tooltip',
           ],
-          'data-libs': ['@tanstack/react-query', 'zustand'],
-          'utils': ['date-fns', 'clsx', 'tailwind-merge', 'zod'],
+          'data-libs': ['@tanstack/react-query', '@supabase/supabase-js'],
+          'utils': ['date-fns', 'clsx', 'tailwind-merge'],
         },
       },
     },
