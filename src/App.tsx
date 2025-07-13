@@ -1,62 +1,65 @@
-import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { AuthGuard } from '@/components/AuthGuard';
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
-import { SponsorGuard } from '@/components/SponsorGuard';
+import { AuthGuard } from '@/components/AuthGuard';
 import { InstitutionGuard } from '@/components/InstitutionGuard';
+import { PrivacyPolicyRedirect } from '@/components/PrivacyPolicyRedirect';
+import { RefundPolicyRedirect } from '@/components/RefundPolicyRedirect';
 import { RoleBasedRedirect } from '@/components/RoleBasedRedirect';
+import { SponsorGuard } from '@/components/SponsorGuard';
+import { TermsOfServiceRedirect } from '@/components/TermsOfServiceRedirect';
+import { VerificationGuard } from '@/components/VerificationGuard';
 import { GlobalErrorBoundary } from '@/components/error-handling/GlobalErrorBoundary';
-import Index from './pages/Index';
-import Dashboard from './pages/Dashboard';
-import Register from './pages/Register';
-import ProfileDemo from './pages/ProfileDemo';
-import PartnerDashboard from './pages/PartnerDashboard';
-import ProfileCompletion from './pages/ProfileCompletion';
-import Pricing from './pages/Pricing';
-import SubscriptionPage from './pages/SubscriptionPage';
-import MeetThandi from './pages/MeetThandi';
-import Institutions from './pages/Institutions';
-import InstitutionDetail from './pages/InstitutionDetail';
-import PartnerInquiry from './pages/PartnerInquiry';
-import SponsorshipsPage from './pages/SponsorshipsPage';
-import CareerGuidancePage from './pages/CareerGuidancePage';
-import ConsultationsPage from './pages/ConsultationsPage';
-import FAQPage from './components/support/FAQPage';
-import NotFound from './pages/NotFound';
-import CheckoutPage from './pages/CheckoutPage';
-import UILockAdmin from './pages/UILockAdmin';
+import { Toaster as Sonner } from '@/components/ui/sonner';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { AuthProvider } from '@/contexts/AuthContext';
+import AdminDashboard from '@/pages/AdminDashboard';
+import Unauthorized from '@/pages/Unauthorized';
+import PartnerProfilePage from '@/pages/admin/PartnerProfile';
+import PartnersPage from '@/pages/admin/Partners';
+import SponsorProfile from '@/pages/admin/SponsorProfile';
+import SponsorsPage from '@/pages/admin/Sponsors';
+import UserManagement from '@/pages/admin/UserManagement';
+import CounselorRegister from '@/pages/counselors/CounselorRegister';
+import InstitutionDashboard from '@/pages/institutions/InstitutionDashboard';
+import InstitutionRegister from '@/pages/institutions/InstitutionRegister';
+import NSFASRegister from '@/pages/nsfas/NSFASRegister';
+import SponsorDashboard from '@/pages/sponsors/SponsorDashboard';
+import SponsorLogin from '@/pages/sponsors/SponsorLogin';
+import SponsorRegister from '@/pages/sponsors/SponsorRegister';
+import ApplyForSponsorship from '@/pages/sponsorships/ApplyForSponsorship';
+import StudentSponsorshipStatus from '@/pages/sponsorships/StudentSponsorshipStatus';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { PartnerCRMLayout } from './components/admin/partners/PartnerCRMLayout';
+import { PartnerInquiries } from './components/admin/partners/PartnerInquiries';
 import { PartnerList } from './components/admin/partners/PartnerList';
 import { PartnerProfile } from './components/admin/partners/PartnerProfile';
 import { TiersManager } from './components/admin/partners/TiersManager';
-import { PartnerInquiries } from './components/admin/partners/PartnerInquiries';
-import Login from './pages/Login';
-import SponsorsPage from '@/pages/admin/Sponsors';
-import SponsorProfile from '@/pages/admin/SponsorProfile';
-import UserManagement from '@/pages/admin/UserManagement';
-import SponsorRegister from '@/pages/sponsors/SponsorRegister';
-import SponsorLogin from '@/pages/sponsors/SponsorLogin';
-import SponsorDashboard from '@/pages/sponsors/SponsorDashboard';
-import InstitutionDashboard from '@/pages/institutions/InstitutionDashboard';
-import AdminDashboard from '@/pages/AdminDashboard';
-import Unauthorized from '@/pages/Unauthorized';
-import ApplyForSponsorship from '@/pages/sponsorships/ApplyForSponsorship';
-import StudentSponsorshipStatus from '@/pages/sponsorships/StudentSponsorshipStatus';
-import PartnersPage from '@/pages/admin/Partners';
-import PartnerProfilePage from '@/pages/admin/PartnerProfile';
-import VerificationRequired from './pages/VerificationRequired';
-import { VerificationGuard } from '@/components/VerificationGuard';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import { PrivacyPolicyRedirect } from '@/components/PrivacyPolicyRedirect';
-import TermsOfService from './pages/TermsOfService';
-import { TermsOfServiceRedirect } from '@/components/TermsOfServiceRedirect';
-import RefundPolicy from './pages/RefundPolicy';
-import { RefundPolicyRedirect } from '@/components/RefundPolicyRedirect';
+import FAQPage from './components/support/FAQPage';
 import ApplicationForm from './pages/ApplicationForm';
+import CareerGuidancePage from './pages/CareerGuidancePage';
+import CheckoutPage from './pages/CheckoutPage';
+import ConsultationsPage from './pages/ConsultationsPage';
+import Dashboard from './pages/Dashboard';
+import Index from './pages/Index';
+import InstitutionDetail from './pages/InstitutionDetail';
+import Institutions from './pages/Institutions';
+import Login from './pages/Login';
+import MeetThandi from './pages/MeetThandi';
+import NotFound from './pages/NotFound';
+import PartnerDashboard from './pages/PartnerDashboard';
+import PartnerInquiry from './pages/PartnerInquiry';
+import Pricing from './pages/Pricing';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import ProfileCompletion from './pages/ProfileCompletion';
+import ProfileDemo from './pages/ProfileDemo';
+import RefundPolicy from './pages/RefundPolicy';
+import Register from './pages/Register';
+import SponsorshipsPage from './pages/SponsorshipsPage';
+import SubscriptionPage from './pages/SubscriptionPage';
+import TermsOfService from './pages/TermsOfService';
+import UILockAdmin from './pages/UILockAdmin';
+import VerificationRequired from './pages/VerificationRequired';
 
 const queryClient = new QueryClient();
 
@@ -245,9 +248,12 @@ const App = () => (
                 }
               />
 
-              {/* Public sponsor ecosystem flows */}
+              {/* Public partner registration flows */}
               <Route path="/sponsors/register" element={<SponsorRegister />} />
               <Route path="/sponsors/login" element={<SponsorLogin />} />
+              <Route path="/institutions/register" element={<InstitutionRegister />} />
+              <Route path="/nsfas/register" element={<NSFASRegister />} />
+              <Route path="/counselors/register" element={<CounselorRegister />} />
               <Route
                 path="/sponsors/dashboard"
                 element={

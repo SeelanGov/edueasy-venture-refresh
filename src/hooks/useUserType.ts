@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from 'react';
 
 export interface UserTypeProfile {
   id: string;
@@ -52,6 +52,7 @@ export const useUserType = () => {
   const isConsultant = userType === 'consultant';
   const isInstitution = userType === 'institution';
   const isSponsor = userType === 'sponsor';
+  const isNSFAS = userType === 'nsfas';
   const isStudent = userType === 'student' || !userType;
 
   return {
@@ -62,6 +63,7 @@ export const useUserType = () => {
     isConsultant,
     isInstitution,
     isSponsor,
+    isNSFAS,
     isStudent,
   };
 };

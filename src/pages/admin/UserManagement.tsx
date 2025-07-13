@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { useAdminRole } from '@/hooks/useAdminRole';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
-import { Users, Shield, UserCheck, Building2, Heart } from 'lucide-react';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { Building2, Heart, Shield, UserCheck, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface UserWithRole {
   id: string;
@@ -193,6 +193,7 @@ export default function UserManagement() {
                         <SelectItem value="consultant">Consultant</SelectItem>
                         <SelectItem value="institution">Institution</SelectItem>
                         <SelectItem value="sponsor">Sponsor</SelectItem>
+                        <SelectItem value="nsfas">NSFAS</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
