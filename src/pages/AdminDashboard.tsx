@@ -7,42 +7,42 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/useAuth';
 import { useDocumentsManagement, type DocumentWithUserInfo } from '@/hooks/useDocumentsManagement';
 import {
-    AlertCircle,
-    BarChart,
-    CheckCircle,
-    ExternalLinkIcon,
-    FileIcon,
-    RefreshCw,
-    XCircle,
+  AlertCircle,
+  BarChart,
+  CheckCircle,
+  ExternalLinkIcon,
+  FileIcon,
+  RefreshCw,
+  XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

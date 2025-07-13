@@ -7,14 +7,14 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import {
-    BarChart,
-    BookOpen,
-    ClipboardList,
-    CreditCard,
-    Home,
-    MessageSquare,
-    Settings,
-    User,
+  BarChart,
+  BookOpen,
+  ClipboardList,
+  CreditCard,
+  Home,
+  MessageSquare,
+  Settings,
+  User,
 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

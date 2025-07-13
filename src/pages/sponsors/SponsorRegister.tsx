@@ -50,7 +50,11 @@ const SponsorRegister = () => {
         <h2 className="text-2xl mb-4">Registration Successful!</h2>
         <p>
           Please proceed to{' '}
-          <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/sponsors/login')}>
+          <Button
+            className="text-cap-teal underline"
+            variant="link"
+            onClick={() => navigate('/sponsors/login')}
+          >
             Login
           </Button>
           .

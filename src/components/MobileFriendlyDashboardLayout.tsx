@@ -5,20 +5,20 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import {
-    BookOpen,
-    Briefcase,
-    Building,
-    ChevronLeft,
-    ChevronRight,
-    ClipboardList,
-    Home,
-    LogOut,
-    Menu,
-    Moon,
-    Sun,
-    User,
-    Video,
-    X,
+  BookOpen,
+  Briefcase,
+  Building,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Home,
+  LogOut,
+  Menu,
+  Moon,
+  Sun,
+  User,
+  Video,
+  X,
 } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';

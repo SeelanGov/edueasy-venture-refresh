@@ -7,9 +7,9 @@ import { DocumentStepperCard } from './documents/DocumentStepperCard';
 import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
 import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
 import type {
-    DocumentUploadState as ComponentDocumentUploadState,
-    DocumentType,
-    Step,
+  DocumentUploadState as ComponentDocumentUploadState,
+  DocumentType,
+  Step,
 } from './documents/types';
 
 interface DocumentsUploadStepProps {
@@ -91,7 +91,10 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleRetry to match expected signature
-  const handleRetryWrapper = (_documentType: DocumentType, _state: ComponentDocumentUploadState) => {
+  const handleRetryWrapper = (
+    _documentType: DocumentType,
+    _state: ComponentDocumentUploadState,
+  ) => {
     handleRetry(_documentType);
   };
 

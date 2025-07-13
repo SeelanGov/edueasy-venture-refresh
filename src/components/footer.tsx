@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
@@ -13,7 +19,7 @@ const partnerTypes = [
     icon: GraduationCap,
     route: '/institutions/register',
     loginRoute: '/institutions/login',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Universities',
@@ -21,7 +27,7 @@ const partnerTypes = [
     icon: Building2,
     route: '/institutions/register',
     loginRoute: '/institutions/login',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Bursary Sponsors',
@@ -29,7 +35,7 @@ const partnerTypes = [
     icon: DollarSign,
     route: '/sponsors/register',
     loginRoute: '/sponsors/login',
-    userType: 'sponsor'
+    userType: 'sponsor',
   },
   {
     name: 'NSFAS',
@@ -37,7 +43,7 @@ const partnerTypes = [
     icon: FileCheck,
     route: '/nsfas/register',
     loginRoute: '/nsfas/login',
-    userType: 'nsfas'
+    userType: 'nsfas',
   },
   {
     name: 'Guidance Counselors',
@@ -45,7 +51,7 @@ const partnerTypes = [
     icon: Users,
     route: '/counselors/register',
     loginRoute: '/counselors/login',
-    userType: 'consultant'
+    userType: 'consultant',
   },
   {
     name: 'Students',
@@ -53,8 +59,8 @@ const partnerTypes = [
     icon: Users,
     route: '/register',
     loginRoute: '/students/login',
-    userType: 'student'
-  }
+    userType: 'student',
+  },
 ];
 
 export function Footer() {
@@ -62,7 +68,7 @@ export function Footer() {
   const { user, userType } = useAuth();
   const navigate = useNavigate();
 
-  const handlePartnerSelect = (partner: typeof partnerTypes[0], isLogin: boolean = false) => {
+  const handlePartnerSelect = (partner: (typeof partnerTypes)[0], isLogin: boolean = false) => {
     if (user && userType === partner.userType) {
       navigate('/dashboard');
     } else {
@@ -117,17 +123,26 @@ export function Footer() {
                 </Button>
               </li>
               <li>
-                <Link to="/dashboard" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/dashboard"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/pricing"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link to="/faqs" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/faqs"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   FAQs
                 </Link>
               </li>
@@ -139,12 +154,18 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-6 text-white">Student Services</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/career-guidance" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/career-guidance"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Career Guidance
                 </Link>
               </li>
               <li>
-                <Link to="/consultations" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/consultations"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Consultations
                 </Link>
               </li>
@@ -158,7 +179,10 @@ export function Footer() {
                 </Button>
               </li>
               <li>
-                <Link to="/sponsorships" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/sponsorships"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Sponsorships
                 </Link>
               </li>
@@ -170,33 +194,45 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-6 text-white">Resources & Legal</h4>
             <ul className="space-y-3 mb-6">
               <li>
-                <Link to="/partner-dashboard" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/partner-dashboard"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   EduEasy Admin
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
+                <Link
+                  to="/privacy-policy"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms-of-service" className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
+                <Link
+                  to="/terms-of-service"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
+                >
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to="/refund-policy" className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
+                <Link
+                  to="/refund-policy"
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
+                >
                   Refund Policy
                 </Link>
               </li>
             </ul>
-            
+
             <div className="space-y-3">
               <h5 className="text-md font-semibold text-white">Partner Access</h5>
               <Dialog open={isPartnerModalOpen} onOpenChange={setIsPartnerModalOpen}>
                 <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white"
                     data-testid="partner-access-trigger"
                   >
@@ -213,7 +249,7 @@ export function Footer() {
                       <TabsTrigger value="login">Existing Partner</TabsTrigger>
                       <TabsTrigger value="register">New Partner</TabsTrigger>
                     </TabsList>
-                    
+
                     <TabsContent value="login" className="mt-4">
                       <h3 className="text-lg font-semibold mb-4">Login to Your Account</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -237,7 +273,7 @@ export function Footer() {
                         })}
                       </div>
                     </TabsContent>
-                    
+
                     <TabsContent value="register" className="mt-4">
                       <h3 className="text-lg font-semibold mb-4">Create New Partner Account</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -267,12 +303,13 @@ export function Footer() {
             </div>
           </div>
         </div>
-        
+
         {/* Bottom Section */}
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-center md:text-left">
-              &copy; 2024 EduEasy. All rights reserved. Building the future of South African education.
+              &copy; 2024 EduEasy. All rights reserved. Building the future of South African
+              education.
             </p>
             <div className="flex items-center space-x-6">
               <div className="flex items-center gap-2 text-gray-400">
