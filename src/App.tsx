@@ -26,6 +26,10 @@ import NSFASRegister from '@/pages/nsfas/NSFASRegister';
 import SponsorDashboard from '@/pages/sponsors/SponsorDashboard';
 import SponsorLogin from '@/pages/sponsors/SponsorLogin';
 import SponsorRegister from '@/pages/sponsors/SponsorRegister';
+import NSFASLogin from '@/pages/NSFASLogin';
+import InstitutionLogin from '@/pages/InstitutionLogin';
+import CounselorLogin from '@/pages/CounselorLogin';
+import StudentLogin from '@/pages/StudentLogin';
 import ApplyForSponsorship from '@/pages/sponsorships/ApplyForSponsorship';
 import StudentSponsorshipStatus from '@/pages/sponsorships/StudentSponsorshipStatus';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -251,6 +255,10 @@ const App = () => (
               {/* Public partner registration flows */}
               <Route path="/sponsors/register" element={<SponsorRegister />} />
               <Route path="/sponsors/login" element={<SponsorLogin />} />
+              <Route path="/nsfas/login" element={<NSFASLogin />} />
+              <Route path="/institutions/login" element={<InstitutionLogin />} />
+              <Route path="/counselors/login" element={<CounselorLogin />} />
+              <Route path="/students/login" element={<StudentLogin />} />
               <Route path="/institutions/register" element={<InstitutionRegister />} />
               <Route path="/nsfas/register" element={<NSFASRegister />} />
               <Route path="/counselors/register" element={<CounselorRegister />} />
