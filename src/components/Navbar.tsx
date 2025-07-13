@@ -28,7 +28,7 @@ export const Navbar = () => {
   };
 
   const handleAuthNavigation = () => {
-    navigate('/register', { state: { from: '/profile-completion' } });
+    navigate('/register', { state: { from: '/dashboard' } });
     setIsOpen(false);
   };
 
