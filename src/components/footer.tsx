@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
 import { useState } from 'react';
@@ -11,6 +12,7 @@ const partnerTypes = [
     description: 'Technical and Vocational Education Training institutions',
     icon: GraduationCap,
     route: '/institutions/register',
+    loginRoute: '/institutions/login',
     userType: 'institution'
   },
   {
@@ -18,6 +20,7 @@ const partnerTypes = [
     description: 'Higher education institutions',
     icon: Building2,
     route: '/institutions/register',
+    loginRoute: '/institutions/login',
     userType: 'institution'
   },
   {
@@ -25,6 +28,7 @@ const partnerTypes = [
     description: 'Organizations providing financial support',
     icon: DollarSign,
     route: '/sponsors/register',
+    loginRoute: '/sponsors/login',
     userType: 'sponsor'
   },
   {
@@ -32,6 +36,7 @@ const partnerTypes = [
     description: 'National Student Financial Aid Scheme',
     icon: FileCheck,
     route: '/nsfas/register',
+    loginRoute: '/nsfas/login',
     userType: 'nsfas'
   },
   {
@@ -39,7 +44,16 @@ const partnerTypes = [
     description: 'Career and educational guidance professionals',
     icon: Users,
     route: '/counselors/register',
+    loginRoute: '/counselors/login',
     userType: 'counselor'
+  },
+  {
+    name: 'Students',
+    description: 'Students seeking educational opportunities',
+    icon: Users,
+    route: '/register',
+    loginRoute: '/students/login',
+    userType: 'student'
   }
 ];
 
@@ -48,11 +62,11 @@ export function Footer() {
   const { user, userType } = useAuth();
   const navigate = useNavigate();
 
-  const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
+  const handlePartnerSelect = (partner: typeof partnerTypes[0], isLogin: boolean = false) => {
     if (user && userType === partner.userType) {
       navigate('/dashboard');
     } else {
-      navigate(partner.route);
+      navigate(isLogin ? partner.loginRoute : partner.route);
     }
     setIsPartnerModalOpen(false);
   };
@@ -109,28 +123,62 @@ export function Footer() {
               </DialogTrigger>
               <DialogContent className="sm:max-w-md md:max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle>Select Your Organization Type</DialogTitle>
+                  <DialogTitle>Partner Access</DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  {partnerTypes.map((partner) => {
-                    const Icon = partner.icon;
-                    return (
-                      <Button
-                        key={partner.name}
-                        variant="outline"
-                        className="h-auto p-4 flex flex-col items-start text-left space-y-2 hover:bg-accent"
-                        onClick={() => handlePartnerSelect(partner)}
-                        data-testid={`partner-${partner.userType}`}
-                      >
-                        <div className="flex items-center space-x-2 w-full">
-                          <Icon className="h-5 w-5 text-primary" />
-                          <span className="font-semibold">{partner.name}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{partner.description}</p>
-                      </Button>
-                    );
-                  })}
-                </div>
+                <Tabs defaultValue="login" className="mt-4">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="login">Existing Partner</TabsTrigger>
+                    <TabsTrigger value="register">New Partner</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="login" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-4">Login to Your Account</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {partnerTypes.map((partner) => {
+                        const Icon = partner.icon;
+                        return (
+                          <Button
+                            key={`login-${partner.name}`}
+                            variant="outline"
+                            className="h-auto p-4 flex flex-col items-start text-left space-y-2 hover:bg-accent"
+                            onClick={() => handlePartnerSelect(partner, true)}
+                            data-testid={`partner-login-${partner.userType}`}
+                          >
+                            <div className="flex items-center space-x-2 w-full">
+                              <Icon className="h-5 w-5 text-primary" />
+                              <span className="font-semibold">{partner.name}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{partner.description}</p>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="register" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-4">Create New Partner Account</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {partnerTypes.map((partner) => {
+                        const Icon = partner.icon;
+                        return (
+                          <Button
+                            key={`register-${partner.name}`}
+                            variant="outline"
+                            className="h-auto p-4 flex flex-col items-start text-left space-y-2 hover:bg-accent"
+                            onClick={() => handlePartnerSelect(partner, false)}
+                            data-testid={`partner-register-${partner.userType}`}
+                          >
+                            <div className="flex items-center space-x-2 w-full">
+                              <Icon className="h-5 w-5 text-primary" />
+                              <span className="font-semibold">{partner.name}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{partner.description}</p>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </DialogContent>
             </Dialog>
           </div>
