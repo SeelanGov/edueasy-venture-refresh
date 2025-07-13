@@ -1,18 +1,17 @@
 import { Button } from '@/components/ui/button';
+import { Typography } from '@/components/ui/typography';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { toast } from '@/components/ui/use-toast';
-import { Typography } from '@/components/ui/typography';
-import { StatisticsGrid } from './StatisticsGrid';
 import { HeroImage } from './HeroImage';
+import { StatisticsGrid } from './StatisticsGrid';
 
 export const Hero = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleStartApplication = () => {
-    console.log('Start application clicked, user:', !!user);
     if (!user) {
       toast({
         title: 'Authentication Required',

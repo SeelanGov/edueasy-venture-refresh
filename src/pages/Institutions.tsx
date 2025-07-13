@@ -1,13 +1,13 @@
-import { Typography } from '@/components/ui/typography';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Building2, MapPin, Users, ArrowRight, Star, Loader2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useInstitutions } from '@/hooks/useInstitutions';
-import { useAuth } from '@/hooks/useAuth';
+import { Typography } from '@/components/ui/typography';
 import { toast } from '@/components/ui/use-toast';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { useAuth } from '@/hooks/useAuth';
+import { useInstitutions } from '@/hooks/useInstitutions';
+import { ArrowRight, Building2, Loader2, MapPin, Star, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Institutions = () => {
   const navigate = useNavigate();
@@ -21,11 +21,11 @@ const Institutions = () => {
         description: 'Please register an account to start your application.',
         variant: 'destructive',
       });
-      console.log('Redirecting unauthenticated user to /register from Institutions');
+  
       navigate('/register', { state: { from: '/apply' } });
       return;
     }
-    console.log('Authenticated user, navigating to /apply from Institutions');
+
     navigate('/apply');
   };
 

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Typography } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Smartphone, QrCode, Calendar } from 'lucide-react';
+import { Typography } from '@/components/ui/typography';
+import { Calendar, CreditCard, QrCode, Smartphone } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const [searchParams] = useSearchParams();
@@ -40,7 +40,7 @@ const CheckoutPage = () => {
   const handlePaymentMethod = (method: string) => {
     setSelectedPaymentMethod(method);
     // Here you would integrate with actual payment providers
-    console.log(`Selected payment method: ${method} for plan: ${plan.name}`);
+
   };
 
   if (plan.amount === 0) {

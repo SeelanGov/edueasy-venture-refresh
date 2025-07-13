@@ -1,3 +1,4 @@
+import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
 import { Spinner } from '@/components/Spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -5,12 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
@@ -21,7 +22,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { PageLayout } from '@/components/layout/PageLayout';
 
 const loginFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -44,7 +44,6 @@ const Login = () => {
   useEffect(() => {
     // If user is already logged in, redirect them to the intended destination
     if (user) {
-      console.log('User already logged in, redirecting to:', from);
       navigate(from, { replace: true });
     }
   }, [user, navigate, from]);
@@ -72,8 +71,6 @@ const Login = () => {
         localStorage.removeItem('rememberMe');
         localStorage.removeItem('rememberedEmail');
       }
-
-      console.log('Login successful, navigating to:', from);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       console.error('Login error:', error);
