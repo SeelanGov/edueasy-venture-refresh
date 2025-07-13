@@ -29,6 +29,12 @@ export const RoleBasedRedirect = () => {
     case 'institution':
       console.log('RoleBasedRedirect: Routing institution to institution dashboard');
       return <Navigate to="/institutions/dashboard" replace />;
+    case 'nsfas':
+      console.log('RoleBasedRedirect: Routing NSFAS user to dashboard');
+      return <Navigate to="/dashboard" replace />;
+    case 'consultant':
+      console.log('RoleBasedRedirect: Routing consultant to dashboard');
+      return <Navigate to="/dashboard" replace />;
     case 'student':
       console.log('RoleBasedRedirect: Routing student to main dashboard');
       return <Navigate to="/dashboard" replace />;

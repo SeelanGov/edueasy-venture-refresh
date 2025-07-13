@@ -96,7 +96,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleResubmit to match expected signature
-  const handleResubmitWrapper = (_type: string) => {
+  const handleResubmitWrapper = () => {
     handleResubmit();
   };
 
@@ -131,7 +131,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
           handleResubmit={handleResubmitWrapper}
           verificationResult={verificationResult || null}
           isVerifying={isVerifying}
-          setCurrentDocumentType={(type) => {}}
+          setCurrentDocumentType={(_type: string) => {}}
           currentDocumentType={currentDocumentType}
           uploadSteps={uploadSteps as Step[]}
           currentStep={currentStep}
