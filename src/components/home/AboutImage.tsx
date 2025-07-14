@@ -1,3 +1,4 @@
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const AboutImage = () => {
   // Use the new uploaded image for the About EduEasy section
