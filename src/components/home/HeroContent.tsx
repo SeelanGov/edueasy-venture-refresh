@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 export const HeroContent = () => {
   const { user, userType, isVerified } = useAuth();
@@ -30,7 +30,8 @@ export const HeroContent = () => {
       return;
     }
 
-    navigate('/dashboard');
+    // For authenticated and verified users, use role-based routing
+    navigate('/auth-redirect');
   };
 
   const handleStartWithThandi = async () => {

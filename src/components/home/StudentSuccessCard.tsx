@@ -1,5 +1,6 @@
-import { Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
+import { Star } from 'lucide-react';
 
 interface StudentSuccessCardProps {
   student: {
@@ -27,7 +28,14 @@ export const StudentSuccessCard = ({ student }: StudentSuccessCardProps) => {
         {/* Student Photo */}
         <div className="flex justify-center mb-4">
           <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-teal-100">
-            <img src={student.image} alt={student.name} className="w-full h-full object-cover" />
+            <OptimizedImage
+              src={student.image}
+              alt={student.name}
+              className="w-full h-full object-cover"
+              skeletonClassName="w-full h-full rounded-full"
+              fallbackSrc="/images/journey-bg.png"
+              priority={false}
+            />
           </div>
         </div>
 

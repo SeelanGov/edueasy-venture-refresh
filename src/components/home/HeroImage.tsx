@@ -1,15 +1,8 @@
-import { useState } from 'react';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 export const HeroImage = () => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   // Using the user's uploaded hero image
   const heroImagePath = '/lovable-uploads/de7fc15f-45f8-4076-b06b-9f70babb5c8e.png';
-
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoaded(true); // Stop loading state
-  };
 
   return (
     <div className="hidden md:block relative h-full">
@@ -17,30 +10,13 @@ export const HeroImage = () => {
       <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-primary/30 rounded-full"></div>
 
       <div className="relative z-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
-        {!imageLoaded && !imageError && (
-          <div className="w-full h-64 bg-gray-200 animate-pulse rounded-xl flex items-center justify-center">
-            <div className="text-gray-500">Loading...</div>
-          </div>
-        )}
-
-        {imageError && (
-          <div className="w-full h-64 bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl flex items-center justify-center">
-            <div className="text-center p-4">
-              <div className="text-2xl mb-2">🎓</div>
-              <div className="text-gray-700 font-medium">EduEasy Platform</div>
-              <div className="text-sm text-gray-500">Empowering SA Youth, Online and Offline</div>
-            </div>
-          </div>
-        )}
-
-        <img
+        <OptimizedImage
           src={heroImagePath}
           alt="Empowering SA Youth, Online and Offline - Student studying with technology"
-          className={`w-full h-auto rounded-xl object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
-          onLoad={() => {
-            setImageLoaded(true);
-          }}
-          onError={handleImageError}
+          priority={true} // Hero image loads immediately
+          className="w-full h-auto rounded-xl object-cover"
+          skeletonClassName="w-full h-64 rounded-xl"
+          fallbackSrc="/images/journey-bg.png" // Fallback to existing image
         />
 
         <div className="absolute -right-6 bottom-12 bg-white p-3 rounded-xl shadow-lg">

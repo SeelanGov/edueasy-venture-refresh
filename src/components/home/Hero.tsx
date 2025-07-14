@@ -14,15 +14,16 @@ export const Hero = () => {
   const handleStartApplication = () => {
     if (!user) {
       toast({
-        title: 'Authentication Required',
-        description: 'Please log in to start your application.',
+        title: 'Registration Required',
+        description: 'Please create an account to start your application journey.',
         variant: 'destructive',
       });
-      navigate('/login', { state: { from: '/apply' } });
+      navigate('/register');
       return;
     }
 
-    navigate('/apply');
+    // For authenticated users, use role-based routing
+    navigate('/auth-redirect');
   };
 
   return (
