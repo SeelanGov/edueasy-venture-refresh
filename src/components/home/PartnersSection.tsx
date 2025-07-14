@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { Typography } from '@/components/ui/typography';
 import { StatisticsGrid } from './StatisticsGrid';
 
@@ -35,17 +36,14 @@ export const PartnersSection = () => {
           {/* Image Illustration with enhanced quality */}
           <div className="w-full flex justify-center md:justify-end">
             <div className="relative rounded-2xl overflow-hidden shadow-xl w-full max-w-sm group">
-              <img
+              <OptimizedImage
                 src={imagePath}
                 alt="Confident graduate blowing confetti at camera, wearing cap and gown"
                 className="w-full h-auto object-cover object-center rounded-2xl transition duration-300 group-hover:scale-105 group-hover:contrast-105 group-hover:saturate-150"
-                style={{
-                  maxHeight: 340,
-                  imageRendering: 'auto',
-                }}
-                loading="eager"
-                fetchPriority="high"
-                draggable={false}
+                style={{ maxHeight: 340, imageRendering: 'auto' }}
+                skeletonClassName="w-full h-64 rounded-2xl"
+                fallbackSrc="/images/journey-bg.png"
+                priority={false}
               />
               {/* Add a soft overlay for crispness & contrast */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-cap-teal/10 pointer-events-none" />

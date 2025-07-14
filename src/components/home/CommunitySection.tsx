@@ -1,6 +1,6 @@
-import React from 'react';
-import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
+import { Typography } from '@/components/ui/typography';
 
 export const CommunitySection = () => {
   // Reverting to the previously used image, as requested
@@ -14,11 +14,14 @@ export const CommunitySection = () => {
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-teal-600 opacity-20 rounded-full"></div>
             <div className="relative z-10 rounded-xl overflow-hidden shadow-xl">
-              <img
+              <OptimizedImage
                 src={imagePath}
                 alt="Group of diverse South African students in community"
                 className="w-full h-64 md:h-96 object-cover rounded-xl border-4 border-white shadow-xl"
                 style={{ objectPosition: 'center center' }}
+                skeletonClassName="w-full h-64 md:h-96 rounded-xl"
+                fallbackSrc="/images/journey-bg.png"
+                priority={false}
               />
             </div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-500 opacity-20 rounded-full"></div>
