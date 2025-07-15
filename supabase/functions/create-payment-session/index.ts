@@ -190,14 +190,18 @@ function generatePayFastSignature(data: PayFastData, passphrase?: string): strin
   // Add passphrase if provided
   const signatureString = passphrase ? `${queryString}&passphrase=${passphrase}` : queryString
   
-  // Generate MD5 hash using Web Crypto API
-  return md5(signatureString)
+  // Generate MD5 hash synchronously using crypto-js equivalent
+  return md5Sync(signatureString)
 }
 
-async function md5(str: string): Promise<string> {
+function md5Sync(str: string): string {
+  // Simple MD5 implementation for Deno
+  // This is a basic implementation - in production, consider using a proper MD5 library
   const encoder = new TextEncoder()
   const data = encoder.encode(str)
-  const hashBuffer = await crypto.subtle.digest('MD5', data)
+  
+  // Use Deno's built-in crypto for MD5
+  const hashBuffer = crypto.subtle.digestSync('MD5', data)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
 }
