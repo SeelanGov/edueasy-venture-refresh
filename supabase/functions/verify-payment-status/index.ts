@@ -42,7 +42,7 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({
-        status: payment.payment_status,
+        status: payment.status,
         amount: payment.amount,
         tier: payment.tier,
         created_at: payment.created_at,
