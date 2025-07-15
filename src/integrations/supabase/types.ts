@@ -1688,6 +1688,48 @@ export type Database = {
           },
         ]
       }
+      tracking_id_audit_log: {
+        Row: {
+          assigned_by: string | null
+          assignment_method: string
+          created_at: string | null
+          id: string
+          tracking_id: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_by?: string | null
+          assignment_method: string
+          created_at?: string | null
+          id?: string
+          tracking_id: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_by?: string | null
+          assignment_method?: string
+          created_at?: string | null
+          id?: string
+          tracking_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tracking_id_audit_log_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tracking_id_audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       transactions: {
         Row: {
           amount: number
@@ -2061,6 +2103,10 @@ export type Database = {
           recommendation: string
         }[]
       }
+      assign_tracking_id_to_user: {
+        Args: { p_user_id: string }
+        Returns: string
+      }
       assign_user_role: {
         Args: {
           p_user_id: string
@@ -2109,6 +2155,10 @@ export type Database = {
           avg_confidence: number
         }[]
       }
+      get_tracking_id_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       handle_verification_success: {
         Args: {
           p_user_id: string
@@ -2122,6 +2172,10 @@ export type Database = {
       is_admin: {
         Args: { user_uuid?: string }
         Returns: boolean
+      }
+      peek_next_tracking_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       register_rls_policy: {
         Args: {
@@ -2142,6 +2196,10 @@ export type Database = {
           details: string
           test_session_id: string
         }[]
+      }
+      validate_tracking_id_format: {
+        Args: { p_tracking_id: string }
+        Returns: boolean
       }
       verify_email_token: {
         Args: { p_token: string }
