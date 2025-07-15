@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
@@ -21,7 +21,7 @@ export default function PaymentSuccess() {
         const paymentId = searchParams.get('m_payment_id');
         const paymentStatus = searchParams.get('payment_status');
         
-        if (!paymentId) {
+        if (!paymentId || !user?.id) {
           setVerificationStatus('failed');
           setLoading(false);
           return;
@@ -32,7 +32,7 @@ export default function PaymentSuccess() {
           .from('payments')
           .select('*')
           .eq('merchant_reference', paymentId)
-          .eq('user_id', user?.id)
+          .eq('user_id', user.id)
           .single();
 
         if (error || !payment) {
@@ -43,7 +43,7 @@ export default function PaymentSuccess() {
 
         setPaymentDetails(payment);
 
-        if (payment.payment_status === 'paid') {
+        if (payment.status === 'paid') {
           setVerificationStatus('success');
           // Clear pending payment from session
           sessionStorage.removeItem('pending_payment');
@@ -52,7 +52,7 @@ export default function PaymentSuccess() {
             title: 'Payment Successful!',
             description: 'Your subscription has been activated.',
           });
-        } else if (payment.payment_status === 'pending') {
+        } else if (payment.status === 'pending') {
           setVerificationStatus('pending');
         } else {
           setVerificationStatus('failed');

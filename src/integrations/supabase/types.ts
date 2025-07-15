@@ -972,42 +972,105 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_audit_logs: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          payment_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          payment_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          payment_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
           created_at: string | null
+          gateway_provider: string | null
           id: string
+          ipn_verified: boolean | null
+          last_webhook_attempt: string | null
+          merchant_reference: string | null
+          payfast_payment_id: string | null
+          payfast_signature: string | null
+          payment_expiry: string | null
           payment_method: string
           payment_reference: string | null
+          payment_url: string | null
           plan: string
+          retry_count: number | null
           status: string
+          tier: string | null
           transaction_id: string | null
           updated_at: string | null
           user_id: string
+          webhook_data: Json | null
         }
         Insert: {
           amount: number
           created_at?: string | null
+          gateway_provider?: string | null
           id?: string
+          ipn_verified?: boolean | null
+          last_webhook_attempt?: string | null
+          merchant_reference?: string | null
+          payfast_payment_id?: string | null
+          payfast_signature?: string | null
+          payment_expiry?: string | null
           payment_method: string
           payment_reference?: string | null
+          payment_url?: string | null
           plan: string
+          retry_count?: number | null
           status: string
+          tier?: string | null
           transaction_id?: string | null
           updated_at?: string | null
           user_id: string
+          webhook_data?: Json | null
         }
         Update: {
           amount?: number
           created_at?: string | null
+          gateway_provider?: string | null
           id?: string
+          ipn_verified?: boolean | null
+          last_webhook_attempt?: string | null
+          merchant_reference?: string | null
+          payfast_payment_id?: string | null
+          payfast_signature?: string | null
+          payment_expiry?: string | null
           payment_method?: string
           payment_reference?: string | null
+          payment_url?: string | null
           plan?: string
+          retry_count?: number | null
           status?: string
+          tier?: string | null
           transaction_id?: string | null
           updated_at?: string | null
           user_id?: string
+          webhook_data?: Json | null
         }
         Relationships: []
       }
@@ -2089,7 +2152,23 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      payment_monitoring: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          gateway_provider: string | null
+          id: string | null
+          last_webhook_attempt: string | null
+          merchant_reference: string | null
+          payment_expiry: string | null
+          retry_count: number | null
+          status: string | null
+          tier: string | null
+          user_email: string | null
+          user_tracking_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       analyze_rls_policies: {

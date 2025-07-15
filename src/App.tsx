@@ -45,6 +45,8 @@ import CareerGuidancePage from './pages/CareerGuidancePage';
 import CheckoutPage from './pages/CheckoutPage';
 import ConsultationsPage from './pages/ConsultationsPage';
 import Dashboard from './pages/Dashboard';
+import PaymentCancelled from './pages/PaymentCancelled';
+import PaymentSuccess from './pages/PaymentSuccess';
 import Index from './pages/Index';
 import InstitutionDetail from './pages/InstitutionDetail';
 import Institutions from './pages/Institutions';
@@ -103,6 +105,8 @@ const App = () => (
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/career-guidance" element={<CareerGuidancePage />} />
               <Route path="/consultations" element={<ConsultationsPage />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/payment-cancelled" element={<PaymentCancelled />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
