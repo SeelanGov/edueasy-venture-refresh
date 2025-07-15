@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Calendar, CreditCard, Loader2, QrCode, Smartphone } from 'lucide-react';
+import { Building2, Calendar, CreditCard, Loader2, QrCode, Smartphone, Store } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ const CheckoutPage = () => {
   const plan = plans[selectedPlan as keyof typeof plans] || plans['starter'];
   const tierId = planToTierMap[selectedPlan as keyof typeof planToTierMap];
 
-  const handlePayFastPayment = async () => {
+  const handlePayFastPayment = async (paymentMethod?: string) => {
     if (!tierId) {
       toast({
         title: 'Error',
@@ -50,10 +50,10 @@ const CheckoutPage = () => {
     }
 
     setLoading(true);
-    setSelectedPaymentMethod('payfast');
+    setSelectedPaymentMethod(paymentMethod || 'payfast');
 
     try {
-      const success = await subscribeToPlan(tierId, 'payfast');
+      const success = await subscribeToPlan(tierId, paymentMethod || 'payfast');
       
       if (success) {
         toast({
@@ -82,20 +82,12 @@ const CheckoutPage = () => {
   const handlePaymentMethod = (method: string) => {
     setSelectedPaymentMethod(method);
     
-    if (method === 'card') {
-      // PayFast handles all card payments
-      handlePayFastPayment();
-    } else if (method === 'airtime') {
-      // PayFast handles airtime payments
-      handlePayFastPayment();
-    } else if (method === 'qr') {
-      // PayFast handles QR payments
-      handlePayFastPayment();
+    if (['card', 'airtime', 'qr', 'eft', 'store'].includes(method)) {
+      // All methods go through PayFast but with method preference
+      handlePayFastPayment(method);
     } else if (method === 'payment-plan') {
-      toast({
-        title: 'Coming Soon',
-        description: 'Payment plans will be available soon',
-      });
+      // Navigate to payment plan setup
+      navigate(`/payment-plan-setup?plan=${selectedPlan}`);
     }
   };
 
@@ -105,32 +97,31 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="container mx-auto max-w-2xl">
+    <div className="min-h-screen bg-background-subtle flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Typography variant="h1" className="mb-2">
-            Complete Your Purchase
-          </Typography>
-          <Typography variant="p" className="text-gray-600">
-            You're upgrading to {plan.name} - pay once for the entire application season
-          </Typography>
+          <h1 className="text-3xl font-bold mb-2">Complete Your Purchase</h1>
+          <p className="text-gray-600">Choose your preferred payment method</p>
         </div>
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>{plan.name} Plan</span>
-              <span className="text-2xl font-bold text-cap-teal">R{plan.amount}</span>
-            </CardTitle>
-            <CardDescription>Once-off payment - no monthly fees</CardDescription>
+            <CardTitle>Order Summary</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {plan.features.map((feature, index) => (
-                <Typography key={index} variant="small" className="text-gray-600">
-                  ✓ {feature}
-                </Typography>
-              ))}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Plan</span>
+                <span>{plan.name}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Price</span>
+                <span className="text-2xl font-bold">R{plan.amount}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Features</span>
+                <span>{plan.features.length} features included</span>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -156,7 +147,24 @@ const CheckoutPage = () => {
               )}
               <div className="text-left">
                 <div className="font-semibold">Pay with Card</div>
-                <div className="text-sm text-gray-500">Visa, Mastercard, or Banking app</div>
+                <div className="text-sm text-gray-500">Visa, Mastercard, or Banking app (FNB, ABSA, Standard Bank, Nedbank)</div>
+              </div>
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full h-16 flex items-center justify-start gap-4"
+              onClick={() => handlePaymentMethod('eft')}
+              disabled={loading}
+            >
+              {loading && selectedPaymentMethod === 'eft' ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                <Building2 className="h-6 w-6" />
+              )}
+              <div className="text-left">
+                <div className="font-semibold">Pay with Bank Transfer</div>
+                <div className="text-sm text-gray-500">Instant EFT - All major banks</div>
               </div>
             </Button>
 
@@ -190,7 +198,24 @@ const CheckoutPage = () => {
               )}
               <div className="text-left">
                 <div className="font-semibold">Pay via QR Code</div>
-                <div className="text-sm text-gray-500">SnapScan, Zapper, or at any store</div>
+                <div className="text-sm text-gray-500">SnapScan, Zapper, or scan at any store</div>
+              </div>
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full h-16 flex items-center justify-start gap-4"
+              onClick={() => handlePaymentMethod('store')}
+              disabled={loading}
+            >
+              {loading && selectedPaymentMethod === 'store' ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                <Store className="h-6 w-6" />
+              )}
+              <div className="text-left">
+                <div className="font-semibold">Pay at Store</div>
+                <div className="text-sm text-gray-500">Pick n Pay, Shoprite, or other retail stores</div>
               </div>
             </Button>
 

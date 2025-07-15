@@ -1025,6 +1025,8 @@ export type Database = {
           updated_at: string | null
           user_id: string
           webhook_data: Json | null
+          preferred_payment_method: string | null
+          actual_payment_method: string | null
         }
         Insert: {
           amount: number
@@ -1048,6 +1050,8 @@ export type Database = {
           updated_at?: string | null
           user_id: string
           webhook_data?: Json | null
+          preferred_payment_method?: string | null
+          actual_payment_method?: string | null
         }
         Update: {
           amount?: number
@@ -1071,6 +1075,8 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           webhook_data?: Json | null
+          preferred_payment_method?: string | null
+          actual_payment_method?: string | null
         }
         Relationships: []
       }

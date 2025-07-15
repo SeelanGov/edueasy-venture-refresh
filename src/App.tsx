@@ -45,8 +45,6 @@ import CareerGuidancePage from './pages/CareerGuidancePage';
 import CheckoutPage from './pages/CheckoutPage';
 import ConsultationsPage from './pages/ConsultationsPage';
 import Dashboard from './pages/Dashboard';
-import PaymentCancelled from './pages/PaymentCancelled';
-import PaymentSuccess from './pages/PaymentSuccess';
 import Index from './pages/Index';
 import InstitutionDetail from './pages/InstitutionDetail';
 import Institutions from './pages/Institutions';
@@ -55,6 +53,9 @@ import MeetThandi from './pages/MeetThandi';
 import NotFound from './pages/NotFound';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerInquiry from './pages/PartnerInquiry';
+import PaymentCancelled from './pages/PaymentCancelled';
+import PaymentPlanSetup from './pages/PaymentPlanSetup';
+import PaymentSuccess from './pages/PaymentSuccess';
 import Pricing from './pages/Pricing';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProfileCompletion from './pages/ProfileCompletion';
@@ -103,6 +104,7 @@ const App = () => (
               <Route path="/faqs" element={<FAQPage />} />
               <Route path="/sponsorships" element={<SponsorshipsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/payment-plan-setup" element={<PaymentPlanSetup />} />
               <Route path="/career-guidance" element={<CareerGuidancePage />} />
               <Route path="/consultations" element={<ConsultationsPage />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
