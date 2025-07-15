@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
-import type { SubscriptionTier, UserSubscription, Transaction } from '@/types/SubscriptionTypes';
+import type { SubscriptionTier, Transaction, UserSubscription } from '@/types/SubscriptionTypes';
+import { useEffect, useState } from 'react';
 
 export function useSubscription() {
   const { user } = useAuth();
@@ -127,43 +127,56 @@ export function useSubscription() {
       const tier = tiers.find((t) => t.id === tierId);
       if (!tier) return false;
 
-      const amount = tier.price_once_off;
+      // Map tier names to PayFast format
+      const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
-      // Create payment record
-      const { error: paymentError } = await supabase.from('payments').insert({
-        user_id: user.id,
-        amount: amount * 100, // Convert to cents
-        plan: tier.name,
-        payment_method: paymentMethod,
-        status: 'paid',
+      // Call PayFast payment session creation
+      const { data, error } = await supabase.functions.invoke('create-payment-session', {
+        body: {
+          tier: payfastTier,
+          user_id: user.id
+        }
       });
 
-      if (paymentError) throw paymentError;
+      if (error) {
+        console.error('PayFast session creation error:', error);
+        throw error;
+      }
 
-      // Update user plan
-      const { error: planError } = await supabase.from('user_plans').upsert({
-        user_id: user.id,
-        plan: tier.name,
-        active: true,
-      });
+      // Redirect to PayFast
+      if (data.payment_url) {
+        // Store payment reference in session storage for verification
+        sessionStorage.setItem('pending_payment', data.merchant_reference);
+        
+        // Redirect to PayFast
+        window.location.href = data.payment_url;
+        return true;
+      }
 
-      if (planError) throw planError;
-
-      toast({
-        title: 'Success',
-        description: `Successfully subscribed to ${tier.name} plan`,
-      });
-
-      await loadSubscriptionData();
-      return true;
+      return false;
     } catch (error) {
-      console.error('Error subscribing to plan:', error);
+      console.error('Error creating payment session:', error);
       toast({
         title: 'Error',
-        description: 'Failed to subscribe to plan',
+        description: 'Failed to initiate payment',
         variant: 'destructive',
       });
       return false;
+    }
+  };
+
+  // Add payment status polling
+  const checkPaymentStatus = async (merchantReference: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-payment-status', {
+        body: { merchant_reference: merchantReference }
+      });
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error checking payment status:', error);
+      return null;
     }
   };
 
@@ -212,6 +225,7 @@ export function useSubscription() {
     currentSubscription: userSubscription,
     transactions,
     subscribeToPlan,
+    checkPaymentStatus,
     cancelSubscription,
     toggleAutoRenew,
   };
