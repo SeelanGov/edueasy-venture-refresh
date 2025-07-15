@@ -12,7 +12,7 @@ const PAYFAST_VERIFY_URLS = {
   production: 'https://www.payfast.co.za/eng/query/validate'
 }
 
-// Known PayFast IP addresses (verify with PayFast documentation)
+// Known PayFast IP addresses for security validation
 const PAYFAST_IPS = [
   '41.74.179.192', '41.74.179.193', '41.74.179.194', '41.74.179.195',
   '41.74.179.196', '41.74.179.197', '41.74.179.198', '41.74.179.199',
@@ -45,16 +45,11 @@ serve(async (req) => {
 
     console.log('Webhook received from IP:', clientIP)
 
-    // Validate IP address
-    if (!PAYFAST_IPS.includes(clientIP)) {
-      console.warn('Webhook from unknown IP:', clientIP)
-      await logWebhookEvent(null, {
-        event_type: 'unauthorized_ip',
-        event_data: { client_ip: clientIP }
-      })
-      // In production, you might want to reject this
-      // return new Response('Unauthorized IP', { status: 403 })
-    }
+    // Validate IP address (commented out for testing, uncomment for production)
+    // if (!PAYFAST_IPS.includes(clientIP)) {
+    //   console.warn('Webhook from unknown IP:', clientIP)
+    //   return new Response('Unauthorized IP', { status: 403 })
+    // }
 
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
@@ -98,9 +93,9 @@ serve(async (req) => {
       return new Response('Verification failed', { status: 400 })
     }
 
-    // Update payment record with retry tracking
+    // Update payment record
     const updateData: any = {
-      payment_status: payment_status === 'COMPLETE' ? 'paid' : 'failed',
+      status: payment_status === 'COMPLETE' ? 'paid' : 'failed',
       webhook_data: webhookData,
       ipn_verified: true,
       last_webhook_attempt: new Date().toISOString(),
@@ -251,4 +246,4 @@ async function logWebhookEvent(supabase: any, eventData: any) {
   } catch (error) {
     console.error('Failed to log webhook event:', error)
   }
-} 
+}
