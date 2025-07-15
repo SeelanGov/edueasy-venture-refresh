@@ -204,8 +204,8 @@ export function Footer() {
                     Partner Login
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-3xl md:max-w-4xl p-0 overflow-hidden">
-                  <div className="bg-gradient-to-br from-background to-muted/30 p-8">
+                <DialogContent className="sm:max-w-5xl max-w-[95vw] max-h-[90vh] p-0 overflow-hidden flex flex-col">
+                  <div className="bg-gradient-to-br from-background to-muted/30 p-8 flex-shrink-0">
                     <DialogHeader className="text-center space-y-3">
                       <DialogTitle className="text-2xl font-bold text-foreground">Partner Access Portal</DialogTitle>
                       <p className="text-muted-foreground text-base max-w-2xl mx-auto">
@@ -214,7 +214,7 @@ export function Footer() {
                     </DialogHeader>
                   </div>
                   
-                  <div className="px-8 pb-8">
+                  <div className="px-8 pb-8 overflow-y-auto flex-1">
                     <Tabs defaultValue="login" className="mt-6">
                       <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 p-1 rounded-lg">
                         <TabsTrigger 
