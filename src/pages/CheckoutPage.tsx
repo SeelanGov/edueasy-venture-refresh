@@ -2,7 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
-import { Calendar, CreditCard, QrCode, Smartphone } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { useSubscription } from '@/hooks/useSubscription';
+import { Calendar, CreditCard, Loader2, QrCode, Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -10,9 +12,15 @@ const CheckoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedPlan = searchParams.get('plan');
-  const [showQRCode, setShowQRCode] = useState(false);
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [loading, setLoading] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const { subscribeToPlan } = useSubscription();
+
+  // Map plan names to tier IDs for PayFast integration
+  const planToTierMap = {
+    'essential': 'essential',
+    'pro-ai': 'pro-ai'
+  };
 
   const plans = {
     starter: { name: 'Starter', amount: 0, features: ['1 application', 'Basic tools'] },
@@ -29,18 +37,66 @@ const CheckoutPage = () => {
   };
 
   const plan = plans[selectedPlan as keyof typeof plans] || plans['starter'];
+  const tierId = planToTierMap[selectedPlan as keyof typeof planToTierMap];
 
-  const handleQRPayment = async () => {
-    setSelectedPaymentMethod('qr');
-    setShowQRCode(true);
-    // Simulate QR code generation
-    setQrCodeUrl('/placeholder.svg'); // This would be replaced with actual QR code generation
+  const handlePayFastPayment = async () => {
+    if (!tierId) {
+      toast({
+        title: 'Error',
+        description: 'Invalid plan selected',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setLoading(true);
+    setSelectedPaymentMethod('payfast');
+
+    try {
+      const success = await subscribeToPlan(tierId, 'payfast');
+      
+      if (success) {
+        toast({
+          title: 'Payment initiated',
+          description: 'Redirecting to PayFast...',
+        });
+      } else {
+        toast({
+          title: 'Payment failed',
+          description: 'Unable to initiate payment. Please try again.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: 'Payment error',
+        description: 'An unexpected error occurred. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePaymentMethod = (method: string) => {
     setSelectedPaymentMethod(method);
-    // Here you would integrate with actual payment providers
-
+    
+    if (method === 'card') {
+      // PayFast handles all card payments
+      handlePayFastPayment();
+    } else if (method === 'airtime') {
+      // PayFast handles airtime payments
+      handlePayFastPayment();
+    } else if (method === 'qr') {
+      // PayFast handles QR payments
+      handlePayFastPayment();
+    } else if (method === 'payment-plan') {
+      toast({
+        title: 'Coming Soon',
+        description: 'Payment plans will be available soon',
+      });
+    }
   };
 
   if (plan.amount === 0) {
@@ -91,8 +147,13 @@ const CheckoutPage = () => {
               variant="outline"
               className="w-full h-16 flex items-center justify-start gap-4"
               onClick={() => handlePaymentMethod('card')}
+              disabled={loading}
             >
-              <CreditCard className="h-6 w-6" />
+              {loading && selectedPaymentMethod === 'card' ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                <CreditCard className="h-6 w-6" />
+              )}
               <div className="text-left">
                 <div className="font-semibold">Pay with Card</div>
                 <div className="text-sm text-gray-500">Visa, Mastercard, or Banking app</div>
@@ -103,8 +164,13 @@ const CheckoutPage = () => {
               variant="outline"
               className="w-full h-16 flex items-center justify-start gap-4"
               onClick={() => handlePaymentMethod('airtime')}
+              disabled={loading}
             >
-              <Smartphone className="h-6 w-6" />
+              {loading && selectedPaymentMethod === 'airtime' ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                <Smartphone className="h-6 w-6" />
+              )}
               <div className="text-left">
                 <div className="font-semibold">Pay with Airtime</div>
                 <div className="text-sm text-gray-500">MTN, Vodacom, Cell C</div>
@@ -114,9 +180,14 @@ const CheckoutPage = () => {
             <Button
               variant="outline"
               className="w-full h-16 flex items-center justify-start gap-4"
-              onClick={handleQRPayment}
+              onClick={() => handlePaymentMethod('qr')}
+              disabled={loading}
             >
-              <QrCode className="h-6 w-6" />
+              {loading && selectedPaymentMethod === 'qr' ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                <QrCode className="h-6 w-6" />
+              )}
               <div className="text-left">
                 <div className="font-semibold">Pay via QR Code</div>
                 <div className="text-sm text-gray-500">SnapScan, Zapper, or at any store</div>
@@ -127,6 +198,7 @@ const CheckoutPage = () => {
               variant="outline"
               className="w-full h-16 flex items-center justify-start gap-4"
               onClick={() => handlePaymentMethod('payment-plan')}
+              disabled={loading}
             >
               <Calendar className="h-6 w-6" />
               <div className="text-left">
@@ -137,30 +209,11 @@ const CheckoutPage = () => {
               </div>
             </Button>
 
-            {showQRCode && (
-              <div className="mt-6 p-6 bg-gray-50 rounded-lg text-center">
-                <Typography variant="h4" className="mb-4">
-                  Scan QR Code to Pay
-                </Typography>
-                <div className="w-48 h-48 mx-auto bg-white rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center mb-4">
-                  <Typography variant="small" className="text-gray-500">
-                    QR Code Here
-                  </Typography>
-                </div>
-                <Typography variant="small" className="text-gray-600 mb-2">
-                  Scan with your banking app or present at participating stores
-                </Typography>
-                <Typography variant="small" className="text-gray-500">
-                  Payment amount: R{plan.amount}
-                </Typography>
-              </div>
-            )}
-
             <Separator className="my-6" />
 
             <div className="text-center space-y-2">
               <Typography variant="small" className="text-gray-600">
-                🔒 Secure payment processing
+                🔒 Secure payment processing via PayFast
               </Typography>
               <Typography variant="small" className="text-gray-500">
                 Questions? Contact support at support@edueasy.co.za
