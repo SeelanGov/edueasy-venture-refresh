@@ -9,6 +9,7 @@ const corsHeaders = {
 interface PaymentRequest {
   tier: 'basic' | 'premium';
   user_id: string;
+  payment_method?: string; // New field for payment method preference
 }
 
 interface PaymentResponse {
@@ -34,7 +35,7 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Get request body
-    const { tier, user_id }: PaymentRequest = await req.json()
+    const { tier, user_id, payment_method }: PaymentRequest = await req.json()
 
     // Enhanced input validation
     if (!tier || !user_id) {
@@ -47,6 +48,15 @@ serve(async (req) => {
     if (!['basic', 'premium'].includes(tier)) {
       return new Response(
         JSON.stringify({ error: 'Invalid tier. Must be "basic" or "premium"' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Validate payment method if provided
+    const validPaymentMethods = ['card', 'airtime', 'qr', 'eft', 'store', 'payment-plan'];
+    if (payment_method && !validPaymentMethods.includes(payment_method)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid payment method' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -89,11 +99,12 @@ serve(async (req) => {
         user_id,
         amount,
         tier,
-        payment_method: 'payfast',
+        payment_method: payment_method || 'payfast',
         status: 'pending',
         merchant_reference,
         gateway_provider: 'payfast',
-        payment_expiry: expires_at
+        payment_expiry: expires_at,
+        preferred_payment_method: payment_method // Store the preferred payment method
       })
 
     if (paymentError) {
@@ -130,7 +141,8 @@ serve(async (req) => {
       item_description: `Access to EduEasy ${tier} features`,
       custom_str1: user_id,
       custom_str2: tier,
-      custom_str3: user.tracking_id || ''
+      custom_str3: user.tracking_id || '',
+      custom_str4: payment_method || 'all' // Pass preferred payment method to PayFast
     }
 
     // Generate signature

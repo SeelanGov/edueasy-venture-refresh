@@ -72,7 +72,9 @@ serve(async (req) => {
       payment_status,
       pf_payment_id: provider_transaction_id,
       custom_str1: user_id,
-      custom_str2: tier
+      custom_str2: tier,
+      custom_str4: preferred_payment_method, // Extract preferred payment method
+      payment_method: actual_payment_method // Extract actual payment method used (if available from PayFast)
     } = webhookData
 
     if (!merchant_reference) {
@@ -99,7 +101,8 @@ serve(async (req) => {
       webhook_data: webhookData,
       ipn_verified: true,
       last_webhook_attempt: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      actual_payment_method: actual_payment_method || preferred_payment_method || 'payfast' // Store actual method used
     }
 
     if (provider_transaction_id) {

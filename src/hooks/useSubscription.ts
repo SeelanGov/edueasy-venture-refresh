@@ -130,11 +130,12 @@ export function useSubscription() {
       // Map tier names to PayFast format
       const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
-      // Call PayFast payment session creation
+      // Call PayFast payment session creation with payment method
       const { data, error } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: payfastTier,
-          user_id: user.id
+          user_id: user.id,
+          payment_method: paymentMethod // Pass the selected payment method
         }
       });
 
