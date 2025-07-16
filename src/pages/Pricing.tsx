@@ -8,15 +8,22 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { ErrorRecovery, useErrorRecovery } from '@/components/ui/ErrorRecovery';
 import { Typography } from '@/components/ui/typography';
-import { Bot, Check } from 'lucide-react';
+import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState<any>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const { handleSessionStorageError } = useErrorRecovery();
 
-  // Plan selection handler with authentication-first flow
+  // Enhanced plan selection handler with error recovery
   const handlePlanSelection = (planId: string) => {
+    setSelectedPlan(planId);
+    
     if (planId === 'starter') {
       navigate('/register');
     } else {
@@ -30,9 +37,22 @@ const Pricing = () => {
           } 
         });
       } catch (error) {
+        // Enhanced error handling with recovery options
+        const sessionStorageError = handleSessionStorageError('plan selection');
+        setError(sessionStorageError);
+        
         // Fallback to URL params if sessionStorage fails
-        navigate(`/register?plan=${planId}`);
+        setTimeout(() => {
+          navigate(`/register?plan=${planId}`);
+        }, 2000);
       }
+    }
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    if (selectedPlan) {
+      handlePlanSelection(selectedPlan);
     }
   };
 
@@ -116,7 +136,7 @@ const Pricing = () => {
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
-          className="px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
+          className="px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10 transition-colors"
         >
           <span className="mr-2 text-lg">&#8592;</span>
           Back to Home
@@ -124,10 +144,24 @@ const Pricing = () => {
       </div>
 
       <div className="container mx-auto py-20 px-4">
+        {/* Error Recovery Display */}
+        {error && (
+          <div className="mb-8">
+            <ErrorRecovery 
+              error={error} 
+              onRetry={handleRetry}
+              className="max-w-2xl mx-auto"
+            />
+          </div>
+        )}
+
         <div className="text-center mb-16">
-          <Typography variant="h1" className="mb-4">
-            Choose Your Plan
-          </Typography>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Shield className="h-8 w-8 text-cap-teal" />
+            <Typography variant="h1" className="mb-0">
+              Choose Your Plan
+            </Typography>
+          </div>
           <Typography variant="lead" className="max-w-2xl mx-auto">
             Pay once for the entire application season - no monthly fees, no surprises
           </Typography>
@@ -143,11 +177,16 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <Card
               key={index}
-              className={`relative ${plan.popular ? 'border-cap-teal shadow-lg scale-105' : 'border-gray-200'}`}
+              className={`relative transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+                plan.popular 
+                  ? 'border-cap-teal shadow-lg scale-105 ring-2 ring-cap-teal/20' 
+                  : 'border-gray-200 hover:border-cap-teal/50'
+              }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-cap-teal text-white px-4 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-gradient-to-r from-cap-teal to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium shadow-lg">
+                    <Sparkles className="h-3 w-3 inline mr-1" />
                     Most Popular
                   </span>
                 </div>
@@ -165,14 +204,14 @@ const Pricing = () => {
               <CardContent>
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
+                    <li key={featureIndex} className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700 text-sm leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
                   <div className="flex items-center gap-2 mb-2">
                     <Bot className="h-4 w-4 text-cap-teal" />
                     <Typography variant="small" className="font-semibold text-cap-teal">
@@ -181,8 +220,9 @@ const Pricing = () => {
                   </div>
                   <ul className="space-y-1">
                     {plan.thandiFeatures.map((feature, idx) => (
-                      <li key={idx} className="text-xs text-blue-700">
-                        • {feature}
+                      <li key={idx} className="text-xs text-blue-700 flex items-start">
+                        <span className="text-cap-teal mr-1">•</span>
+                        <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -192,7 +232,11 @@ const Pricing = () => {
               <CardFooter>
                 <Button
                   onClick={() => handlePlanSelection(plan.id)}
-                  className={`w-full ${plan.popular ? 'bg-cap-teal hover:bg-cap-teal/90' : 'bg-gray-900 hover:bg-gray-800'} text-white`}
+                  className={`w-full transition-all duration-300 ${
+                    plan.popular 
+                      ? 'bg-gradient-to-r from-cap-teal to-blue-600 hover:from-cap-teal/90 hover:to-blue-700 shadow-lg' 
+                      : 'bg-gray-900 hover:bg-gray-800'
+                  } text-white font-semibold py-3`}
                 >
                   {plan.buttonText}
                 </Button>
@@ -205,14 +249,28 @@ const Pricing = () => {
           <Typography variant="p" className="text-gray-600 mb-4">
             Need personalized guidance? Book a 1-on-1 session with our experts
           </Typography>
-          <Typography variant="small" className="text-gray-500">
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1">
+              <CreditCard className="h-4 w-4" />
+              <span>Card Payments</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Shield className="h-4 w-4" />
+              <span>Secure Processing</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Sparkles className="h-4 w-4" />
+              <span>Instant Access</span>
+            </div>
+          </div>
+          <Typography variant="small" className="text-gray-500 mt-2">
             All plans include lifetime access for the application season. Pay with card, airtime, or
             at any service provider.
           </Typography>
         </div>
 
         <div className="mt-8 text-center">
-          <Card className="max-w-md mx-auto bg-blue-50 border-blue-200">
+          <Card className="max-w-md mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
             <CardContent className="pt-6">
               <Typography variant="h4" className="mb-2">
                 1-on-1 Expert Sessions
@@ -223,7 +281,7 @@ const Pricing = () => {
               <Typography variant="small" className="text-gray-600 mb-4">
                 Career coaching, interview prep, application reviews
               </Typography>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full hover:bg-blue-100 transition-colors">
                 Book Consultation
               </Button>
             </CardContent>
