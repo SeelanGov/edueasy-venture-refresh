@@ -2,7 +2,8 @@ import { RegisterForm } from '@/components/auth/RegisterForm';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle } from 'lucide-react';
+import { ProgressIndicator, createAuthFlowSteps } from '@/components/ui/ProgressIndicator';
+import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Register = () => {
@@ -27,32 +28,74 @@ const Register = () => {
       gradient={true}
     >
       <div className="max-w-md mx-auto">
-        {/* Plan context banner for paid plans */}
+        {/* Progress Indicator for paid plans */}
         {selectedPlan && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-blue-600" />
-              <div>
-                <p className="font-medium text-blue-900">
-                  Complete your {selectedPlan.name} purchase
-                </p>
-                <p className="text-sm text-blue-700">
+          <div className="mb-8">
+            <ProgressIndicator 
+              steps={createAuthFlowSteps('register')} 
+              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
+            />
+          </div>
+        )}
+
+        {/* Enhanced Plan context banner for paid plans */}
+        {selectedPlan && (
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <CreditCard className="h-5 w-5 text-blue-600" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <p className="font-semibold text-blue-900">
+                    Plan Selected: {selectedPlan.name}
+                  </p>
+                </div>
+                <p className="text-sm text-blue-700 mb-2">
                   Create your account to secure your {selectedPlan.price} purchase
                 </p>
+                <div className="flex items-center gap-4 text-xs text-blue-600">
+                  <div className="flex items-center gap-1">
+                    <Shield className="h-3 w-3" />
+                    <span>Secure Payment</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <UserCheck className="h-3 w-3" />
+                    <span>Account Protection</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Plan-specific benefits */}
+        {/* Enhanced Plan-specific benefits */}
         {selectedPlan && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-            <h3 className="font-medium text-green-900 mb-2">What you'll get:</h3>
-            <ul className="text-sm text-green-800 space-y-1">
-              <li>• Secure payment processing with tracking</li>
-              <li>• Immediate access to your dashboard</li>
-              <li>• Personalized application guidance</li>
-              <li>• Document management system</li>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-6">
+            <h3 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              What you'll get with {selectedPlan.name}:
+            </h3>
+            <ul className="text-sm text-green-800 space-y-2">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-3 w-3 text-green-600 mt-0.5 flex-shrink-0" />
+                <span>Secure payment processing with full tracking</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-3 w-3 text-green-600 mt-0.5 flex-shrink-0" />
+                <span>Immediate access to your personalized dashboard</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-3 w-3 text-green-600 mt-0.5 flex-shrink-0" />
+                <span>AI-powered application guidance and support</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-3 w-3 text-green-600 mt-0.5 flex-shrink-0" />
+                <span>Advanced document management system</span>
+              </li>
             </ul>
           </div>
         )}
