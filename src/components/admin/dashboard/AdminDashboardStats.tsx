@@ -1,5 +1,7 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Users, FileText, AlertCircle, Check, X } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
+import { AlertCircle, AlertTriangle, Check, FileText, Users, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   totalUsers: number;
@@ -16,6 +18,33 @@ export function AdminDashboardStats({
   pendingDocuments,
   totalApplications,
 }: Props) {
+  const [paymentRecoveryStats, setPaymentRecoveryStats] = useState({
+    orphaned: 0,
+    failed: 0
+  })
+
+  const { listOrphanedPayments, listFailedPayments } = usePaymentRecovery()
+
+  useEffect(() => {
+    const loadPaymentRecoveryStats = async () => {
+      try {
+        const [orphanedResult, failedResult] = await Promise.all([
+          listOrphanedPayments(),
+          listFailedPayments()
+        ])
+        
+        setPaymentRecoveryStats({
+          orphaned: orphanedResult.success ? (orphanedResult.data?.length || 0) : 0,
+          failed: failedResult.success ? (failedResult.data?.length || 0) : 0
+        })
+      } catch (error) {
+        console.error('Error loading payment recovery stats:', error)
+      }
+    }
+
+    loadPaymentRecoveryStats()
+  }, [listOrphanedPayments, listFailedPayments])
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
       <Card>
@@ -61,6 +90,20 @@ export function AdminDashboardStats({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalApplications}</div>
+        </CardContent>
+      </Card>
+      <Card className="col-span-1 md:col-span-2 lg:col-span-1">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Payment Recovery</CardTitle>
+          <AlertTriangle className="h-4 w-4 text-amber-500" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-amber-600">
+            {paymentRecoveryStats.orphaned + paymentRecoveryStats.failed}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {paymentRecoveryStats.orphaned} orphaned, {paymentRecoveryStats.failed} failed
+          </p>
         </CardContent>
       </Card>
     </div>

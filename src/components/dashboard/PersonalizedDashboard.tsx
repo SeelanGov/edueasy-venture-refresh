@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Typography } from '@/components/ui/typography';
+import { PaymentRecoveryNotice } from '@/components/user/PaymentRecoveryNotice';
 import { toast } from '@/hooks/use-toast';
 import { useApplications } from '@/hooks/useApplications';
 import { useAuth } from '@/hooks/useAuth';
@@ -114,6 +115,9 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
           </CardContent>
         </Card>
       )}
+
+      {/* Payment Recovery Notice */}
+      <PaymentRecoveryNotice />
 
       {/* Welcome Card */}
       <Card className="bg-gradient-to-br from-cap-teal/80 to-blue-300 text-white shadow-md">

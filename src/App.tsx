@@ -18,6 +18,7 @@ import InstitutionLogin from '@/pages/InstitutionLogin';
 import NSFASLogin from '@/pages/NSFASLogin';
 import StudentLogin from '@/pages/StudentLogin';
 import Unauthorized from '@/pages/Unauthorized';
+import AdminPaymentRecovery from '@/pages/admin/AdminPaymentRecovery';
 import PartnerProfilePage from '@/pages/admin/PartnerProfile';
 import PartnersPage from '@/pages/admin/Partners';
 import SponsorProfile from '@/pages/admin/SponsorProfile';
@@ -184,6 +185,14 @@ const App = () => (
                 element={
                   <AdminAuthGuard>
                     <UILockAdmin />
+                  </AdminAuthGuard>
+                }
+              />
+              <Route
+                path="/admin/payment-recovery"
+                element={
+                  <AdminAuthGuard>
+                    <AdminPaymentRecovery />
                   </AdminAuthGuard>
                 }
               />
