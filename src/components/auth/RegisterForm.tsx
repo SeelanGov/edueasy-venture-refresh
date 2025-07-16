@@ -1,24 +1,24 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { Link, useLocation } from 'react-router-dom';
-import { AlertCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/Spinner';
-import { useAuth } from '@/hooks/useAuth';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
+import { useAuth } from '@/hooks/useAuth';
 
 // Refactored atomic fields
-import { FullNameField } from './register/FullNameField';
-import { IdNumberField } from './register/IdNumberField';
-import { EmailField } from './register/EmailField';
-import { GenderField } from './register/GenderField';
-import { PasswordField } from './register/PasswordField';
 import { ConfirmPasswordField } from './register/ConfirmPasswordField';
 import { ConsentCheckboxes } from './register/ConsentCheckboxes';
+import { EmailField } from './register/EmailField';
+import { FullNameField } from './register/FullNameField';
+import { GenderField } from './register/GenderField';
+import { IdNumberField } from './register/IdNumberField';
+import { PasswordField } from './register/PasswordField';
 
 // IMPORTANT: Import the shadcn/ui Form provider to wrap around the form
 import { Form } from '@/components/ui/form';
@@ -43,8 +43,13 @@ const registerFormSchema = z
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
 export type { RegisterFormValues };
 
-export const RegisterForm = () => {
+interface RegisterFormProps {
+  hasPendingPlan?: boolean;
+}
+
+export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
   const { signUp } = useAuth();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const [consentPrivacy, setConsentPrivacy] = useState(false);
@@ -63,6 +68,31 @@ export const RegisterForm = () => {
       confirmPassword: '',
     },
   });
+
+  // Enhanced registration success handler
+  const handleRegistrationSuccess = async () => {
+    try {
+      const pendingPlan = sessionStorage.getItem('pending_plan');
+      
+      if (pendingPlan) {
+        // Clear pending plan from storage
+        sessionStorage.removeItem('pending_plan');
+        
+        // Redirect to checkout with plan
+        navigate(`/checkout?plan=${pendingPlan}`, {
+          state: { 
+            message: 'Account created successfully! Complete your purchase below.'
+          }
+        });
+      } else {
+        // Default redirect for non-payment registrations
+        navigate('/auth-redirect');
+      }
+    } catch (error) {
+      console.error('Registration redirect error:', error);
+      navigate('/auth-redirect');
+    }
+  };
 
   // NEW: call /verify-id before sign-up
   const handleRegister = async (e: React.FormEvent) => {
@@ -106,7 +136,8 @@ export const RegisterForm = () => {
         return;
       }
 
-      // Success—navigate after regular post-signup logic
+      // Success - handle post-registration redirect
+      await handleRegistrationSuccess();
     } catch (error: unknown) {
       // Edge function or network failure
       setRegistrationError(
@@ -121,8 +152,15 @@ export const RegisterForm = () => {
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="bg-cap-teal p-6 text-white text-center">
-        <h2 className="text-2xl font-bold">Create Your Account</h2>
-        <p className="mt-2 text-sm opacity-90">Get started with EduEasy today</p>
+        <h2 className="text-2xl font-bold">
+          {hasPendingPlan ? 'Create Your Account' : 'Create Your Account'}
+        </h2>
+        <p className="mt-2 text-sm opacity-90">
+          {hasPendingPlan 
+            ? 'Complete your purchase and get immediate access'
+            : 'Get started with EduEasy today'
+          }
+        </p>
       </div>
       <div className="p-6">
         <SecurityInfoPanel badgeType="privacy" />
@@ -154,7 +192,7 @@ export const RegisterForm = () => {
               disabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-              {isLoading ? 'Signing up...' : 'Sign Up'}
+              {isLoading ? 'Signing up...' : (hasPendingPlan ? 'Create Account & Continue' : 'Sign Up')}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">

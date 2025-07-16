@@ -1,11 +1,13 @@
+import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Building2, Calendar, CreditCard, Loader2, QrCode, Smartphone, Store } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const CheckoutPage = () => {
@@ -15,6 +17,39 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const { subscribeToPlan } = useSubscription();
+  const { user, loading: authLoading } = useAuth();
+
+  // Authentication check - redirect unauthenticated users to registration
+  useEffect(() => {
+    if (!authLoading && !user) {
+      // Preserve plan selection for post-registration
+      sessionStorage.setItem('pending_plan', selectedPlan || '');
+      navigate('/register', { 
+        state: { 
+          from: `/checkout?plan=${selectedPlan}`,
+          message: 'Create your account to secure your purchase and tracking'
+        } 
+      });
+      return;
+    }
+  }, [user, authLoading, selectedPlan, navigate]);
+
+  // Show loading state while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background-subtle flex items-center justify-center">
+        <div className="text-center">
+          <Spinner size="lg" />
+          <p className="mt-4 text-gray-600">Verifying your account...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Prevent rendering if no user (will be redirected by useEffect)
+  if (!user) {
+    return null;
+  }
 
   // Map plan names to tier IDs for PayFast integration
   const planToTierMap = {

@@ -1,20 +1,41 @@
+import { PatternBorder } from '@/components/PatternBorder';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
-import { Check, Bot } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { PatternBorder } from '@/components/PatternBorder';
 import { Typography } from '@/components/ui/typography';
-import React from 'react';
+import { Bot, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Pricing = () => {
   const navigate = useNavigate();
+
+  // Plan selection handler with authentication-first flow
+  const handlePlanSelection = (planId: string) => {
+    if (planId === 'starter') {
+      navigate('/register');
+    } else {
+      // For paid plans, always require registration
+      try {
+        sessionStorage.setItem('pending_plan', planId);
+        navigate('/register', { 
+          state: { 
+            from: `/checkout?plan=${planId}`,
+            message: 'Create your account to continue with your purchase'
+          } 
+        });
+      } catch (error) {
+        // Fallback to URL params if sessionStorage fails
+        navigate(`/register?plan=${planId}`);
+      }
+    }
+  };
+
   const plans = [
     {
       id: 'starter',
@@ -169,16 +190,12 @@ const Pricing = () => {
               </CardContent>
 
               <CardFooter>
-                <Link
-                  to={plan.id === 'starter' ? '/register' : `/checkout?plan=${plan.id}`}
-                  className="w-full"
+                <Button
+                  onClick={() => handlePlanSelection(plan.id)}
+                  className={`w-full ${plan.popular ? 'bg-cap-teal hover:bg-cap-teal/90' : 'bg-gray-900 hover:bg-gray-800'} text-white`}
                 >
-                  <Button
-                    className={`w-full ${plan.popular ? 'bg-cap-teal hover:bg-cap-teal/90' : 'bg-gray-900 hover:bg-gray-800'} text-white`}
-                  >
-                    {plan.buttonText}
-                  </Button>
-                </Link>
+                  {plan.buttonText}
+                </Button>
               </CardFooter>
             </Card>
           ))}
