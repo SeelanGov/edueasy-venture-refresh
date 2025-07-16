@@ -136,99 +136,101 @@ const CheckoutPage = () => {
           <CardContent className="space-y-4">
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('card')}
               disabled={loading}
             >
               {loading && selectedPaymentMethod === 'card' ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin flex-shrink-0" />
               ) : (
-                <CreditCard className="h-6 w-6" />
+                <CreditCard className="h-6 w-6 flex-shrink-0" />
               )}
-              <div className="text-left">
-                <div className="font-semibold">Pay with Card</div>
-                <div className="text-sm text-gray-500">Visa, Mastercard, or Banking app (FNB, ABSA, Standard Bank, Nedbank)</div>
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Pay with Card</div>
+                <div className="text-xs text-muted-foreground leading-relaxed break-words">
+                  Visa, Mastercard, or Banking app (FNB, ABSA, Standard Bank, Nedbank)
+                </div>
               </div>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('eft')}
               disabled={loading}
             >
               {loading && selectedPaymentMethod === 'eft' ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin flex-shrink-0" />
               ) : (
-                <Building2 className="h-6 w-6" />
+                <Building2 className="h-6 w-6 flex-shrink-0" />
               )}
-              <div className="text-left">
-                <div className="font-semibold">Pay with Bank Transfer</div>
-                <div className="text-sm text-gray-500">Instant EFT - All major banks</div>
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Pay with Bank Transfer</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">Instant EFT - All major banks</div>
               </div>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('airtime')}
               disabled={loading}
             >
               {loading && selectedPaymentMethod === 'airtime' ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin flex-shrink-0" />
               ) : (
-                <Smartphone className="h-6 w-6" />
+                <Smartphone className="h-6 w-6 flex-shrink-0" />
               )}
-              <div className="text-left">
-                <div className="font-semibold">Pay with Airtime</div>
-                <div className="text-sm text-gray-500">MTN, Vodacom, Cell C</div>
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Pay with Airtime</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">MTN, Vodacom, Cell C</div>
               </div>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('qr')}
               disabled={loading}
             >
               {loading && selectedPaymentMethod === 'qr' ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin flex-shrink-0" />
               ) : (
-                <QrCode className="h-6 w-6" />
+                <QrCode className="h-6 w-6 flex-shrink-0" />
               )}
-              <div className="text-left">
-                <div className="font-semibold">Pay via QR Code</div>
-                <div className="text-sm text-gray-500">SnapScan, Zapper, or scan at any store</div>
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Pay via QR Code</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">SnapScan, Zapper, or scan at any store</div>
               </div>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('store')}
               disabled={loading}
             >
               {loading && selectedPaymentMethod === 'store' ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-6 w-6 animate-spin flex-shrink-0" />
               ) : (
-                <Store className="h-6 w-6" />
+                <Store className="h-6 w-6 flex-shrink-0" />
               )}
-              <div className="text-left">
-                <div className="font-semibold">Pay at Store</div>
-                <div className="text-sm text-gray-500">Pick n Pay, Shoprite, or other retail stores</div>
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Pay at Store</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">Pick n Pay, Shoprite, or other retail stores</div>
               </div>
             </Button>
 
             <Button
               variant="outline"
-              className="w-full h-16 flex items-center justify-start gap-4"
+              className="w-full min-h-[64px] h-auto flex items-center justify-start gap-4 px-4 py-3"
               onClick={() => handlePaymentMethod('payment-plan')}
               disabled={loading}
             >
-              <Calendar className="h-6 w-6" />
-              <div className="text-left">
-                <div className="font-semibold">Payment Plan</div>
-                <div className="text-sm text-gray-500">
+              <Calendar className="h-6 w-6 flex-shrink-0" />
+              <div className="text-left space-y-1 flex-1">
+                <div className="font-semibold leading-tight">Payment Plan</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">
                   R{Math.ceil(plan.amount / 4)}/week for 4 weeks
                 </div>
               </div>
