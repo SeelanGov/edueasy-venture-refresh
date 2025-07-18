@@ -103,6 +103,10 @@ verify_jwt = false
 [functions.verify-payment-status]
 verify_jwt = false
 
+[functions.payment-recovery]
+verify_jwt = true
+timeout_seconds = 60
+
 [analytics]
 enabled = false
 port = 54327
