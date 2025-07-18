@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "deploy:payment-recovery": "node deploy-payment-recovery.js",
-    "verify:payment-recovery": "node verify-payment-recovery.js"
+    "verify:payment-recovery": "node verify-payment-recovery.js",
+    "test:phase3": "node test-phase3-complete.js"
   }
 }
