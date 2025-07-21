@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 import { useAuth } from '@/hooks/useAuth';
+import { secureStorage } from '@/utils/secureStorage';
 
 // Refactored atomic fields
 import { ConfirmPasswordField } from './register/ConfirmPasswordField';
@@ -72,11 +73,11 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
   // Enhanced registration success handler
   const handleRegistrationSuccess = async () => {
     try {
-      const pendingPlan = sessionStorage.getItem('pending_plan');
+      const pendingPlan = secureStorage.getItem('pending_plan');
       
       if (pendingPlan) {
         // Clear pending plan from storage
-        sessionStorage.removeItem('pending_plan');
+        secureStorage.removeItem('pending_plan');
         
         // Redirect to checkout with plan
         navigate(`/checkout?plan=${pendingPlan}`, {

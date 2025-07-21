@@ -2,6 +2,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import type { SubscriptionTier, Transaction, UserSubscription } from '@/types/SubscriptionTypes';
+import { secureStorage } from '@/utils/secureStorage';
 import { useEffect, useState } from 'react';
 
 export function useSubscription() {
@@ -147,7 +148,7 @@ export function useSubscription() {
       // Redirect to PayFast
       if (data.payment_url) {
         // Store payment reference in session storage for verification
-        sessionStorage.setItem('pending_payment', data.merchant_reference);
+        secureStorage.setItem('pending_payment', data.merchant_reference);
         
         // Redirect to PayFast
         window.location.href = data.payment_url;

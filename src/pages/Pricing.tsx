@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { ErrorRecovery, useErrorRecovery } from '@/components/ui/ErrorRecovery';
 import { Typography } from '@/components/ui/typography';
+import { secureStorage } from '@/utils/secureStorage';
 import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +30,7 @@ const Pricing = () => {
     } else {
       // For paid plans, always require registration
       try {
-        sessionStorage.setItem('pending_plan', planId);
+        secureStorage.setItem('pending_plan', planId);
         navigate('/register', { 
           state: { 
             from: `/checkout?plan=${planId}`,
