@@ -1,11 +1,28 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const corsHeaders = {
+// Constants aligned with existing project patterns
+const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const PAYMENT_STATUSES = {
+  PENDING: 'pending',
+  FAILED: 'failed',
+  REFUNDED: 'refunded',
+  PAID: 'paid'
+} as const
+
+const EVENT_TYPES = {
+  ADMIN_LINKED_PAYMENT: 'admin_linked_payment',
+  ADMIN_RESOLVED_PAYMENT: 'admin_resolved_payment',
+  USER_CLAIMED_PAYMENT: 'user_claimed_payment'
+} as const
+
+const ORPHANED_PAYMENT_THRESHOLD_HOURS = 1
+
+// Types aligned with existing database schema
 interface PaymentRecoveryRequest {
   action: 'list_orphaned' | 'list_failed' | 'link_payment' | 'resolve_payment' | 'user_recovery_check' | 'claim_payment'
   payment_id?: string
@@ -19,21 +36,321 @@ interface PaymentRecoveryResponse {
   success: boolean
   data?: any
   error?: string
+  message?: string
 }
 
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+interface AdminContext {
+  isAdmin: boolean
+  currentUserId: string | null
+}
+
+// Utility functions using existing patterns
+function createErrorResponse(error: string, status: number = 400): Response {
+  return new Response(
+    JSON.stringify({ success: false, error }),
+    { 
+      status, 
+      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } 
+    }
+  )
+}
+
+function createSuccessResponse(data?: any, message?: string): Response {
+  return new Response(
+    JSON.stringify({ success: true, data, message }),
+    { headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
+  )
+}
+
+async function validateAdminAccess(supabase: any, authHeader: string | null): Promise<AdminContext> {
+  if (!authHeader) {
+    return { isAdmin: false, currentUserId: null }
   }
 
   try {
-    const { action, payment_id, user_id, user_email, resolution_notes, admin_action }: PaymentRecoveryRequest = await req.json()
+    const { data: { user }, error: authError } = await supabase.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    )
+    
+    if (authError || !user) {
+      return { isAdmin: false, currentUserId: null }
+    }
+
+    // Use existing is_admin RPC function for consistency
+    const { data: isAdminResult, error: adminCheckError } = await supabase.rpc('is_admin', {
+      user_uuid: user.id
+    })
+
+    if (adminCheckError) {
+      console.error('Admin check error:', adminCheckError)
+      return { isAdmin: false, currentUserId: user.id }
+    }
+
+    return { 
+      isAdmin: !!isAdminResult, 
+      currentUserId: user.id 
+    }
+  } catch (error) {
+    console.error('Error validating admin access:', error)
+    return { isAdmin: false, currentUserId: null }
+  }
+}
+
+async function logPaymentEvent(
+  supabase: any, 
+  paymentId: string, 
+  eventType: string, 
+  eventData: Record<string, any>
+): Promise<void> {
+  try {
+    await supabase
+      .from('payment_audit_logs')
+      .insert({
+        payment_id: paymentId,
+        event_type: eventType,
+        event_data: eventData
+      })
+  } catch (error) {
+    console.error('Failed to log payment event:', error)
+    // Don't throw - audit logging failure shouldn't break the main operation
+  }
+}
+
+function validatePaymentId(paymentId: string): boolean {
+  // Basic UUID validation
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return uuidRegex.test(paymentId)
+}
+
+function validateUserId(userId: string): boolean {
+  // Basic UUID validation
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return uuidRegex.test(userId)
+}
+
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+// Action handlers
+async function handleListOrphaned(supabase: any, adminContext: AdminContext): Promise<Response> {
+  if (!adminContext.isAdmin) {
+    return createErrorResponse('Admin access required', 403)
+  }
+
+  const orphanedThreshold = new Date(Date.now() - ORPHANED_PAYMENT_THRESHOLD_HOURS * 60 * 60 * 1000)
+
+  const { data: orphanedPayments, error } = await supabase
+    .from('payments')
+    .select(`
+      id,
+      merchant_reference,
+      amount,
+      status,
+      created_at,
+      user_id,
+      users!left(email, tracking_id)
+    `)
+    .or(`status.eq.${PAYMENT_STATUSES.PENDING},status.eq.${PAYMENT_STATUSES.FAILED}`)
+    .lt('created_at', orphanedThreshold.toISOString())
+    .order('created_at', { ascending: false })
+    .limit(100) // Add pagination
+
+  if (error) {
+    console.error('Error fetching orphaned payments:', error)
+    return createErrorResponse('Failed to fetch orphaned payments', 500)
+  }
+
+  return createSuccessResponse(orphanedPayments)
+}
+
+async function handleListFailed(supabase: any, adminContext: AdminContext): Promise<Response> {
+  if (!adminContext.isAdmin) {
+    return createErrorResponse('Admin access required', 403)
+  }
+
+  const { data: failedPayments, error } = await supabase
+    .from('payments')
+    .select(`
+      id,
+      merchant_reference,
+      amount,
+      status,
+      created_at,
+      user_id,
+      users!left(email, tracking_id)
+    `)
+    .eq('status', PAYMENT_STATUSES.FAILED)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching failed payments:', error)
+    return createErrorResponse('Failed to fetch failed payments', 500)
+  }
+
+  return createSuccessResponse(failedPayments)
+}
+
+async function handleLinkPayment(
+  supabase: any, 
+  adminContext: AdminContext, 
+  paymentId: string, 
+  userId: string, 
+  resolutionNotes?: string
+): Promise<Response> {
+  if (!adminContext.isAdmin) {
+    return createErrorResponse('Admin access required', 403)
+  }
+
+  if (!validatePaymentId(paymentId) || !validateUserId(userId)) {
+    return createErrorResponse('Invalid payment_id or user_id format')
+  }
+
+  const { error: linkError } = await supabase
+    .from('payments')
+    .update({ 
+      user_id: userId,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', paymentId)
+
+  if (linkError) {
+    console.error('Error linking payment:', linkError)
+    return createErrorResponse('Failed to link payment', 500)
+  }
+
+  await logPaymentEvent(supabase, paymentId, EVENT_TYPES.ADMIN_LINKED_PAYMENT, {
+    admin_user_id: adminContext.currentUserId,
+    linked_user_id: userId,
+    notes: resolutionNotes || 'Payment linked by admin'
+  })
+
+  return createSuccessResponse(null, 'Payment linked successfully')
+}
+
+async function handleResolvePayment(
+  supabase: any, 
+  adminContext: AdminContext, 
+  paymentId: string, 
+  resolutionNotes?: string
+): Promise<Response> {
+  if (!adminContext.isAdmin) {
+    return createErrorResponse('Admin access required', 403)
+  }
+
+  if (!validatePaymentId(paymentId)) {
+    return createErrorResponse('Invalid payment_id format')
+  }
+
+  const { error: resolveError } = await supabase
+    .from('payments')
+    .update({ 
+      status: PAYMENT_STATUSES.REFUNDED,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', paymentId)
+
+  if (resolveError) {
+    console.error('Error resolving payment:', resolveError)
+    return createErrorResponse('Failed to resolve payment', 500)
+  }
+
+  await logPaymentEvent(supabase, paymentId, EVENT_TYPES.ADMIN_RESOLVED_PAYMENT, {
+    admin_user_id: adminContext.currentUserId,
+    resolution_notes: resolutionNotes || 'Payment resolved by admin'
+  })
+
+  return createSuccessResponse(null, 'Payment resolved successfully')
+}
+
+async function handleUserRecoveryCheck(
+  supabase: any, 
+  userEmail: string
+): Promise<Response> {
+  if (!validateEmail(userEmail)) {
+    return createErrorResponse('Invalid email format')
+  }
+
+  const emailPrefix = userEmail.split('@')[0]
+
+  const { data: potentialPayments, error } = await supabase
+    .from('payments')
+    .select('*')
+    .or(`status.eq.${PAYMENT_STATUSES.PENDING},status.eq.${PAYMENT_STATUSES.FAILED}`)
+    .like('merchant_reference', `%${emailPrefix}%`)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error checking for recovery payments:', error)
+    return createErrorResponse('Failed to check for recovery payments', 500)
+  }
+
+  return createSuccessResponse(potentialPayments)
+}
+
+async function handleClaimPayment(
+  supabase: any, 
+  paymentId: string, 
+  userId: string
+): Promise<Response> {
+  if (!validatePaymentId(paymentId) || !validateUserId(userId)) {
+    return createErrorResponse('Invalid payment_id or user_id format')
+  }
+
+  // Use transaction to prevent race conditions
+  const { data: paymentToClaim, error: claimCheckError } = await supabase
+    .from('payments')
+    .select('*')
+    .eq('id', paymentId)
+    .single()
+
+  if (claimCheckError || !paymentToClaim) {
+    return createErrorResponse('Payment not found', 404)
+  }
+
+  if (paymentToClaim.user_id && paymentToClaim.user_id !== userId) {
+    return createErrorResponse('Payment already claimed by another user', 403)
+  }
+
+  const { error: claimError } = await supabase
+    .from('payments')
+    .update({ 
+      user_id: userId,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', paymentId)
+
+  if (claimError) {
+    console.error('Error claiming payment:', claimError)
+    return createErrorResponse('Failed to claim payment', 500)
+  }
+
+  await logPaymentEvent(supabase, paymentId, EVENT_TYPES.USER_CLAIMED_PAYMENT, {
+    user_id: userId,
+    previous_user_id: paymentToClaim.user_id
+  })
+
+  return createSuccessResponse(null, 'Payment claimed successfully')
+}
+
+// Main handler
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: CORS_HEADERS })
+  }
+
+  try {
+    const { 
+      action, 
+      payment_id, 
+      user_id, 
+      user_email, 
+      resolution_notes 
+    }: PaymentRecoveryRequest = await req.json()
 
     if (!action) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Missing action parameter' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
+      return createErrorResponse('Missing action parameter')
     }
 
     // Initialize Supabase client
@@ -41,279 +358,48 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Get authorization header for admin checks
+    // Validate admin access
     const authHeader = req.headers.get('authorization')
-    let isAdmin = false
-    let currentUserId = null
+    const adminContext = await validateAdminAccess(supabase, authHeader)
 
-    if (authHeader) {
-      const { data: { user }, error: authError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''))
-      if (!authError && user) {
-        currentUserId = user.id
-        // Check if user is admin
-        const { data: adminCheck } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .single()
-        isAdmin = !!adminCheck
-      }
-    }
-
+    // Route to appropriate handler
     switch (action) {
       case 'list_orphaned':
-        if (!isAdmin) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Admin access required' }),
-            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Get payments that are pending/failed and older than 1 hour, or have no user_id
-        const { data: orphanedPayments, error: orphanedError } = await supabase
-          .from('payments')
-          .select(`
-            *,
-            users!inner(email, tracking_id)
-          `)
-          .or(`status.eq.pending,status.eq.failed`)
-          .lt('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString())
-          .order('created_at', { ascending: false })
-
-        if (orphanedError) {
-          console.error('Error fetching orphaned payments:', orphanedError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to fetch orphaned payments' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        return new Response(
-          JSON.stringify({ success: true, data: orphanedPayments }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleListOrphaned(supabase, adminContext)
 
       case 'list_failed':
-        if (!isAdmin) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Admin access required' }),
-            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Get all failed payments with user info
-        const { data: failedPayments, error: failedError } = await supabase
-          .from('payments')
-          .select(`
-            *,
-            users!inner(email, tracking_id)
-          `)
-          .eq('status', 'failed')
-          .order('created_at', { ascending: false })
-
-        if (failedError) {
-          console.error('Error fetching failed payments:', failedError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to fetch failed payments' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        return new Response(
-          JSON.stringify({ success: true, data: failedPayments }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleListFailed(supabase, adminContext)
 
       case 'link_payment':
-        if (!isAdmin || !payment_id || !user_id) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Admin access required and payment_id/user_id must be provided' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
+        if (!payment_id || !user_id) {
+          return createErrorResponse('payment_id and user_id are required')
         }
-
-        // Link payment to user
-        const { error: linkError } = await supabase
-          .from('payments')
-          .update({ 
-            user_id,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', payment_id)
-
-        if (linkError) {
-          console.error('Error linking payment:', linkError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to link payment' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Log admin action
-        await supabase
-          .from('payment_audit_logs')
-          .insert({
-            payment_id,
-            event_type: 'admin_linked_payment',
-            event_data: { 
-              admin_user_id: currentUserId,
-              linked_user_id: user_id,
-              notes: resolution_notes || 'Payment linked by admin'
-            }
-          })
-
-        return new Response(
-          JSON.stringify({ success: true, message: 'Payment linked successfully' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleLinkPayment(supabase, adminContext, payment_id, user_id, resolution_notes)
 
       case 'resolve_payment':
-        if (!isAdmin || !payment_id) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Admin access required and payment_id must be provided' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
+        if (!payment_id) {
+          return createErrorResponse('payment_id is required')
         }
-
-        // Resolve payment (mark as resolved or refunded)
-        const { error: resolveError } = await supabase
-          .from('payments')
-          .update({ 
-            status: 'refunded',
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', payment_id)
-
-        if (resolveError) {
-          console.error('Error resolving payment:', resolveError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to resolve payment' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Log admin action
-        await supabase
-          .from('payment_audit_logs')
-          .insert({
-            payment_id,
-            event_type: 'admin_resolved_payment',
-            event_data: { 
-              admin_user_id: currentUserId,
-              resolution_notes: resolution_notes || 'Payment resolved by admin'
-            }
-          })
-
-        return new Response(
-          JSON.stringify({ success: true, message: 'Payment resolved successfully' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleResolvePayment(supabase, adminContext, payment_id, resolution_notes)
 
       case 'user_recovery_check':
         if (!user_email) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'user_email is required' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
+          return createErrorResponse('user_email is required')
         }
-
-        // Check for payments that might belong to this user (by email pattern or metadata)
-        const { data: potentialPayments, error: recoveryError } = await supabase
-          .from('payments')
-          .select('*')
-          .or(`status.eq.pending,status.eq.failed`)
-          .like('merchant_reference', `%${user_email.split('@')[0]}%`)
-          .order('created_at', { ascending: false })
-
-        if (recoveryError) {
-          console.error('Error checking for recovery payments:', recoveryError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to check for recovery payments' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        return new Response(
-          JSON.stringify({ success: true, data: potentialPayments }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleUserRecoveryCheck(supabase, user_email)
 
       case 'claim_payment':
         if (!payment_id || !user_id) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'payment_id and user_id are required' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
+          return createErrorResponse('payment_id and user_id are required')
         }
-
-        // Verify user owns this payment or it's unclaimed
-        const { data: paymentToClaim, error: claimCheckError } = await supabase
-          .from('payments')
-          .select('*')
-          .eq('id', payment_id)
-          .single()
-
-        if (claimCheckError || !paymentToClaim) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Payment not found' }),
-            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        if (paymentToClaim.user_id && paymentToClaim.user_id !== user_id) {
-          return new Response(
-            JSON.stringify({ success: false, error: 'Payment already claimed by another user' }),
-            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Claim the payment
-        const { error: claimError } = await supabase
-          .from('payments')
-          .update({ 
-            user_id,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', payment_id)
-
-        if (claimError) {
-          console.error('Error claiming payment:', claimError)
-          return new Response(
-            JSON.stringify({ success: false, error: 'Failed to claim payment' }),
-            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-
-        // Log claim action
-        await supabase
-          .from('payment_audit_logs')
-          .insert({
-            payment_id,
-            event_type: 'user_claimed_payment',
-            event_data: { 
-              user_id,
-              previous_user_id: paymentToClaim.user_id
-            }
-          })
-
-        return new Response(
-          JSON.stringify({ success: true, message: 'Payment claimed successfully' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return await handleClaimPayment(supabase, payment_id, user_id)
 
       default:
-        return new Response(
-          JSON.stringify({ success: false, error: 'Invalid action' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
+        return createErrorResponse('Invalid action')
     }
 
   } catch (error) {
     console.error('Payment recovery function error:', error)
-    return new Response(
-      JSON.stringify({ success: false, error: 'Internal server error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    return createErrorResponse('Internal server error', 500)
   }
 }) 
