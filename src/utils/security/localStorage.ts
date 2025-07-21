@@ -127,15 +127,16 @@ export const secureClear = (): void => {
 
 /**
  * Session management utilities
+ * Fixed recursion bug by using window.sessionStorage directly
  */
-export const sessionStorage = {
+export const secureSessionStorage = {
   setItem: (key: string, value: string): void => {
     try {
       if (isSensitiveKey(key)) {
         const encryptedValue = encrypt(value);
-        sessionStorage.setItem(key, encryptedValue);
+        window.sessionStorage.setItem(key, encryptedValue);
       } else {
-        sessionStorage.setItem(key, value);
+        window.sessionStorage.setItem(key, value);
       }
     } catch (error) {
       console.error('Failed to set sessionStorage item:', error);
@@ -144,7 +145,7 @@ export const sessionStorage = {
 
   getItem: (key: string): string | null => {
     try {
-      const value = sessionStorage.getItem(key);
+      const value = window.sessionStorage.getItem(key);
       if (!value) return null;
 
       if (isSensitiveKey(key)) {
@@ -160,7 +161,7 @@ export const sessionStorage = {
 
   removeItem: (key: string): void => {
     try {
-      sessionStorage.removeItem(key);
+      window.sessionStorage.removeItem(key);
     } catch (error) {
       console.error('Failed to remove sessionStorage item:', error);
     }
@@ -168,7 +169,7 @@ export const sessionStorage = {
 
   clear: (): void => {
     try {
-      sessionStorage.clear();
+      window.sessionStorage.clear();
     } catch (error) {
       console.error('Failed to clear sessionStorage:', error);
     }
@@ -211,7 +212,7 @@ export const clearSession = (): void => {
   // Clear all sensitive data
   SENSITIVE_KEYS.forEach(key => {
     secureRemoveItem(key);
-    sessionStorage.removeItem(key);
+    window.sessionStorage.removeItem(key);
   });
   
   // Clear session data
@@ -219,7 +220,7 @@ export const clearSession = (): void => {
   secureRemoveItem('rememberMe');
   
   // Clear sessionStorage
-  sessionStorage.clear();
+  window.sessionStorage.clear();
 };
 
 /**

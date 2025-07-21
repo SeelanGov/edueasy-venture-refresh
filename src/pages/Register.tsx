@@ -3,12 +3,13 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProgressIndicator, createAuthFlowSteps } from '@/components/ui/ProgressIndicator';
+import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Register = () => {
   const location = useLocation();
-  const pendingPlan = sessionStorage.getItem('pending_plan');
+  const pendingPlan = secureStorage.getItem('pending_plan');
   
   // Plan context for paid plans
   const plans = {

@@ -7,6 +7,7 @@ import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { secureStorage } from '@/utils/secureStorage';
 import { Building2, Calendar, CheckCircle, CreditCard, Loader2, Lock, QrCode, Shield, Smartphone, Store } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -24,7 +25,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (!authLoading && !user) {
       // Preserve plan selection for post-registration
-      sessionStorage.setItem('pending_plan', selectedPlan || '');
+      secureStorage.setItem('pending_plan', selectedPlan || '');
       navigate('/register', { 
         state: { 
           from: `/checkout?plan=${selectedPlan}`,

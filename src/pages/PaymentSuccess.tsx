@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { secureStorage } from '@/utils/secureStorage';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -46,7 +47,7 @@ export default function PaymentSuccess() {
         if (payment.status === 'paid') {
           setVerificationStatus('success');
           // Clear pending payment from session
-          sessionStorage.removeItem('pending_payment');
+          secureStorage.removeItem('pending_payment');
           
           toast({
             title: 'Payment Successful!',
