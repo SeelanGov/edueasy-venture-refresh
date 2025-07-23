@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import supabase for registration (assume import path for client)
@@ -13,9 +15,16 @@ const PartnerRegister: React.FC = () => {
     confirmPassword: '',
     email: '',
   });
+  const [tier, setTier] = useState<'basic' | 'standard' | 'premium'>('basic');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const tierOptions = [
+    { value: 'basic', label: 'Basic', price: 'R50,000', description: 'Up to 100 applications/month' },
+    { value: 'standard', label: 'Standard', price: 'R150,000', description: 'Up to 500 applications/month' },
+    { value: 'premium', label: 'Premium', price: 'R300,000', description: 'Unlimited applications' }
+  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -59,7 +68,7 @@ const PartnerRegister: React.FC = () => {
       return;
     }
 
-    // 2. Create partner record with required 'type' (use 'university' by default)
+    // 2. Create partner record with required 'type' and tier
     if (data.user) {
       const { error: partnerError } = await supabase.from('partners').insert({
         name: form.instituteName,
@@ -69,6 +78,7 @@ const PartnerRegister: React.FC = () => {
         phone: null,
         website: null,
         status: 'pending',
+        tier: tier, // Add selected tier
         created_by: data.user.id,
       });
 
@@ -149,6 +159,24 @@ const PartnerRegister: React.FC = () => {
             className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
+          
+          {/* Tier Selection */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Select Your Plan</Label>
+            <RadioGroup value={tier} onValueChange={(value) => setTier(value as 'basic' | 'standard' | 'premium')}>
+              {tierOptions.map((option) => (
+                <div key={option.value} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50">
+                  <RadioGroupItem value={option.value} id={option.value} />
+                  <Label htmlFor={option.value} className="flex-1 cursor-pointer">
+                    <div className="font-medium">{option.label}</div>
+                    <div className="text-sm text-muted-foreground">{option.description}</div>
+                    <div className="text-lg font-bold text-primary">{option.price}</div>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+          
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-500 text-sm">{success}</div>}
           <Button
