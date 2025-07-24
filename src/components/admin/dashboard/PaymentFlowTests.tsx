@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar, Clock, AlertCircle, CheckCircle, XCircle, Play, Pause, Download, Trash2, Square } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
@@ -7,14 +8,9 @@ import { paymentTestingService, type TestResult, type TestScenario } from '@/ser
 import {
     AlertTriangle,
     BarChart3,
-    CheckCircle,
-    Clock,
-    Download,
     Eye,
-    Play,
     RefreshCw,
     Shield,
-    XCircle,
     Zap
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
