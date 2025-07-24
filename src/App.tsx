@@ -7,7 +7,10 @@ import { RoleBasedRedirect } from '@/components/RoleBasedRedirect';
 import { SponsorGuard } from '@/components/SponsorGuard';
 import { TermsOfServiceRedirect } from '@/components/TermsOfServiceRedirect';
 import { VerificationGuard } from '@/components/VerificationGuard';
+import { AdminPaymentAuditView } from '@/components/admin/dashboard/AdminPaymentAuditView';
+import { PaymentFlowTests } from '@/components/admin/dashboard/PaymentFlowTests';
 import { GlobalErrorBoundary } from '@/components/error-handling/GlobalErrorBoundary';
+import { StudentMatchingView } from '@/components/sponsor/StudentMatchingView';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -35,6 +38,7 @@ import ApplyForSponsorship from '@/pages/sponsorships/ApplyForSponsorship';
 import StudentSponsorshipStatus from '@/pages/sponsorships/StudentSponsorshipStatus';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { DashboardLayout } from './components/DashboardLayout';
 import { PartnerCRMLayout } from './components/admin/partners/PartnerCRMLayout';
 import { PartnerInquiries } from './components/admin/partners/PartnerInquiries';
 import { PartnerList } from './components/admin/partners/PartnerList';
@@ -264,6 +268,42 @@ const App = () => (
                 element={
                   <AdminAuthGuard>
                     <UserManagement />
+                  </AdminAuthGuard>
+                }
+              />
+
+              {/* Admin payment audit route */}
+              <Route
+                path="/admin/payment-audit"
+                element={
+                  <AdminAuthGuard>
+                    <DashboardLayout>
+                      <AdminPaymentAuditView />
+                    </DashboardLayout>
+                  </AdminAuthGuard>
+                }
+              />
+
+              {/* Admin payment testing route */}
+              <Route
+                path="/admin/payment-tests"
+                element={
+                  <AdminAuthGuard>
+                    <DashboardLayout>
+                      <PaymentFlowTests />
+                    </DashboardLayout>
+                  </AdminAuthGuard>
+                }
+              />
+
+              {/* Admin sponsor matching route */}
+              <Route
+                path="/admin/matching"
+                element={
+                  <AdminAuthGuard>
+                    <DashboardLayout>
+                      <StudentMatchingView />
+                    </DashboardLayout>
                   </AdminAuthGuard>
                 }
               />

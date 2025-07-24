@@ -93,8 +93,8 @@ class PaymentService {
         body: {
           tier: payfastTier,
           user_id: request.userId,
-          payment_method: request.paymentMethod
-        }
+          payment_method: request.paymentMethod,
+        },
       });
 
       if (error) {
@@ -115,7 +115,7 @@ class PaymentService {
         paymentUrl: data.payment_url,
         merchantReference: data.merchant_reference,
         expiresAt: data.expires_at,
-        status: 'pending'
+        status: 'pending',
       };
     } catch (error) {
       const appError = parseError(error);
@@ -130,7 +130,7 @@ class PaymentService {
   async checkPaymentStatus(merchantReference: string): Promise<PaymentStatus | null> {
     try {
       const { data, error } = await supabase.functions.invoke('verify-payment-status', {
-        body: { merchant_reference: merchantReference }
+        body: { merchant_reference: merchantReference },
       });
 
       if (error) throw error;
@@ -206,18 +206,16 @@ class PaymentService {
    * Log payment event using existing audit system
    */
   private async logPaymentEvent(
-    eventType: string, 
-    paymentId: string, 
-    eventData: Record<string, any>
+    eventType: string,
+    paymentId: string,
+    eventData: Record<string, any>,
   ): Promise<void> {
     try {
-      await supabase
-        .from('payment_audit_logs')
-        .insert({
-          payment_id: paymentId,
-          event_type: eventType,
-          event_data: eventData
-        });
+      await supabase.from('payment_audit_logs').insert({
+        payment_id: paymentId,
+        event_type: eventType,
+        event_data: eventData,
+      });
     } catch (error) {
       const appError = parseError(error);
       console.error('Payment logging failed:', appError);

@@ -39,10 +39,13 @@ import {
     AlertCircle,
     BarChart,
     CheckCircle,
+    DollarSign,
     ExternalLinkIcon,
     FileIcon,
     RefreshCw,
+    Users,
     XCircle,
+    Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -148,7 +151,7 @@ const AdminDashboard = () => {
           gradient={false}
           containerClassName="max-w-7xl py-8"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Link to="/admin/analytics">
               <Card className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-2">
@@ -164,7 +167,50 @@ const AdminDashboard = () => {
               </Card>
             </Link>
 
-            {/* Additional admin cards can be added here */}
+            <Link to="/admin/payment-audit">
+              <Card className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Payment Audit</CardTitle>
+                  <CardDescription>Monitor payment transactions and recovery</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Payment monitoring</span>
+                    <DollarSign className="h-6 w-6 text-green-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/admin/payment-tests">
+              <Card className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Payment Testing</CardTitle>
+                  <CardDescription>Run payment flow tests and validation</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Test payment flows</span>
+                    <Zap className="h-6 w-6 text-blue-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/admin/matching">
+              <Card className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Sponsor Matching</CardTitle>
+                  <CardDescription>Manage sponsor-student matching system</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Matching management</span>
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           <div className="flex justify-between items-center mb-6">
