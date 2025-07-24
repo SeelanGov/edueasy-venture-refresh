@@ -1,16 +1,16 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bot, Crown, HelpCircle, Send, Sparkles, User, Zap } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { Bot, HelpCircle, Send, Sparkles, User, Crown, Zap } from 'lucide-react';
-import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
-import { getThandiCapabilities, SubscriptionTierName } from '@/types/SubscriptionTypes';
-import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { getThandiCapabilities, SubscriptionTierName } from '@/types/SubscriptionTypes';
+import { memo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -21,7 +21,7 @@ interface Message {
 
 interface ThandiAgentProps {}
 
-export const ThandiAgent = ({}: ThandiAgentProps) => {
+const ThandiAgent = memo(() => {
   const { user } = useAuth();
   const { userSubscription } = useSubscription();
   const [messages, setMessages] = useState<Message[]>([
@@ -345,4 +345,6 @@ export const ThandiAgent = ({}: ThandiAgentProps) => {
       </CardContent>
     </Card>
   );
-};
+});
+
+export default ThandiAgent;

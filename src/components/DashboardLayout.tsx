@@ -3,9 +3,6 @@ import { DashboardHeader } from '@/components/dashboard/layout/DashboardHeader';
 import { DashboardSidebar } from '@/components/dashboard/layout/DashboardSidebar';
 import { MobileMenu } from '@/components/dashboard/layout/MobileMenu';
 import { Spinner } from '@/components/Spinner';
-import { useAdminRole } from '@/hooks/useAdminRole';
-import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '@/hooks/useTheme';
 import {
     BarChart,
     BookOpen,
@@ -15,7 +12,10 @@ import {
     MessageSquare,
     Settings,
     User,
-} from 'lucide-react';
+} from '@/components/ui/icons';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
 import { useState, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 

@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
 import { MobileFriendlyDashboardLayout } from '@/components/MobileFriendlyDashboardLayout';
-import { ThandiAgent } from '@/components/ai/ThandiAgent';
-import { Toaster as SonnerToaster } from 'sonner';
+import ThandiAgent from '@/components/ai/ThandiAgent';
 import { Toaster } from '@/components/ui/toaster';
+import type { ReactNode } from 'react';
+import { Toaster as SonnerToaster } from 'sonner';
 
 interface DashboardLayoutWithThandiProps {
   children: ReactNode;

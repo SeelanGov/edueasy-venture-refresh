@@ -1,12 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
-import { notificationService, type NotificationRecord, type UserNotificationPreferences } from '@/services/NotificationService';
 import {
     AlertTriangle,
     Bell,
@@ -17,12 +11,17 @@ import {
     MessageSquare,
     RefreshCw,
     Save,
-    Smartphone,
     XCircle
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
+} from '@/components/ui/icons';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { notificationService, type NotificationRecord, type UserNotificationPreferences } from '@/services/NotificationService';
+import { memo, useEffect, useState } from 'react';
 
-export const NotificationPreferences = () => {
+const NotificationPreferences = memo(() => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [preferences, setPreferences] = useState<UserNotificationPreferences | null>(null);
@@ -482,4 +481,6 @@ export const NotificationPreferences = () => {
       </Tabs>
     </div>
   );
-}; 
+});
+
+export default NotificationPreferences; 
