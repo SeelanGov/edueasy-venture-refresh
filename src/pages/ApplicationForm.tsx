@@ -1,15 +1,15 @@
-import { useEffect, useRef } from 'react';
-import { Navbar } from '@/components/Navbar';
-import { Form } from '@/components/ui/form';
-import { OfflineNotice } from '@/components/application/OfflineNotice';
+import ThandiAgent from '@/components/ai/ThandiAgent';
 import { ApplicationFormFields } from '@/components/application/ApplicationFormFields';
 import { FormActions } from '@/components/application/FormActions';
-import { Separator } from '@/components/ui/separator';
-import { Toaster } from '@/components/ui/toaster';
-import { ThandiAgent } from '@/components/ai/ThandiAgent';
-import { useApplicationFormManager } from '@/hooks/useApplicationFormManager';
-import { SkipToContent } from '@/components/ui/skip-to-content';
+import { OfflineNotice } from '@/components/application/OfflineNotice';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { Navbar } from '@/components/Navbar';
+import { Form } from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { SkipToContent } from '@/components/ui/skip-to-content';
+import { Toaster } from '@/components/ui/toaster';
+import { useApplicationFormManager } from '@/hooks/useApplicationFormManager';
+import { useEffect, useRef } from 'react';
 
 const ApplicationForm = () => {
   const {
