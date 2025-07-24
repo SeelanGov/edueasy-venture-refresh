@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { PlanSelector } from '@/components/subscription/PlanSelector';
-import { usePlanManagement } from '@/hooks/usePlanManagement';
-import { useAuth } from '@/hooks/useAuth';
-import type { UserSubscription } from '@/types/SubscriptionTypes';
-import { Spinner } from '@/components/Spinner';
-import { formatCurrency } from '@/types/SubscriptionTypes';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { CreditCard, Star, Shield } from 'lucide-react';
+import { Spinner } from '@/components/Spinner';
+import { PlanSelector } from '@/components/subscription/PlanSelector';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/hooks/useAuth';
+import { usePlanManagement } from '@/hooks/usePlanManagement';
+import { formatCurrency, type UserSubscription } from '@/types/SubscriptionTypes';
+import { CreditCard, Shield, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const Subscription = () => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);

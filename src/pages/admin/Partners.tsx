@@ -1,9 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import type { PartnerType } from '@/hooks/usePartners';
-import { usePartners } from '@/hooks/usePartners';
 import PartnerCard from '@/components/admin/partners/PartnerCard';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { usePartners, type PartnerType } from '@/hooks/usePartners';
+import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // Show toast notifications
 
 const PARTNER_TYPES = [
