@@ -4,782 +4,358 @@ export interface MatchingRule {
   id: string;
   name: string;
   description: string;
-  category: 'academic' | 'financial' | 'demographic' | 'preference' | 'custom';
-  criteria: MatchingCriteria[];
-  weight: number; // 0-100, determines importance in scoring
+  category: string;
+  criteria: any; // JSON criteria
+  weight: number;
   is_active: boolean;
-  priority: 'low' | 'medium' | 'high' | 'critical';
   created_at: string;
   updated_at: string;
-}
-
-export interface MatchingCriteria {
-  field: string;
-  operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'not_in' | 'between';
-  value: any;
-  value2?: any; // For 'between' operator
-  weight: number; // 0-100, relative weight within the rule
-}
-
-export interface StudentProfile {
-  id: string;
-  user_id: string;
-  academic_level: string;
-  field_of_study: string;
-  institution: string;
-  gpa?: number;
-  financial_need: 'low' | 'medium' | 'high' | 'critical';
-  household_income?: number;
-  location: string;
-  ethnicity?: string;
-  gender?: string;
-  disability_status?: boolean;
-  first_generation?: boolean;
-  rural_background?: boolean;
-  academic_achievements?: string[];
-  extracurricular_activities?: string[];
-  community_service?: boolean;
-  leadership_experience?: boolean;
-  created_at: string;
-}
-
-export interface SponsorProfile {
-  id: string;
-  sponsor_id: string;
-  organization_type: 'individual' | 'company' | 'ngo' | 'government' | 'foundation';
-  industry?: string;
-  location: string;
-  funding_capacity: 'low' | 'medium' | 'high' | 'unlimited';
-  preferred_academic_levels: string[];
-  preferred_fields: string[];
-  preferred_locations: string[];
-  preferred_demographics?: {
-    ethnicity?: string[];
-    gender?: string[];
-    first_generation?: boolean;
-    rural_background?: boolean;
-    disability_status?: boolean;
-  };
-  minimum_gpa?: number;
-  maximum_household_income?: number;
-  funding_amount_range: {
-    min: number;
-    max: number;
-  };
-  funding_frequency: 'one_time' | 'monthly' | 'quarterly' | 'annually';
-  application_deadline?: string;
-  special_criteria?: string[];
-  created_at: string;
 }
 
 export interface MatchingResult {
   student_id: string;
   sponsor_id: string;
-  score: number; // 0-100
-  matched_criteria: string[];
-  unmatched_criteria: string[];
+  score: number;
   funding_amount: number;
-  confidence_level: 'low' | 'medium' | 'high';
-  created_at: string;
-}
-
-export interface MatchingRequest {
-  student_id?: string;
-  sponsor_id?: string;
-  academic_level?: string;
-  field_of_study?: string;
-  location?: string;
-  financial_need?: string;
-  funding_amount?: number;
-  limit?: number;
+  match_criteria: string[];
+  confidence_level: 'high' | 'medium' | 'low';
+  calculated_at: string;
 }
 
 class MatchingRulesService {
-  private defaultRules: MatchingRule[] = [
-    // Academic Rules
-    {
-      id: 'academic-level-match',
-      name: 'Academic Level Match',
-      description: 'Match students with sponsors who prefer their academic level',
-      category: 'academic',
-      weight: 25,
-      is_active: true,
-      priority: 'high',
-      criteria: [
-        {
-          field: 'academic_level',
-          operator: 'equals',
-          value: '{{student.academic_level}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'field-of-study-match',
-      name: 'Field of Study Match',
-      description: 'Match students with sponsors who prefer their field of study',
-      category: 'academic',
-      weight: 20,
-      is_active: true,
-      priority: 'high',
-      criteria: [
-        {
-          field: 'preferred_fields',
-          operator: 'contains',
-          value: '{{student.field_of_study}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'gpa-requirement',
-      name: 'GPA Requirement',
-      description: 'Match students who meet sponsor GPA requirements',
-      category: 'academic',
-      weight: 15,
-      is_active: true,
-      priority: 'medium',
-      criteria: [
-        {
-          field: 'gpa',
-          operator: 'greater_than',
-          value: '{{sponsor.minimum_gpa}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-
-    // Financial Rules
-    {
-      id: 'financial-need-match',
-      name: 'Financial Need Match',
-      description: 'Match students with appropriate financial need levels',
-      category: 'financial',
-      weight: 20,
-      is_active: true,
-      priority: 'high',
-      criteria: [
-        {
-          field: 'financial_need',
-          operator: 'in',
-          value: ['high', 'critical'],
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'household-income-limit',
-      name: 'Household Income Limit',
-      description: 'Match students within sponsor income limits',
-      category: 'financial',
-      weight: 15,
-      is_active: true,
-      priority: 'medium',
-      criteria: [
-        {
-          field: 'household_income',
-          operator: 'less_than',
-          value: '{{sponsor.maximum_household_income}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'funding-amount-match',
-      name: 'Funding Amount Match',
-      description: 'Match students with appropriate funding amounts',
-      category: 'financial',
-      weight: 15,
-      is_active: true,
-      priority: 'medium',
-      criteria: [
-        {
-          field: 'funding_amount_range',
-          operator: 'between',
-          value: '{{sponsor.funding_amount_range.min}}',
-          value2: '{{sponsor.funding_amount_range.max}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-
-    // Demographic Rules
-    {
-      id: 'location-match',
-      name: 'Location Match',
-      description: 'Match students with sponsors who prefer their location',
-      category: 'demographic',
-      weight: 10,
-      is_active: true,
-      priority: 'medium',
-      criteria: [
-        {
-          field: 'preferred_locations',
-          operator: 'contains',
-          value: '{{student.location}}',
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'first-generation-preference',
-      name: 'First Generation Preference',
-      description: 'Match first-generation students with sponsors who prefer them',
-      category: 'demographic',
-      weight: 8,
-      is_active: true,
-      priority: 'low',
-      criteria: [
-        {
-          field: 'first_generation',
-          operator: 'equals',
-          value: true,
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'rural-background-preference',
-      name: 'Rural Background Preference',
-      description: 'Match rural background students with sponsors who prefer them',
-      category: 'demographic',
-      weight: 7,
-      is_active: true,
-      priority: 'low',
-      criteria: [
-        {
-          field: 'rural_background',
-          operator: 'equals',
-          value: true,
-          weight: 100
-        }
-      ],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ];
+  private rules: MatchingRule[] = [];
 
   /**
-   * Initialize matching rules in database
+   * Initialize matching rules
    */
   async initializeRules(): Promise<void> {
     try {
-      // Check if rules already exist
-      const { data: existingRules } = await supabase
-        .from('sponsor_matching_rules')
-        .select('id')
-        .limit(1);
-
-      if (existingRules && existingRules.length > 0) {
-        console.log('Matching rules already initialized');
-        return;
-      }
-
-      // Insert default rules
-      const { error } = await supabase
-        .from('sponsor_matching_rules')
-        .insert(this.defaultRules);
-
-      if (error) {
-        throw error;
-      }
-
-      console.log('Matching rules initialized successfully');
+      // Create default rules
+      this.createDefaultRules();
+      console.log(`Loaded ${this.rules.length} matching rules`);
     } catch (error) {
       console.error('Error initializing matching rules:', error);
-      throw error;
+      this.rules = [];
     }
   }
 
   /**
-   * Get all matching rules
+   * Create default matching rules
    */
-  async getMatchingRules(): Promise<MatchingRule[]> {
-    try {
-      const { data, error } = await supabase
-        .from('sponsor_matching_rules')
-        .select('*')
-        .order('priority', { ascending: false })
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      return data || [];
-    } catch (error) {
-      console.error('Error fetching matching rules:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Create or update a matching rule
-   */
-  async saveMatchingRule(rule: Omit<MatchingRule, 'id' | 'created_at' | 'updated_at'>): Promise<MatchingRule> {
-    try {
-      const ruleData = {
-        ...rule,
+  private createDefaultRules(): void {
+    this.rules = [
+      {
+        id: 'academic-level-match',
+        name: 'Academic Level Match',
+        description: 'Match students with sponsors based on academic level preferences',
+        category: 'academic',
+        criteria: {
+          field: 'academic_level',
+          weight: 30,
+          exact_match: true
+        },
+        weight: 30,
+        is_active: true,
+        created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
-      };
-
-      const { data, error } = await supabase
-        .from('sponsor_matching_rules')
-        .upsert(ruleData)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error saving matching rule:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Delete a matching rule
-   */
-  async deleteMatchingRule(ruleId: string): Promise<void> {
-    try {
-      const { error } = await supabase
-        .from('sponsor_matching_rules')
-        .delete()
-        .eq('id', ruleId);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error deleting matching rule:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Find matches for a student or sponsor
-   */
-  async findMatches(request: MatchingRequest): Promise<MatchingResult[]> {
-    try {
-      const rules = await this.getMatchingRules();
-      const activeRules = rules.filter(rule => rule.is_active);
-
-      if (request.student_id) {
-        return await this.findMatchesForStudent(request.student_id, activeRules, request.limit);
-      } else if (request.sponsor_id) {
-        return await this.findMatchesForSponsor(request.sponsor_id, activeRules, request.limit);
-      } else {
-        // Generic matching based on criteria
-        return await this.findMatchesByCriteria(request, activeRules, request.limit);
+      },
+      {
+        id: 'field-of-study-match',
+        name: 'Field of Study Match',
+        description: 'Match students with sponsors based on field of study',
+        category: 'academic',
+        criteria: {
+          field: 'field_of_study',
+          weight: 25,
+          partial_match: true
+        },
+        weight: 25,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'location-match',
+        name: 'Geographic Location',
+        description: 'Prefer sponsors and students in the same geographic area',
+        category: 'location',
+        criteria: {
+          field: 'location',
+          weight: 15,
+          radius_km: 100
+        },
+        weight: 15,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'financial-need',
+        name: 'Financial Need Score',
+        description: 'Prioritize students with higher financial need',
+        category: 'financial',
+        criteria: {
+          field: 'financial_need_score',
+          weight: 20,
+          higher_is_better: true
+        },
+        weight: 20,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'gpa-threshold',
+        name: 'GPA Threshold',
+        description: 'Match students meeting minimum GPA requirements',
+        category: 'academic',
+        criteria: {
+          field: 'gpa',
+          weight: 10,
+          minimum_threshold: 3.0
+        },
+        weight: 10,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
-    } catch (error) {
-      console.error('Error finding matches:', error);
-      throw error;
-    }
+    ];
   }
 
   /**
-   * Find matches for a specific student
+   * Find matches for a student
    */
-  private async findMatchesForStudent(
-    studentId: string, 
-    rules: MatchingRule[], 
-    limit: number = 10
-  ): Promise<MatchingResult[]> {
+  async findMatches(params: {
+    student_id: string;
+    limit?: number;
+  }): Promise<MatchingResult[]> {
     try {
       // Get student profile
-      const { data: studentProfile, error: studentError } = await supabase
+      const { data: studentProfile } = await supabase
         .from('student_profiles')
         .select('*')
-        .eq('user_id', studentId)
-        .single();
+        .eq('user_id', params.student_id)
+        .maybeSingle();
 
-      if (studentError || !studentProfile) {
-        throw new Error('Student profile not found');
+      if (!studentProfile) {
+        return [];
       }
 
-      // Get all active sponsors
-      const { data: sponsors, error: sponsorsError } = await supabase
-        .from('sponsor_profiles')
-        .select('*')
-        .eq('is_active', true);
+      // Get available sponsors
+      const { data: sponsors } = await supabase
+        .from('sponsors')
+        .select('id')
+        .eq('verified_status', 'verified');
 
-      if (sponsorsError) throw sponsorsError;
+      if (!sponsors || sponsors.length === 0) {
+        return [];
+      }
 
       const matches: MatchingResult[] = [];
 
-      for (const sponsor of sponsors || []) {
-        const matchResult = this.evaluateMatch(studentProfile, sponsor, rules);
-        if (matchResult.score > 0) {
-          matches.push(matchResult);
+      // For each sponsor, calculate match score
+      for (const sponsor of sponsors) {
+        const { data: sponsorProfile } = await supabase
+          .from('sponsor_profiles')
+          .select('*')
+          .eq('sponsor_id', sponsor.id)
+          .maybeSingle();
+
+        if (!sponsorProfile) {
+          continue;
+        }
+
+        const score = this.calculateMatchScore(studentProfile, sponsorProfile);
+        
+        if (score > 0) {
+          matches.push({
+            student_id: params.student_id,
+            sponsor_id: sponsor.id,
+            score,
+            funding_amount: this.calculateFundingAmount(sponsorProfile),
+            match_criteria: this.getMatchCriteria(studentProfile, sponsorProfile),
+            confidence_level: this.getConfidenceLevel(score),
+            calculated_at: new Date().toISOString()
+          });
         }
       }
 
-      // Sort by score and return top matches
-      return matches
-        .sort((a, b) => b.score - a.score)
-        .slice(0, limit);
+      // Sort by score and limit results
+      matches.sort((a, b) => b.score - a.score);
+      return matches.slice(0, params.limit || 10);
 
     } catch (error) {
-      console.error('Error finding matches for student:', error);
-      throw error;
+      console.error('Error finding matches:', error);
+      return [];
     }
   }
 
   /**
-   * Find matches for a specific sponsor
+   * Calculate match score between student and sponsor
    */
-  private async findMatchesForSponsor(
-    sponsorId: string, 
-    rules: MatchingRule[], 
-    limit: number = 10
-  ): Promise<MatchingResult[]> {
-    try {
-      // Get sponsor profile
-      const { data: sponsorProfile, error: sponsorError } = await supabase
-        .from('sponsor_profiles')
-        .select('*')
-        .eq('sponsor_id', sponsorId)
-        .single();
-
-      if (sponsorError || !sponsorProfile) {
-        throw new Error('Sponsor profile not found');
-      }
-
-      // Get all students with sponsorship applications
-      const { data: students, error: studentsError } = await supabase
-        .from('student_profiles')
-        .select('*')
-        .in('user_id', 
-          supabase
-            .from('sponsor_applications')
-            .select('student_id')
-            .eq('status', 'pending')
-        );
-
-      if (studentsError) throw studentsError;
-
-      const matches: MatchingResult[] = [];
-
-      for (const student of students || []) {
-        const matchResult = this.evaluateMatch(student, sponsorProfile, rules);
-        if (matchResult.score > 0) {
-          matches.push(matchResult);
-        }
-      }
-
-      // Sort by score and return top matches
-      return matches
-        .sort((a, b) => b.score - a.score)
-        .slice(0, limit);
-
-    } catch (error) {
-      console.error('Error finding matches for sponsor:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Find matches based on generic criteria
-   */
-  private async findMatchesByCriteria(
-    request: MatchingRequest, 
-    rules: MatchingRule[], 
-    limit: number = 10
-  ): Promise<MatchingResult[]> {
-    try {
-      // Build query based on criteria
-      let studentQuery = supabase
-        .from('student_profiles')
-        .select('*');
-
-      if (request.academic_level) {
-        studentQuery = studentQuery.eq('academic_level', request.academic_level);
-      }
-      if (request.field_of_study) {
-        studentQuery = studentQuery.eq('field_of_study', request.field_of_study);
-      }
-      if (request.location) {
-        studentQuery = studentQuery.eq('location', request.location);
-      }
-      if (request.financial_need) {
-        studentQuery = studentQuery.eq('financial_need', request.financial_need);
-      }
-
-      const { data: students, error: studentsError } = await studentQuery;
-      if (studentsError) throw studentsError;
-
-      // Get all active sponsors
-      const { data: sponsors, error: sponsorsError } = await supabase
-        .from('sponsor_profiles')
-        .select('*')
-        .eq('is_active', true);
-
-      if (sponsorsError) throw sponsorsError;
-
-      const matches: MatchingResult[] = [];
-
-      for (const student of students || []) {
-        for (const sponsor of sponsors || []) {
-          const matchResult = this.evaluateMatch(student, sponsor, rules);
-          if (matchResult.score > 0) {
-            matches.push(matchResult);
-          }
-        }
-      }
-
-      // Sort by score and return top matches
-      return matches
-        .sort((a, b) => b.score - a.score)
-        .slice(0, limit);
-
-    } catch (error) {
-      console.error('Error finding matches by criteria:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Evaluate match between student and sponsor using rules
-   */
-  private evaluateMatch(
-    student: StudentProfile, 
-    sponsor: SponsorProfile, 
-    rules: MatchingRule[]
-  ): MatchingResult {
+  private calculateMatchScore(studentProfile: any, sponsorProfile: any): number {
     let totalScore = 0;
     let totalWeight = 0;
-    const matchedCriteria: string[] = [];
-    const unmatchedCriteria: string[] = [];
 
-    for (const rule of rules) {
-      const ruleScore = this.evaluateRule(student, sponsor, rule);
-      const weightedScore = (ruleScore * rule.weight) / 100;
-      
-      totalScore += weightedScore;
+    for (const rule of this.rules) {
+      if (!rule.is_active) continue;
+
+      const ruleScore = this.applyRule(rule, studentProfile, sponsorProfile);
+      totalScore += ruleScore * rule.weight;
       totalWeight += rule.weight;
+    }
 
-      if (ruleScore > 0) {
-        matchedCriteria.push(rule.name);
-      } else {
-        unmatchedCriteria.push(rule.name);
+    return totalWeight > 0 ? Math.round((totalScore / totalWeight) * 100) / 100 : 0;
+  }
+
+  /**
+   * Apply a single matching rule
+   */
+  private applyRule(rule: MatchingRule, studentProfile: any, sponsorProfile: any): number {
+    try {
+      const criteria = rule.criteria;
+      const field = criteria.field;
+
+      switch (field) {
+        case 'academic_level':
+          return this.matchAcademicLevel(studentProfile, sponsorProfile);
+        case 'field_of_study':
+          return this.matchFieldOfStudy(studentProfile, sponsorProfile);
+        case 'location':
+          return this.matchLocation(studentProfile, sponsorProfile);
+        case 'financial_need_score':
+          return this.scoreFinancialNeed(studentProfile);
+        case 'gpa':
+          return this.scoreGPA(studentProfile, criteria);
+        default:
+          return 0;
       }
-    }
-
-    const finalScore = totalWeight > 0 ? (totalScore / totalWeight) * 100 : 0;
-
-    // Determine confidence level
-    let confidenceLevel: 'low' | 'medium' | 'high' = 'low';
-    if (finalScore >= 80) confidenceLevel = 'high';
-    else if (finalScore >= 50) confidenceLevel = 'medium';
-
-    // Calculate funding amount
-    const fundingAmount = this.calculateFundingAmount(student, sponsor, finalScore);
-
-    return {
-      student_id: student.user_id,
-      sponsor_id: sponsor.sponsor_id,
-      score: Math.round(finalScore),
-      matched_criteria: matchedCriteria,
-      unmatched_criteria: unmatchedCriteria,
-      funding_amount: fundingAmount,
-      confidence_level: confidenceLevel,
-      created_at: new Date().toISOString()
-    };
-  }
-
-  /**
-   * Evaluate a single rule
-   */
-  private evaluateRule(
-    student: StudentProfile, 
-    sponsor: SponsorProfile, 
-    rule: MatchingRule
-  ): number {
-    let ruleScore = 0;
-    let totalCriteriaWeight = 0;
-
-    for (const criteria of rule.criteria) {
-      const criteriaScore = this.evaluateCriteria(student, sponsor, criteria);
-      const weightedScore = (criteriaScore * criteria.weight) / 100;
-      
-      ruleScore += weightedScore;
-      totalCriteriaWeight += criteria.weight;
-    }
-
-    return totalCriteriaWeight > 0 ? (ruleScore / totalCriteriaWeight) * 100 : 0;
-  }
-
-  /**
-   * Evaluate a single criteria
-   */
-  private evaluateCriteria(
-    student: StudentProfile, 
-    sponsor: SponsorProfile, 
-    criteria: MatchingCriteria
-  ): number {
-    const studentValue = this.getStudentValue(student, criteria.field);
-    const sponsorValue = this.getSponsorValue(sponsor, criteria.field);
-
-    switch (criteria.operator) {
-      case 'equals':
-        return studentValue === criteria.value ? 100 : 0;
-      
-      case 'not_equals':
-        return studentValue !== criteria.value ? 100 : 0;
-      
-      case 'greater_than':
-        return studentValue > criteria.value ? 100 : 0;
-      
-      case 'less_than':
-        return studentValue < criteria.value ? 100 : 0;
-      
-      case 'contains':
-        if (Array.isArray(sponsorValue)) {
-          return sponsorValue.includes(studentValue) ? 100 : 0;
-        }
-        return String(sponsorValue).includes(String(studentValue)) ? 100 : 0;
-      
-      case 'in':
-        if (Array.isArray(criteria.value)) {
-          return criteria.value.includes(studentValue) ? 100 : 0;
-        }
-        return 0;
-      
-      case 'not_in':
-        if (Array.isArray(criteria.value)) {
-          return !criteria.value.includes(studentValue) ? 100 : 0;
-        }
-        return 100;
-      
-      case 'between':
-        return studentValue >= criteria.value && studentValue <= (criteria.value2 || criteria.value) ? 100 : 0;
-      
-      default:
-        return 0;
+    } catch (error) {
+      console.error(`Error applying rule ${rule.name}:`, error);
+      return 0;
     }
   }
 
   /**
-   * Get student value for a field
+   * Match academic level
    */
-  private getStudentValue(student: StudentProfile, field: string): any {
-    return (student as any)[field];
-  }
-
-  /**
-   * Get sponsor value for a field
-   */
-  private getSponsorValue(sponsor: SponsorProfile, field: string): any {
-    return (sponsor as any)[field];
-  }
-
-  /**
-   * Calculate funding amount based on match score and sponsor capacity
-   */
-  private calculateFundingAmount(
-    student: StudentProfile, 
-    sponsor: SponsorProfile, 
-    matchScore: number
-  ): number {
-    const baseAmount = sponsor.funding_amount_range.min;
-    const maxAmount = sponsor.funding_amount_range.max;
+  private matchAcademicLevel(studentProfile: any, sponsorProfile: any): number {
+    const studentLevel = studentProfile.academic_level;
+    const preferredLevels = sponsorProfile.preferred_academic_levels || [];
     
-    // Adjust amount based on match score
-    const scoreMultiplier = matchScore / 100;
-    const adjustedAmount = baseAmount + (maxAmount - baseAmount) * scoreMultiplier;
-    
-    // Consider financial need
-    const needMultiplier = this.getFinancialNeedMultiplier(student.financial_need);
-    
-    return Math.round(adjustedAmount * needMultiplier);
+    return preferredLevels.includes(studentLevel) ? 1 : 0;
   }
 
   /**
-   * Get multiplier based on financial need
+   * Match field of study
    */
-  private getFinancialNeedMultiplier(financialNeed: string): number {
-    switch (financialNeed) {
-      case 'critical':
-        return 1.2;
-      case 'high':
-        return 1.1;
-      case 'medium':
-        return 1.0;
-      case 'low':
-        return 0.9;
-      default:
-        return 1.0;
-    }
+  private matchFieldOfStudy(studentProfile: any, sponsorProfile: any): number {
+    const studentField = studentProfile.field_of_study;
+    const preferredFields = sponsorProfile.preferred_fields || [];
+    
+    return preferredFields.includes(studentField) ? 1 : 0.5;
   }
 
   /**
-   * Save matching results to database
+   * Match location
+   */
+  private matchLocation(studentProfile: any, sponsorProfile: any): number {
+    const studentLocation = studentProfile.location;
+    const sponsorLocation = sponsorProfile.location;
+    
+    return studentLocation === sponsorLocation ? 1 : 0.3;
+  }
+
+  /**
+   * Score financial need
+   */
+  private scoreFinancialNeed(studentProfile: any): number {
+    const needScore = studentProfile.financial_need_score || 0;
+    return Math.min(needScore / 100, 1);
+  }
+
+  /**
+   * Score GPA
+   */
+  private scoreGPA(studentProfile: any, criteria: any): number {
+    const gpa = studentProfile.gpa || 0;
+    const threshold = criteria.minimum_threshold || 3.0;
+    
+    return gpa >= threshold ? Math.min(gpa / 4.0, 1) : 0;
+  }
+
+  /**
+   * Calculate funding amount
+   */
+  private calculateFundingAmount(sponsorProfile: any): number {
+    const range = sponsorProfile.funding_amount_range || { min: 1000, max: 5000 };
+    return (range.min + range.max) / 2;
+  }
+
+  /**
+   * Get match criteria
+   */
+  private getMatchCriteria(studentProfile: any, sponsorProfile: any): string[] {
+    const criteria: string[] = [];
+    
+    if (sponsorProfile.preferred_academic_levels?.includes(studentProfile.academic_level)) {
+      criteria.push('Academic Level Match');
+    }
+    
+    if (sponsorProfile.preferred_fields?.includes(studentProfile.field_of_study)) {
+      criteria.push('Field of Study Match');
+    }
+    
+    if (studentProfile.location === sponsorProfile.location) {
+      criteria.push('Location Match');
+    }
+    
+    return criteria;
+  }
+
+  /**
+   * Get confidence level
+   */
+  private getConfidenceLevel(score: number): 'high' | 'medium' | 'low' {
+    if (score >= 80) return 'high';
+    if (score >= 60) return 'medium';
+    return 'low';
+  }
+
+  /**
+   * Save matching results
    */
   async saveMatchingResults(results: MatchingResult[]): Promise<void> {
     try {
+      if (results.length === 0) return;
+
+      // Save to sponsor_matching_results table
+      const matchingData = results.map(result => ({
+        sponsor_id: result.sponsor_id,
+        student_id: result.student_id,
+        match_score: result.score,
+        status: 'pending'
+      }));
+
       const { error } = await supabase
         .from('sponsor_matching_results')
-        .insert(results);
+        .upsert(matchingData);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error saving matching results:', error);
+      }
     } catch (error) {
       console.error('Error saving matching results:', error);
-      throw error;
     }
   }
 
   /**
-   * Get matching statistics
+   * Get matching rules
    */
-  async getMatchingStats(): Promise<{
-    totalMatches: number;
-    averageScore: number;
-    highConfidenceMatches: number;
-    mediumConfidenceMatches: number;
-    lowConfidenceMatches: number;
-  }> {
-    try {
-      const { data, error } = await supabase
-        .from('sponsor_matching_results')
-        .select('score, confidence_level');
-
-      if (error) throw error;
-
-      const results = data || [];
-      const totalMatches = results.length;
-      const averageScore = totalMatches > 0 
-        ? results.reduce((sum, r) => sum + r.score, 0) / totalMatches 
-        : 0;
-
-      const highConfidenceMatches = results.filter(r => r.confidence_level === 'high').length;
-      const mediumConfidenceMatches = results.filter(r => r.confidence_level === 'medium').length;
-      const lowConfidenceMatches = results.filter(r => r.confidence_level === 'low').length;
-
-      return {
-        totalMatches,
-        averageScore: Math.round(averageScore),
-        highConfidenceMatches,
-        mediumConfidenceMatches,
-        lowConfidenceMatches
-      };
-    } catch (error) {
-      console.error('Error getting matching stats:', error);
-      throw error;
-    }
+  async getMatchingRules(): Promise<MatchingRule[]> {
+    return this.rules;
   }
 }
 
 // Export singleton instance
-export const matchingRulesService = new MatchingRulesService(); 
+export const matchingRulesService = new MatchingRulesService();
