@@ -48,7 +48,7 @@ class Logger {
   }
 
   // Future enhancement: send critical errors to Supabase
-  private async sendToErrorService(entry: LogEntry) {
+  private async sendToErrorService(_entry: LogEntry) {
     // Implementation for sending to external logging service
     // Could integrate with Supabase system_error_logs table
   }
