@@ -1317,6 +1317,103 @@ export type Database = {
           },
         ]
       }
+      sponsor_matching_results: {
+        Row: {
+          created_at: string | null
+          id: string
+          match_score: number
+          sponsor_id: string
+          status: string | null
+          student_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          match_score: number
+          sponsor_id: string
+          status?: string | null
+          student_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          match_score?: number
+          sponsor_id?: string
+          status?: string | null
+          student_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_matching_results_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_profiles: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          funding_amount_range: Json | null
+          funding_capacity: number | null
+          funding_frequency: string | null
+          id: string
+          industry: string | null
+          location: string | null
+          logo_url: string | null
+          preferred_academic_levels: string[] | null
+          preferred_fields: string[] | null
+          sponsor_id: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          funding_amount_range?: Json | null
+          funding_capacity?: number | null
+          funding_frequency?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          preferred_academic_levels?: string[] | null
+          preferred_fields?: string[] | null
+          sponsor_id: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          funding_amount_range?: Json | null
+          funding_capacity?: number | null
+          funding_frequency?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          preferred_academic_levels?: string[] | null
+          preferred_fields?: string[] | null
+          sponsor_id?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_profiles_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sponsors: {
         Row: {
           created_at: string
@@ -1427,6 +1524,51 @@ export type Database = {
           status?: string
           updated_at?: string
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      student_profiles: {
+        Row: {
+          academic_level: string | null
+          achievements: Json | null
+          bio: string | null
+          created_at: string | null
+          extracurricular_activities: Json | null
+          field_of_study: string | null
+          financial_need_score: number | null
+          gpa: number | null
+          id: string
+          location: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          academic_level?: string | null
+          achievements?: Json | null
+          bio?: string | null
+          created_at?: string | null
+          extracurricular_activities?: Json | null
+          field_of_study?: string | null
+          financial_need_score?: number | null
+          gpa?: number | null
+          id?: string
+          location?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          academic_level?: string | null
+          achievements?: Json | null
+          bio?: string | null
+          created_at?: string | null
+          extracurricular_activities?: Json | null
+          field_of_study?: string | null
+          financial_need_score?: number | null
+          gpa?: number | null
+          id?: string
+          location?: string | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -1842,6 +1984,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_notification_preferences: {
+        Row: {
+          created_at: string | null
+          email_notifications: boolean | null
+          id: string
+          marketing_emails: boolean | null
+          notification_types: Json | null
+          push_notifications: boolean | null
+          sms_notifications: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          marketing_emails?: boolean | null
+          notification_types?: Json | null
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          marketing_emails?: boolean | null
+          notification_types?: Json | null
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_plans: {
         Row: {

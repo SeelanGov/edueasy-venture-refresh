@@ -23,18 +23,18 @@ interface PaymentAuditData {
   id: string;
   user_id: string;
   amount: number;
-  tier: string;
+  tier: string | null;
   payment_method: string;
   status: string;
-  merchant_reference: string;
-  gateway_provider: string;
-  payment_url?: string;
-  payfast_payment_id?: string;
-  payment_expiry?: string;
-  ipn_verified: boolean;
+  merchant_reference: string | null;
+  gateway_provider: string | null;
+  payment_url?: string | null;
+  payfast_payment_id?: string | null;
+  payment_expiry?: string | null;
+  ipn_verified: boolean | null;
   webhook_data?: any;
-  created_at: string;
-  updated_at: string;
+  created_at: string | null;
+  updated_at: string | null;
   user_email?: string;
   user_name?: string;
 }
@@ -82,10 +82,7 @@ export const AdminPaymentAuditView = () => {
     try {
       let query = supabase
         .from('payments')
-        .select(`
-          *,
-          users!inner(email, first_name, last_name)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       // Apply date range filter
@@ -102,8 +99,9 @@ export const AdminPaymentAuditView = () => {
 
       const paymentsWithUserInfo = data?.map(payment => ({
         ...payment,
-        user_email: payment.users?.email,
-        user_name: `${payment.users?.first_name || ''} ${payment.users?.last_name || ''}`.trim()
+        user_email: 'N/A',
+        user_name: 'N/A',
+        tier: payment.tier || 'N/A'
       })) || [];
 
       setPayments(paymentsWithUserInfo);
@@ -232,8 +230,8 @@ export const AdminPaymentAuditView = () => {
           payment.status || '',
           payment.gateway_provider || '',
           payment.ipn_verified ? 'Yes' : 'No',
-          new Date(payment.created_at).toLocaleString(),
-          new Date(payment.updated_at).toLocaleString()
+          payment.created_at ? new Date(payment.created_at).toLocaleString() : 'N/A',
+          payment.updated_at ? new Date(payment.updated_at).toLocaleString() : 'N/A'
         ])
       ];
       
@@ -542,7 +540,7 @@ export const AdminPaymentAuditView = () => {
                         </Badge>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(payment.created_at).toLocaleDateString()}
+                        {payment.created_at ? new Date(payment.created_at).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex space-x-2">
@@ -558,7 +556,7 @@ export const AdminPaymentAuditView = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => window.open(payment.payment_url, '_blank')}
+                              onClick={() => payment.payment_url && window.open(payment.payment_url, '_blank')}
                             >
                               <ExternalLink className="h-4 w-4" />
                             </Button>
