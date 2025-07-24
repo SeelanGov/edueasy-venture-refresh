@@ -443,7 +443,7 @@ export const NotificationPreferences = () => {
                     <div key={notification.id} className="border rounded-lg p-4 space-y-3">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center space-x-3">
-                          {getNotificationTypeIcon(notification.type)}
+                          {getNotificationTypeIcon(notification.type || 'default')}
                           <div>
                             <h3 className="font-medium">
                               {notification.subject || 'EduEasy Notification'}
@@ -452,9 +452,9 @@ export const NotificationPreferences = () => {
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                          {getStatusIcon(notification.status)}
-                          <Badge variant={getStatusBadgeVariant(notification.status)}>
-                            {notification.status}
+                          {getStatusIcon(notification.status || 'pending')}
+                          <Badge variant={getStatusBadgeVariant(notification.status || 'pending')}>
+                            {notification.status || 'pending'}
                           </Badge>
                         </div>
                       </div>
