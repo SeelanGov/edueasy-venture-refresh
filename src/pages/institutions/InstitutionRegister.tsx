@@ -12,7 +12,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
 const institutionRegisterSchema = z.object({
@@ -48,7 +47,7 @@ const provinces = [
 ];
 
 export default function InstitutionRegister() {
-  const { signUp } = useAuth();
+  // const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [registrationError, setRegistrationError] = useState<string | null>(null);

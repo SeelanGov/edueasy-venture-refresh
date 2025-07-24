@@ -80,7 +80,7 @@ export const checkAccessibility = (
     const isButton = el.tagName === 'BUTTON';
     const isLink = el.tagName === 'A';
     const hasTabIndex = el.hasAttribute('tabindex');
-    const _hasKeyHandler = el.hasAttribute('onkeydown') || el.hasAttribute('onkeyup');
+    // const _hasKeyHandler = el.hasAttribute('onkeydown') || el.hasAttribute('onkeyup');
 
     if (!isButton && !isLink && !hasTabIndex) {
       issues.push({

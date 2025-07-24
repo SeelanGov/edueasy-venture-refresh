@@ -27,7 +27,7 @@ export const validateComponentProps = (
   const {
     checkColors = true,
     checkSpacing = true,
-    checkTypography: _checkTypography = true,
+    // checkTypography: _checkTypography = true,
     checkAccessibility = true,
     strictMode = false,
   } = options;

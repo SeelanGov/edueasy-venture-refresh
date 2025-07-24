@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
-import { matchingRulesService, type MatchingResult } from './MatchingRulesService';
 import type { SponsorAllocation } from '@/types/SponsorTypes';
+import { matchingRulesService, type MatchingResult } from './MatchingRulesService';
 
 export interface AutoMatchingConfig {
   enabled: boolean;
@@ -323,7 +323,7 @@ class AutoMatchingService {
   /**
    * Get bulk matching jobs (simplified - returns recent job records from matching results)
    */
-  async getBulkMatchingJobs(limit: number = 10): Promise<BulkMatchingJob[]> {
+  async getBulkMatchingJobs(_limit: number = 10): Promise<BulkMatchingJob[]> {
     try {
       // Since we don't have a bulk_matching_jobs table, return mock data
       // In a real implementation, this would track actual job execution

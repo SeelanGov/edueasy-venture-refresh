@@ -5,10 +5,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ProgressIndicator, createAuthFlowSteps } from '@/components/ui/ProgressIndicator';
 import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const location = useLocation();
   const pendingPlan = secureStorage.getItem('pending_plan');
   
   // Plan context for paid plans

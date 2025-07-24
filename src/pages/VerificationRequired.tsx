@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle, RefreshCw, Phone, Mail, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthActions } from '@/hooks/useAuthActions';
-import { Spinner } from '@/components/Spinner';
+import { AlertTriangle, CheckCircle, Mail, Phone, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const VerificationRequired = () => {
   const { user } = useAuth();
   const { verifyIdentity } = useAuthActions();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryError, setRetryError] = useState<string | null>(null);
   const [retrySuccess, setRetrySuccess] = useState(false);

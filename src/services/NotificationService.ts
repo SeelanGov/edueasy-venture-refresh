@@ -74,7 +74,7 @@ class NotificationService {
     };
   }
 
-  async getUserNotificationHistory(userId: string, limit?: number): Promise<NotificationRecord[]> {
+  async getUserNotificationHistory(_userId: string, _limit?: number): Promise<NotificationRecord[]> {
     return [];
   }
 

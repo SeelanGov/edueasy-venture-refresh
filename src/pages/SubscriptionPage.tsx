@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import { useSubscription } from '@/hooks/useSubscription';
-import { SubscriptionTierCard } from '@/components/subscription/SubscriptionTierCard';
 import { PaymentForm } from '@/components/subscription/PaymentForm';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { SubscriptionTierCard } from '@/components/subscription/SubscriptionTierCard';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { useSubscription } from '@/hooks/useSubscription';
 import { formatCurrency } from '@/types/SubscriptionTypes';
 import { CheckCircle, CreditCard } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function SubscriptionPage() {
@@ -24,7 +23,7 @@ export default function SubscriptionPage() {
 
   const [selectedTierId, setSelectedTierId] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const selectedTier = selectedTierId ? tiers.find((tier) => tier.id === selectedTierId) : null;
 

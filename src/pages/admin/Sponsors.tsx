@@ -29,7 +29,6 @@ const SponsorsPage = () => {
   const {
     data: sponsorList = [],
     isLoading: sponsorsLoading,
-    refetch: refetchSponsors,
   } = useSponsors({ search, type: typeFilter });
 
   const [tab, setTab] = useState<'allocations' | 'sponsors'>('allocations');
@@ -82,7 +81,7 @@ const SponsorsPage = () => {
       }
       setModalOpen(false);
       fetchAllocations();
-    } catch (err) {
+    } catch {
       toast({
         title: 'Operation failed',
         variant: 'destructive',

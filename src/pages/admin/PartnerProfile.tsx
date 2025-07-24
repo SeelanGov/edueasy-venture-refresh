@@ -1,14 +1,15 @@
+import NotesTimeline from '@/components/admin/partners/NotesTimeline';
+import PartnerIntegrationChecklist from '@/components/admin/partners/PartnerIntegrationChecklist';
+import PartnerPaymentHistory from '@/components/admin/partners/PartnerPaymentHistory';
+import PartnerStatusBadge from '@/components/admin/partners/PartnerStatusBadge';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast'; // show toast on error
+import { usePartner } from '@/hooks/usePartner';
+import { usePartnerNotes } from '@/hooks/usePartnerNotes';
+import { usePartnerPayments } from '@/hooks/usePartnerPayments';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { usePartner } from '@/hooks/usePartner';
-import { usePartnerPayments } from '@/hooks/usePartnerPayments';
-import { usePartnerNotes } from '@/hooks/usePartnerNotes';
-import PartnerStatusBadge from '@/components/admin/partners/PartnerStatusBadge';
-import PartnerPaymentHistory from '@/components/admin/partners/PartnerPaymentHistory';
-import PartnerIntegrationChecklist from '@/components/admin/partners/PartnerIntegrationChecklist';
-import NotesTimeline from '@/components/admin/partners/NotesTimeline';
-import { Spinner } from '@/components/Spinner';
-import { toast } from '@/components/ui/use-toast'; // show toast on error
 
 const TAB_HEADINGS = [
   { id: 'details', label: 'Details' },
@@ -51,13 +52,14 @@ const PartnerProfilePage: React.FC = () => {
       </div>
       <div className="flex gap-3 mb-6">
         {TAB_HEADINGS.map((t) => (
-          <button
+          <Button
             key={t.id}
-            className={`rounded px-3 py-2 text-sm ${tab === t.id ? 'bg-cap-teal/10 font-bold underline' : 'hover:bg-gray-100'}`}
+            variant={tab === t.id ? 'default' : 'ghost'}
+            className={`text-sm ${tab === t.id ? 'bg-cap-teal/10 font-bold underline' : ''}`}
             onClick={() => setTab(t.id)}
           >
             {t.label}
-          </button>
+          </Button>
         ))}
       </div>
       <div>

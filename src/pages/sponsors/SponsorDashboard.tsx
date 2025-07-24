@@ -148,7 +148,7 @@ const SponsorDashboard = () => {
         title: 'Export Successful',
         description: 'Payment data exported to CSV file',
       });
-    } catch (error) {
+    } catch {
       toast({
         title: 'Export Failed',
         description: 'Failed to export payment data',
