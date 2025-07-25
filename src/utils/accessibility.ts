@@ -1,10 +1,15 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 /**
  * Accessibility utilities for WCAG compliance and screen reader support
  */
 
 // ARIA roles and attributes
+
+/**
+ * ARIA_ROLES
+ * @description Function
+ */
 export const ARIA_ROLES = {
   BUTTON: 'button',
   LINK: 'link',
@@ -56,6 +61,11 @@ export const ARIA_ROLES = {
 } as const;
 
 // ARIA states and properties
+
+/**
+ * ARIA_STATES
+ * @description Function
+ */
 export const ARIA_STATES = {
   EXPANDED: 'aria-expanded',
   SELECTED: 'aria-selected',
@@ -100,6 +110,11 @@ export const ARIA_STATES = {
 } as const;
 
 // Keyboard navigation utilities
+
+/**
+ * KEYBOARD_KEYS
+ * @description Function
+ */
 export const KEYBOARD_KEYS = {
   ENTER: 'Enter',
   SPACE: ' ',
@@ -120,6 +135,11 @@ export const KEYBOARD_KEYS = {
 /**
  * Generate unique ID for ARIA relationships
  */
+
+/**
+ * generateId
+ * @description Function
+ */
 export const generateId = (prefix: string = 'id'): string => {
   return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
 };
@@ -127,10 +147,15 @@ export const generateId = (prefix: string = 'id'): string => {
 /**
  * Create ARIA label for form fields
  */
+
+/**
+ * createFieldLabel
+ * @description Function
+ */
 export const createFieldLabel = (
   label: string,
   required: boolean = false,
-  description?: string
+  description?: string,
 ): string => {
   let ariaLabel = label;
   if (required) {
@@ -145,10 +170,15 @@ export const createFieldLabel = (
 /**
  * Create ARIA description for form fields
  */
+
+/**
+ * createFieldDescription
+ * @description Function
+ */
 export const createFieldDescription = (
   description: string,
   error?: string,
-  hint?: string
+  hint?: string,
 ): string => {
   const parts = [description];
   if (error) parts.push(`Error: ${error}`);
@@ -159,12 +189,17 @@ export const createFieldDescription = (
 /**
  * Handle keyboard navigation for lists
  */
+
+/**
+ * handleListKeyboardNavigation
+ * @description Function
+ */
 export const handleListKeyboardNavigation = (
   event: React.KeyboardEvent,
   currentIndex: number,
   totalItems: number,
   onIndexChange: (index: number) => void,
-  onSelect?: (index: number) => void
+  onSelect?: (index: number) => void,
 ): void => {
   switch (event.key) {
     case KEYBOARD_KEYS.ARROW_DOWN:
@@ -194,12 +229,17 @@ export const handleListKeyboardNavigation = (
 /**
  * Handle keyboard navigation for tabs
  */
+
+/**
+ * handleTabKeyboardNavigation
+ * @description Function
+ */
 export const handleTabKeyboardNavigation = (
   event: React.KeyboardEvent,
   currentIndex: number,
   totalTabs: number,
   onIndexChange: (index: number) => void,
-  onSelect?: (index: number) => void
+  onSelect?: (index: number) => void,
 ): void => {
   switch (event.key) {
     case KEYBOARD_KEYS.ARROW_LEFT:
@@ -229,9 +269,14 @@ export const handleTabKeyboardNavigation = (
 /**
  * Validate color contrast ratio
  */
+
+/**
+ * validateColorContrast
+ * @description Function
+ */
 export const validateColorContrast = (
   foregroundColor: string,
-  backgroundColor: string
+  backgroundColor: string,
 ): { ratio: number; passes: boolean; level: 'AA' | 'AAA' | 'FAIL' } => {
   // Convert colors to luminance
   const getLuminance = (color: string): number => {
@@ -239,22 +284,22 @@ export const validateColorContrast = (
     const r = parseInt(hex.substr(0, 2), 16) / 255;
     const g = parseInt(hex.substr(2, 2), 16) / 255;
     const b = parseInt(hex.substr(4, 2), 16) / 255;
-    
-    const [rs, gs, bs] = [r, g, b].map(c => {
+
+    const [rs, gs, bs] = [r, g, b].map((c) => {
       if (c <= 0.03928) {
         return c / 12.92;
       }
       return Math.pow((c + 0.055) / 1.055, 2.4);
     });
-    
+
     return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
   };
 
   const l1 = getLuminance(foregroundColor);
   const l2 = getLuminance(backgroundColor);
-  
+
   const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-  
+
   return {
     ratio,
     passes: ratio >= 4.5,
@@ -265,19 +310,24 @@ export const validateColorContrast = (
 /**
  * Focus management utilities
  */
+
+/**
+ * focusManagement
+ * @description Function
+ */
 export const focusManagement = {
   /**
    * Trap focus within a container
    */
   trapFocus: (container: HTMLElement): (() => void) => {
     const focusableElements = container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
-    
+
     const firstElement = focusableElements[0] as HTMLElement;
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-    
-    const handleKeyDown = (event: KeyboardEvent) => {
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key === KEYBOARD_KEYS.TAB) {
         if (event.shiftKey) {
           if (document.activeElement === firstElement) {
@@ -292,9 +342,9 @@ export const focusManagement = {
         }
       }
     };
-    
+
     container.addEventListener('keydown', handleKeyDown);
-    
+
     // Return cleanup function
     return () => {
       container.removeEventListener('keydown', handleKeyDown);
@@ -306,9 +356,9 @@ export const focusManagement = {
    */
   focusFirst: (container: HTMLElement): void => {
     const focusableElement = container.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     ) as HTMLElement;
-    
+
     if (focusableElement) {
       focusableElement.focus();
     }
@@ -319,11 +369,11 @@ export const focusManagement = {
    */
   focusLast: (container: HTMLElement): void => {
     const focusableElements = container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
-    
+
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-    
+
     if (lastElement) {
       lastElement.focus();
     }
@@ -332,6 +382,11 @@ export const focusManagement = {
 
 /**
  * Screen reader utilities
+ */
+
+/**
+ * screenReader
+ * @description Function
  */
 export const screenReader = {
   /**
@@ -343,9 +398,9 @@ export const screenReader = {
     announcement.setAttribute('aria-atomic', 'true');
     announcement.className = 'sr-only';
     announcement.textContent = message;
-    
+
     document.body.appendChild(announcement);
-    
+
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
@@ -369,6 +424,11 @@ export const screenReader = {
 /**
  * WCAG compliance utilities
  */
+
+/**
+ * wcag
+ * @description Function
+ */
 export const wcag = {
   /**
    * Check if element meets WCAG AA contrast requirements
@@ -389,11 +449,7 @@ export const wcag = {
   /**
    * Generate accessible name for element
    */
-  generateAccessibleName: (
-    label?: string,
-    ariaLabel?: string,
-    ariaLabelledBy?: string
-  ): string => {
+  generateAccessibleName: (label?: string, ariaLabel?: string, ariaLabelledBy?: string): string => {
     if (ariaLabel) return ariaLabel;
     if (label) return label;
     if (ariaLabelledBy) {

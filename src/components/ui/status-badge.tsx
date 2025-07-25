@@ -57,6 +57,11 @@ const statusIcons: Record<ExtendedStatusType, LucideIcon> = {
   'resubmission-required': RefreshCw,
 };
 
+
+/**
+ * StatusBadge
+ * @description Function
+ */
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   children,

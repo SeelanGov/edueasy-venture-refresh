@@ -9,19 +9,19 @@ import { useInstitutions } from '@/hooks/useInstitutions';
 import { ArrowRight, Building2, Loader2, MapPin, Star, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Institutions = () => {
+const Institutions = (): void => {
   const navigate = useNavigate();
   const { institutions, loading, error } = useInstitutions();
   const { user } = useAuth();
 
-  const handleStartApplication = () => {
+  const handleStartApplication = (): void => {
     if (!user) {
       toast({
         title: 'Authentication Required',
         description: 'Please register an account to start your application.',
         variant: 'destructive',
       });
-  
+
       navigate('/register', { state: { from: '/apply' } });
       return;
     }

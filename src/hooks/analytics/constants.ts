@@ -7,6 +7,11 @@ const getDateDaysAgo = (days: number): Date => {
   return date;
 };
 
+
+/**
+ * DEFAULT_FILTERS
+ * @description Function
+ */
 export const DEFAULT_FILTERS: AnalyticsFilters = {
   startDate: getDateDaysAgo(30), // Default to past 30 days
   endDate: new Date(),
@@ -15,6 +20,11 @@ export const DEFAULT_FILTERS: AnalyticsFilters = {
 };
 
 // Common filter presets that can be reused
+
+/**
+ * FILTER_PRESETS
+ * @description Function
+ */
 export const FILTER_PRESETS = {
   LAST_7_DAYS: {
     startDate: getDateDaysAgo(7),

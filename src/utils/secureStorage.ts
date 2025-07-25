@@ -1,6 +1,11 @@
 // Secure storage wrapper to prevent recursion bugs
 // This provides a safe interface for sessionStorage operations
 
+
+/**
+ * secureStorage
+ * @description Function
+ */
 export const secureStorage = {
   getItem: (key: string): string | null => {
     try {
@@ -33,5 +38,5 @@ export const secureStorage = {
     } catch (error) {
       console.error('Failed to clear sessionStorage:', error);
     }
-  }
-}; 
+  },
+};

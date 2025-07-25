@@ -21,13 +21,18 @@ interface PaymentFormProps {
   onCancel: () => void;
 }
 
+
+/**
+ * PaymentForm
+ * @description Function
+ */
 export function PaymentForm({
   amount,
   currency = 'ZAR',
   description = 'Complete your payment',
   onPaymentComplete,
   onCancel,
-}: PaymentFormProps) {
+}: PaymentFormProps): void {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvc, setCardCvc] = useState('');
@@ -61,7 +66,7 @@ export function PaymentForm({
   };
 
   // Format card number with spaces
-  const formatCardNumber = (value: string) => {
+  const formatCardNumber = (value: string): void => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
     const match = (matches && matches[0]) || '';
@@ -79,7 +84,7 @@ export function PaymentForm({
   };
 
   // Format card expiry date
-  const formatCardExpiry = (value: string) => {
+  const formatCardExpiry = (value: string): void => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
 
     if (v.length > 2) {

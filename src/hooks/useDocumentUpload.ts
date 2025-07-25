@@ -9,7 +9,12 @@ export interface DocumentUploadResult {
   verification_status: string;
 }
 
-export const useDocumentUpload = () => {
+
+/**
+ * useDocumentUpload
+ * @description Function
+ */
+export const useDocumentUpload = (): void => {
   const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
 

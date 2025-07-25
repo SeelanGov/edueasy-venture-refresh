@@ -15,10 +15,15 @@ interface PolicyRegistryTabProps {
   onRefreshData: () => void;
 }
 
+
+/**
+ * PolicyRegistryTab
+ * @description Function
+ */
 export const PolicyRegistryTab = ({
   registeredPolicies,
   onRefreshData,
-}: PolicyRegistryTabProps) => {
+}: PolicyRegistryTabProps): void => {
   return (
     <CardContent>
       <div className="flex justify-between items-center mb-4">

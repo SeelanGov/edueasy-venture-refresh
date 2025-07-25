@@ -8,7 +8,12 @@ interface DashboardLayoutWithThandiProps {
   children: ReactNode;
 }
 
-export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThandiProps) => {
+
+/**
+ * DashboardLayoutWithThandi
+ * @description Function
+ */
+export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThandiProps): void => {
   return (
     <>
       <MobileFriendlyDashboardLayout>{children}</MobileFriendlyDashboardLayout>

@@ -8,7 +8,12 @@ interface OverviewTabProps {
   analytics: DocumentAnalytics;
 }
 
-export const OverviewTab = ({ analytics }: OverviewTabProps) => {
+
+/**
+ * OverviewTab
+ * @description Function
+ */
+export const OverviewTab = ({ analytics }: OverviewTabProps): void => {
   const statusData = useStatusDistributionData(analytics);
 
   return (

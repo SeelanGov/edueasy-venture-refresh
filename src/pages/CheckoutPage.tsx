@@ -8,11 +8,22 @@ import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { secureStorage } from '@/utils/secureStorage';
-import { Building2, Calendar, CheckCircle, CreditCard, Loader2, Lock, QrCode, Shield, Smartphone, Store } from 'lucide-react';
+import {
+  Building2,
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  Loader2,
+  Lock,
+  QrCode,
+  Shield,
+  Smartphone,
+  Store,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const CheckoutPage = () => {
+const CheckoutPage = (): void => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedPlan = searchParams.get('plan');
@@ -26,11 +37,11 @@ const CheckoutPage = () => {
     if (!authLoading && !user) {
       // Preserve plan selection for post-registration
       secureStorage.setItem('pending_plan', selectedPlan || '');
-      navigate('/register', { 
-        state: { 
+      navigate('/register', {
+        state: {
           from: `/checkout?plan=${selectedPlan}`,
-          message: 'Create your account to secure your purchase and tracking'
-        } 
+          message: 'Create your account to secure your purchase and tracking',
+        },
       });
       return;
     }
@@ -55,8 +66,8 @@ const CheckoutPage = () => {
 
   // Map plan names to tier IDs for PayFast integration
   const planToTierMap = {
-    'essential': 'essential',
-    'pro-ai': 'pro-ai'
+    essential: 'essential',
+    'pro-ai': 'pro-ai',
   };
 
   const plans = {
@@ -91,7 +102,7 @@ const CheckoutPage = () => {
 
     try {
       const success = await subscribeToPlan(tierId, paymentMethod || 'payfast');
-      
+
       if (success) {
         toast({
           title: 'Payment initiated',
@@ -116,9 +127,9 @@ const CheckoutPage = () => {
     }
   };
 
-  const handlePaymentMethod = (method: string) => {
+  const handlePaymentMethod = (method: string): void => {
     setSelectedPaymentMethod(method);
-    
+
     if (['card', 'airtime', 'qr', 'eft', 'store'].includes(method)) {
       // All methods go through PayFast but with method preference
       handlePayFastPayment(method);
@@ -138,8 +149,8 @@ const CheckoutPage = () => {
       <div className="max-w-2xl mx-auto">
         {/* Progress Indicator */}
         <div className="mb-8">
-          <ProgressIndicator 
-            steps={createAuthFlowSteps('payment')} 
+          <ProgressIndicator
+            steps={createAuthFlowSteps('payment')}
             className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
           />
         </div>
@@ -173,7 +184,9 @@ const CheckoutPage = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-medium">Features</span>
-                  <span className="text-sm text-gray-600">{plan.features.length} features included</span>
+                  <span className="text-sm text-gray-600">
+                    {plan.features.length} features included
+                  </span>
                 </div>
                 <Separator />
                 <div className="bg-green-50 p-3 rounded-lg">
@@ -227,7 +240,9 @@ const CheckoutPage = () => {
                 )}
                 <div className="text-left space-y-1 flex-1">
                   <div className="font-semibold leading-tight">Pay with Bank Transfer</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">Instant EFT - All major banks</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">
+                    Instant EFT - All major banks
+                  </div>
                 </div>
               </Button>
 
@@ -244,7 +259,9 @@ const CheckoutPage = () => {
                 )}
                 <div className="text-left space-y-1 flex-1">
                   <div className="font-semibold leading-tight">Pay with Airtime</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">MTN, Vodacom, Cell C</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">
+                    MTN, Vodacom, Cell C
+                  </div>
                 </div>
               </Button>
 
@@ -261,7 +278,9 @@ const CheckoutPage = () => {
                 )}
                 <div className="text-left space-y-1 flex-1">
                   <div className="font-semibold leading-tight">Pay via QR Code</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">SnapScan, Zapper, or scan at any store</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">
+                    SnapScan, Zapper, or scan at any store
+                  </div>
                 </div>
               </Button>
 
@@ -278,7 +297,9 @@ const CheckoutPage = () => {
                 )}
                 <div className="text-left space-y-1 flex-1">
                   <div className="font-semibold leading-tight">Pay at Store</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">Pick n Pay, Shoprite, or other retail stores</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">
+                    Pick n Pay, Shoprite, or other retail stores
+                  </div>
                 </div>
               </Button>
 
@@ -313,7 +334,11 @@ const CheckoutPage = () => {
         </div>
 
         <div className="mt-6 text-center">
-          <Button variant="ghost" onClick={() => navigate('/pricing')} className="text-gray-600 hover:text-cap-teal">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/pricing')}
+            className="text-gray-600 hover:text-cap-teal"
+          >
             ← Back to Plans
           </Button>
         </div>

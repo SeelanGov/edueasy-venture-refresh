@@ -6,7 +6,12 @@ interface FocusTrapProps {
   className?: string;
 }
 
-export function FocusTrap({ children, active = true, className }: FocusTrapProps) {
+
+/**
+ * FocusTrap
+ * @description Function
+ */
+export function FocusTrap({ children, active = true, className }: FocusTrapProps): void {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [focusableElements, setFocusableElements] = React.useState<HTMLElement[]>([]);
 

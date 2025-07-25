@@ -31,12 +31,17 @@ type Props = {
   refreshUsers?: () => void;
 };
 
+
+/**
+ * UserManagementPanel
+ * @description Function
+ */
 export function UserManagementPanel({
   users,
   trackingIdSearch,
   setTrackingIdSearch,
   refreshUsers,
-}: Props) {
+}: Props): void {
   const [showOnlyVerified, setShowOnlyVerified] = useState<null | boolean>(null);
   const [exporting, setExporting] = useState(false);
   const [searchText, setSearchText] = useState('');

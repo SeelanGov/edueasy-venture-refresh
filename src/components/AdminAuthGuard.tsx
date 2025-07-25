@@ -8,7 +8,12 @@ interface AdminAuthGuardProps {
   children: ReactNode;
 }
 
-export const AdminAuthGuard = ({ children }: AdminAuthGuardProps) => {
+
+/**
+ * AdminAuthGuard
+ * @description Function
+ */
+export const AdminAuthGuard = ({ children }: AdminAuthGuardProps): void => {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: roleLoading } = useAdminRole();
   const navigate = useNavigate();

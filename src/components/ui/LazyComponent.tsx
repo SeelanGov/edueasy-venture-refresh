@@ -1,19 +1,25 @@
 import { Spinner } from '@/components/Spinner';
-import React, { ComponentType, Suspense, lazy } from 'react';
+import type { ComponentType } from 'react';
+import React, { Suspense, lazy } from 'react';
 
 interface LazyComponentProps {
   component: () => Promise<{ default: ComponentType<any> }>;
   fallback?: React.ReactNode;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;
 }
 
-export const LazyComponent: React.FC<LazyComponentProps> = ({ 
-  component, 
+
+/**
+ * LazyComponent
+ * @description React component
+ */
+export const LazyComponent: React.FC<LazyComponentProps> = ({
+  component,
   fallback = <Spinner size="md" />,
-  props = {}
+  props = {},
 }) => {
   const LazyComponent = lazy(component);
-  
+
   return (
     <Suspense fallback={fallback}>
       <LazyComponent {...props} />
@@ -22,7 +28,28 @@ export const LazyComponent: React.FC<LazyComponentProps> = ({
 };
 
 // Predefined lazy components for common use cases
+
+/**
+ * LazyThandiAgent
+ * @description Function
+ */
 export const LazyThandiAgent = () => import('@/components/ai/ThandiAgent');
-export const LazyNotificationPreferences = () => import('@/components/user/NotificationPreferences');
+
+/**
+ * LazyNotificationPreferences
+ * @description Function
+ */
+export const LazyNotificationPreferences = () =>
+  import('@/components/user/NotificationPreferences');
+
+/**
+ * LazyAdminDashboard
+ * @description Function
+ */
 export const LazyAdminDashboard = () => import('@/pages/AdminDashboard');
-export const LazyAnalytics = () => import('@/pages/AdminAnalytics'); 
+
+/**
+ * LazyAnalytics
+ * @description Function
+ */
+export const LazyAnalytics = () => import('@/pages/AdminAnalytics');

@@ -12,7 +12,7 @@ import { FileText } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SponsorsPage = () => {
+const SponsorsPage = (): void => {
   // Search & filter state
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
@@ -26,10 +26,10 @@ const SponsorsPage = () => {
     fetchAllocations,
   } = useSponsorAllocations();
 
-  const {
-    data: sponsorList = [],
-    isLoading: sponsorsLoading,
-  } = useSponsors({ search, type: typeFilter });
+  const { data: sponsorList = [], isLoading: sponsorsLoading } = useSponsors({
+    search,
+    type: typeFilter,
+  });
 
   const [tab, setTab] = useState<'allocations' | 'sponsors'>('allocations');
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,11 +42,11 @@ const SponsorsPage = () => {
   const totalAllocations = allocations.length;
   const activeAllocations = allocations.filter((a) => a.status === 'active').length;
 
-  const handleAdd = () => {
+  const handleAdd = (): void => {
     setEditAlloc(null);
     setModalOpen(true);
   };
-  const handleEdit = (alloc: any) => {
+  const handleEdit = (alloc: unknown): void => {
     setEditAlloc(alloc);
     setModalOpen(true);
   };
@@ -66,7 +66,7 @@ const SponsorsPage = () => {
       }
     }
   };
-  const handleSave = async (values: any) => {
+  const handleSave = async (values: unknown) => {
     try {
       if (editAlloc) {
         await updateAllocation(editAlloc.id, values);
@@ -90,7 +90,7 @@ const SponsorsPage = () => {
   };
 
   // Export Handlers
-  const handleExportAllocations = () => {
+  const handleExportAllocations = (): void => {
     if (allocations.length === 0) {
       toast({ title: 'No allocations to export', variant: 'destructive' });
       return;
@@ -110,7 +110,7 @@ const SponsorsPage = () => {
     toast({ title: 'Allocations exported!' });
   };
 
-  const handleExportSponsors = () => {
+  const handleExportSponsors = (): void => {
     if (!sponsorList || sponsorList.length === 0) {
       toast({ title: 'No sponsors to export', variant: 'destructive' });
       return;

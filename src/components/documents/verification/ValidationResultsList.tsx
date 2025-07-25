@@ -6,10 +6,15 @@ interface ValidationResultsListProps {
   extractedFields?: Record<string, string> | undefined;
 }
 
+
+/**
+ * ValidationResultsList
+ * @description Function
+ */
 export const ValidationResultsList = ({
   validationResults,
   extractedFields,
-}: ValidationResultsListProps) => {
+}: ValidationResultsListProps): void => {
   if (!validationResults && !extractedFields) {
     return null;
   }
@@ -69,7 +74,7 @@ export const ValidationResultsList = ({
                       <div key={key} className="mt-1">
                         <div className="font-medium">Subjects:</div>
                         <div className="pl-2">
-                          {parsed.map((subject: any, index: number) => {
+                          {parsed.map((subject: unknown, index: number) => {
                             if (
                               typeof subject === 'object' &&
                               subject !== null &&

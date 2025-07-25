@@ -18,7 +18,12 @@ interface CareerAssessmentCardProps {
   onView: (assessmentId: string) => void;
 }
 
-export function CareerAssessmentCard({ assessment, onView }: CareerAssessmentCardProps) {
+
+/**
+ * CareerAssessmentCard
+ * @description Function
+ */
+export function CareerAssessmentCard({ assessment, onView }: CareerAssessmentCardProps): void {
   // Format the assessment date
   const formattedDate = formatDistanceToNow(new Date(assessment.assessment_date), {
     addSuffix: true,

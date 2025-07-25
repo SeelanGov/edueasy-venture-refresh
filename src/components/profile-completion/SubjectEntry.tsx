@@ -47,6 +47,11 @@ interface SubjectEntryProps {
   onDelete: () => void;
 }
 
+
+/**
+ * SubjectEntry
+ * @description Function
+ */
 export const SubjectEntry: React.FC<SubjectEntryProps> = ({
   index,
   control,

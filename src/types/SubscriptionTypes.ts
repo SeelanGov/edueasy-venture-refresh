@@ -52,6 +52,11 @@ export interface ConsultationBooking {
   created_at: string;
 }
 
+
+/**
+ * formatCurrency
+ * @description Function
+ */
 export function formatCurrency(amount: number, currency: string = 'ZAR'): string {
   return new Intl.NumberFormat('en-ZA', {
     style: 'currency',
@@ -59,11 +64,21 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
   }).format(amount);
 }
 
+
+/**
+ * getSubscriptionPrice
+ * @description Function
+ */
 export function getSubscriptionPrice(tier: SubscriptionTier): number {
   return tier.price_once_off;
 }
 
-export function getThandiCapabilities(tierName: SubscriptionTierName) {
+
+/**
+ * getThandiCapabilities
+ * @description Function
+ */
+export function getThandiCapabilities(tierName: SubscriptionTierName): void {
   switch (tierName) {
     case SubscriptionTierName.STARTER:
       return {

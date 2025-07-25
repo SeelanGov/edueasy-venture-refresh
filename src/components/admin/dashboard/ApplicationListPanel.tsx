@@ -29,7 +29,12 @@ function getStatusBadge(status: string | null) {
   }
 }
 
-export function ApplicationListPanel({ applications, userMap }: Props) {
+
+/**
+ * ApplicationListPanel
+ * @description Function
+ */
+export function ApplicationListPanel({ applications, userMap }: Props): void {
   return (
     <Card>
       <CardHeader>

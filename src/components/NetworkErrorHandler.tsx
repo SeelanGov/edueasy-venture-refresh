@@ -8,7 +8,12 @@ interface NetworkErrorHandlerProps {
   children: React.ReactNode;
 }
 
-export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
+
+/**
+ * NetworkErrorHandler
+ * @description Event handler function
+ */
+export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps): void => {
   const { isOnline } = useNetwork();
   const [showOfflineWarning, setShowOfflineWarning] = useState(false);
 

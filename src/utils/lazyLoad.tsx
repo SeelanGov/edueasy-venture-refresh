@@ -6,6 +6,11 @@ import React, { Suspense } from 'react';
  * @param importFunc - Dynamic import function for the component
  * @returns Lazy loaded component with Suspense
  */
+
+/**
+ * lazyLoad
+ * @description Function
+ */
 export function lazyLoad<T extends React.ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
 ): React.LazyExoticComponent<T> {
@@ -28,6 +33,11 @@ export function lazyLoad<T extends React.ComponentType<any>>(
  * Utility function for lazy loading admin components with a consistent loading state
  * @param importFunc - Dynamic import function for the component
  * @returns Lazy loaded component with Suspense
+ */
+
+/**
+ * lazyLoadAdmin
+ * @description Function
  */
 export function lazyLoadAdmin<T extends React.ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,

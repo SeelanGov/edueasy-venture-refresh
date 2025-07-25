@@ -10,7 +10,12 @@ export interface VerificationLog {
   error_message: string | null;
 }
 
-export function useUserVerificationLogs(userId?: string) {
+
+/**
+ * useUserVerificationLogs
+ * @description Function
+ */
+export function useUserVerificationLogs(userId?: string): void {
   const [logs, setLogs] = useState<VerificationLog[]>([]);
   const [loading, setLoading] = useState(false);
 

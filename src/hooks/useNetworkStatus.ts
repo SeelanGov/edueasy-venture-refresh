@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { playNotificationSound } from '@/utils/notificationSound';
 
-export const useNetworkStatus = () => {
+
+/**
+ * useNetworkStatus
+ * @description Function
+ */
+export const useNetworkStatus = (): void => {
   const [isOnline, setIsOnline] = useState(
     typeof navigator !== 'undefined' ? navigator.onLine : true,
   );
@@ -12,7 +17,7 @@ export const useNetworkStatus = () => {
 
   // Update the online status and lastConnectedTime when it changes
   useEffect(() => {
-    const handleOnline = () => {
+    const handleOnline = (): void => {
       setIsOnline(true);
       setLastConnectedTime(new Date());
 
@@ -20,7 +25,7 @@ export const useNetworkStatus = () => {
       playNotificationSound();
     };
 
-    const handleOffline = () => {
+    const handleOffline = (): void => {
       setIsOnline(false);
     };
 

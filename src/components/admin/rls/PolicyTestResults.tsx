@@ -7,7 +7,12 @@ interface PolicyTestResultsProps {
   results: RLSTestResult[];
 }
 
-export const PolicyTestResults = ({ results }: PolicyTestResultsProps) => {
+
+/**
+ * PolicyTestResults
+ * @description Function
+ */
+export const PolicyTestResults = ({ results }: PolicyTestResultsProps): void => {
   // Group results by table name for better organization
   const groupedResults = results.reduce(
     (acc, result) => {

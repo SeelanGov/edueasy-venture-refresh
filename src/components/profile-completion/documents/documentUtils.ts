@@ -1,5 +1,10 @@
 import type { DocumentFileValidation } from './types';
 
+
+/**
+ * validateFile
+ * @description Function
+ */
 export const validateFile = (file: File): DocumentFileValidation => {
   const maxSizeInBytes = 1024 * 1024; // 1MB
   const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];

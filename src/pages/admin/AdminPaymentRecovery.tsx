@@ -1,8 +1,8 @@
-import { PaymentRecoveryPanel } from '@/components/admin/dashboard/PaymentRecoveryPanel'
-import { AdminAuthGuard } from '@/components/AdminAuthGuard'
-import { PageLayout } from '@/components/layout/PageLayout'
+import { PaymentRecoveryPanel } from '@/components/admin/dashboard/PaymentRecoveryPanel';
+import { AdminAuthGuard } from '@/components/AdminAuthGuard';
+import { PageLayout } from '@/components/layout/PageLayout';
 
-const AdminPaymentRecovery = () => {
+const AdminPaymentRecovery = (): void => {
   return (
     <AdminAuthGuard>
       <PageLayout
@@ -14,7 +14,7 @@ const AdminPaymentRecovery = () => {
         <PaymentRecoveryPanel />
       </PageLayout>
     </AdminAuthGuard>
-  )
-}
+  );
+};
 
-export default AdminPaymentRecovery 
+export default AdminPaymentRecovery;

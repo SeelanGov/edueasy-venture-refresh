@@ -16,7 +16,12 @@ interface TrainingEntry {
   } | null;
 }
 
-export const useTrainingEntries = () => {
+
+/**
+ * useTrainingEntries
+ * @description Function
+ */
+export const useTrainingEntries = (): void => {
   const [trainedMessages, setTrainedMessages] = useState<TrainingEntry[]>([]);
   const { user } = useAuth();
 

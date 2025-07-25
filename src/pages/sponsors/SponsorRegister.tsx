@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SponsorRegister = () => {
+const SponsorRegister = (): void => {
   const [form, setForm] = useState({
     email: '',
     name: '',
@@ -17,7 +17,7 @@ const SponsorRegister = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -25,7 +25,7 @@ const SponsorRegister = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
       // Step 1: Create user account with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -86,7 +86,7 @@ const SponsorRegister = () => {
         description: 'Your sponsor account has been created successfully.',
         variant: 'default',
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Error registering sponsor');
       toast({
         title: 'Registration Failed',
@@ -104,7 +104,11 @@ const SponsorRegister = () => {
         <h2 className="text-2xl mb-4">Registration Successful!</h2>
         <p>
           Please proceed to{' '}
-          <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/sponsors/login')}>
+          <Button
+            className="text-cap-teal underline"
+            variant="link"
+            onClick={() => navigate('/sponsors/login')}
+          >
             Login
           </Button>
           .

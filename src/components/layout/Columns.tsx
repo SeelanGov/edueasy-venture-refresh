@@ -9,6 +9,11 @@ interface ColumnsProps {
   as?: 'div' | 'section' | 'main' | 'article';
 }
 
+
+/**
+ * Columns
+ * @description Function
+ */
 export const Columns: React.FC<ColumnsProps> = ({
   children,
   gap = 'md',
@@ -46,13 +51,18 @@ interface ColumnProps {
   as?: 'div' | 'section' | 'article' | 'aside' | 'nav';
 }
 
+
+/**
+ * Column
+ * @description Function
+ */
 export const Column: React.FC<ColumnProps> = ({
   children,
   span,
   className,
   as: Component = 'div',
 }) => {
-  const getSpanClasses = () => {
+  const getSpanClasses = (): void => {
     if (!span) return 'flex-1';
 
     const classes: string[] = [];

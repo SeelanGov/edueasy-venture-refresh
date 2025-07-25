@@ -21,6 +21,11 @@ interface JourneyMilestoneProps {
   onClick?: () => void;
 }
 
+
+/**
+ * JourneyMilestone
+ * @description Function
+ */
 export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
   title,
   stepNumber,
@@ -30,7 +35,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
   const [showDetail, setShowDetail] = useState(false);
 
   // Get icon based on milestone title
-  const getMilestoneIcon = () => {
+  const getMilestoneIcon = (): void => {
     if (title.includes('Personal')) return User;
     if (title.includes('Contact')) return Phone;
     if (title.includes('Address')) return MapPin;
@@ -42,13 +47,13 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
 
   const Icon = getMilestoneIcon();
 
-  const handleMilestoneClick = () => {
+  const handleMilestoneClick = (): void => {
     setShowDetail(!showDetail);
     onClick?.();
   };
 
   // Define inline color styles to avoid CSS variable issues
-  const getStatusColors = () => {
+  const getStatusColors = (): void => {
     switch (status) {
       case 'active':
         return {

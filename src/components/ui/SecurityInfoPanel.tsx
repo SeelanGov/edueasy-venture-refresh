@@ -16,6 +16,11 @@ const badgeDescriptions: Record<string, string> = {
   verification: 'Verification: This field or document is verified for authenticity and integrity.',
 };
 
+
+/**
+ * SecurityInfoPanel
+ * @description Function
+ */
 export const SecurityInfoPanel: React.FC<SecurityInfoPanelProps> = ({ badgeType }) => (
   <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-zinc-800 rounded-lg border border-blue-200 dark:border-zinc-700">
     <SecurityBadge type={badgeType} size="md" showLabel={true} />

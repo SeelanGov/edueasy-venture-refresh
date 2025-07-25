@@ -63,11 +63,16 @@ interface PersonalInfoFormProps {
   isSubmitting: boolean;
 }
 
+
+/**
+ * PersonalInfoForm
+ * @description Function
+ */
 export const PersonalInfoForm = ({
   initialValues,
   onSubmit,
   isSubmitting,
-}: PersonalInfoFormProps) => {
+}: PersonalInfoFormProps): void => {
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: initialValues,

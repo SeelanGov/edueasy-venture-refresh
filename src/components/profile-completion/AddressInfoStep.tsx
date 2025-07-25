@@ -14,7 +14,12 @@ interface AddressInfoStepProps {
   onBack: () => void;
 }
 
-export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps) => {
+
+/**
+ * AddressInfoStep
+ * @description Function
+ */
+export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps): void => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

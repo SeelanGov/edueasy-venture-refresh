@@ -17,9 +17,9 @@ export interface CareerAssessment {
   id: string;
   user_id: string;
   assessment_type: AssessmentType;
-  questions: Record<string, any>;
-  responses: Record<string, any>;
-  results: Record<string, any>;
+  questions: Record<string, unknown>;
+  responses: Record<string, unknown>;
+  results: Record<string, unknown>;
   completed_at?: string;
   created_at: string;
   updated_at: string;
@@ -31,15 +31,20 @@ export interface CareerGuidance {
   assessment_id?: string;
   assessment_type: AssessmentType;
   assessment_date: string;
-  recommendations: Record<string, any> | null;
-  action_plan?: Record<string, any>;
-  results: Record<string, any>;
+  recommendations: Record<string, unknown> | null;
+  action_plan?: Record<string, unknown>;
+  results: Record<string, unknown>;
   is_premium: boolean;
   created_at: string;
   updated_at: string;
 }
 
-export const useCareerGuidance = () => {
+
+/**
+ * useCareerGuidance
+ * @description Function
+ */
+export const useCareerGuidance = (): void => {
   const [assessments, setAssessments] = useState<CareerAssessment[]>([]);
   const [guidance, setGuidance] = useState<CareerGuidance[]>([]);
   const [loading, setLoading] = useState(false);
@@ -128,8 +133,8 @@ export const useCareerGuidance = () => {
 
   const createAssessment = async (
     assessmentType: AssessmentType,
-    results: Record<string, any>,
-    recommendations: Record<string, any>,
+    results: Record<string, unknown>,
+    recommendations: Record<string, unknown>,
     isPremium: boolean = false,
   ) => {
     if (!user) return null;
@@ -188,7 +193,7 @@ export const useCareerGuidance = () => {
 
   const submitAssessmentResponses = async (
     assessmentId: string,
-    responses: Record<string, any>,
+    responses: Record<string, unknown>,
   ) => {
     if (!user) return null;
 

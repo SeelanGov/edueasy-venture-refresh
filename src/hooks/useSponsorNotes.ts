@@ -10,7 +10,12 @@ export type SponsorNote = {
   note_type?: string | null;
 };
 
-export const useSponsorNotes = (sponsorId: string | undefined) => {
+
+/**
+ * useSponsorNotes
+ * @description Function
+ */
+export const useSponsorNotes = (sponsorId: string | undefined): void => {
   return useQuery({
     queryKey: ['sponsorNotes', sponsorId],
     queryFn: async () => {
@@ -27,7 +32,12 @@ export const useSponsorNotes = (sponsorId: string | undefined) => {
   });
 };
 
-export const useAddSponsorNote = () => {
+
+/**
+ * useAddSponsorNote
+ * @description Function
+ */
+export const useAddSponsorNote = (): void => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (

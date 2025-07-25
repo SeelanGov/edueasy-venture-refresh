@@ -5,20 +5,20 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import {
-    BookOpen,
-    Briefcase,
-    Building,
-    ChevronLeft,
-    ChevronRight,
-    ClipboardList,
-    Home,
-    LogOut,
-    Menu,
-    Moon,
-    Sun,
-    User,
-    Video,
-    X,
+  BookOpen,
+  Briefcase,
+  Building,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Home,
+  LogOut,
+  Menu,
+  Moon,
+  Sun,
+  User,
+  Video,
+  X,
 } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -27,7 +27,12 @@ interface MobileFriendlyDashboardLayoutProps {
   children: ReactNode;
 }
 
-export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashboardLayoutProps) => {
+
+/**
+ * MobileFriendlyDashboardLayout
+ * @description Function
+ */
+export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashboardLayoutProps): void => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +41,7 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
   const { isDarkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = (): void => {
       // Automatically expand/collapse sidebar based on screen width
       setSidebarOpen(window.innerWidth >= 768);
     };
@@ -59,12 +64,12 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
     return null;
   }
 
-  const handleSignOut = () => {
+  const handleSignOut = (): void => {
     signOut();
     navigate('/');
   };
 
-  const isActive = (path: string) => {
+  const isActive = (path: string): void => {
     return location.pathname === path;
   };
 

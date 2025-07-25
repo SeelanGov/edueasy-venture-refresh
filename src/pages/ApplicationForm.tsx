@@ -11,7 +11,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { useApplicationFormManager } from '@/hooks/useApplicationFormManager';
 import { useEffect, useRef } from 'react';
 
-const ApplicationForm = () => {
+const ApplicationForm = (): void => {
   const {
     form,
     isSubmitting,

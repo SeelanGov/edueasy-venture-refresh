@@ -4,13 +4,13 @@ interface LogEntry {
   timestamp: string;
   level: LogLevel;
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 class Logger {
   private isDevelopment = import.meta.env.DEV;
 
-  private formatMessage(level: LogLevel, message: string, data?: any): LogEntry {
+  private formatMessage(level: LogLevel, message: string, data?: unknown): LogEntry {
     return {
       timestamp: new Date().toISOString(),
       level,
@@ -19,24 +19,24 @@ class Logger {
     };
   }
 
-  debug(message: string, data?: any) {
+  debug(message: string, data?: unknown) {
     if (this.isDevelopment) {
       const entry = this.formatMessage('debug', message, data);
       console.debug(`[${entry.timestamp}] DEBUG: ${entry.message}`, entry.data || '');
     }
   }
 
-  info(message: string, data?: any) {
+  info(message: string, data?: unknown) {
     const entry = this.formatMessage('info', message, data);
     console.info(`[${entry.timestamp}] INFO: ${entry.message}`, entry.data || '');
   }
 
-  warn(message: string, data?: any) {
+  warn(message: string, data?: unknown) {
     const entry = this.formatMessage('warn', message, data);
     console.warn(`[${entry.timestamp}] WARN: ${entry.message}`, entry.data || '');
   }
 
-  error(message: string, error?: any) {
+  error(message: string, error?: unknown) {
     const entry = this.formatMessage('error', message, error);
     console.error(`[${entry.timestamp}] ERROR: ${entry.message}`, entry.data || '');
 

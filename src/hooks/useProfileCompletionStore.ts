@@ -99,6 +99,11 @@ const initialState = {
   documents: {},
 };
 
+
+/**
+ * useProfileCompletionStore
+ * @description Function
+ */
 export const useProfileCompletionStore = create<ProfileCompletionState>()(
   persist(
     (set, get) => ({

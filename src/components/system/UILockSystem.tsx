@@ -24,7 +24,12 @@ interface ComponentInventory {
   locked: boolean;
 }
 
-export const UILockSystem = () => {
+
+/**
+ * UILockSystem
+ * @description Function
+ */
+export const UILockSystem = (): void => {
   const [snapshots, setSnapshots] = useState<UISnapshot[]>([]);
   const [currentLock, setCurrentLock] = useState<UISnapshot | null>(null);
   const [components, setComponents] = useState<ComponentInventory[]>([]);
@@ -35,7 +40,7 @@ export const UILockSystem = () => {
     initializeUIState();
   }, []);
 
-  const initializeUIState = () => {
+  const initializeUIState = (): void => {
     const today = new Date().toISOString().split('T')[0];
 
     // Create the initial lock snapshot
@@ -120,7 +125,7 @@ export const UILockSystem = () => {
     });
   };
 
-  const createSnapshot = () => {
+  const createSnapshot = (): void => {
     const timestamp = new Date().toISOString();
     const newSnapshot: UISnapshot = {
       id: `snapshot-${Date.now()}`,
@@ -140,7 +145,7 @@ export const UILockSystem = () => {
     });
   };
 
-  const lockSnapshot = (snapshot: UISnapshot) => {
+  const lockSnapshot = (snapshot: UISnapshot): void => {
     const updatedSnapshot = { ...snapshot, isLocked: true };
     setSnapshots((prev) => prev.map((s) => (s.id === snapshot.id ? updatedSnapshot : s)));
     setCurrentLock(updatedSnapshot);
@@ -152,7 +157,7 @@ export const UILockSystem = () => {
     });
   };
 
-  const unlockUI = () => {
+  const unlockUI = (): void => {
     setIsLockActive(false);
     setCurrentLock(null);
 
@@ -162,7 +167,7 @@ export const UILockSystem = () => {
     });
   };
 
-  const restoreSnapshot = (snapshot: UISnapshot) => {
+  const restoreSnapshot = (snapshot: UISnapshot): void => {
     // In a real implementation, this would restore the UI state
     toast({
       title: 'Snapshot Restored',

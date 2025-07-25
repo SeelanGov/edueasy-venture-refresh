@@ -19,7 +19,12 @@ const steps = [
   },
 ];
 
-export function HowItWorksStepper() {
+
+/**
+ * HowItWorksStepper
+ * @description Function
+ */
+export function HowItWorksStepper(): void {
   return (
     <div className="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-stretch py-8">
       {steps.map((step, idx) => (

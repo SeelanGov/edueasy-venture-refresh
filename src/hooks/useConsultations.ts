@@ -3,7 +3,12 @@ import { useAuth } from '@/hooks/useAuth';
 import type { ConsultationBooking } from '@/types/RevenueTypes';
 import { useEffect, useState } from 'react';
 
-export function useConsultations() {
+
+/**
+ * useConsultations
+ * @description Function
+ */
+export function useConsultations(): void {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<ConsultationBooking[]>([]);
@@ -11,7 +16,7 @@ export function useConsultations() {
   const [error, setError] = useState<string | null>(null);
 
   // Helper function to handle errors
-  const handleError = (error: any, message: string) => {
+  const handleError = (error: unknown, message: string): void => {
     console.error(message, error);
     setError(message);
     toast({

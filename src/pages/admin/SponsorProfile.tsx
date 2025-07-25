@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSponsor } from '@/hooks/useSponsor';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
@@ -9,7 +8,7 @@ import SponsorPaymentHistory from '@/components/sponsor/SponsorPaymentHistory';
 import SponsorStudentTable from '@/components/sponsor/SponsorStudentTable';
 import { Spinner } from '@/components/Spinner';
 
-const SponsorProfile = () => {
+const SponsorProfile = (): void => {
   const { id } = useParams<{ id: string }>();
   const { data: sponsor, isLoading: sponsorLoading } = useSponsor(id);
   const { allocations, loading: allocationsLoading } = useSponsorAllocations({ sponsorId: id });

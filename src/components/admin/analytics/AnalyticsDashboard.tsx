@@ -9,7 +9,12 @@ import { AnalyticsKeyboardShortcuts } from './AnalyticsKeyboardShortcuts';
 import { useDocumentAnalytics } from '@/hooks/analytics';
 import { supabase } from '@/integrations/supabase/client';
 
-export const AnalyticsDashboard = () => {
+
+/**
+ * AnalyticsDashboard
+ * @description Function
+ */
+export const AnalyticsDashboard = (): void => {
   const { analytics, loading, error, filters, updateFilters, resetFilters, refreshAnalytics } =
     useDocumentAnalytics();
   const [documentTypes, setDocumentTypes] = useState<string[]>([]);
@@ -47,7 +52,7 @@ export const AnalyticsDashboard = () => {
   }, []);
 
   // Export analytics data as CSV
-  const handleExportData = () => {
+  const handleExportData = (): void => {
     if (!analytics) return;
 
     let csv = 'data:text/csv;charset=utf-8,';

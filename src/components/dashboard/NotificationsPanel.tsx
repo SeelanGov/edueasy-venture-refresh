@@ -21,7 +21,12 @@ import { useMemo, useState } from 'react';
 type FilterOption = 'all' | 'unread' | 'document' | 'application' | 'admin' | 'system';
 type GroupBy = 'date' | 'type' | 'none';
 
-export const NotificationsPanel = () => {
+
+/**
+ * NotificationsPanel
+ * @description Function
+ */
+export const NotificationsPanel = (): void => {
   const {
     notifications,
     unreadCount,
@@ -110,7 +115,7 @@ export const NotificationsPanel = () => {
     return 'Older';
   };
 
-  const getNotificationIcon = (type: string) => {
+  const getNotificationIcon = (type: string): void => {
     switch (type) {
       case 'document_status':
         return <AlertCircle className="h-4 w-4 text-blue-500" />;
@@ -123,7 +128,7 @@ export const NotificationsPanel = () => {
     }
   };
 
-  const renderNotificationContent = (notification: Notification) => {
+  const renderNotificationContent = (notification: Notification): void => {
     return (
       <div
         className={`p-4 ${notification.is_read ? 'bg-white dark:bg-gray-800' : 'bg-blue-50 dark:bg-blue-900/20'} transition-colors duration-200`}
@@ -168,7 +173,7 @@ export const NotificationsPanel = () => {
     );
   };
 
-  const renderNotificationGroups = () => {
+  const renderNotificationGroups = (): void => {
     return Object.entries(groupedNotifications).map(([groupName, groupNotifications]) => (
       <div key={groupName} className="mb-2">
         {groupName && (

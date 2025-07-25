@@ -7,50 +7,50 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/useAuth';
 import { useDocumentsManagement, type DocumentWithUserInfo } from '@/hooks/useDocumentsManagement';
 import {
-    AlertCircle,
-    BarChart,
-    CheckCircle,
-    DollarSign,
-    ExternalLinkIcon,
-    FileIcon,
-    RefreshCw,
-    Users,
-    XCircle,
-    Zap,
+  AlertCircle,
+  BarChart,
+  CheckCircle,
+  DollarSign,
+  ExternalLinkIcon,
+  FileIcon,
+  RefreshCw,
+  Users,
+  XCircle,
+  Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const AdminDashboard = () => {
+const AdminDashboard = (): void => {
   const { user } = useAuth();
   const {
     documents,
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
     return doc.verification_status === tabValue;
   });
 
-  const getStatusBadgeVariant = (status: string | null) => {
+  const getStatusBadgeVariant = (status: string | null): void => {
     switch (status) {
       case 'approved':
         return 'default';
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const getStatusBadge = (status: string | null) => {
+  const getStatusBadge = (status: string | null): void => {
     let statusText = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown';
     if (status === 'request_resubmission') statusText = 'Needs Resubmission';
 
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number): void => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };

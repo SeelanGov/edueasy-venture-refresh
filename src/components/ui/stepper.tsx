@@ -12,6 +12,11 @@ export interface StepperProps {
   className?: string;
 }
 
+
+/**
+ * Stepper
+ * @description Function
+ */
 export function Stepper({ steps, currentStep, className }: StepperProps): JSX.Element {
   return (
     <div className={cn('w-full space-y-4', className)}>

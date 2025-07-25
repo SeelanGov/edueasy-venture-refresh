@@ -16,7 +16,12 @@ interface DatabaseResult {
   plan: string;
 }
 
-export const useAuthActions = () => {
+
+/**
+ * useAuthActions
+ * @description Function
+ */
+export const useAuthActions = (): void => {
   const verifyIdentity = async (
     email: string,
     nationalId: string,
@@ -165,7 +170,7 @@ export const useAuthActions = () => {
         error: null,
         tracking_id: result.tracking_id,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.message || 'Registration failed';
       logger.error('Sign up failed:', error);
       return { user: null, session: null, error: message };
@@ -192,7 +197,7 @@ export const useAuthActions = () => {
       }
 
       return { user: data.user, session: data.session, error: null };
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.message || 'Sign in failed';
       logger.error('Sign in failed:', error);
       throw new Error(message);
@@ -210,7 +215,7 @@ export const useAuthActions = () => {
       }
 
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.message || 'Password reset failed';
       logger.error('Password reset failed:', error);
       throw new Error(message);
@@ -233,7 +238,7 @@ export const useAuthActions = () => {
       });
 
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       const message = error.message || 'Password update failed';
       logger.error('Password update failed:', error);
       throw new Error(message);

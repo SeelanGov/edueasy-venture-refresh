@@ -6,7 +6,12 @@ import { useLocation } from 'react-router-dom';
 /**
  * Hook for tracking page views automatically
  */
-export const usePageTracking = () => {
+
+/**
+ * usePageTracking
+ * @description Function
+ */
+export const usePageTracking = (): void => {
   const location = useLocation();
   const { user } = useAuth();
 
@@ -14,7 +19,7 @@ export const usePageTracking = () => {
     if (user) {
       analyticsService.setUserId(user.id);
     }
-    
+
     // Track page view on route change
     analyticsService.trackPageView(location.pathname);
   }, [location.pathname, user]);
@@ -23,18 +28,23 @@ export const usePageTracking = () => {
 /**
  * Hook for tracking user actions
  */
-export const useActionTracking = () => {
+
+/**
+ * useActionTracking
+ * @description Function
+ */
+export const useActionTracking = (): void => {
   const { user } = useAuth();
 
-  const trackAction = useCallback((
-    actionName: string, 
-    properties: Record<string, any> = {}
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackUserAction(actionName, properties);
-  }, [user]);
+  const trackAction = useCallback(
+    (actionName: string, properties: Record<string, unknown> = {}) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackUserAction(actionName, properties);
+    },
+    [user],
+  );
 
   return { trackAction };
 };
@@ -42,22 +52,28 @@ export const useActionTracking = () => {
 /**
  * Hook for tracking application submissions
  */
-export const useApplicationTracking = () => {
+
+/**
+ * useApplicationTracking
+ * @description Function
+ */
+export const useApplicationTracking = (): void => {
   const { user } = useAuth();
 
-  const trackApplicationSubmitted = useCallback((
-    applicationData: {
+  const trackApplicationSubmitted = useCallback(
+    (applicationData: {
       program_name: string;
       application_id: string;
       completion_time: number;
       documents_uploaded: number;
-    }
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackApplicationSubmitted(applicationData);
-  }, [user]);
+    }) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackApplicationSubmitted(applicationData);
+    },
+    [user],
+  );
 
   return { trackApplicationSubmitted };
 };
@@ -65,23 +81,29 @@ export const useApplicationTracking = () => {
 /**
  * Hook for tracking payments
  */
-export const usePaymentTracking = () => {
+
+/**
+ * usePaymentTracking
+ * @description Function
+ */
+export const usePaymentTracking = (): void => {
   const { user } = useAuth();
 
-  const trackPaymentCompleted = useCallback((
-    paymentData: {
+  const trackPaymentCompleted = useCallback(
+    (paymentData: {
       amount: number;
       currency: string;
       payment_method: string;
       tier_name: string;
       transaction_id: string;
-    }
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackPaymentCompleted(paymentData);
-  }, [user]);
+    }) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackPaymentCompleted(paymentData);
+    },
+    [user],
+  );
 
   return { trackPaymentCompleted };
 };
@@ -89,22 +111,28 @@ export const usePaymentTracking = () => {
 /**
  * Hook for tracking errors
  */
-export const useErrorTracking = () => {
+
+/**
+ * useErrorTracking
+ * @description Function
+ */
+export const useErrorTracking = (): void => {
   const { user } = useAuth();
 
-  const trackError = useCallback((
-    errorData: {
+  const trackError = useCallback(
+    (errorData: {
       error_message: string;
       error_stack?: string;
       component_name?: string;
       user_action?: string;
-    }
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackError(errorData);
-  }, [user]);
+    }) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackError(errorData);
+    },
+    [user],
+  );
 
   return { trackError };
 };
@@ -112,18 +140,23 @@ export const useErrorTracking = () => {
 /**
  * Hook for tracking feature usage
  */
-export const useFeatureTracking = () => {
+
+/**
+ * useFeatureTracking
+ * @description Function
+ */
+export const useFeatureTracking = (): void => {
   const { user } = useAuth();
 
-  const trackFeatureUsed = useCallback((
-    featureName: string, 
-    properties: Record<string, any> = {}
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackFeatureUsed(featureName, properties);
-  }, [user]);
+  const trackFeatureUsed = useCallback(
+    (featureName: string, properties: Record<string, unknown> = {}) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackFeatureUsed(featureName, properties);
+    },
+    [user],
+  );
 
   return { trackFeatureUsed };
 };
@@ -131,22 +164,28 @@ export const useFeatureTracking = () => {
 /**
  * Hook for tracking conversions
  */
-export const useConversionTracking = () => {
+
+/**
+ * useConversionTracking
+ * @description Function
+ */
+export const useConversionTracking = (): void => {
   const { user } = useAuth();
 
-  const trackConversion = useCallback((
-    conversionData: {
+  const trackConversion = useCallback(
+    (conversionData: {
       conversion_type: string;
       value?: number;
       currency?: string;
-      properties?: Record<string, any>;
-    }
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackConversion(conversionData);
-  }, [user]);
+      properties?: Record<string, unknown>;
+    }) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackConversion(conversionData);
+    },
+    [user],
+  );
 
   return { trackConversion };
 };
@@ -154,22 +193,28 @@ export const useConversionTracking = () => {
 /**
  * Hook for tracking engagement
  */
-export const useEngagementTracking = () => {
+
+/**
+ * useEngagementTracking
+ * @description Function
+ */
+export const useEngagementTracking = (): void => {
   const { user } = useAuth();
 
-  const trackEngagement = useCallback((
-    engagementData: {
+  const trackEngagement = useCallback(
+    (engagementData: {
       engagement_type: string;
       duration?: number;
       interactions?: number;
-      properties?: Record<string, any>;
-    }
-  ) => {
-    if (user) {
-      analyticsService.setUserId(user.id);
-    }
-    analyticsService.trackEngagement(engagementData);
-  }, [user]);
+      properties?: Record<string, unknown>;
+    }) => {
+      if (user) {
+        analyticsService.setUserId(user.id);
+      }
+      analyticsService.trackEngagement(engagementData);
+    },
+    [user],
+  );
 
   return { trackEngagement };
 };
@@ -177,7 +222,12 @@ export const useEngagementTracking = () => {
 /**
  * Hook for getting analytics data
  */
-export const useAnalyticsData = () => {
+
+/**
+ * useAnalyticsData
+ * @description Function
+ */
+export const useAnalyticsData = (): void => {
   const { user } = useAuth();
 
   const getUserAnalytics = useCallback(async () => {
@@ -193,12 +243,12 @@ export const useAnalyticsData = () => {
     return await analyticsService.getRevenueAnalytics();
   }, []);
 
-  const generateReport = useCallback(async (
-    reportType: 'user' | 'application' | 'revenue', 
-    filters?: Record<string, any>
-  ) => {
-    return await analyticsService.generateReport(reportType, filters);
-  }, []);
+  const generateReport = useCallback(
+    async (reportType: 'user' | 'application' | 'revenue', filters?: Record<string, unknown>) => {
+      return await analyticsService.generateReport(reportType, filters);
+    },
+    [],
+  );
 
   return {
     getUserAnalytics,
@@ -211,7 +261,12 @@ export const useAnalyticsData = () => {
 /**
  * Hook for comprehensive analytics tracking
  */
-export const useAnalytics = () => {
+
+/**
+ * useAnalytics
+ * @description Function
+ */
+export const useAnalytics = (): void => {
   const { trackAction } = useActionTracking();
   const { trackApplicationSubmitted } = useApplicationTracking();
   const { trackPaymentCompleted } = usePaymentTracking();
@@ -231,4 +286,4 @@ export const useAnalytics = () => {
     trackEngagement,
     ...analyticsData,
   };
-}; 
+};

@@ -5,11 +5,16 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
-export const HeroContent = () => {
+
+/**
+ * HeroContent
+ * @description Function
+ */
+export const HeroContent = (): void => {
   const { user, userType, isVerified } = useAuth();
   const navigate = useNavigate();
 
-  const handleStartApplication = () => {
+  const handleStartApplication = (): void => {
     if (!user) {
       toast({
         title: 'Registration Required',
@@ -49,19 +54,21 @@ export const HeroContent = () => {
     try {
       const { data: userSubscription } = await supabase
         .from('user_subscriptions')
-        .select(`
+        .select(
+          `
           tier_id,
           subscription_tiers!inner(
             name,
             thandi_tier
           )
-        `)
+        `,
+        )
         .eq('user_id', user.id)
         .eq('is_active', true)
         .single();
 
       const thandiTier = userSubscription?.subscription_tiers?.thandi_tier || 'basic';
-      
+
       // Allow access but show tier limitations in Meet Thandi page
       navigate('/meet-thandi', { state: { thandiTier } });
     } catch (error) {

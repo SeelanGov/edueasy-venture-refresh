@@ -1,4 +1,9 @@
 // Feature flag configuration for design system rollout
+
+/**
+ * FEATURE_FLAGS
+ * @description Function
+ */
 export const FEATURE_FLAGS = {
   NEW_DESIGN_SYSTEM:
     process.env.NODE_ENV === 'development' || process.env.VITE_ENABLE_NEW_DESIGN_SYSTEM === 'true',
@@ -14,15 +19,30 @@ export const FEATURE_FLAGS = {
 
 export type FeatureFlag = keyof typeof FEATURE_FLAGS;
 
+
+/**
+ * isFeatureEnabled
+ * @description Function
+ */
 export const isFeatureEnabled = (flag: FeatureFlag): boolean => {
   return FEATURE_FLAGS[flag];
 };
 
+
+/**
+ * withFeatureFlag
+ * @description Function
+ */
 export const withFeatureFlag = <T>(flag: FeatureFlag, component: T, fallback: T): T => {
   return isFeatureEnabled(flag) ? component : fallback;
 };
 
 // Helper for conditional component rendering
-export const useDesignSystemFeature = (flag: FeatureFlag) => {
+
+/**
+ * useDesignSystemFeature
+ * @description Function
+ */
+export const useDesignSystemFeature = (flag: FeatureFlag): void => {
   return isFeatureEnabled(flag);
 };

@@ -16,9 +16,14 @@ export interface ComponentValidationOptions {
 }
 
 // Validate component props against design system
+
+/**
+ * validateComponentProps
+ * @description Function
+ */
 export const validateComponentProps = (
   componentName: string,
-  props: Record<string, any>,
+  props: Record<string, unknown>,
   options: ComponentValidationOptions = {},
 ): ValidationResult => {
   const violations: string[] = [];
@@ -81,7 +86,12 @@ export const validateComponentProps = (
 };
 
 // Validate design system usage across components
-export const validateDesignSystemUsage = (componentTree: any[]): ValidationResult => {
+
+/**
+ * validateDesignSystemUsage
+ * @description Function
+ */
+export const validateDesignSystemUsage = (componentTree: unknown[]): ValidationResult => {
   const violations: string[] = [];
   const suggestions: string[] = [];
 
@@ -104,6 +114,11 @@ export const validateDesignSystemUsage = (componentTree: any[]): ValidationResul
 };
 
 // Color contrast validation
+
+/**
+ * validateColorContrast
+ * @description Function
+ */
 export const validateColorContrast = (
   foreground: string,
   background: string,
@@ -124,6 +139,11 @@ export const validateColorContrast = (
 };
 
 // Generate design system report
+
+/**
+ * generateDesignSystemReport
+ * @description Function
+ */
 export const generateDesignSystemReport = (
   validationResults: ValidationResult[],
 ): {

@@ -2,7 +2,12 @@ import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
-export const RoleBasedRedirect = () => {
+
+/**
+ * RoleBasedRedirect
+ * @description Function
+ */
+export const RoleBasedRedirect = (): void => {
   const { user, userType, loading } = useAuth();
 
   if (loading) {

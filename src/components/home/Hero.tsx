@@ -7,11 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import { HeroImage } from './HeroImage';
 import { StatisticsGrid } from './StatisticsGrid';
 
-export const Hero = () => {
+
+/**
+ * Hero
+ * @description Function
+ */
+export const Hero = (): void => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleStartApplication = () => {
+  const handleStartApplication = (): void => {
     if (!user) {
       toast({
         title: 'Registration Required',

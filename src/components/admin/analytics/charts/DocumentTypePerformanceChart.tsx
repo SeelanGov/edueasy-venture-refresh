@@ -14,7 +14,12 @@ interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];
 }
 
-export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps) => {
+
+/**
+ * DocumentTypePerformanceChart
+ * @description Function
+ */
+export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps): void => {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-muted-foreground">

@@ -61,7 +61,12 @@ interface FilterState {
   showResolved: boolean;
 }
 
-export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorLogsTableProps) => {
+
+/**
+ * ErrorLogsTable
+ * @description Function
+ */
+export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorLogsTableProps): void => {
   const [filter, setFilter] = useState<FilterState>({
     search: '',
     showResolved: false,
@@ -71,7 +76,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
   const [resolutionNotes, setResolutionNotes] = useState<Record<string, string>>({});
   const [resolvingIds, setResolvingIds] = useState<string[]>([]);
 
-  const toggleRowExpanded = (id: string) => {
+  const toggleRowExpanded = (id: string): void => {
     setExpandedRows((prev) => ({
       ...prev,
       [id]: !prev[id],
@@ -120,7 +125,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
     return true;
   });
 
-  const getSeverityIcon = (severity: string) => {
+  const getSeverityIcon = (severity: string): void => {
     switch (severity) {
       case 'INFO':
         return <Info className="h-4 w-4 text-info" />;
@@ -135,7 +140,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
     }
   };
 
-  const getSeverityStatus = (severity: string) => {
+  const getSeverityStatus = (severity: string): void => {
     switch (severity) {
       case 'INFO':
         return 'info';
@@ -150,7 +155,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
     }
   };
 
-  const getCategoryStatus = (category: string) => {
+  const getCategoryStatus = (category: string): void => {
     switch (category) {
       case 'NETWORK':
       case 'DATABASE':

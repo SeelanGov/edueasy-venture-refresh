@@ -5,7 +5,12 @@ interface RejectionReasonsChartProps {
   data: RejectionReason[];
 }
 
-export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
+
+/**
+ * RejectionReasonsChart
+ * @description Function
+ */
+export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps): void => {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-muted-foreground">

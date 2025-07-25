@@ -11,7 +11,12 @@ export interface UserTypeProfile {
   tier_level: string | null;
 }
 
-export const useUserType = () => {
+
+/**
+ * useUserType
+ * @description Function
+ */
+export const useUserType = (): void => {
   const { user } = useAuth();
   const [userType, setUserType] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserTypeProfile | null>(null);

@@ -5,7 +5,12 @@ interface ProfileCompletionStepperProps {
   currentStep: number;
 }
 
-export const ProfileCompletionStepper = ({ steps, currentStep }: ProfileCompletionStepperProps) => {
+
+/**
+ * ProfileCompletionStepper
+ * @description Function
+ */
+export const ProfileCompletionStepper = ({ steps, currentStep }: ProfileCompletionStepperProps): void => {
   return (
     <div className="w-full py-6 px-4 bg-gray-50 border-b">
       <div className="flex items-center justify-between max-w-4xl mx-auto">

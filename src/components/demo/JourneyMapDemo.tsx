@@ -3,7 +3,12 @@ import { JourneyMap } from '@/components/journey/JourneyMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
-export const JourneyMapDemo = () => {
+
+/**
+ * JourneyMapDemo
+ * @description Function
+ */
+export const JourneyMapDemo = (): void => {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [
     'Personal Information',
@@ -14,19 +19,19 @@ export const JourneyMapDemo = () => {
     'Review & Submit',
   ];
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = (): void => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
 
-  const handleReset = () => {
+  const handleReset = (): void => {
     setCurrentStep(0);
   };
 

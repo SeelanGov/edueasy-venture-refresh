@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,46 +11,46 @@ const partnerTypes = [
     description: 'Technical and Vocational Education Training institutions',
     icon: GraduationCap,
     route: '/institutions/register',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Universities',
     description: 'Higher education institutions',
     icon: Building2,
     route: '/institutions/register',
-    userType: 'institution'
+    userType: 'institution',
   },
   {
     name: 'Bursary Sponsors',
     description: 'Organizations providing financial support',
     icon: DollarSign,
     route: '/sponsors/register',
-    userType: 'sponsor'
+    userType: 'sponsor',
   },
   {
     name: 'NSFAS',
     description: 'National Student Financial Aid Scheme',
     icon: FileCheck,
     route: '/nsfas/register',
-    userType: 'nsfas'
+    userType: 'nsfas',
   },
   {
     name: 'Guidance Counselors',
     description: 'Career and educational guidance professionals',
     icon: Users,
     route: '/counselors/register',
-    userType: 'consultant'
-  }
+    userType: 'consultant',
+  },
 ];
 
-const Footer = () => {
+const Footer = (): void => {
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userType } = useAuth();
   const { isAdmin } = useAdminRole();
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -68,7 +67,7 @@ const Footer = () => {
     }
   };
 
-  const handlePartnerSelect = (partner: typeof partnerTypes[0]) => {
+  const handlePartnerSelect = (partner: (typeof partnerTypes)[0]) => {
     // If user is already logged in with this user type, redirect to auth-redirect
     if (user && userType === partner.userType) {
       navigate('/auth-redirect');
@@ -79,7 +78,7 @@ const Footer = () => {
     setIsPartnerModalOpen(false);
   };
 
-  const handleAdminAccess = () => {
+  const handleAdminAccess = (): void => {
     if (user && isAdmin) {
       navigate('/admin/dashboard');
     } else {

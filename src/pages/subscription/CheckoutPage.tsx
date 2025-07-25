@@ -13,11 +13,13 @@ interface CheckoutPageProps {
 
 export default function CheckoutPage({ tierId }: CheckoutPageProps) {
   const [loading, setLoading] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>('idle');
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>(
+    'idle',
+  );
   const { tiers, subscribeToPlan } = useSubscription();
   const navigate = useNavigate();
 
-  const selectedTier = tiers.find(tier => tier.id === tierId);
+  const selectedTier = tiers.find((tier) => tier.id === tierId);
 
   if (!selectedTier) {
     return <div>Plan not found</div>;
@@ -29,7 +31,7 @@ export default function CheckoutPage({ tierId }: CheckoutPageProps) {
 
     try {
       const success = await subscribeToPlan(tierId, 'payfast');
-      
+
       if (success) {
         setPaymentStatus('success');
         toast({
@@ -105,9 +107,9 @@ export default function CheckoutPage({ tierId }: CheckoutPageProps) {
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-4 border rounded-lg bg-gray-50">
-              <img 
-                src="/images/payfast-logo.png" 
-                alt="PayFast" 
+              <img
+                src="/images/payfast-logo.png"
+                alt="PayFast"
                 className="h-8 w-auto"
                 onError={(e) => {
                   // Fallback if image doesn't exist
@@ -147,21 +149,13 @@ export default function CheckoutPage({ tierId }: CheckoutPageProps) {
             </Button>
 
             {paymentStatus === 'failed' && (
-              <Button
-                onClick={handlePayFastPayment}
-                variant="outline"
-                className="w-full"
-              >
+              <Button onClick={handlePayFastPayment} variant="outline" className="w-full">
                 Try Again
               </Button>
             )}
 
             <div className="text-center">
-              <Button
-                onClick={() => navigate('/subscription')}
-                variant="ghost"
-                size="sm"
-              >
+              <Button onClick={() => navigate('/subscription')} variant="ghost" size="sm">
                 ← Back to Plans
               </Button>
             </div>
@@ -175,4 +169,4 @@ export default function CheckoutPage({ tierId }: CheckoutPageProps) {
       </div>
     </div>
   );
-} 
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PartnerStatusBadge from './PartnerStatusBadge';
 type Props = {
-  partner: any;
+  partner: unknown;
   onClick?: () => void;
 };
 const PartnerCard: React.FC<Props> = ({ partner, onClick }) => (

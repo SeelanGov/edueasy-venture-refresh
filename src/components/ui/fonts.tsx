@@ -6,7 +6,12 @@ import { Helmet } from 'react-helmet';
  * This component uses Helmet to inject the Google Fonts link
  * in the document head
  */
-export const Fonts = () => {
+
+/**
+ * Fonts
+ * @description Function
+ */
+export const Fonts = (): void => {
   return (
     <Helmet>
       <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 
-const UserProfile = () => {
+const UserProfile = (): void => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState({

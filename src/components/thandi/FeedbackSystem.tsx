@@ -9,7 +9,12 @@ interface FeedbackSystemProps {
   onFeedbackSubmit?: (feedback: 'helpful' | 'unhelpful') => void;
 }
 
-export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemProps) => {
+
+/**
+ * FeedbackSystem
+ * @description Function
+ */
+export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemProps): void => {
   const [feedback, setFeedback] = useState<'helpful' | 'unhelpful' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();

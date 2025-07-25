@@ -13,6 +13,11 @@ export enum ErrorSeverity {
 /**
  * Log a standardized error to the system error logs
  */
+
+/**
+ * logError
+ * @description Function
+ */
 export const logError = async (
   error: StandardError,
   severity: ErrorSeverity = ErrorSeverity.ERROR,
@@ -53,6 +58,11 @@ export const logError = async (
 
 /**
  * Safely log errors to our backend with standardized structure
+ */
+
+/**
+ * safeAsyncWithLogging
+ * @description Function
  */
 export const safeAsyncWithLogging = async <T>(
   fn: () => Promise<T>,
@@ -105,6 +115,11 @@ export const safeAsyncWithLogging = async <T>(
 /**
  * Get count of critical errors in the last 24 hours
  */
+
+/**
+ * getCriticalErrorCount
+ * @description Function
+ */
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
     // Fixed: Use proper count method with Supabase
@@ -120,6 +135,11 @@ export const getCriticalErrorCount = async (): Promise<number> => {
 
 /**
  * Mark an error as resolved
+ */
+
+/**
+ * resolveSystemError
+ * @description Function
  */
 export const resolveSystemError = async (
   errorId: string,

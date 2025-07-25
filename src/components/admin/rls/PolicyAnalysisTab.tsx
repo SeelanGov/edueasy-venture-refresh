@@ -9,7 +9,12 @@ interface PolicyAnalysisTabProps {
   onRefreshData: () => void;
 }
 
-export const PolicyAnalysisTab = ({ policyAnalysis, onRefreshData }: PolicyAnalysisTabProps) => {
+
+/**
+ * PolicyAnalysisTab
+ * @description Function
+ */
+export const PolicyAnalysisTab = ({ policyAnalysis, onRefreshData }: PolicyAnalysisTabProps): void => {
   return (
     <CardContent>
       <div className="flex justify-between items-center mb-4">

@@ -23,6 +23,11 @@ interface GradeSubjectsTabProps {
   createSubject: () => SubjectMark;
 }
 
+
+/**
+ * GradeSubjectsTab
+ * @description Function
+ */
 export const GradeSubjectsTab: React.FC<GradeSubjectsTabProps> = ({
   gradeFields,
   control,

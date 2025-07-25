@@ -28,7 +28,12 @@ interface UserProfile {
   verified?: boolean; // Add verified property
 }
 
-export const UserProfileCard = () => {
+
+/**
+ * UserProfileCard
+ * @description Function
+ */
+export const UserProfileCard = (): void => {
   const [isFollowing, toggleFollowing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +77,7 @@ export const UserProfileCard = () => {
     fetchProfileData();
   }, []);
 
-  const handleFollowToggle = () => {
+  const handleFollowToggle = (): void => {
     toggleFollowing((prev) => !prev);
   };
 

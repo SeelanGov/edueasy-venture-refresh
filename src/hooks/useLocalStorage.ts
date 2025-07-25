@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 
+
+/**
+ * useLocalStorage
+ * @description Function
+ */
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
@@ -35,7 +40,7 @@ export function useLocalStorage<T>(
 
   // Listen for changes to the localStorage value
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
+    const handleStorageChange = (e: StorageEvent): void => {
       if (e.key === key && e.newValue !== null) {
         try {
           const newValue = JSON.parse(e.newValue);

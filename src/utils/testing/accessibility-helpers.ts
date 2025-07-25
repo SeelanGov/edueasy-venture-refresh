@@ -24,6 +24,11 @@ const isFormElementWithLabels = (
 };
 
 // Check for common accessibility issues
+
+/**
+ * checkAccessibility
+ * @description Function
+ */
 export const checkAccessibility = (
   element: HTMLElement | null,
   level: 'A' | 'AA' | 'AAA' = 'AA',
@@ -141,6 +146,11 @@ export const checkAccessibility = (
 };
 
 // Generate accessibility report
+
+/**
+ * generateAccessibilityReport
+ * @description Function
+ */
 export const generateAccessibilityReport = (
   checkResults: AccessibilityCheckResult[],
 ): {
@@ -174,6 +184,11 @@ export const generateAccessibilityReport = (
 };
 
 // Keyboard navigation helper
+
+/**
+ * simulateKeyboardNavigation
+ * @description Function
+ */
 export const simulateKeyboardNavigation = (
   element: HTMLElement,
 ): {

@@ -24,7 +24,7 @@ export default function PaymentCancelled() {
               You can try again anytime or contact support if you need assistance.
             </p>
           </div>
-          
+
           <div className="flex gap-4">
             <Button onClick={() => navigate('/subscription')} className="flex-1">
               Try Again
@@ -37,4 +37,4 @@ export default function PaymentCancelled() {
       </Card>
     </div>
   );
-} 
+}

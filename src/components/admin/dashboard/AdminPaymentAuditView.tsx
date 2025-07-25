@@ -2,20 +2,26 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import {
-    CheckCircle,
-    Clock,
-    DollarSign,
-    Download,
-    ExternalLink,
-    Eye,
-    Filter,
-    RefreshCw,
-    Search,
-    XCircle
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Download,
+  ExternalLink,
+  Eye,
+  Filter,
+  RefreshCw,
+  Search,
+  XCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -32,7 +38,7 @@ interface PaymentAuditData {
   payfast_payment_id?: string | null;
   payment_expiry?: string | null;
   ipn_verified: boolean | null;
-  webhook_data?: any;
+  webhook_data?: unknown;
   created_at: string | null;
   updated_at: string | null;
   user_email?: string;
@@ -52,7 +58,12 @@ interface PaymentSummary {
   verifiedCount: number;
 }
 
-export const AdminPaymentAuditView = () => {
+
+/**
+ * AdminPaymentAuditView
+ * @description Function
+ */
+export const AdminPaymentAuditView = (): void => {
   const { toast } = useToast();
   const [payments, setPayments] = useState<PaymentAuditData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +77,7 @@ export const AdminPaymentAuditView = () => {
     failedAmount: 0,
     failedCount: 0,
     verifiedAmount: 0,
-    verifiedCount: 0
+    verifiedCount: 0,
   });
 
   // Filter states
@@ -80,10 +91,7 @@ export const AdminPaymentAuditView = () => {
   const fetchPayments = async () => {
     setLoading(true);
     try {
-      let query = supabase
-        .from('payments')
-        .select('*')
-        .order('created_at', { ascending: false });
+      let query = supabase.from('payments').select('*').order('created_at', { ascending: false });
 
       // Apply date range filter
       if (dateRange !== 'all') {
@@ -97,12 +105,13 @@ export const AdminPaymentAuditView = () => {
 
       if (error) throw error;
 
-      const paymentsWithUserInfo = data?.map(payment => ({
-        ...payment,
-        user_email: 'N/A',
-        user_name: 'N/A',
-        tier: payment.tier || 'N/A'
-      })) || [];
+      const paymentsWithUserInfo =
+        data?.map((payment) => ({
+          ...payment,
+          user_email: 'N/A',
+          user_name: 'N/A',
+          tier: payment.tier || 'N/A',
+        })) || [];
 
       setPayments(paymentsWithUserInfo);
       calculateSummary(paymentsWithUserInfo);
@@ -118,44 +127,47 @@ export const AdminPaymentAuditView = () => {
     }
   };
 
-  const calculateSummary = (paymentData: PaymentAuditData[]) => {
-    const summary = paymentData.reduce((acc, payment) => {
-      const amount = payment.amount || 0;
-      acc.totalAmount += amount;
-      acc.totalPayments += 1;
-      
-      switch (payment.status) {
-        case 'pending':
-          acc.pendingAmount += amount;
-          acc.pendingCount += 1;
-          break;
-        case 'paid':
-          acc.paidAmount += amount;
-          acc.paidCount += 1;
-          if (payment.ipn_verified) {
-            acc.verifiedAmount += amount;
-            acc.verifiedCount += 1;
-          }
-          break;
-        case 'failed':
-          acc.failedAmount += amount;
-          acc.failedCount += 1;
-          break;
-      }
-      return acc;
-    }, {
-      totalAmount: 0,
-      totalPayments: 0,
-      pendingAmount: 0,
-      pendingCount: 0,
-      paidAmount: 0,
-      paidCount: 0,
-      failedAmount: 0,
-      failedCount: 0,
-      verifiedAmount: 0,
-      verifiedCount: 0
-    } as PaymentSummary);
-    
+  const calculateSummary = (paymentData: PaymentAuditData[]): void => {
+    const summary = paymentData.reduce(
+      (acc, payment) => {
+        const amount = payment.amount || 0;
+        acc.totalAmount += amount;
+        acc.totalPayments += 1;
+
+        switch (payment.status) {
+          case 'pending':
+            acc.pendingAmount += amount;
+            acc.pendingCount += 1;
+            break;
+          case 'paid':
+            acc.paidAmount += amount;
+            acc.paidCount += 1;
+            if (payment.ipn_verified) {
+              acc.verifiedAmount += amount;
+              acc.verifiedCount += 1;
+            }
+            break;
+          case 'failed':
+            acc.failedAmount += amount;
+            acc.failedCount += 1;
+            break;
+        }
+        return acc;
+      },
+      {
+        totalAmount: 0,
+        totalPayments: 0,
+        pendingAmount: 0,
+        pendingCount: 0,
+        paidAmount: 0,
+        paidCount: 0,
+        failedAmount: 0,
+        failedCount: 0,
+        verifiedAmount: 0,
+        verifiedCount: 0,
+      } as PaymentSummary,
+    );
+
     setSummary(summary);
   };
 
@@ -169,17 +181,17 @@ export const AdminPaymentAuditView = () => {
     if (paymentStatus !== 'all' && payment.status !== paymentStatus) {
       return false;
     }
-    
+
     // Payment method filter
     if (paymentMethod !== 'all' && payment.payment_method !== paymentMethod) {
       return false;
     }
-    
+
     // Gateway provider filter
     if (gatewayProvider !== 'all' && payment.gateway_provider !== gatewayProvider) {
       return false;
     }
-    
+
     // Amount range filter
     if (amountRange !== 'all') {
       const amount = payment.amount || 0;
@@ -195,7 +207,7 @@ export const AdminPaymentAuditView = () => {
           break;
       }
     }
-    
+
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -204,22 +216,39 @@ export const AdminPaymentAuditView = () => {
       const userEmail = payment.user_email?.toLowerCase() || '';
       const userName = payment.user_name?.toLowerCase() || '';
       const amount = payment.amount?.toString() || '';
-      
-      if (!merchantRef.includes(query) && !userId.includes(query) && 
-          !userEmail.includes(query) && !userName.includes(query) && 
-          !amount.includes(query)) {
+
+      if (
+        !merchantRef.includes(query) &&
+        !userId.includes(query) &&
+        !userEmail.includes(query) &&
+        !userName.includes(query) &&
+        !amount.includes(query)
+      ) {
         return false;
       }
     }
-    
+
     return true;
   });
 
   const handleExportCSV = async () => {
     try {
       const csvData = [
-        ['Merchant Reference', 'User ID', 'User Email', 'User Name', 'Amount', 'Tier', 'Payment Method', 'Status', 'Gateway', 'IPN Verified', 'Created At', 'Updated At'],
-        ...filteredPayments.map(payment => [
+        [
+          'Merchant Reference',
+          'User ID',
+          'User Email',
+          'User Name',
+          'Amount',
+          'Tier',
+          'Payment Method',
+          'Status',
+          'Gateway',
+          'IPN Verified',
+          'Created At',
+          'Updated At',
+        ],
+        ...filteredPayments.map((payment) => [
           payment.merchant_reference || '',
           payment.user_id || '',
           payment.user_email || '',
@@ -231,11 +260,11 @@ export const AdminPaymentAuditView = () => {
           payment.gateway_provider || '',
           payment.ipn_verified ? 'Yes' : 'No',
           payment.created_at ? new Date(payment.created_at).toLocaleString() : 'N/A',
-          payment.updated_at ? new Date(payment.updated_at).toLocaleString() : 'N/A'
-        ])
+          payment.updated_at ? new Date(payment.updated_at).toLocaleString() : 'N/A',
+        ]),
       ];
-      
-      const csvContent = csvData.map(row => row.join(',')).join('\n');
+
+      const csvContent = csvData.map((row) => row.join(',')).join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -243,7 +272,7 @@ export const AdminPaymentAuditView = () => {
       a.download = `payment-audit-${new Date().toISOString().split('T')[0]}.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
-      
+
       toast({
         title: 'Export Successful',
         description: 'Payment audit data exported to CSV file',
@@ -257,7 +286,7 @@ export const AdminPaymentAuditView = () => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeVariant = (status: string): void => {
     switch (status) {
       case 'paid':
         return 'default';
@@ -270,14 +299,14 @@ export const AdminPaymentAuditView = () => {
     }
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: number): void => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
-      currency: 'ZAR'
+      currency: 'ZAR',
     }).format(amount);
   };
 
-  const handleViewPaymentDetails = (payment: PaymentAuditData) => {
+  const handleViewPaymentDetails = (payment: PaymentAuditData): void => {
     // Open payment details in a new tab or modal
     if (payment.payment_url) {
       window.open(payment.payment_url, '_blank');
@@ -306,9 +335,7 @@ export const AdminPaymentAuditView = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(summary.totalAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.totalPayments} transactions
-            </p>
+            <p className="text-xs text-muted-foreground">{summary.totalPayments} transactions</p>
           </CardContent>
         </Card>
 
@@ -318,10 +345,10 @@ export const AdminPaymentAuditView = () => {
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(summary.paidAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.paidCount} successful
-            </p>
+            <div className="text-2xl font-bold text-green-600">
+              {formatCurrency(summary.paidAmount)}
+            </div>
+            <p className="text-xs text-muted-foreground">{summary.paidCount} successful</p>
           </CardContent>
         </Card>
 
@@ -331,10 +358,10 @@ export const AdminPaymentAuditView = () => {
             <CheckCircle className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{formatCurrency(summary.verifiedAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.verifiedCount} IPN verified
-            </p>
+            <div className="text-2xl font-bold text-blue-600">
+              {formatCurrency(summary.verifiedAmount)}
+            </div>
+            <p className="text-xs text-muted-foreground">{summary.verifiedCount} IPN verified</p>
           </CardContent>
         </Card>
 
@@ -344,10 +371,10 @@ export const AdminPaymentAuditView = () => {
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{formatCurrency(summary.pendingAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.pendingCount} pending
-            </p>
+            <div className="text-2xl font-bold text-yellow-600">
+              {formatCurrency(summary.pendingAmount)}
+            </div>
+            <p className="text-xs text-muted-foreground">{summary.pendingCount} pending</p>
           </CardContent>
         </Card>
 
@@ -357,10 +384,10 @@ export const AdminPaymentAuditView = () => {
             <XCircle className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{formatCurrency(summary.failedAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.failedCount} failed
-            </p>
+            <div className="text-2xl font-bold text-red-600">
+              {formatCurrency(summary.failedAmount)}
+            </div>
+            <p className="text-xs text-muted-foreground">{summary.failedCount} failed</p>
           </CardContent>
         </Card>
       </div>
@@ -516,7 +543,9 @@ export const AdminPaymentAuditView = () => {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{payment.user_name || 'N/A'}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {payment.user_name || 'N/A'}
+                          </div>
                           <div className="text-sm text-gray-500">{payment.user_email}</div>
                         </div>
                       </td>
@@ -540,7 +569,9 @@ export const AdminPaymentAuditView = () => {
                         </Badge>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        {payment.created_at ? new Date(payment.created_at).toLocaleDateString() : 'N/A'}
+                        {payment.created_at
+                          ? new Date(payment.created_at).toLocaleDateString()
+                          : 'N/A'}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex space-x-2">
@@ -556,7 +587,9 @@ export const AdminPaymentAuditView = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => payment.payment_url && window.open(payment.payment_url, '_blank')}
+                              onClick={() =>
+                                payment.payment_url && window.open(payment.payment_url, '_blank')
+                              }
                             >
                               <ExternalLink className="h-4 w-4" />
                             </Button>
@@ -568,7 +601,9 @@ export const AdminPaymentAuditView = () => {
                   {filteredPayments.length === 0 && (
                     <tr>
                       <td colSpan={9} className="text-center text-gray-400 py-8">
-                        {payments.length === 0 ? 'No payments found.' : 'No payments match your filters.'}
+                        {payments.length === 0
+                          ? 'No payments found.'
+                          : 'No payments match your filters.'}
                       </td>
                     </tr>
                   )}
@@ -580,4 +615,4 @@ export const AdminPaymentAuditView = () => {
       </Card>
     </div>
   );
-}; 
+};

@@ -160,7 +160,7 @@ const ThandiAgent = memo(() => {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error calling Thandi AI:', error);
 
       const errorMessage: Message = {
@@ -182,7 +182,7 @@ const ThandiAgent = memo(() => {
     }
   };
 
-  const getTierIcon = () => {
+  const getTierIcon = (): void => {
     switch (thandiCapabilities.tier) {
       case 'basic':
         return <HelpCircle className="h-4 w-4" />;
@@ -195,7 +195,7 @@ const ThandiAgent = memo(() => {
     }
   };
 
-  const getTierColor = () => {
+  const getTierColor = (): void => {
     switch (thandiCapabilities.tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-700';

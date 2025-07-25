@@ -3,7 +3,7 @@ import { validateComponentProps, type ValidationResult } from './design-system-v
 // Component testing utilities
 export interface TestScenario {
   name: string;
-  props: Record<string, any>;
+  props: Record<string, unknown>;
   expectedBehavior?: string;
   shouldFail?: boolean;
 }
@@ -83,6 +83,11 @@ export class DesignSystemTester {
 }
 
 // Pre-built test scenarios for common components
+
+/**
+ * createButtonTestScenarios
+ * @description Function
+ */
 export const createButtonTestScenarios = (): TestScenario[] => [
   {
     name: 'Default button',
@@ -104,6 +109,11 @@ export const createButtonTestScenarios = (): TestScenario[] => [
   },
 ];
 
+
+/**
+ * createStatusBadgeTestScenarios
+ * @description Function
+ */
 export const createStatusBadgeTestScenarios = (): TestScenario[] => [
   {
     name: 'Valid status',
@@ -121,4 +131,9 @@ export const createStatusBadgeTestScenarios = (): TestScenario[] => [
 ];
 
 // Global test runner instance
+
+/**
+ * designSystemTester
+ * @description Function
+ */
 export const designSystemTester = new DesignSystemTester();

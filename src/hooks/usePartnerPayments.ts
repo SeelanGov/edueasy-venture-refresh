@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-export const usePartnerPayments = (partnerId?: string) => {
+
+/**
+ * usePartnerPayments
+ * @description Function
+ */
+export const usePartnerPayments = (partnerId?: string): void => {
   const [payments, setPayments] = useState<any[]>([]);
   useEffect(() => {
     if (!partnerId) return;

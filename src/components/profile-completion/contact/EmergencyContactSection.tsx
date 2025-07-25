@@ -15,6 +15,11 @@ interface EmergencyContactSectionProps {
   control: Control<ContactFormValues>;
 }
 
+
+/**
+ * EmergencyContactSection
+ * @description Function
+ */
 export const EmergencyContactSection: React.FC<EmergencyContactSectionProps> = ({ control }) => {
   return (
     <div className="space-y-6 p-4 border border-gray-200 rounded-md bg-gray-50">

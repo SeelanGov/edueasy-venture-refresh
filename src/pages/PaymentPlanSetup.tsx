@@ -1,13 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Building2, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const PaymentPlanSetup = () => {
+const PaymentPlanSetup = (): void => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedPlan = searchParams.get('plan');
@@ -181,9 +187,7 @@ const PaymentPlanSetup = () => {
         </Card>
 
         <div className="text-center space-y-2">
-          <p className="text-sm text-gray-600">
-            🔒 Secure payment processing via PayFast
-          </p>
+          <p className="text-sm text-gray-600">🔒 Secure payment processing via PayFast</p>
           <p className="text-sm text-gray-500">
             Questions? Contact support at support@edueasy.co.za
           </p>
@@ -199,4 +203,4 @@ const PaymentPlanSetup = () => {
   );
 };
 
-export default PaymentPlanSetup; 
+export default PaymentPlanSetup;

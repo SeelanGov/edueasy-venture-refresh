@@ -14,6 +14,11 @@ const tierColor: Record<string, string> = {
   basic: 'bg-slate-100 text-slate-600',
 };
 
+
+/**
+ * SponsorCard
+ * @description Function
+ */
 export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor, onClick }) => (
   <div
     className={`rounded-lg border shadow hover:shadow-lg transition cursor-pointer p-4 mb-2 w-full max-w-md bg-white`}

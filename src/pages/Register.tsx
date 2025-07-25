@@ -7,23 +7,24 @@ import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Register = () => {
+const Register = (): void => {
   const pendingPlan = secureStorage.getItem('pending_plan');
-  
+
   // Plan context for paid plans
   const plans = {
     essential: { name: 'Essential Plan', price: 'R199' },
-    'pro-ai': { name: 'Pro + AI Plan', price: 'R300' }
+    'pro-ai': { name: 'Pro + AI Plan', price: 'R300' },
   };
-  
+
   const selectedPlan = plans[pendingPlan as keyof typeof plans];
 
   return (
     <PageLayout
-      title={selectedPlan ? `Complete Your ${selectedPlan.name} Purchase` : "Create Your Account"}
-      subtitle={selectedPlan 
-        ? "Create your account to secure your purchase and get immediate access"
-        : "Join thousands of students who are already transforming their educational journey"
+      title={selectedPlan ? `Complete Your ${selectedPlan.name} Purchase` : 'Create Your Account'}
+      subtitle={
+        selectedPlan
+          ? 'Create your account to secure your purchase and get immediate access'
+          : 'Join thousands of students who are already transforming their educational journey'
       }
       gradient={true}
     >
@@ -31,8 +32,8 @@ const Register = () => {
         {/* Progress Indicator for paid plans */}
         {selectedPlan && (
           <div className="mb-8">
-            <ProgressIndicator 
-              steps={createAuthFlowSteps('register')} 
+            <ProgressIndicator
+              steps={createAuthFlowSteps('register')}
               className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
             />
           </div>
@@ -50,9 +51,7 @@ const Register = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle className="h-4 w-4 text-blue-600" />
-                  <p className="font-semibold text-blue-900">
-                    Plan Selected: {selectedPlan.name}
-                  </p>
+                  <p className="font-semibold text-blue-900">Plan Selected: {selectedPlan.name}</p>
                 </div>
                 <p className="text-sm text-blue-700 mb-2">
                   Create your account to secure your {selectedPlan.price} purchase
@@ -109,10 +108,9 @@ const Register = () => {
               {selectedPlan ? 'Create Your Account' : 'Join EduEasy'}
             </h2>
             <p className="text-white/90 text-sm">
-              {selectedPlan 
+              {selectedPlan
                 ? 'Complete your purchase and get access to your personalized dashboard'
-                : 'Start your educational journey today'
-              }
+                : 'Start your educational journey today'}
             </p>
           </div>
 

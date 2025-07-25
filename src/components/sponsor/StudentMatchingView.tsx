@@ -1,29 +1,25 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import {
-    AlertTriangle,
-    Award,
-    Building2,
-    CheckCircle,
-    Clock,
-    DollarSign,
-    ExternalLink,
-    Filter,
-    GraduationCap,
-    Heart,
-    MapPin,
-    RefreshCw,
-    Star,
-    TrendingUp,
-    Users,
-    XCircle
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Filter,
+  GraduationCap,
+  RefreshCw,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export const StudentMatchingView = () => {
+
+/**
+ * StudentMatchingView
+ * @description Function
+ */
+export const StudentMatchingView = (): void => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -34,7 +30,7 @@ export const StudentMatchingView = () => {
     }
   }, [user]);
 
-  const checkMigrationStatus = () => {
+  const checkMigrationStatus = (): void => {
     console.log('Database migration required for sponsor matching system');
     toast({
       title: 'Migration Required',
@@ -66,7 +62,8 @@ export const StudentMatchingView = () => {
         </CardHeader>
         <CardContent>
           <p className="text-orange-700 mb-4">
-            The sponsor matching system is currently unavailable as it requires database migration to create the necessary tables for matching functionality.
+            The sponsor matching system is currently unavailable as it requires database migration
+            to create the necessary tables for matching functionality.
           </p>
           <div className="space-y-2 text-sm text-orange-600">
             <p>• Missing table: sponsor_profiles</p>
@@ -150,8 +147,8 @@ export const StudentMatchingView = () => {
             <GraduationCap className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <h3 className="text-lg font-medium mb-2">Sponsor Matching System</h3>
             <p className="max-w-md mx-auto">
-              Once the database migration is applied, you'll be able to discover sponsors that match your academic profile, 
-              interests, and funding needs.
+              Once the database migration is applied, you'll be able to discover sponsors that match
+              your academic profile, interests, and funding needs.
             </p>
           </div>
         </CardContent>

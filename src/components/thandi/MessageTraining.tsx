@@ -20,6 +20,11 @@ interface MessageTrainingProps {
   onDeleteTraining: (id: string) => void;
 }
 
+
+/**
+ * MessageTraining
+ * @description Function
+ */
 export const MessageTraining = ({
   messages,
   trainedMessages,
@@ -33,7 +38,7 @@ export const MessageTraining = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageTrainingProps) => {
+}: MessageTrainingProps): void => {
   const {
     trainingStats,
     lastTrainingDate,

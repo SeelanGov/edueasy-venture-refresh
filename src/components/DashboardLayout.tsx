@@ -4,14 +4,14 @@ import { DashboardSidebar } from '@/components/dashboard/layout/DashboardSidebar
 import { MobileMenu } from '@/components/dashboard/layout/MobileMenu';
 import { Spinner } from '@/components/Spinner';
 import {
-    BarChart,
-    BookOpen,
-    ClipboardList,
-    CreditCard,
-    Home,
-    MessageSquare,
-    Settings,
-    User,
+  BarChart,
+  BookOpen,
+  ClipboardList,
+  CreditCard,
+  Home,
+  MessageSquare,
+  Settings,
+  User,
 } from '@/components/ui/icons';
 import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,7 +23,12 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+
+/**
+ * DashboardLayout
+ * @description Function
+ */
+export const DashboardLayout = ({ children }: DashboardLayoutProps): void => {
   const { user, signOut, loading } = useAuth();
   const { isAdmin, loading: roleLoading } = useAdminRole();
   const navigate = useNavigate();
@@ -45,12 +50,12 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     return null;
   }
 
-  const handleSignOut = () => {
+  const handleSignOut = (): void => {
     signOut();
     navigate('/');
   };
 
-  const isActive = (path: string) => {
+  const isActive = (path: string): void => {
     return location.pathname === path;
   };
 
@@ -103,7 +108,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       ]
     : [];
 
-  const getPageTitle = () => {
+  const getPageTitle = (): void => {
     const allNavItems = [...navItems, ...adminNavItems];
     const currentNavItem = allNavItems.find(
       (item) => isActive(item.path) || location.pathname.startsWith(item.path + '/'),

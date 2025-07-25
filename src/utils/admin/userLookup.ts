@@ -8,6 +8,11 @@ export interface UserSummary {
   id_verified?: boolean | null;
 }
 
+
+/**
+ * makeUserMap
+ * @description Function
+ */
 export function makeUserMap(
   users: Array<{
     id: string;
@@ -16,7 +21,7 @@ export function makeUserMap(
     email?: string | null;
     id_verified?: boolean | null;
   }>,
-) {
+): void {
   const map: Record<string, UserSummary> = {};
   users.forEach((u) => {
     map[u.id] = {

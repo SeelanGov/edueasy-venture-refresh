@@ -37,7 +37,12 @@ export interface Application {
   grade12_results: string | null;
 }
 
-export function useAdminDashboardData() {
+
+/**
+ * useAdminDashboardData
+ * @description Function
+ */
+export function useAdminDashboardData(): void {
   const [users, setUsers] = useState<DatabaseUser[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);

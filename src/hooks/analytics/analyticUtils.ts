@@ -4,6 +4,11 @@ import type { Database } from '@/integrations/supabase/types';
 type Document = Database['public']['Tables']['documents']['Row'];
 
 // Process documents to get counts by date
+
+/**
+ * processDocumentsByDate
+ * @description Function
+ */
 export const processDocumentsByDate = (documents: Document[]): DocumentDateData[] => {
   const dateMap: Record<string, Record<string, number>> = {};
 
@@ -37,6 +42,11 @@ export const processDocumentsByDate = (documents: Document[]): DocumentDateData[
 };
 
 // Process documents to get counts by type
+
+/**
+ * processDocumentsByType
+ * @description Function
+ */
 export const processDocumentsByType = (documents: Document[]): DocumentTypeData[] => {
   const typeMap: Record<
     string,
@@ -69,6 +79,11 @@ export const processDocumentsByType = (documents: Document[]): DocumentTypeData[
 };
 
 // Extract rejection reasons from documents
+
+/**
+ * extractRejectionReasons
+ * @description Function
+ */
 export const extractRejectionReasons = (documents: Document[]): RejectionReason[] => {
   const rejectionReasons = documents
     .filter(
@@ -90,7 +105,12 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
 };
 
 // Calculate analytics metrics from documents
-export const calculateAnalytics = (filteredDocuments: Document[]) => {
+
+/**
+ * calculateAnalytics
+ * @description Function
+ */
+export const calculateAnalytics = (filteredDocuments: Document[]): void => {
   const totalDocuments = filteredDocuments.length;
   const approvedDocuments = filteredDocuments.filter(
     (doc) => doc.verification_status === 'approved',

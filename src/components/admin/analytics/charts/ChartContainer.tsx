@@ -11,6 +11,11 @@ interface ChartContainerProps {
   className?: string;
 }
 
+
+/**
+ * ChartContainer
+ * @description Function
+ */
 export const ChartContainer = ({
   title,
   description,
@@ -18,7 +23,7 @@ export const ChartContainer = ({
   loading = false,
   error = null,
   className = '',
-}: ChartContainerProps) => {
+}: ChartContainerProps): void => {
   return (
     <Card className={className}>
       <CardHeader>

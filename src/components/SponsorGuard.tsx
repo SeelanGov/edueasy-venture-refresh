@@ -7,7 +7,12 @@ interface SponsorGuardProps {
   children: ReactNode;
 }
 
-export const SponsorGuard = ({ children }: SponsorGuardProps) => {
+
+/**
+ * SponsorGuard
+ * @description Function
+ */
+export const SponsorGuard = ({ children }: SponsorGuardProps): void => {
   const { userType, loading } = useAuth();
   const location = useLocation();
 

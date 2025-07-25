@@ -8,7 +8,12 @@ interface DocumentUploadError {
   retryable: boolean;
 }
 
-export const useDocumentUploadWithErrorHandling = () => {
+
+/**
+ * useDocumentUploadWithErrorHandling
+ * @description Function
+ */
+export const useDocumentUploadWithErrorHandling = (): void => {
   const [error, setError] = useState<DocumentUploadError | null>(null);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [currentDocType, setCurrentDocType] = useState<string>('');

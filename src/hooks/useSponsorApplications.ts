@@ -2,7 +2,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useCallback, useEffect, useState } from 'react';
 
-export function useSponsorApplications({ asSponsor = false } = {}) {
+
+/**
+ * useSponsorApplications
+ * @description Function
+ */
+export function useSponsorApplications({ asSponsor = false } = {}): void {
   const { user } = useAuth();
   const [applications, setApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +25,6 @@ export function useSponsorApplications({ asSponsor = false } = {}) {
         .single();
 
       if (sponsorError || !sponsorData) {
-  
         setApplications([]);
         setLoading(false);
         return;

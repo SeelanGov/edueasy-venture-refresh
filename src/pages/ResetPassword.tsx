@@ -32,7 +32,7 @@ const resetPasswordSchema = z
 
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-const ResetPassword = () => {
+const ResetPassword = (): void => {
   const { updatePassword } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);

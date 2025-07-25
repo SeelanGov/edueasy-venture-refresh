@@ -8,6 +8,11 @@ interface SectionProps {
   background?: 'default' | 'muted' | 'subtle';
 }
 
+
+/**
+ * Section
+ * @description Function
+ */
 export const Section: React.FC<SectionProps> = ({
   children,
   className,

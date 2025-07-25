@@ -24,22 +24,27 @@ interface AnalyticsFiltersProps {
   institutions: { id: string; name: string }[];
 }
 
+
+/**
+ * AnalyticsFilters
+ * @description Function
+ */
 export const AnalyticsFilters = ({
   filters,
   onUpdateFilters,
   onResetFilters,
   documentTypes,
   institutions,
-}: AnalyticsFiltersProps) => {
+}: AnalyticsFiltersProps): void => {
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
-  const handleStartDateSelect = (date: Date | undefined) => {
+  const handleStartDateSelect = (date: Date | undefined): void => {
     onUpdateFilters({ startDate: date || null });
     setStartDateOpen(false);
   };
 
-  const handleEndDateSelect = (date: Date | undefined) => {
+  const handleEndDateSelect = (date: Date | undefined): void => {
     onUpdateFilters({ endDate: date || null });
     setEndDateOpen(false);
   };

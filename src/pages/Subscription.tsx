@@ -9,7 +9,7 @@ import { formatCurrency, type UserSubscription } from '@/types/SubscriptionTypes
 import { CreditCard, Shield, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const Subscription = () => {
+const Subscription = (): void => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
   const { getUserPlan } = usePlanManagement();

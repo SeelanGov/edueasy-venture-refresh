@@ -21,18 +21,23 @@ interface PremiumFeatureProps {
   showPreview?: boolean;
 }
 
+
+/**
+ * PremiumFeature
+ * @description Function
+ */
 export function PremiumFeature({
   title,
   description,
   requiredTier,
   children,
   showPreview = false,
-}: PremiumFeatureProps) {
+}: PremiumFeatureProps): void {
   const { currentSubscription } = useSubscription();
   const navigate = useNavigate();
 
   // Check if user has access to this feature
-  const hasAccess = () => {
+  const hasAccess = (): void => {
     if (!currentSubscription || !currentSubscription.tier) {
       return false;
     }
@@ -55,7 +60,7 @@ export function PremiumFeature({
   };
 
   // Navigate to subscription page
-  const handleUpgrade = () => {
+  const handleUpgrade = (): void => {
     navigate('/pricing');
   };
 

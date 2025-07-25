@@ -7,6 +7,11 @@ interface DocumentFormActionsProps {
   isComplete: boolean;
 }
 
+
+/**
+ * DocumentFormActions
+ * @description Function
+ */
 export const DocumentFormActions: React.FC<DocumentFormActionsProps> = ({ onBack, isComplete }) => {
   return (
     <div className="flex justify-between pt-6">

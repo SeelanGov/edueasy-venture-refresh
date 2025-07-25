@@ -9,7 +9,12 @@ interface EmailFieldProps {
   isLoading: boolean;
 }
 
-export const EmailField = ({ control, isLoading }: EmailFieldProps) => {
+
+/**
+ * EmailField
+ * @description Function
+ */
+export const EmailField = ({ control, isLoading }: EmailFieldProps): void => {
   return (
     <FormField
       control={control}

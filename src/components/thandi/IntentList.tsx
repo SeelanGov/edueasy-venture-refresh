@@ -35,17 +35,22 @@ interface IntentListProps {
   }) => void;
 }
 
-export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: IntentListProps) => {
+
+/**
+ * IntentList
+ * @description Function
+ */
+export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: IntentListProps): void => {
   const [isCreating, setIsCreating] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [intentToDelete, setIntentToDelete] = useState<string | null>(null);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: string): void => {
     setIntentToDelete(id);
     setShowDeleteDialog(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = (): void => {
     if (intentToDelete) {
       onDelete(intentToDelete);
       setShowDeleteDialog(false);
@@ -58,7 +63,7 @@ export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: Int
     description?: string;
     response_template?: string;
     sample_queries?: string[];
-  }) => {
+  }): void => {
     onCreate(data);
     setIsCreating(false);
   };

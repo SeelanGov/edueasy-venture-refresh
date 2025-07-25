@@ -1,21 +1,23 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, AlertCircle, CheckCircle, XCircle, Play, Pause, Download, Trash2, Square } from "lucide-react";
+import { Clock, CheckCircle, XCircle, Play, Download, Square } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { paymentTestingService, type TestResult, type TestScenario } from '@/services/PaymentTestingService';
 import {
-    AlertTriangle,
-    BarChart3,
-    Eye,
-    RefreshCw,
-    Shield,
-    Zap
-} from 'lucide-react';
+  paymentTestingService,
+  type TestResult,
+  type TestScenario,
+} from '@/services/PaymentTestingService';
+import { AlertTriangle, BarChart3, Eye, RefreshCw, Shield, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export const PaymentFlowTests = () => {
+
+/**
+ * PaymentFlowTests
+ * @description Function
+ */
+export const PaymentFlowTests = (): void => {
   const { toast } = useToast();
   const [scenarios, setScenarios] = useState<TestScenario[]>([]);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -29,12 +31,12 @@ export const PaymentFlowTests = () => {
     loadTestResults();
   }, []);
 
-  const loadScenarios = () => {
+  const loadScenarios = (): void => {
     const allScenarios = paymentTestingService.getTestScenarios();
     setScenarios(allScenarios);
   };
 
-  const loadTestResults = () => {
+  const loadTestResults = (): void => {
     const results = paymentTestingService.getTestResults();
     setTestResults(results);
   };
@@ -56,7 +58,7 @@ export const PaymentFlowTests = () => {
     try {
       // Simulate progress updates
       const progressInterval = setInterval(() => {
-        setProgress(prev => {
+        setProgress((prev) => {
           if (prev >= 90) {
             clearInterval(progressInterval);
             return 90;
@@ -66,21 +68,20 @@ export const PaymentFlowTests = () => {
       }, 500);
 
       const results = await paymentTestingService.runAutomatedTests();
-      
+
       clearInterval(progressInterval);
       setProgress(100);
       setCurrentTest('Tests completed');
 
       setTestResults(results);
-      
+
       const stats = paymentTestingService.getTestStatistics();
-      
+
       toast({
         title: 'Tests Completed',
         description: `${stats.passed} passed, ${stats.failed} failed (${stats.successRate.toFixed(1)}% success rate)`,
         variant: stats.successRate >= 80 ? 'default' : 'destructive',
       });
-
     } catch (error) {
       toast({
         title: 'Test Execution Failed',
@@ -104,7 +105,7 @@ export const PaymentFlowTests = () => {
       return;
     }
 
-    const scenario = scenarios.find(s => s.id === scenarioId);
+    const scenario = scenarios.find((s) => s.id === scenarioId);
     if (!scenario) return;
 
     setIsRunning(true);
@@ -114,14 +115,14 @@ export const PaymentFlowTests = () => {
     try {
       // For single test, we'll simulate the process
       const testData = paymentTestingService.generateTestData(scenario);
-      
+
       // Simulate test execution
       for (let i = 0; i < scenario.steps.length; i++) {
         setProgress(((i + 1) / scenario.steps.length) * 100);
         setCurrentTest(`Step ${i + 1}: ${scenario.steps[i].action}`);
-        
+
         // Simulate step execution time
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       // Create mock result
@@ -134,17 +135,16 @@ export const PaymentFlowTests = () => {
         details: scenario.steps.map((step, index) => ({
           ...step,
           status: 'passed',
-          actualOutcome: 'Step completed successfully'
-        }))
+          actualOutcome: 'Step completed successfully',
+        })),
       };
 
-      setTestResults(prev => [mockResult, ...prev]);
-      
+      setTestResults((prev) => [mockResult, ...prev]);
+
       toast({
         title: 'Single Test Completed',
         description: `${scenario.name} completed successfully`,
       });
-
     } catch (error) {
       toast({
         title: 'Single Test Failed',
@@ -158,7 +158,7 @@ export const PaymentFlowTests = () => {
     }
   };
 
-  const handleStopTests = () => {
+  const handleStopTests = (): void => {
     setIsRunning(false);
     setProgress(0);
     setCurrentTest(null);
@@ -168,7 +168,7 @@ export const PaymentFlowTests = () => {
     });
   };
 
-  const handleExportReport = () => {
+  const handleExportReport = (): void => {
     const report = paymentTestingService.generateTestReport();
     const blob = new Blob([report], { type: 'text/markdown' });
     const url = window.URL.createObjectURL(blob);
@@ -177,14 +177,14 @@ export const PaymentFlowTests = () => {
     a.download = `payment-test-report-${new Date().toISOString().split('T')[0]}.md`;
     a.click();
     window.URL.revokeObjectURL(url);
-    
+
     toast({
       title: 'Report Exported',
       description: 'Test report downloaded successfully',
     });
   };
 
-  const handleClearResults = () => {
+  const handleClearResults = (): void => {
     paymentTestingService.clearTestResults();
     setTestResults([]);
     toast({
@@ -193,7 +193,7 @@ export const PaymentFlowTests = () => {
     });
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): void => {
     switch (status) {
       case 'passed':
         return <CheckCircle className="h-4 w-4 text-green-600" />;
@@ -206,7 +206,7 @@ export const PaymentFlowTests = () => {
     }
   };
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority: string): void => {
     switch (priority) {
       case 'critical':
         return 'bg-red-100 text-red-800';
@@ -221,7 +221,7 @@ export const PaymentFlowTests = () => {
     }
   };
 
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = (category: string): void => {
     switch (category) {
       case 'success':
         return <CheckCircle className="h-4 w-4" />;
@@ -270,9 +270,7 @@ export const PaymentFlowTests = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-xs text-muted-foreground">
-              All time test runs
-            </p>
+            <p className="text-xs text-muted-foreground">All time test runs</p>
           </CardContent>
         </Card>
 
@@ -296,9 +294,7 @@ export const PaymentFlowTests = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.averageDuration.toFixed(0)}ms</div>
-            <p className="text-xs text-muted-foreground">
-              Per test scenario
-            </p>
+            <p className="text-xs text-muted-foreground">Per test scenario</p>
           </CardContent>
         </Card>
 
@@ -315,9 +311,7 @@ export const PaymentFlowTests = () => {
                 <span className="text-gray-600">Idle</span>
               )}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {currentTest || 'Ready to test'}
-            </p>
+            <p className="text-xs text-muted-foreground">{currentTest || 'Ready to test'}</p>
           </CardContent>
         </Card>
       </div>
@@ -357,19 +351,11 @@ export const PaymentFlowTests = () => {
         </CardHeader>
         <CardContent>
           <div className="flex space-x-4">
-            <Button 
-              onClick={handleRunAllTests} 
-              disabled={isRunning}
-              className="flex-1"
-            >
+            <Button onClick={handleRunAllTests} disabled={isRunning} className="flex-1">
               <Play className="h-4 w-4 mr-2" />
               Run All Tests
             </Button>
-            <Button 
-              onClick={handleStopTests} 
-              disabled={!isRunning}
-              variant="destructive"
-            >
+            <Button onClick={handleStopTests} disabled={!isRunning} variant="destructive">
               <Square className="h-4 w-4 mr-2" />
               Stop Tests
             </Button>
@@ -381,9 +367,7 @@ export const PaymentFlowTests = () => {
       <Card>
         <CardHeader>
           <CardTitle>Available Test Scenarios</CardTitle>
-          <CardDescription>
-            Individual test scenarios for targeted validation
-          </CardDescription>
+          <CardDescription>Individual test scenarios for targeted validation</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -394,23 +378,19 @@ export const PaymentFlowTests = () => {
                     {getCategoryIcon(scenario.category)}
                     <h3 className="font-medium">{scenario.name}</h3>
                   </div>
-                  <Badge className={getPriorityColor(scenario.priority)}>
-                    {scenario.priority}
-                  </Badge>
+                  <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
                 </div>
-                
+
                 <p className="text-sm text-gray-600">{scenario.description}</p>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Badge variant={scenario.automated ? 'default' : 'secondary'}>
                       {scenario.automated ? 'Automated' : 'Manual'}
                     </Badge>
-                    <span className="text-xs text-gray-500">
-                      {scenario.steps.length} steps
-                    </span>
+                    <span className="text-xs text-gray-500">{scenario.steps.length} steps</span>
                   </div>
-                  
+
                   <Button
                     onClick={() => handleRunSingleTest(scenario.id)}
                     disabled={isRunning}
@@ -431,9 +411,7 @@ export const PaymentFlowTests = () => {
       <Card>
         <CardHeader>
           <CardTitle>Recent Test Results</CardTitle>
-          <CardDescription>
-            Latest test execution results and outcomes
-          </CardDescription>
+          <CardDescription>Latest test execution results and outcomes</CardDescription>
         </CardHeader>
         <CardContent>
           {testResults.length === 0 ? (
@@ -453,25 +431,27 @@ export const PaymentFlowTests = () => {
                       <Badge variant={result.status === 'passed' ? 'default' : 'destructive'}>
                         {result.status}
                       </Badge>
-                      <span className="text-sm text-gray-500">
-                        {result.duration}ms
-                      </span>
+                      <span className="text-sm text-gray-500">{result.duration}ms</span>
                     </div>
                   </div>
-                  
+
                   <div className="text-sm text-gray-600">
                     {new Date(result.timestamp).toLocaleString()}
                   </div>
-                  
+
                   {result.error && (
                     <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
                       Error: {result.error}
                     </div>
                   )}
-                  
+
                   <div className="flex items-center space-x-2">
                     <Button
-                      onClick={() => setSelectedScenario(selectedScenario === result.scenarioId ? null : result.scenarioId)}
+                      onClick={() =>
+                        setSelectedScenario(
+                          selectedScenario === result.scenarioId ? null : result.scenarioId,
+                        )
+                      }
                       size="sm"
                       variant="ghost"
                     >
@@ -479,14 +459,17 @@ export const PaymentFlowTests = () => {
                       {selectedScenario === result.scenarioId ? 'Hide' : 'View'} Details
                     </Button>
                   </div>
-                  
+
                   {selectedScenario === result.scenarioId && (
                     <div className="mt-3 space-y-2">
                       {result.details.map((step, stepIndex) => (
                         <div key={stepIndex} className="flex items-center space-x-2 text-sm">
                           <span className="w-8 text-gray-500">Step {step.step}:</span>
                           <span className="flex-1">{step.action}</span>
-                          <Badge variant={step.status === 'passed' ? 'default' : 'destructive'} className="text-xs">
+                          <Badge
+                            variant={step.status === 'passed' ? 'default' : 'destructive'}
+                            className="text-xs"
+                          >
                             {step.status}
                           </Badge>
                         </div>
@@ -501,4 +484,4 @@ export const PaymentFlowTests = () => {
       </Card>
     </div>
   );
-}; 
+};

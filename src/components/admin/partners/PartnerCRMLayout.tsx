@@ -1,10 +1,14 @@
-import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Building2, Settings, Mail, BarChart3 } from 'lucide-react';
 
-export const PartnerCRMLayout = () => {
+
+/**
+ * PartnerCRMLayout
+ * @description Function
+ */
+export const PartnerCRMLayout = (): void => {
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -12,7 +12,12 @@ interface ContactInfoStepProps {
   onBack: () => void;
 }
 
-export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps) => {
+
+/**
+ * ContactInfoStep
+ * @description Function
+ */
+export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps): void => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

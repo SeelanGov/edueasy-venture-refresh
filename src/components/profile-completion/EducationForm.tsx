@@ -72,6 +72,11 @@ interface EducationFormProps {
   isSubmitting: boolean;
 }
 
+
+/**
+ * EducationForm
+ * @description Function
+ */
 export const EducationForm: React.FC<EducationFormProps> = ({
   initialValues,
   onSubmit,

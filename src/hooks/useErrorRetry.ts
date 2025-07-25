@@ -15,6 +15,11 @@ interface UseErrorRetryReturn {
   resetRetry: () => void;
 }
 
+
+/**
+ * useErrorRetry
+ * @description Function
+ */
 export const useErrorRetry = (
   operation: () => Promise<void>,
   options: RetryOptions = {},

@@ -12,6 +12,11 @@ interface AuditTrailProps {
   limit?: number;
 }
 
+
+/**
+ * AuditTrail
+ * @description Function
+ */
 export const AuditTrail: React.FC<AuditTrailProps> = ({
   targetId,
   targetType,
@@ -28,7 +33,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     }
   }, [targetId, targetType, limit]);
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): void => {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'bg-red-100 text-red-800';
@@ -43,7 +48,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     }
   };
 
-  const getActionIcon = (action: string) => {
+  const getActionIcon = (action: string): void => {
     if (action.includes('verify') || action.includes('approve')) {
       return <Shield className="h-4 w-4" />;
     }
@@ -53,7 +58,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     return <User className="h-4 w-4" />;
   };
 
-  const formatDetails = (details: Record<string, any>) => {
+  const formatDetails = (details: Record<string, unknown>): void => {
     const relevantDetails = Object.entries(details)
       .filter(([key]) => !['timestamp', 'admin_id'].includes(key))
       .slice(0, 3);

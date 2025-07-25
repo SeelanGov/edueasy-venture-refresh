@@ -3,7 +3,12 @@ import { supabase } from '@/integrations/supabase/client';
 
 type PartnerTier = 'basic' | 'standard' | 'premium';
 
-export const useUpdatePartnerTier = () => {
+
+/**
+ * useUpdatePartnerTier
+ * @description Function
+ */
+export const useUpdatePartnerTier = (): void => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const updateTier = async (partnerId: string, newTier: PartnerTier) => {

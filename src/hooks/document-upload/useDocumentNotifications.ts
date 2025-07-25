@@ -8,7 +8,12 @@ interface VerificationResult {
   failureReason?: string;
 }
 
-export const useDocumentNotifications = () => {
+
+/**
+ * useDocumentNotifications
+ * @description Function
+ */
+export const useDocumentNotifications = (): void => {
   // Create notification for document resubmission
   const createResubmissionNotification = useCallback(
     async (userId: string, documentId: string, documentType: string) => {

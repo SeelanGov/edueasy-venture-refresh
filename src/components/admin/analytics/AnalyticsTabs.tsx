@@ -19,8 +19,13 @@ interface AnalyticsTabsProps {
   analytics: DocumentAnalytics;
 }
 
-export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
-  const formatDocumentType = (type: string) => {
+
+/**
+ * AnalyticsTabs
+ * @description Function
+ */
+export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps): void => {
+  const formatDocumentType = (type: string): void => {
     return type.replace(/([A-Z])/g, ' $1').trim();
   };
 

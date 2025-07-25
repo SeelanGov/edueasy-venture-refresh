@@ -6,7 +6,7 @@ import { SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Bot, TrendingUp, Users, BookOpen } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 
-const CareerGuidancePage = () => {
+const CareerGuidancePage = (): void => {
   const [activeTab, setActiveTab] = useState('assessment');
 
   return (

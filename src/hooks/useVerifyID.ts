@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface VerifyIDResult {
   success: boolean;
-  data?: any;
+  data?: unknown;
   error?: string;
 }
 
@@ -14,6 +14,11 @@ interface UseVerifyIDReturn {
   error: string | null;
 }
 
+
+/**
+ * useVerifyID
+ * @description Function
+ */
 export const useVerifyID = (): UseVerifyIDReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,13 +30,14 @@ export const useVerifyID = (): UseVerifyIDReturn => {
     try {
       // Step 1: Check if user has valid consent
       const hasConsent = await hasValidConsent(userId, 'ID_verification');
-      
+
       if (!hasConsent) {
-        const errorMsg = 'ID verification consent not found. Please provide consent before verification.';
+        const errorMsg =
+          'ID verification consent not found. Please provide consent before verification.';
         setError(errorMsg);
         return {
           success: false,
-          error: errorMsg
+          error: errorMsg,
         };
       }
 
@@ -40,39 +46,40 @@ export const useVerifyID = (): UseVerifyIDReturn => {
 
       const response = await fetch(edgeUrl, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({
           user_id: userId,
           national_id: idNumber,
-          api_key: import.meta.env.VITE_VERIFYID_API_KEY
+          api_key: import.meta.env.VITE_VERIFYID_API_KEY,
         }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        const errorMsg = result.error || 'ID Verification failed. Please check your ID number and try again.';
+        const errorMsg =
+          result.error || 'ID Verification failed. Please check your ID number and try again.';
         setError(errorMsg);
         return {
           success: false,
-          error: errorMsg
+          error: errorMsg,
         };
       }
 
       return {
         success: true,
-        data: result
+        data: result,
       };
-
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Failed to verify ID. Please try again later.';
+      const errorMsg =
+        err instanceof Error ? err.message : 'Failed to verify ID. Please try again later.';
       setError(errorMsg);
       return {
         success: false,
-        error: errorMsg
+        error: errorMsg,
       };
     } finally {
       setIsLoading(false);
@@ -82,14 +89,19 @@ export const useVerifyID = (): UseVerifyIDReturn => {
   return {
     verifyId,
     isLoading,
-    error
+    error,
   };
 };
 
 /**
  * Hook for checking verification status
  */
-export const useVerificationStatus = (userId: string) => {
+
+/**
+ * useVerificationStatus
+ * @description Function
+ */
+export const useVerificationStatus = (userId: string): void => {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -118,14 +130,19 @@ export const useVerificationStatus = (userId: string) => {
     isVerified,
     isLoading,
     error,
-    checkVerificationStatus
+    checkVerificationStatus,
   };
 };
 
 /**
  * Hook for getting verification audit log
  */
-export const useVerificationAudit = (userId: string) => {
+
+/**
+ * useVerificationAudit
+ * @description Function
+ */
+export const useVerificationAudit = (userId: string): void => {
   const [auditLog, setAuditLog] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -154,6 +171,6 @@ export const useVerificationAudit = (userId: string) => {
     auditLog,
     isLoading,
     error,
-    fetchAuditLog
+    fetchAuditLog,
   };
-}; 
+};

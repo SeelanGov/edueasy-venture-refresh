@@ -1,17 +1,22 @@
 /**
  * Utility function to export objects array as a CSV file and trigger download.
  */
+
+/**
+ * exportToCsv
+ * @description Function
+ */
 export function exportToCsv(
   rows: Record<string, string | number | null | undefined>[],
   filename = 'export.csv',
-) {
+): void {
   if (!rows || rows.length === 0) {
     return;
   }
 
   // Extract CSV header
   const headers = Object.keys(rows[0]);
-  const escapeValue = (val: any) => {
+  const escapeValue = (val: unknown): void => {
     if (val == null) return '';
     let s = String(val);
     // Escape quotes by doubling them

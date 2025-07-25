@@ -1,4 +1,9 @@
 // Visual diffing configuration for Chromatic/Percy integration
+
+/**
+ * VISUAL_DIFF_CONFIG
+ * @description Function
+ */
 export const VISUAL_DIFF_CONFIG = {
   // Component stories to test for visual regressions
   criticalComponents: [
@@ -40,8 +45,13 @@ export const VISUAL_DIFF_CONFIG = {
   ],
 };
 
+
+/**
+ * generateVisualDiffReport
+ * @description Function
+ */
 export const generateVisualDiffReport = (
-  results: any[],
+  results: unknown[],
 ): {
   passed: number;
   failed: number;

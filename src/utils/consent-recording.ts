@@ -24,24 +24,27 @@ export async function recordUserConsents(userId: string, consents: ConsentData):
     {
       user_id: userId,
       consent_type: 'privacy_policy',
-      consent_text: 'I agree to the Privacy Policy and consent to the processing of my personal information for identity verification and educational services.',
+      consent_text:
+        'I agree to the Privacy Policy and consent to the processing of my personal information for identity verification and educational services.',
       consent_version: '1.0',
-      accepted: consents.privacy
+      accepted: consents.privacy,
     },
     {
       user_id: userId,
       consent_type: 'terms_of_service',
-      consent_text: 'I agree to the Terms of Service and understand the platform\'s educational application services.',
+      consent_text:
+        "I agree to the Terms of Service and understand the platform's educational application services.",
       consent_version: '1.0',
-      accepted: consents.terms
+      accepted: consents.terms,
     },
     {
       user_id: userId,
       consent_type: 'ID_verification',
-      consent_text: 'I consent to EduEasy collecting, verifying, and processing my South African ID number for identity confirmation, application processing, and to match me with education and funding opportunities. This will include verification with third-party providers (e.g., VerifyID). I understand this information will be processed in line with POPIA and the EduEasy Privacy Policy.',
+      consent_text:
+        'I consent to EduEasy collecting, verifying, and processing my South African ID number for identity confirmation, application processing, and to match me with education and funding opportunities. This will include verification with third-party providers (e.g., VerifyID). I understand this information will be processed in line with POPIA and the EduEasy Privacy Policy.',
       consent_version: '1.0',
-      accepted: consents.idVerification
-    }
+      accepted: consents.idVerification,
+    },
   ];
 
   // Get client IP and user agent if available
@@ -49,15 +52,13 @@ export async function recordUserConsents(userId: string, consents: ConsentData):
   const userAgent = navigator.userAgent;
 
   // Add IP and user agent to all consent records
-  const recordsWithMetadata = consentRecords.map(record => ({
+  const recordsWithMetadata = consentRecords.map((record) => ({
     ...record,
     ip_address: clientIP,
-    user_agent: userAgent
+    user_agent: userAgent,
   }));
 
-  const { error } = await supabase
-    .from('user_consents')
-    .insert(recordsWithMetadata);
+  const { error } = await supabase.from('user_consents').insert(recordsWithMetadata);
 
   if (error) {
     console.error('Failed to record consents:', error);
@@ -106,32 +107,30 @@ export async function getUserConsentHistory(userId: string): Promise<ConsentReco
  * Update user consent
  */
 export async function updateUserConsent(
-  userId: string, 
-  consentType: string, 
+  userId: string,
+  consentType: string,
   accepted: boolean,
   consentText?: string,
-  consentVersion?: string
+  consentVersion?: string,
 ): Promise<void> {
   const updateData: Partial<ConsentRecord> = {
     accepted,
     ip_address: await getClientIP(),
-    user_agent: navigator.userAgent
+    user_agent: navigator.userAgent,
   };
 
   if (consentText) updateData.consent_text = consentText;
   if (consentVersion) updateData.consent_version = consentVersion;
 
-  const { error } = await supabase
-    .from('user_consents')
-    .upsert({
-      user_id: userId,
-      consent_type: consentType,
-      consent_text: consentText || getDefaultConsentText(consentType),
-      consent_version: consentVersion || '1.0',
-      accepted,
-      ip_address: updateData.ip_address,
-      user_agent: updateData.user_agent
-    });
+  const { error } = await supabase.from('user_consents').upsert({
+    user_id: userId,
+    consent_type: consentType,
+    consent_text: consentText || getDefaultConsentText(consentType),
+    consent_version: consentVersion || '1.0',
+    accepted,
+    ip_address: updateData.ip_address,
+    user_agent: updateData.user_agent,
+  });
 
   if (error) {
     console.error('Failed to update consent:', error);
@@ -144,15 +143,23 @@ export async function updateUserConsent(
  */
 function getDefaultConsentText(consentType: string): string {
   const consentTexts: Record<string, string> = {
-    'privacy_policy': 'I agree to the Privacy Policy and consent to the processing of my personal information for identity verification and educational services.',
-    'terms_of_service': 'I agree to the Terms of Service and understand the platform\'s educational application services.',
-    'ID_verification': 'I consent to EduEasy collecting, verifying, and processing my South African ID number for identity confirmation, application processing, and to match me with education and funding opportunities. This will include verification with third-party providers (e.g., VerifyID). I understand this information will be processed in line with POPIA and the EduEasy Privacy Policy.',
-    'marketing': 'I consent to receive marketing communications about educational opportunities and platform updates.',
-    'analytics': 'I consent to the collection of anonymous usage data to improve platform performance and user experience.',
-    'third_party': 'I consent to data sharing with trusted third-party services for educational and verification purposes.'
+    privacy_policy:
+      'I agree to the Privacy Policy and consent to the processing of my personal information for identity verification and educational services.',
+    terms_of_service:
+      "I agree to the Terms of Service and understand the platform's educational application services.",
+    ID_verification:
+      'I consent to EduEasy collecting, verifying, and processing my South African ID number for identity confirmation, application processing, and to match me with education and funding opportunities. This will include verification with third-party providers (e.g., VerifyID). I understand this information will be processed in line with POPIA and the EduEasy Privacy Policy.',
+    marketing:
+      'I consent to receive marketing communications about educational opportunities and platform updates.',
+    analytics:
+      'I consent to the collection of anonymous usage data to improve platform performance and user experience.',
+    third_party:
+      'I consent to data sharing with trusted third-party services for educational and verification purposes.',
   };
 
-  return consentTexts[consentType] || 'I consent to the processing of my data for the specified purpose.';
+  return (
+    consentTexts[consentType] || 'I consent to the processing of my data for the specified purpose.'
+  );
 }
 
 /**
@@ -188,9 +195,7 @@ export async function getConsentStatistics(): Promise<{
   idVerificationConsent: number;
   marketingConsent: number;
 }> {
-  const { data, error } = await supabase
-    .from('user_consents')
-    .select('consent_type, accepted');
+  const { data, error } = await supabase.from('user_consents').select('consent_type, accepted');
 
   if (error) {
     console.error('Failed to fetch consent statistics:', error);
@@ -202,14 +207,14 @@ export async function getConsentStatistics(): Promise<{
     privacyConsent: 0,
     termsConsent: 0,
     idVerificationConsent: 0,
-    marketingConsent: 0
+    marketingConsent: 0,
   };
 
   const uniqueUsers = new Set<string>();
 
-  data?.forEach(consent => {
+  data?.forEach((consent) => {
     uniqueUsers.add(consent.user_id);
-    
+
     if (consent.accepted) {
       switch (consent.consent_type) {
         case 'privacy_policy':
@@ -231,4 +236,4 @@ export async function getConsentStatistics(): Promise<{
   stats.totalUsers = uniqueUsers.size;
 
   return stats;
-} 
+}

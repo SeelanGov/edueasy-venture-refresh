@@ -208,7 +208,7 @@ class PaymentService {
   private async logPaymentEvent(
     eventType: string,
     paymentId: string,
-    eventData: Record<string, any>,
+    eventData: Record<string, unknown>,
   ): Promise<void> {
     try {
       await supabase.from('payment_audit_logs').insert({
@@ -225,6 +225,11 @@ class PaymentService {
 }
 
 // Export singleton instance
+
+/**
+ * paymentService
+ * @description Function
+ */
 export const paymentService = PaymentService.getInstance();
 
 // Export types for use in components

@@ -81,6 +81,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 /**
  * Higher-order component that wraps a component with an ErrorBoundary
  */
+
+/**
+ * withErrorBoundary
+ * @description Function
+ */
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   fallback?: ReactNode,

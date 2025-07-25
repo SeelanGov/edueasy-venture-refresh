@@ -11,7 +11,12 @@ interface TimelineChartProps {
   }[];
 }
 
-export const DocumentTimelineChart = ({ data }: TimelineChartProps) => {
+
+/**
+ * DocumentTimelineChart
+ * @description Function
+ */
+export const DocumentTimelineChart = ({ data }: TimelineChartProps): void => {
   // Process data for timeline chart with memoization
   const processedData = useMemo(() => {
     const dateMap: Record<string, Record<string, number>> = {};

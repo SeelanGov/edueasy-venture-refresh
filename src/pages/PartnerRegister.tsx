@@ -21,12 +21,27 @@ const PartnerRegister: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const tierOptions = [
-    { value: 'basic', label: 'Basic', price: 'R50,000', description: 'Up to 100 applications/month' },
-    { value: 'standard', label: 'Standard', price: 'R150,000', description: 'Up to 500 applications/month' },
-    { value: 'premium', label: 'Premium', price: 'R300,000', description: 'Unlimited applications' }
+    {
+      value: 'basic',
+      label: 'Basic',
+      price: 'R50,000',
+      description: 'Up to 100 applications/month',
+    },
+    {
+      value: 'standard',
+      label: 'Standard',
+      price: 'R150,000',
+      description: 'Up to 500 applications/month',
+    },
+    {
+      value: 'premium',
+      label: 'Premium',
+      price: 'R300,000',
+      description: 'Unlimited applications',
+    },
   ];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -109,7 +124,7 @@ const PartnerRegister: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
+      <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">
           Partner Institute Registration
         </h1>
@@ -159,13 +174,19 @@ const PartnerRegister: React.FC = () => {
             className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required
           />
-          
+
           {/* Tier Selection */}
           <div className="space-y-4">
             <Label className="text-base font-semibold">Select Your Plan</Label>
-            <RadioGroup value={tier} onValueChange={(value) => setTier(value as 'basic' | 'standard' | 'premium')}>
+            <RadioGroup
+              value={tier}
+              onValueChange={(value) => setTier(value as 'basic' | 'standard' | 'premium')}
+            >
               {tierOptions.map((option) => (
-                <div key={option.value} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50">
+                <div
+                  key={option.value}
+                  className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50"
+                >
                   <RadioGroupItem value={option.value} id={option.value} />
                   <Label htmlFor={option.value} className="flex-1 cursor-pointer">
                     <div className="font-medium">{option.label}</div>
@@ -176,7 +197,7 @@ const PartnerRegister: React.FC = () => {
               ))}
             </RadioGroup>
           </div>
-          
+
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-500 text-sm">{success}</div>}
           <Button

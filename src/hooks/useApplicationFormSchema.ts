@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-export const useApplicationFormSchema = () => {
+
+/**
+ * useApplicationFormSchema
+ * @description Function
+ */
+export const useApplicationFormSchema = (): void => {
   // Improved form schema with better validation messages and more robust validation
   const formSchema = z.object({
     fullName: z

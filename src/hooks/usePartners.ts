@@ -13,7 +13,12 @@ const VALID_PARTNER_TYPES: PartnerType[] = [
 ];
 
 // Step 2: Accept only the allowed types for `type`
-export const usePartners = ({ type, search }: { type?: PartnerType; search?: string }) => {
+
+/**
+ * usePartners
+ * @description Function
+ */
+export const usePartners = ({ type, search }: { type?: PartnerType; search?: string }): void => {
   const [partners, setPartners] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

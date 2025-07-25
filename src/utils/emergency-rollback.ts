@@ -1,4 +1,9 @@
 // Emergency rollback utilities for design system deployment
+
+/**
+ * ROLLBACK_CONFIG
+ * @description Function
+ */
 export const ROLLBACK_CONFIG = {
   // CSS classes to restore if emergency rollback is needed
   legacyClassMappings: {
@@ -19,6 +24,11 @@ export const ROLLBACK_CONFIG = {
   criticalPages: ['/login', '/register', '/dashboard', '/application-form', '/admin'],
 };
 
+
+/**
+ * initiateEmergencyRollback
+ * @description Function
+ */
 export const initiateEmergencyRollback = (): void => {
   console.warn('🚨 EMERGENCY ROLLBACK INITIATED');
 
@@ -33,10 +43,20 @@ export const initiateEmergencyRollback = (): void => {
   window.location.reload();
 };
 
+
+/**
+ * isEmergencyRollbackActive
+ * @description Function
+ */
 export const isEmergencyRollbackActive = (): boolean => {
   return localStorage.getItem('EMERGENCY_ROLLBACK') === 'true';
 };
 
+
+/**
+ * clearEmergencyRollback
+ * @description Function
+ */
 export const clearEmergencyRollback = (): void => {
   localStorage.removeItem('EMERGENCY_ROLLBACK');
   localStorage.removeItem('VITE_ENABLE_NEW_DESIGN_SYSTEM');

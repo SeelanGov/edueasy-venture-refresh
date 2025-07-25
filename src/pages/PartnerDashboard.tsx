@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-const BackToHomeBtn = ({ className = '' }: { className?: string }) => {
+const BackToHomeBtn = ({ className = '' }: { className?: string }): void => {
   const navigate = useNavigate();
   return (
     <div className={`relative w-full ${className}`}>
@@ -58,14 +58,13 @@ const PartnerDashboard: React.FC = () => {
 
       // Generate payment details for pending partners
       if (partnerData.status === 'pending') {
-        const reference = `EDU-PART-${uuidv4().slice(0,8)}`;
-        const amount = partnerData.tier === 'basic' ? 50000 
-                    : partnerData.tier === 'standard' ? 150000 
-                    : 300000;
-        
+        const reference = `EDU-PART-${uuidv4().slice(0, 8)}`;
+        const amount =
+          partnerData.tier === 'basic' ? 50000 : partnerData.tier === 'standard' ? 150000 : 300000;
+
         setPaymentReference(reference);
         setPaymentAmount(amount);
-        
+
         // Check if payment record already exists
         const { data: existingPayment } = await supabase
           .from('partner_payments')
@@ -73,7 +72,7 @@ const PartnerDashboard: React.FC = () => {
           .eq('partner_id', partnerData.id)
           .eq('status', 'pending')
           .single();
-        
+
         if (!existingPayment) {
           // Create payment record
           await supabase.from('partner_payments').insert({
@@ -83,7 +82,7 @@ const PartnerDashboard: React.FC = () => {
             method: 'eft',
             reference_number: reference,
             status: 'pending',
-            payment_date: new Date().toISOString()
+            payment_date: new Date().toISOString(),
           });
         }
       }
@@ -94,7 +93,7 @@ const PartnerDashboard: React.FC = () => {
         .select('*')
         .eq('partner_id', partnerData.id)
         .order('created_at', { ascending: false });
-      
+
       setPayments(paymentsData || []);
       setLoading(false);
     }
@@ -114,7 +113,7 @@ const PartnerDashboard: React.FC = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
         <BackToHomeBtn />
-        <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
+        <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md">
           <h1 className="text-xl font-bold mb-4 text-center text-primary">
             No Partner Profile Found
           </h1>
@@ -135,28 +134,37 @@ const PartnerDashboard: React.FC = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background-subtle">
         <BackToHomeBtn />
-        <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-xl text-center">
+        <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-xl text-center">
           <h1 className="text-2xl font-bold mb-2 text-primary">Complete Your Subscription</h1>
           <p className="mb-4 text-foreground-muted">
             To access all partner features, please complete your subscription payment via EFT.
           </p>
-          
+
           <div className="border border-dashed border-cap-teal rounded-lg p-6 mt-4 text-left bg-cap-teal/5">
             <h3 className="font-semibold mb-3">EFT Payment Instructions</h3>
-            <p className="mb-2">Please make payment of <strong>R{paymentAmount.toLocaleString()}</strong> via EFT to:</p>
+            <p className="mb-2">
+              Please make payment of <strong>R{paymentAmount.toLocaleString()}</strong> via EFT to:
+            </p>
             <div className="bg-gray-50 p-3 rounded font-mono text-sm">
               <div>Bank: FNB</div>
               <div>Account: 123456789</div>
-              <div>Reference: <strong>{paymentReference}</strong></div>
+              <div>
+                Reference: <strong>{paymentReference}</strong>
+              </div>
             </div>
             <p className="text-sm text-gray-600 mt-3">
               Once payment is confirmed by EduEasy, your dashboard will be fully unlocked.
             </p>
           </div>
-          
+
           <div className="mt-4 text-sm text-gray-500">
-            <strong>Need help?</strong><br />
-            Email <a href="mailto:partners@edueasy.co.za" className="text-cap-teal underline">partners@edueasy.co.za</a><br />
+            <strong>Need help?</strong>
+            <br />
+            Email{' '}
+            <a href="mailto:partners@edueasy.co.za" className="text-cap-teal underline">
+              partners@edueasy.co.za
+            </a>
+            <br />
             or WhatsApp 060 123 4567
           </div>
         </div>
@@ -182,35 +190,44 @@ const PartnerDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-card p-6 rounded-lg shadow">
+          <Card className="bg-card p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-3">Your Plan</h2>
             <div className="space-y-2">
               <p className="text-2xl font-bold">{partner.tier}</p>
               <p className="text-muted-foreground">
-                {partner.tier === 'basic' ? 'Up to 100 applications/month' :
-                 partner.tier === 'standard' ? 'Up to 500 applications/month' :
-                 'Unlimited applications'}
+                {partner.tier === 'basic'
+                  ? 'Up to 100 applications/month'
+                  : partner.tier === 'standard'
+                    ? 'Up to 500 applications/month'
+                    : 'Unlimited applications'}
               </p>
             </div>
           </div>
 
-          <div className="bg-card p-6 rounded-lg shadow">
+          <Card className="bg-card p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-3">Payment History</h2>
             {payments.length === 0 ? (
               <p className="text-muted-foreground">No payments recorded</p>
             ) : (
               <div className="space-y-2">
                 {payments.slice(0, 3).map((payment) => (
-                  <div key={payment.id} className="flex justify-between items-center p-2 border rounded">
+                  <div
+                    key={payment.id}
+                    className="flex justify-between items-center p-2 border rounded"
+                  >
                     <div>
                       <p className="font-medium">R{payment.amount.toLocaleString()}</p>
                       <p className="text-sm text-muted-foreground">
                         {new Date(payment.payment_date).toLocaleDateString()}
                       </p>
                     </div>
-                    <span className={`text-sm px-2 py-1 rounded ${
-                      payment.status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`text-sm px-2 py-1 rounded ${
+                        payment.status === 'paid'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
                       {payment.status}
                     </span>
                   </div>
@@ -221,13 +238,13 @@ const PartnerDashboard: React.FC = () => {
         </div>
 
         {/* Applications Overview */}
-        <div className="bg-card p-6 rounded-lg shadow">
+        <Card className="bg-card p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-3">Applications Overview</h2>
           <div className="text-muted">(API integration coming soon)</div>
         </div>
 
         {/* Invoice Download */}
-        <div className="bg-card p-6 rounded-lg shadow">
+        <Card className="bg-card p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-3">Documents</h2>
           <div className="flex gap-4">
             <Button variant="outline" asChild>

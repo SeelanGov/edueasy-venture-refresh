@@ -41,7 +41,12 @@ interface ProfileFormProps {
   };
 }
 
-export const ProfileForm = ({ user, initialData }: ProfileFormProps) => {
+
+/**
+ * ProfileForm
+ * @description Function
+ */
+export const ProfileForm = ({ user, initialData }: ProfileFormProps): void => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

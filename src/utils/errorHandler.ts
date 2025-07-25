@@ -40,6 +40,11 @@ export interface StandardError {
 /**
  * Parse an error into a standardized AppError format
  */
+
+/**
+ * parseError
+ * @description Function
+ */
 export const parseError = (error: unknown): AppError => {
   const timestamp = new Date().toISOString();
   // Handle PostgreSQL/Supabase errors
@@ -89,6 +94,11 @@ export const parseError = (error: unknown): AppError => {
 
 /**
  * Handle an error with standardized logging and user feedback
+ */
+
+/**
+ * handleError
+ * @description Function
  */
 export const handleError = (
   error: unknown,

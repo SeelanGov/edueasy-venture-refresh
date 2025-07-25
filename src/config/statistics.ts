@@ -1,3 +1,8 @@
+
+/**
+ * EDUEASY_STATISTICS
+ * @description Function
+ */
 export const EDUEASY_STATISTICS = {
   applicationSuccessRate: {
     value: '90%+',

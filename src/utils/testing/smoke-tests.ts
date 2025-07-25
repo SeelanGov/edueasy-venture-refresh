@@ -7,6 +7,11 @@ export interface SmokeTestCase {
   criticalUserFlow?: boolean;
 }
 
+
+/**
+ * CRITICAL_USER_FLOWS
+ * @description Function
+ */
 export const CRITICAL_USER_FLOWS: SmokeTestCase[] = [
   {
     name: 'Login Flow',
@@ -40,6 +45,11 @@ export const CRITICAL_USER_FLOWS: SmokeTestCase[] = [
   },
 ];
 
+
+/**
+ * validateDesignSystemCompliance
+ * @description Function
+ */
 export const validateDesignSystemCompliance = (
   componentHtml: string,
 ): {
@@ -74,6 +84,11 @@ export const validateDesignSystemCompliance = (
   };
 };
 
+
+/**
+ * runSmokeTest
+ * @description Function
+ */
 export const runSmokeTest = async (testCase: SmokeTestCase): Promise<boolean> => {
   try {
     console.log(`Running smoke test: ${testCase.name}`);

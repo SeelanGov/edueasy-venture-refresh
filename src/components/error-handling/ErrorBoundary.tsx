@@ -122,6 +122,11 @@ export class ErrorBoundary extends Component<Props, State> {
 /**
  * Hook-friendly error boundary wrapper
  */
+
+/**
+ * withErrorBoundary
+ * @description Function
+ */
 export const withErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>,
   options: {
@@ -132,7 +137,7 @@ export const withErrorBoundary = <P extends object>(
 ) => {
   const { fallback, componentName, onReset } = options;
 
-  const WrappedComponent = (props: P) => {
+  const WrappedComponent = (props: P): void => {
     // Build props object conditionally to satisfy exactOptionalPropertyTypes
     const boundaryProps: {
       children: ReactNode;

@@ -37,11 +37,16 @@ interface ApplicationFormFieldsProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+
+/**
+ * ApplicationFormFields
+ * @description Function
+ */
 export const ApplicationFormFields = ({
   form,
   isSubmitting,
   handleFileChange,
-}: ApplicationFormFieldsProps) => {
+}: ApplicationFormFieldsProps): void => {
   const {
     institutions,
     filteredPrograms,

@@ -3,7 +3,12 @@ import { PlusIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 
-export const ApplicationHeader = () => {
+
+/**
+ * ApplicationHeader
+ * @description Function
+ */
+export const ApplicationHeader = (): void => {
   return (
     <div className="flex justify-between items-center mb-8 animate-fade-in">
       <Typography variant="h2" className="text-gray-800">

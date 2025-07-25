@@ -15,13 +15,18 @@ interface ModelTrainingStatusProps {
   onRetrain: () => Promise<void>;
 }
 
+
+/**
+ * ModelTrainingStatus
+ * @description Function
+ */
 export const ModelTrainingStatus = ({
   trainingStats,
   lastTrainingDate,
   isLoading,
   isRetraining,
   onRetrain,
-}: ModelTrainingStatusProps) => {
+}: ModelTrainingStatusProps): void => {
   const [showStats, setShowStats] = useState(false);
 
   const handleRetrain = async () => {
@@ -34,7 +39,7 @@ export const ModelTrainingStatus = ({
     }
   };
 
-  const formatDate = (date: Date | null) => {
+  const formatDate = (date: Date | null): void => {
     if (!date) return 'Never';
     return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',

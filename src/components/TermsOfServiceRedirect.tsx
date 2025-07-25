@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // This component handles redirects from the old terms-of-service.html to the new React route
-export const TermsOfServiceRedirect = () => {
+
+/**
+ * TermsOfServiceRedirect
+ * @description Function
+ */
+export const TermsOfServiceRedirect = (): void => {
   const navigate = useNavigate();
 
   useEffect(() => {

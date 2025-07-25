@@ -5,7 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 import type { Sponsorship } from '@/types/RevenueTypes';
 import { SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
 
-export const useSponsorships = () => {
+
+/**
+ * useSponsorships
+ * @description Function
+ */
+export const useSponsorships = (): void => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +54,7 @@ export const useSponsorships = () => {
         expires_at: item.expires_at || undefined,
         status: item.status as SponsorshipStatus,
         sponsorship_level: item.sponsorship_level as SponsorshipLevel,
-        requirements: item.requirements as Record<string, any> | null,
+        requirements: item.requirements as Record<string, unknown> | null,
       }));
 
       setSponsorships(convertedData);

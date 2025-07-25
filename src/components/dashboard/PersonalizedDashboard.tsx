@@ -18,7 +18,12 @@ interface PersonalizedDashboardProps {
   loading: boolean;
 }
 
-export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDashboardProps) => {
+
+/**
+ * PersonalizedDashboard
+ * @description Function
+ */
+export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDashboardProps): void => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { currentSubscription } = useSubscription();
@@ -34,7 +39,7 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
     }
   }, [allApplications, allApplicationsLoading]);
 
-  const handleStartApplication = () => {
+  const handleStartApplication = (): void => {
     navigate('/apply');
   };
 
@@ -70,7 +75,7 @@ export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDas
   const isSubscribed =
     (currentSubscription && currentSubscription.is_active) || hasSponsorAllocation;
 
-  const handleCopyTrackingId = () => {
+  const handleCopyTrackingId = (): void => {
     if (trackingId) {
       navigator.clipboard.writeText(trackingId);
       toast({

@@ -8,29 +8,44 @@ import { z } from 'zod';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-const institutionRegisterSchema = z.object({
-  institutionName: z.string().min(2, 'Institution name must be at least 2 characters'),
-  institutionType: z.enum(['university', 'tvet', 'college'], {
-    required_error: 'Please select an institution type',
-  }),
-  contactName: z.string().min(2, 'Contact name must be at least 2 characters'),
-  contactEmail: z.string().email('Please enter a valid email address'),
-  contactPhone: z.string().min(10, 'Phone number must be at least 10 digits'),
-  website: z.string().url('Please enter a valid website URL').optional().or(z.literal('')),
-  province: z.string().min(1, 'Please select a province'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-});
+const institutionRegisterSchema = z
+  .object({
+    institutionName: z.string().min(2, 'Institution name must be at least 2 characters'),
+    institutionType: z.enum(['university', 'tvet', 'college'], {
+      required_error: 'Please select an institution type',
+    }),
+    contactName: z.string().min(2, 'Contact name must be at least 2 characters'),
+    contactEmail: z.string().email('Please enter a valid email address'),
+    contactPhone: z.string().min(10, 'Phone number must be at least 10 digits'),
+    website: z.string().url('Please enter a valid website URL').optional().or(z.literal('')),
+    province: z.string().min(1, 'Please select a province'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type InstitutionRegisterValues = z.infer<typeof institutionRegisterSchema>;
 
@@ -107,17 +122,17 @@ export default function InstitutionRegister() {
 
       toast({
         title: 'Registration Successful',
-        description: 'Your institution account has been created. Please check your email for verification.',
+        description:
+          'Your institution account has been created. Please check your email for verification.',
       });
 
       // Navigate to login
-      navigate('/login', { 
-        state: { 
-          message: 'Institution registration successful. Please check your email for verification.' 
-        } 
+      navigate('/login', {
+        state: {
+          message: 'Institution registration successful. Please check your email for verification.',
+        },
       });
-
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration error:', error);
       setRegistrationError(error.message || 'Failed to register institution');
     } finally {
@@ -152,7 +167,7 @@ export default function InstitutionRegister() {
                 {/* Institution Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Institution Details</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="institutionName"
@@ -233,7 +248,7 @@ export default function InstitutionRegister() {
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="contactName"
@@ -280,7 +295,7 @@ export default function InstitutionRegister() {
                 {/* Account Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900">Account Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -356,4 +371,4 @@ export default function InstitutionRegister() {
       </div>
     </div>
   );
-} 
+}

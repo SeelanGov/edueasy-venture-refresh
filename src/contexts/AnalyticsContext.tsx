@@ -19,13 +19,23 @@ interface AnalyticsProviderProps {
   initialFilters?: Partial<AnalyticsFilters>;
 }
 
-export const AnalyticsProvider = ({ children, initialFilters }: AnalyticsProviderProps) => {
+
+/**
+ * AnalyticsProvider
+ * @description Function
+ */
+export const AnalyticsProvider = ({ children, initialFilters }: AnalyticsProviderProps): void => {
   const analyticsData = useDocumentAnalytics(initialFilters);
 
   return <AnalyticsContext.Provider value={analyticsData}>{children}</AnalyticsContext.Provider>;
 };
 
-export const useAnalyticsContext = () => {
+
+/**
+ * useAnalyticsContext
+ * @description Function
+ */
+export const useAnalyticsContext = (): void => {
   const context = useContext(AnalyticsContext);
   if (context === undefined) {
     throw new Error('useAnalyticsContext must be used within an AnalyticsProvider');

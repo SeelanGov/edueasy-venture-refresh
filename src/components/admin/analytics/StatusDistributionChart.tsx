@@ -10,7 +10,12 @@ interface StatusDistributionChartProps {
   data: StatusData[];
 }
 
-export const StatusDistributionChart = ({ data }: StatusDistributionChartProps) => {
+
+/**
+ * StatusDistributionChart
+ * @description Function
+ */
+export const StatusDistributionChart = ({ data }: StatusDistributionChartProps): void => {
   return (
     <div className="w-full h-[400px]">
       <ResponsiveContainer width="100%" height="100%">

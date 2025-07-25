@@ -2,7 +2,7 @@
 let notificationAudio: HTMLAudioElement | null = null;
 
 // Initialize audio element (lazy loading)
-const initAudio = () => {
+const initAudio = (): void => {
   if (notificationAudio) return;
 
   try {
@@ -18,7 +18,12 @@ const initAudio = () => {
 };
 
 // Play notification sound
-export const playNotificationSound = () => {
+
+/**
+ * playNotificationSound
+ * @description Function
+ */
+export const playNotificationSound = (): void => {
   try {
     // Initialize audio if not already done
     if (!notificationAudio) {

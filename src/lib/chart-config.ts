@@ -1,4 +1,9 @@
 // Chart configuration and utilities for consistent styling
+
+/**
+ * CHART_COLORS
+ * @description Function
+ */
 export const CHART_COLORS = {
   approved: '#10b981',
   rejected: '#ef4444',
@@ -6,6 +11,11 @@ export const CHART_COLORS = {
   request_resubmission: '#8b5cf6',
 } as const;
 
+
+/**
+ * STATUS_CONFIG
+ * @description Function
+ */
 export const STATUS_CONFIG = {
   approved: {
     label: 'Approved',
@@ -26,6 +36,11 @@ export const STATUS_CONFIG = {
 } as const;
 
 // Utility function to format display names
+
+/**
+ * formatDisplayName
+ * @description Function
+ */
 export const formatDisplayName = (name: string): string => {
   return name
     .replace(/([A-Z])/g, ' $1')

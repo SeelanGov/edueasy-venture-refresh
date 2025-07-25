@@ -5,6 +5,11 @@ import type { Json } from '@/integrations/supabase/types';
 /**
  * Create a standardized logging helper for security-related events
  */
+
+/**
+ * logSecurityEvent
+ * @description Function
+ */
 export const logSecurityEvent = async (
   userId: string | undefined,
   action: string,

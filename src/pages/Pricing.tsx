@@ -1,12 +1,12 @@
 import { PatternBorder } from '@/components/PatternBorder';
 import { Button } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { ErrorRecovery, useErrorRecovery } from '@/components/ui/ErrorRecovery';
 import { Typography } from '@/components/ui/typography';
@@ -15,33 +15,33 @@ import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Pricing = () => {
+const Pricing = (): void => {
   const navigate = useNavigate();
   const [error, setError] = useState<any>(null);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const { handleSessionStorageError } = useErrorRecovery();
 
   // Enhanced plan selection handler with error recovery
-  const handlePlanSelection = (planId: string) => {
+  const handlePlanSelection = (planId: string): void => {
     setSelectedPlan(planId);
-    
+
     if (planId === 'starter') {
       navigate('/register');
     } else {
       // For paid plans, always require registration
       try {
         secureStorage.setItem('pending_plan', planId);
-        navigate('/register', { 
-          state: { 
+        navigate('/register', {
+          state: {
             from: `/checkout?plan=${planId}`,
-            message: 'Create your account to continue with your purchase'
-          } 
+            message: 'Create your account to continue with your purchase',
+          },
         });
       } catch (error) {
         // Enhanced error handling with recovery options
         const sessionStorageError = handleSessionStorageError('plan selection');
         setError(sessionStorageError);
-        
+
         // Fallback to URL params if sessionStorage fails
         setTimeout(() => {
           navigate(`/register?plan=${planId}`);
@@ -50,7 +50,7 @@ const Pricing = () => {
     }
   };
 
-  const handleRetry = () => {
+  const handleRetry = (): void => {
     setError(null);
     if (selectedPlan) {
       handlePlanSelection(selectedPlan);
@@ -148,11 +148,7 @@ const Pricing = () => {
         {/* Error Recovery Display */}
         {error && (
           <div className="mb-8">
-            <ErrorRecovery 
-              error={error} 
-              onRetry={handleRetry}
-              className="max-w-2xl mx-auto"
-            />
+            <ErrorRecovery error={error} onRetry={handleRetry} className="max-w-2xl mx-auto" />
           </div>
         )}
 
@@ -179,8 +175,8 @@ const Pricing = () => {
             <Card
               key={index}
               className={`relative transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                plan.popular 
-                  ? 'border-cap-teal shadow-lg scale-105 ring-2 ring-cap-teal/20' 
+                plan.popular
+                  ? 'border-cap-teal shadow-lg scale-105 ring-2 ring-cap-teal/20'
                   : 'border-gray-200 hover:border-cap-teal/50'
               }`}
             >
@@ -234,8 +230,8 @@ const Pricing = () => {
                 <Button
                   onClick={() => handlePlanSelection(plan.id)}
                   className={`w-full transition-all duration-300 ${
-                    plan.popular 
-                      ? 'bg-gradient-to-r from-cap-teal to-blue-600 hover:from-cap-teal/90 hover:to-blue-700 shadow-lg' 
+                    plan.popular
+                      ? 'bg-gradient-to-r from-cap-teal to-blue-600 hover:from-cap-teal/90 hover:to-blue-700 shadow-lg'
                       : 'bg-gray-900 hover:bg-gray-800'
                   } text-white font-semibold py-3`}
                 >

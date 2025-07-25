@@ -2,7 +2,12 @@ import { Button } from '@/components/ui/button';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { Typography } from '@/components/ui/typography';
 
-export const AISupportSection = () => {
+
+/**
+ * AISupportSection
+ * @description Function
+ */
+export const AISupportSection = (): void => {
   const imagePath = '/lovable-uploads/ea352049-18bb-49a0-b8e3-d00ae059e1f1.png';
 
   return (

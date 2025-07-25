@@ -5,7 +5,7 @@ export interface Document {
   file_path: string;
   verification_status: 'pending' | 'approved' | 'rejected' | 'request_resubmission';
   verification_confidence?: number;
-  verification_details?: Record<string, any>;
+  verification_details?: Record<string, unknown>;
   rejection_reason?: string;
   extracted_text?: string;
   created_at: string;

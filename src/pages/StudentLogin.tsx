@@ -10,7 +10,7 @@ const StudentLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -42,15 +42,14 @@ const StudentLogin: React.FC = () => {
 
       if (userError) {
         // If no user record exists, it's likely a new user - allow login
-  
       } else if (userData?.user_type && userData.user_type !== 'student') {
         await supabase.auth.signOut();
         throw new Error('Please use the appropriate login page for your account type');
       }
 
       toast.success('Successfully logged in!');
-              navigate('/auth-redirect');
-    } catch (err: any) {
+      navigate('/auth-redirect');
+    } catch (err: unknown) {
       setError(err.message || 'Login error');
       toast.error(err.message || 'Login failed');
     } finally {
@@ -73,7 +72,7 @@ const StudentLogin: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
+      <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">Student Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input

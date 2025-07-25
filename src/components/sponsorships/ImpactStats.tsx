@@ -1,6 +1,11 @@
 import { StatisticsGrid } from '@/components/home/StatisticsGrid';
 
-export function ImpactStats() {
+
+/**
+ * ImpactStats
+ * @description Function
+ */
+export function ImpactStats(): void {
   return (
     <div className="my-8">
       <StatisticsGrid

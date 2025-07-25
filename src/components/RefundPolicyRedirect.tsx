@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // This component handles redirects from the old refund-policy.html to the new React route
-export const RefundPolicyRedirect = () => {
+
+/**
+ * RefundPolicyRedirect
+ * @description Function
+ */
+export const RefundPolicyRedirect = (): void => {
   const navigate = useNavigate();
 
   useEffect(() => {

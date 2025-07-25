@@ -14,7 +14,12 @@ interface GenderFieldProps {
   isLoading: boolean;
 }
 
-export const GenderField = ({ control, isLoading }: GenderFieldProps) => {
+
+/**
+ * GenderField
+ * @description Function
+ */
+export const GenderField = ({ control, isLoading }: GenderFieldProps): void => {
   return (
     <FormField
       control={control}

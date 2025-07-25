@@ -21,6 +21,11 @@ interface MobileMenuProps {
   isActive: (path: string) => boolean;
 }
 
+
+/**
+ * MobileMenu
+ * @description Function
+ */
 export const MobileMenu = ({
   isOpen,
   onClose,
@@ -31,7 +36,7 @@ export const MobileMenu = ({
   isDarkMode,
   toggleTheme,
   isActive,
-}: MobileMenuProps) => {
+}: MobileMenuProps): void => {
   if (!isOpen) return null;
 
   return (

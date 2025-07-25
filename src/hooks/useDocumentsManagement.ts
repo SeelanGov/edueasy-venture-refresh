@@ -15,7 +15,12 @@ export interface DocumentWithUserInfo {
   user_email: string;
 }
 
-export function useDocumentsManagement() {
+
+/**
+ * useDocumentsManagement
+ * @description Function
+ */
+export function useDocumentsManagement(): void {
   const [documents, setDocuments] = useState<DocumentWithUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -150,7 +155,7 @@ export function useDocumentsManagement() {
     }
   };
 
-  const refreshDocuments = () => {
+  const refreshDocuments = (): void => {
     fetchDocuments();
   };
 

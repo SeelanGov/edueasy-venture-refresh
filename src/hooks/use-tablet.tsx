@@ -1,13 +1,18 @@
 import * as React from 'react';
 
-export function useIsTablet() {
+
+/**
+ * useIsTablet
+ * @description Function
+ */
+export function useIsTablet(): void {
   const [isTablet, setIsTablet] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
     const minWidth = 768;
     const maxWidth = 1024;
 
-    const checkIsTablet = () => {
+    const checkIsTablet = (): void => {
       setIsTablet(window.innerWidth >= minWidth && window.innerWidth < maxWidth);
     };
 

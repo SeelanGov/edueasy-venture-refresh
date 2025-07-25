@@ -17,7 +17,12 @@ export interface IntentWithStats extends Intent {
   avg_confidence: number | null;
 }
 
-export const useIntentManagement = () => {
+
+/**
+ * useIntentManagement
+ * @description Function
+ */
+export const useIntentManagement = (): void => {
   const [intents, setIntents] = useState<IntentWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIntent, setSelectedIntent] = useState<IntentWithStats | null>(null);

@@ -5,19 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { supabase } from '@/integrations/supabase/client';
 import { getConsentStatistics } from '@/utils/consent-recording';
-import {
-    CheckCircle,
-    Clock,
-    Download,
-    Eye,
-    FileText,
-    Shield,
-    XCircle
-} from 'lucide-react';
+import { CheckCircle, Clock, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface ConsentRecord {
@@ -50,7 +55,12 @@ interface VerificationLog {
   };
 }
 
-export const ConsentAuditPanel = () => {
+
+/**
+ * ConsentAuditPanel
+ * @description Function
+ */
+export const ConsentAuditPanel = (): void => {
   const [consents, setConsents] = useState<ConsentRecord[]>([]);
   const [verificationLogs, setVerificationLogs] = useState<VerificationLog[]>([]);
   const [statistics, setStatistics] = useState<any>(null);
@@ -72,10 +82,12 @@ export const ConsentAuditPanel = () => {
       // Load consents with user data
       const { data: consentsData, error: consentsError } = await supabase
         .from('user_consents')
-        .select(`
+        .select(
+          `
           *,
           user:users(email, full_name)
-        `)
+        `,
+        )
         .order('created_at', { ascending: false });
 
       if (consentsError) throw consentsError;
@@ -83,10 +95,12 @@ export const ConsentAuditPanel = () => {
       // Load verification logs with user data
       const { data: verificationData, error: verificationError } = await supabase
         .from('verifyid_audit_log')
-        .select(`
+        .select(
+          `
           *,
           user:users(email, full_name)
-        `)
+        `,
+        )
         .order('created_at', { ascending: false });
 
       if (verificationError) throw verificationError;
@@ -97,7 +111,6 @@ export const ConsentAuditPanel = () => {
       setConsents(consentsData || []);
       setVerificationLogs(verificationData || []);
       setStatistics(stats);
-
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load audit data');
     } finally {
@@ -105,35 +118,37 @@ export const ConsentAuditPanel = () => {
     }
   };
 
-  const filteredConsents = consents.filter(consent => {
+  const filteredConsents = consents.filter((consent) => {
     const matchesType = filterType === 'all' || consent.consent_type === filterType;
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch =
+      searchTerm === '' ||
       consent.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       consent.user?.full_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     return matchesType && matchesSearch;
   });
 
-  const filteredVerifications = verificationLogs.filter(log => {
-    const matchesSearch = searchTerm === '' || 
+  const filteredVerifications = verificationLogs.filter((log) => {
+    const matchesSearch =
+      searchTerm === '' ||
       log.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.user?.full_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     return matchesSearch;
   });
 
   const exportConsentData = async () => {
     try {
-      const csvData = filteredConsents.map(consent => ({
+      const csvData = filteredConsents.map((consent) => ({
         'User ID': consent.user_id,
-        'Email': consent.user?.email || 'N/A',
+        Email: consent.user?.email || 'N/A',
         'Full Name': consent.user?.full_name || 'N/A',
         'Consent Type': consent.consent_type,
-        'Accepted': consent.accepted ? 'Yes' : 'No',
-        'Version': consent.consent_version,
+        Accepted: consent.accepted ? 'Yes' : 'No',
+        Version: consent.consent_version,
         'IP Address': consent.ip_address || 'N/A',
-        'Date': new Date(consent.created_at).toLocaleString(),
-        'User Agent': consent.user_agent || 'N/A'
+        Date: new Date(consent.created_at).toLocaleString(),
+        'User Agent': consent.user_agent || 'N/A',
       }));
 
       const csv = convertToCSV(csvData);
@@ -143,19 +158,19 @@ export const ConsentAuditPanel = () => {
     }
   };
 
-  const convertToCSV = (data: any[]): string => {
+  const convertToCSV = (data: unknown[]): string => {
     if (data.length === 0) return '';
-    
+
     const headers = Object.keys(data[0]);
     const csvRows = [
       headers.join(','),
-      ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+      ...data.map((row) => headers.map((header) => `"${row[header]}"`).join(',')),
     ];
-    
+
     return csvRows.join('\n');
   };
 
-  const downloadCSV = (csv: string, filename: string) => {
+  const downloadCSV = (csv: string, filename: string): void => {
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -165,16 +180,36 @@ export const ConsentAuditPanel = () => {
     window.URL.revokeObjectURL(url);
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string): void => {
     switch (status) {
       case 'success':
-        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Success</Badge>;
+        return (
+          <Badge variant="default" className="bg-green-100 text-green-800">
+            <CheckCircle className="h-3 w-3 mr-1" />
+            Success
+          </Badge>
+        );
       case 'failed':
-        return <Badge variant="destructive"><XCircle className="h-3 w-3 mr-1" />Failed</Badge>;
+        return (
+          <Badge variant="destructive">
+            <XCircle className="h-3 w-3 mr-1" />
+            Failed
+          </Badge>
+        );
       case 'consent_missing':
-        return <Badge variant="secondary"><Shield className="h-3 w-3 mr-1" />No Consent</Badge>;
+        return (
+          <Badge variant="secondary">
+            <Shield className="h-3 w-3 mr-1" />
+            No Consent
+          </Badge>
+        );
       case 'rate_limited':
-        return <Badge variant="outline"><Clock className="h-3 w-3 mr-1" />Rate Limited</Badge>;
+        return (
+          <Badge variant="outline">
+            <Clock className="h-3 w-3 mr-1" />
+            Rate Limited
+          </Badge>
+        );
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -242,7 +277,9 @@ export const ConsentAuditPanel = () => {
               <CardTitle className="text-sm font-medium">ID Verification Consent</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">{statistics.idVerificationConsent}</div>
+              <div className="text-2xl font-bold text-purple-600">
+                {statistics.idVerificationConsent}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -345,16 +382,20 @@ export const ConsentAuditPanel = () => {
                     <TableCell>
                       {consent.accepted ? (
                         <Badge variant="default" className="bg-green-100 text-green-800">
-                          <CheckCircle className="h-3 w-3 mr-1" />Accepted
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          Accepted
                         </Badge>
                       ) : (
                         <Badge variant="destructive">
-                          <XCircle className="h-3 w-3 mr-1" />Declined
+                          <XCircle className="h-3 w-3 mr-1" />
+                          Declined
                         </Badge>
                       )}
                     </TableCell>
                     <TableCell>{consent.consent_version}</TableCell>
-                    <TableCell className="font-mono text-sm">{consent.ip_address || 'N/A'}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {consent.ip_address || 'N/A'}
+                    </TableCell>
                     <TableCell>{new Date(consent.created_at).toLocaleString()}</TableCell>
                   </TableRow>
                 ))}
@@ -393,8 +434,12 @@ export const ConsentAuditPanel = () => {
                       </div>
                     </TableCell>
                     <TableCell>{getStatusBadge(log.verification_status)}</TableCell>
-                    <TableCell className="font-mono text-sm">{log.api_request_id || 'N/A'}</TableCell>
-                    <TableCell className="max-w-xs truncate">{log.error_message || 'N/A'}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {log.api_request_id || 'N/A'}
+                    </TableCell>
+                    <TableCell className="max-w-xs truncate">
+                      {log.error_message || 'N/A'}
+                    </TableCell>
                     <TableCell className="font-mono text-sm">{log.ip_address || 'N/A'}</TableCell>
                     <TableCell>{new Date(log.created_at).toLocaleString()}</TableCell>
                   </TableRow>
@@ -415,19 +460,27 @@ export const ConsentAuditPanel = () => {
             <CardContent className="space-y-4">
               <div className="flex justify-between">
                 <span>Privacy Policy Consent:</span>
-                <span className="font-medium">{statistics.privacyConsent} / {statistics.totalUsers}</span>
+                <span className="font-medium">
+                  {statistics.privacyConsent} / {statistics.totalUsers}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Terms of Service Consent:</span>
-                <span className="font-medium">{statistics.termsConsent} / {statistics.totalUsers}</span>
+                <span className="font-medium">
+                  {statistics.termsConsent} / {statistics.totalUsers}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>ID Verification Consent:</span>
-                <span className="font-medium">{statistics.idVerificationConsent} / {statistics.totalUsers}</span>
+                <span className="font-medium">
+                  {statistics.idVerificationConsent} / {statistics.totalUsers}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Marketing Consent:</span>
-                <span className="font-medium">{statistics.marketingConsent} / {statistics.totalUsers}</span>
+                <span className="font-medium">
+                  {statistics.marketingConsent} / {statistics.totalUsers}
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -444,19 +497,22 @@ export const ConsentAuditPanel = () => {
               <div className="flex justify-between">
                 <span>Successful Verifications:</span>
                 <span className="font-medium text-green-600">
-                  {verificationLogs.filter(log => log.verification_status === 'success').length}
+                  {verificationLogs.filter((log) => log.verification_status === 'success').length}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Failed Verifications:</span>
                 <span className="font-medium text-red-600">
-                  {verificationLogs.filter(log => log.verification_status === 'failed').length}
+                  {verificationLogs.filter((log) => log.verification_status === 'failed').length}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Consent Missing:</span>
                 <span className="font-medium text-yellow-600">
-                  {verificationLogs.filter(log => log.verification_status === 'consent_missing').length}
+                  {
+                    verificationLogs.filter((log) => log.verification_status === 'consent_missing')
+                      .length
+                  }
                 </span>
               </div>
             </CardContent>
@@ -465,4 +521,4 @@ export const ConsentAuditPanel = () => {
       )}
     </div>
   );
-}; 
+};

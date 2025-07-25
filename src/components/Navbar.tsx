@@ -4,12 +4,17 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 
-export const Navbar = () => {
+
+/**
+ * Navbar
+ * @description Function
+ */
+export const Navbar = (): void => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -27,12 +32,12 @@ export const Navbar = () => {
     setIsOpen(false);
   };
 
-  const handleAuthNavigation = () => {
+  const handleAuthNavigation = (): void => {
     navigate('/register');
     setIsOpen(false);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (): void => {
     navigate('/login');
     setIsOpen(false);
   };

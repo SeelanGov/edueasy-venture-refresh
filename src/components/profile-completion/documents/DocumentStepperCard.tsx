@@ -17,6 +17,11 @@ interface DocumentStepperCardProps {
   currentStep: number;
 }
 
+
+/**
+ * DocumentStepperCard
+ * @description Function
+ */
 export const DocumentStepperCard: React.FC<DocumentStepperCardProps> = ({
   currentDocumentType,
   documentName,

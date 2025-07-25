@@ -20,7 +20,12 @@ interface TrainingEntry {
 export { type ChatMessage };
 export type { TrainingEntry };
 
-export const useTrainingData = () => {
+
+/**
+ * useTrainingData
+ * @description Function
+ */
+export const useTrainingData = (): void => {
   const [lowConfidenceOnly, setLowConfidenceOnly] = useState(true);
   const [page, setPage] = useState(0);
   const limit = 20;

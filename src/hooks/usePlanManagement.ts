@@ -4,7 +4,12 @@ import { toast } from '@/components/ui/use-toast';
 import type { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
 import logger from '@/utils/logger';
 
-export const usePlanManagement = () => {
+
+/**
+ * usePlanManagement
+ * @description Function
+ */
+export const usePlanManagement = (): void => {
   const [loading, setLoading] = useState(false);
 
   // Mock data for subscription tiers until types are updated

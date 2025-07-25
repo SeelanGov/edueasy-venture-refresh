@@ -9,7 +9,12 @@ interface IdNumberFieldProps {
   isLoading: boolean;
 }
 
-export const IdNumberField = ({ control, isLoading }: IdNumberFieldProps) => {
+
+/**
+ * IdNumberField
+ * @description Function
+ */
+export const IdNumberField = ({ control, isLoading }: IdNumberFieldProps): void => {
   return (
     <FormField
       control={control}

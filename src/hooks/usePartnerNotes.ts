@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-export const usePartnerNotes = (partnerId?: string) => {
+
+/**
+ * usePartnerNotes
+ * @description Function
+ */
+export const usePartnerNotes = (partnerId?: string): void => {
   const [notes, setNotes] = useState<any[]>([]);
   useEffect(() => {
     if (!partnerId) return;

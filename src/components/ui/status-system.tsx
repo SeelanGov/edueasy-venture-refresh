@@ -38,6 +38,11 @@ interface StatusSystemProps {
   customDescription?: string;
 }
 
+
+/**
+ * StatusSystem
+ * @description Function
+ */
 export const StatusSystem: React.FC<StatusSystemProps> = ({
   status,
   size = 'default',
@@ -77,6 +82,11 @@ export const StatusSystem: React.FC<StatusSystemProps> = ({
 };
 
 // Utility function for status transitions
+
+/**
+ * getStatusTransition
+ * @description Function
+ */
 export const getStatusTransition = (
   fromStatus: ExtendedStatusType,
   toStatus: ExtendedStatusType,

@@ -13,10 +13,15 @@ interface Application {
   university: string | null;
   program: string | null;
   status: string | null;
-  documents?: any[];
+  documents?: unknown[];
 }
 
-export const useApplications = () => {
+
+/**
+ * useApplications
+ * @description Function
+ */
+export const useApplications = (): void => {
   const { user } = useAuth();
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +44,7 @@ export const useApplications = () => {
 
         // Fetch documents for each application
         const appsWithDocs: Application[] = await Promise.all(
-          (data || []).map(async (app: any) => {
+          (data || []).map(async (app: unknown) => {
             const { data: documents, error: docsError } = await supabase
               .from('documents')
               .select('*')

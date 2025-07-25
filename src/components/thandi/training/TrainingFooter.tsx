@@ -12,7 +12,12 @@ interface TrainingFooterProps {
   hasMore: boolean;
 }
 
-export const TrainingFooter = ({ page, setPage, hasMore }: TrainingFooterProps) => {
+
+/**
+ * TrainingFooter
+ * @description Function
+ */
+export const TrainingFooter = ({ page, setPage, hasMore }: TrainingFooterProps): void => {
   return (
     <div className="flex justify-center">
       <Pagination>

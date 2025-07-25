@@ -8,7 +8,12 @@ interface ApprovedDocumentProps {
   documentType: string;
 }
 
-export const ApprovedDocument = ({ result, documentType }: ApprovedDocumentProps) => {
+
+/**
+ * ApprovedDocument
+ * @description Function
+ */
+export const ApprovedDocument = ({ result, documentType }: ApprovedDocumentProps): void => {
   const { validationResults, confidence, extractedFields } = result;
 
   const confidencePercent = confidence ? Math.round(confidence * 100) : undefined;

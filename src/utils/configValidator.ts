@@ -1,4 +1,3 @@
-
 /**
  * Configuration interface for payment-related settings
  */
@@ -40,7 +39,7 @@ export class ConfigValidationError extends Error {
   constructor(
     message: string,
     public missingKeys: string[] = [],
-    public invalidValues: Record<string, any> = {}
+    public invalidValues: Record<string, unknown> = {},
   ) {
     super(message);
     this.name = 'ConfigValidationError';
@@ -69,15 +68,15 @@ export class ConfigValidator {
   validatePaymentConfig(): PaymentConfig {
     const requiredKeys = [
       'PAYFAST_MERCHANT_ID',
-      'PAYFAST_MERCHANT_KEY', 
+      'PAYFAST_MERCHANT_KEY',
       'PAYFAST_PASSPHRASE',
       'PAYFAST_SANDBOX',
       'SITE_URL',
-      'SUPABASE_URL'
+      'SUPABASE_URL',
     ];
 
     const missingKeys: string[] = [];
-    const invalidValues: Record<string, any> = {};
+    const invalidValues: Record<string, unknown> = {};
 
     // Check for missing environment variables
     for (const key of requiredKeys) {
@@ -90,7 +89,7 @@ export class ConfigValidator {
     if (missingKeys.length > 0) {
       throw new ConfigValidationError(
         'Missing required payment configuration environment variables',
-        missingKeys
+        missingKeys,
       );
     }
 
@@ -99,7 +98,7 @@ export class ConfigValidator {
       merchantId: this.getEnvVar('PAYFAST_MERCHANT_ID')!,
       merchantKey: this.getEnvVar('PAYFAST_MERCHANT_KEY')!,
       passphrase: this.getEnvVar('PAYFAST_PASSPHRASE')!,
-      sandbox: this.getEnvVar('PAYFAST_SANDBOX') === 'true'
+      sandbox: this.getEnvVar('PAYFAST_SANDBOX') === 'true',
     };
 
     // Validate PayFast credentials format
@@ -112,19 +111,15 @@ export class ConfigValidator {
     }
 
     if (invalidValues && Object.keys(invalidValues).length > 0) {
-      throw new ConfigValidationError(
-        'Invalid payment configuration values',
-        [],
-        invalidValues
-      );
+      throw new ConfigValidationError('Invalid payment configuration values', [], invalidValues);
     }
 
     const config: PaymentConfig = {
       payfast: payfastConfig,
       site: {
         url: this.getEnvVar('SITE_URL')!,
-        webhookUrl: `${this.getEnvVar('SUPABASE_URL')}/functions/v1/process-payment-webhook`
-      }
+        webhookUrl: `${this.getEnvVar('SUPABASE_URL')}/functions/v1/process-payment-webhook`,
+      },
     };
 
     return config;
@@ -134,11 +129,7 @@ export class ConfigValidator {
    * Validate and return Supabase configuration
    */
   validateSupabaseConfig(): SupabaseConfig {
-    const requiredKeys = [
-      'SUPABASE_URL',
-      'SUPABASE_SERVICE_ROLE_KEY',
-      'SUPABASE_ANON_KEY'
-    ];
+    const requiredKeys = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_ANON_KEY'];
 
     const missingKeys: string[] = [];
 
@@ -153,23 +144,21 @@ export class ConfigValidator {
     if (missingKeys.length > 0) {
       throw new ConfigValidationError(
         'Missing required Supabase configuration environment variables',
-        missingKeys
+        missingKeys,
       );
     }
 
     const config: SupabaseConfig = {
       url: this.getEnvVar('SUPABASE_URL')!,
       serviceKey: this.getEnvVar('SUPABASE_SERVICE_ROLE_KEY')!,
-      anonKey: this.getEnvVar('SUPABASE_ANON_KEY')!
+      anonKey: this.getEnvVar('SUPABASE_ANON_KEY')!,
     };
 
     // Validate Supabase URL format
     if (!this.isValidSupabaseUrl(config.url)) {
-      throw new ConfigValidationError(
-        'Invalid Supabase URL format',
-        [],
-        { SUPABASE_URL: config.url }
-      );
+      throw new ConfigValidationError('Invalid Supabase URL format', [], {
+        SUPABASE_URL: config.url,
+      });
     }
 
     return config;
@@ -186,7 +175,7 @@ export class ConfigValidator {
     this.config = {
       payment: this.validatePaymentConfig(),
       supabase: this.validateSupabaseConfig(),
-      environment: this.getEnvironment()
+      environment: this.getEnvironment(),
     };
 
     return this.config;
@@ -219,7 +208,7 @@ export class ConfigValidator {
    */
   private getEnvironment(): 'development' | 'staging' | 'production' {
     const env = this.getEnvVar('NODE_ENV') || this.getEnvVar('ENVIRONMENT') || 'development';
-    
+
     if (env === 'production') return 'production';
     if (env === 'staging') return 'staging';
     return 'development';
@@ -247,9 +236,11 @@ export class ConfigValidator {
   private isValidSupabaseUrl(url: string): boolean {
     try {
       const parsed = new URL(url);
-      return parsed.hostname.includes('supabase.co') || 
-             parsed.hostname.includes('supabase.com') ||
-             parsed.hostname.includes('localhost');
+      return (
+        parsed.hostname.includes('supabase.co') ||
+        parsed.hostname.includes('supabase.com') ||
+        parsed.hostname.includes('localhost')
+      );
     } catch {
       return false;
     }
@@ -261,7 +252,7 @@ export class ConfigValidator {
   isProductionReady(): boolean {
     try {
       const config = this.getAppConfig();
-      
+
       // In production, sandbox should be false
       if (config.environment === 'production' && config.payment.payfast.sandbox) {
         return false;
@@ -289,7 +280,7 @@ export class ConfigValidator {
         isValid: true,
         environment: config.environment,
         missingKeys: [],
-        productionReady: this.isProductionReady()
+        productionReady: this.isProductionReady(),
       };
     } catch (error) {
       if (error instanceof ConfigValidationError) {
@@ -297,19 +288,24 @@ export class ConfigValidator {
           isValid: false,
           environment: this.getEnvironment(),
           missingKeys: error.missingKeys,
-          productionReady: false
+          productionReady: false,
         };
       }
-      
+
       return {
         isValid: false,
         environment: this.getEnvironment(),
         missingKeys: ['unknown'],
-        productionReady: false
+        productionReady: false,
       };
     }
   }
 }
 
 // Export singleton instance
-export const configValidator = ConfigValidator.getInstance(); 
+
+/**
+ * configValidator
+ * @description Validation function
+ */
+export const configValidator = ConfigValidator.getInstance();

@@ -19,6 +19,11 @@ interface PageLayoutProps {
   containerClassName?: string;
 }
 
+
+/**
+ * PageLayout
+ * @description Function
+ */
 export const PageLayout: React.FC<PageLayoutProps> = ({
   children,
   title,

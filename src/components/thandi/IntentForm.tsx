@@ -17,7 +17,12 @@ interface IntentFormProps {
   onCancel: () => void;
 }
 
-export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
+
+/**
+ * IntentForm
+ * @description Function
+ */
+export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps): void => {
   const [name, setName] = useState(intent?.intent_name || '');
   const [description, setDescription] = useState(intent?.description || '');
   const [template, setTemplate] = useState(intent?.response_template || '');
@@ -36,18 +41,18 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps) => {
     }
   }, [intent]);
 
-  const handleAddQuery = () => {
+  const handleAddQuery = (): void => {
     if (newQuery.trim() && !queries.includes(newQuery.trim())) {
       setQueries([...queries, newQuery.trim()]);
       setNewQuery('');
     }
   };
 
-  const handleRemoveQuery = (index: number) => {
+  const handleRemoveQuery = (index: number): void => {
     setQueries(queries.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
 
     // Validate form

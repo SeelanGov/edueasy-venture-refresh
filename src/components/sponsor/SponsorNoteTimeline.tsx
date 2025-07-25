@@ -5,6 +5,11 @@ interface SponsorNoteTimelineProps {
   notes: SponsorNote[];
 }
 
+
+/**
+ * SponsorNoteTimeline
+ * @description Function
+ */
 export const SponsorNoteTimeline: React.FC<SponsorNoteTimelineProps> = ({ notes }) => (
   <div className="py-4">
     {notes.length === 0 && (

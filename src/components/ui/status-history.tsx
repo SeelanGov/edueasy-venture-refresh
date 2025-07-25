@@ -20,6 +20,11 @@ interface StatusHistoryProps {
   maxEntries?: number;
 }
 
+
+/**
+ * StatusHistory
+ * @description Function
+ */
 export const StatusHistory: React.FC<StatusHistoryProps> = ({
   entries,
   className,

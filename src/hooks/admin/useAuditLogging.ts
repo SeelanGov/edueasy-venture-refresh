@@ -8,7 +8,7 @@ export interface AuditLogEntry {
   action: string;
   component: string;
   message: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   occurred_at: string;
   category: string;
   severity: string;
@@ -18,11 +18,16 @@ export interface AdminAction {
   action: string;
   target_type: 'document' | 'user' | 'system';
   target_id: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   reason?: string;
 }
 
-export function useAuditLogging() {
+
+/**
+ * useAuditLogging
+ * @description Function
+ */
+export function useAuditLogging(): void {
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(false);
 

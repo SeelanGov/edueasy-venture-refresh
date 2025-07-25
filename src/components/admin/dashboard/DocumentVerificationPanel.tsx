@@ -32,7 +32,12 @@ function getStatusBadge(status: string | null) {
   }
 }
 
-export function DocumentVerificationPanel({ documents, updateDocumentStatus, userMap }: Props) {
+
+/**
+ * DocumentVerificationPanel
+ * @description Function
+ */
+export function DocumentVerificationPanel({ documents, updateDocumentStatus, userMap }: Props): void {
   return (
     <Card>
       <CardHeader>

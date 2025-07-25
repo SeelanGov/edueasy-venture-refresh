@@ -13,7 +13,12 @@ interface AdminNavSectionProps {
   isActive: (path: string) => boolean;
 }
 
-export const AdminNavSection = ({ items, sidebarOpen, isActive }: AdminNavSectionProps) => {
+
+/**
+ * AdminNavSection
+ * @description Function
+ */
+export const AdminNavSection = ({ items, sidebarOpen, isActive }: AdminNavSectionProps): void => {
   if (items.length === 0) {
     return null;
   }

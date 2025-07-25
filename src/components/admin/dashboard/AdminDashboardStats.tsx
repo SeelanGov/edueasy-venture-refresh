@@ -11,39 +11,44 @@ interface Props {
   totalApplications: number;
 }
 
+
+/**
+ * AdminDashboardStats
+ * @description Function
+ */
 export function AdminDashboardStats({
   totalUsers,
   verifiedUsers,
   unverifiedUsers,
   pendingDocuments,
   totalApplications,
-}: Props) {
+}: Props): void {
   const [paymentRecoveryStats, setPaymentRecoveryStats] = useState({
     orphaned: 0,
-    failed: 0
-  })
+    failed: 0,
+  });
 
-  const { listOrphanedPayments, listFailedPayments } = usePaymentRecovery()
+  const { listOrphanedPayments, listFailedPayments } = usePaymentRecovery();
 
   useEffect(() => {
     const loadPaymentRecoveryStats = async () => {
       try {
         const [orphanedResult, failedResult] = await Promise.all([
           listOrphanedPayments(),
-          listFailedPayments()
-        ])
-        
-        setPaymentRecoveryStats({
-          orphaned: orphanedResult.success ? (orphanedResult.data?.length || 0) : 0,
-          failed: failedResult.success ? (failedResult.data?.length || 0) : 0
-        })
-      } catch (error) {
-        console.error('Error loading payment recovery stats:', error)
-      }
-    }
+          listFailedPayments(),
+        ]);
 
-    loadPaymentRecoveryStats()
-  }, [listOrphanedPayments, listFailedPayments])
+        setPaymentRecoveryStats({
+          orphaned: orphanedResult.success ? orphanedResult.data?.length || 0 : 0,
+          failed: failedResult.success ? failedResult.data?.length || 0 : 0,
+        });
+      } catch (error) {
+        console.error('Error loading payment recovery stats:', error);
+      }
+    };
+
+    loadPaymentRecoveryStats();
+  }, [listOrphanedPayments, listFailedPayments]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
