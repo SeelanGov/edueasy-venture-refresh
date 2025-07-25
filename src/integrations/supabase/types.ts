@@ -83,6 +83,84 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_events: {
+        Row: {
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          page_url: string | null
+          properties: Json | null
+          referrer: string | null
+          session_id: string
+          timestamp: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer?: string | null
+          session_id: string
+          timestamp?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer?: string | null
+          session_id?: string
+          timestamp?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      application_analytics: {
+        Row: {
+          applications_by_program: Json | null
+          applications_by_status: Json | null
+          average_completion_time: number | null
+          conversion_funnel: Json | null
+          created_at: string | null
+          id: string
+          top_programs: Json | null
+          total_applications: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          applications_by_program?: Json | null
+          applications_by_status?: Json | null
+          average_completion_time?: number | null
+          conversion_funnel?: Json | null
+          created_at?: string | null
+          id?: string
+          top_programs?: Json | null
+          total_applications?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          applications_by_program?: Json | null
+          applications_by_status?: Json | null
+          average_completion_time?: number | null
+          conversion_funnel?: Json | null
+          created_at?: string | null
+          id?: string
+          top_programs?: Json | null
+          total_applications?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       application_fee_sponsorships: {
         Row: {
           created_at: string
@@ -1157,6 +1235,42 @@ export type Database = {
           },
         ]
       }
+      revenue_analytics: {
+        Row: {
+          average_order_value: number | null
+          conversion_rate: number | null
+          created_at: string | null
+          id: string
+          revenue_by_month: Json | null
+          revenue_by_tier: Json | null
+          top_revenue_sources: Json | null
+          total_revenue: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          average_order_value?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          id?: string
+          revenue_by_month?: Json | null
+          revenue_by_tier?: Json | null
+          top_revenue_sources?: Json | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          average_order_value?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          id?: string
+          revenue_by_month?: Json | null
+          revenue_by_tier?: Json | null
+          top_revenue_sources?: Json | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       rls_policy_registry: {
         Row: {
           created_at: string
@@ -1984,6 +2098,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_analytics: {
+        Row: {
+          applications_submitted: number | null
+          conversion_rate: number | null
+          features_used: string[] | null
+          first_seen: string | null
+          last_active: string | null
+          payments_completed: number | null
+          total_page_views: number | null
+          total_sessions: number | null
+          user_id: string
+        }
+        Insert: {
+          applications_submitted?: number | null
+          conversion_rate?: number | null
+          features_used?: string[] | null
+          first_seen?: string | null
+          last_active?: string | null
+          payments_completed?: number | null
+          total_page_views?: number | null
+          total_sessions?: number | null
+          user_id: string
+        }
+        Update: {
+          applications_submitted?: number | null
+          conversion_rate?: number | null
+          features_used?: string[] | null
+          first_seen?: string | null
+          last_active?: string | null
+          payments_completed?: number | null
+          total_page_views?: number | null
+          total_sessions?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_notification_preferences: {
         Row: {

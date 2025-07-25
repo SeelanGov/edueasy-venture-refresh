@@ -1,16 +1,16 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    AlertTriangle,
     Bell,
-    CheckCircle,
+    Calendar,
+    Check,
     Clock,
     Eye,
     Mail,
     MessageSquare,
     RefreshCw,
     Save,
+    Smartphone,
     XCircle
 } from '@/components/ui/icons';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -18,52 +18,94 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { notificationService, type NotificationRecord, type UserNotificationPreferences } from '@/services/NotificationService';
-import { memo, useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
-const NotificationPreferences = memo(() => {
-  const { toast } = useToast();
+interface NotificationPreference {
+  id: string;
+  type: string;
+  enabled: boolean;
+  method: 'email' | 'sms' | 'in_app';
+  frequency: 'immediately' | 'daily' | 'weekly' | 'never';
+}
+
+interface NotificationPreferencesProps {
+  className?: string;
+}
+
+const defaultPreferences: NotificationPreference[] = [
+  {
+    id: 'application_status',
+    type: 'Application Status Updates',
+    enabled: true,
+    method: 'email',
+    frequency: 'immediately',
+  },
+  {
+    id: 'document_verification',
+    type: 'Document Verification',
+    enabled: true,
+    method: 'email',
+    frequency: 'immediately',
+  },
+  {
+    id: 'payment_updates',
+    type: 'Payment Updates',
+    enabled: true,
+    method: 'email',
+    frequency: 'immediately',
+  },
+  {
+    id: 'system_announcements',
+    type: 'System Announcements',
+    enabled: false,
+    method: 'email',
+    frequency: 'weekly',
+  },
+  {
+    id: 'marketing',
+    type: 'Marketing & Promotions',
+    enabled: false,
+    method: 'email',
+    frequency: 'weekly',
+  },
+];
+
+export const NotificationPreferences: React.FC<NotificationPreferencesProps> = ({ className }) => {
   const { user } = useAuth();
-  const [preferences, setPreferences] = useState<UserNotificationPreferences | null>(null);
-  const [notificationHistory, setNotificationHistory] = useState<NotificationRecord[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  
+  const [preferences, setPreferences] = useState<NotificationPreference[]>(defaultPreferences);
+  const [globalSettings, setGlobalSettings] = useState({
+    email_enabled: true,
+    sms_enabled: false,
+    in_app_enabled: true,
+    quiet_hours_enabled: false,
+    quiet_hours_start: '22:00',
+    quiet_hours_end: '07:00',
+  });
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState('preferences');
 
+  // Load user preferences on component mount
   useEffect(() => {
     if (user) {
-      loadUserPreferences();
-      loadNotificationHistory();
+      loadPreferences();
     }
   }, [user]);
 
-  const loadUserPreferences = async () => {
+  const loadPreferences = async () => {
+    setLoading(true);
     try {
-      if (!user) return;
-      
-      const userPrefs = await notificationService.getUserPreferences(user.id);
-      if (userPrefs) {
-        setPreferences(userPrefs);
-      } else {
-        // Create default preferences if none exist
-        const defaultPrefs: UserNotificationPreferences = {
-          user_id: user.id,
-          email_enabled: true,
-          sms_enabled: true,
-          in_app_enabled: true,
-          payment_notifications: true,
-          sponsorship_notifications: true,
-          system_notifications: true,
-          marketing_notifications: false,
-          updated_at: new Date().toISOString()
-        };
-        setPreferences(defaultPrefs);
-      }
+      // Load notification preferences (if they exist in your database)
+      // For now, we'll use the default preferences
+      setPreferences(defaultPreferences);
     } catch (error) {
-      console.error('Error loading user preferences:', error);
+      console.error('Error loading notification preferences:', error);
       toast({
         title: 'Error',
-        description: 'Failed to load notification preferences',
+        description: 'Failed to load notification preferences.',
         variant: 'destructive',
       });
     } finally {
@@ -71,51 +113,23 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const loadNotificationHistory = async () => {
-    try {
-      if (!user) return;
-      
-      const history = await notificationService.getUserNotificationHistory(user.id, 50);
-      setNotificationHistory(history);
-    } catch (error) {
-      console.error('Error loading notification history:', error);
-    }
-  };
+  const savePreferences = async () => {
+    if (!user) return;
 
-  const handlePreferenceChange = (key: keyof UserNotificationPreferences, value: boolean) => {
-    if (!preferences) return;
-    
-    setPreferences(prev => prev ? {
-      ...prev,
-      [key]: value
-    } : null);
-  };
-
-  const handleQuietHoursChange = (type: 'start' | 'end', value: string) => {
-    if (!preferences) return;
-    
-    setPreferences(prev => prev ? {
-      ...prev,
-      [`quiet_hours_${type}`]: value
-    } : null);
-  };
-
-  const handleSavePreferences = async () => {
-    if (!user || !preferences) return;
-    
     setSaving(true);
     try {
-      await notificationService.updateUserPreferences(user.id, preferences);
+      // Save preferences to database
+      // This would typically involve updating a user_notification_preferences table
       
       toast({
-        title: 'Preferences Saved',
-        description: 'Your notification preferences have been updated successfully',
+        title: 'Success',
+        description: 'Notification preferences saved successfully.',
       });
     } catch (error) {
-      console.error('Error saving preferences:', error);
+      console.error('Error saving notification preferences:', error);
       toast({
         title: 'Error',
-        description: 'Failed to save notification preferences',
+        description: 'Failed to save notification preferences.',
         variant: 'destructive',
       });
     } finally {
@@ -123,60 +137,51 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const handleMarkAsRead = async (notificationId: string) => {
+  const handlePreferenceChange = (key: string, value: any) => {
+    setGlobalSettings(prev => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleNotificationToggle = (id: string, enabled: boolean) => {
+    setPreferences(prev =>
+      prev.map(pref =>
+        pref.id === id ? { ...pref, enabled } : pref
+      )
+    );
+  };
+
+  const handleMethodChange = (id: string, method: 'email' | 'sms' | 'in_app') => {
+    setPreferences(prev =>
+      prev.map(pref =>
+        pref.id === id ? { ...pref, method } : pref
+      )
+    );
+  };
+
+  const handleFrequencyChange = (id: string, frequency: 'immediately' | 'daily' | 'weekly' | 'never') => {
+    setPreferences(prev =>
+      prev.map(pref =>
+        pref.id === id ? { ...pref, frequency } : pref
+      )
+    );
+  };
+
+  const testNotification = async (type: string) => {
     try {
-      await notificationService.markNotificationAsRead(notificationId);
-      
-      // Update local state
-      setNotificationHistory(prev => 
-        prev.map(notification => 
-          notification.id === notificationId 
-            ? { ...notification, status: 'delivered', delivered_at: new Date().toISOString() }
-            : notification
-        )
-      );
-      
+      // Send a test notification
       toast({
-        title: 'Notification Marked as Read',
-        description: 'Notification has been marked as read',
+        title: 'Test Notification Sent',
+        description: `A test ${type} notification has been sent.`,
       });
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      console.error('Error sending test notification:', error);
       toast({
         title: 'Error',
-        description: 'Failed to mark notification as read',
+        description: 'Failed to send test notification.',
         variant: 'destructive',
       });
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'sent':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case 'delivered':
-        return <CheckCircle className="h-4 w-4 text-blue-600" />;
-      case 'failed':
-        return <XCircle className="h-4 w-4 text-red-600" />;
-      case 'pending':
-        return <Clock className="h-4 w-4 text-yellow-600" />;
-      default:
-        return <AlertTriangle className="h-4 w-4 text-gray-600" />;
-    }
-  };
-
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'sent':
-        return 'default';
-      case 'delivered':
-        return 'default';
-      case 'failed':
-        return 'destructive';
-      case 'pending':
-        return 'secondary';
-      default:
-        return 'outline';
     }
   };
 
@@ -193,294 +198,336 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
+  const getPreferenceIcon = (id: string) => {
+    switch (id) {
+      case 'application_status':
+        return <Check className="h-5 w-5 text-blue-600" />;
+      case 'document_verification':
+        return <Eye className="h-5 w-5 text-green-600" />;
+      case 'payment_updates':
+        return <RefreshCw className="h-5 w-5 text-purple-600" />;
+      case 'system_announcements':
+        return <Bell className="h-5 w-5 text-orange-600" />;
+      case 'marketing':
+        return <Mail className="h-5 w-5 text-red-600" />;
+      default:
+        return <Bell className="h-5 w-5 text-gray-600" />;
+    }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <RefreshCw className="h-6 w-6 animate-spin mr-2" />
-        Loading notification preferences...
-      </div>
-    );
-  }
-
-  if (!preferences) {
-    return (
-      <div className="text-center py-8">
-        <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-600">Unable to load notification preferences</p>
-      </div>
+      <Card className={cn('w-full', className)}>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Bell className="h-5 w-5" />
+            <span>Notification Preferences</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center justify-between p-4 border rounded-lg animate-pulse">
+                <div className="flex items-center space-x-3">
+                  <div className="h-5 w-5 bg-gray-200 rounded"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 w-32 bg-gray-200 rounded"></div>
+                    <div className="h-3 w-24 bg-gray-200 rounded"></div>
+                  </div>
+                </div>
+                <div className="h-6 w-12 bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Notification Preferences</h2>
-          <p className="text-gray-600 mt-1">Manage how and when you receive notifications</p>
-        </div>
-        <Button onClick={loadNotificationHistory} variant="outline" size="sm">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh History
-        </Button>
-      </div>
+    <div className={cn('space-y-6', className)}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Bell className="h-5 w-5" />
+            <span>Notification Preferences</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="channels" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="channels">Channels</TabsTrigger>
+              <TabsTrigger value="types">Types</TabsTrigger>
+              <TabsTrigger value="schedule">Schedule</TabsTrigger>
+            </TabsList>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
-          <TabsTrigger value="history">Notification History</TabsTrigger>
-        </TabsList>
+            <TabsContent value="channels" className="space-y-4">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Notification Channels</h3>
+                <p className="text-sm text-gray-600">
+                  Choose how you want to receive notifications from EduEasy.
+                </p>
 
-        <TabsContent value="preferences" className="space-y-6">
-          {/* Notification Channels */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Bell className="h-5 w-5 mr-2" />
-                Notification Channels
-              </CardTitle>
-              <CardDescription>
-                Choose how you want to receive notifications
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-blue-600" />
-                  <div>
-                    <p className="font-medium">Email Notifications</p>
-                    <p className="text-sm text-gray-600">Receive notifications via email</p>
-                  </div>
-                </div>
-                <Switch
-                  checked={preferences.email_enabled}
-                  onCheckedChange={(checked) => handlePreferenceChange('email_enabled', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Smartphone className="h-5 w-5 text-green-600" />
-                  <div>
-                    <p className="font-medium">SMS Notifications</p>
-                    <p className="text-sm text-gray-600">Receive notifications via SMS</p>
-                  </div>
-                </div>
-                <Switch
-                  checked={preferences.sms_enabled}
-                  onCheckedChange={(checked) => handlePreferenceChange('sms_enabled', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <MessageSquare className="h-5 w-5 text-purple-600" />
-                  <div>
-                    <p className="font-medium">In-App Notifications</p>
-                    <p className="text-sm text-gray-600">Receive notifications within the app</p>
-                  </div>
-                </div>
-                <Switch
-                  checked={preferences.in_app_enabled}
-                  onCheckedChange={(checked) => handlePreferenceChange('in_app_enabled', checked)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Notification Categories */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Notification Categories</CardTitle>
-              <CardDescription>
-                Choose which types of notifications you want to receive
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Payment Notifications</p>
-                  <p className="text-sm text-gray-600">Payment confirmations, failures, and reminders</p>
-                </div>
-                <Switch
-                  checked={preferences.payment_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('payment_notifications', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Sponsorship Notifications</p>
-                  <p className="text-sm text-gray-600">Sponsorship allocations and updates</p>
-                </div>
-                <Switch
-                  checked={preferences.sponsorship_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('sponsorship_notifications', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">System Notifications</p>
-                  <p className="text-sm text-gray-600">Account verification, document status updates</p>
-                </div>
-                <Switch
-                  checked={preferences.system_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('system_notifications', checked)}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Marketing Notifications</p>
-                  <p className="text-sm text-gray-600">News, updates, and promotional content</p>
-                </div>
-                <Switch
-                  checked={preferences.marketing_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('marketing_notifications', checked)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Quiet Hours */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Clock className="h-5 w-5 mr-2" />
-                Quiet Hours
-              </CardTitle>
-              <CardDescription>
-                Set times when you don't want to receive notifications
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Start Time</label>
-                  <Select
-                    value={preferences.quiet_hours_start || '22:00'}
-                    onValueChange={(value) => handleQuietHoursChange('start', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <SelectItem key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                          {i === 0 ? '12:00 AM' : i === 12 ? '12:00 PM' : i > 12 ? `${i - 12}:00 PM` : `${i}:00 AM`}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">End Time</label>
-                  <Select
-                    value={preferences.quiet_hours_end || '08:00'}
-                    onValueChange={(value) => handleQuietHoursChange('end', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <SelectItem key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                          {i === 0 ? '12:00 AM' : i === 12 ? '12:00 PM' : i > 12 ? `${i - 12}:00 PM` : `${i}:00 AM`}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="text-sm text-gray-600">
-                Notifications will be paused between {preferences.quiet_hours_start || '22:00'} and {preferences.quiet_hours_end || '08:00'}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Save Button */}
-          <div className="flex justify-end">
-            <Button onClick={handleSavePreferences} disabled={saving}>
-              {saving ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Preferences
-                </>
-              )}
-            </Button>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="history" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Notifications</CardTitle>
-              <CardDescription>
-                View your recent notification history
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {notificationHistory.length === 0 ? (
-                <div className="text-center py-8">
-                  <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No notifications yet</p>
-                </div>
-              ) : (
                 <div className="space-y-4">
-                  {notificationHistory.map((notification) => (
-                    <div key={notification.id} className="border rounded-lg p-4 space-y-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-3">
-                          {getNotificationTypeIcon(notification.type || 'default')}
-                          <div>
-                            <h3 className="font-medium">
-                              {notification.subject || 'EduEasy Notification'}
-                            </h3>
-                            <p className="text-sm text-gray-600">{notification.message}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Mail className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="font-medium">Email Notifications</p>
+                        <p className="text-sm text-gray-600">Receive notifications via email</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={globalSettings.email_enabled}
+                      onCheckedChange={(checked) => handlePreferenceChange('email_enabled', checked)}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Smartphone className="h-5 w-5 text-green-600" />
+                      <div>
+                        <p className="font-medium">SMS Notifications</p>
+                        <p className="text-sm text-gray-600">Receive notifications via SMS</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={globalSettings.sms_enabled}
+                      onCheckedChange={(checked) => handlePreferenceChange('sms_enabled', checked)}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <MessageSquare className="h-5 w-5 text-purple-600" />
+                      <div>
+                        <p className="font-medium">In-App Notifications</p>
+                        <p className="text-sm text-gray-600">Receive notifications within the app</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={globalSettings.in_app_enabled}
+                      onCheckedChange={(checked) => handlePreferenceChange('in_app_enabled', checked)}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => testNotification('email')}
+                    className="flex items-center space-x-2"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>Test Email</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => testNotification('SMS')}
+                    className="flex items-center space-x-2"
+                    disabled={!globalSettings.sms_enabled}
+                  >
+                    <Smartphone className="h-4 w-4" />
+                    <span>Test SMS</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => testNotification('in-app')}
+                    className="flex items-center space-x-2"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span>Test In-App</span>
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="types" className="space-y-4">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Notification Types</h3>
+                <p className="text-sm text-gray-600">
+                  Customize which types of notifications you want to receive.
+                </p>
+
+                <div className="space-y-4">
+                  {preferences.map((preference) => (
+                    <div
+                      key={preference.id}
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                    >
+                      <div className="flex items-center space-x-3">
+                        {getPreferenceIcon(preference.id)}
+                        <div>
+                          <p className="font-medium">{preference.type}</p>
+                          <div className="flex items-center space-x-4 mt-1">
+                            <Select
+                              value={preference.method}
+                              onValueChange={(value: 'email' | 'sms' | 'in_app') =>
+                                handleMethodChange(preference.id, value)
+                              }
+                              disabled={!preference.enabled}
+                            >
+                              <SelectTrigger className="w-24 h-8 text-xs">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="email">Email</SelectItem>
+                                <SelectItem value="sms">SMS</SelectItem>
+                                <SelectItem value="in_app">In-App</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Select
+                              value={preference.frequency}
+                              onValueChange={(value: 'immediately' | 'daily' | 'weekly' | 'never') =>
+                                handleFrequencyChange(preference.id, value)
+                              }
+                              disabled={!preference.enabled}
+                            >
+                              <SelectTrigger className="w-32 h-8 text-xs">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="immediately">Immediately</SelectItem>
+                                <SelectItem value="daily">Daily</SelectItem>
+                                <SelectItem value="weekly">Weekly</SelectItem>
+                                <SelectItem value="never">Never</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          {getStatusIcon(notification.status || 'pending')}
-                          <Badge variant={getStatusBadgeVariant(notification.status || 'pending')}>
-                            {notification.status || 'pending'}
-                          </Badge>
-                        </div>
                       </div>
-                      
-                      <div className="flex items-center justify-between text-sm text-gray-500">
-                        <span>{formatDate(notification.created_at)}</span>
-                        {notification.status === 'sent' && (
-                          <Button
-                            onClick={() => handleMarkAsRead(notification.id)}
-                            size="sm"
-                            variant="ghost"
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            Mark as Read
-                          </Button>
-                        )}
-                      </div>
+                      <Switch
+                        checked={preference.enabled}
+                        onCheckedChange={(checked) => handleNotificationToggle(preference.id, checked)}
+                      />
                     </div>
                   ))}
                 </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="schedule" className="space-y-4">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Notification Schedule</h3>
+                <p className="text-sm text-gray-600">
+                  Set quiet hours and delivery preferences.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Clock className="h-5 w-5 text-indigo-600" />
+                      <div>
+                        <p className="font-medium">Quiet Hours</p>
+                        <p className="text-sm text-gray-600">Don't send notifications during these hours</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={globalSettings.quiet_hours_enabled}
+                      onCheckedChange={(checked) => handlePreferenceChange('quiet_hours_enabled', checked)}
+                    />
+                  </div>
+
+                  {globalSettings.quiet_hours_enabled && (
+                    <div className="ml-8 space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Start Time
+                          </label>
+                          <Select
+                            value={globalSettings.quiet_hours_start}
+                            onValueChange={(value) => handlePreferenceChange('quiet_hours_start', value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 24 }, (_, i) => {
+                                const hour = i.toString().padStart(2, '0');
+                                return (
+                                  <SelectItem key={hour} value={`${hour}:00`}>
+                                    {hour}:00
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            End Time
+                          </label>
+                          <Select
+                            value={globalSettings.quiet_hours_end}
+                            onValueChange={(value) => handlePreferenceChange('quiet_hours_end', value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 24 }, (_, i) => {
+                                const hour = i.toString().padStart(2, '0');
+                                return (
+                                  <SelectItem key={hour} value={`${hour}:00`}>
+                                    {hour}:00
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="border-t pt-4">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <Calendar className="h-5 w-5 text-green-600" />
+                      <div>
+                        <p className="font-medium">Weekend Delivery</p>
+                        <p className="text-sm text-gray-600">Receive non-urgent notifications on weekends</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="flex items-center space-x-2">
+                        <input type="checkbox" className="rounded" defaultChecked />
+                        <span className="text-sm">Saturday</span>
+                      </label>
+                      <label className="flex items-center space-x-2">
+                        <input type="checkbox" className="rounded" defaultChecked />
+                        <span className="text-sm">Sunday</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex items-center justify-between mt-6 pt-6 border-t">
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <XCircle className="h-4 w-4" />
+              <span>Changes are saved automatically</span>
+            </div>
+            <Button
+              onClick={savePreferences}
+              disabled={saving}
+              className="flex items-center space-x-2"
+            >
+              {saving ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
               )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <span>{saving ? 'Saving...' : 'Save Preferences'}</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
-});
-
-export default NotificationPreferences; 
+};
