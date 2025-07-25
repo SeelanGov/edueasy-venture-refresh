@@ -57,7 +57,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
   useEffect(() => {
     if (newPassword) {
-      setPasswordStrength(inputValidation.isValidPassword(newPassword));
+      const validation = inputValidation.validatePassword(newPassword);
     }
   }, [newPassword]);
 
@@ -90,7 +90,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     });
 
     securityMonitoring.logSecurityEvent({
-      type: 'security_preferences_updated',
+      type: 'suspicious_activity',
       severity: 'low',
       description: 'User updated security preferences',
       userId: user?.id,
@@ -152,7 +152,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       setConfirmPassword('');
 
       securityMonitoring.logSecurityEvent({
-        type: 'password_changed',
+        type: 'password_change',
         severity: 'medium',
         description: 'User changed password',
         userId: user?.id,
@@ -199,9 +199,9 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
     setLoading(true);
     try {
-      const success = await gdpr.requestDataDeletion(user?.id || '');
+      const result = await gdpr.handleDataDeletionRequest(user?.id || '');
       
-      if (success) {
+      if (result.success) {
         toast({
           title: 'Deletion Request Submitted',
           description: 'Your data deletion request has been submitted. You will receive a confirmation email.',
