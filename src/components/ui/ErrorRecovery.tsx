@@ -14,10 +14,15 @@ interface ErrorRecoveryProps {
   className?: string;
 }
 
-export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecoveryProps) => {
+
+/**
+ * ErrorRecovery
+ * @description Function
+ */
+export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecoveryProps): void => {
   const navigate = useNavigate();
 
-  const getErrorIcon = () => {
+  const getErrorIcon = (): void => {
     switch (error.type) {
       case 'sessionStorage':
         return <AlertCircle className="h-5 w-5 text-orange-500" />;
@@ -32,7 +37,7 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
     }
   };
 
-  const getErrorTitle = () => {
+  const getErrorTitle = (): void => {
     switch (error.type) {
       case 'sessionStorage':
         return 'Storage Issue Detected';
@@ -47,7 +52,7 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
     }
   };
 
-  const getRecoveryActions = () => {
+  const getRecoveryActions = (): void => {
     switch (error.type) {
       case 'sessionStorage':
         return (
@@ -56,7 +61,11 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
               <RefreshCw className="h-4 w-4" />
               Try Again
             </Button>
-            <Button onClick={() => navigate('/pricing')} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={() => navigate('/pricing')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Select Plan Again
             </Button>
@@ -69,7 +78,11 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
               <RefreshCw className="h-4 w-4" />
               Retry Connection
             </Button>
-            <Button onClick={() => window.location.reload()} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={() => window.location.reload()}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <RefreshCw className="h-4 w-4" />
               Refresh Page
             </Button>
@@ -91,11 +104,19 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
       case 'authentication':
         return (
           <div className="flex flex-col sm:flex-row gap-2 mt-4">
-            <Button onClick={() => navigate('/login')} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={() => navigate('/login')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <RefreshCw className="h-4 w-4" />
               Sign In Again
             </Button>
-            <Button onClick={() => navigate('/register')} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={() => navigate('/register')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <RefreshCw className="h-4 w-4" />
               Create New Account
             </Button>
@@ -108,7 +129,11 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
               <RefreshCw className="h-4 w-4" />
               Try Again
             </Button>
-            <Button onClick={() => navigate('/')} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <Home className="h-4 w-4" />
               Go Home
             </Button>
@@ -124,20 +149,16 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
           {getErrorIcon()}
           <div className="flex-1">
             <h3 className="font-semibold text-red-900 mb-1">{getErrorTitle()}</h3>
-            <AlertDescription className="text-red-800 mb-2">
-              {error.message}
-            </AlertDescription>
+            <AlertDescription className="text-red-800 mb-2">{error.message}</AlertDescription>
             {error.details && (
-              <p className="text-sm text-red-700 bg-red-100 p-2 rounded">
-                {error.details}
-              </p>
+              <p className="text-sm text-red-700 bg-red-100 p-2 rounded">{error.details}</p>
             )}
           </div>
         </div>
       </Alert>
-      
+
       {getRecoveryActions()}
-      
+
       <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
         <p className="text-sm text-blue-800">
           <strong>Need help?</strong> Contact our support team at{' '}
@@ -151,8 +172,13 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
 };
 
 // Hook for handling common errors in the authentication flow
-export const useErrorRecovery = () => {
-  const handleSessionStorageError = (operation: string) => {
+
+/**
+ * useErrorRecovery
+ * @description Function
+ */
+export const useErrorRecovery = (): void => {
+  const handleSessionStorageError = (operation: string): void => {
     console.error(`SessionStorage error during ${operation}`);
     return {
       type: 'sessionStorage' as const,
@@ -161,7 +187,7 @@ export const useErrorRecovery = () => {
     };
   };
 
-  const handleNetworkError = (operation: string) => {
+  const handleNetworkError = (operation: string): void => {
     console.error(`Network error during ${operation}`);
     return {
       type: 'network' as const,
@@ -170,7 +196,7 @@ export const useErrorRecovery = () => {
     };
   };
 
-  const handlePaymentError = (operation: string, details?: string) => {
+  const handlePaymentError = (operation: string, details?: string): void => {
     console.error(`Payment error during ${operation}`);
     return {
       type: 'payment' as const,
@@ -179,7 +205,7 @@ export const useErrorRecovery = () => {
     };
   };
 
-  const handleAuthenticationError = (operation: string) => {
+  const handleAuthenticationError = (operation: string): void => {
     console.error(`Authentication error during ${operation}`);
     return {
       type: 'authentication' as const,
@@ -194,4 +220,4 @@ export const useErrorRecovery = () => {
     handlePaymentError,
     handleAuthenticationError,
   };
-}; 
+};

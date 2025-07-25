@@ -1,7 +1,12 @@
 import { ChevronRight, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export const AnalyticsBreadcrumb = () => {
+
+/**
+ * AnalyticsBreadcrumb
+ * @description Function
+ */
+export const AnalyticsBreadcrumb = (): void => {
   return (
     <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
       <Link

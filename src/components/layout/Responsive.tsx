@@ -20,8 +20,13 @@ interface ResponsiveProps {
   className?: string;
 }
 
+
+/**
+ * Responsive
+ * @description Function
+ */
 export const Responsive: React.FC<ResponsiveProps> = ({ children, show, hide, className }) => {
-  const getResponsiveClasses = () => {
+  const getResponsiveClasses = (): void => {
     const classes: string[] = [];
 
     // Handle show breakpoints
@@ -55,6 +60,11 @@ interface ShowOnlyProps {
   className?: string;
 }
 
+
+/**
+ * ShowOnly
+ * @description Function
+ */
 export const ShowOnly: React.FC<ShowOnlyProps> = ({ children, breakpoint, className }) => {
   const breakpointClasses = {
     sm: 'hidden sm:block md:hidden',
@@ -73,6 +83,11 @@ interface HideOnProps {
   className?: string;
 }
 
+
+/**
+ * HideOn
+ * @description Function
+ */
 export const HideOn: React.FC<HideOnProps> = ({ children, breakpoint, className }) => {
   const breakpointClasses = {
     sm: 'sm:hidden',

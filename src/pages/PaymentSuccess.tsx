@@ -12,7 +12,9 @@ export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [verificationStatus, setVerificationStatus] = useState<'checking' | 'success' | 'failed' | 'pending'>('checking');
+  const [verificationStatus, setVerificationStatus] = useState<
+    'checking' | 'success' | 'failed' | 'pending'
+  >('checking');
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const { user } = useAuth();
 
@@ -21,7 +23,7 @@ export default function PaymentSuccess() {
       try {
         const paymentId = searchParams.get('m_payment_id');
         const paymentStatus = searchParams.get('payment_status');
-        
+
         if (!paymentId || !user?.id) {
           setVerificationStatus('failed');
           setLoading(false);
@@ -48,7 +50,7 @@ export default function PaymentSuccess() {
           setVerificationStatus('success');
           // Clear pending payment from session
           secureStorage.removeItem('pending_payment');
-          
+
           toast({
             title: 'Payment Successful!',
             description: 'Your subscription has been activated.',
@@ -58,7 +60,6 @@ export default function PaymentSuccess() {
         } else {
           setVerificationStatus('failed');
         }
-
       } catch (error) {
         console.error('Error verifying payment:', error);
         setVerificationStatus('failed');
@@ -119,7 +120,11 @@ export default function PaymentSuccess() {
                 <Button onClick={() => navigate('/dashboard')} className="flex-1">
                   Go to Dashboard
                 </Button>
-                <Button onClick={() => navigate('/subscription')} variant="outline" className="flex-1">
+                <Button
+                  onClick={() => navigate('/subscription')}
+                  variant="outline"
+                  className="flex-1"
+                >
                   View Subscription
                 </Button>
               </div>
@@ -130,10 +135,12 @@ export default function PaymentSuccess() {
             <>
               <div className="text-center">
                 <p className="text-gray-600 mb-4">
-                  We couldn't verify your payment. This might be due to a processing delay or an error.
+                  We couldn't verify your payment. This might be due to a processing delay or an
+                  error.
                 </p>
                 <p className="text-sm text-gray-500">
-                  If you believe this is an error, please contact our support team with your payment reference.
+                  If you believe this is an error, please contact our support team with your payment
+                  reference.
                 </p>
               </div>
               <div className="flex gap-4">
@@ -161,7 +168,11 @@ export default function PaymentSuccess() {
                 <Button onClick={() => navigate('/dashboard')} className="flex-1">
                   Go to Dashboard
                 </Button>
-                <Button onClick={() => window.location.reload()} variant="outline" className="flex-1">
+                <Button
+                  onClick={() => window.location.reload()}
+                  variant="outline"
+                  className="flex-1"
+                >
                   Check Again
                 </Button>
               </div>
@@ -171,4 +182,4 @@ export default function PaymentSuccess() {
       </Card>
     </div>
   );
-} 
+}

@@ -6,6 +6,11 @@ import type { RLSPolicyTestResult, RLSTestResult, RLSPolicyAnalysis } from './ty
 /**
  * Utility for testing and validating Row Level Security (RLS) policies
  */
+
+/**
+ * testRLSPolicies
+ * @description Function
+ */
 export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPolicyTestResult> => {
   if (!userId) {
     toast.error('User must be authenticated to test RLS policies');
@@ -57,6 +62,11 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
 
 /**
  * Test RLS policies with a specific role
+ */
+
+/**
+ * testRLSPoliciesWithRole
+ * @description Function
  */
 export const testRLSPoliciesWithRole = async (
   userId: string | undefined,
@@ -130,6 +140,11 @@ export const testRLSPoliciesWithRole = async (
 /**
  * Analyze RLS policy coverage and get recommendations
  */
+
+/**
+ * analyzeRLSPolicies
+ * @description Function
+ */
 export const analyzeRLSPolicies = async (
   userId: string | undefined,
 ): Promise<RLSPolicyAnalysis[]> => {
@@ -158,6 +173,11 @@ export const analyzeRLSPolicies = async (
 
 /**
  * Get registered RLS policies from the registry
+ */
+
+/**
+ * getRegisteredPolicies
+ * @description Function
  */
 export const getRegisteredPolicies = async () => {
   try {

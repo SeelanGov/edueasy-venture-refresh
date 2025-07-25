@@ -2,8 +2,12 @@
  * Security utilities for data protection, input validation, and privacy compliance
  */
 
-
 // Security constants
+
+/**
+ * SECURITY_CONFIG
+ * @description Function
+ */
 export const SECURITY_CONFIG = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 128,
@@ -16,12 +20,17 @@ export const SECURITY_CONFIG = {
 } as const;
 
 // Input validation patterns
+
+/**
+ * VALIDATION_PATTERNS
+ * @description Function
+ */
 export const VALIDATION_PATTERNS = {
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   PHONE: /^(\+27|0)[6-8][0-9]{8}$/,
   ID_NUMBER: /^[0-9]{13}$/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/,
+  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/,
   ALPHANUMERIC: /^[a-zA-Z0-9]+$/,
   ALPHANUMERIC_SPACES: /^[a-zA-Z0-9\s]+$/,
   NUMERIC: /^[0-9]+$/,
@@ -29,6 +38,11 @@ export const VALIDATION_PATTERNS = {
 } as const;
 
 // Sensitive data patterns for detection
+
+/**
+ * SENSITIVE_DATA_PATTERNS
+ * @description Function
+ */
 export const SENSITIVE_DATA_PATTERNS = {
   ID_NUMBER: /[0-9]{13}/g,
   PHONE_NUMBER: /(\+27|0)[6-8][0-9]{8}/g,
@@ -39,6 +53,11 @@ export const SENSITIVE_DATA_PATTERNS = {
 
 /**
  * Input validation utilities
+ */
+
+/**
+ * inputValidation
+ * @description Function
  */
 export const inputValidation = {
   /**
@@ -69,11 +88,15 @@ export const inputValidation = {
     const errors: string[] = [];
 
     if (password.length < SECURITY_CONFIG.PASSWORD_MIN_LENGTH) {
-      errors.push(`Password must be at least ${SECURITY_CONFIG.PASSWORD_MIN_LENGTH} characters long`);
+      errors.push(
+        `Password must be at least ${SECURITY_CONFIG.PASSWORD_MIN_LENGTH} characters long`,
+      );
     }
 
     if (password.length > SECURITY_CONFIG.PASSWORD_MAX_LENGTH) {
-      errors.push(`Password must be no more than ${SECURITY_CONFIG.PASSWORD_MAX_LENGTH} characters long`);
+      errors.push(
+        `Password must be no more than ${SECURITY_CONFIG.PASSWORD_MAX_LENGTH} characters long`,
+      );
     }
 
     if (!/(?=.*[a-z])/.test(password)) {
@@ -125,7 +148,7 @@ export const inputValidation = {
   isValidFile: (
     file: File,
     allowedTypes: string[] = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'],
-    maxSize: number = 5 * 1024 * 1024 // 5MB
+    maxSize: number = 5 * 1024 * 1024, // 5MB
   ): { valid: boolean; error?: string } => {
     if (!allowedTypes.includes(file.type)) {
       return {
@@ -148,6 +171,11 @@ export const inputValidation = {
 /**
  * Data encryption utilities
  */
+
+/**
+ * encryption
+ * @description Function
+ */
 export const encryption = {
   /**
    * Generate a secure random string
@@ -155,7 +183,7 @@ export const encryption = {
   generateSecureToken: (length: number = SECURITY_CONFIG.CSRF_TOKEN_LENGTH): string => {
     const array = new Uint8Array(length);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
   },
 
   /**
@@ -166,7 +194,7 @@ export const encryption = {
     const data = encoder.encode(input);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
   },
 
   /**
@@ -177,13 +205,13 @@ export const encryption = {
     const encoder = new TextEncoder();
     const dataBuffer = encoder.encode(data);
     const keyBuffer = encoder.encode(key);
-    
+
     // Simple XOR encryption (not secure for production)
     const encrypted = new Uint8Array(dataBuffer.length);
     for (let i = 0; i < dataBuffer.length; i++) {
       encrypted[i] = dataBuffer[i] ^ keyBuffer[i % keyBuffer.length];
     }
-    
+
     return btoa(String.fromCharCode(...encrypted));
   },
 
@@ -193,15 +221,19 @@ export const encryption = {
   decryptData: (encryptedData: string, key: string): string => {
     // This is a basic implementation - in production, use a proper encryption library
     const decoder = new TextDecoder();
-    const encrypted = new Uint8Array(atob(encryptedData).split('').map(char => char.charCodeAt(0)));
+    const encrypted = new Uint8Array(
+      atob(encryptedData)
+        .split('')
+        .map((char) => char.charCodeAt(0)),
+    );
     const keyBuffer = new TextEncoder().encode(key);
-    
+
     // Simple XOR decryption (not secure for production)
     const decrypted = new Uint8Array(encrypted.length);
     for (let i = 0; i < encrypted.length; i++) {
       decrypted[i] = encrypted[i] ^ keyBuffer[i % keyBuffer.length];
     }
-    
+
     return decoder.decode(decrypted);
   },
 };
@@ -209,11 +241,16 @@ export const encryption = {
 /**
  * Session management utilities
  */
+
+/**
+ * sessionManagement
+ * @description Function
+ */
 export const sessionManagement = {
   /**
    * Create a secure session
    */
-  createSession: (userId: string, userData: any): void => {
+  createSession: (userId: string, userData: unknown): void => {
     const sessionData = {
       userId,
       userData,
@@ -224,7 +261,7 @@ export const sessionManagement = {
 
     // Store session data securely
     sessionStorage.setItem('session', JSON.stringify(sessionData));
-    
+
     // Set session timeout
     setTimeout(() => {
       sessionManagement.destroySession();
@@ -234,13 +271,13 @@ export const sessionManagement = {
   /**
    * Get current session
    */
-  getSession: (): any => {
+  getSession: (): unknown => {
     const sessionData = sessionStorage.getItem('session');
     if (!sessionData) return null;
 
     try {
       const session = JSON.parse(sessionData);
-      
+
       // Check if session has expired
       if (Date.now() - session.lastActivity > SECURITY_CONFIG.SESSION_TIMEOUT) {
         sessionManagement.destroySession();
@@ -250,7 +287,7 @@ export const sessionManagement = {
       // Update last activity
       session.lastActivity = Date.now();
       sessionStorage.setItem('session', JSON.stringify(session));
-      
+
       return session;
     } catch (error) {
       console.error('Error parsing session data:', error);
@@ -265,10 +302,10 @@ export const sessionManagement = {
   destroySession: (): void => {
     sessionStorage.removeItem('session');
     localStorage.removeItem('session');
-    
+
     // Clear any sensitive data
     sessionStorage.clear();
-    
+
     // Redirect to login page
     window.location.href = '/login';
   },
@@ -283,6 +320,11 @@ export const sessionManagement = {
 
 /**
  * Rate limiting utilities
+ */
+
+/**
+ * rateLimiting
+ * @description Function
  */
 export const rateLimiting = {
   requests: new Map<string, { count: number; resetTime: number }>(),
@@ -326,6 +368,11 @@ export const rateLimiting = {
 /**
  * Privacy utilities
  */
+
+/**
+ * privacy
+ * @description Function
+ */
 export const privacy = {
   /**
    * Detect sensitive data in text
@@ -338,7 +385,7 @@ export const privacy = {
       if (matches) {
         results.push({
           type,
-          matches: matches.map(match => this.maskSensitiveData(match, type)),
+          matches: matches.map((match) => privacy.maskSensitiveData(match, type)),
         });
       }
     });
@@ -370,14 +417,17 @@ export const privacy = {
   /**
    * Anonymize user data
    */
-  anonymizeData: (data: Record<string, any>): Record<string, any> => {
+  anonymizeData: (data: Record<string, unknown>): Record<string, unknown> => {
     const anonymized = { ...data };
-    
+
     // Remove or mask sensitive fields
     const sensitiveFields = ['email', 'phone', 'idNumber', 'address', 'password'];
-    sensitiveFields.forEach(field => {
+    sensitiveFields.forEach((field) => {
       if (anonymized[field]) {
-        anonymized[field] = privacy.maskSensitiveData(anonymized[field], field);
+        const fieldValue = anonymized[field];
+        if (typeof fieldValue === 'string') {
+          anonymized[field] = privacy.maskSensitiveData(fieldValue, field);
+        }
       }
     });
 
@@ -387,6 +437,11 @@ export const privacy = {
 
 /**
  * CSRF protection utilities
+ */
+
+/**
+ * csrfProtection
+ * @description Function
  */
 export const csrfProtection = {
   /**
@@ -418,6 +473,11 @@ export const csrfProtection = {
 /**
  * Security monitoring utilities
  */
+
+/**
+ * securityMonitoring
+ * @description Function
+ */
 export const securityMonitoring = {
   /**
    * Log security event
@@ -429,12 +489,12 @@ export const securityMonitoring = {
     userId?: string;
     ipAddress?: string;
     userAgent?: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   }): void => {
     const securityEvent = {
       ...event,
       timestamp: new Date().toISOString(),
-      sessionId: sessionManagement.getSession()?.token,
+      sessionId: (sessionManagement.getSession() as { token?: string })?.token || undefined,
     };
 
     // Log to console in development
@@ -463,12 +523,17 @@ export const securityMonitoring = {
       activity.type === 'file_upload' && activity.frequency > 5, // Multiple file uploads
     ];
 
-    return suspiciousPatterns.some(pattern => pattern);
+    return suspiciousPatterns.some((pattern) => pattern);
   },
 };
 
 /**
  * GDPR compliance utilities
+ */
+
+/**
+ * gdpr
+ * @description Function
  */
 export const gdpr = {
   /**
@@ -501,7 +566,7 @@ export const gdpr = {
         description: `Data deletion requested for user ${userId}`,
         userId,
       });
-      
+
       return true;
     } catch (error) {
       console.error('Error requesting data deletion:', error);
@@ -512,7 +577,7 @@ export const gdpr = {
   /**
    * Export user data
    */
-  exportUserData: async (userId: string): Promise<any> => {
+  exportUserData: async (userId: string): Promise<unknown> => {
     try {
       // TODO: Implement data export API call
       securityMonitoring.logSecurityEvent({
@@ -521,11 +586,12 @@ export const gdpr = {
         description: `Data export requested for user ${userId}`,
         userId,
       });
-      
+
       return { success: true, data: null };
     } catch (error) {
       console.error('Error exporting user data:', error);
-      return { success: false, error: error.message };
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      return { success: false, error: errorMessage };
     }
   },
-}; 
+};

@@ -18,6 +18,11 @@ interface DocumentUploadGridProps {
   currentStep: number;
 }
 
+
+/**
+ * DocumentUploadGrid
+ * @description Function
+ */
 export const DocumentUploadGrid: React.FC<DocumentUploadGridProps> = ({
   getDocumentState,
   handleFileChange,

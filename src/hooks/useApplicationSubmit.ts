@@ -6,6 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 // This hook is now simplified as most functionality has moved to useApplicationForm
+
+/**
+ * useApplicationSubmit
+ * @description Function
+ */
 export const useApplicationSubmit = (
   userId: string | undefined,
   isOnline: boolean,
@@ -16,7 +21,7 @@ export const useApplicationSubmit = (
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
     setDocumentFile(file);
   };
@@ -98,8 +103,8 @@ export const useApplicationSubmit = (
         description: 'Your application has been submitted successfully',
       });
 
-          // Navigate to auth-redirect for role-based routing
-    navigate('/auth-redirect');
+      // Navigate to auth-redirect for role-based routing
+      navigate('/auth-redirect');
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       console.error('Application submission error:', err);

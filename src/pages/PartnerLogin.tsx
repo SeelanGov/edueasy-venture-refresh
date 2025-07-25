@@ -7,11 +7,11 @@ const PartnerLogin: React.FC = () => {
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     setError('');
     if (!form.username || !form.password) {
@@ -37,7 +37,7 @@ const PartnerLogin: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
+      <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">Partner Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input

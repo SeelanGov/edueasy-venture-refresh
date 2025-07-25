@@ -8,6 +8,11 @@ interface SponsorStudentTableProps {
   onDelete?: (id: string) => void;
 }
 
+
+/**
+ * SponsorStudentTable
+ * @description Function
+ */
 export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
   allocations,
   onEdit,

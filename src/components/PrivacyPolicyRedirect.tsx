@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // This component handles redirects from the old privacy-policy.html to the new React route
-export const PrivacyPolicyRedirect = () => {
+
+/**
+ * PrivacyPolicyRedirect
+ * @description Function
+ */
+export const PrivacyPolicyRedirect = (): void => {
   const navigate = useNavigate();
 
   useEffect(() => {

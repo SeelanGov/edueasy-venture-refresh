@@ -1,10 +1,9 @@
-import React from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Building2, Users, BookOpen, BarChart3 } from 'lucide-react';
 
-const InstitutionDashboard = () => {
+const InstitutionDashboard = (): void => {
   return (
     <PageLayout title="Institution Dashboard" showBackButton={false}>
       <div className="space-y-6">

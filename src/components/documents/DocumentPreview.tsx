@@ -11,13 +11,18 @@ interface DocumentPreviewProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
+
+/**
+ * DocumentPreview
+ * @description Function
+ */
 export const DocumentPreview = ({
   filePath,
   fileName = 'Document',
   fileType,
   className = '',
   size = 'md',
-}: DocumentPreviewProps) => {
+}: DocumentPreviewProps): void => {
   const [url, setUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

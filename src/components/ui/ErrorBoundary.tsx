@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, Home, RefreshCw } from '@/components/ui/icons';
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
+import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -28,10 +29,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+
     // Call the onError callback if provided
     this.props.onError?.(error, errorInfo);
-    
+
     // Log to error reporting service in production
     if (process.env.NODE_ENV === 'production') {
       // TODO: Send to error reporting service
@@ -59,11 +60,11 @@ interface ErrorFallbackProps {
 const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
   const navigate = useNavigate();
 
-  const handleRetry = () => {
+  const handleRetry = (): void => {
     window.location.reload();
   };
 
-  const handleGoHome = () => {
+  const handleGoHome = (): void => {
     navigate('/');
   };
 
@@ -78,7 +79,8 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
             Something went wrong
           </CardTitle>
           <CardDescription className="text-gray-600">
-            We encountered an unexpected error. Please try again or contact support if the problem persists.
+            We encountered an unexpected error. Please try again or contact support if the problem
+            persists.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -93,21 +95,13 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
               </pre>
             </details>
           )}
-          
+
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button 
-              onClick={handleRetry} 
-              className="flex-1"
-              variant="default"
-            >
+            <Button onClick={handleRetry} className="flex-1" variant="default">
               <RefreshCw className="h-4 w-4 mr-2" />
               Try Again
             </Button>
-            <Button 
-              onClick={handleGoHome} 
-              className="flex-1"
-              variant="outline"
-            >
+            <Button onClick={handleGoHome} className="flex-1" variant="outline">
               <Home className="h-4 w-4 mr-2" />
               Go Home
             </Button>
@@ -119,10 +113,15 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
 };
 
 // Hook for functional components to use error boundaries
-export const useErrorHandler = () => {
-  const handleError = (error: Error, errorInfo?: ErrorInfo) => {
+
+/**
+ * useErrorHandler
+ * @description Event handler function
+ */
+export const useErrorHandler = (): void => {
+  const handleError = (error: Error, errorInfo?: ErrorInfo): void => {
     console.error('Error caught by useErrorHandler:', error, errorInfo);
-    
+
     // Log to error reporting service in production
     if (process.env.NODE_ENV === 'production') {
       // TODO: Send to error reporting service
@@ -131,4 +130,4 @@ export const useErrorHandler = () => {
   };
 
   return { handleError };
-}; 
+};

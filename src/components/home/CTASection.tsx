@@ -4,11 +4,16 @@ import { Typography } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const CTASection = () => {
+
+/**
+ * CTASection
+ * @description Function
+ */
+export const CTASection = (): void => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleStartApplication = () => {
+  const handleStartApplication = (): void => {
     if (!user) {
       navigate('/register', { state: { from: '/profile-completion' } });
       return;

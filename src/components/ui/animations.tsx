@@ -11,6 +11,11 @@ export interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * FadeIn component that animates children with a fade-in effect
  */
+
+/**
+ * FadeIn
+ * @description Function
+ */
 export const FadeIn = ({
   children,
   className,
@@ -18,7 +23,7 @@ export const FadeIn = ({
   delay = 0,
   direction = 'up',
   ...props
-}: FadeInProps) => {
+}: FadeInProps): void => {
   // Map duration to CSS values
   const durationClasses = {
     fast: 'duration-300',
@@ -63,13 +68,18 @@ export interface ScaleInProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * ScaleIn component that animates children with a scale-in effect
  */
+
+/**
+ * ScaleIn
+ * @description Function
+ */
 export const ScaleIn = ({
   children,
   className,
   duration = 'normal',
   delay = 0,
   ...props
-}: ScaleInProps) => {
+}: ScaleInProps): void => {
   // Map duration to CSS values
   const durationClasses = {
     fast: 'duration-300',
@@ -98,11 +108,16 @@ export const ScaleIn = ({
 /**
  * Animation wrapper components
  */
+
+/**
+ * AnimateOnScroll
+ * @description Function
+ */
 export const AnimateOnScroll = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: React.HTMLAttributes<HTMLDivElement>): void => {
   return (
     <div
       className={cn(

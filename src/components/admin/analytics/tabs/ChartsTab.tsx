@@ -7,7 +7,12 @@ interface ChartsTabProps {
   analytics: DocumentAnalytics;
 }
 
-export const ChartsTab = ({ analytics }: ChartsTabProps) => {
+
+/**
+ * ChartsTab
+ * @description Function
+ */
+export const ChartsTab = ({ analytics }: ChartsTabProps): void => {
   return (
     <div className="space-y-6">
       <ChartContainer

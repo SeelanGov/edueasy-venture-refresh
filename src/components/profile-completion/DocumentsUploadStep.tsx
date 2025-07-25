@@ -7,9 +7,9 @@ import { DocumentStepperCard } from './documents/DocumentStepperCard';
 import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
 import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
 import type {
-    DocumentUploadState as ComponentDocumentUploadState,
-    DocumentType,
-    Step,
+  DocumentUploadState as ComponentDocumentUploadState,
+  DocumentType,
+  Step,
 } from './documents/types';
 
 interface DocumentsUploadStepProps {
@@ -17,6 +17,11 @@ interface DocumentsUploadStepProps {
   onBack: () => void;
 }
 
+
+/**
+ * DocumentsUploadStep
+ * @description Function
+ */
 export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComplete, onBack }) => {
   const {
     form,
@@ -55,7 +60,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     : '';
 
   // Convert hook's DocumentUploadState to component's DocumentUploadState
-  const convertDocumentState = (state: any): ComponentDocumentUploadState => {
+  const convertDocumentState = (state: unknown): ComponentDocumentUploadState => {
     return {
       file: state.file,
       uploading: state.uploading || false,
@@ -83,7 +88,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   const handleFileChangeWrapper = (
     e: React.ChangeEvent<HTMLInputElement>,
     documentType: DocumentType,
-  ) => {
+  ): void => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileChange(file, documentType);
@@ -91,12 +96,15 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleRetry to match expected signature
-  const handleRetryWrapper = (_documentType: DocumentType, _state: ComponentDocumentUploadState) => {
+  const handleRetryWrapper = (
+    _documentType: DocumentType,
+    _state: ComponentDocumentUploadState,
+  ): void => {
     handleRetry(_documentType);
   };
 
   // Wrapper for handleResubmit to match expected signature
-  const handleResubmitWrapper = () => {
+  const handleResubmitWrapper = (): void => {
     handleResubmit();
   };
 

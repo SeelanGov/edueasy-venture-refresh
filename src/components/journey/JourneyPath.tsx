@@ -5,6 +5,11 @@ interface JourneyPathProps {
   currentStep: number;
 }
 
+
+/**
+ * JourneyPath
+ * @description Function
+ */
 export const JourneyPath: React.FC<JourneyPathProps> = ({ totalSteps, currentStep }) => {
   // Calculate the percentage of the journey completed
   const completedPercentage = (currentStep / (totalSteps - 1)) * 100;

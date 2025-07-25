@@ -2,7 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Typography } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
 
-export const TypographyGuide = () => {
+
+/**
+ * TypographyGuide
+ * @description Function
+ */
+export const TypographyGuide = (): void => {
   return (
     <div className="container mx-auto py-12 px-4">
       <Typography variant="h1" className="mb-6">

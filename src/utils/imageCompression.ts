@@ -1,4 +1,9 @@
 // Simple image compression utility
+
+/**
+ * compressImage
+ * @description Function
+ */
 export const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     // If it's not an image, return original file

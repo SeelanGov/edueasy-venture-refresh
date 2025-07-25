@@ -10,21 +10,21 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
@@ -51,11 +51,16 @@ interface ConsultationBookingFormProps {
   consultationPrice: number;
 }
 
+
+/**
+ * ConsultationBookingForm
+ * @description Function
+ */
 export function ConsultationBookingForm({
   onSubmit,
   onCancel,
   consultationPrice,
-}: ConsultationBookingFormProps) {
+}: ConsultationBookingFormProps): void {
   const [showPayment, setShowPayment] = useState(false);
   const [formData, setFormData] = useState<{
     date: Date;
@@ -92,7 +97,7 @@ export function ConsultationBookingForm({
   });
 
   // Handle form submission
-  const handleFormSubmit = (values: FormValues) => {
+  const handleFormSubmit = (values: FormValues): void => {
     // Combine date and time
     const [hours, minutes] = values.timeSlot.split(':').map(Number);
     const bookingDateTime = new Date(values.bookingDate);
@@ -128,7 +133,7 @@ export function ConsultationBookingForm({
   };
 
   // Handle payment completion
-  const handlePaymentComplete = () => {
+  const handlePaymentComplete = (): void => {
     if (formData) {
       onSubmit(formData.date, formData.duration, formData.notes);
     }

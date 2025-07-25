@@ -10,7 +10,12 @@ import {
   calculateAnalytics,
 } from './analyticUtils';
 
-export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>) => {
+
+/**
+ * useDocumentAnalytics
+ * @description Function
+ */
+export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>): void => {
   const { user } = useAuth();
   const [filters, setFilters] = useState<AnalyticsFilters>({
     ...DEFAULT_FILTERS,
@@ -86,12 +91,12 @@ export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>)
   };
 
   // Update filters
-  const updateFilters = (newFilters: Partial<AnalyticsFilters>) => {
+  const updateFilters = (newFilters: Partial<AnalyticsFilters>): void => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
   // Reset filters to default
-  const resetFilters = () => {
+  const resetFilters = (): void => {
     setFilters(DEFAULT_FILTERS);
   };
 

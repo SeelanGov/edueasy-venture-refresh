@@ -8,9 +8,14 @@ interface PolicyAnalysisProps {
   analysis: RLSPolicyAnalysis[];
 }
 
-export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps) => {
+
+/**
+ * PolicyAnalysis
+ * @description Function
+ */
+export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps): void => {
   // Calculate overall security score
-  const calculateSecurityScore = (tableAnalysis: RLSPolicyAnalysis) => {
+  const calculateSecurityScore = (tableAnalysis: RLSPolicyAnalysis): void => {
     let score = 0;
     let total = 0;
 
@@ -24,14 +29,14 @@ export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps) => {
   };
 
   // Get color based on security score
-  const getScoreColor = (score: number) => {
+  const getScoreColor = (score: number): void => {
     if (score >= 90) return 'text-green-600';
     if (score >= 70) return 'text-yellow-600';
     return 'text-red-600';
   };
 
   // Get icon based on security score
-  const getScoreIcon = (score: number) => {
+  const getScoreIcon = (score: number): void => {
     if (score >= 90) return <CheckCircle className="h-5 w-5 text-green-600" />;
     if (score >= 70) return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
     return <ShieldAlert className="h-5 w-5 text-red-600" />;

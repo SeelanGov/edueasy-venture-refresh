@@ -5,7 +5,12 @@ import logger from '@/utils/logger';
 import type { Session, User } from '@supabase/supabase-js';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export const useAuthOperations = () => {
+
+/**
+ * useAuthOperations
+ * @description Function
+ */
+export const useAuthOperations = (): void => {
   const navigate = useNavigate();
   const location = useLocation();
 

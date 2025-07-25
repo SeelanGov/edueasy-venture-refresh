@@ -4,11 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -27,7 +27,7 @@ export default function SubscriptionPage() {
 
   const selectedTier = selectedTierId ? tiers.find((tier) => tier.id === selectedTierId) : null;
 
-  const handleSelectTier = (tierId: string) => {
+  const handleSelectTier = (tierId: string): void => {
     setSelectedTierId(tierId);
     setShowPaymentDialog(true);
   };
@@ -50,7 +50,7 @@ export default function SubscriptionPage() {
   };
 
   // Format date for display
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): void => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'long',

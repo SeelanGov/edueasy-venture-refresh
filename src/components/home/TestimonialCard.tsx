@@ -15,11 +15,16 @@ interface TestimonialCardProps {
   testimonial: Testimonial;
 }
 
-export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
+
+/**
+ * TestimonialCard
+ * @description Function
+ */
+export const TestimonialCard = ({ testimonial }: TestimonialCardProps): void => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const handleImageError = () => {
+  const handleImageError = (): void => {
     setImageError(true);
     setImageLoaded(true);
   };

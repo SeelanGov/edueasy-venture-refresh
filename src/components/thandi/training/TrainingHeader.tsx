@@ -13,6 +13,11 @@ interface TrainingHeaderProps {
   onRetrain: () => Promise<void>;
 }
 
+
+/**
+ * TrainingHeader
+ * @description Function
+ */
 export const TrainingHeader = ({
   lowConfidenceOnly,
   setLowConfidenceOnly,
@@ -21,7 +26,7 @@ export const TrainingHeader = ({
   isLoading,
   isRetraining,
   onRetrain,
-}: TrainingHeaderProps) => {
+}: TrainingHeaderProps): void => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">

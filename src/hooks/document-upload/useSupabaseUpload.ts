@@ -11,12 +11,17 @@ export interface DocumentsStore {
   [key: string]: DocumentInfo | string | undefined;
 }
 
+
+/**
+ * useSupabaseUpload
+ * @description Function
+ */
 export const useSupabaseUpload = (
   setDocumentState: (documentType: string, state: Partial<DocumentUploadState>) => void,
   documents: DocumentsStore,
   setDocuments: (docs: DocumentsStore) => void,
   form: {
-    setValue: (field: string, value: any) => void;
+    setValue: (field: string, value: unknown) => void;
   },
 ) => {
   const uploadToSupabase = useCallback(
@@ -115,7 +120,7 @@ export const useSupabaseUpload = (
         form.setValue(documentType, file);
 
         return { success: true, documentId: documentId, filePath: filePath };
-      } catch (err: any) {
+      } catch (err: unknown) {
         logger.error('Supabase general error:', err);
         setDocumentState(documentType, { uploading: false, error: err.message, progress: 0 });
         return { success: false };

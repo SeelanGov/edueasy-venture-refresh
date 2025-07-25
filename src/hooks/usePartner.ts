@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-export const usePartner = (id?: string) => {
+
+/**
+ * usePartner
+ * @description Function
+ */
+export const usePartner = (id?: string): void => {
   const [partner, setPartner] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 

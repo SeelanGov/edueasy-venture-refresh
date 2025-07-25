@@ -11,7 +11,12 @@ interface PasswordFieldProps {
   isLoading: boolean;
 }
 
-export const PasswordField = ({ control, isLoading }: PasswordFieldProps) => {
+
+/**
+ * PasswordField
+ * @description Function
+ */
+export const PasswordField = ({ control, isLoading }: PasswordFieldProps): void => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -35,14 +40,14 @@ export const PasswordField = ({ control, isLoading }: PasswordFieldProps) => {
                 maxLength={32}
                 aria-describedby="password-helper"
               />
-              <button
+              <Button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+              </Button>
             </div>
           </FormControl>
           <div id="password-helper" className="text-xs text-gray-500 mt-1">

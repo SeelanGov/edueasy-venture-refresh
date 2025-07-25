@@ -30,17 +30,22 @@ interface DashboardSidebarProps {
   onSignOut: () => void;
 }
 
+
+/**
+ * DashboardSidebar
+ * @description Function
+ */
 export const DashboardSidebar = ({
   navItems,
   adminNavItems,
   isAdmin,
   onSignOut,
-}: DashboardSidebarProps) => {
+}: DashboardSidebarProps): void => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const { isDarkMode, toggleTheme } = useTheme();
 
-  const isActive = (path: string) => {
+  const isActive = (path: string): void => {
     return location.pathname === path;
   };
 

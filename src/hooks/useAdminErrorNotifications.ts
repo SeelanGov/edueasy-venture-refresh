@@ -30,7 +30,12 @@ export interface ErrorNotification {
 /**
  * Hook for fetching and managing system error logs for admins
  */
-export const useAdminErrorNotifications = () => {
+
+/**
+ * useAdminErrorNotifications
+ * @description Function
+ */
+export const useAdminErrorNotifications = (): void => {
   const [notifications, setNotifications] = useState<ErrorNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +73,7 @@ export const useAdminErrorNotifications = () => {
         setNotifications(formattedNotifications);
         setNewErrors(formattedNotifications.some((note) => !note.is_resolved));
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching error notifications:', err);
       setError(err.message || 'Failed to load error notifications');
     } finally {
@@ -101,7 +106,7 @@ export const useAdminErrorNotifications = () => {
       toast('Error marked as resolved');
 
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error marking notification as resolved:', err);
       toast('Failed to mark error as resolved');
       return false;

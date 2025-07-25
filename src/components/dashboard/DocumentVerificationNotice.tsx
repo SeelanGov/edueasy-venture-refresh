@@ -5,7 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { CheckCircle, AlertTriangle, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export const DocumentVerificationNotice = () => {
+
+/**
+ * DocumentVerificationNotice
+ * @description Function
+ */
+export const DocumentVerificationNotice = (): void => {
   const { user } = useAuth();
   const [documents, setDocuments] = useState([
     { name: 'ID Document', status: 'pending', required: true },
@@ -14,7 +19,7 @@ export const DocumentVerificationNotice = () => {
     { name: 'CV/Resume', status: 'pending', required: false },
   ]);
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): void => {
     switch (status) {
       case 'verified':
         return <CheckCircle className="h-5 w-5 text-success" />;
@@ -25,7 +30,7 @@ export const DocumentVerificationNotice = () => {
     }
   };
 
-  const getStatusBadgeType = (status: string) => {
+  const getStatusBadgeType = (status: string): void => {
     switch (status) {
       case 'verified':
         return 'success';

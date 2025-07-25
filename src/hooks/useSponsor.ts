@@ -2,7 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Sponsor } from '@/types/SponsorTypes';
 
-export const useSponsor = (id: string | undefined) => {
+
+/**
+ * useSponsor
+ * @description Function
+ */
+export const useSponsor = (id: string | undefined): void => {
   return useQuery({
     queryKey: ['sponsor', id],
     queryFn: async () => {

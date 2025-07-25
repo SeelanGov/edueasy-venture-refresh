@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Institution, Program } from '@/types/Institution';
 
-export const useInstitutionsAndPrograms = () => {
+
+/**
+ * useInstitutionsAndPrograms
+ * @description Function
+ */
+export const useInstitutionsAndPrograms = (): void => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);

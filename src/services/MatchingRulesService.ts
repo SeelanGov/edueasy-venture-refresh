@@ -5,7 +5,7 @@ export interface MatchingRule {
   name: string;
   description: string;
   category: string;
-  criteria: any; // JSON criteria
+  criteria: unknown; // JSON criteria
   weight: number;
   is_active: boolean;
   created_at: string;
@@ -52,12 +52,12 @@ class MatchingRulesService {
         criteria: {
           field: 'academic_level',
           weight: 30,
-          exact_match: true
+          exact_match: true,
         },
         weight: 30,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       },
       {
         id: 'field-of-study-match',
@@ -67,12 +67,12 @@ class MatchingRulesService {
         criteria: {
           field: 'field_of_study',
           weight: 25,
-          partial_match: true
+          partial_match: true,
         },
         weight: 25,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       },
       {
         id: 'location-match',
@@ -82,12 +82,12 @@ class MatchingRulesService {
         criteria: {
           field: 'location',
           weight: 15,
-          radius_km: 100
+          radius_km: 100,
         },
         weight: 15,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       },
       {
         id: 'financial-need',
@@ -97,12 +97,12 @@ class MatchingRulesService {
         criteria: {
           field: 'financial_need_score',
           weight: 20,
-          higher_is_better: true
+          higher_is_better: true,
         },
         weight: 20,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       },
       {
         id: 'gpa-threshold',
@@ -112,23 +112,20 @@ class MatchingRulesService {
         criteria: {
           field: 'gpa',
           weight: 10,
-          minimum_threshold: 3.0
+          minimum_threshold: 3.0,
         },
         weight: 10,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
+        updated_at: new Date().toISOString(),
+      },
     ];
   }
 
   /**
    * Find matches for a student
    */
-  async findMatches(params: {
-    student_id: string;
-    limit?: number;
-  }): Promise<MatchingResult[]> {
+  async findMatches(params: { student_id: string; limit?: number }): Promise<MatchingResult[]> {
     try {
       // Get student profile
       const { data: studentProfile } = await supabase
@@ -166,7 +163,7 @@ class MatchingRulesService {
         }
 
         const score = this.calculateMatchScore(studentProfile, sponsorProfile);
-        
+
         if (score > 0) {
           matches.push({
             student_id: params.student_id,
@@ -175,7 +172,7 @@ class MatchingRulesService {
             funding_amount: this.calculateFundingAmount(sponsorProfile),
             match_criteria: this.getMatchCriteria(studentProfile, sponsorProfile),
             confidence_level: this.getConfidenceLevel(score),
-            calculated_at: new Date().toISOString()
+            calculated_at: new Date().toISOString(),
           });
         }
       }
@@ -183,7 +180,6 @@ class MatchingRulesService {
       // Sort by score and limit results
       matches.sort((a, b) => b.score - a.score);
       return matches.slice(0, params.limit || 10);
-
     } catch (error) {
       console.error('Error finding matches:', error);
       return [];
@@ -193,7 +189,7 @@ class MatchingRulesService {
   /**
    * Calculate match score between student and sponsor
    */
-  private calculateMatchScore(studentProfile: any, sponsorProfile: any): number {
+  private calculateMatchScore(studentProfile: unknown, sponsorProfile: unknown): number {
     let totalScore = 0;
     let totalWeight = 0;
 
@@ -211,7 +207,7 @@ class MatchingRulesService {
   /**
    * Apply a single matching rule
    */
-  private applyRule(rule: MatchingRule, studentProfile: any, sponsorProfile: any): number {
+  private applyRule(rule: MatchingRule, studentProfile: unknown, sponsorProfile: unknown): number {
     try {
       const criteria = rule.criteria;
       const field = criteria.field;
@@ -239,37 +235,37 @@ class MatchingRulesService {
   /**
    * Match academic level
    */
-  private matchAcademicLevel(studentProfile: any, sponsorProfile: any): number {
+  private matchAcademicLevel(studentProfile: unknown, sponsorProfile: unknown): number {
     const studentLevel = studentProfile.academic_level;
     const preferredLevels = sponsorProfile.preferred_academic_levels || [];
-    
+
     return preferredLevels.includes(studentLevel) ? 1 : 0;
   }
 
   /**
    * Match field of study
    */
-  private matchFieldOfStudy(studentProfile: any, sponsorProfile: any): number {
+  private matchFieldOfStudy(studentProfile: unknown, sponsorProfile: unknown): number {
     const studentField = studentProfile.field_of_study;
     const preferredFields = sponsorProfile.preferred_fields || [];
-    
+
     return preferredFields.includes(studentField) ? 1 : 0.5;
   }
 
   /**
    * Match location
    */
-  private matchLocation(studentProfile: any, sponsorProfile: any): number {
+  private matchLocation(studentProfile: unknown, sponsorProfile: unknown): number {
     const studentLocation = studentProfile.location;
     const sponsorLocation = sponsorProfile.location;
-    
+
     return studentLocation === sponsorLocation ? 1 : 0.3;
   }
 
   /**
    * Score financial need
    */
-  private scoreFinancialNeed(studentProfile: any): number {
+  private scoreFinancialNeed(studentProfile: unknown): number {
     const needScore = studentProfile.financial_need_score || 0;
     return Math.min(needScore / 100, 1);
   }
@@ -277,17 +273,17 @@ class MatchingRulesService {
   /**
    * Score GPA
    */
-  private scoreGPA(studentProfile: any, criteria: any): number {
+  private scoreGPA(studentProfile: unknown, criteria: unknown): number {
     const gpa = studentProfile.gpa || 0;
     const threshold = criteria.minimum_threshold || 3.0;
-    
+
     return gpa >= threshold ? Math.min(gpa / 4.0, 1) : 0;
   }
 
   /**
    * Calculate funding amount
    */
-  private calculateFundingAmount(sponsorProfile: any): number {
+  private calculateFundingAmount(sponsorProfile: unknown): number {
     const range = sponsorProfile.funding_amount_range || { min: 1000, max: 5000 };
     return (range.min + range.max) / 2;
   }
@@ -295,21 +291,21 @@ class MatchingRulesService {
   /**
    * Get match criteria
    */
-  private getMatchCriteria(studentProfile: any, sponsorProfile: any): string[] {
+  private getMatchCriteria(studentProfile: unknown, sponsorProfile: unknown): string[] {
     const criteria: string[] = [];
-    
+
     if (sponsorProfile.preferred_academic_levels?.includes(studentProfile.academic_level)) {
       criteria.push('Academic Level Match');
     }
-    
+
     if (sponsorProfile.preferred_fields?.includes(studentProfile.field_of_study)) {
       criteria.push('Field of Study Match');
     }
-    
+
     if (studentProfile.location === sponsorProfile.location) {
       criteria.push('Location Match');
     }
-    
+
     return criteria;
   }
 
@@ -330,16 +326,14 @@ class MatchingRulesService {
       if (results.length === 0) return;
 
       // Save to sponsor_matching_results table
-      const matchingData = results.map(result => ({
+      const matchingData = results.map((result) => ({
         sponsor_id: result.sponsor_id,
         student_id: result.student_id,
         match_score: result.score,
-        status: 'pending'
+        status: 'pending',
       }));
 
-      const { error } = await supabase
-        .from('sponsor_matching_results')
-        .upsert(matchingData);
+      const { error } = await supabase.from('sponsor_matching_results').upsert(matchingData);
 
       if (error) {
         console.error('Error saving matching results:', error);
@@ -358,4 +352,9 @@ class MatchingRulesService {
 }
 
 // Export singleton instance
+
+/**
+ * matchingRulesService
+ * @description Function
+ */
 export const matchingRulesService = new MatchingRulesService();

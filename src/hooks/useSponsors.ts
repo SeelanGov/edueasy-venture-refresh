@@ -9,7 +9,12 @@ export type UseSponsorsOptions = {
   pageSize?: number;
 };
 
-export const useSponsors = (options: UseSponsorsOptions = {}) => {
+
+/**
+ * useSponsors
+ * @description Function
+ */
+export const useSponsors = (options: UseSponsorsOptions = {}): void => {
   return useQuery({
     queryKey: ['sponsors', options],
     queryFn: async () => {

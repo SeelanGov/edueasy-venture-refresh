@@ -11,6 +11,11 @@ interface ChartWrapperProps {
   className?: string;
 }
 
+
+/**
+ * ChartWrapper
+ * @description Function
+ */
 export const ChartWrapper = ({
   title,
   children,
@@ -18,7 +23,7 @@ export const ChartWrapper = ({
   loading = false,
   error = null,
   className = '',
-}: ChartWrapperProps) => {
+}: ChartWrapperProps): void => {
   return (
     <>
       <CardHeader className={className}>

@@ -4,6 +4,11 @@ import { logSecurityEvent } from './logging';
 /**
  * Utility to verify if a user has admin privileges using the enhanced is_admin function
  */
+
+/**
+ * verifyAdminAccess
+ * @description Function
+ */
 export const verifyAdminAccess = async (userId: string | undefined): Promise<boolean> => {
   if (!userId) return false;
 

@@ -1,104 +1,114 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useToast } from '@/hooks/use-toast'
-import { usePaymentRecovery } from '@/hooks/usePaymentRecovery'
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
-    AlertTriangle,
-    CheckCircle,
-    Clock,
-    DollarSign,
-    Link,
-    RefreshCw,
-    User,
-    XCircle
-} from 'lucide-react'
-import { useEffect, useState } from 'react'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Link,
+  RefreshCw,
+  User,
+  XCircle,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Payment {
-  id: string
-  merchant_reference: string
-  amount: number
-  status: string
-  tier: string
-  created_at: string
-  updated_at: string
-  user_id: string | null
+  id: string;
+  merchant_reference: string;
+  amount: number;
+  status: string;
+  tier: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string | null;
   users?: {
-    email: string
-    tracking_id: string
-  }
+    email: string;
+    tracking_id: string;
+  };
 }
 
-export const PaymentRecoveryPanel = () => {
-  const [payments, setPayments] = useState<Payment[]>([])
-  const [filteredPayments, setFilteredPayments] = useState<Payment[]>([])
-  const [view, setView] = useState<'orphaned' | 'failed'>('orphaned')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
-  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null)
-  const [linkUserId, setLinkUserId] = useState('')
-  const [resolutionNotes, setResolutionNotes] = useState('')
-  const [showLinkModal, setShowLinkModal] = useState(false)
-  const [showResolveModal, setShowResolveModal] = useState(false)
 
-  const { 
-    loading, 
-    error, 
-    listOrphanedPayments, 
-    listFailedPayments, 
-    linkPaymentToUser, 
-    resolvePayment 
-  } = usePaymentRecovery()
-  
-  const { toast } = useToast()
+/**
+ * PaymentRecoveryPanel
+ * @description Function
+ */
+export const PaymentRecoveryPanel = (): void => {
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [filteredPayments, setFilteredPayments] = useState<Payment[]>([]);
+  const [view, setView] = useState<'orphaned' | 'failed'>('orphaned');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [linkUserId, setLinkUserId] = useState('');
+  const [resolutionNotes, setResolutionNotes] = useState('');
+  const [showLinkModal, setShowLinkModal] = useState(false);
+  const [showResolveModal, setShowResolveModal] = useState(false);
+
+  const {
+    loading,
+    error,
+    listOrphanedPayments,
+    listFailedPayments,
+    linkPaymentToUser,
+    resolvePayment,
+  } = usePaymentRecovery();
+
+  const { toast } = useToast();
 
   useEffect(() => {
-    loadPayments()
-  }, [view])
+    loadPayments();
+  }, [view]);
 
   useEffect(() => {
-    filterPayments()
-  }, [payments, searchTerm, statusFilter])
+    filterPayments();
+  }, [payments, searchTerm, statusFilter]);
 
   const loadPayments = async () => {
-    const result = view === 'orphaned' 
-      ? await listOrphanedPayments()
-      : await listFailedPayments()
+    const result = view === 'orphaned' ? await listOrphanedPayments() : await listFailedPayments();
 
     if (result.success) {
-      setPayments(result.data || [])
+      setPayments(result.data || []);
     } else {
       toast({
         title: 'Error',
         description: result.error || 'Failed to load payments',
         variant: 'destructive',
-      })
+      });
     }
-  }
+  };
 
-  const filterPayments = () => {
-    let filtered = payments
+  const filterPayments = (): void => {
+    let filtered = payments;
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(payment => 
-        payment.merchant_reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        payment.users?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        payment.users?.tracking_id?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      filtered = filtered.filter(
+        (payment) =>
+          payment.merchant_reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          payment.users?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          payment.users?.tracking_id?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
     }
 
     // Status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(payment => payment.status === statusFilter)
+      filtered = filtered.filter((payment) => payment.status === statusFilter);
     }
 
-    setFilteredPayments(filtered)
-  }
+    setFilteredPayments(filtered);
+  };
 
   const handleLinkPayment = async () => {
     if (!selectedPayment || !linkUserId.trim()) {
@@ -106,102 +116,98 @@ export const PaymentRecoveryPanel = () => {
         title: 'Error',
         description: 'Please provide a user ID',
         variant: 'destructive',
-      })
-      return
+      });
+      return;
     }
 
-    const result = await linkPaymentToUser(selectedPayment.id, linkUserId.trim(), resolutionNotes)
-    
+    const result = await linkPaymentToUser(selectedPayment.id, linkUserId.trim(), resolutionNotes);
+
     if (result.success) {
       toast({
         title: 'Success',
         description: 'Payment linked successfully',
-      })
-      setShowLinkModal(false)
-      setSelectedPayment(null)
-      setLinkUserId('')
-      setResolutionNotes('')
-      loadPayments() // Refresh the list
+      });
+      setShowLinkModal(false);
+      setSelectedPayment(null);
+      setLinkUserId('');
+      setResolutionNotes('');
+      loadPayments(); // Refresh the list
     } else {
       toast({
         title: 'Error',
         description: result.error || 'Failed to link payment',
         variant: 'destructive',
-      })
+      });
     }
-  }
+  };
 
   const handleResolvePayment = async () => {
-    if (!selectedPayment) return
+    if (!selectedPayment) return;
 
-    const result = await resolvePayment(selectedPayment.id, resolutionNotes)
-    
+    const result = await resolvePayment(selectedPayment.id, resolutionNotes);
+
     if (result.success) {
       toast({
         title: 'Success',
         description: 'Payment resolved successfully',
-      })
-      setShowResolveModal(false)
-      setSelectedPayment(null)
-      setResolutionNotes('')
-      loadPayments() // Refresh the list
+      });
+      setShowResolveModal(false);
+      setSelectedPayment(null);
+      setResolutionNotes('');
+      loadPayments(); // Refresh the list
     } else {
       toast({
         title: 'Error',
         description: result.error || 'Failed to resolve payment',
         variant: 'destructive',
-      })
+      });
     }
-  }
+  };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): void => {
     switch (status) {
       case 'pending':
-        return <Clock className="h-4 w-4 text-yellow-500" />
+        return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'paid':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'failed':
-        return <XCircle className="h-4 w-4 text-red-500" />
+        return <XCircle className="h-4 w-4 text-red-500" />;
       case 'expired':
-        return <AlertTriangle className="h-4 w-4 text-orange-500" />
+        return <AlertTriangle className="h-4 w-4 text-orange-500" />;
       default:
-        return <AlertTriangle className="h-4 w-4 text-gray-500" />
+        return <AlertTriangle className="h-4 w-4 text-gray-500" />;
     }
-  }
+  };
 
-  const getStatusBadge = (status: string) => {
-    const variants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+  const getStatusBadge = (status: string): void => {
+    const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
       pending: 'secondary',
       paid: 'default',
       failed: 'destructive',
       expired: 'outline',
       cancelled: 'outline',
-      refunded: 'outline'
-    }
+      refunded: 'outline',
+    };
 
-    return (
-      <Badge variant={variants[status] || 'outline'}>
-        {status.toUpperCase()}
-      </Badge>
-    )
-  }
+    return <Badge variant={variants[status] || 'outline'}>{status.toUpperCase()}</Badge>;
+  };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: number): void => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): void => {
     return new Date(dateString).toLocaleString('en-ZA', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    })
-  }
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -287,26 +293,22 @@ export const PaymentRecoveryPanel = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       {getStatusIcon(payment.status)}
-                      <h3 className="font-semibold text-gray-900">
-                        {payment.merchant_reference}
-                      </h3>
+                      <h3 className="font-semibold text-gray-900">{payment.merchant_reference}</h3>
                       {getStatusBadge(payment.status)}
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
                       <div className="flex items-center gap-2">
                         <DollarSign className="h-4 w-4" />
                         <span>{formatCurrency(payment.amount)}</span>
                         <Badge variant="outline">{payment.tier}</Badge>
                       </div>
-                      
+
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4" />
-                        <span>
-                          {payment.users?.email || 'No user linked'}
-                        </span>
+                        <span>{payment.users?.email || 'No user linked'}</span>
                       </div>
-                      
+
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         <span>{formatDate(payment.created_at)}</span>
@@ -325,20 +327,20 @@ export const PaymentRecoveryPanel = () => {
                       size="sm"
                       variant="outline"
                       onClick={() => {
-                        setSelectedPayment(payment)
-                        setShowLinkModal(true)
+                        setSelectedPayment(payment);
+                        setShowLinkModal(true);
                       }}
                     >
                       <Link className="h-4 w-4 mr-2" />
                       Link
                     </Button>
-                    
+
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => {
-                        setSelectedPayment(payment)
-                        setShowResolveModal(true)
+                        setSelectedPayment(payment);
+                        setShowResolveModal(true);
                       }}
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
@@ -383,8 +385,8 @@ export const PaymentRecoveryPanel = () => {
                 <Button onClick={handleLinkPayment} className="flex-1">
                   Link Payment
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShowLinkModal(false)}
                   className="flex-1"
                 >
@@ -419,8 +421,8 @@ export const PaymentRecoveryPanel = () => {
                 <Button onClick={handleResolvePayment} className="flex-1">
                   Resolve Payment
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShowResolveModal(false)}
                   className="flex-1"
                 >
@@ -432,5 +434,5 @@ export const PaymentRecoveryPanel = () => {
         </div>
       )}
     </div>
-  )
-} 
+  );
+};

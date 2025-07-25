@@ -45,7 +45,12 @@ const students: Student[] = [
   },
 ];
 
-export function TestimonialsSection() {
+
+/**
+ * TestimonialsSection
+ * @description Function
+ */
+export function TestimonialsSection(): void {
   return (
     <section className="container mx-auto py-12 px-4">
       <div className="text-center mb-12">

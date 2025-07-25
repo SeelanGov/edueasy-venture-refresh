@@ -7,12 +7,17 @@ interface StatusDistributionChartProps {
   resubmission: number;
 }
 
+
+/**
+ * StatusDistributionChart
+ * @description Function
+ */
 export const StatusDistributionChart = ({
   approved,
   rejected,
   pending,
   resubmission,
-}: StatusDistributionChartProps) => {
+}: StatusDistributionChartProps): void => {
   const data = [
     { name: 'Approved', value: approved, color: '#22c55e' },
     { name: 'Rejected', value: rejected, color: '#ef4444' },

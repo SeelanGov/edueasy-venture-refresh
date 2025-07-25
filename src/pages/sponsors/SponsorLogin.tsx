@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
-const SponsorLogin = () => {
+const SponsorLogin = (): void => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +34,7 @@ const SponsorLogin = () => {
       }
 
       navigate('/sponsors/dashboard');
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Login error');
     } finally {
       setLoading(false);
@@ -61,13 +61,13 @@ const SponsorLogin = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button
+        <Button 
           type="submit"
           className="w-full bg-cap-teal text-white py-2 rounded"
           disabled={loading}
         >
           {loading ? 'Logging in...' : 'Login'}
-        </button>
+        </Button>
         {error && <div className="text-red-500">{error}</div>}
       </form>
     </div>

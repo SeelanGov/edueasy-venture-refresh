@@ -12,7 +12,12 @@ interface PlanSelectorProps {
   currentPlan?: string;
 }
 
-export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) => {
+
+/**
+ * PlanSelector
+ * @description Function
+ */
+export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): void => {
   const [plans, setPlans] = useState<SubscriptionTier[]>([]);
   const [loading, setLoading] = useState(true);
   const { getAvailablePlans, upgradePlan } = usePlanManagement();
@@ -44,7 +49,7 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
     }
   };
 
-  const getPlanIcon = (tierName: string) => {
+  const getPlanIcon = (tierName: string): void => {
     switch (tierName) {
       case 'Starter':
         return <Users className="h-5 w-5" />;
@@ -57,7 +62,7 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps) =
     }
   };
 
-  const getPlanColor = (tierName: string) => {
+  const getPlanColor = (tierName: string): void => {
     switch (tierName) {
       case 'Starter':
         return 'border-gray-200 hover:border-gray-300';

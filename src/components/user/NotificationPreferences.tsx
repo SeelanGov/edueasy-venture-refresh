@@ -2,23 +2,33 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-    AlertTriangle,
-    Bell,
-    CheckCircle,
-    Clock,
-    Eye,
-    Mail,
-    MessageSquare,
-    RefreshCw,
-    Save,
-    XCircle
+  AlertTriangle,
+  Bell,
+  CheckCircle,
+  Clock,
+  Eye,
+  Mail,
+  MessageSquare,
+  RefreshCw,
+  Save,
+  XCircle,
 } from '@/components/ui/icons';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { notificationService, type NotificationRecord, type UserNotificationPreferences } from '@/services/NotificationService';
+import {
+  notificationService,
+  type NotificationRecord,
+  type UserNotificationPreferences,
+} from '@/services/NotificationService';
 import { memo, useEffect, useState } from 'react';
 
 const NotificationPreferences = memo(() => {
@@ -40,7 +50,7 @@ const NotificationPreferences = memo(() => {
   const loadUserPreferences = async () => {
     try {
       if (!user) return;
-      
+
       const userPrefs = await notificationService.getUserPreferences(user.id);
       if (userPrefs) {
         setPreferences(userPrefs);
@@ -55,7 +65,7 @@ const NotificationPreferences = memo(() => {
           sponsorship_notifications: true,
           system_notifications: true,
           marketing_notifications: false,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         };
         setPreferences(defaultPrefs);
       }
@@ -74,7 +84,7 @@ const NotificationPreferences = memo(() => {
   const loadNotificationHistory = async () => {
     try {
       if (!user) return;
-      
+
       const history = await notificationService.getUserNotificationHistory(user.id, 50);
       setNotificationHistory(history);
     } catch (error) {
@@ -82,31 +92,39 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const handlePreferenceChange = (key: keyof UserNotificationPreferences, value: boolean) => {
+  const handlePreferenceChange = (key: keyof UserNotificationPreferences, value: boolean): void => {
     if (!preferences) return;
-    
-    setPreferences(prev => prev ? {
-      ...prev,
-      [key]: value
-    } : null);
+
+    setPreferences((prev) =>
+      prev
+        ? {
+            ...prev,
+            [key]: value,
+          }
+        : null,
+    );
   };
 
-  const handleQuietHoursChange = (type: 'start' | 'end', value: string) => {
+  const handleQuietHoursChange = (type: 'start' | 'end', value: string): void => {
     if (!preferences) return;
-    
-    setPreferences(prev => prev ? {
-      ...prev,
-      [`quiet_hours_${type}`]: value
-    } : null);
+
+    setPreferences((prev) =>
+      prev
+        ? {
+            ...prev,
+            [`quiet_hours_${type}`]: value,
+          }
+        : null,
+    );
   };
 
   const handleSavePreferences = async () => {
     if (!user || !preferences) return;
-    
+
     setSaving(true);
     try {
       await notificationService.updateUserPreferences(user.id, preferences);
-      
+
       toast({
         title: 'Preferences Saved',
         description: 'Your notification preferences have been updated successfully',
@@ -126,16 +144,16 @@ const NotificationPreferences = memo(() => {
   const handleMarkAsRead = async (notificationId: string) => {
     try {
       await notificationService.markNotificationAsRead(notificationId);
-      
+
       // Update local state
-      setNotificationHistory(prev => 
-        prev.map(notification => 
-          notification.id === notificationId 
+      setNotificationHistory((prev) =>
+        prev.map((notification) =>
+          notification.id === notificationId
             ? { ...notification, status: 'delivered', delivered_at: new Date().toISOString() }
-            : notification
-        )
+            : notification,
+        ),
       );
-      
+
       toast({
         title: 'Notification Marked as Read',
         description: 'Notification has been marked as read',
@@ -150,7 +168,7 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): void => {
     switch (status) {
       case 'sent':
         return <CheckCircle className="h-4 w-4 text-green-600" />;
@@ -165,7 +183,7 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeVariant = (status: string): void => {
     switch (status) {
       case 'sent':
         return 'default';
@@ -180,7 +198,7 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const getNotificationTypeIcon = (type: string) => {
+  const getNotificationTypeIcon = (type: string): void => {
     switch (type) {
       case 'email':
         return <Mail className="h-4 w-4" />;
@@ -193,7 +211,7 @@ const NotificationPreferences = memo(() => {
     }
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): void => {
     return new Date(dateString).toLocaleString();
   };
 
@@ -242,9 +260,7 @@ const NotificationPreferences = memo(() => {
                 <Bell className="h-5 w-5 mr-2" />
                 Notification Channels
               </CardTitle>
-              <CardDescription>
-                Choose how you want to receive notifications
-              </CardDescription>
+              <CardDescription>Choose how you want to receive notifications</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
@@ -303,11 +319,15 @@ const NotificationPreferences = memo(() => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Payment Notifications</p>
-                  <p className="text-sm text-gray-600">Payment confirmations, failures, and reminders</p>
+                  <p className="text-sm text-gray-600">
+                    Payment confirmations, failures, and reminders
+                  </p>
                 </div>
                 <Switch
                   checked={preferences.payment_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('payment_notifications', checked)}
+                  onCheckedChange={(checked) =>
+                    handlePreferenceChange('payment_notifications', checked)
+                  }
                 />
               </div>
 
@@ -318,18 +338,24 @@ const NotificationPreferences = memo(() => {
                 </div>
                 <Switch
                   checked={preferences.sponsorship_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('sponsorship_notifications', checked)}
+                  onCheckedChange={(checked) =>
+                    handlePreferenceChange('sponsorship_notifications', checked)
+                  }
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">System Notifications</p>
-                  <p className="text-sm text-gray-600">Account verification, document status updates</p>
+                  <p className="text-sm text-gray-600">
+                    Account verification, document status updates
+                  </p>
                 </div>
                 <Switch
                   checked={preferences.system_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('system_notifications', checked)}
+                  onCheckedChange={(checked) =>
+                    handlePreferenceChange('system_notifications', checked)
+                  }
                 />
               </div>
 
@@ -340,7 +366,9 @@ const NotificationPreferences = memo(() => {
                 </div>
                 <Switch
                   checked={preferences.marketing_notifications}
-                  onCheckedChange={(checked) => handlePreferenceChange('marketing_notifications', checked)}
+                  onCheckedChange={(checked) =>
+                    handlePreferenceChange('marketing_notifications', checked)
+                  }
                 />
               </div>
             </CardContent>
@@ -371,7 +399,13 @@ const NotificationPreferences = memo(() => {
                     <SelectContent>
                       {Array.from({ length: 24 }, (_, i) => (
                         <SelectItem key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                          {i === 0 ? '12:00 AM' : i === 12 ? '12:00 PM' : i > 12 ? `${i - 12}:00 PM` : `${i}:00 AM`}
+                          {i === 0
+                            ? '12:00 AM'
+                            : i === 12
+                              ? '12:00 PM'
+                              : i > 12
+                                ? `${i - 12}:00 PM`
+                                : `${i}:00 AM`}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -390,7 +424,13 @@ const NotificationPreferences = memo(() => {
                     <SelectContent>
                       {Array.from({ length: 24 }, (_, i) => (
                         <SelectItem key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                          {i === 0 ? '12:00 AM' : i === 12 ? '12:00 PM' : i > 12 ? `${i - 12}:00 PM` : `${i}:00 AM`}
+                          {i === 0
+                            ? '12:00 AM'
+                            : i === 12
+                              ? '12:00 PM'
+                              : i > 12
+                                ? `${i - 12}:00 PM`
+                                : `${i}:00 AM`}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -399,7 +439,8 @@ const NotificationPreferences = memo(() => {
               </div>
 
               <div className="text-sm text-gray-600">
-                Notifications will be paused between {preferences.quiet_hours_start || '22:00'} and {preferences.quiet_hours_end || '08:00'}
+                Notifications will be paused between {preferences.quiet_hours_start || '22:00'} and{' '}
+                {preferences.quiet_hours_end || '08:00'}
               </div>
             </CardContent>
           </Card>
@@ -426,9 +467,7 @@ const NotificationPreferences = memo(() => {
           <Card>
             <CardHeader>
               <CardTitle>Recent Notifications</CardTitle>
-              <CardDescription>
-                View your recent notification history
-              </CardDescription>
+              <CardDescription>View your recent notification history</CardDescription>
             </CardHeader>
             <CardContent>
               {notificationHistory.length === 0 ? (
@@ -457,7 +496,7 @@ const NotificationPreferences = memo(() => {
                           </Badge>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <span>{formatDate(notification.created_at)}</span>
                         {notification.status === 'sent' && (
@@ -483,4 +522,4 @@ const NotificationPreferences = memo(() => {
   );
 });
 
-export default NotificationPreferences; 
+export default NotificationPreferences;

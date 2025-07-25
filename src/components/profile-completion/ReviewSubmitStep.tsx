@@ -9,6 +9,11 @@ import { logError } from '@/utils/logging';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+/**
+ * ReviewSubmitStep
+ * @description Function
+ */
 export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
   const { user } = useAuth();
   const navigate = useNavigate();

@@ -45,12 +45,10 @@ class NotificationService {
         title: 'Notification',
         message: 'You have a new notification',
         notification_type: 'system',
-        is_read: false
+        is_read: false,
       };
 
-      const { error } = await supabase
-        .from('notifications')
-        .insert(notification);
+      const { error } = await supabase.from('notifications').insert(notification);
 
       if (error) {
         console.error('Error creating notification:', error);
@@ -61,24 +59,30 @@ class NotificationService {
   }
 
   async getUserPreferences(userId: string): Promise<UserNotificationPreferences | null> {
-    return { 
-      user_id: userId, 
-      email_enabled: true, 
-      sms_enabled: false, 
-      in_app_enabled: true, 
+    return {
+      user_id: userId,
+      email_enabled: true,
+      sms_enabled: false,
+      in_app_enabled: true,
       payment_notifications: true,
       sponsorship_notifications: true,
       system_notifications: true,
       marketing_notifications: false,
-      updated_at: new Date().toISOString() 
+      updated_at: new Date().toISOString(),
     };
   }
 
-  async getUserNotificationHistory(_userId: string, _limit?: number): Promise<NotificationRecord[]> {
+  async getUserNotificationHistory(
+    _userId: string,
+    _limit?: number,
+  ): Promise<NotificationRecord[]> {
     return [];
   }
 
-  async updateUserPreferences(userId: string, preferences: Partial<UserNotificationPreferences>): Promise<void> {
+  async updateUserPreferences(
+    userId: string,
+    preferences: Partial<UserNotificationPreferences>,
+  ): Promise<void> {
     console.log('Updating preferences for', userId, preferences);
   }
 
@@ -88,4 +92,9 @@ class NotificationService {
 }
 
 // Export singleton instance
+
+/**
+ * notificationService
+ * @description Function
+ */
 export const notificationService = new NotificationService();

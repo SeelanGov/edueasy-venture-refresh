@@ -26,6 +26,11 @@ const iconMap = {
   Flag,
 };
 
+
+/**
+ * StatisticCard
+ * @description Function
+ */
 export const StatisticCard = ({
   value,
   label,
@@ -36,7 +41,7 @@ export const StatisticCard = ({
   animateCount = true,
   delay = 0,
   isTarget = false,
-}: StatisticCardProps) => {
+}: StatisticCardProps): void => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [animatedValue, setAnimatedValue] = useState('0');
@@ -64,7 +69,7 @@ export const StatisticCard = ({
     };
   }, [value, animateCount, delay]);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     if (linkTo) {
       navigate(linkTo);
     }

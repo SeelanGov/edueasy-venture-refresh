@@ -10,12 +10,17 @@ interface PlanLimitWarningProps {
   planName: string;
 }
 
+
+/**
+ * PlanLimitWarning
+ * @description Function
+ */
 export const PlanLimitWarning = ({
   limitType,
   currentCount,
   maxAllowed,
   planName,
-}: PlanLimitWarningProps) => {
+}: PlanLimitWarningProps): void => {
   const isAtLimit = currentCount >= maxAllowed;
   const isNearLimit = currentCount >= maxAllowed - 1;
 

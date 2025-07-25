@@ -48,7 +48,12 @@ const students: Student[] = [
   },
 ];
 
-export const TestimonialsSection = () => {
+
+/**
+ * TestimonialsSection
+ * @description Function
+ */
+export const TestimonialsSection = (): void => {
   return (
     <section
       id="testimonials"

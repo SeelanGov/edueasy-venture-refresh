@@ -6,14 +6,19 @@ import { useState } from 'react';
 export interface VerificationResult {
   status: 'approved' | 'rejected' | 'request_resubmission' | 'pending';
   confidence?: number;
-  validationResults?: Record<string, any>;
+  validationResults?: Record<string, unknown>;
   failureReason?: string | null;
   errorCategory?: string;
   processingTimeMs?: number;
   extractedFields?: Record<string, string>;
 }
 
-export const useDocumentVerification = () => {
+
+/**
+ * useDocumentVerification
+ * @description Function
+ */
+export const useDocumentVerification = (): void => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
 
@@ -113,7 +118,7 @@ export const useDocumentVerification = () => {
       }
 
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       handleError(error, 'Document verification failed');
 
       const errorResult: VerificationResult = {

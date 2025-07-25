@@ -30,7 +30,12 @@ interface ApplicationTableProps {
   loading: boolean;
 }
 
-export const ApplicationTable = ({ applications, loading }: ApplicationTableProps) => {
+
+/**
+ * ApplicationTable
+ * @description Function
+ */
+export const ApplicationTable = ({ applications, loading }: ApplicationTableProps): void => {
   const [enrichedApplications, setEnrichedApplications] = useState<EnrichedApplication[]>([]);
 
   useEffect(() => {
@@ -79,7 +84,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   }, [applications]);
 
-  const getStatusBadgeClass = (status: string | null = 'draft') => {
+  const getStatusBadgeClass = (status: string | null = 'draft'): void => {
     const statusValue = status || 'draft';
     switch (statusValue.toLowerCase()) {
       case 'draft':
@@ -93,7 +98,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   };
 
-  const getVerificationBadge = (status: string | null) => {
+  const getVerificationBadge = (status: string | null): void => {
     if (!status) return null;
 
     switch (status.toLowerCase()) {
@@ -227,7 +232,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
   );
 };
 
-const EmptyApplicationState = () => {
+const EmptyApplicationState = (): void => {
   return (
     <div className="text-center py-12 bg-gray-50 rounded-md">
       <div className="inline-flex justify-center items-center w-16 h-16 bg-gray-100 rounded-full mb-4">

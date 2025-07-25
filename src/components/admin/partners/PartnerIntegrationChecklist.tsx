@@ -26,7 +26,7 @@ const INTEGRATION_STEPS = [
   },
 ];
 
-const getStepStatus = (partner: any, key: string) => {
+const getStepStatus = (partner: unknown, key: string): void => {
   // Simulated logic: in production, fields like `mou_uploaded_at`, `api_connected`, etc. would exist
   switch (key) {
     case 'signed_mou':
@@ -55,7 +55,7 @@ const statusToIcon = (status: string) =>
     <Circle className="text-gray-300 mr-2 h-5 w-5" />
   );
 
-const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) => (
+const PartnerIntegrationChecklist: React.FC<{ partner: unknown }> = ({ partner }) => (
   <div className="rounded border p-4 bg-white shadow text-gray-700 space-y-4">
     <div className="font-semibold mb-2">Integration Progress</div>
     <div>

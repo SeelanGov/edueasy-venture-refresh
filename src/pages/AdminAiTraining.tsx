@@ -9,7 +9,7 @@ import { useIntentManagement, type IntentWithStats } from '@/hooks/useIntentMana
 import { useTrainingData } from '@/hooks/useTrainingData';
 import { useState } from 'react';
 
-const AdminAiTraining = () => {
+const AdminAiTraining = (): void => {
   const [activeTab, setActiveTab] = useState('messages');
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const AdminAiTraining = () => {
   } = useTrainingData();
 
   // Handle intent edit
-  const handleEditIntent = (intent: IntentWithStats) => {
+  const handleEditIntent = (intent: IntentWithStats): void => {
     setSelectedIntent(intent);
     setIsEditFormOpen(true);
   };

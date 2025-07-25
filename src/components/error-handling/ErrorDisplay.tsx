@@ -13,8 +13,8 @@ export interface ErrorInfo {
   sessionId?: string;
   severity?: 'low' | 'medium' | 'high' | 'critical';
   category?: string;
-  details?: Record<string, any>;
-  context?: Record<string, any>;
+  details?: Record<string, unknown>;
+  context?: Record<string, unknown>;
 }
 
 interface ErrorDisplayProps {
@@ -25,6 +25,11 @@ interface ErrorDisplayProps {
   className?: string;
 }
 
+
+/**
+ * ErrorDisplay
+ * @description Function
+ */
 export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   error,
   onRetry,
@@ -32,7 +37,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   showDetails = false,
   className = '',
 }) => {
-  const getSeverityColor = (severity: string = 'medium') => {
+  const getSeverityColor = (severity: string = 'medium'): void => {
     switch (severity) {
       case 'low':
         return 'border-yellow-200 bg-yellow-50';
@@ -45,7 +50,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     }
   };
 
-  const renderErrorDetails = () => {
+  const renderErrorDetails = (): void => {
     if (!showDetails) return null;
 
     return (

@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ApplyForSponsorship = () => {
+const ApplyForSponsorship = (): void => {
   const { user } = useAuth();
   const [applicationId, setApplicationId] = useState('');
   const [requestedAmount, setRequestedAmount] = useState('');
@@ -33,7 +33,7 @@ const ApplyForSponsorship = () => {
       ]);
       if (error) throw error;
       setDone(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Submission error');
     } finally {
       setLoading(false);
@@ -44,7 +44,9 @@ const ApplyForSponsorship = () => {
     return (
       <div className="max-w-md mx-auto mt-16 p-8 bg-white rounded-xl shadow">
         <h2 className="text-2xl mb-4">Sponsorship Requested!</h2>
-        <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/')}>Back to Home</Button>
+        <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/')}>
+          Back to Home
+        </Button>
       </div>
     );
   }

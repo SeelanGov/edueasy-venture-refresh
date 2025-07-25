@@ -19,6 +19,11 @@ interface GridProps {
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 }
 
+
+/**
+ * Grid
+ * @description Function
+ */
 export const Grid: React.FC<GridProps> = ({
   children,
   cols = { default: 1, md: 2, lg: 3 },
@@ -70,7 +75,7 @@ export const Grid: React.FC<GridProps> = ({
     evenly: 'justify-items-stretch',
   };
 
-  const getColsClass = () => {
+  const getColsClass = (): void => {
     const classes = ['grid'];
 
     if (cols.default) classes.push(gridCols[cols.default as keyof typeof gridCols]);
@@ -109,6 +114,11 @@ interface FlexProps {
   as?: 'div' | 'section' | 'main' | 'article' | 'header' | 'footer' | 'nav';
 }
 
+
+/**
+ * Flex
+ * @description Function
+ */
 export const Flex: React.FC<FlexProps> = ({
   children,
   direction = 'row',
@@ -186,6 +196,11 @@ interface ContainerProps {
   as?: 'div' | 'section' | 'main' | 'article';
 }
 
+
+/**
+ * Container
+ * @description Function
+ */
 export const Container: React.FC<ContainerProps> = ({
   children,
   size = 'xl',

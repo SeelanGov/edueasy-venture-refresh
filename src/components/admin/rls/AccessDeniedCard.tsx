@@ -1,7 +1,12 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AlertCircle } from 'lucide-react';
 
-export const AccessDeniedCard = () => {
+
+/**
+ * AccessDeniedCard
+ * @description Function
+ */
+export const AccessDeniedCard = (): void => {
   return (
     <Card className="border-destructive">
       <CardHeader>

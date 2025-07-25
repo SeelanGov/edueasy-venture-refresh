@@ -11,6 +11,11 @@ interface OfflineErrorDisplayProps {
   lastConnectedTime?: Date | null;
 }
 
+
+/**
+ * OfflineErrorDisplay
+ * @description Function
+ */
 export const OfflineErrorDisplay = ({
   message = 'You appear to be offline. Some features may be unavailable.',
   onRetryConnection,
@@ -18,9 +23,9 @@ export const OfflineErrorDisplay = ({
   className = '',
   timeSinceLastConnection = null,
   lastConnectedTime = null,
-}: OfflineErrorDisplayProps) => {
+}: OfflineErrorDisplayProps): void => {
   // Format the time since last connection
-  const formatTimeSince = (seconds: number) => {
+  const formatTimeSince = (seconds: number): void => {
     if (seconds < 60) return `${seconds} seconds`;
     if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
     return `${Math.floor(seconds / 3600)} hours`;

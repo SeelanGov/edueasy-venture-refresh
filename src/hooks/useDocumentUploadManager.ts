@@ -9,7 +9,7 @@ export interface VerificationResult {
   confidence?: number;
   details?: string;
   failureReason?: string;
-  validationResults?: Record<string, any>;
+  validationResults?: Record<string, unknown>;
   processingTimeMs?: number;
   extractedFields?: Record<string, string>;
 }
@@ -25,10 +25,15 @@ export interface DocumentUploadState {
   filePath?: string;
   progress?: number;
   error?: string | null;
-  retryData?: any;
+  retryData?: unknown;
 }
 
-export const useDocumentUploadManager = () => {
+
+/**
+ * useDocumentUploadManager
+ * @description Function
+ */
+export const useDocumentUploadManager = (): void => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | undefined>();
   const [uploadSteps, setUploadSteps] = useState<Record<string, unknown>[]>([]);

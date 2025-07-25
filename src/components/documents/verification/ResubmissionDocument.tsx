@@ -11,11 +11,16 @@ interface ResubmissionDocumentProps {
   onResubmit: () => void;
 }
 
+
+/**
+ * ResubmissionDocument
+ * @description Function
+ */
 export const ResubmissionDocument = ({
   result,
   documentType,
   onResubmit,
-}: ResubmissionDocumentProps) => {
+}: ResubmissionDocumentProps): void => {
   const { failureReason, validationResults, extractedFields } = result;
 
   return (

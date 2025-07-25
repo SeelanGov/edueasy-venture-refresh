@@ -13,10 +13,10 @@ interface ColorCardProps {
   textClassName?: string;
 }
 
-const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps) => {
+const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps): void => {
   const [copied, setCopied] = useState(false);
 
-  const copyToClipboard = () => {
+  const copyToClipboard = (): void => {
     navigator.clipboard.writeText(variable);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -44,7 +44,12 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
   );
 };
 
-export const ColorSystem = () => {
+
+/**
+ * ColorSystem
+ * @description Function
+ */
+export const ColorSystem = (): void => {
   const { theme, toggleTheme } = useTheme();
 
   return (

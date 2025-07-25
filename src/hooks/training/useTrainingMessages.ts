@@ -4,7 +4,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import type { ChatMessage, TrainingFilters } from '@/types/TrainingTypes';
 
-export const useTrainingMessages = () => {
+
+/**
+ * useTrainingMessages
+ * @description Function
+ */
+export const useTrainingMessages = (): void => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);

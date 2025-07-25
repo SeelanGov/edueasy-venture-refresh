@@ -6,6 +6,11 @@ import type { ApplicationFormValues } from '@/components/application/Application
 /**
  * Hook for loading draft applications from Supabase
  */
+
+/**
+ * useDraftLoading
+ * @description Function
+ */
 export const useDraftLoading = (
   userId: string | undefined,
   isOnline: boolean,

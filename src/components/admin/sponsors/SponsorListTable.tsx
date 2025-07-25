@@ -7,6 +7,11 @@ interface SponsorListTableProps {
   onView: (id: string) => void;
 }
 
+
+/**
+ * SponsorListTable
+ * @description Function
+ */
 export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, onView }) => (
   <div className="overflow-x-auto">
     <table className="min-w-full border rounded">
@@ -39,7 +44,12 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, on
               </span>
             </td>
             <td className="px-3 py-2">
-              <Button className="text-cap-teal hover:underline" variant="link" size="sm" onClick={() => onView(sponsor.id)}>
+              <Button
+                className="text-cap-teal hover:underline"
+                variant="link"
+                size="sm"
+                onClick={() => onView(sponsor.id)}
+              >
                 View
               </Button>
             </td>

@@ -48,7 +48,12 @@ interface RegisterFormProps {
   hasPendingPlan?: boolean;
 }
 
-export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
+
+/**
+ * RegisterForm
+ * @description Function
+ */
+export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): void => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,16 +80,16 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
   const handleRegistrationSuccess = async () => {
     try {
       const pendingPlan = secureStorage.getItem('pending_plan');
-      
+
       if (pendingPlan) {
         // Clear pending plan from storage
         secureStorage.removeItem('pending_plan');
-        
+
         // Redirect to checkout with plan
         navigate(`/checkout?plan=${pendingPlan}`, {
-          state: { 
-            message: 'Account created successfully! Complete your purchase below.'
-          }
+          state: {
+            message: 'Account created successfully! Complete your purchase below.',
+          },
         });
       } else {
         // Default redirect for non-payment registrations
@@ -111,10 +116,10 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
 
     try {
       const data = form.getValues();
-      
+
       // Step 2: Create user account first (without ID verification)
       const response = await signUp(data.email, data.password, data.fullName);
-      
+
       if (response?.error) {
         setRegistrationError(response.error);
         return;
@@ -128,23 +133,24 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
       await recordUserConsents(response.user.id, {
         privacy: consentPrivacy,
         terms: consentTerms,
-        idVerification: consentIdVerification
+        idVerification: consentIdVerification,
       });
 
       // Step 4: Now perform ID verification with VerifyID
       const verificationResult = await verifyIdWithVerifyID(response.user.id, data.idNumber);
-      
+
       if (!verificationResult.success) {
-        setRegistrationError(verificationResult.error || 'ID verification failed. Please try again.');
+        setRegistrationError(
+          verificationResult.error || 'ID verification failed. Please try again.',
+        );
         return;
       }
 
       // Step 5: Success - handle post-registration redirect
       await handleRegistrationSuccess();
-      
     } catch (error: unknown) {
       setRegistrationError(
-        error instanceof Error ? error.message : 'Registration failed. Please try again later.'
+        error instanceof Error ? error.message : 'Registration failed. Please try again later.',
       );
     } finally {
       setIsLoading(false);
@@ -162,28 +168,29 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
         body: JSON.stringify({
           user_id: userId,
           national_id: idNumber,
-          api_key: import.meta.env.VITE_VERIFYID_API_KEY || 'your_verifyid_api_key_here'
+          api_key: import.meta.env.VITE_VERIFYID_API_KEY || 'your_verifyid_api_key_here',
         }),
       });
 
       const result = await res.json();
-      
+
       if (!res.ok) {
         return {
           success: false,
-          error: result.error || 'ID Verification failed. Please check your ID number and try again.'
+          error:
+            result.error || 'ID Verification failed. Please check your ID number and try again.',
         };
       }
 
       return {
         success: true,
-        data: result
+        data: result,
       };
     } catch (error) {
       console.error('VerifyID integration error:', error);
       return {
         success: false,
-        error: 'Failed to verify ID. Please try again later.'
+        error: 'Failed to verify ID. Please try again later.',
       };
     }
   };
@@ -196,10 +203,9 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
             {hasPendingPlan ? 'Create Your Account' : 'Sign Up'}
           </h1>
           <p className="text-gray-600">
-            {hasPendingPlan 
+            {hasPendingPlan
               ? 'Complete your account to continue with your purchase'
-              : 'Join EduEasy to access educational opportunities'
-            }
+              : 'Join EduEasy to access educational opportunities'}
           </p>
         </div>
 
@@ -234,7 +240,11 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
               disabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
-              {isLoading ? 'Signing up...' : (hasPendingPlan ? 'Create Account & Continue' : 'Sign Up')}
+              {isLoading
+                ? 'Signing up...'
+                : hasPendingPlan
+                  ? 'Create Account & Continue'
+                  : 'Sign Up'}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">

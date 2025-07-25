@@ -5,7 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
 
-export const useSession = () => {
+
+/**
+ * useSession
+ * @description Function
+ */
+export const useSession = (): void => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);

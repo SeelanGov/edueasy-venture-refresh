@@ -2,28 +2,24 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    AlertTriangle,
-    CheckCircle,
-    Clock,
-    Download,
-    Eye,
-    EyeOff,
-    Key,
-    Shield,
-    Trash2
-} from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { gdpr, inputValidation, securityMonitoring } from '@/utils/security';
 import {
-    gdpr,
-    inputValidation,
-    securityMonitoring
-} from '@/utils/security';
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Download,
+  Eye,
+  EyeOff,
+  Key,
+  Shield,
+  Trash2,
+} from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 
 interface SecuritySettingsProps {
@@ -37,14 +33,17 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswords, setShowPasswords] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState<{ valid: boolean; errors: string[] }>({ valid: false, errors: [] });
-  
+  const [passwordStrength, setPasswordStrength] = useState<{ valid: boolean; errors: string[] }>({
+    valid: false,
+    errors: [],
+  });
+
   // Security preferences
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState(30);
   const [loginNotifications, setLoginNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
-  
+
   // Privacy preferences
   const [analyticsConsent, setAnalyticsConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -61,7 +60,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
   }, [newPassword]);
 
-  const loadSecurityPreferences = () => {
+  const loadSecurityPreferences = (): void => {
     // Load from localStorage or user preferences
     const preferences = JSON.parse(localStorage.getItem('security-preferences') || '{}');
     setTwoFactorEnabled(preferences.twoFactorEnabled || false);
@@ -69,21 +68,21 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     setLoginNotifications(preferences.loginNotifications !== false);
   };
 
-  const loadPrivacyPreferences = () => {
+  const loadPrivacyPreferences = (): void => {
     setAnalyticsConsent(gdpr.hasConsent('analytics'));
     setMarketingConsent(gdpr.hasConsent('marketing'));
     setThirdPartyConsent(gdpr.hasConsent('third_party'));
   };
 
-  const saveSecurityPreferences = () => {
+  const saveSecurityPreferences = (): void => {
     const preferences = {
       twoFactorEnabled,
       sessionTimeout,
       loginNotifications,
     };
-    
+
     localStorage.setItem('security-preferences', JSON.stringify(preferences));
-    
+
     toast({
       title: 'Security Preferences Updated',
       description: 'Your security preferences have been saved successfully.',
@@ -97,11 +96,11 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     });
   };
 
-  const savePrivacyPreferences = () => {
+  const savePrivacyPreferences = (): void => {
     gdpr.setConsent('analytics', analyticsConsent);
     gdpr.setConsent('marketing', marketingConsent);
     gdpr.setConsent('third_party', thirdPartyConsent);
-    
+
     toast({
       title: 'Privacy Preferences Updated',
       description: 'Your privacy preferences have been saved successfully.',
@@ -139,8 +138,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     setLoading(true);
     try {
       // TODO: Implement password change API call
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+
       toast({
         title: 'Password Updated',
         description: 'Your password has been changed successfully.',
@@ -172,14 +171,16 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     setLoading(true);
     try {
       const result = await gdpr.exportUserData(user?.id || '');
-      
-      if (result.success) {
+
+      const exportResult = result as { success: boolean; error?: string };
+      if (exportResult.success) {
         toast({
           title: 'Data Export Requested',
-          description: 'Your data export request has been submitted. You will receive an email when it\'s ready.',
+          description:
+            "Your data export request has been submitted. You will receive an email when it's ready.",
         });
       } else {
-        throw new Error(result.error);
+        throw new Error(exportResult.error || 'Export failed');
       }
     } catch (error) {
       toast({
@@ -200,11 +201,12 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     setLoading(true);
     try {
       const success = await gdpr.requestDataDeletion(user?.id || '');
-      
+
       if (success) {
         toast({
           title: 'Deletion Request Submitted',
-          description: 'Your data deletion request has been submitted. You will receive a confirmation email.',
+          description:
+            'Your data deletion request has been submitted. You will receive a confirmation email.',
         });
       } else {
         throw new Error('Failed to submit deletion request');
@@ -220,7 +222,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
   };
 
-  const getPasswordStrengthColor = () => {
+  const getPasswordStrengthColor = (): string => {
     if (passwordStrength.valid) return 'text-green-600';
     if (newPassword.length > 0) return 'text-red-600';
     return 'text-gray-500';
@@ -321,8 +323,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
             </div>
           )}
 
-          <Button 
-            onClick={handlePasswordChange} 
+          <Button
+            onClick={handlePasswordChange}
             disabled={loading || !passwordStrength.valid}
             className="w-full md:w-auto"
           >
@@ -338,9 +340,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
             <Shield className="h-5 w-5" />
             Security Preferences
           </CardTitle>
-          <CardDescription>
-            Configure your account security settings
-          </CardDescription>
+          <CardDescription>Configure your account security settings</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -350,10 +350,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 Add an extra layer of security to your account
               </p>
             </div>
-            <Switch
-              checked={twoFactorEnabled}
-              onCheckedChange={setTwoFactorEnabled}
-            />
+            <Switch checked={twoFactorEnabled} onCheckedChange={setTwoFactorEnabled} />
           </div>
 
           <Separator />
@@ -384,10 +381,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 Receive email notifications for new login attempts
               </p>
             </div>
-            <Switch
-              checked={loginNotifications}
-              onCheckedChange={setLoginNotifications}
-            />
+            <Switch checked={loginNotifications} onCheckedChange={setLoginNotifications} />
           </div>
 
           <Button onClick={saveSecurityPreferences} className="w-full md:w-auto">
@@ -403,9 +397,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
             <Eye className="h-5 w-5" />
             Privacy Preferences
           </CardTitle>
-          <CardDescription>
-            Control how your data is used and shared
-          </CardDescription>
+          <CardDescription>Control how your data is used and shared</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -415,10 +407,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 Allow us to collect anonymous usage data to improve our services
               </p>
             </div>
-            <Switch
-              checked={analyticsConsent}
-              onCheckedChange={setAnalyticsConsent}
-            />
+            <Switch checked={analyticsConsent} onCheckedChange={setAnalyticsConsent} />
           </div>
 
           <Separator />
@@ -430,10 +419,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 Receive updates about new features and educational opportunities
               </p>
             </div>
-            <Switch
-              checked={marketingConsent}
-              onCheckedChange={setMarketingConsent}
-            />
+            <Switch checked={marketingConsent} onCheckedChange={setMarketingConsent} />
           </div>
 
           <Separator />
@@ -445,10 +431,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 Allow data sharing with trusted third-party services
               </p>
             </div>
-            <Switch
-              checked={thirdPartyConsent}
-              onCheckedChange={setThirdPartyConsent}
-            />
+            <Switch checked={thirdPartyConsent} onCheckedChange={setThirdPartyConsent} />
           </div>
 
           <Button onClick={savePrivacyPreferences} className="w-full md:w-auto">
@@ -464,21 +447,20 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
             <Download className="h-5 w-5" />
             Data Management
           </CardTitle>
-          <CardDescription>
-            Export or delete your personal data
-          </CardDescription>
+          <CardDescription>Export or delete your personal data</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              You have the right to access, export, and delete your personal data under GDPR regulations.
+              You have the right to access, export, and delete your personal data under GDPR
+              regulations.
             </AlertDescription>
           </Alert>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button 
-              onClick={handleDataExport} 
+            <Button
+              onClick={handleDataExport}
               disabled={loading}
               variant="outline"
               className="flex items-center gap-2"
@@ -487,8 +469,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
               Export My Data
             </Button>
 
-            <Button 
-              onClick={handleDataDeletion} 
+            <Button
+              onClick={handleDataDeletion}
               disabled={loading}
               variant="destructive"
               className="flex items-center gap-2"
@@ -507,16 +489,17 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
             <CheckCircle className="h-5 w-5" />
             Security Status
           </CardTitle>
-          <CardDescription>
-            Overview of your account security
-          </CardDescription>
+          <CardDescription>Overview of your account security</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">Password Strength</p>
-                <p className="text-sm text-gray-600">Last changed: {user?.updated_at ? new Date(user.updated_at).toLocaleDateString() : 'Unknown'}</p>
+                <p className="text-sm text-gray-600">
+                  Last changed:{' '}
+                  {user?.updated_at ? new Date(user.updated_at).toLocaleDateString() : 'Unknown'}
+                </p>
               </div>
               <Badge variant={passwordStrength.valid ? 'default' : 'destructive'}>
                 {passwordStrength.valid ? 'Strong' : 'Weak'}
@@ -538,9 +521,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 <p className="font-medium">Session Timeout</p>
                 <p className="text-sm text-gray-600">Auto-logout protection</p>
               </div>
-              <Badge variant="outline">
-                {sessionTimeout}m
-              </Badge>
+              <Badge variant="outline">{sessionTimeout}m</Badge>
             </div>
 
             <div className="flex items-center justify-between p-3 border rounded-lg">
@@ -562,4 +543,4 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
 SecuritySettings.displayName = 'SecuritySettings';
 
-export default SecuritySettings; 
+export default SecuritySettings;

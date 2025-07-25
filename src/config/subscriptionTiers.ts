@@ -1,3 +1,8 @@
+
+/**
+ * TIER_LEVELS
+ * @description Function
+ */
 export const TIER_LEVELS = {
   FREE: 'free',
   BASIC: 'basic',
@@ -24,6 +29,11 @@ export interface SubscriptionTier {
   color: string; // For UI styling
 }
 
+
+/**
+ * subscriptionTiers
+ * @description Function
+ */
 export const subscriptionTiers: SubscriptionTier[] = [
   {
     id: TIER_LEVELS.FREE,
@@ -258,10 +268,20 @@ export const subscriptionTiers: SubscriptionTier[] = [
   },
 ];
 
+
+/**
+ * findTierById
+ * @description Function
+ */
 export const findTierById = (tierId: TierLevel): SubscriptionTier | undefined => {
   return subscriptionTiers.find((tier) => tier.id === tierId);
 };
 
+
+/**
+ * getApplicationLimit
+ * @description Function
+ */
 export const getApplicationLimit = (tierId: TierLevel): number => {
   const tier = findTierById(tierId);
   return tier?.applicationLimit || 0;

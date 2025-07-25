@@ -13,13 +13,18 @@ interface FormActionsProps {
   formId?: string;
 }
 
+
+/**
+ * FormActions
+ * @description Function
+ */
 export const FormActions = ({
   isSubmitting,
   isSaving = false,
   onSaveDraft,
   className,
   formId,
-}: FormActionsProps) => {
+}: FormActionsProps): void => {
   const navigate = useNavigate();
   const statusId = `form-status-${formId || 'main'}`;
 

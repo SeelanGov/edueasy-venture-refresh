@@ -1,5 +1,5 @@
 import React from 'react';
-const NotesTimeline: React.FC<{ notes: any[] }> = ({ notes }) => (
+const NotesTimeline: React.FC<{ notes: unknown[] }> = ({ notes }) => (
   <div>
     <h3 className="font-semibold mb-2">Notes</h3>
     {!notes?.length ? (

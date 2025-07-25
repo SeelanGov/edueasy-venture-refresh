@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 // Analytics event types
-export type AnalyticsEventType = 
+export type AnalyticsEventType =
   | 'page_view'
   | 'user_action'
   | 'application_submitted'
@@ -18,7 +18,7 @@ export interface AnalyticsEvent {
   event_name: string;
   user_id?: string;
   session_id: string;
-  properties: Record<string, any>;
+  properties: Record<string, unknown>;
   timestamp: Date;
   page_url: string;
   user_agent: string;
@@ -88,7 +88,7 @@ class AnalyticsService {
   private initializeAnalytics(): void {
     // Track page views automatically
     this.trackPageView();
-    
+
     // Set up automatic session tracking
     this.trackSessionStart();
   }
@@ -119,10 +119,7 @@ class AnalyticsService {
   /**
    * Track user actions
    */
-  public trackUserAction(
-    actionName: string, 
-    properties: Record<string, any> = {}
-  ): void {
+  public trackUserAction(actionName: string, properties: Record<string, unknown> = {}): void {
     const event: AnalyticsEvent = {
       event_type: 'user_action',
       event_name: actionName,
@@ -210,7 +207,7 @@ class AnalyticsService {
   /**
    * Track feature usage
    */
-  public trackFeatureUsed(featureName: string, properties: Record<string, any> = {}): void {
+  public trackFeatureUsed(featureName: string, properties: Record<string, unknown> = {}): void {
     const event: AnalyticsEvent = {
       event_type: 'feature_used',
       event_name: featureName,
@@ -232,7 +229,7 @@ class AnalyticsService {
     conversion_type: string;
     value?: number;
     currency?: string;
-    properties?: Record<string, any>;
+    properties?: Record<string, unknown>;
   }): void {
     const event: AnalyticsEvent = {
       event_type: 'conversion',
@@ -255,7 +252,7 @@ class AnalyticsService {
     engagement_type: string;
     duration?: number;
     interactions?: number;
-    properties?: Record<string, any>;
+    properties?: Record<string, unknown>;
   }): void {
     const event: AnalyticsEvent = {
       event_type: 'engagement',
@@ -294,19 +291,17 @@ class AnalyticsService {
   private async sendEvent(event: AnalyticsEvent): Promise<void> {
     try {
       // Store in Supabase analytics table
-      const { error } = await supabase
-        .from('analytics_events')
-        .insert({
-          event_type: event.event_type,
-          event_name: event.event_name,
-          user_id: event.user_id,
-          session_id: event.session_id,
-          properties: event.properties,
-          timestamp: event.timestamp.toISOString(),
-          page_url: event.page_url,
-          user_agent: event.user_agent,
-          referrer: event.referrer,
-        });
+      const { error } = await supabase.from('analytics_events').insert({
+        event_type: event.event_type,
+        event_name: event.event_name,
+        user_id: event.user_id,
+        session_id: event.session_id,
+        properties: event.properties,
+        timestamp: event.timestamp.toISOString(),
+        page_url: event.page_url,
+        user_agent: event.user_agent,
+        referrer: event.referrer,
+      });
 
       if (error) {
         console.error('Failed to send analytics event:', error);
@@ -344,10 +339,7 @@ class AnalyticsService {
    */
   public async getApplicationAnalytics(): Promise<ApplicationAnalytics | null> {
     try {
-      const { data, error } = await supabase
-        .from('application_analytics')
-        .select('*')
-        .single();
+      const { data, error } = await supabase.from('application_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get application analytics:', error);
@@ -366,10 +358,7 @@ class AnalyticsService {
    */
   public async getRevenueAnalytics(): Promise<RevenueAnalytics | null> {
     try {
-      const { data, error } = await supabase
-        .from('revenue_analytics')
-        .select('*')
-        .single();
+      const { data, error } = await supabase.from('revenue_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get revenue analytics:', error);
@@ -386,13 +375,15 @@ class AnalyticsService {
   /**
    * Generate analytics report
    */
-  public async generateReport(reportType: 'user' | 'application' | 'revenue', filters?: Record<string, any>): Promise<any> {
+  public async generateReport(
+    reportType: 'user' | 'application' | 'revenue',
+    filters?: Record<string, unknown>,
+  ): Promise<unknown> {
     try {
-      const { data, error } = await supabase
-        .rpc('generate_analytics_report', {
-          report_type: reportType,
-          filters: filters || {},
-        });
+      const { data, error } = await supabase.rpc('generate_analytics_report', {
+        report_type: reportType,
+        filters: filters || {},
+      });
 
       if (error) {
         console.error('Failed to generate analytics report:', error);
@@ -408,7 +399,12 @@ class AnalyticsService {
 }
 
 // Create singleton instance
+
+/**
+ * analyticsService
+ * @description Function
+ */
 export const analyticsService = new AnalyticsService();
 
 // Export for use in components
-export default analyticsService; 
+export default analyticsService;

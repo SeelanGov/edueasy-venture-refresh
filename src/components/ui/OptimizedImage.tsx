@@ -14,6 +14,11 @@ interface OptimizedImageProps {
   enableIntersectionObserver?: boolean;
 }
 
+
+/**
+ * OptimizedImage
+ * @description Function
+ */
 export const OptimizedImage = ({
   src,
   alt,
@@ -26,7 +31,7 @@ export const OptimizedImage = ({
   enableWebP = true,
   enableIntersectionObserver = true,
   ...props
-}: OptimizedImageProps & React.ImgHTMLAttributes<HTMLImageElement>) => {
+}: OptimizedImageProps & React.ImgHTMLAttributes<HTMLImageElement>): void => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
@@ -38,12 +43,13 @@ export const OptimizedImage = ({
   // Check WebP support
   useEffect(() => {
     if (!enableWebP) return;
-    
+
     const webp = new Image();
     webp.onload = webp.onerror = () => {
       setWebPSupported(webp.height === 2);
     };
-    webp.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+    webp.src =
+      'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
   }, [enableWebP]);
 
   // Intersection Observer for lazy loading
@@ -60,7 +66,7 @@ export const OptimizedImage = ({
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(containerRef.current);
@@ -76,18 +82,21 @@ export const OptimizedImage = ({
   }, [src]);
 
   // Generate optimized src with WebP support
-  const getOptimizedSrc = useCallback((originalSrc: string) => {
-    if (!enableWebP || !webPSupported || !originalSrc.includes('unsplash')) {
+  const getOptimizedSrc = useCallback(
+    (originalSrc: string) => {
+      if (!enableWebP || !webPSupported || !originalSrc.includes('unsplash')) {
+        return originalSrc;
+      }
+
+      // Convert Unsplash URLs to WebP format
+      if (originalSrc.includes('images.unsplash.com')) {
+        return `${originalSrc}&fm=webp&q=80`;
+      }
+
       return originalSrc;
-    }
-    
-    // Convert Unsplash URLs to WebP format
-    if (originalSrc.includes('images.unsplash.com')) {
-      return `${originalSrc}&fm=webp&q=80`;
-    }
-    
-    return originalSrc;
-  }, [enableWebP, webPSupported]);
+    },
+    [enableWebP, webPSupported],
+  );
 
   const handleLoad = useCallback(() => {
     setIsLoaded(true);
@@ -108,7 +117,7 @@ export const OptimizedImage = ({
     <div
       className={cn(
         'animate-pulse bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg',
-        skeletonClassName
+        skeletonClassName,
       )}
     >
       <div className="h-full w-full bg-gray-200 rounded-lg" />
@@ -128,14 +137,10 @@ export const OptimizedImage = ({
   return (
     <div ref={containerRef} className="relative">
       {/* Loading skeleton */}
-      {!isLoaded && !hasError && isInView && (
-        <ImageSkeleton />
-      )}
+      {!isLoaded && !hasError && isInView && <ImageSkeleton />}
 
       {/* Error fallback */}
-      {hasError && (
-        <ErrorFallback />
-      )}
+      {hasError && <ErrorFallback />}
 
       {/* Optimized image - only render when in view */}
       {isInView && (
@@ -143,17 +148,17 @@ export const OptimizedImage = ({
           ref={imgRef}
           src={getOptimizedSrc(currentSrc)}
           alt={alt}
-          loading={priority ? "eager" : "lazy"}
+          loading={priority ? 'eager' : 'lazy'}
           onLoad={handleLoad}
           onError={handleError}
           className={cn(
             'transition-opacity duration-300',
             isLoaded && !hasError ? 'opacity-100' : 'opacity-0',
-            className
+            className,
           )}
           {...props}
         />
       )}
     </div>
   );
-}; 
+};

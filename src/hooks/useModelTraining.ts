@@ -17,12 +17,17 @@ export interface TrainingLog {
   admin_id: string;
   example_count: number;
   success: boolean;
-  performance_before: Record<string, any> | null;
-  performance_after: Record<string, any> | null;
+  performance_before: Record<string, unknown> | null;
+  performance_after: Record<string, unknown> | null;
   error_message: string | null;
 }
 
-export const useModelTraining = () => {
+
+/**
+ * useModelTraining
+ * @description Function
+ */
+export const useModelTraining = (): void => {
   const [trainingStats, setTrainingStats] = useState<TrainingStats | null>(null);
   const [lastTrainingDate, setLastTrainingDate] = useState<Date | null>(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -8,7 +8,12 @@ interface AnalyticsErrorStateProps {
   onRetry: () => void;
 }
 
-export const AnalyticsErrorState = ({ error, onRetry }: AnalyticsErrorStateProps) => {
+
+/**
+ * AnalyticsErrorState
+ * @description Function
+ */
+export const AnalyticsErrorState = ({ error, onRetry }: AnalyticsErrorStateProps): void => {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">

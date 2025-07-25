@@ -14,13 +14,18 @@ interface VerificationResultDisplayProps {
   isResubmission?: boolean;
 }
 
+
+/**
+ * VerificationResultDisplay
+ * @description Function
+ */
 export const VerificationResultDisplay = ({
   result,
   isVerifying,
   documentType,
   onResubmit,
   isResubmission = false,
-}: VerificationResultDisplayProps) => {
+}: VerificationResultDisplayProps): void => {
   if (isVerifying) {
     return (
       <VerifyingDocument

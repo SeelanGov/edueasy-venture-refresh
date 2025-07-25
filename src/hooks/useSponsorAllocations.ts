@@ -12,7 +12,12 @@ export interface SponsorAllocationsOptions {
   pageSize?: number;
 }
 
-export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}) => {
+
+/**
+ * useSponsorAllocations
+ * @description Function
+ */
+export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}): void => {
   const [allocations, setAllocations] = useState<SponsorAllocation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +49,6 @@ export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}) =
       setAllocations(data ?? []);
       setTotal(count ?? 0);
       // ADDED: Logging for debugging
-
     } catch (err) {
       setError(
         (err as Error).message

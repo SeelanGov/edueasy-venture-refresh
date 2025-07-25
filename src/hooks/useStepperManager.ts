@@ -2,6 +2,11 @@ import { useEffect } from 'react';
 import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
 
+
+/**
+ * useStepperManager
+ * @description Function
+ */
 export const useStepperManager = (
   currentDocumentType: string | null,
   getDocumentState: (documentType: string) => DocumentUploadState,
@@ -17,7 +22,7 @@ export const useStepperManager = (
     const documentState = getDocumentState(currentDocumentType);
     const isResubmission = documentState.isResubmission || false;
 
-    const getStepLabel = (stepName: string) => {
+    const getStepLabel = (stepName: string): void => {
       if (isResubmission && stepName === 'Upload') return 'Resubmit';
       if (isResubmission && stepName === 'Verify') return 'Re-verify';
       return stepName;

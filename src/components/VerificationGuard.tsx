@@ -11,7 +11,12 @@ interface VerificationGuardProps {
  * Restricts access unless user is both authenticated AND verified (id_verified === true).
  * Redirects user to /verification-required if not verified, or shows spinner if loading.
  */
-export const VerificationGuard = ({ children }: VerificationGuardProps) => {
+
+/**
+ * VerificationGuard
+ * @description Function
+ */
+export const VerificationGuard = ({ children }: VerificationGuardProps): void => {
   const { user, userType, loading, isVerified } = useAuth();
   const location = useLocation();
 

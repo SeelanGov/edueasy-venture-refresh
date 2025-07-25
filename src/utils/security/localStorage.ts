@@ -10,7 +10,7 @@ const SENSITIVE_KEYS = [
   'user_preferences',
   'session_data',
   'auth_tokens',
-  'payment_info'
+  'payment_info',
 ];
 
 // Session timeout (8 hours)
@@ -54,13 +54,18 @@ const decrypt = (encryptedText: string): string => {
  * Check if a key contains sensitive data
  */
 const isSensitiveKey = (key: string): boolean => {
-  return SENSITIVE_KEYS.some(sensitiveKey => 
-    key.toLowerCase().includes(sensitiveKey.toLowerCase())
+  return SENSITIVE_KEYS.some((sensitiveKey) =>
+    key.toLowerCase().includes(sensitiveKey.toLowerCase()),
   );
 };
 
 /**
  * Secure setItem with encryption for sensitive data
+ */
+
+/**
+ * secureSetItem
+ * @description Function
  */
 export const secureSetItem = (key: string, value: string): void => {
   try {
@@ -85,6 +90,11 @@ export const secureSetItem = (key: string, value: string): void => {
 /**
  * Secure getItem with decryption for sensitive data
  */
+
+/**
+ * secureGetItem
+ * @description Function
+ */
 export const secureGetItem = (key: string): string | null => {
   try {
     const value = localStorage.getItem(key);
@@ -106,6 +116,11 @@ export const secureGetItem = (key: string): string | null => {
 /**
  * Secure removeItem
  */
+
+/**
+ * secureRemoveItem
+ * @description Function
+ */
 export const secureRemoveItem = (key: string): void => {
   try {
     localStorage.removeItem(key);
@@ -116,6 +131,11 @@ export const secureRemoveItem = (key: string): void => {
 
 /**
  * Clear all secure localStorage data
+ */
+
+/**
+ * secureClear
+ * @description Function
  */
 export const secureClear = (): void => {
   try {
@@ -128,6 +148,11 @@ export const secureClear = (): void => {
 /**
  * Session management utilities
  * Fixed recursion bug by using window.sessionStorage directly
+ */
+
+/**
+ * secureSessionStorage
+ * @description Function
  */
 export const secureSessionStorage = {
   setItem: (key: string, value: string): void => {
@@ -173,11 +198,16 @@ export const secureSessionStorage = {
     } catch (error) {
       console.error('Failed to clear sessionStorage:', error);
     }
-  }
+  },
 };
 
 /**
  * Check if session has expired
+ */
+
+/**
+ * isSessionExpired
+ * @description Function
  */
 export const isSessionExpired = (): boolean => {
   const sessionStart = secureGetItem('session_start');
@@ -185,12 +215,17 @@ export const isSessionExpired = (): boolean => {
 
   const startTime = parseInt(sessionStart, 10);
   const currentTime = Date.now();
-  
-  return (currentTime - startTime) > SESSION_TIMEOUT;
+
+  return currentTime - startTime > SESSION_TIMEOUT;
 };
 
 /**
  * Start a new session
+ */
+
+/**
+ * startSession
+ * @description Function
  */
 export const startSession = (): void => {
   secureSetItem('session_start', Date.now().toString());
@@ -198,6 +233,11 @@ export const startSession = (): void => {
 
 /**
  * Extend current session
+ */
+
+/**
+ * extendSession
+ * @description Function
  */
 export const extendSession = (): void => {
   if (!isSessionExpired()) {
@@ -208,17 +248,22 @@ export const extendSession = (): void => {
 /**
  * Clear session and sensitive data
  */
+
+/**
+ * clearSession
+ * @description Function
+ */
 export const clearSession = (): void => {
   // Clear all sensitive data
-  SENSITIVE_KEYS.forEach(key => {
+  SENSITIVE_KEYS.forEach((key) => {
     secureRemoveItem(key);
     window.sessionStorage.removeItem(key);
   });
-  
+
   // Clear session data
   secureRemoveItem('session_start');
   secureRemoveItem('rememberMe');
-  
+
   // Clear sessionStorage
   window.sessionStorage.clear();
 };
@@ -226,21 +271,33 @@ export const clearSession = (): void => {
 /**
  * Get session status
  */
-export const getSessionStatus = () => {
+
+/**
+ * getSessionStatus
+ * @description Function
+ */
+export const getSessionStatus = (): void => {
   const isExpired = isSessionExpired();
   const sessionStart = secureGetItem('session_start');
   const rememberMe = secureGetItem('rememberMe');
-  
+
   return {
     isExpired,
     sessionStart: sessionStart ? parseInt(sessionStart, 10) : null,
     rememberMe: rememberMe === 'true',
-    timeRemaining: sessionStart ? Math.max(0, SESSION_TIMEOUT - (Date.now() - parseInt(sessionStart, 10))) : 0
+    timeRemaining: sessionStart
+      ? Math.max(0, SESSION_TIMEOUT - (Date.now() - parseInt(sessionStart, 10)))
+      : 0,
   };
 };
 
 /**
  * Auto-clear expired sessions
+ */
+
+/**
+ * cleanupExpiredSessions
+ * @description Function
  */
 export const cleanupExpiredSessions = (): void => {
   if (isSessionExpired()) {
@@ -257,4 +314,4 @@ export const cleanupExpiredSessions = (): void => {
 if (typeof window !== 'undefined') {
   window.addEventListener('load', cleanupExpiredSessions);
   window.addEventListener('focus', extendSession);
-} 
+}

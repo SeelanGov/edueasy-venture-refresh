@@ -3,6 +3,11 @@ import { supabase } from '@/integrations/supabase/client';
 /**
  * Utility to check if a record belongs to the current user using the new belongs_to_user function
  */
+
+/**
+ * recordBelongsToUser
+ * @description Function
+ */
 export const recordBelongsToUser = async (
   tableName: string,
   recordId: string,

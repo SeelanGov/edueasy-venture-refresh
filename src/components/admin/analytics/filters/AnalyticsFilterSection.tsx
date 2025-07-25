@@ -7,11 +7,16 @@ interface AnalyticsFilterSectionProps {
   className?: string;
 }
 
+
+/**
+ * AnalyticsFilterSection
+ * @description Function
+ */
 export const AnalyticsFilterSection = ({
   label,
   children,
   className = 'space-y-2',
-}: AnalyticsFilterSectionProps) => {
+}: AnalyticsFilterSectionProps): void => {
   return (
     <div className={className}>
       <Label>{label}</Label>

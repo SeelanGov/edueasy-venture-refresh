@@ -1,6 +1,11 @@
 import { colors } from './design-tokens';
 
 // Export colors in format expected by Tailwind CSS
+
+/**
+ * tailwindColors
+ * @description Function
+ */
 export const tailwindColors = {
   // Brand colors with full scale
   'cap-teal': colors.primary.DEFAULT,

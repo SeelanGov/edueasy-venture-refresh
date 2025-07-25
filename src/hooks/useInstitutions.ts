@@ -20,7 +20,12 @@ export interface Institution {
   partner_id?: string | null;
 }
 
-export const useInstitutions = () => {
+
+/**
+ * useInstitutions
+ * @description Function
+ */
+export const useInstitutions = (): void => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

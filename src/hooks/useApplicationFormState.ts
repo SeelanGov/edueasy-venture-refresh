@@ -9,7 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 /**
  * Hook for managing application form state and validation
  */
-export const useApplicationFormState = () => {
+
+/**
+ * useApplicationFormState
+ * @description Function
+ */
+export const useApplicationFormState = (): void => {
   const { user } = useAuth();
   const { formSchema } = useApplicationFormSchema();
   const [documentFile, setDocumentFile] = useState<File | null>(null);
@@ -30,7 +35,7 @@ export const useApplicationFormState = () => {
   // Initialize the user profile hook
   useUserProfile(user?.id, form);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
     setDocumentFile(file);
   };

@@ -23,6 +23,11 @@ interface MessageRowProps {
   onDeleteTraining: (trainingId: string) => void;
 }
 
+
+/**
+ * MessageRow
+ * @description Function
+ */
 export const MessageRow = ({
   message,
   training,
@@ -30,22 +35,22 @@ export const MessageRow = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageRowProps) => {
+}: MessageRowProps): void => {
   const [selectedIntent, setSelectedIntent] = useState<string>('');
 
-  const formatConfidence = (score: number | null | undefined) => {
+  const formatConfidence = (score: number | null | undefined): void => {
     if (score === null || score === undefined) return '-';
     return `${Math.round(score * 100)}%`;
   };
 
-  const handleTrain = () => {
+  const handleTrain = (): void => {
     if (selectedIntent) {
       onTrain(message.id, selectedIntent);
       setSelectedIntent('');
     }
   };
 
-  const handleUpdateTraining = (trainingId: string) => {
+  const handleUpdateTraining = (trainingId: string): void => {
     if (selectedIntent) {
       onUpdateTraining(trainingId, selectedIntent);
       setSelectedIntent('');

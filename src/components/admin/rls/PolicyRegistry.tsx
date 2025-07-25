@@ -13,7 +13,12 @@ interface PolicyRegistryProps {
   policies: PolicyRecord[];
 }
 
-export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
+
+/**
+ * PolicyRegistry
+ * @description Function
+ */
+export const PolicyRegistry = ({ policies }: PolicyRegistryProps): void => {
   // Group policies by table name for better organization
   const groupedPolicies = useMemo(() => {
     return policies.reduce(
@@ -34,7 +39,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps) => {
   }, [policies]);
 
   // Get policy type badge variant
-  const getPolicyTypeVariant = (type: string) => {
+  const getPolicyTypeVariant = (type: string): void => {
     switch (type.toUpperCase()) {
       case 'SELECT':
         return 'outline';

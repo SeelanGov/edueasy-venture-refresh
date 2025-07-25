@@ -2,7 +2,7 @@ import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { AnalyticsDashboard } from '@/components/admin/analytics/AnalyticsDashboard';
 
-const AdminAnalytics = () => {
+const AdminAnalytics = (): void => {
   return (
     <AdminAuthGuard>
       <DashboardLayout>

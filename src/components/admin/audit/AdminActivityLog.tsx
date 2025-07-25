@@ -16,6 +16,11 @@ import { Spinner } from '@/components/Spinner';
 import { Download, Search, RefreshCw } from 'lucide-react';
 import { exportToCsv } from '@/utils/exportToCsv';
 
+
+/**
+ * AdminActivityLog
+ * @description Function
+ */
 export const AdminActivityLog: React.FC = () => {
   const { auditLogs, loading, fetchRecentActivity } = useAuditLogging();
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,7 +44,7 @@ export const AdminActivityLog: React.FC = () => {
     }
   }, [auditLogs, searchTerm]);
 
-  const handleExport = () => {
+  const handleExport = (): void => {
     const exportData = filteredLogs.map((log) => ({
       Timestamp: new Date(log.occurred_at).toLocaleString(),
       Action: log.action,
@@ -55,7 +60,7 @@ export const AdminActivityLog: React.FC = () => {
     exportToCsv(exportData, 'admin-activity-log.csv');
   };
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): void => {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'bg-red-100 text-red-800';

@@ -14,12 +14,17 @@ interface PolicyTestConfigurationProps {
   setScenarioName: (name: string) => void;
 }
 
+
+/**
+ * PolicyTestConfiguration
+ * @description Function
+ */
 export const PolicyTestConfiguration = ({
   selectedRole,
   setSelectedRole,
   scenarioName,
   setScenarioName,
-}: PolicyTestConfigurationProps) => {
+}: PolicyTestConfigurationProps): void => {
   return (
     <div className="mb-6">
       <h3 className="text-lg font-medium mb-4">Policy Test Configuration</h3>

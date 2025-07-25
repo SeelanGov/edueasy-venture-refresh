@@ -11,7 +11,12 @@ interface RejectedDocumentProps {
   onResubmit: () => void;
 }
 
-export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedDocumentProps) => {
+
+/**
+ * RejectedDocument
+ * @description Function
+ */
+export const RejectedDocument = ({ result, documentType, onResubmit }: RejectedDocumentProps): void => {
   const { failureReason, validationResults, extractedFields } = result;
 
   return (

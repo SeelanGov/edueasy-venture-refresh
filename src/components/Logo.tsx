@@ -4,7 +4,12 @@ type LogoProps = {
   className?: string;
 };
 
-export const Logo = ({ size = 'medium', layout = 'vertical', className = '' }: LogoProps) => {
+
+/**
+ * Logo
+ * @description Function
+ */
+export const Logo = ({ size = 'medium', layout = 'vertical', className = '' }: LogoProps): void => {
   const sizeClasses = {
     small: 'w-8 h-8',
     medium: 'w-12 h-12',

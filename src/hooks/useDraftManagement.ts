@@ -15,6 +15,11 @@ type DraftFormData = {
 /**
  * Hook for managing draft saving functionality
  */
+
+/**
+ * useDraftManagement
+ * @description Function
+ */
 export const useDraftManagement = (
   userId: string | undefined,
   isOnline: boolean,
@@ -144,7 +149,7 @@ export const useDraftManagement = (
           description: "Your draft will be saved to the server when you're back online",
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving draft:', error);
       toast({
         title: 'Error',

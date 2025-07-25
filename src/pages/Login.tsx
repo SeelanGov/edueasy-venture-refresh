@@ -6,17 +6,22 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { useAuth } from '@/hooks/useAuth';
-import { secureGetItem, secureRemoveItem, secureSetItem, startSession } from '@/utils/security/localStorage';
+import {
+  secureGetItem,
+  secureRemoveItem,
+  secureSetItem,
+  startSession,
+} from '@/utils/security/localStorage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -32,7 +37,7 @@ const loginFormSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-const Login = () => {
+const Login = (): void => {
   const { signIn, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -481,16 +481,16 @@ class PaymentTestingService {
       try {
         // Use user_subscriptions with correct field names
         const { error } = await supabase.from('user_subscriptions').insert({
-        user_id: testData.userId,
+          user_id: testData.userId,
           tier_id: testData.tier, // Use tier_id instead of tier
           is_active: true,
           payment_method: testData.paymentMethod,
           purchase_date: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
 
-      if (error) {
+        if (error) {
           console.warn('Failed to create test subscription:', error);
         }
       } catch (error) {
@@ -600,4 +600,9 @@ class PaymentTestingService {
 }
 
 // Export singleton instance
+
+/**
+ * paymentTestingService
+ * @description Function
+ */
 export const paymentTestingService = new PaymentTestingService();

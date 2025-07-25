@@ -12,7 +12,12 @@ interface PersonalInfoStepProps {
   onComplete: () => void;
 }
 
-export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps) => {
+
+/**
+ * PersonalInfoStep
+ * @description Function
+ */
+export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): void => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

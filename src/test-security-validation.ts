@@ -3,6 +3,11 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+
+/**
+ * runSecurityTests
+ * @description Function
+ */
 export const runSecurityTests = async () => {
   console.log('🔐 PHASE 4.1.2 FINAL SECURITY VALIDATION');
   console.log('========================================');

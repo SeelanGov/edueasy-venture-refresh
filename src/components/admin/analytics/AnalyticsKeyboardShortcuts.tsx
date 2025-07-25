@@ -7,15 +7,20 @@ interface AnalyticsKeyboardShortcutsProps {
   onResetFilters: () => void;
 }
 
+
+/**
+ * AnalyticsKeyboardShortcuts
+ * @description Function
+ */
 export const AnalyticsKeyboardShortcuts = ({
   onRefresh,
   onExport,
   onResetFilters,
-}: AnalyticsKeyboardShortcutsProps) => {
+}: AnalyticsKeyboardShortcutsProps): void => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       // Only handle if Ctrl/Cmd is pressed
       if (!(event.ctrlKey || event.metaKey)) return;
 

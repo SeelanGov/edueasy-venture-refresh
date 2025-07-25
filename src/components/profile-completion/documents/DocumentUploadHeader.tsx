@@ -5,6 +5,11 @@ interface DocumentUploadHeaderProps {
   description: string;
 }
 
+
+/**
+ * DocumentUploadHeader
+ * @description Function
+ */
 export const DocumentUploadHeader: React.FC<DocumentUploadHeaderProps> = ({
   title,
   description,

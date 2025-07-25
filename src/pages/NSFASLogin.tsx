@@ -10,7 +10,7 @@ const NSFASLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -46,8 +46,8 @@ const NSFASLogin: React.FC = () => {
       }
 
       toast.success('Successfully logged in!');
-              navigate('/auth-redirect');
-    } catch (err: any) {
+      navigate('/auth-redirect');
+    } catch (err: unknown) {
       setError(err.message || 'Login error');
       toast.error(err.message || 'Login failed');
     } finally {
@@ -70,7 +70,7 @@ const NSFASLogin: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
+      <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md mt-0">
         <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">NSFAS Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input

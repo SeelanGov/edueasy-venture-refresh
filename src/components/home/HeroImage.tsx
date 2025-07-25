@@ -1,6 +1,11 @@
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
-export const HeroImage = () => {
+
+/**
+ * HeroImage
+ * @description Function
+ */
+export const HeroImage = (): void => {
   // Using the user's uploaded hero image
   const heroImagePath = '/lovable-uploads/de7fc15f-45f8-4076-b06b-9f70babb5c8e.png';
 

@@ -20,6 +20,11 @@ interface MessageTableProps {
   onDeleteTraining: (id: string) => void;
 }
 
+
+/**
+ * MessageTable
+ * @description Function
+ */
 export const MessageTable = ({
   messages,
   trainedMessages,
@@ -28,8 +33,8 @@ export const MessageTable = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageTableProps) => {
-  const getTrainingForMessage = (messageId: string) => {
+}: MessageTableProps): void => {
+  const getTrainingForMessage = (messageId: string): void => {
     return trainedMessages.find((t) => t.message_id === messageId);
   };
 

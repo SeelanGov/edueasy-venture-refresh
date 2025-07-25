@@ -35,7 +35,7 @@ class AutoMatchingService {
     maxStudentsPerSponsor: 10,
     autoAssignEnabled: true,
     conflictResolutionEnabled: true,
-    notificationEnabled: true
+    notificationEnabled: true,
   };
 
   /**
@@ -85,11 +85,13 @@ class AutoMatchingService {
           try {
             const matches = await matchingRulesService.findMatches({
               student_id: student.id,
-              limit: this.config.maxMatchesPerStudent
+              limit: this.config.maxMatchesPerStudent,
             });
 
             // Filter matches by threshold
-            const validMatches = matches.filter(match => match.score >= this.config.minScoreThreshold);
+            const validMatches = matches.filter(
+              (match) => match.score >= this.config.minScoreThreshold,
+            );
             totalMatches += validMatches.length;
 
             // Create assignments if auto-assign is enabled
@@ -102,7 +104,6 @@ class AutoMatchingService {
 
             // Save matches to database
             await matchingRulesService.saveMatchingResults(validMatches);
-
           } catch (error) {
             const errorMessage = `Error processing student ${student.id}: ${error instanceof Error ? error.message : 'Unknown error'}`;
             errors.push(errorMessage);
@@ -119,9 +120,8 @@ class AutoMatchingService {
         matchesFound: totalMatches,
         assignmentsMade: totalAssignments,
         errors,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
       };
-
     } catch (error) {
       console.error('Error in bulk matching:', error);
       throw error;
@@ -164,7 +164,7 @@ class AutoMatchingService {
         expires_on: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
         status: 'active',
         plan: 'standard',
-        notes: `Auto-assigned with ${match.score}% match score`
+        notes: `Auto-assigned with ${match.score}% match score`,
       };
 
       const { data: newAssignment, error } = await supabase
@@ -181,7 +181,6 @@ class AutoMatchingService {
       }
 
       return newAssignment;
-
     } catch (error) {
       console.error('Error creating assignment:', error);
       return null;
@@ -228,7 +227,6 @@ class AutoMatchingService {
           await this.updateAssignmentStatus(assignment.id, 'inactive');
         }
       }
-
     } catch (error) {
       console.error('Error resolving conflicts:', error);
       throw error;
@@ -241,9 +239,9 @@ class AutoMatchingService {
   private async updateAssignmentStatus(assignmentId: string, status: string): Promise<void> {
     const { error } = await supabase
       .from('sponsor_allocations')
-      .update({ 
+      .update({
         status,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq('id', assignmentId);
 
@@ -267,8 +265,8 @@ class AutoMatchingService {
         variables: {
           student_name: 'Student',
           plan: assignment.plan || 'standard',
-          sponsor_name: 'Sponsor'
-        }
+          sponsor_name: 'Sponsor',
+        },
       });
 
       // Send notification to sponsor
@@ -278,10 +276,9 @@ class AutoMatchingService {
         variables: {
           sponsor_name: 'Sponsor',
           plan: assignment.plan || 'standard',
-          student_name: 'Student'
-        }
+          student_name: 'Student',
+        },
       });
-
     } catch (error) {
       console.error('Error sending assignment notifications:', error);
     }
@@ -369,23 +366,21 @@ class AutoMatchingService {
     expired: number;
   }> {
     try {
-      const { data, error } = await supabase
-        .from('sponsor_allocations')
-        .select('status');
+      const { data, error } = await supabase.from('sponsor_allocations').select('status');
 
       if (error) throw error;
 
       const allocations = data || [];
       const total = allocations.length;
-      const active = allocations.filter(a => a.status === 'active').length;
-      const inactive = allocations.filter(a => a.status === 'inactive').length;
-      const expired = allocations.filter(a => a.status === 'expired').length;
+      const active = allocations.filter((a) => a.status === 'active').length;
+      const inactive = allocations.filter((a) => a.status === 'inactive').length;
+      const expired = allocations.filter((a) => a.status === 'expired').length;
 
       return {
         total,
         active,
         inactive,
-        expired
+        expired,
       };
     } catch (error) {
       console.error('Error getting assignment stats:', error);
@@ -395,4 +390,9 @@ class AutoMatchingService {
 }
 
 // Export singleton instance
+
+/**
+ * autoMatchingService
+ * @description Function
+ */
 export const autoMatchingService = new AutoMatchingService();

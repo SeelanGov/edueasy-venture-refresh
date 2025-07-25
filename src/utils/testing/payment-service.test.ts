@@ -7,9 +7,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     functions: {
-      invoke: vi.fn()
-    }
-  }
+      invoke: vi.fn(),
+    },
+  },
 }));
 
 // Mock secure storage
@@ -17,8 +17,8 @@ vi.mock('@/utils/secureStorage', () => ({
   secureStorage: {
     setItem: vi.fn(),
     removeItem: vi.fn(),
-    getItem: vi.fn()
-  }
+    getItem: vi.fn(),
+  },
 }));
 
 describe('PaymentService', () => {
@@ -53,7 +53,7 @@ describe('PaymentService', () => {
     it('should return all available payment plans', () => {
       const plans = paymentService.getAllPaymentPlans();
       expect(plans).toHaveLength(3);
-      expect(plans.map(p => p.id)).toEqual(['starter', 'essential', 'pro-ai']);
+      expect(plans.map((p) => p.id)).toEqual(['starter', 'essential', 'pro-ai']);
     });
   });
 
@@ -65,8 +65,8 @@ describe('PaymentService', () => {
 
     it('should return true for paid plans with valid payment methods', () => {
       const validMethods = ['card', 'airtime', 'qr', 'eft', 'store', 'payment-plan'];
-      
-      validMethods.forEach(method => {
+
+      validMethods.forEach((method) => {
         expect(paymentService.isPaymentMethodValid('essential', method as any)).toBe(true);
         expect(paymentService.isPaymentMethodValid('pro-ai', method as any)).toBe(true);
       });
@@ -95,9 +95,9 @@ describe('PaymentService', () => {
         data: {
           payment_url: 'https://sandbox.payfast.co.za/eng/process',
           merchant_reference: 'test-ref-123',
-          expires_at: '2025-01-20T10:00:00Z'
+          expires_at: '2025-01-20T10:00:00Z',
         },
-        error: null
+        error: null,
       };
 
       (supabase.functions.invoke as any).mockResolvedValue(mockResponse);
@@ -105,55 +105,63 @@ describe('PaymentService', () => {
       const session = await paymentService.createPaymentSession({
         tierId: 'essential',
         userId: 'test-user-id',
-        paymentMethod: 'card'
+        paymentMethod: 'card',
       });
 
       expect(session).toEqual({
         paymentUrl: 'https://sandbox.payfast.co.za/eng/process',
         merchantReference: 'test-ref-123',
         expiresAt: '2025-01-20T10:00:00Z',
-        status: 'pending'
+        status: 'pending',
       });
 
       expect(supabase.functions.invoke).toHaveBeenCalledWith('create-payment-session', {
         body: {
           tier: 'basic',
           user_id: 'test-user-id',
-          payment_method: 'card'
-        }
+          payment_method: 'card',
+        },
       });
     });
 
     it('should throw error for invalid tier', async () => {
-      await expect(paymentService.createPaymentSession({
-        tierId: 'invalid-tier',
-        userId: 'test-user-id',
-        paymentMethod: 'card'
-      })).rejects.toThrow('Invalid tier selected');
+      await expect(
+        paymentService.createPaymentSession({
+          tierId: 'invalid-tier',
+          userId: 'test-user-id',
+          paymentMethod: 'card',
+        }),
+      ).rejects.toThrow('Invalid tier selected');
     });
 
     it('should throw error for free tier', async () => {
-      await expect(paymentService.createPaymentSession({
-        tierId: 'starter',
-        userId: 'test-user-id',
-        paymentMethod: 'card'
-      })).rejects.toThrow('Cannot create payment for free tier');
+      await expect(
+        paymentService.createPaymentSession({
+          tierId: 'starter',
+          userId: 'test-user-id',
+          paymentMethod: 'card',
+        }),
+      ).rejects.toThrow('Cannot create payment for free tier');
     });
 
     it('should throw error for invalid payment method', async () => {
-      await expect(paymentService.createPaymentSession({
-        tierId: 'essential',
-        userId: 'test-user-id',
-        paymentMethod: 'invalid' as any
-      })).rejects.toThrow('Invalid payment method for this tier');
+      await expect(
+        paymentService.createPaymentSession({
+          tierId: 'essential',
+          userId: 'test-user-id',
+          paymentMethod: 'invalid' as any,
+        }),
+      ).rejects.toThrow('Invalid payment method for this tier');
     });
 
     it('should throw error for missing required fields', async () => {
-      await expect(paymentService.createPaymentSession({
-        tierId: '',
-        userId: '',
-        paymentMethod: 'card'
-      })).rejects.toThrow('Missing required payment fields');
+      await expect(
+        paymentService.createPaymentSession({
+          tierId: '',
+          userId: '',
+          paymentMethod: 'card',
+        }),
+      ).rejects.toThrow('Missing required payment fields');
     });
   });
 
@@ -161,7 +169,7 @@ describe('PaymentService', () => {
     it('should return payment status successfully', async () => {
       const mockResponse = {
         data: { status: 'paid' },
-        error: null
+        error: null,
       };
 
       (supabase.functions.invoke as any).mockResolvedValue(mockResponse);
@@ -170,7 +178,7 @@ describe('PaymentService', () => {
       expect(status).toBe('paid');
 
       expect(supabase.functions.invoke).toHaveBeenCalledWith('verify-payment-status', {
-        body: { merchant_reference: 'test-ref-123' }
+        body: { merchant_reference: 'test-ref-123' },
       });
     });
 
@@ -214,7 +222,9 @@ describe('ConfigValidator', () => {
     });
 
     it('should throw error for missing environment variables', () => {
-      expect(() => configValidator.validatePaymentConfig()).toThrow('Missing required payment configuration environment variables');
+      expect(() => configValidator.validatePaymentConfig()).toThrow(
+        'Missing required payment configuration environment variables',
+      );
     });
 
     it('should throw error for invalid PayFast merchant ID', () => {
@@ -225,7 +235,9 @@ describe('ConfigValidator', () => {
       process.env.SITE_URL = 'https://test.com';
       process.env.SUPABASE_URL = 'https://test.supabase.co';
 
-      expect(() => configValidator.validatePaymentConfig()).toThrow('Invalid payment configuration values');
+      expect(() => configValidator.validatePaymentConfig()).toThrow(
+        'Invalid payment configuration values',
+      );
     });
   });
 
@@ -243,7 +255,9 @@ describe('ConfigValidator', () => {
     });
 
     it('should throw error for missing Supabase environment variables', () => {
-      expect(() => configValidator.validateSupabaseConfig()).toThrow('Missing required Supabase configuration environment variables');
+      expect(() => configValidator.validateSupabaseConfig()).toThrow(
+        'Missing required Supabase configuration environment variables',
+      );
     });
 
     it('should throw error for invalid Supabase URL', () => {
@@ -282,4 +296,4 @@ describe('ConfigValidator', () => {
       expect(status.productionReady).toBe(false);
     });
   });
-}); 
+});

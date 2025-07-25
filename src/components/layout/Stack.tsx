@@ -12,6 +12,11 @@ interface StackProps {
   divider?: React.ReactNode;
 }
 
+
+/**
+ * Stack
+ * @description Function
+ */
 export const Stack: React.FC<StackProps> = ({
   children,
   space = 'md',
@@ -69,10 +74,20 @@ export const Stack: React.FC<StackProps> = ({
 };
 
 // VStack and HStack as convenience components
+
+/**
+ * VStack
+ * @description Function
+ */
 export const VStack: React.FC<Omit<StackProps, 'direction'>> = (props) => (
   <Stack {...props} direction="vertical" />
 );
 
+
+/**
+ * HStack
+ * @description Function
+ */
 export const HStack: React.FC<Omit<StackProps, 'direction'>> = (props) => (
   <Stack {...props} direction="horizontal" />
 );

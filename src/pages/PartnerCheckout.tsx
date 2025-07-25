@@ -33,7 +33,7 @@ const PartnerCheckout: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-lg mt-0">
+      <Card className="bg-card p-8 rounded-xl shadow-lg w-full max-w-lg mt-0">
         <h1 className="text-2xl font-bold mb-4 text-primary text-center">
           Institution Subscription Payment
         </h1>

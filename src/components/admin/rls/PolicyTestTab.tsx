@@ -16,6 +16,11 @@ interface PolicyTestTabProps {
   onRunRoleTests: () => void;
 }
 
+
+/**
+ * PolicyTestTab
+ * @description Function
+ */
 export const PolicyTestTab = ({
   testResults,
   selectedRole,
@@ -25,7 +30,7 @@ export const PolicyTestTab = ({
   isLoading,
   onRunStandardTests,
   onRunRoleTests,
-}: PolicyTestTabProps) => {
+}: PolicyTestTabProps): void => {
   return (
     <>
       <CardContent>

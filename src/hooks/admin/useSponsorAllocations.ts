@@ -11,7 +11,12 @@ export interface SponsorAllocation {
   notes: string | null;
 }
 
-export function useSponsorAllocations(userId?: string) {
+
+/**
+ * useSponsorAllocations
+ * @description Function
+ */
+export function useSponsorAllocations(userId?: string): void {
   const [allocations, setAllocations] = useState<SponsorAllocation[]>([]);
   const [loading, setLoading] = useState(false);
 

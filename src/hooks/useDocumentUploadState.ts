@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
 
-export const useDocumentUploadState = () => {
+
+/**
+ * useDocumentUploadState
+ * @description Function
+ */
+export const useDocumentUploadState = (): void => {
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [uploadSteps, setUploadSteps] = useState<any[]>([
@@ -67,7 +72,7 @@ export const useDocumentUploadState = () => {
   };
 
   // Set document state based on type
-  const setDocumentState = (documentType: string, state: Partial<DocumentUploadState>) => {
+  const setDocumentState = (documentType: string, state: Partial<DocumentUploadState>): void => {
     switch (documentType) {
       case 'idDocument':
         setIdDocumentState((prev) => ({ ...prev, ...state }));

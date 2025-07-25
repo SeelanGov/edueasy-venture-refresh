@@ -9,13 +9,18 @@ interface StatisticsGridProps {
   className?: string;
 }
 
+
+/**
+ * StatisticsGrid
+ * @description Function
+ */
 export const StatisticsGrid = ({
   variant = 'default',
   columns = 3,
   selectedStats,
   animateOnScroll = true,
   className = '',
-}: StatisticsGridProps) => {
+}: StatisticsGridProps): void => {
   const statsToShow = selectedStats
     ? selectedStats.map((key) => ({ key, ...EDUEASY_STATISTICS[key] }))
     : Object.entries(EDUEASY_STATISTICS).map(([key, value]) => ({ key, ...value }));

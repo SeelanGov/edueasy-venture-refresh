@@ -14,15 +14,25 @@ export interface AuthContextType {
     password: string,
     fullName?: string,
     idNumber?: string,
-  ) => Promise<{ error?: any }>;
-  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error?: any }>;
+  ) => Promise<{ error?: unknown }>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error?: unknown }>;
   resetPassword: (email: string) => Promise<boolean>;
   updatePassword: (newPassword: string) => Promise<boolean>;
 }
 
+
+/**
+ * AuthContext
+ * @description Function
+ */
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+
+/**
+ * AuthProvider
+ * @description Function
+ */
+export function AuthProvider({ children }: { children: React.ReactNode }): void {
   const [user, setUser] = useState<User | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [isVerified, setIsVerified] = useState<boolean | null>(null);

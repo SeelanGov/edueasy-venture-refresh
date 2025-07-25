@@ -5,6 +5,11 @@ interface PartnerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode;
 }
 
+
+/**
+ * PartnerButton
+ * @description Function
+ */
 export const PartnerButton: React.FC<PartnerButtonProps> = ({
   children,
   className = '',

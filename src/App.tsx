@@ -90,7 +90,7 @@ const App = () => (
               {/* Public routes - Landing page should be accessible to everyone */}
               <Route path="/" element={<Index />} />
               <Route path="/home" element={<Index />} />
-              
+
               {/* Authentication redirect route - for authenticated users only */}
               <Route path="/auth-redirect" element={<RoleBasedRedirect />} />
               <Route

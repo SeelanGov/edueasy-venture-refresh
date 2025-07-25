@@ -23,7 +23,12 @@ interface PartnerInquiry {
   updated_at: string;
 }
 
-export const PartnerInquiries = () => {
+
+/**
+ * PartnerInquiries
+ * @description Function
+ */
+export const PartnerInquiries = (): void => {
   const [inquiries, setInquiries] = useState<PartnerInquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -79,7 +84,7 @@ export const PartnerInquiries = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusColor = (status: string | null) => {
+  const getStatusColor = (status: string | null): void => {
     const actualStatus = status || 'pending';
     switch (actualStatus) {
       case 'pending':

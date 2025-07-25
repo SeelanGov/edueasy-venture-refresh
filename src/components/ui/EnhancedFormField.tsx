@@ -21,6 +21,11 @@ interface EnhancedFormFieldProps<TFieldValues extends FieldValues = FieldValues>
   patternExample?: string;
 }
 
+
+/**
+ * EnhancedFormField
+ * @description Function
+ */
 export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues>({
   control,
   name,

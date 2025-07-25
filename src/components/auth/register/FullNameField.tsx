@@ -9,7 +9,12 @@ interface FullNameFieldProps {
   isLoading: boolean;
 }
 
-export const FullNameField = ({ control, isLoading }: FullNameFieldProps) => {
+
+/**
+ * FullNameField
+ * @description Function
+ */
+export const FullNameField = ({ control, isLoading }: FullNameFieldProps): void => {
   return (
     <FormField
       control={control}

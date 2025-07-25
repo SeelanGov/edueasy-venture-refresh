@@ -47,6 +47,11 @@ const categories = [
   'Privacy',
 ];
 
+
+/**
+ * FAQPage
+ * @description Function
+ */
 export const FAQPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('All');
 

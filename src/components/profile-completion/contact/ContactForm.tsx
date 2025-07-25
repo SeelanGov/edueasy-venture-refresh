@@ -17,7 +17,7 @@ import type { ContactFormValues } from './types';
 import { EmergencyContactSection } from './EmergencyContactSection';
 
 // South African phone number validation
-const validateSAPhoneNumber = (phone: string) => {
+const validateSAPhoneNumber = (phone: string): void => {
   // Allow formats: +27XXXXXXXXX, 0XXXXXXXXX (10 digits)
   return /^(\+27|0)[1-9][0-9]{8}$/.test(phone);
 };
@@ -42,12 +42,17 @@ interface ContactFormProps {
   isSubmitting: boolean;
 }
 
+
+/**
+ * ContactForm
+ * @description Function
+ */
 export const ContactForm = ({
   initialValues,
   onSubmit,
   onBack,
   isSubmitting,
-}: ContactFormProps) => {
+}: ContactFormProps): void => {
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactInfoSchema),
     defaultValues: initialValues,

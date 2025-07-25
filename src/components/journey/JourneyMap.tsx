@@ -9,6 +9,11 @@ export interface JourneyMapProps {
   className?: string;
 }
 
+
+/**
+ * JourneyMap
+ * @description Function
+ */
 export const JourneyMap: React.FC<JourneyMapProps> = ({ steps, currentStep, className }) => {
   return (
     <div className={cn('w-full px-4 py-6', className)}>

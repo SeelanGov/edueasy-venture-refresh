@@ -6,12 +6,12 @@ import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PrivacyPolicy = () => {
+const PrivacyPolicy = (): void => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const sections = document.querySelectorAll('[data-section]');
       let current = '';
 
@@ -29,7 +29,7 @@ const PrivacyPolicy = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });

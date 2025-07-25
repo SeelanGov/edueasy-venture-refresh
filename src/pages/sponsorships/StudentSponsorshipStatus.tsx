@@ -1,7 +1,6 @@
-import React from 'react';
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 
-const StudentSponsorshipStatus = () => {
+const StudentSponsorshipStatus = (): void => {
   const { applications, loading } = useSponsorApplications({ asSponsor: false });
 
   return (
@@ -21,7 +20,7 @@ const StudentSponsorshipStatus = () => {
             </tr>
           </thead>
           <tbody>
-            {applications.map((row: any) => (
+            {applications.map((row: unknown) => (
               <tr key={row.id}>
                 <td className="px-2 py-1">{row.application_id}</td>
                 <td className="px-2 py-1">{row.requested_amount}</td>

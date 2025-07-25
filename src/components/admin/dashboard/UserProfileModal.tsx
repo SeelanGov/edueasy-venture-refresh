@@ -36,6 +36,11 @@ interface UserModalProps {
   onClose: () => void;
 }
 
+
+/**
+ * UserProfileModal
+ * @description Function
+ */
 export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose }) => {
   // Fetch verification logs and sponsor allocations for the user
   const { logs, loading: logsLoading } = useUserVerificationLogs(user?.id);
@@ -207,9 +212,9 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
 
         <DialogFooter>
           <DialogClose asChild>
-            <button className="btn btn-sm btn-outline mt-2" onClick={onClose}>
+            <Button className="btn btn-sm btn-outline mt-2" onClick={onClose}>
               Close
-            </button>
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

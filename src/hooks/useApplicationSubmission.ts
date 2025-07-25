@@ -9,6 +9,11 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Hook for managing application submission functionality
  */
+
+/**
+ * useApplicationSubmission
+ * @description Function
+ */
 export const useApplicationSubmission = (
   userId: string | undefined,
   isOnline: boolean,
@@ -117,9 +122,9 @@ export const useApplicationSubmission = (
         description: 'Your application has been submitted successfully',
       });
 
-          // Navigate to auth-redirect for role-based routing
-    navigate('/auth-redirect');
-    } catch (error: any) {
+      // Navigate to auth-redirect for role-based routing
+      navigate('/auth-redirect');
+    } catch (error: unknown) {
       console.error('Application submission error:', error);
       toast({
         title: 'Error',
@@ -131,7 +136,7 @@ export const useApplicationSubmission = (
     }
   };
 
-  const handleSyncNow = () => {
+  const handleSyncNow = (): void => {
     if (isOnline) {
       // This will be connected in the main hook
     }

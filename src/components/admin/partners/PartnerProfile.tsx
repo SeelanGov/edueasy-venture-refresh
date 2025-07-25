@@ -38,7 +38,12 @@ interface Payment {
   tier?: string | null;
 }
 
-export const PartnerProfile = () => {
+
+/**
+ * PartnerProfile
+ * @description Function
+ */
+export const PartnerProfile = (): void => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [partner, setPartner] = useState<Partner | null>(null);
@@ -111,9 +116,9 @@ export const PartnerProfile = () => {
       // Update payment status
       const { error: paymentError } = await supabase
         .from('partner_payments')
-        .update({ 
-          status: 'paid', 
-          updated_at: new Date().toISOString() 
+        .update({
+          status: 'paid',
+          updated_at: new Date().toISOString(),
         })
         .eq('id', paymentId);
 
@@ -122,9 +127,9 @@ export const PartnerProfile = () => {
       // Update partner status
       const { error: partnerError } = await supabase
         .from('partners')
-        .update({ 
+        .update({
           status: 'active',
-          updated_at: new Date().toISOString() 
+          updated_at: new Date().toISOString(),
         })
         .eq('id', partner.id);
 
@@ -204,7 +209,10 @@ export const PartnerProfile = () => {
                   <label className="text-sm font-medium text-gray-500">Email</label>
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-gray-400" />
-                    <a href={`mailto:${partner.contact_email}`} className="text-sm text-blue-600 hover:underline">
+                    <a
+                      href={`mailto:${partner.contact_email}`}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
                       {partner.contact_email}
                     </a>
                   </div>
@@ -221,7 +229,12 @@ export const PartnerProfile = () => {
                     <label className="text-sm font-medium text-gray-500">Website</label>
                     <div className="flex items-center gap-2">
                       <Globe className="h-4 w-4 text-gray-400" />
-                      <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
+                      <a
+                        href={partner.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-600 hover:underline"
+                      >
                         {partner.website}
                       </a>
                     </div>
@@ -293,8 +306,8 @@ export const PartnerProfile = () => {
                           {payment.status}
                         </Badge>
                         {payment.status === 'pending' && (
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             onClick={() => handleMarkAsPaid(payment.id)}
                             disabled={isProcessingPayment}
                             className="bg-green-600 hover:bg-green-700"

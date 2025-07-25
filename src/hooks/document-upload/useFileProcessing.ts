@@ -7,6 +7,11 @@ import type {
 import { compressImage } from '@/utils/imageCompression';
 import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
+
+/**
+ * useFileProcessing
+ * @description Function
+ */
 export const useFileProcessing = (
   setDocumentState: (documentType: DocumentType, state: Partial<DocumentUploadState>) => void,
   user?: { id?: string } | null,

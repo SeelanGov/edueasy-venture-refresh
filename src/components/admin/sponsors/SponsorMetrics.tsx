@@ -7,6 +7,11 @@ interface SponsorMetricsProps {
   activeAllocations: number;
 }
 
+
+/**
+ * SponsorMetrics
+ * @description Function
+ */
 export const SponsorMetrics: React.FC<SponsorMetricsProps> = ({
   totalSponsors,
   activeSponsors,

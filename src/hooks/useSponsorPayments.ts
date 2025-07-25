@@ -17,7 +17,12 @@ export type SponsorPayment = {
   reference_number?: string | null;
 };
 
-export const useSponsorPayments = (sponsorId: string | undefined) => {
+
+/**
+ * useSponsorPayments
+ * @description Function
+ */
+export const useSponsorPayments = (sponsorId: string | undefined): void => {
   return useQuery({
     queryKey: ['sponsorPayments', sponsorId],
     queryFn: async () => {

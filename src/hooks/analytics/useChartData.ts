@@ -1,7 +1,12 @@
 import { useMemo } from 'react';
 import type { DocumentAnalytics } from './types';
 
-export const useStatusDistributionData = (analytics: DocumentAnalytics | null) => {
+
+/**
+ * useStatusDistributionData
+ * @description Function
+ */
+export const useStatusDistributionData = (analytics: DocumentAnalytics | null): void => {
   return useMemo(() => {
     if (!analytics) return [];
 
@@ -31,7 +36,12 @@ export const useStatusDistributionData = (analytics: DocumentAnalytics | null) =
   }, [analytics]);
 };
 
-export const useDocumentTypeTableData = (analytics: DocumentAnalytics | null) => {
+
+/**
+ * useDocumentTypeTableData
+ * @description Function
+ */
+export const useDocumentTypeTableData = (analytics: DocumentAnalytics | null): void => {
   return useMemo(() => {
     if (!analytics) return [];
 

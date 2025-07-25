@@ -21,7 +21,12 @@ interface Partner {
   created_at: string;
 }
 
-export const PartnerList = () => {
+
+/**
+ * PartnerList
+ * @description Function
+ */
+export const PartnerList = (): void => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,7 +71,7 @@ export const PartnerList = () => {
     return matchesSearch && matchesType && matchesTier;
   });
 
-  const getTierColor = (tier: string) => {
+  const getTierColor = (tier: string): void => {
     switch (tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-800';
@@ -79,7 +84,7 @@ export const PartnerList = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): void => {
     switch (status) {
       case 'active':
         return 'bg-green-100 text-green-800';

@@ -5,7 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 /**
  * Returns the current step index and completion status for each journey step.
  */
-export function useApplicationJourneyStep() {
+
+/**
+ * useApplicationJourneyStep
+ * @description Function
+ */
+export function useApplicationJourneyStep(): void {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [stepStatus, setStepStatus] = useState<(boolean | undefined)[]>([]);

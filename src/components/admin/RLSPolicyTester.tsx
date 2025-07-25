@@ -8,7 +8,12 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-export const RLSPolicyTester = () => {
+
+/**
+ * RLSPolicyTester
+ * @description Function
+ */
+export const RLSPolicyTester = (): void => {
   const [testQuery, setTestQuery] = useState('');
   const [userId, setUserId] = useState('');
   const [results, setResults] = useState<any[]>([]);

@@ -5,6 +5,11 @@ interface SponsorPaymentHistoryProps {
   payments: SponsorPayment[];
 }
 
+
+/**
+ * SponsorPaymentHistory
+ * @description Function
+ */
 export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ payments }) => (
   <div className="overflow-x-auto border rounded-md bg-white shadow-sm">
     <table className="min-w-full table-auto">

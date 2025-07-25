@@ -10,12 +10,17 @@ interface AnalyticsHeaderProps {
   hasData: boolean;
 }
 
+
+/**
+ * AnalyticsHeader
+ * @description Function
+ */
 export const AnalyticsHeader = ({
   onRefresh,
   onExport,
   loading,
   hasData,
-}: AnalyticsHeaderProps) => {
+}: AnalyticsHeaderProps): void => {
   return (
     <div className="space-y-4">
       <AnalyticsBreadcrumb />

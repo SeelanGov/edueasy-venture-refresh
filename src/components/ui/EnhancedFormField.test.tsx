@@ -5,7 +5,7 @@ import { EnhancedFormField } from './EnhancedFormField';
 import { TooltipProvider } from './tooltip';
 
 // Create a test component that uses the hooks
-const TestComponent = () => {
+const TestComponent = (): void => {
   const methods = useForm({ defaultValues: { password: '' } });
 
   return (

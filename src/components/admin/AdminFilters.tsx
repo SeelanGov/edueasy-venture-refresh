@@ -1,9 +1,14 @@
 import React from 'react';
 
 interface AdminFiltersProps {
-  onFilterChange: (filters: Record<string, any>) => void;
+  onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
+
+/**
+ * AdminFilters
+ * @description Function
+ */
 export const AdminFilters: React.FC<AdminFiltersProps> = ({ onFilterChange }) => {
   // Placeholder for filter UI (date range, status, user, etc.)
   return (

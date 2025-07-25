@@ -5,7 +5,12 @@ import type { SubscriptionTier, Transaction, UserSubscription } from '@/types/Su
 import { secureStorage } from '@/utils/secureStorage';
 import { useEffect, useState } from 'react';
 
-export function useSubscription() {
+
+/**
+ * useSubscription
+ * @description Function
+ */
+export function useSubscription(): void {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [tiers, setTiers] = useState<SubscriptionTier[]>([]);
@@ -136,8 +141,8 @@ export function useSubscription() {
         body: {
           tier: payfastTier,
           user_id: user.id,
-          payment_method: paymentMethod // Pass the selected payment method
-        }
+          payment_method: paymentMethod, // Pass the selected payment method
+        },
       });
 
       if (error) {
@@ -149,7 +154,7 @@ export function useSubscription() {
       if (data.payment_url) {
         // Store payment reference in session storage for verification
         secureStorage.setItem('pending_payment', data.merchant_reference);
-        
+
         // Redirect to PayFast
         window.location.href = data.payment_url;
         return true;
@@ -171,7 +176,7 @@ export function useSubscription() {
   const checkPaymentStatus = async (merchantReference: string) => {
     try {
       const { data, error } = await supabase.functions.invoke('verify-payment-status', {
-        body: { merchant_reference: merchantReference }
+        body: { merchant_reference: merchantReference },
       });
 
       if (error) throw error;

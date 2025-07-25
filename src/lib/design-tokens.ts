@@ -1,4 +1,9 @@
 // Design System Tokens
+
+/**
+ * colors
+ * @description Function
+ */
 export const colors = {
   // Brand colors
   primary: {
@@ -63,6 +68,11 @@ export const colors = {
   },
 } as const;
 
+
+/**
+ * statusColors
+ * @description Function
+ */
 export const statusColors = {
   success: {
     bg: 'bg-success-light',
@@ -91,6 +101,11 @@ export const statusColors = {
   },
 } as const;
 
+
+/**
+ * spacing
+ * @description Function
+ */
 export const spacing = {
   xs: '0.5rem',
   sm: '0.75rem',
@@ -102,6 +117,11 @@ export const spacing = {
 } as const;
 
 // Typography scale
+
+/**
+ * typography
+ * @description Function
+ */
 export const typography = {
   fontSizes: {
     xs: '0.75rem',
@@ -146,6 +166,11 @@ export type ExtendedStatusType =
   | 'resubmission-required';
 
 // Enhanced status colors with extended types
+
+/**
+ * extendedStatusColors
+ * @description Function
+ */
 export const extendedStatusColors: Record<ExtendedStatusType, StatusStyle> = {
   ...statusColors,
   approved: statusColors.success,
@@ -168,6 +193,11 @@ export const extendedStatusColors: Record<ExtendedStatusType, StatusStyle> = {
 };
 
 // Status priority levels for sorting and filtering
+
+/**
+ * statusPriority
+ * @description Function
+ */
 export const statusPriority: Record<ExtendedStatusType, number> = {
   error: 1,
   rejected: 2,
@@ -182,11 +212,21 @@ export const statusPriority: Record<ExtendedStatusType, number> = {
 };
 
 // Helper function to get status priority
+
+/**
+ * getStatusPriority
+ * @description Function
+ */
 export const getStatusPriority = (status: ExtendedStatusType): number => {
   return statusPriority[status] || 0;
 };
 
 // Helper function to sort statuses by priority
+
+/**
+ * sortByStatusPriority
+ * @description Function
+ */
 export const sortByStatusPriority = (statuses: ExtendedStatusType[]): ExtendedStatusType[] => {
   return statuses.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
 };

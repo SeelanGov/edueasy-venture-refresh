@@ -9,6 +9,11 @@ interface SponsorFormModalProps {
   onClose: () => void;
 }
 
+
+/**
+ * SponsorFormModal
+ * @description Function
+ */
 export const SponsorFormModal: React.FC<SponsorFormModalProps> = ({
   open,
   allocation,

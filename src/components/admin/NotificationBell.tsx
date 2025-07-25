@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+
+/**
+ * NotificationBell
+ * @description Function
+ */
 export const NotificationBell: React.FC = () => {
   const [open, setOpen] = useState(false);
   // Placeholder notifications

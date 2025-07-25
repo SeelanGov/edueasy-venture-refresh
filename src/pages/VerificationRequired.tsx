@@ -8,7 +8,7 @@ import { AlertTriangle, CheckCircle, Mail, Phone, RefreshCw } from 'lucide-react
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const VerificationRequired = () => {
+const VerificationRequired = (): void => {
   const { user } = useAuth();
   const { verifyIdentity } = useAuthActions();
   // const navigate = useNavigate();

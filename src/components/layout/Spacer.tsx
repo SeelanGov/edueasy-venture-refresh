@@ -14,13 +14,18 @@ interface SpacerProps {
   className?: string;
 }
 
+
+/**
+ * Spacer
+ * @description Function
+ */
 export const Spacer: React.FC<SpacerProps> = ({
   size = 'md',
   direction = 'vertical',
   responsive,
   className,
 }) => {
-  const getSpacingClasses = () => {
+  const getSpacingClasses = (): void => {
     const classes: string[] = [];
 
     // Base spacing
@@ -83,10 +88,20 @@ export const Spacer: React.FC<SpacerProps> = ({
 };
 
 // Convenience components
+
+/**
+ * VSpacer
+ * @description Function
+ */
 export const VSpacer: React.FC<Omit<SpacerProps, 'direction'>> = (props) => (
   <Spacer {...props} direction="vertical" />
 );
 
+
+/**
+ * HSpacer
+ * @description Function
+ */
 export const HSpacer: React.FC<Omit<SpacerProps, 'direction'>> = (props) => (
   <Spacer {...props} direction="horizontal" />
 );

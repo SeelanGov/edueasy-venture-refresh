@@ -7,7 +7,12 @@ import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
 import type { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
 
-export const useApplicationForm = () => {
+
+/**
+ * useApplicationForm
+ * @description Function
+ */
+export const useApplicationForm = (): void => {
   const navigate = useNavigate();
   const { isOnline } = useNetwork();
 
@@ -16,7 +21,7 @@ export const useApplicationForm = () => {
     useApplicationFormState();
 
   // Create a proper conversion function for storage
-  const saveFormToStorageWrapper = (data: DraftFormData) => {
+  const saveFormToStorageWrapper = (data: DraftFormData): void => {
     // Convert DraftFormData to ApplicationFormValues for storage
     const applicationFormData: ApplicationFormValues = {
       fullName: form.getValues('fullName') || '',
@@ -62,7 +67,7 @@ export const useApplicationForm = () => {
   const onSubmit = form.handleSubmit(submitFormData);
 
   // Create a sync handler
-  const handleSyncNow = () => {
+  const handleSyncNow = (): void => {
     if (isOnline) {
       onSubmit();
     }

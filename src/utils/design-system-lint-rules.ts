@@ -1,4 +1,9 @@
 // ESLint rules for design system compliance
+
+/**
+ * DESIGN_SYSTEM_VIOLATIONS
+ * @description Function
+ */
 export const DESIGN_SYSTEM_VIOLATIONS = {
   // Hardcoded colors that should use design tokens
   HARDCODED_COLORS: [
@@ -18,6 +23,11 @@ export const DESIGN_SYSTEM_VIOLATIONS = {
   HARDCODED_SPACING: [/p-\d+/g, /m-\d+/g, /gap-\d+/g],
 };
 
+
+/**
+ * validateDesignSystemUsage
+ * @description Function
+ */
 export const validateDesignSystemUsage = (
   code: string,
 ): {

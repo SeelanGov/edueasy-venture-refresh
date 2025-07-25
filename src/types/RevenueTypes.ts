@@ -46,7 +46,7 @@ export interface Sponsorship {
   start_date: string;
   end_date: string;
   is_active: boolean;
-  requirements?: Record<string, any> | null;
+  requirements?: Record<string, unknown> | null;
   logo_url?: string;
   website_url?: string;
   created_at: string;
@@ -72,9 +72,9 @@ export interface CareerAssessment {
   id: string;
   user_id: string;
   assessment_type: AssessmentType;
-  questions: Record<string, any>;
-  responses: Record<string, any>;
-  results: Record<string, any>;
+  questions: Record<string, unknown>;
+  responses: Record<string, unknown>;
+  results: Record<string, unknown>;
   completed_at?: string;
   created_at: string;
   updated_at: string;
@@ -86,14 +86,19 @@ export interface CareerGuidance {
   assessment_id?: string;
   assessment_type: AssessmentType;
   assessment_date: string;
-  recommendations: Record<string, any> | null;
-  action_plan?: Record<string, any>;
-  results: Record<string, any>;
+  recommendations: Record<string, unknown> | null;
+  action_plan?: Record<string, unknown>;
+  results: Record<string, unknown>;
   is_premium: boolean;
   created_at: string;
   updated_at: string;
 }
 
+
+/**
+ * formatSponsorshipLevel
+ * @description Function
+ */
 export const formatSponsorshipLevel = (level: SponsorshipLevel): string => {
   switch (level) {
     case SponsorshipLevel.BRONZE:

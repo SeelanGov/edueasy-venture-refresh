@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
-export function useTheme() {
+
+/**
+ * useTheme
+ * @description Function
+ */
+export function useTheme(): void {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     // Check for saved theme preference in localStorage
     const savedTheme = localStorage.getItem('theme');
@@ -32,7 +37,7 @@ export function useTheme() {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleChange = (e: MediaQueryListEvent) => {
+    const handleChange = (e: MediaQueryListEvent): void => {
       // Only update if user hasn't explicitly set a preference
       if (!localStorage.getItem('theme')) {
         setIsDarkMode(e.matches);
@@ -46,11 +51,11 @@ export function useTheme() {
     };
   }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     setIsDarkMode((prev) => !prev);
   };
 
-  const setTheme = (theme: Theme) => {
+  const setTheme = (theme: Theme): void => {
     setIsDarkMode(theme === 'dark');
   };
 

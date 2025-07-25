@@ -47,6 +47,11 @@ export interface SecurityBadgeProps {
   className?: string;
 }
 
+
+/**
+ * SecurityBadge
+ * @description Function
+ */
 export const SecurityBadge: React.FC<SecurityBadgeProps> = ({
   type,
   size = 'md',

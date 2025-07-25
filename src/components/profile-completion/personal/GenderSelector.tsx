@@ -14,6 +14,11 @@ interface GenderSelectorProps {
   control: Control<PersonalInfoFormValues>;
 }
 
+
+/**
+ * GenderSelector
+ * @description Function
+ */
 export const GenderSelector: React.FC<GenderSelectorProps> = ({ control }) => {
   return (
     <FormField

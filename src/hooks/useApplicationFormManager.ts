@@ -19,7 +19,12 @@ const applicationFormSchema = z.object({
   documentFile: z.any().optional(),
 });
 
-export const useApplicationFormManager = () => {
+
+/**
+ * useApplicationFormManager
+ * @description Function
+ */
+export const useApplicationFormManager = (): void => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { isOnline } = useNetwork();
@@ -41,7 +46,7 @@ export const useApplicationFormManager = () => {
   });
 
   // Load any saved drafts
-  const initializeForm = () => {
+  const initializeForm = (): void => {
     const savedForm = localStorage.getItem('application-draft');
     if (savedForm) {
       try {
@@ -55,7 +60,7 @@ export const useApplicationFormManager = () => {
   };
 
   // Handle file input change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0] || null;
     setSelectedFile(file);
   };
@@ -204,7 +209,7 @@ export const useApplicationFormManager = () => {
   });
 
   // Handle sync now functionality
-  const handleSyncNow = () => {
+  const handleSyncNow = (): void => {
     if (isOnline && hasSavedDraft) {
       // Trigger the submission process
       onSubmit();

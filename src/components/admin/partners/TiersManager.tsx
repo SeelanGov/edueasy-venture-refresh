@@ -18,7 +18,12 @@ interface TierConfig {
   active: boolean | null;
 }
 
-export const TiersManager = () => {
+
+/**
+ * TiersManager
+ * @description Function
+ */
+export const TiersManager = (): void => {
   const [tiers, setTiers] = useState<TierConfig[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,7 +83,7 @@ export const TiersManager = () => {
     }
   };
 
-  const getTierColor = (tier: string) => {
+  const getTierColor = (tier: string): void => {
     switch (tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-800 border-gray-300';

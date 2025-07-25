@@ -134,4 +134,9 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+
+/**
+ * supabase
+ * @description Function
+ */
 export const supabase = supabaseClient;

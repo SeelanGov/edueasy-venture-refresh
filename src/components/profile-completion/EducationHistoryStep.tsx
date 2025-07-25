@@ -12,7 +12,12 @@ interface EducationHistoryStepProps {
   onBack: () => void;
 }
 
-export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistoryStepProps) => {
+
+/**
+ * EducationHistoryStep
+ * @description Function
+ */
+export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistoryStepProps): void => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

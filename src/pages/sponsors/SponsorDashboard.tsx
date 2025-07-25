@@ -2,19 +2,25 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 import {
-    CheckCircle,
-    Clock,
-    DollarSign,
-    Download,
-    Filter,
-    RefreshCw,
-    Search,
-    XCircle
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Download,
+  Filter,
+  RefreshCw,
+  Search,
+  XCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,12 +36,12 @@ interface PaymentSummary {
   failedCount: number;
 }
 
-const SponsorDashboard = () => {
+const SponsorDashboard = (): void => {
   const { applications, loading, refresh } = useSponsorApplications({ asSponsor: true });
   const { userType } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   // Filter states
   const [dateRange, setDateRange] = useState('30d');
   const [paymentStatus, setPaymentStatus] = useState('all');
@@ -48,43 +54,46 @@ const SponsorDashboard = () => {
     paidAmount: 0,
     paidCount: 0,
     failedAmount: 0,
-    failedCount: 0
+    failedCount: 0,
   });
 
   // Calculate payment summary
   useEffect(() => {
     if (applications.length > 0) {
-      const summary = applications.reduce((acc, app) => {
-        const amount = parseFloat(app.sponsored_amount) || 0;
-        acc.totalAmount += amount;
-        acc.totalPayments += 1;
-        
-        switch (app.payment_status) {
-          case 'pending':
-            acc.pendingAmount += amount;
-            acc.pendingCount += 1;
-            break;
-          case 'paid':
-            acc.paidAmount += amount;
-            acc.paidCount += 1;
-            break;
-          case 'failed':
-            acc.failedAmount += amount;
-            acc.failedCount += 1;
-            break;
-        }
-        return acc;
-      }, {
-        totalAmount: 0,
-        totalPayments: 0,
-        pendingAmount: 0,
-        pendingCount: 0,
-        paidAmount: 0,
-        paidCount: 0,
-        failedAmount: 0,
-        failedCount: 0
-      } as PaymentSummary);
-      
+      const summary = applications.reduce(
+        (acc, app) => {
+          const amount = parseFloat(app.sponsored_amount) || 0;
+          acc.totalAmount += amount;
+          acc.totalPayments += 1;
+
+          switch (app.payment_status) {
+            case 'pending':
+              acc.pendingAmount += amount;
+              acc.pendingCount += 1;
+              break;
+            case 'paid':
+              acc.paidAmount += amount;
+              acc.paidCount += 1;
+              break;
+            case 'failed':
+              acc.failedAmount += amount;
+              acc.failedCount += 1;
+              break;
+          }
+          return acc;
+        },
+        {
+          totalAmount: 0,
+          totalPayments: 0,
+          pendingAmount: 0,
+          pendingCount: 0,
+          paidAmount: 0,
+          paidCount: 0,
+          failedAmount: 0,
+          failedCount: 0,
+        } as PaymentSummary,
+      );
+
       setPaymentSummary(summary);
     }
   }, [applications]);
@@ -96,28 +105,28 @@ const SponsorDashboard = () => {
       const appDate = new Date(app.created_at);
       const now = new Date();
       const daysAgo = parseInt(dateRange.replace('d', ''));
-      const cutoffDate = new Date(now.getTime() - (daysAgo * 24 * 60 * 60 * 1000));
-      
+      const cutoffDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+
       if (appDate < cutoffDate) return false;
     }
-    
+
     // Payment status filter
     if (paymentStatus !== 'all' && app.payment_status !== paymentStatus) {
       return false;
     }
-    
+
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       const appId = app.sponsor_application_id?.toLowerCase() || '';
       const studentId = app.sponsor_applications?.student_id?.toLowerCase() || '';
       const amount = app.sponsored_amount?.toString() || '';
-      
+
       if (!appId.includes(query) && !studentId.includes(query) && !amount.includes(query)) {
         return false;
       }
     }
-    
+
     return true;
   });
 
@@ -125,17 +134,17 @@ const SponsorDashboard = () => {
     try {
       const csvData = [
         ['Application ID', 'Student ID', 'Sponsored Amount', 'Status', 'Paid At', 'Created At'],
-        ...filteredApplications.map(app => [
+        ...filteredApplications.map((app) => [
           app.sponsor_application_id || '',
           app.sponsor_applications?.student_id || '',
           app.sponsored_amount || '',
           app.payment_status || '',
           app.paid_at ? new Date(app.paid_at).toLocaleString() : '',
-          new Date(app.created_at).toLocaleString()
-        ])
+          new Date(app.created_at).toLocaleString(),
+        ]),
       ];
-      
-      const csvContent = csvData.map(row => row.join(',')).join('\n');
+
+      const csvContent = csvData.map((row) => row.join(',')).join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -143,7 +152,7 @@ const SponsorDashboard = () => {
       a.download = `sponsor-payments-${new Date().toISOString().split('T')[0]}.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
-      
+
       toast({
         title: 'Export Successful',
         description: 'Payment data exported to CSV file',
@@ -157,7 +166,7 @@ const SponsorDashboard = () => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeVariant = (status: string): void => {
     switch (status) {
       case 'paid':
         return 'default';
@@ -170,10 +179,10 @@ const SponsorDashboard = () => {
     }
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: number): void => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
-      currency: 'ZAR'
+      currency: 'ZAR',
     }).format(amount);
   };
 
@@ -183,7 +192,11 @@ const SponsorDashboard = () => {
         <h2 className="text-2xl mb-4">Unauthenticated</h2>
         <p>
           Please{' '}
-          <Button className="text-cap-teal underline" variant="link" onClick={() => navigate('/sponsors/login')}>
+          <Button
+            className="text-cap-teal underline"
+            variant="link"
+            onClick={() => navigate('/sponsors/login')}
+          >
             Login
           </Button>{' '}
           as sponsor.
@@ -214,9 +227,7 @@ const SponsorDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(paymentSummary.totalAmount)}</div>
-            <p className="text-xs text-muted-foreground">
-              {paymentSummary.totalPayments} payments
-            </p>
+            <p className="text-xs text-muted-foreground">{paymentSummary.totalPayments} payments</p>
           </CardContent>
         </Card>
 
@@ -226,7 +237,9 @@ const SponsorDashboard = () => {
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(paymentSummary.paidAmount)}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {formatCurrency(paymentSummary.paidAmount)}
+            </div>
             <p className="text-xs text-muted-foreground">
               {paymentSummary.paidCount} successful payments
             </p>
@@ -239,7 +252,9 @@ const SponsorDashboard = () => {
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{formatCurrency(paymentSummary.pendingAmount)}</div>
+            <div className="text-2xl font-bold text-yellow-600">
+              {formatCurrency(paymentSummary.pendingAmount)}
+            </div>
             <p className="text-xs text-muted-foreground">
               {paymentSummary.pendingCount} pending payments
             </p>
@@ -252,7 +267,9 @@ const SponsorDashboard = () => {
             <XCircle className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{formatCurrency(paymentSummary.failedAmount)}</div>
+            <div className="text-2xl font-bold text-red-600">
+              {formatCurrency(paymentSummary.failedAmount)}
+            </div>
             <p className="text-xs text-muted-foreground">
               {paymentSummary.failedCount} failed payments
             </p>
@@ -363,7 +380,7 @@ const SponsorDashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredApplications.map((row: any) => (
+                  {filteredApplications.map((row: unknown) => (
                     <tr key={row.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
                         {row.sponsor_application_id}
@@ -390,7 +407,9 @@ const SponsorDashboard = () => {
                   {filteredApplications.length === 0 && (
                     <tr>
                       <td colSpan={6} className="text-center text-gray-400 py-8">
-                        {applications.length === 0 ? 'No sponsorships found.' : 'No applications match your filters.'}
+                        {applications.length === 0
+                          ? 'No sponsorships found.'
+                          : 'No applications match your filters.'}
                       </td>
                     </tr>
                   )}

@@ -1,9 +1,9 @@
 declare module './logger' {
   const logger: {
-    info: (message: string, ...args: any[]) => void;
-    success: (message: string, ...args: any[]) => void;
-    warn: (message: string, ...args: any[]) => void;
-    error: (message: string, ...args: any[]) => void;
+    info: (message: string, ...args: unknown[]) => void;
+    success: (message: string, ...args: unknown[]) => void;
+    warn: (message: string, ...args: unknown[]) => void;
+    error: (message: string, ...args: unknown[]) => void;
   };
   export default logger;
 }

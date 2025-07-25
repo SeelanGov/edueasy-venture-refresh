@@ -17,6 +17,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { AlertCircle, CheckCircle, RefreshCw, Upload } from 'lucide-react';
 import type { DocumentUploadInputProps } from './types';
 
+
+/**
+ * DocumentUploadInput
+ * @description Function
+ */
 export const DocumentUploadInput = ({
   documentType,
   label,
@@ -32,10 +37,10 @@ export const DocumentUploadInput = ({
   setCurrentDocumentType,
   currentDocumentType,
   uploadSteps,
-}: DocumentUploadInputProps) => {
+}: DocumentUploadInputProps): void => {
   const { file, uploading, progress, error, uploaded, isResubmission } = state;
 
-  const handleDocumentClick = () => {
+  const handleDocumentClick = (): void => {
     setCurrentDocumentType(documentType);
   };
 

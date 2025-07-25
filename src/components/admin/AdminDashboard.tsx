@@ -41,7 +41,12 @@ interface ErrorLogEntry {
   resolution_notes?: string | null;
 }
 
-export const AdminDashboard = () => {
+
+/**
+ * AdminDashboard
+ * @description Function
+ */
+export const AdminDashboard = (): void => {
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     totalApplications: 0,

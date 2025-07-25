@@ -20,14 +20,19 @@ interface SponsorshipCardProps {
   onDeactivate?: (sponsorshipId: string) => void;
 }
 
+
+/**
+ * SponsorshipCard
+ * @description Function
+ */
 export function SponsorshipCard({
   sponsorship,
   isAdmin = false,
   onEdit,
   onDeactivate,
-}: SponsorshipCardProps) {
+}: SponsorshipCardProps): void {
   // Format dates
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): void => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'short',

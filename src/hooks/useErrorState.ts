@@ -16,7 +16,12 @@ const DEFAULT_CONFIG: ErrorHandlingConfig = {
 /**
  * Hook for centralized application error state management
  */
-export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
+
+/**
+ * useErrorState
+ * @description Function
+ */
+export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}): void => {
   const [errors, setErrors] = useState<ErrorDetails[]>([]);
   const [reportCount, setReportCount] = useState(0);
   const { user } = useAuth();
@@ -36,7 +41,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
       component: string = 'Unknown',
       action: string = 'Unknown',
       severity: ErrorSeverity = ErrorSeverity.ERROR,
-      context: Record<string, any> = {},
+      context: Record<string, unknown> = {},
     ): Promise<string | null> => {
       // Parse error to standard format if needed
       const standardError =

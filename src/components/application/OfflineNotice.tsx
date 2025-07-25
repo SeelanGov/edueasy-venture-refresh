@@ -8,7 +8,12 @@ interface OfflineNoticeProps {
   className?: string;
 }
 
-export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeProps) => {
+
+/**
+ * OfflineNotice
+ * @description Function
+ */
+export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeProps): void => {
   if (isOnline) return null;
 
   return (

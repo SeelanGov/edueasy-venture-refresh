@@ -6,6 +6,11 @@ import type { SecurityAuditResult } from './types';
 /**
  * Check for security issues in the application
  */
+
+/**
+ * performSecurityAudit
+ * @description Function
+ */
 export const performSecurityAudit = async (
   userId: string | undefined,
 ): Promise<SecurityAuditResult> => {

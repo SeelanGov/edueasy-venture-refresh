@@ -7,6 +7,11 @@ interface ConsentCheckboxesProps {
   setConsentIdVerification: (value: boolean) => void;
 }
 
+
+/**
+ * ConsentCheckboxes
+ * @description Function
+ */
 export const ConsentCheckboxes = ({
   consentPrivacy,
   consentTerms,
@@ -14,7 +19,7 @@ export const ConsentCheckboxes = ({
   setConsentPrivacy,
   setConsentTerms,
   setConsentIdVerification,
-}: ConsentCheckboxesProps) => {
+}: ConsentCheckboxesProps): void => {
   return (
     <div className="flex flex-col gap-3 my-4 p-4 bg-gray-50 rounded-lg">
       <div className="text-sm font-medium text-gray-700 mb-2">Required Agreements</div>
@@ -62,13 +67,14 @@ export const ConsentCheckboxes = ({
           required
         />
         <span className="text-sm text-gray-600">
-          I consent to EduEasy collecting, verifying, and processing my South African ID number 
-          for identity confirmation, application processing, and to match me with education and 
-          funding opportunities. This will include verification with third-party providers (e.g., 
-          VerifyID). I understand this information will be processed in line with POPIA and the{' '}
+          I consent to EduEasy collecting, verifying, and processing my South African ID number for
+          identity confirmation, application processing, and to match me with education and funding
+          opportunities. This will include verification with third-party providers (e.g., VerifyID).
+          I understand this information will be processed in line with POPIA and the{' '}
           <a href="/privacy-policy" className="text-cap-teal underline hover:text-cap-teal/80">
             EduEasy Privacy Policy
-          </a>.
+          </a>
+          .
         </span>
       </label>
     </div>

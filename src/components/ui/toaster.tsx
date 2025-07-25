@@ -8,6 +8,11 @@ import {
 } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
 
+
+/**
+ * Toaster
+ * @description Function
+ */
 export function Toaster(): JSX.Element {
   const { toasts } = useToast();
 

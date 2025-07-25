@@ -11,6 +11,11 @@ interface MilestoneDetailProps {
   onClose: () => void;
 }
 
+
+/**
+ * MilestoneDetail
+ * @description Function
+ */
 export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   title,
   status,
@@ -21,7 +26,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
 
   // Close when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (detailRef.current && !detailRef.current.contains(event.target as Node)) {
         onClose();
       }
@@ -32,7 +37,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   }, [onClose]);
 
   // Get description based on milestone title
-  const getDescription = () => {
+  const getDescription = (): void => {
     switch (true) {
       case title.includes('Personal'):
         return 'Basic personal information including your full name, ID number, and gender.';
@@ -52,7 +57,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   };
 
   // Get status text
-  const getStatusText = () => {
+  const getStatusText = (): void => {
     switch (status) {
       case 'completed':
         return 'Completed';
@@ -67,7 +72,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
     }
   };
 
-  const getStatusColor = () => {
+  const getStatusColor = (): void => {
     switch (status) {
       case 'completed':
         return 'text-green-600';

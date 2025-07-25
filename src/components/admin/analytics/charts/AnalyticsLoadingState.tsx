@@ -1,7 +1,12 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const AnalyticsLoadingState = () => {
+
+/**
+ * AnalyticsLoadingState
+ * @description Function
+ */
+export const AnalyticsLoadingState = (): void => {
   return (
     <div className="space-y-6">
       {/* Stats Cards Loading */}

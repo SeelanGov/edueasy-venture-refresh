@@ -10,6 +10,11 @@ interface SidebarNavItemProps {
   onClick?: () => void;
 }
 
+
+/**
+ * SidebarNavItem
+ * @description Function
+ */
 export const SidebarNavItem = ({
   path,
   icon,
@@ -17,7 +22,7 @@ export const SidebarNavItem = ({
   isActive,
   sidebarOpen,
   onClick,
-}: SidebarNavItemProps) => {
+}: SidebarNavItemProps): void => {
   return (
     <Link
       to={path}

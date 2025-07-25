@@ -12,6 +12,11 @@ interface RecoveryHelperProps {
   cancelButtonText?: string;
 }
 
+
+/**
+ * RecoveryHelper
+ * @description Function
+ */
 export const RecoveryHelper = ({
   title,
   description,
@@ -19,7 +24,7 @@ export const RecoveryHelper = ({
   onCancel,
   recoveryButtonText = 'Recover',
   cancelButtonText = 'Cancel',
-}: RecoveryHelperProps) => {
+}: RecoveryHelperProps): void => {
   const [isRecovering, setIsRecovering] = useState(false);
   const [isRecovered, setIsRecovered] = useState(false);
   const [error, setError] = useState<string | null>(null);

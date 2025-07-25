@@ -17,7 +17,12 @@ const faq = [
   },
 ];
 
-export function FAQCollapsible() {
+
+/**
+ * FAQCollapsible
+ * @description Function
+ */
+export function FAQCollapsible(): void {
   const [openIdx, setOpenIdx] = React.useState<number | null>(null);
 
   return (

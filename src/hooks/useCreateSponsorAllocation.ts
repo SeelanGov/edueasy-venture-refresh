@@ -12,7 +12,12 @@ type SponsorAllocationInsert = {
   notes?: string;
 };
 
-export const useCreateSponsorAllocation = () => {
+
+/**
+ * useCreateSponsorAllocation
+ * @description Function
+ */
+export const useCreateSponsorAllocation = (): void => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: SponsorAllocationInsert) => {

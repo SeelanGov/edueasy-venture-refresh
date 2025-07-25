@@ -13,7 +13,12 @@ interface ProgressIndicatorProps {
   className?: string;
 }
 
-export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps) => {
+
+/**
+ * ProgressIndicator
+ * @description Function
+ */
+export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps): void => {
   return (
     <div className={cn('w-full', className)}>
       <div className="flex items-center justify-between mb-4">
@@ -28,7 +33,7 @@ export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps) 
                     'bg-cap-teal border-cap-teal text-white': step.status === 'completed',
                     'bg-white border-cap-teal text-cap-teal': step.status === 'current',
                     'bg-gray-100 border-gray-300 text-gray-400': step.status === 'upcoming',
-                  }
+                  },
                 )}
               >
                 {step.status === 'completed' ? (
@@ -37,7 +42,7 @@ export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps) 
                   <span className="text-sm font-medium">{index + 1}</span>
                 )}
               </div>
-              
+
               {/* Step Label */}
               <div className="mt-2 text-center">
                 <p
@@ -58,17 +63,14 @@ export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps) 
                 </p>
               </div>
             </div>
-            
+
             {/* Connector Line */}
             {index < steps.length - 1 && (
               <div
-                className={cn(
-                  'flex-1 h-0.5 mx-4 transition-colors duration-300',
-                  {
-                    'bg-cap-teal': step.status === 'completed',
-                    'bg-gray-200': step.status === 'current' || step.status === 'upcoming',
-                  }
-                )}
+                className={cn('flex-1 h-0.5 mx-4 transition-colors duration-300', {
+                  'bg-cap-teal': step.status === 'completed',
+                  'bg-gray-200': step.status === 'current' || step.status === 'upcoming',
+                })}
               />
             )}
           </div>
@@ -79,19 +81,34 @@ export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps) 
 };
 
 // Helper function to create steps for the authentication flow
-export const createAuthFlowSteps = (currentStep: 'plan' | 'register' | 'payment') => {
+
+/**
+ * createAuthFlowSteps
+ * @description Function
+ */
+export const createAuthFlowSteps = (currentStep: 'plan' | 'register' | 'payment'): void => {
   const steps: ProgressStep[] = [
     {
       id: 'plan',
       label: 'Plan Selected',
       description: 'Choose your plan',
-      status: currentStep === 'plan' ? 'current' : currentStep === 'register' || currentStep === 'payment' ? 'completed' : 'upcoming',
+      status:
+        currentStep === 'plan'
+          ? 'current'
+          : currentStep === 'register' || currentStep === 'payment'
+            ? 'completed'
+            : 'upcoming',
     },
     {
       id: 'register',
       label: 'Create Account',
       description: 'Register securely',
-      status: currentStep === 'register' ? 'current' : currentStep === 'payment' ? 'completed' : 'upcoming',
+      status:
+        currentStep === 'register'
+          ? 'current'
+          : currentStep === 'payment'
+            ? 'completed'
+            : 'upcoming',
     },
     {
       id: 'payment',
@@ -100,6 +117,6 @@ export const createAuthFlowSteps = (currentStep: 'plan' | 'register' | 'payment'
       status: currentStep === 'payment' ? 'current' : 'upcoming',
     },
   ];
-  
+
   return steps;
-}; 
+};

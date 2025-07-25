@@ -2,7 +2,12 @@ import { Button } from '@/components/ui/button';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { Typography } from '@/components/ui/typography';
 
-export const CommunitySection = () => {
+
+/**
+ * CommunitySection
+ * @description Function
+ */
+export const CommunitySection = (): void => {
   // Reverting to the previously used image, as requested
   const imagePath = '/lovable-uploads/6739c361-94ae-4f3b-ab45-3e22e34af1ff.png';
 

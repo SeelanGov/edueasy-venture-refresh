@@ -7,7 +7,12 @@ interface InstitutionGuardProps {
   children: ReactNode;
 }
 
-export const InstitutionGuard = ({ children }: InstitutionGuardProps) => {
+
+/**
+ * InstitutionGuard
+ * @description Function
+ */
+export const InstitutionGuard = ({ children }: InstitutionGuardProps): void => {
   const { userType, loading } = useAuth();
   const location = useLocation();
 

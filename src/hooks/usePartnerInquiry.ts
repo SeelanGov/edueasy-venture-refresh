@@ -14,7 +14,12 @@ interface PartnerInquiryData {
   message?: string;
 }
 
-export const usePartnerInquiry = () => {
+
+/**
+ * usePartnerInquiry
+ * @description Function
+ */
+export const usePartnerInquiry = (): void => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
