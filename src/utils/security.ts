@@ -1,30 +1,18 @@
-/**
- * Security utilities for data protection, input validation, and privacy compliance
- */
+// Security utilities for authentication, authorization, and data protection
+import { supabase } from '@/integrations/supabase/client';
 
-// Security constants
-
-/**
- * SECURITY_CONFIG
- * @description Function
- */
+// Security configuration constants
 export const SECURITY_CONFIG = {
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 128,
-  SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutes
   MAX_LOGIN_ATTEMPTS: 5,
   LOCKOUT_DURATION: 15 * 60 * 1000, // 15 minutes
+  SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutes
+  PASSWORD_MIN_LENGTH: 8,
   CSRF_TOKEN_LENGTH: 32,
   RATE_LIMIT_WINDOW: 60 * 1000, // 1 minute
   RATE_LIMIT_MAX_REQUESTS: 100,
 } as const;
 
 // Input validation patterns
-
-/**
- * VALIDATION_PATTERNS
- * @description Function
- */
 export const VALIDATION_PATTERNS = {
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   PHONE: /^(\+27|0)[6-8][0-9]{8}$/,
@@ -38,11 +26,6 @@ export const VALIDATION_PATTERNS = {
 } as const;
 
 // Sensitive data patterns for detection
-
-/**
- * SENSITIVE_DATA_PATTERNS
- * @description Function
- */
 export const SENSITIVE_DATA_PATTERNS = {
   ID_NUMBER: /[0-9]{13}/g,
   PHONE_NUMBER: /(\+27|0)[6-8][0-9]{8}/g,
@@ -51,40 +34,68 @@ export const SENSITIVE_DATA_PATTERNS = {
   BANK_ACCOUNT: /\b\d{10,12}\b/g,
 } as const;
 
-/**
- * Input validation utilities
- */
+// Rate limiting store
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
 /**
- * inputValidation
- * @description Function
+ * Security utilities for rate limiting and request validation
  */
 export const inputValidation = {
   /**
-   * Validate email address
+   * Check if a request is within rate limits
    */
-  isValidEmail: (email: string): boolean => {
-    return VALIDATION_PATTERNS.EMAIL.test(email);
+  checkRateLimit: (identifier: string, maxRequests = SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS): boolean => {
+    const now = Date.now();
+    const key = identifier;
+    const window = rateLimitStore.get(key);
+
+    if (!window || now > window.resetTime) {
+      rateLimitStore.set(key, {
+        count: 1,
+        resetTime: now + SECURITY_CONFIG.RATE_LIMIT_WINDOW,
+      });
+      return true;
+    }
+
+    if (window.count >= maxRequests) {
+      return false;
+    }
+
+    window.count++;
+    return true;
   },
 
   /**
-   * Validate phone number (South African format)
+   * Generate CSRF token
    */
-  isValidPhone: (phone: string): boolean => {
-    return VALIDATION_PATTERNS.PHONE.test(phone);
+  generateCSRFToken: (): string => {
+    const array = new Uint8Array(SECURITY_CONFIG.CSRF_TOKEN_LENGTH);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
   },
 
   /**
-   * Validate ID number (South African format)
+   * Validate CSRF token
    */
-  isValidIdNumber: (idNumber: string): boolean => {
-    return VALIDATION_PATTERNS.ID_NUMBER.test(idNumber);
+  validateCSRFToken: (token: string, storedToken: string): boolean => {
+    return token === storedToken && token.length === SECURITY_CONFIG.CSRF_TOKEN_LENGTH * 2;
+  },
+
+  /**
+   * Sanitize user input to prevent XSS
+   */
+  sanitizeInput: (input: string): string => {
+    return input
+      .replace(/[<>]/g, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+=/gi, '')
+      .trim();
   },
 
   /**
    * Validate password strength
    */
-  isValidPassword: (password: string): { valid: boolean; errors: string[] } => {
+  validatePassword: (password: string): { valid: boolean; errors: string[] } => {
     const errors: string[] = [];
 
     if (password.length < SECURITY_CONFIG.PASSWORD_MIN_LENGTH) {
@@ -93,26 +104,20 @@ export const inputValidation = {
       );
     }
 
-    if (password.length > SECURITY_CONFIG.PASSWORD_MAX_LENGTH) {
-      errors.push(
-        `Password must be no more than ${SECURITY_CONFIG.PASSWORD_MAX_LENGTH} characters long`,
-      );
-    }
-
-    if (!/(?=.*[a-z])/.test(password)) {
-      errors.push('Password must contain at least one lowercase letter');
-    }
-
-    if (!/(?=.*[A-Z])/.test(password)) {
+    if (!/[A-Z]/.test(password)) {
       errors.push('Password must contain at least one uppercase letter');
     }
 
-    if (!/(?=.*\d)/.test(password)) {
+    if (!/[a-z]/.test(password)) {
+      errors.push('Password must contain at least one lowercase letter');
+    }
+
+    if (!/\d/.test(password)) {
       errors.push('Password must contain at least one number');
     }
 
-    if (!/(?=.*[@$!%*?&])/.test(password)) {
-      errors.push('Password must contain at least one special character (@$!%*?&)');
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      errors.push('Password must contain at least one special character');
     }
 
     return {
@@ -122,28 +127,52 @@ export const inputValidation = {
   },
 
   /**
-   * Sanitize HTML input
+   * Check for common passwords
    */
-  sanitizeHtml: (input: string): string => {
-    const div = document.createElement('div');
-    div.textContent = input;
-    return div.innerHTML;
+  isCommonPassword: (password: string): boolean => {
+    const commonPasswords = [
+      'password', 'password123', '123456', 'qwerty', 'abc123',
+      'letmein', 'welcome', 'admin', 'user', 'guest',
+    ];
+    return commonPasswords.includes(password.toLowerCase());
   },
 
   /**
-   * Sanitize user input for database storage
+   * Log security events
    */
-  sanitizeInput: (input: string): string => {
-    return input
-      .trim()
-      .replace(/[<>]/g, '') // Remove potential HTML tags
-      .replace(/javascript:/gi, '') // Remove javascript: protocol
-      .replace(/on\w+=/gi, '') // Remove event handlers
-      .substring(0, 1000); // Limit length
+  logSecurityEvent: async (event: {
+    type: 'login_attempt' | 'login_success' | 'login_failure' | 'password_change' | 'account_locked' | 'suspicious_activity';
+    userId?: string;
+    ipAddress?: string;
+    userAgent?: string;
+    details?: Record<string, any>;
+  }) => {
+    try {
+      const { error } = await supabase.from('system_error_logs').insert({
+        message: `Security event: ${event.type}`,
+        category: 'SECURITY',
+        severity: event.type.includes('failure') || event.type.includes('suspicious') ? 'ERROR' : 'INFO',
+        component: 'AUTH',
+        action: event.type.toUpperCase(),
+        user_id: event.userId,
+        details: {
+          ip_address: event.ipAddress,
+          user_agent: event.userAgent,
+          timestamp: new Date().toISOString(),
+          ...event.details,
+        },
+      });
+
+      if (error) {
+        console.error('Failed to log security event:', error);
+      }
+    } catch (error) {
+      console.error('Error logging security event:', error);
+    }
   },
 
   /**
-   * Validate file upload
+   * Validate file uploads for security
    */
   isValidFile: (
     file: File,
@@ -166,15 +195,29 @@ export const inputValidation = {
 
     return { valid: true };
   },
+
+  /**
+   * Mask sensitive data
+   */
+  maskSensitiveData: (data: string, type: string): string => {
+    switch (type) {
+      case 'email':
+        const [username, domain] = data.split('@');
+        return `${username.substring(0, 2)}***@${domain}`;
+      case 'phone':
+        return data.replace(/(\d{3})\d{3}(\d{4})/, '$1***$2');
+      case 'id_number':
+        return data.replace(/(\d{6})\d{6}(\d{1})/, '$1******$2');
+      case 'credit_card':
+        return data.replace(/(\d{4})\d{8}(\d{4})/, '$1********$2');
+      default:
+        return data.replace(/./g, '*');
+    }
+  },
 };
 
 /**
  * Data encryption utilities
- */
-
-/**
- * encryption
- * @description Function
  */
 export const encryption = {
   /**
@@ -198,53 +241,16 @@ export const encryption = {
   },
 
   /**
-   * Encrypt sensitive data (basic implementation)
+   * Compare hashed strings securely
    */
-  encryptData: (data: string, key: string): string => {
-    // This is a basic implementation - in production, use a proper encryption library
-    const encoder = new TextEncoder();
-    const dataBuffer = encoder.encode(data);
-    const keyBuffer = encoder.encode(key);
-
-    // Simple XOR encryption (not secure for production)
-    const encrypted = new Uint8Array(dataBuffer.length);
-    for (let i = 0; i < dataBuffer.length; i++) {
-      encrypted[i] = dataBuffer[i] ^ keyBuffer[i % keyBuffer.length];
-    }
-
-    return btoa(String.fromCharCode(...encrypted));
-  },
-
-  /**
-   * Decrypt sensitive data (basic implementation)
-   */
-  decryptData: (encryptedData: string, key: string): string => {
-    // This is a basic implementation - in production, use a proper encryption library
-    const decoder = new TextDecoder();
-    const encrypted = new Uint8Array(
-      atob(encryptedData)
-        .split('')
-        .map((char) => char.charCodeAt(0)),
-    );
-    const keyBuffer = new TextEncoder().encode(key);
-
-    // Simple XOR decryption (not secure for production)
-    const decrypted = new Uint8Array(encrypted.length);
-    for (let i = 0; i < encrypted.length; i++) {
-      decrypted[i] = encrypted[i] ^ keyBuffer[i % keyBuffer.length];
-    }
-
-    return decoder.decode(decrypted);
+  async compareHash(input: string, hash: string): Promise<boolean> {
+    const inputHash = await this.hashString(input);
+    return inputHash === hash;
   },
 };
 
 /**
  * Session management utilities
- */
-
-/**
- * sessionManagement
- * @description Function
  */
 export const sessionManagement = {
   /**
@@ -319,59 +325,7 @@ export const sessionManagement = {
 };
 
 /**
- * Rate limiting utilities
- */
-
-/**
- * rateLimiting
- * @description Function
- */
-export const rateLimiting = {
-  requests: new Map<string, { count: number; resetTime: number }>(),
-
-  /**
-   * Check if request is allowed
-   */
-  isAllowed: (identifier: string): boolean => {
-    const now = Date.now();
-    const requestData = rateLimiting.requests.get(identifier);
-
-    if (!requestData || now > requestData.resetTime) {
-      // Reset or create new rate limit data
-      rateLimiting.requests.set(identifier, {
-        count: 1,
-        resetTime: now + SECURITY_CONFIG.RATE_LIMIT_WINDOW,
-      });
-      return true;
-    }
-
-    if (requestData.count >= SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS) {
-      return false;
-    }
-
-    requestData.count++;
-    return true;
-  },
-
-  /**
-   * Get remaining requests for identifier
-   */
-  getRemainingRequests: (identifier: string): number => {
-    const requestData = rateLimiting.requests.get(identifier);
-    if (!requestData || Date.now() > requestData.resetTime) {
-      return SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS;
-    }
-    return Math.max(0, SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS - requestData.count);
-  },
-};
-
-/**
  * Privacy utilities
- */
-
-/**
- * privacy
- * @description Function
  */
 export const privacy = {
   /**
@@ -391,27 +345,6 @@ export const privacy = {
     });
 
     return results;
-  },
-
-  /**
-   * Mask sensitive data
-   */
-  maskSensitiveData: (data: string, type: string): string => {
-    switch (type) {
-      case 'ID_NUMBER':
-        return data.replace(/(\d{6})(\d{7})/, '$1*******');
-      case 'PHONE_NUMBER':
-        return data.replace(/(\d{3})(\d{3})(\d{4})/, '$1***$3');
-      case 'EMAIL':
-        const [local, domain] = data.split('@');
-        return `${local.charAt(0)}***@${domain}`;
-      case 'CREDIT_CARD':
-        return data.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '**** **** **** $4');
-      case 'BANK_ACCOUNT':
-        return data.replace(/(\d{4})(\d{6})/, '$1******');
-      default:
-        return data.replace(/(.{3})(.*)/, '$1***');
-    }
   },
 
   /**
@@ -436,51 +369,11 @@ export const privacy = {
 };
 
 /**
- * CSRF protection utilities
- */
-
-/**
- * csrfProtection
- * @description Function
- */
-export const csrfProtection = {
-  /**
-   * Generate CSRF token
-   */
-  generateToken: (): string => {
-    return encryption.generateSecureToken(SECURITY_CONFIG.CSRF_TOKEN_LENGTH);
-  },
-
-  /**
-   * Validate CSRF token
-   */
-  validateToken: (token: string, storedToken: string): boolean => {
-    return token === storedToken && token.length === SECURITY_CONFIG.CSRF_TOKEN_LENGTH;
-  },
-
-  /**
-   * Add CSRF token to request headers
-   */
-  addTokenToHeaders: (headers: Record<string, string>): Record<string, string> => {
-    const token = csrfProtection.generateToken();
-    return {
-      ...headers,
-      'X-CSRF-Token': token,
-    };
-  },
-};
-
-/**
  * Security monitoring utilities
- */
-
-/**
- * securityMonitoring
- * @description Function
  */
 export const securityMonitoring = {
   /**
-   * Log security event
+   * Log security events
    */
   logSecurityEvent: (event: {
     type: string;
@@ -505,86 +398,79 @@ export const securityMonitoring = {
     // In production, send to security monitoring service
     // TODO: Implement security event logging service
   },
-
-  /**
-   * Detect suspicious activity
-   */
-  detectSuspiciousActivity: (activity: {
-    type: string;
-    userId?: string;
-    ipAddress?: string;
-    userAgent?: string;
-    frequency: number;
-  }): boolean => {
-    // Simple suspicious activity detection
-    const suspiciousPatterns = [
-      activity.frequency > 10, // Too many requests
-      activity.type === 'login_failed' && activity.frequency > 3, // Multiple failed logins
-      activity.type === 'file_upload' && activity.frequency > 5, // Multiple file uploads
-    ];
-
-    return suspiciousPatterns.some((pattern) => pattern);
-  },
 };
 
 /**
  * GDPR compliance utilities
  */
-
-/**
- * gdpr
- * @description Function
- */
 export const gdpr = {
   /**
-   * Check if user has given consent
+   * Handle data subject access request
    */
-  hasConsent: (consentType: string): boolean => {
-    const consents = JSON.parse(localStorage.getItem('gdpr-consents') || '{}');
-    return consents[consentType] === true;
-  },
-
-  /**
-   * Set user consent
-   */
-  setConsent: (consentType: string, granted: boolean): void => {
-    const consents = JSON.parse(localStorage.getItem('gdpr-consents') || '{}');
-    consents[consentType] = granted;
-    consents[`${consentType}_timestamp`] = new Date().toISOString();
-    localStorage.setItem('gdpr-consents', JSON.stringify(consents));
-  },
-
-  /**
-   * Request data deletion
-   */
-  requestDataDeletion: async (userId: string): Promise<boolean> => {
+  handleDataAccessRequest: async (userId: string): Promise<{ success: boolean; data?: any; error?: string }> => {
     try {
-      // TODO: Implement data deletion API call
-      securityMonitoring.logSecurityEvent({
-        type: 'data_deletion_requested',
-        severity: 'medium',
-        description: `Data deletion requested for user ${userId}`,
+      // Fetch all user data from various tables
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) throw error;
+
+      // Log the data access request
+      await inputValidation.logSecurityEvent({
+        type: 'suspicious_activity',
         userId,
+        details: {
+          action: 'data_access_request',
+          timestamp: new Date().toISOString(),
+        },
       });
 
-      return true;
+      return { success: true, data: userData };
     } catch (error) {
-      console.error('Error requesting data deletion:', error);
-      return false;
+      console.error('Error handling data access request:', error);
+      return { success: false, error: (error as Error).message };
     }
   },
 
   /**
-   * Export user data
+   * Handle right to be forgotten request
    */
-  exportUserData: async (userId: string): Promise<unknown> => {
+  handleDataDeletionRequest: async (userId: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      // TODO: Implement data export API call
-      securityMonitoring.logSecurityEvent({
-        type: 'data_export_requested',
-        severity: 'low',
-        description: `Data export requested for user ${userId}`,
+      // This would anonymize or delete user data across all tables
+      // For now, just log the request
+      await inputValidation.logSecurityEvent({
+        type: 'suspicious_activity',
         userId,
+        details: {
+          action: 'data_deletion_request',
+          timestamp: new Date().toISOString(),
+        },
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error('Error handling data deletion request:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  },
+
+  /**
+   * Export user data for portability
+   */
+  exportUserData: async (userId: string): Promise<{ success: boolean; data?: any; error?: string }> => {
+    try {
+      // Log the data export request
+      await inputValidation.logSecurityEvent({
+        type: 'suspicious_activity',
+        userId,
+        details: {
+          action: 'data_export_request',
+          timestamp: new Date().toISOString(),
+        },
       });
 
       return { success: true, data: null };
@@ -594,4 +480,27 @@ export const gdpr = {
       return { success: false, error: errorMessage };
     }
   },
+
+  /**
+   * Handle consent management
+   */
+  hasConsent: (type: string): boolean => {
+    // Implementation would check user consent records
+    return true;
+  },
+
+  setConsent: (type: string, consent: boolean): void => {
+    // Implementation would update user consent records
+    console.log(`Setting consent: ${type} = ${consent}`);
+  },
+
+  /**
+   * Request data deletion 
+   */
+  requestDataDeletion: async (userId: string): Promise<{ success: boolean; error?: string }> => {
+    return gdpr.handleDataDeletionRequest(userId);
+  },
 };
+
+// Export aliases for compatibility
+export const securityUtils = inputValidation;
