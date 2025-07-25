@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 import { useAuth } from '@/hooks/useAuth';
+import { recordUserConsents } from '@/utils/consent-recording';
 import { secureStorage } from '@/utils/secureStorage';
 
 // Refactored atomic fields
@@ -42,7 +43,6 @@ const registerFormSchema = z
   });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
-export type { RegisterFormValues };
 
 interface RegisterFormProps {
   hasPendingPlan?: boolean;
@@ -55,6 +55,7 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const [consentPrivacy, setConsentPrivacy] = useState(false);
   const [consentTerms, setConsentTerms] = useState(false);
+  const [consentIdVerification, setConsentIdVerification] = useState(false);
   const location = useLocation();
   const from = location.state?.from || '/profile-completion';
 
@@ -95,13 +96,14 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
     }
   };
 
-  // NEW: call /verify-id before sign-up
+  // NEW: Enhanced registration with consent-first approach
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setRegistrationError(null);
 
-    if (!consentPrivacy || !consentTerms) {
-      setRegistrationError('You must agree to the Privacy Policy and Terms of Service.');
+    // Step 1: Validate all consents
+    if (!consentPrivacy || !consentTerms || !consentIdVerification) {
+      setRegistrationError('You must agree to all required terms and consent to ID verification.');
       return;
     }
 
@@ -109,70 +111,107 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
 
     try {
       const data = form.getValues();
-      // Call verify-id function with plain national_id (ID Number) and TEMP user_id (random for now)
-      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'pensvamtfjtpsaoeflbx'}.functions.supabase.co/verify-id`;
-
-      const tmp_user_id = crypto.randomUUID();
-      const res = await fetch(edgeUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: tmp_user_id, // We do not yet have a user, but pass a temp and update after account creation
-          national_id: data.idNumber,
-        }),
-      });
-
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(
-          result.error || 'ID Verification failed. Please check your ID number and try again.',
-        );
-      }
-
-      // ID Verified! Now proceed to sign up
-      const response = await signUp(data.email, data.password, data.fullName, data.idNumber);
-
+      
+      // Step 2: Create user account first (without ID verification)
+      const response = await signUp(data.email, data.password, data.fullName);
+      
       if (response?.error) {
         setRegistrationError(response.error);
         return;
       }
 
-      // Success - handle post-registration redirect
+      if (!response?.user?.id) {
+        throw new Error('Failed to create user account');
+      }
+
+      // Step 3: Record consents in database
+      await recordUserConsents(response.user.id, {
+        privacy: consentPrivacy,
+        terms: consentTerms,
+        idVerification: consentIdVerification
+      });
+
+      // Step 4: Now perform ID verification with VerifyID
+      const verificationResult = await verifyIdWithVerifyID(response.user.id, data.idNumber);
+      
+      if (!verificationResult.success) {
+        setRegistrationError(verificationResult.error || 'ID verification failed. Please try again.');
+        return;
+      }
+
+      // Step 5: Success - handle post-registration redirect
       await handleRegistrationSuccess();
+      
     } catch (error: unknown) {
-      // Edge function or network failure
       setRegistrationError(
-        error instanceof Error ? error.message : 'Failed to verify ID. Please try again later.',
+        error instanceof Error ? error.message : 'Registration failed. Please try again later.'
       );
-      return;
     } finally {
       setIsLoading(false);
     }
   };
 
+  // NEW: VerifyID integration function
+  const verifyIdWithVerifyID = async (userId: string, idNumber: string) => {
+    try {
+      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'pensvamtfjtpsaoeflbx'}.functions.supabase.co/verifyid-integration`;
+
+      const res = await fetch(edgeUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          national_id: idNumber,
+          api_key: import.meta.env.VITE_VERIFYID_API_KEY || 'your_verifyid_api_key_here'
+        }),
+      });
+
+      const result = await res.json();
+      
+      if (!res.ok) {
+        return {
+          success: false,
+          error: result.error || 'ID Verification failed. Please check your ID number and try again.'
+        };
+      }
+
+      return {
+        success: true,
+        data: result
+      };
+    } catch (error) {
+      console.error('VerifyID integration error:', error);
+      return {
+        success: false,
+        error: 'Failed to verify ID. Please try again later.'
+      };
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      <div className="bg-cap-teal p-6 text-white text-center">
-        <h2 className="text-2xl font-bold">
-          {hasPendingPlan ? 'Create Your Account' : 'Create Your Account'}
-        </h2>
-        <p className="mt-2 text-sm opacity-90">
-          {hasPendingPlan 
-            ? 'Complete your purchase and get immediate access'
-            : 'Get started with EduEasy today'
-          }
-        </p>
-      </div>
-      <div className="p-6">
-        <SecurityInfoPanel badgeType="privacy" />
+    <div className="w-full max-w-md mx-auto">
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {hasPendingPlan ? 'Create Your Account' : 'Sign Up'}
+          </h1>
+          <p className="text-gray-600">
+            {hasPendingPlan 
+              ? 'Complete your account to continue with your purchase'
+              : 'Join EduEasy to access educational opportunities'
+            }
+          </p>
+        </div>
+
         {registrationError && (
-          <Alert variant="destructive" className="mb-4">
+          <Alert className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{registrationError}</AlertDescription>
           </Alert>
         )}
 
-        {/* Wrap the form fields in the Form provider */}
+        <SecurityInfoPanel />
+
         <Form {...form}>
           <form onSubmit={handleRegister} className="space-y-4">
             <FullNameField control={form.control} isLoading={isLoading} />
@@ -184,8 +223,10 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps) => {
             <ConsentCheckboxes
               consentPrivacy={consentPrivacy}
               consentTerms={consentTerms}
+              consentIdVerification={consentIdVerification}
               setConsentPrivacy={setConsentPrivacy}
               setConsentTerms={setConsentTerms}
+              setConsentIdVerification={setConsentIdVerification}
             />
             <Button
               type="submit"
