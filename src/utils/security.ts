@@ -398,12 +398,10 @@ export const authUtils = {
 /**
  * GDPR compliance utilities
  */
-// Export aliases for compatibility
-export const gdpr = gdprUtils;
-export const inputValidation = securityUtils;
-export const securityMonitoring = securityUtils;
-
-export const gdprUtils = {
+/**
+ * GDPR compliance utilities
+ */
+const gdprUtilsImpl = {
   /**
    * Handle data subject access request
    */
@@ -479,6 +477,26 @@ export const gdprUtils = {
       return { success: false, error: (error as Error).message };
     }
   },
+
+  /**
+   * Handle consent management
+   */
+  hasConsent: (userId: string, type: string): boolean => {
+    // Implementation would check user consent records
+    return true;
+  },
+
+  setConsent: (userId: string, type: string, consent: boolean): void => {
+    // Implementation would update user consent records
+    console.log(`Setting consent for ${userId}: ${type} = ${consent}`);
+  },
+
+  /**
+   * Request data deletion 
+   */
+  requestDataDeletion: async (userId: string): Promise<{ success: boolean; error?: string }> => {
+    return gdprUtilsImpl.handleDataDeletionRequest(userId);
+  },
 };
 
 // RLS Policy Testing Functions
@@ -521,6 +539,14 @@ export const getRegisteredPolicies = async (): Promise<any[]> => {
     return [];
   }
 };
+
+// Export the GDPR utilities
+export const gdprUtils = gdprUtilsImpl;
+
+// Export aliases for compatibility
+export const gdpr = gdprUtils;
+export const inputValidation = securityUtils;
+export const securityMonitoring = securityUtils;
 
 export const authenticateUser = async (credentials: any): Promise<boolean> => {
   try {
