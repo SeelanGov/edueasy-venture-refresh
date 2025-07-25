@@ -15,7 +15,7 @@ export { LogOut, User, UserCheck, UserPlus } from 'lucide-react';
 // Document & File Icons
 export {
     Download,
-    Eye, FileCheck2, FileIcon, FileText,
+    Eye, EyeOff, FileCheck2, FileIcon, FileText,
     Upload
 } from 'lucide-react';
 
@@ -28,13 +28,13 @@ export {
 // Payment & Financial Icons
 export {
     CreditCard,
-    DollarSign, KeyRound, Lock, Shield,
-    ShieldCheck
+    DollarSign, Key, KeyRound, Lock, Shield,
+    ShieldCheck, Smartphone, Trash2
 } from 'lucide-react';
 
 // Communication Icons
 export {
-    Bell, Bot, Crown, Mail, MessageSquare, Phone, Send, Sparkles,
+    Bell, Bot, Calendar, Crown, Mail, MessageSquare, Phone, Send, Sparkles,
     Zap
 } from 'lucide-react';
 
