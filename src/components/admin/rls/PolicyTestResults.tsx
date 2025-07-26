@@ -7,7 +7,6 @@ interface PolicyTestResultsProps {
   results: RLSTestResult[];
 }
 
-
 /**
  * PolicyTestResults
  * @description Function

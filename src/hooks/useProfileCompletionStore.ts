@@ -99,7 +99,6 @@ const initialState = {
   documents: {},
 };
 
-
 /**
  * useProfileCompletionStore
  * @description Function

@@ -5,7 +5,6 @@ interface RejectionReasonsChartProps {
   data: RejectionReason[];
 }
 
-
 /**
  * RejectionReasonsChart
  * @description Function

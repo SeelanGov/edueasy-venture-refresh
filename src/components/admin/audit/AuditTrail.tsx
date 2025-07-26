@@ -12,7 +12,6 @@ interface AuditTrailProps {
   limit?: number;
 }
 
-
 /**
  * AuditTrail
  * @description Function

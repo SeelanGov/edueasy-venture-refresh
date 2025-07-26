@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import type { DocumentAnalytics } from './types';
 
-
 /**
  * useStatusDistributionData
  * @description Function
@@ -35,7 +34,6 @@ export const useStatusDistributionData = (analytics: DocumentAnalytics | null): 
     ];
   }, [analytics]);
 };
-
 
 /**
  * useDocumentTypeTableData

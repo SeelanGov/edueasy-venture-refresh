@@ -7,7 +7,6 @@ interface SponsorGuardProps {
   children: ReactNode;
 }
 
-
 /**
  * SponsorGuard
  * @description Function

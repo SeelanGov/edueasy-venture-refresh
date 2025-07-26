@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth';
 import type { Sponsorship } from '@/types/RevenueTypes';
 import { SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
 
-
 /**
  * useSponsorships
  * @description Function

@@ -30,7 +30,6 @@ interface ApplicationTableProps {
   loading: boolean;
 }
 
-
 /**
  * ApplicationTable
  * @description Function

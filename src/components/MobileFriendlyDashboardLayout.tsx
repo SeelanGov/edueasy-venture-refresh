@@ -27,12 +27,13 @@ interface MobileFriendlyDashboardLayoutProps {
   children: ReactNode;
 }
 
-
 /**
  * MobileFriendlyDashboardLayout
  * @description Function
  */
-export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashboardLayoutProps): void => {
+export const MobileFriendlyDashboardLayout = ({
+  children,
+}: MobileFriendlyDashboardLayoutProps): void => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,6 +1,5 @@
 import type { DocumentFileValidation } from './types';
 
-
 /**
  * validateFile
  * @description Function

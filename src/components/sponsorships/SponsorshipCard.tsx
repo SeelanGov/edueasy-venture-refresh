@@ -20,7 +20,6 @@ interface SponsorshipCardProps {
   onDeactivate?: (sponsorshipId: string) => void;
 }
 
-
 /**
  * SponsorshipCard
  * @description Function

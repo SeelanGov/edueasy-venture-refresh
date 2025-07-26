@@ -12,7 +12,6 @@ interface PersonalInfoStepProps {
   onComplete: () => void;
 }
 
-
 /**
  * PersonalInfoStep
  * @description Function

@@ -8,7 +8,6 @@ interface PolicyAnalysisProps {
   analysis: RLSPolicyAnalysis[];
 }
 
-
 /**
  * PolicyAnalysis
  * @description Function

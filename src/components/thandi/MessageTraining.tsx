@@ -20,7 +20,6 @@ interface MessageTrainingProps {
   onDeleteTraining: (id: string) => void;
 }
 
-
 /**
  * MessageTraining
  * @description Function

@@ -4,7 +4,6 @@ type LogoProps = {
   className?: string;
 };
 
-
 /**
  * Logo
  * @description Function

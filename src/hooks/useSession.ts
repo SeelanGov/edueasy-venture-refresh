@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import logger from '@/utils/logger';
 
-
 /**
  * useSession
  * @description Function

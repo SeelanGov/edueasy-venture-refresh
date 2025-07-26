@@ -201,7 +201,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     setLoading(true);
     try {
       const result = await gdpr.requestDataDeletion(user?.id || '');
-      
+
       if (result.success) {
         toast({
           title: 'Deletion Request Submitted',

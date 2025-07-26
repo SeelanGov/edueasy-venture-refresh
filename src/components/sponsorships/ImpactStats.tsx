@@ -1,6 +1,5 @@
 import { StatisticsGrid } from '@/components/home/StatisticsGrid';
 
-
 /**
  * ImpactStats
  * @description Function

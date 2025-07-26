@@ -37,7 +37,6 @@ interface ApplicationFormFieldsProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-
 /**
  * ApplicationFormFields
  * @description Function

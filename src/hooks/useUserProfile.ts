@@ -5,7 +5,6 @@ import { toast } from '@/components/ui/use-toast';
 import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
 import type { UserProfile } from '@/types/UserProfile';
 
-
 /**
  * useUserProfile
  * @description Function

@@ -15,7 +15,6 @@ interface TestimonialCardProps {
   testimonial: Testimonial;
 }
 
-
 /**
  * TestimonialCard
  * @description Function

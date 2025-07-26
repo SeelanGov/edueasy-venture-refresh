@@ -15,7 +15,6 @@ export interface DocumentWithUserInfo {
   user_email: string;
 }
 
-
 /**
  * useDocumentsManagement
  * @description Function

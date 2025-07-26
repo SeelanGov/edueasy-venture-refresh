@@ -8,7 +8,6 @@ export interface UserSummary {
   id_verified?: boolean | null;
 }
 
-
 /**
  * makeUserMap
  * @description Function

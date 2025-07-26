@@ -48,7 +48,6 @@ interface RegisterFormProps {
   hasPendingPlan?: boolean;
 }
 
-
 /**
  * RegisterForm
  * @description Function

@@ -2,7 +2,6 @@ import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
-
 /**
  * RoleBasedRedirect
  * @description Function

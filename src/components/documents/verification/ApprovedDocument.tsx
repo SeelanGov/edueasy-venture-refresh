@@ -8,7 +8,6 @@ interface ApprovedDocumentProps {
   documentType: string;
 }
 
-
 /**
  * ApprovedDocument
  * @description Function

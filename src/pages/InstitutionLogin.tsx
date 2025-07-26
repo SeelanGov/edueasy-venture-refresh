@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const InstitutionLogin: React.FC = () => {
@@ -48,8 +49,9 @@ const InstitutionLogin: React.FC = () => {
       toast.success('Successfully logged in!');
       navigate('/institutions/dashboard');
     } catch (err: unknown) {
-      setError(err.message || 'Login error');
-      toast.error(err.message || 'Login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Login error';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -110,7 +112,7 @@ const InstitutionLogin: React.FC = () => {
             Register
           </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

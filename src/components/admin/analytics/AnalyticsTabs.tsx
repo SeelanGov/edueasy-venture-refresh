@@ -19,7 +19,6 @@ interface AnalyticsTabsProps {
   analytics: DocumentAnalytics;
 }
 
-
 /**
  * AnalyticsTabs
  * @description Function

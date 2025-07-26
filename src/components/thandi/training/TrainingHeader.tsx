@@ -13,7 +13,6 @@ interface TrainingHeaderProps {
   onRetrain: () => Promise<void>;
 }
 
-
 /**
  * TrainingHeader
  * @description Function

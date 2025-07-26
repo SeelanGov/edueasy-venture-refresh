@@ -14,7 +14,6 @@ interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];
 }
 
-
 /**
  * DocumentTypePerformanceChart
  * @description Function

@@ -19,7 +19,6 @@ const applicationFormSchema = z.object({
   documentFile: z.any().optional(),
 });
 
-
 /**
  * useApplicationFormManager
  * @description Function

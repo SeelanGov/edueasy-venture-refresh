@@ -1,7 +1,6 @@
 import { Logo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
 
-
 /**
  * RegisterHeader
  * @description Function

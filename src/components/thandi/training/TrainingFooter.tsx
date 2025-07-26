@@ -12,7 +12,6 @@ interface TrainingFooterProps {
   hasMore: boolean;
 }
 
-
 /**
  * TrainingFooter
  * @description Function

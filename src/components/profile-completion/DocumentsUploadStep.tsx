@@ -17,7 +17,6 @@ interface DocumentsUploadStepProps {
   onBack: () => void;
 }
 
-
 /**
  * DocumentsUploadStep
  * @description Function

@@ -23,7 +23,6 @@ export const DESIGN_SYSTEM_VIOLATIONS = {
   HARDCODED_SPACING: [/p-\d+/g, /m-\d+/g, /gap-\d+/g],
 };
 
-
 /**
  * validateDesignSystemUsage
  * @description Function

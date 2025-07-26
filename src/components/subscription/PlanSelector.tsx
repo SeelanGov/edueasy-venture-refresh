@@ -12,7 +12,6 @@ interface PlanSelectorProps {
   currentPlan?: string;
 }
 
-
 /**
  * PlanSelector
  * @description Function

@@ -24,7 +24,6 @@ export const ROLLBACK_CONFIG = {
   criticalPages: ['/login', '/register', '/dashboard', '/application-form', '/admin'],
 };
 
-
 /**
  * initiateEmergencyRollback
  * @description Function
@@ -43,7 +42,6 @@ export const initiateEmergencyRollback = (): void => {
   window.location.reload();
 };
 
-
 /**
  * isEmergencyRollbackActive
  * @description Function
@@ -51,7 +49,6 @@ export const initiateEmergencyRollback = (): void => {
 export const isEmergencyRollbackActive = (): boolean => {
   return localStorage.getItem('EMERGENCY_ROLLBACK') === 'true';
 };
-
 
 /**
  * clearEmergencyRollback

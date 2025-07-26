@@ -11,7 +11,6 @@ interface RejectionReasonsChartProps {
 
 const COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
 
-
 /**
  * RejectionReasonsChart
  * @description Function

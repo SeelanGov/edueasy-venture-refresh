@@ -14,7 +14,6 @@ const tierColor: Record<string, string> = {
   basic: 'bg-slate-100 text-slate-600',
 };
 
-
 /**
  * SponsorCard
  * @description Function

@@ -218,7 +218,7 @@ const PartnerRegister: React.FC = () => {
             Log in
           </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

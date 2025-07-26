@@ -17,7 +17,6 @@ export type SponsorPayment = {
   reference_number?: string | null;
 };
 
-
 /**
  * useSponsorPayments
  * @description Function

@@ -6,7 +6,6 @@ interface FocusTrapProps {
   className?: string;
 }
 
-
 /**
  * FocusTrap
  * @description Function

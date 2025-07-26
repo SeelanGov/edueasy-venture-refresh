@@ -21,7 +21,6 @@ interface Partner {
   created_at: string;
 }
 
-
 /**
  * PartnerList
  * @description Function

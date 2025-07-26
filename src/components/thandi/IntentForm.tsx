@@ -17,7 +17,6 @@ interface IntentFormProps {
   onCancel: () => void;
 }
 
-
 /**
  * IntentForm
  * @description Function

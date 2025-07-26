@@ -29,7 +29,6 @@ function getStatusBadge(status: string | null) {
   }
 }
 
-
 /**
  * ApplicationListPanel
  * @description Function

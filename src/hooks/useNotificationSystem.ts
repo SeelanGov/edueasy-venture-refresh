@@ -6,7 +6,6 @@ import { toast } from '@/components/ui/use-toast';
 
 export type { Notification } from '@/types/Notification';
 
-
 /**
  * useNotificationSystem
  * @description Function

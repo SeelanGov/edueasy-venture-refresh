@@ -14,7 +14,6 @@ interface GenderSelectorProps {
   control: Control<PersonalInfoFormValues>;
 }
 
-
 /**
  * GenderSelector
  * @description Function

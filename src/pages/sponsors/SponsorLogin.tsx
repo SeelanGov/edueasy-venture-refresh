@@ -61,7 +61,7 @@ const SponsorLogin = (): void => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button 
+        <Button
           type="submit"
           className="w-full bg-cap-teal text-white py-2 rounded"
           disabled={loading}

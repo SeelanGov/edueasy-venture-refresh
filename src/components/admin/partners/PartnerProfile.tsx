@@ -38,7 +38,6 @@ interface Payment {
   tier?: string | null;
 }
 
-
 /**
  * PartnerProfile
  * @description Function

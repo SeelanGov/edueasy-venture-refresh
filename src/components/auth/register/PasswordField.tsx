@@ -11,7 +11,6 @@ interface PasswordFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * PasswordField
  * @description Function
@@ -40,7 +39,7 @@ export const PasswordField = ({ control, isLoading }: PasswordFieldProps): void 
                 maxLength={32}
                 aria-describedby="password-helper"
               />
-              <Button 
+              <Button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"

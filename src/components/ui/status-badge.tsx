@@ -57,7 +57,6 @@ const statusIcons: Record<ExtendedStatusType, LucideIcon> = {
   'resubmission-required': RefreshCw,
 };
 
-
 /**
  * StatusBadge
  * @description Function

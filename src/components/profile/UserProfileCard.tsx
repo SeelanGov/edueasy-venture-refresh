@@ -28,7 +28,6 @@ interface UserProfile {
   verified?: boolean; // Add verified property
 }
 
-
 /**
  * UserProfileCard
  * @description Function

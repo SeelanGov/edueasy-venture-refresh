@@ -13,7 +13,6 @@ interface PolicyRegistryProps {
   policies: PolicyRecord[];
 }
 
-
 /**
  * PolicyRegistry
  * @description Function

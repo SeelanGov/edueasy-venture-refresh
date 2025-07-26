@@ -7,7 +7,6 @@ interface ChartsTabProps {
   analytics: DocumentAnalytics;
 }
 
-
 /**
  * ChartsTab
  * @description Function

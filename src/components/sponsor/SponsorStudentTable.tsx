@@ -8,7 +8,6 @@ interface SponsorStudentTableProps {
   onDelete?: (id: string) => void;
 }
 
-
 /**
  * SponsorStudentTable
  * @description Function

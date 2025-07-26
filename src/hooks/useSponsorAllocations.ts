@@ -12,7 +12,6 @@ export interface SponsorAllocationsOptions {
   pageSize?: number;
 }
 
-
 /**
  * useSponsorAllocations
  * @description Function

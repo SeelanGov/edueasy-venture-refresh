@@ -9,7 +9,6 @@ export interface JourneyMapProps {
   className?: string;
 }
 
-
 /**
  * JourneyMap
  * @description Function

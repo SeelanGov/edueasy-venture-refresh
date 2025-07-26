@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { CheckCircle, AlertTriangle, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-
 /**
  * DocumentVerificationNotice
  * @description Function

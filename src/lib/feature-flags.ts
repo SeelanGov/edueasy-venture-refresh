@@ -19,7 +19,6 @@ export const FEATURE_FLAGS = {
 
 export type FeatureFlag = keyof typeof FEATURE_FLAGS;
 
-
 /**
  * isFeatureEnabled
  * @description Function
@@ -27,7 +26,6 @@ export type FeatureFlag = keyof typeof FEATURE_FLAGS;
 export const isFeatureEnabled = (flag: FeatureFlag): boolean => {
   return FEATURE_FLAGS[flag];
 };
-
 
 /**
  * withFeatureFlag

@@ -11,7 +11,6 @@ interface DashboardHeaderProps {
   onOpenMobileMenu: () => void;
 }
 
-
 /**
  * DashboardHeader
  * @description Function

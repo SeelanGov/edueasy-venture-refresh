@@ -47,7 +47,6 @@ const categories = [
   'Privacy',
 ];
 
-
 /**
  * FAQPage
  * @description Function

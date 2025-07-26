@@ -21,7 +21,6 @@ interface JourneyMilestoneProps {
   onClick?: () => void;
 }
 
-
 /**
  * JourneyMilestone
  * @description Function

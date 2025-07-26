@@ -18,7 +18,6 @@ interface TierConfig {
   active: boolean | null;
 }
 
-
 /**
  * TiersManager
  * @description Function

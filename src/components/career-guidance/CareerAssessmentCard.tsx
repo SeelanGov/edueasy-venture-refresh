@@ -18,7 +18,6 @@ interface CareerAssessmentCardProps {
   onView: (assessmentId: string) => void;
 }
 
-
 /**
  * CareerAssessmentCard
  * @description Function

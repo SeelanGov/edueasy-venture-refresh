@@ -19,7 +19,6 @@ interface AnalyticsProviderProps {
   initialFilters?: Partial<AnalyticsFilters>;
 }
 
-
 /**
  * AnalyticsProvider
  * @description Function
@@ -29,7 +28,6 @@ export const AnalyticsProvider = ({ children, initialFilters }: AnalyticsProvide
 
   return <AnalyticsContext.Provider value={analyticsData}>{children}</AnalyticsContext.Provider>;
 };
-
 
 /**
  * useAnalyticsContext

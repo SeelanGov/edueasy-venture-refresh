@@ -13,7 +13,6 @@ interface AdminNavSectionProps {
   isActive: (path: string) => boolean;
 }
 
-
 /**
  * AdminNavSection
  * @description Function

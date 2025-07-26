@@ -41,7 +41,6 @@ interface ErrorLogEntry {
   resolution_notes?: string | null;
 }
 
-
 /**
  * AdminDashboard
  * @description Function

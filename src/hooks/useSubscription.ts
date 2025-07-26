@@ -5,7 +5,6 @@ import type { SubscriptionTier, Transaction, UserSubscription } from '@/types/Su
 import { secureStorage } from '@/utils/secureStorage';
 import { useEffect, useState } from 'react';
 
-
 /**
  * useSubscription
  * @description Function

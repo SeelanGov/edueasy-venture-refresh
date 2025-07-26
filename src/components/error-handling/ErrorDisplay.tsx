@@ -25,7 +25,6 @@ interface ErrorDisplayProps {
   className?: string;
 }
 
-
 /**
  * ErrorDisplay
  * @description Function

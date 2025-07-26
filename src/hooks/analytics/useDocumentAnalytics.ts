@@ -10,7 +10,6 @@ import {
   calculateAnalytics,
 } from './analyticUtils';
 
-
 /**
  * useDocumentAnalytics
  * @description Function

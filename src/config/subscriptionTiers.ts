@@ -1,4 +1,3 @@
-
 /**
  * TIER_LEVELS
  * @description Function
@@ -28,7 +27,6 @@ export interface SubscriptionTier {
   features: SubscriptionFeature[];
   color: string; // For UI styling
 }
-
 
 /**
  * subscriptionTiers
@@ -268,7 +266,6 @@ export const subscriptionTiers: SubscriptionTier[] = [
   },
 ];
 
-
 /**
  * findTierById
  * @description Function
@@ -276,7 +273,6 @@ export const subscriptionTiers: SubscriptionTier[] = [
 export const findTierById = (tierId: TierLevel): SubscriptionTier | undefined => {
   return subscriptionTiers.find((tier) => tier.id === tierId);
 };
-
 
 /**
  * getApplicationLimit

@@ -22,7 +22,6 @@ export interface AdminAction {
   reason?: string;
 }
 
-
 /**
  * useAuditLogging
  * @description Function

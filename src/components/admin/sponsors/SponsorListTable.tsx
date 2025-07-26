@@ -7,7 +7,6 @@ interface SponsorListTableProps {
   onView: (id: string) => void;
 }
 
-
 /**
  * SponsorListTable
  * @description Function

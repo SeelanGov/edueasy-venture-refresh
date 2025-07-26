@@ -14,7 +14,6 @@ interface GenderFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * GenderField
  * @description Function

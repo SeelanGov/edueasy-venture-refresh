@@ -12,7 +12,6 @@ const universities = [
   'Rhodes University',
 ];
 
-
 /**
  * PartnersSection
  * @description Function

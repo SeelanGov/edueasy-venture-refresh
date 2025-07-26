@@ -6,7 +6,6 @@ interface FeatureCardProps {
   description: string;
 }
 
-
 /**
  * FeatureCard
  * @description Function

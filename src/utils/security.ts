@@ -44,7 +44,10 @@ export const inputValidation = {
   /**
    * Check if a request is within rate limits
    */
-  checkRateLimit: (identifier: string, maxRequests = SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS): boolean => {
+  checkRateLimit: (
+    identifier: string,
+    maxRequests = SECURITY_CONFIG.RATE_LIMIT_MAX_REQUESTS,
+  ): boolean => {
     const now = Date.now();
     const key = identifier;
     const window = rateLimitStore.get(key);
@@ -71,7 +74,7 @@ export const inputValidation = {
   generateCSRFToken: (): string => {
     const array = new Uint8Array(SECURITY_CONFIG.CSRF_TOKEN_LENGTH);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
   },
 
   /**
@@ -131,8 +134,16 @@ export const inputValidation = {
    */
   isCommonPassword: (password: string): boolean => {
     const commonPasswords = [
-      'password', 'password123', '123456', 'qwerty', 'abc123',
-      'letmein', 'welcome', 'admin', 'user', 'guest',
+      'password',
+      'password123',
+      '123456',
+      'qwerty',
+      'abc123',
+      'letmein',
+      'welcome',
+      'admin',
+      'user',
+      'guest',
     ];
     return commonPasswords.includes(password.toLowerCase());
   },
@@ -141,7 +152,13 @@ export const inputValidation = {
    * Log security events
    */
   logSecurityEvent: async (event: {
-    type: 'login_attempt' | 'login_success' | 'login_failure' | 'password_change' | 'account_locked' | 'suspicious_activity';
+    type:
+      | 'login_attempt'
+      | 'login_success'
+      | 'login_failure'
+      | 'password_change'
+      | 'account_locked'
+      | 'suspicious_activity';
     userId?: string;
     ipAddress?: string;
     userAgent?: string;
@@ -151,7 +168,8 @@ export const inputValidation = {
       const { error } = await supabase.from('system_error_logs').insert({
         message: `Security event: ${event.type}`,
         category: 'SECURITY',
-        severity: event.type.includes('failure') || event.type.includes('suspicious') ? 'ERROR' : 'INFO',
+        severity:
+          event.type.includes('failure') || event.type.includes('suspicious') ? 'ERROR' : 'INFO',
         component: 'AUTH',
         action: event.type.toUpperCase(),
         user_id: event.userId,
@@ -407,7 +425,9 @@ export const gdpr = {
   /**
    * Handle data subject access request
    */
-  handleDataAccessRequest: async (userId: string): Promise<{ success: boolean; data?: any; error?: string }> => {
+  handleDataAccessRequest: async (
+    userId: string,
+  ): Promise<{ success: boolean; data?: any; error?: string }> => {
     try {
       // Fetch all user data from various tables
       const { data: userData, error } = await supabase
@@ -438,7 +458,9 @@ export const gdpr = {
   /**
    * Handle right to be forgotten request
    */
-  handleDataDeletionRequest: async (userId: string): Promise<{ success: boolean; error?: string }> => {
+  handleDataDeletionRequest: async (
+    userId: string,
+  ): Promise<{ success: boolean; error?: string }> => {
     try {
       // This would anonymize or delete user data across all tables
       // For now, just log the request
@@ -461,7 +483,9 @@ export const gdpr = {
   /**
    * Export user data for portability
    */
-  exportUserData: async (userId: string): Promise<{ success: boolean; data?: any; error?: string }> => {
+  exportUserData: async (
+    userId: string,
+  ): Promise<{ success: boolean; data?: any; error?: string }> => {
     try {
       // Log the data export request
       await inputValidation.logSecurityEvent({
@@ -495,7 +519,7 @@ export const gdpr = {
   },
 
   /**
-   * Request data deletion 
+   * Request data deletion
    */
   requestDataDeletion: async (userId: string): Promise<{ success: boolean; error?: string }> => {
     return gdpr.handleDataDeletionRequest(userId);

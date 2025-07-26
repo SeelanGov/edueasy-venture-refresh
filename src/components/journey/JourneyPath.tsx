@@ -5,7 +5,6 @@ interface JourneyPathProps {
   currentStep: number;
 }
 
-
 /**
  * JourneyPath
  * @description Function

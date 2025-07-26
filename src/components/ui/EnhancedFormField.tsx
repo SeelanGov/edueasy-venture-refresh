@@ -21,7 +21,6 @@ interface EnhancedFormFieldProps<TFieldValues extends FieldValues = FieldValues>
   patternExample?: string;
 }
 
-
 /**
  * EnhancedFormField
  * @description Function

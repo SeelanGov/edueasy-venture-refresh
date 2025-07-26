@@ -23,7 +23,6 @@ interface PartnerInquiry {
   updated_at: string;
 }
 
-
 /**
  * PartnerInquiries
  * @description Function

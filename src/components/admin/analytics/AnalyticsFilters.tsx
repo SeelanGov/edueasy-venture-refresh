@@ -24,7 +24,6 @@ interface AnalyticsFiltersProps {
   institutions: { id: string; name: string }[];
 }
 
-
 /**
  * AnalyticsFilters
  * @description Function

@@ -13,7 +13,6 @@ export interface VerificationResult {
   extractedFields?: Record<string, string>;
 }
 
-
 /**
  * useDocumentVerification
  * @description Function

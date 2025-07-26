@@ -5,7 +5,6 @@ import logger from '@/utils/logger';
 import type { Session, User } from '@supabase/supabase-js';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
 /**
  * useAuthOperations
  * @description Function

@@ -4,7 +4,6 @@ import { Typography } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 /**
  * CTASection
  * @description Function

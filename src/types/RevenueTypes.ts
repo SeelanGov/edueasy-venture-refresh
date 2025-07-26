@@ -94,7 +94,6 @@ export interface CareerGuidance {
   updated_at: string;
 }
 
-
 /**
  * formatSponsorshipLevel
  * @description Function

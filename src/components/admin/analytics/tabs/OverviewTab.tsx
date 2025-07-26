@@ -8,7 +8,6 @@ interface OverviewTabProps {
   analytics: DocumentAnalytics;
 }
 
-
 /**
  * OverviewTab
  * @description Function

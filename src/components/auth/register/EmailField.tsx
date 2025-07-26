@@ -9,7 +9,6 @@ interface EmailFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * EmailField
  * @description Function

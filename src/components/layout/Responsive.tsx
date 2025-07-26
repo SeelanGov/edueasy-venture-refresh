@@ -20,7 +20,6 @@ interface ResponsiveProps {
   className?: string;
 }
 
-
 /**
  * Responsive
  * @description Function
@@ -60,7 +59,6 @@ interface ShowOnlyProps {
   className?: string;
 }
 
-
 /**
  * ShowOnly
  * @description Function
@@ -82,7 +80,6 @@ interface HideOnProps {
   breakpoint: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   className?: string;
 }
-
 
 /**
  * HideOn

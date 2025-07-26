@@ -35,12 +35,17 @@ interface IntentListProps {
   }) => void;
 }
 
-
 /**
  * IntentList
  * @description Function
  */
-export const IntentList = ({ intents, loading, onEdit, onDelete, onCreate }: IntentListProps): void => {
+export const IntentList = ({
+  intents,
+  loading,
+  onEdit,
+  onDelete,
+  onCreate,
+}: IntentListProps): void => {
   const [isCreating, setIsCreating] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [intentToDelete, setIntentToDelete] = useState<string | null>(null);

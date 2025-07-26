@@ -47,7 +47,6 @@ export interface SecurityBadgeProps {
   className?: string;
 }
 
-
 /**
  * SecurityBadge
  * @description Function

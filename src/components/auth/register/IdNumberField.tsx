@@ -9,7 +9,6 @@ interface IdNumberFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * IdNumberField
  * @description Function

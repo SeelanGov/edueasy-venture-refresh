@@ -42,7 +42,6 @@ interface ContactFormProps {
   isSubmitting: boolean;
 }
 
-
 /**
  * ContactForm
  * @description Function

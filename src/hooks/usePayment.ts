@@ -18,7 +18,6 @@ interface UsePaymentReturn {
   getPaymentPlan: (tierId: string) => any;
 }
 
-
 /**
  * usePayment
  * @description Function

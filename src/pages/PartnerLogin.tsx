@@ -76,7 +76,7 @@ const PartnerLogin: React.FC = () => {
             Register
           </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

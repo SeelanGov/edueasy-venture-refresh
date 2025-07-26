@@ -3,7 +3,6 @@ import { JourneyMap } from '@/components/journey/JourneyMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
-
 /**
  * JourneyMapDemo
  * @description Function

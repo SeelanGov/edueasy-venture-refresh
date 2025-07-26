@@ -110,7 +110,7 @@ const CounselorLogin: React.FC = () => {
             Register
           </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

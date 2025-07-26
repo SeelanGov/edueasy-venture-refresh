@@ -4,7 +4,6 @@ interface AdminFiltersProps {
   onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
-
 /**
  * AdminFilters
  * @description Function

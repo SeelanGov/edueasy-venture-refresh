@@ -5,7 +5,6 @@ interface DocumentUploadHeaderProps {
   description: string;
 }
 
-
 /**
  * DocumentUploadHeader
  * @description Function

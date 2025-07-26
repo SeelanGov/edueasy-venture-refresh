@@ -17,7 +17,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { AlertCircle, CheckCircle, RefreshCw, Upload } from 'lucide-react';
 import type { DocumentUploadInputProps } from './types';
 
-
 /**
  * DocumentUploadInput
  * @description Function

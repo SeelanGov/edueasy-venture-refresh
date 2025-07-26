@@ -7,7 +7,6 @@ interface StatusDistributionChartProps {
   resubmission: number;
 }
 
-
 /**
  * StatusDistributionChart
  * @description Function

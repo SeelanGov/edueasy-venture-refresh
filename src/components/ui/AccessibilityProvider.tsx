@@ -32,7 +32,6 @@ interface AccessibilityProviderProps {
   children: ReactNode;
 }
 
-
 /**
  * AccessibilityProvider
  * @description Function
@@ -156,7 +155,6 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 
   return <AccessibilityContext.Provider value={value}>{children}</AccessibilityContext.Provider>;
 };
-
 
 /**
  * useAccessibility

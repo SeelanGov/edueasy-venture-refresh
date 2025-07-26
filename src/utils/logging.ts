@@ -1,7 +1,6 @@
 import { toast } from '@/components/ui/use-toast';
 import type { StandardError } from './errorHandler';
 
-
 /**
  * logError
  * @description Function

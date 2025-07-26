@@ -15,7 +15,6 @@ interface UseErrorRetryReturn {
   resetRetry: () => void;
 }
 
-
 /**
  * useErrorRetry
  * @description Function

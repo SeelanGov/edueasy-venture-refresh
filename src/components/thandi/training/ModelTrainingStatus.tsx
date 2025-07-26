@@ -15,7 +15,6 @@ interface ModelTrainingStatusProps {
   onRetrain: () => Promise<void>;
 }
 
-
 /**
  * ModelTrainingStatus
  * @description Function

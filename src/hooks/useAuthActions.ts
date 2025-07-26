@@ -16,7 +16,6 @@ interface DatabaseResult {
   plan: string;
 }
 
-
 /**
  * useAuthActions
  * @description Function

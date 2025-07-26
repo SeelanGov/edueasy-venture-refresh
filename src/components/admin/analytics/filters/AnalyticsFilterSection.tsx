@@ -7,7 +7,6 @@ interface AnalyticsFilterSectionProps {
   className?: string;
 }
 
-
 /**
  * AnalyticsFilterSection
  * @description Function

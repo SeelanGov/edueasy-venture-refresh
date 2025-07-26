@@ -14,7 +14,6 @@ interface UseVerifyIDReturn {
   error: string | null;
 }
 
-
 /**
  * useVerifyID
  * @description Function

@@ -16,7 +16,6 @@ interface TrainingEntry {
   } | null;
 }
 
-
 /**
  * useTrainingEntries
  * @description Function

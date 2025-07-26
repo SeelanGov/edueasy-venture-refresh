@@ -19,7 +19,6 @@ const steps = [
   },
 ];
 
-
 /**
  * HowItWorksStepper
  * @description Function

@@ -7,7 +7,6 @@ import type {
 import { compressImage } from '@/utils/imageCompression';
 import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
-
 /**
  * useFileProcessing
  * @description Function

@@ -63,7 +63,6 @@ const partnerTypes = [
   },
 ];
 
-
 /**
  * Footer
  * @description Function

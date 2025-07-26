@@ -13,7 +13,6 @@ interface ProgressIndicatorProps {
   className?: string;
 }
 
-
 /**
  * ProgressIndicator
  * @description Function

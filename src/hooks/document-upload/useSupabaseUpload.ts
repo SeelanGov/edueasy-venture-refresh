@@ -11,7 +11,6 @@ export interface DocumentsStore {
   [key: string]: DocumentInfo | string | undefined;
 }
 
-
 /**
  * useSupabaseUpload
  * @description Function

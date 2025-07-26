@@ -9,7 +9,6 @@ import { AnalyticsKeyboardShortcuts } from './AnalyticsKeyboardShortcuts';
 import { useDocumentAnalytics } from '@/hooks/analytics';
 import { supabase } from '@/integrations/supabase/client';
 
-
 /**
  * AnalyticsDashboard
  * @description Function

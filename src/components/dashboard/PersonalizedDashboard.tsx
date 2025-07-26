@@ -18,12 +18,14 @@ interface PersonalizedDashboardProps {
   loading: boolean;
 }
 
-
 /**
  * PersonalizedDashboard
  * @description Function
  */
-export const PersonalizedDashboard = ({ applications, loading }: PersonalizedDashboardProps): void => {
+export const PersonalizedDashboard = ({
+  applications,
+  loading,
+}: PersonalizedDashboardProps): void => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { currentSubscription } = useSubscription();

@@ -6,7 +6,6 @@ interface AnalyticsStatCardsProps {
   analytics: DocumentAnalytics;
 }
 
-
 /**
  * AnalyticsStatCards
  * @description Function

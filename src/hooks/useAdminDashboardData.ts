@@ -37,7 +37,6 @@ export interface Application {
   grade12_results: string | null;
 }
 
-
 /**
  * useAdminDashboardData
  * @description Function

@@ -10,7 +10,6 @@ interface ConfirmPasswordFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * ConfirmPasswordField
  * @description Function
@@ -34,7 +33,7 @@ export const ConfirmPasswordField = ({ control, isLoading }: ConfirmPasswordFiel
                 disabled={isLoading}
                 className="text-gray-900 pr-10"
               />
-              <Button 
+              <Button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"

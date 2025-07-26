@@ -91,7 +91,7 @@ const PartnerCheckout: React.FC = () => {
             partners@edueasy.co.za
           </a>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

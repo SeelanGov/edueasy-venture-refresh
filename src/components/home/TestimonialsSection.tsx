@@ -48,7 +48,6 @@ const students: Student[] = [
   },
 ];
 
-
 /**
  * TestimonialsSection
  * @description Function

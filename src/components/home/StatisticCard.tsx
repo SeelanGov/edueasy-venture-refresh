@@ -26,7 +26,6 @@ const iconMap = {
   Flag,
 };
 
-
 /**
  * StatisticCard
  * @description Function

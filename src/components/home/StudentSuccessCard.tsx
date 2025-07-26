@@ -14,7 +14,6 @@ interface StudentSuccessCardProps {
   };
 }
 
-
 /**
  * StudentSuccessCard
  * @description Function

@@ -23,7 +23,6 @@ interface MessageRowProps {
   onDeleteTraining: (trainingId: string) => void;
 }
 
-
 /**
  * MessageRow
  * @description Function

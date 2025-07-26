@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { HeroImage } from './HeroImage';
 import { StatisticsGrid } from './StatisticsGrid';
 
-
 /**
  * Hero
  * @description Function

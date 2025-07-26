@@ -12,7 +12,6 @@ interface RecoveryHelperProps {
   cancelButtonText?: string;
 }
 
-
 /**
  * RecoveryHelper
  * @description Function
