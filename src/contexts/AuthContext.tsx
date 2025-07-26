@@ -20,13 +20,11 @@ export interface AuthContextType {
   updatePassword: (newPassword: string) => Promise<boolean>;
 }
 
-
 /**
  * AuthContext
  * @description Function
  */
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 
 /**
  * AuthProvider

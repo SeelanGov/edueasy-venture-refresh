@@ -8,7 +8,6 @@ interface AnalyticsErrorStateProps {
   onRetry: () => void;
 }
 
-
 /**
  * AnalyticsErrorState
  * @description Function

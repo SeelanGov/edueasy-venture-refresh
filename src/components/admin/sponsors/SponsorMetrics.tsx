@@ -7,7 +7,6 @@ interface SponsorMetricsProps {
   activeAllocations: number;
 }
 
-
 /**
  * SponsorMetrics
  * @description Function

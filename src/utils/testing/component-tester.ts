@@ -109,7 +109,6 @@ export const createButtonTestScenarios = (): TestScenario[] => [
   },
 ];
 
-
 /**
  * createStatusBadgeTestScenarios
  * @description Function

@@ -7,7 +7,6 @@ interface AnalyticsKeyboardShortcutsProps {
   onResetFilters: () => void;
 }
 
-
 /**
  * AnalyticsKeyboardShortcuts
  * @description Function

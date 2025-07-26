@@ -14,7 +14,6 @@ interface DataTablesTabProps {
   analytics: DocumentAnalytics;
 }
 
-
 /**
  * DataTablesTab
  * @description Function

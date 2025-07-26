@@ -3,7 +3,6 @@ type PatternBorderProps = {
   className?: string;
 };
 
-
 /**
  * PatternBorder
  * @description Function

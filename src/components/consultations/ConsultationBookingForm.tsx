@@ -51,7 +51,6 @@ interface ConsultationBookingFormProps {
   consultationPrice: number;
 }
 
-
 /**
  * ConsultationBookingForm
  * @description Function

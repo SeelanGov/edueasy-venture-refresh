@@ -9,7 +9,6 @@ import type { ApplicationFormValues } from '@/components/application/Application
  */
 export const LOCAL_STORAGE_FORM_KEY = 'edueasy-application-form';
 
-
 /**
  * useOfflineFormStorage
  * @description Function

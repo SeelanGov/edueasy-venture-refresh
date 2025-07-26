@@ -14,7 +14,6 @@ interface OptimizedImageProps {
   enableIntersectionObserver?: boolean;
 }
 
-
 /**
  * OptimizedImage
  * @description Function

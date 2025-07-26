@@ -10,7 +10,6 @@ import {
 } from '@/utils/security';
 import type { RLSTestResult, RLSPolicyAnalysis } from '@/utils/security/types';
 
-
 /**
  * usePolicyTester
  * @description Function

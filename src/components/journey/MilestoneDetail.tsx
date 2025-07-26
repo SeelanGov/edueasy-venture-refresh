@@ -11,7 +11,6 @@ interface MilestoneDetailProps {
   onClose: () => void;
 }
 
-
 /**
  * MilestoneDetail
  * @description Function

@@ -7,7 +7,6 @@ export interface SmokeTestCase {
   criticalUserFlow?: boolean;
 }
 
-
 /**
  * CRITICAL_USER_FLOWS
  * @description Function
@@ -44,7 +43,6 @@ export const CRITICAL_USER_FLOWS: SmokeTestCase[] = [
     criticalUserFlow: true,
   },
 ];
-
 
 /**
  * validateDesignSystemCompliance
@@ -83,7 +81,6 @@ export const validateDesignSystemCompliance = (
     violations,
   };
 };
-
 
 /**
  * runSmokeTest

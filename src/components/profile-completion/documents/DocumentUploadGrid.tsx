@@ -18,7 +18,6 @@ interface DocumentUploadGridProps {
   currentStep: number;
 }
 
-
 /**
  * DocumentUploadGrid
  * @description Function

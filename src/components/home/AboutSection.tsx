@@ -3,7 +3,6 @@ import { AboutContent } from './AboutContent';
 import { AboutImage } from './AboutImage';
 import { FeatureCard } from './FeatureCard';
 
-
 /**
  * AboutSection
  * @description Function

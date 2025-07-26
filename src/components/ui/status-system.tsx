@@ -38,7 +38,6 @@ interface StatusSystemProps {
   customDescription?: string;
 }
 
-
 /**
  * StatusSystem
  * @description Function

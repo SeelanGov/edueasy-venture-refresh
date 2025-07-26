@@ -12,7 +12,6 @@ interface StackProps {
   divider?: React.ReactNode;
 }
 
-
 /**
  * Stack
  * @description Function
@@ -82,7 +81,6 @@ export const Stack: React.FC<StackProps> = ({
 export const VStack: React.FC<Omit<StackProps, 'direction'>> = (props) => (
   <Stack {...props} direction="vertical" />
 );
-
 
 /**
  * HStack

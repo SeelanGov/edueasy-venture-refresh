@@ -10,7 +10,6 @@ interface SidebarNavItemProps {
   onClick?: () => void;
 }
 
-
 /**
  * SidebarNavItem
  * @description Function

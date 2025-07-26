@@ -254,7 +254,7 @@ const PartnerDashboard: React.FC = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

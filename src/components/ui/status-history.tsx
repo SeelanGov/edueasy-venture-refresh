@@ -20,7 +20,6 @@ interface StatusHistoryProps {
   maxEntries?: number;
 }
 
-
 /**
  * StatusHistory
  * @description Function

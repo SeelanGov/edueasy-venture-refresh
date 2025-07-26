@@ -6,7 +6,6 @@ interface ValidationResultsListProps {
   extractedFields?: Record<string, string> | undefined;
 }
 
-
 /**
  * ValidationResultsList
  * @description Function

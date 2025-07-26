@@ -5,7 +5,6 @@ interface PartnerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode;
 }
 
-
 /**
  * PartnerButton
  * @description Function

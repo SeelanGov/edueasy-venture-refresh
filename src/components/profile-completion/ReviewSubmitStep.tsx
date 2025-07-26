@@ -9,7 +9,6 @@ import { logError } from '@/utils/logging';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 /**
  * ReviewSubmitStep
  * @description Function

@@ -12,7 +12,6 @@ export interface StepperProps {
   className?: string;
 }
 
-
 /**
  * Stepper
  * @description Function

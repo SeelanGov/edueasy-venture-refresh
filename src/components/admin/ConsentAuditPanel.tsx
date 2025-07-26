@@ -55,7 +55,6 @@ interface VerificationLog {
   };
 }
 
-
 /**
  * ConsentAuditPanel
  * @description Function

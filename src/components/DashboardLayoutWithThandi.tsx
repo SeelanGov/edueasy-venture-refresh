@@ -8,7 +8,6 @@ interface DashboardLayoutWithThandiProps {
   children: ReactNode;
 }
 
-
 /**
  * DashboardLayoutWithThandi
  * @description Function

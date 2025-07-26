@@ -23,7 +23,6 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-
 /**
  * DashboardLayout
  * @description Function

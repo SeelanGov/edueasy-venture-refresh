@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-
 /**
  * useLocalStorage
  * @description Function

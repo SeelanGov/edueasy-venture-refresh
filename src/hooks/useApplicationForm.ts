@@ -7,7 +7,6 @@ import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
 import type { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
 
-
 /**
  * useApplicationForm
  * @description Function

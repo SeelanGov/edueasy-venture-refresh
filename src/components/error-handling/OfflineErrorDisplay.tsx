@@ -11,7 +11,6 @@ interface OfflineErrorDisplayProps {
   lastConnectedTime?: Date | null;
 }
 
-
 /**
  * OfflineErrorDisplay
  * @description Function

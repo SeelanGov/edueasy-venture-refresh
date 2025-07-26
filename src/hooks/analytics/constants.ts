@@ -7,7 +7,6 @@ const getDateDaysAgo = (days: number): Date => {
   return date;
 };
 
-
 /**
  * DEFAULT_FILTERS
  * @description Function

@@ -16,7 +16,6 @@ const badgeDescriptions: Record<string, string> = {
   verification: 'Verification: This field or document is verified for authenticity and integrity.',
 };
 
-
 /**
  * SecurityInfoPanel
  * @description Function

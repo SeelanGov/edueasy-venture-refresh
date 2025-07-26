@@ -9,7 +9,6 @@ interface StatisticsGridProps {
   className?: string;
 }
 
-
 /**
  * StatisticsGrid
  * @description Function

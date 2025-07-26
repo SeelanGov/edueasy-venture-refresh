@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext, type AuthContextType } from '@/contexts/AuthContext';
 
-
 /**
  * useAuth
  * @description Function

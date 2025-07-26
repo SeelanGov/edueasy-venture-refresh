@@ -19,7 +19,6 @@ interface GridProps {
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 }
 
-
 /**
  * Grid
  * @description Function
@@ -114,7 +113,6 @@ interface FlexProps {
   as?: 'div' | 'section' | 'main' | 'article' | 'header' | 'footer' | 'nav';
 }
 
-
 /**
  * Flex
  * @description Function
@@ -195,7 +193,6 @@ interface ContainerProps {
   className?: string;
   as?: 'div' | 'section' | 'main' | 'article';
 }
-
 
 /**
  * Container

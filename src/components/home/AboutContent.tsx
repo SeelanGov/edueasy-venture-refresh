@@ -1,6 +1,5 @@
 import { Typography } from '@/components/ui/typography';
 
-
 /**
  * AboutContent
  * @description Function

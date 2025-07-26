@@ -61,12 +61,16 @@ interface FilterState {
   showResolved: boolean;
 }
 
-
 /**
  * ErrorLogsTable
  * @description Function
  */
-export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorLogsTableProps): void => {
+export const ErrorLogsTable = ({
+  errors,
+  loading,
+  onRefresh,
+  onResolve,
+}: ErrorLogsTableProps): void => {
   const [filter, setFilter] = useState<FilterState>({
     search: '',
     showResolved: false,

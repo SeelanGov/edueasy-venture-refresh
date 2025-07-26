@@ -6,7 +6,6 @@ interface VerifyingDocumentProps {
   isResubmission?: boolean;
 }
 
-
 /**
  * VerifyingDocument
  * @description Function

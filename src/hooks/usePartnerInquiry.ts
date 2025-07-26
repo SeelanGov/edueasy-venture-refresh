@@ -14,7 +14,6 @@ interface PartnerInquiryData {
   message?: string;
 }
 
-
 /**
  * usePartnerInquiry
  * @description Function

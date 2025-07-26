@@ -4,7 +4,6 @@ interface DashboardContentProps {
   children: ReactNode;
 }
 
-
 /**
  * DashboardContent
  * @description Function

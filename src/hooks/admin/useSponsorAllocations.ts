@@ -11,7 +11,6 @@ export interface SponsorAllocation {
   notes: string | null;
 }
 
-
 /**
  * useSponsorAllocations
  * @description Function

@@ -5,7 +5,6 @@ interface SponsorNoteTimelineProps {
   notes: SponsorNote[];
 }
 
-
 /**
  * SponsorNoteTimeline
  * @description Function

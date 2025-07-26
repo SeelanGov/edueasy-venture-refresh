@@ -30,7 +30,6 @@ interface DashboardSidebarProps {
   onSignOut: () => void;
 }
 
-
 /**
  * DashboardSidebar
  * @description Function

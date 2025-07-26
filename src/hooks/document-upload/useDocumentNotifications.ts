@@ -8,7 +8,6 @@ interface VerificationResult {
   failureReason?: string;
 }
 
-
 /**
  * useDocumentNotifications
  * @description Function

@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Typography } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
 
-
 /**
  * TypographyGuide
  * @description Function

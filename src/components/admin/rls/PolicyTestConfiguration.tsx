@@ -14,7 +14,6 @@ interface PolicyTestConfigurationProps {
   setScenarioName: (name: string) => void;
 }
 
-
 /**
  * PolicyTestConfiguration
  * @description Function

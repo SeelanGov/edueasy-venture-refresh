@@ -9,7 +9,6 @@ interface ColumnsProps {
   as?: 'div' | 'section' | 'main' | 'article';
 }
 
-
 /**
  * Columns
  * @description Function
@@ -50,7 +49,6 @@ interface ColumnProps {
   className?: string;
   as?: 'div' | 'section' | 'article' | 'aside' | 'nav';
 }
-
 
 /**
  * Column

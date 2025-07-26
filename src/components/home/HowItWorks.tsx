@@ -41,7 +41,6 @@ const Step = ({ number, title, description, icon, isActive = false }: StepProps)
   );
 };
 
-
 /**
  * HowItWorks
  * @description Function

@@ -6,7 +6,6 @@ interface SkeletonProps {
   height?: string | number;
 }
 
-
 /**
  * Skeleton
  * @description Function
@@ -37,7 +36,6 @@ export const SkeletonCard: React.FC<{ className?: string }> = ({ className }) =>
   </div>
 );
 
-
 /**
  * SkeletonTable
  * @description Function
@@ -58,7 +56,6 @@ export const SkeletonTable: React.FC<{ rows?: number; className?: string }> = ({
   </div>
 );
 
-
 /**
  * SkeletonAvatar
  * @description Function
@@ -76,7 +73,6 @@ export const SkeletonAvatar: React.FC<{ size?: 'sm' | 'md' | 'lg'; className?: s
   return <Skeleton className={cn('rounded-full', sizeClasses[size], className)} />;
 };
 
-
 /**
  * SkeletonButton
  * @description Function
@@ -85,7 +81,6 @@ export const SkeletonButton: React.FC<{ className?: string }> = ({ className }) 
   <Skeleton className={cn('h-10 w-24', className)} />
 );
 
-
 /**
  * SkeletonInput
  * @description Function
@@ -93,7 +88,6 @@ export const SkeletonButton: React.FC<{ className?: string }> = ({ className }) 
 export const SkeletonInput: React.FC<{ className?: string }> = ({ className }) => (
   <Skeleton className={cn('h-10 w-full', className)} />
 );
-
 
 /**
  * SkeletonBadge
@@ -120,7 +114,6 @@ export const SkeletonDashboardCard: React.FC<{ className?: string }> = ({ classN
   </div>
 );
 
-
 /**
  * SkeletonNotification
  * @description Function
@@ -139,7 +132,6 @@ export const SkeletonNotification: React.FC<{ className?: string }> = ({ classNa
     </div>
   </div>
 );
-
 
 /**
  * SkeletonProfile

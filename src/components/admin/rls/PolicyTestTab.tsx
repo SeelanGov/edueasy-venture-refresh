@@ -16,7 +16,6 @@ interface PolicyTestTabProps {
   onRunRoleTests: () => void;
 }
 
-
 /**
  * PolicyTestTab
  * @description Function

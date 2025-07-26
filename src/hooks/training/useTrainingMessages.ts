@@ -4,7 +4,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import type { ChatMessage, TrainingFilters } from '@/types/TrainingTypes';
 
-
 /**
  * useTrainingMessages
  * @description Function

@@ -18,7 +18,6 @@ interface SubscriptionTierCardProps {
   disabled?: boolean;
 }
 
-
 /**
  * SubscriptionTierCard
  * @description Function

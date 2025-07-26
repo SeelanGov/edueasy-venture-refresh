@@ -8,7 +8,6 @@ interface OfflineNoticeProps {
   className?: string;
 }
 
-
 /**
  * OfflineNotice
  * @description Function

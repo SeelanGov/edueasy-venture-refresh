@@ -39,7 +39,6 @@ export interface CareerGuidance {
   updated_at: string;
 }
 
-
 /**
  * useCareerGuidance
  * @description Function

@@ -31,7 +31,6 @@ type Props = {
   refreshUsers?: () => void;
 };
 
-
 /**
  * UserManagementPanel
  * @description Function

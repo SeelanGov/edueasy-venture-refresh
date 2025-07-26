@@ -15,7 +15,6 @@ interface MobileOptimizedCardProps {
   icon?: ReactNode;
 }
 
-
 /**
  * MobileOptimizedCard
  * @description Function

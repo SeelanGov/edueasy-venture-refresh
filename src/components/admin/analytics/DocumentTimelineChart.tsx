@@ -11,7 +11,6 @@ interface TimelineChartProps {
   }[];
 }
 
-
 /**
  * DocumentTimelineChart
  * @description Function

@@ -68,7 +68,6 @@ const addToRemoveQueue = (toastId: string): void => {
   toastTimeouts.set(toastId, timeout);
 };
 
-
 /**
  * reducer
  * @description Function

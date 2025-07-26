@@ -11,7 +11,6 @@ interface DocumentUploadStepperProps {
   steps: Step[];
 }
 
-
 /**
  * DocumentUploadStepper
  * @description Function

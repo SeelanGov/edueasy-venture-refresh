@@ -11,7 +11,6 @@ export const CHART_COLORS = {
   request_resubmission: '#8b5cf6',
 } as const;
 
-
 /**
  * STATUS_CONFIG
  * @description Function

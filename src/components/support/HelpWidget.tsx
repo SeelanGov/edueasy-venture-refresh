@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
 
-
 /**
  * HelpWidget
  * @description Function

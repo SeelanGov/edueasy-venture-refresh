@@ -7,7 +7,6 @@ interface ConsentCheckboxesProps {
   setConsentIdVerification: (value: boolean) => void;
 }
 
-
 /**
  * ConsentCheckboxes
  * @description Function

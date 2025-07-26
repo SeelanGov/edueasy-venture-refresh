@@ -21,7 +21,6 @@ interface MobileMenuProps {
   isActive: (path: string) => boolean;
 }
 
-
 /**
  * MobileMenu
  * @description Function

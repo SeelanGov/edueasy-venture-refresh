@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
-
 /**
  * useTheme
  * @description Function

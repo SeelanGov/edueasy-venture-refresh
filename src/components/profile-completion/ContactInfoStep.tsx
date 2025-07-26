@@ -12,7 +12,6 @@ interface ContactInfoStepProps {
   onBack: () => void;
 }
 
-
 /**
  * ContactInfoStep
  * @description Function

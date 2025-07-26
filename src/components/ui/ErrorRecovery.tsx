@@ -14,7 +14,6 @@ interface ErrorRecoveryProps {
   className?: string;
 }
 
-
 /**
  * ErrorRecovery
  * @description Function

@@ -1,6 +1,5 @@
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
-
 /**
  * AboutImage
  * @description Function

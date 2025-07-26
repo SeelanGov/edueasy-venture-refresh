@@ -20,7 +20,6 @@ export interface Institution {
   partner_id?: string | null;
 }
 
-
 /**
  * useInstitutions
  * @description Function

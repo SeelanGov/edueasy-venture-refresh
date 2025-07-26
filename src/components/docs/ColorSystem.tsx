@@ -44,7 +44,6 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
   );
 };
 
-
 /**
  * ColorSystem
  * @description Function

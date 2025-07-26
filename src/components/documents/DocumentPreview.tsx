@@ -11,7 +11,6 @@ interface DocumentPreviewProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-
 /**
  * DocumentPreview
  * @description Function

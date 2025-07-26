@@ -8,7 +8,6 @@ interface SponsorAllocationsTableProps {
   onDelete: (id: string) => void;
 }
 
-
 /**
  * SponsorAllocationsTable
  * @description Function

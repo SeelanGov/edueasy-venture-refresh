@@ -8,7 +8,6 @@ interface LazyComponentProps {
   props?: Record<string, unknown>;
 }
 
-
 /**
  * LazyComponent
  * @description React component

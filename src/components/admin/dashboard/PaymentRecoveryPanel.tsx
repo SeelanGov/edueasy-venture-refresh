@@ -39,7 +39,6 @@ interface Payment {
   };
 }
 
-
 /**
  * PaymentRecoveryPanel
  * @description Function

@@ -15,7 +15,6 @@ interface PolicyRegistryTabProps {
   onRefreshData: () => void;
 }
 
-
 /**
  * PolicyRegistryTab
  * @description Function

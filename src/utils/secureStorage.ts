@@ -1,7 +1,6 @@
 // Secure storage wrapper to prevent recursion bugs
 // This provides a safe interface for sessionStorage operations
 
-
 /**
  * secureStorage
  * @description Function

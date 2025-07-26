@@ -9,7 +9,6 @@ interface FeedbackSystemProps {
   onFeedbackSubmit?: (feedback: 'helpful' | 'unhelpful') => void;
 }
 
-
 /**
  * FeedbackSystem
  * @description Function

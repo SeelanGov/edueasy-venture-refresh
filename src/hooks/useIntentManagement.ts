@@ -17,7 +17,6 @@ export interface IntentWithStats extends Intent {
   avg_confidence: number | null;
 }
 
-
 /**
  * useIntentManagement
  * @description Function

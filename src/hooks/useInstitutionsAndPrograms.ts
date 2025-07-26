@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Institution, Program } from '@/types/Institution';
 
-
 /**
  * useInstitutionsAndPrograms
  * @description Function

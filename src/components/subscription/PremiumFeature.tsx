@@ -21,7 +21,6 @@ interface PremiumFeatureProps {
   showPreview?: boolean;
 }
 
-
 /**
  * PremiumFeature
  * @description Function

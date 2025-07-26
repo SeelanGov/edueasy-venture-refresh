@@ -3,7 +3,6 @@ import { useAuth } from '@/hooks/useAuth';
 import type { ConsultationBooking } from '@/types/RevenueTypes';
 import { useEffect, useState } from 'react';
 
-
 /**
  * useConsultations
  * @description Function

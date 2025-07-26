@@ -47,7 +47,6 @@ interface SubjectEntryProps {
   onDelete: () => void;
 }
 
-
 /**
  * SubjectEntry
  * @description Function

@@ -14,7 +14,6 @@ interface VerificationResultDisplayProps {
   isResubmission?: boolean;
 }
 
-
 /**
  * VerificationResultDisplay
  * @description Function

@@ -8,7 +8,6 @@ interface AuthGuardProps {
   requiresAuth?: boolean;
 }
 
-
 /**
  * AuthGuard
  * @description Function

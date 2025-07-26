@@ -27,7 +27,6 @@ interface ProvinceSelectorProps {
   control: Control<AddressFormValues>;
 }
 
-
 /**
  * ProvinceSelector
  * @description Function

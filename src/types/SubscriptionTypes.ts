@@ -52,7 +52,6 @@ export interface ConsultationBooking {
   created_at: string;
 }
 
-
 /**
  * formatCurrency
  * @description Function
@@ -64,7 +63,6 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
   }).format(amount);
 }
 
-
 /**
  * getSubscriptionPrice
  * @description Function
@@ -72,7 +70,6 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
 export function getSubscriptionPrice(tier: SubscriptionTier): number {
   return tier.price_once_off;
 }
-
 
 /**
  * getThandiCapabilities

@@ -7,7 +7,6 @@ interface DocumentFormActionsProps {
   isComplete: boolean;
 }
 
-
 /**
  * DocumentFormActions
  * @description Function

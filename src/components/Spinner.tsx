@@ -5,7 +5,6 @@ interface SpinnerProps {
   className?: string;
 }
 
-
 /**
  * Spinner
  * @description Function

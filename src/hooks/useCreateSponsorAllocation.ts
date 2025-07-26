@@ -12,7 +12,6 @@ type SponsorAllocationInsert = {
   notes?: string;
 };
 
-
 /**
  * useCreateSponsorAllocation
  * @description Function

@@ -10,7 +10,6 @@ interface StatusDistributionChartProps {
   data: StatusData[];
 }
 
-
 /**
  * StatusDistributionChart
  * @description Function

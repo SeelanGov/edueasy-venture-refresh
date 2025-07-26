@@ -45,7 +45,6 @@ export const VISUAL_DIFF_CONFIG = {
   ],
 };
 
-
 /**
  * generateVisualDiffReport
  * @description Function

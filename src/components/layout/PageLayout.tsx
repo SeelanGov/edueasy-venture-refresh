@@ -19,7 +19,6 @@ interface PageLayoutProps {
   containerClassName?: string;
 }
 
-
 /**
  * PageLayout
  * @description Function

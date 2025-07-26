@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
 import type { VerificationResult } from '@/hooks/useDocumentVerification';
 
-
 /**
  * useStepperManager
  * @description Function

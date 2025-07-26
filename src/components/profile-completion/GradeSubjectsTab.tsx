@@ -23,7 +23,6 @@ interface GradeSubjectsTabProps {
   createSubject: () => SubjectMark;
 }
 
-
 /**
  * GradeSubjectsTab
  * @description Function

@@ -4,7 +4,6 @@ import { toast } from '@/components/ui/use-toast';
 import type { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
 import logger from '@/utils/logger';
 
-
 /**
  * usePlanManagement
  * @description Function

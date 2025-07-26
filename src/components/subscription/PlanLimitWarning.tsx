@@ -10,7 +10,6 @@ interface PlanLimitWarningProps {
   planName: string;
 }
 
-
 /**
  * PlanLimitWarning
  * @description Function

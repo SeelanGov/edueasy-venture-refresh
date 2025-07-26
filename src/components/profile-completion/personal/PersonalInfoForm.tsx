@@ -63,7 +63,6 @@ interface PersonalInfoFormProps {
   isSubmitting: boolean;
 }
 
-
 /**
  * PersonalInfoForm
  * @description Function

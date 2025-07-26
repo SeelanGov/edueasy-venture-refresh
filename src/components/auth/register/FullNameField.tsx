@@ -9,7 +9,6 @@ interface FullNameFieldProps {
   isLoading: boolean;
 }
 
-
 /**
  * FullNameField
  * @description Function

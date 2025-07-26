@@ -14,7 +14,6 @@ interface SpacerProps {
   className?: string;
 }
 
-
 /**
  * Spacer
  * @description Function
@@ -96,7 +95,6 @@ export const Spacer: React.FC<SpacerProps> = ({
 export const VSpacer: React.FC<Omit<SpacerProps, 'direction'>> = (props) => (
   <Spacer {...props} direction="vertical" />
 );
-
 
 /**
  * HSpacer

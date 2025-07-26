@@ -11,7 +11,6 @@ interface ChartWrapperProps {
   className?: string;
 }
 
-
 /**
  * ChartWrapper
  * @description Function

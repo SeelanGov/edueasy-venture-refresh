@@ -36,7 +36,6 @@ interface UserModalProps {
   onClose: () => void;
 }
 
-
 /**
  * UserProfileModal
  * @description Function

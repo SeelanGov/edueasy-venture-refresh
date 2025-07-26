@@ -12,7 +12,6 @@ interface EducationHistoryStepProps {
   onBack: () => void;
 }
 
-
 /**
  * EducationHistoryStep
  * @description Function

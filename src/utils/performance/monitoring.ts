@@ -13,14 +13,14 @@ export interface PerformanceMetric {
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: Map<string, PerformanceMetric[]> = new Map();
-  
+
   static getInstance(): PerformanceMonitor {
     if (!PerformanceMonitor.instance) {
       PerformanceMonitor.instance = new PerformanceMonitor();
     }
     return PerformanceMonitor.instance;
   }
-  
+
   /**
    * Start timing a performance measurement
    * @param name - Name of the measurement
@@ -30,7 +30,7 @@ export class PerformanceMonitor {
       performance.mark(`${name}-start`);
     }
   }
-  
+
   /**
    * End timing and record the measurement
    * @param name - Name of the measurement
@@ -40,28 +40,28 @@ export class PerformanceMonitor {
     if (typeof performance !== 'undefined') {
       performance.mark(`${name}-end`);
       performance.measure(name, `${name}-start`, `${name}-end`);
-      
+
       const measure = performance.getEntriesByName(name)[0];
       const duration = measure.duration;
-      
+
       // Store metric
       if (!this.metrics.has(name)) {
         this.metrics.set(name, []);
       }
-      
+
       const metric: PerformanceMetric = {
         name,
         value: duration,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
-      
+
       this.metrics.get(name)!.push(metric);
-      
+
       return duration;
     }
     return 0;
   }
-  
+
   /**
    * Get all metrics for a specific measurement
    * @param name - Name of the measurement
@@ -70,7 +70,7 @@ export class PerformanceMonitor {
   getMetrics(name: string): PerformanceMetric[] {
     return this.metrics.get(name) || [];
   }
-  
+
   /**
    * Get average duration for a measurement
    * @param name - Name of the measurement
@@ -81,7 +81,7 @@ export class PerformanceMonitor {
     if (metrics.length === 0) return 0;
     return metrics.reduce((sum, metric) => sum + metric.value, 0) / metrics.length;
   }
-  
+
   /**
    * Clear all metrics
    */
@@ -100,9 +100,9 @@ export const monitorWebVitals = (): void => {
         console.log(`Web Vital: ${entry.name} = ${entry.value}`);
       }
     });
-    
-    observer.observe({ 
-      entryTypes: ['navigation', 'paint', 'largest-contentful-paint'] 
+
+    observer.observe({
+      entryTypes: ['navigation', 'paint', 'largest-contentful-paint'],
     });
   }
 };
@@ -115,7 +115,7 @@ export const monitorWebVitals = (): void => {
 export const monitorRouteLoad = (routeName: string): (() => void) => {
   const monitor = PerformanceMonitor.getInstance();
   monitor.startTimer(`route-load-${routeName}`);
-  
+
   return () => {
     const duration = monitor.endTimer(`route-load-${routeName}`);
     console.log(`Route ${routeName} loaded in ${duration.toFixed(2)}ms`);
@@ -130,7 +130,7 @@ export const monitorRouteLoad = (routeName: string): (() => void) => {
 export const monitorAPICall = (endpoint: string): (() => void) => {
   const monitor = PerformanceMonitor.getInstance();
   monitor.startTimer(`api-${endpoint}`);
-  
+
   return () => {
     const duration = monitor.endTimer(`api-${endpoint}`);
     console.log(`API ${endpoint} completed in ${duration.toFixed(2)}ms`);

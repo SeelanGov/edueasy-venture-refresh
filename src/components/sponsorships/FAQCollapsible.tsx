@@ -17,7 +17,6 @@ const faq = [
   },
 ];
 
-
 /**
  * FAQCollapsible
  * @description Function

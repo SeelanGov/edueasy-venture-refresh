@@ -8,7 +8,6 @@ interface NetworkErrorHandlerProps {
   children: React.ReactNode;
 }
 
-
 /**
  * NetworkErrorHandler
  * @description Event handler function

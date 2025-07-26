@@ -22,7 +22,6 @@ export interface TrainingLog {
   error_message: string | null;
 }
 
-
 /**
  * useModelTraining
  * @description Function

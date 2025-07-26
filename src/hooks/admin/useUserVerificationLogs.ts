@@ -10,7 +10,6 @@ export interface VerificationLog {
   error_message: string | null;
 }
 
-
 /**
  * useUserVerificationLogs
  * @description Function

@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { playNotificationSound } from '@/utils/notificationSound';
 
-
 /**
  * useNetworkStatus
  * @description Function

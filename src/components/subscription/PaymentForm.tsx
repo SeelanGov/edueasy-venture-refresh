@@ -21,7 +21,6 @@ interface PaymentFormProps {
   onCancel: () => void;
 }
 
-
 /**
  * PaymentForm
  * @description Function

@@ -2613,7 +2613,6 @@ export type CompositeTypes<
     ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never;
 
-
 /**
  * Constants
  * @description Function

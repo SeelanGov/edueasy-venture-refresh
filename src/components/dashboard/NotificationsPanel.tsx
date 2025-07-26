@@ -21,7 +21,6 @@ import { useMemo, useState } from 'react';
 type FilterOption = 'all' | 'unread' | 'document' | 'application' | 'admin' | 'system';
 type GroupBy = 'date' | 'type' | 'none';
 
-
 /**
  * NotificationsPanel
  * @description Function

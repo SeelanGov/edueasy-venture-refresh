@@ -16,7 +16,6 @@ interface Application {
   documents?: unknown[];
 }
 
-
 /**
  * useApplications
  * @description Function

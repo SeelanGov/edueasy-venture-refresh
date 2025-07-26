@@ -14,7 +14,6 @@ interface DocumentTimelineChartProps {
   data: DocumentDateData[];
 }
 
-
 /**
  * DocumentTimelineChart
  * @description Function

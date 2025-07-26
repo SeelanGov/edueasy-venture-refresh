@@ -7,7 +7,6 @@ interface InstitutionGuardProps {
   children: ReactNode;
 }
 
-
 /**
  * InstitutionGuard
  * @description Function

@@ -8,7 +8,6 @@ interface AddressTypeSelectorProps {
   control: Control<AddressFormValues>;
 }
 
-
 /**
  * AddressTypeSelector
  * @description Function

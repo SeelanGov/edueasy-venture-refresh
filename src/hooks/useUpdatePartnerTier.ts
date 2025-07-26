@@ -3,7 +3,6 @@ import { supabase } from '@/integrations/supabase/client';
 
 type PartnerTier = 'basic' | 'standard' | 'premium';
 
-
 /**
  * useUpdatePartnerTier
  * @description Function

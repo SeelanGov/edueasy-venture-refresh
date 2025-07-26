@@ -10,7 +10,6 @@ interface AnalyticsHeaderProps {
   hasData: boolean;
 }
 
-
 /**
  * AnalyticsHeader
  * @description Function

@@ -16,7 +16,6 @@ import { Spinner } from '@/components/Spinner';
 import { Download, Search, RefreshCw } from 'lucide-react';
 import { exportToCsv } from '@/utils/exportToCsv';
 
-
 /**
  * AdminActivityLog
  * @description Function

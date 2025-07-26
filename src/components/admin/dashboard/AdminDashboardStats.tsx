@@ -11,7 +11,6 @@ interface Props {
   totalApplications: number;
 }
 
-
 /**
  * AdminDashboardStats
  * @description Function

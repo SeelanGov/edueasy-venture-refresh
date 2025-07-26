@@ -24,7 +24,6 @@ interface ComponentInventory {
   locked: boolean;
 }
 
-
 /**
  * UILockSystem
  * @description Function

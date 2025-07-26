@@ -110,7 +110,7 @@ const NSFASLogin: React.FC = () => {
             Register
           </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

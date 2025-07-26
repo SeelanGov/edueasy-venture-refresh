@@ -72,7 +72,6 @@ interface EducationFormProps {
   isSubmitting: boolean;
 }
 
-
 /**
  * EducationForm
  * @description Function

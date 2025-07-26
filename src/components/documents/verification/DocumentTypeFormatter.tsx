@@ -1,4 +1,3 @@
-
 /**
  * formatDocumentType
  * @description Function

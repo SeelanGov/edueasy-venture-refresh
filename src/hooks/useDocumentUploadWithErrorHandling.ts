@@ -8,7 +8,6 @@ interface DocumentUploadError {
   retryable: boolean;
 }
 
-
 /**
  * useDocumentUploadWithErrorHandling
  * @description Function

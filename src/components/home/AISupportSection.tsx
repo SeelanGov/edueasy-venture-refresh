@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { Typography } from '@/components/ui/typography';
 
-
 /**
  * AISupportSection
  * @description Function

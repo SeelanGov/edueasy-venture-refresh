@@ -2,7 +2,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useCallback, useEffect, useState } from 'react';
 
-
 /**
  * useSponsorApplications
  * @description Function

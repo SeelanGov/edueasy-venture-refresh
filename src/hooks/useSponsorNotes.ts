@@ -10,7 +10,6 @@ export type SponsorNote = {
   note_type?: string | null;
 };
 
-
 /**
  * useSponsorNotes
  * @description Function
@@ -31,7 +30,6 @@ export const useSponsorNotes = (sponsorId: string | undefined): void => {
     enabled: !!sponsorId,
   });
 };
-
 
 /**
  * useAddSponsorNote

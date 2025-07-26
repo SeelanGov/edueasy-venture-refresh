@@ -8,7 +8,6 @@ interface SectionProps {
   background?: 'default' | 'muted' | 'subtle';
 }
 
-
 /**
  * Section
  * @description Function

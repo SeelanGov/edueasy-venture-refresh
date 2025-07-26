@@ -20,7 +20,6 @@ interface TrainingEntry {
 export { type ChatMessage };
 export type { TrainingEntry };
 
-
 /**
  * useTrainingData
  * @description Function

@@ -68,7 +68,6 @@ export const colors = {
   },
 } as const;
 
-
 /**
  * statusColors
  * @description Function
@@ -100,7 +99,6 @@ export const statusColors = {
     border: 'border-gray-200',
   },
 } as const;
-
 
 /**
  * spacing

@@ -15,7 +15,6 @@ interface EmergencyContactSectionProps {
   control: Control<ContactFormValues>;
 }
 
-
 /**
  * EmergencyContactSection
  * @description Function

@@ -5,7 +5,6 @@ interface SponsorPaymentHistoryProps {
   payments: SponsorPayment[];
 }
 
-
 /**
  * SponsorPaymentHistory
  * @description Function

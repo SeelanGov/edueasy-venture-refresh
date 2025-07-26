@@ -5,7 +5,6 @@ interface DocumentGuidanceProps {
   documentType?: string;
 }
 
-
 /**
  * DocumentGuidance
  * @description Function

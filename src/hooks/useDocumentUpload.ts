@@ -9,7 +9,6 @@ export interface DocumentUploadResult {
   verification_status: string;
 }
 
-
 /**
  * useDocumentUpload
  * @description Function

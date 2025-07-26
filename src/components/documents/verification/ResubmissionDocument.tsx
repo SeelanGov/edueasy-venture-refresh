@@ -11,7 +11,6 @@ interface ResubmissionDocumentProps {
   onResubmit: () => void;
 }
 
-
 /**
  * ResubmissionDocument
  * @description Function

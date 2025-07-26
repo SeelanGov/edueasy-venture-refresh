@@ -14,7 +14,6 @@ interface AddressInfoStepProps {
   onBack: () => void;
 }
 
-
 /**
  * AddressInfoStep
  * @description Function

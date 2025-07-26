@@ -11,7 +11,6 @@ export interface UserTypeProfile {
   tier_level: string | null;
 }
 
-
 /**
  * useUserType
  * @description Function

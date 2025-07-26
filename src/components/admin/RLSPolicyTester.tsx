@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-
 /**
  * RLSPolicyTester
  * @description Function

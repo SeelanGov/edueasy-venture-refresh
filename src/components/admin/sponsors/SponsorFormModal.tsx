@@ -9,7 +9,6 @@ interface SponsorFormModalProps {
   onClose: () => void;
 }
 
-
 /**
  * SponsorFormModal
  * @description Function

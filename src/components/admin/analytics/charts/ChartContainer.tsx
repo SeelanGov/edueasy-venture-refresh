@@ -11,7 +11,6 @@ interface ChartContainerProps {
   className?: string;
 }
 
-
 /**
  * ChartContainer
  * @description Function

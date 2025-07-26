@@ -14,12 +14,18 @@ interface StatCardProps {
   className?: string;
 }
 
-
 /**
  * StatCard
  * @description Function
  */
-export const StatCard = ({ title, value, icon, description, trend, className }: StatCardProps): void => {
+export const StatCard = ({
+  title,
+  value,
+  icon,
+  description,
+  trend,
+  className,
+}: StatCardProps): void => {
   return (
     <Card className={cn('transition-all hover:shadow-md', className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

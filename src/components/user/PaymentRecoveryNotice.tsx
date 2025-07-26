@@ -26,7 +26,6 @@ interface Payment {
   user_id: string | null;
 }
 
-
 /**
  * PaymentRecoveryNotice
  * @description Function
