@@ -8,6 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { safeAsync } from '@/utils/errorHandling';
 import { gdpr, inputValidation, securityMonitoring } from '@/utils/security';
 import {
   AlertTriangle,
@@ -136,61 +138,85 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
 
     setLoading(true);
-    try {
-      // TODO: Implement password change API call
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-
-      toast({
-        title: 'Password Updated',
-        description: 'Your password has been changed successfully.',
-      });
-
-      // Clear form
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-
-      securityMonitoring.logSecurityEvent({
-        type: 'password_change',
-        severity: 'medium',
-        description: 'User changed password',
+    
+    const { error } = await safeAsync(
+      async () => {
+        const { error: updateError } = await supabase.auth.updateUser({
+          password: newPassword
+        });
+        
+        if (updateError) {
+          throw updateError;
+        }
+        
+        return true;
+      },
+      {
+        component: 'SecuritySettings',
+        action: 'password_change',
         userId: user?.id,
-      });
-    } catch (error) {
-      toast({
-        title: 'Password Change Failed',
-        description: 'Failed to change password. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
+        showToast: false, // We'll handle the success toast manually
+      }
+    );
+
+    if (error) {
+      // Error toast is already shown by safeAsync
       setLoading(false);
+      return;
     }
+
+    toast({
+      title: 'Password Updated',
+      description: 'Your password has been changed successfully.',
+    });
+
+    // Clear form
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+
+    securityMonitoring.logSecurityEvent({
+      type: 'password_change',
+      severity: 'medium',
+      description: 'User changed password',
+      userId: user?.id,
+    });
+    
+    setLoading(false);
   };
 
   const handleDataExport = async () => {
     setLoading(true);
-    try {
-      const result = await gdpr.exportUserData(user?.id || '');
-
-      const exportResult = result as { success: boolean; error?: string };
-      if (exportResult.success) {
-        toast({
-          title: 'Data Export Requested',
-          description:
-            "Your data export request has been submitted. You will receive an email when it's ready.",
-        });
-      } else {
-        throw new Error(exportResult.error || 'Export failed');
+    
+    const { error } = await safeAsync(
+      async () => {
+        const result = await gdpr.exportUserData(user?.id || '');
+        
+        if (!result.success) {
+          throw new Error(result.error || 'Export failed');
+        }
+        
+        return result;
+      },
+      {
+        component: 'SecuritySettings',
+        action: 'data_export',
+        userId: user?.id,
+        showToast: false,
       }
-    } catch (error) {
-      toast({
-        title: 'Export Failed',
-        description: 'Failed to request data export. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
+    );
+
+    if (error) {
       setLoading(false);
+      return;
     }
+
+    toast({
+      title: 'Data Export Requested',
+      description: "Your data export request has been submitted. You will receive an email when it's ready.",
+    });
+    
+    setLoading(false);
   };
 
   const handleDataDeletion = async () => {
@@ -199,27 +225,36 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
 
     setLoading(true);
-    try {
-      const result = await gdpr.requestDataDeletion(user?.id || '');
-
-      if (result.success) {
-        toast({
-          title: 'Deletion Request Submitted',
-          description:
-            'Your data deletion request has been submitted. You will receive a confirmation email.',
-        });
-      } else {
-        throw new Error('Failed to submit deletion request');
+    
+    const { error } = await safeAsync(
+      async () => {
+        const result = await gdpr.requestDataDeletion(user?.id || '');
+        
+        if (!result.success) {
+          throw new Error('Failed to submit deletion request');
+        }
+        
+        return result;
+      },
+      {
+        component: 'SecuritySettings',
+        action: 'data_deletion',
+        userId: user?.id,
+        showToast: false,
       }
-    } catch (error) {
-      toast({
-        title: 'Deletion Request Failed',
-        description: 'Failed to submit data deletion request. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
+    );
+
+    if (error) {
       setLoading(false);
+      return;
     }
+
+    toast({
+      title: 'Deletion Request Submitted',
+      description: 'Your data deletion request has been submitted. You will receive a confirmation email.',
+    });
+    
+    setLoading(false);
   };
 
   const getPasswordStrengthColor = (): string => {

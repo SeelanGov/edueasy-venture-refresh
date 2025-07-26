@@ -284,7 +284,7 @@ export const sessionManagement = {
     };
 
     // Store session data securely
-    sessionStorage.setItem('session', JSON.stringify(sessionData));
+    window.sessionStorage.setItem('session', JSON.stringify(sessionData));
 
     // Set session timeout
     setTimeout(() => {
@@ -296,11 +296,17 @@ export const sessionManagement = {
    * Get current session
    */
   getSession: (): unknown => {
-    const sessionData = sessionStorage.getItem('session');
+    const sessionData = window.sessionStorage.getItem('session');
     if (!sessionData) return null;
 
     try {
-      const session = JSON.parse(sessionData);
+      const session = JSON.parse(sessionData) as {
+        userId: string;
+        userData: unknown;
+        createdAt: number;
+        lastActivity: number;
+        token: string;
+      };
 
       // Check if session has expired
       if (Date.now() - session.lastActivity > SECURITY_CONFIG.SESSION_TIMEOUT) {
@@ -310,7 +316,7 @@ export const sessionManagement = {
 
       // Update last activity
       session.lastActivity = Date.now();
-      sessionStorage.setItem('session', JSON.stringify(session));
+      window.sessionStorage.setItem('session', JSON.stringify(session));
 
       return session;
     } catch (error) {
@@ -324,11 +330,11 @@ export const sessionManagement = {
    * Destroy current session
    */
   destroySession: (): void => {
-    sessionStorage.removeItem('session');
+    window.sessionStorage.removeItem('session');
     localStorage.removeItem('session');
 
     // Clear any sensitive data
-    sessionStorage.clear();
+    window.sessionStorage.clear();
 
     // Redirect to login page
     window.location.href = '/login';
@@ -427,7 +433,7 @@ export const gdpr = {
    */
   handleDataAccessRequest: async (
     userId: string,
-  ): Promise<{ success: boolean; data?: any; error?: string }> => {
+  ): Promise<{ success: boolean; data?: unknown; error?: string }> => {
     try {
       // Fetch all user data from various tables
       const { data: userData, error } = await supabase
@@ -485,7 +491,7 @@ export const gdpr = {
    */
   exportUserData: async (
     userId: string,
-  ): Promise<{ success: boolean; data?: any; error?: string }> => {
+  ): Promise<{ success: boolean; data?: unknown; error?: string }> => {
     try {
       // Log the data export request
       await inputValidation.logSecurityEvent({
