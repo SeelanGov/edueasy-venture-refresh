@@ -14,20 +14,20 @@ const colors = {
   green: '\x1b[32m',
   yellow: '\x1b[33m',
   red: '\x1b[31m',
-  blue: '\x1b[34m'
+  blue: '\x1b[34m',
 };
 
 const log = {
   info: (msg) => console.log(`${colors.blue}[INFO]${colors.reset} ${msg}`),
   success: (msg) => console.log(`${colors.green}[SUCCESS]${colors.reset} ${msg}`),
   warning: (msg) => console.log(`${colors.yellow}[WARNING]${colors.reset} ${msg}`),
-  error: (msg) => console.log(`${colors.red}[ERROR]${colors.reset} ${msg}`)
+  error: (msg) => console.log(`${colors.red}[ERROR]${colors.reset} ${msg}`),
 };
 
 // Configuration
 const config = {
   srcDir: path.resolve(process.cwd(), 'src'),
-  maxWarnings: 0
+  maxWarnings: 0,
 };
 
 /**
@@ -35,7 +35,7 @@ const config = {
  */
 function replaceAnyTypes() {
   log.info('Fixing any types...');
-  
+
   const files = getAllTypeScriptFiles(config.srcDir);
   let fixedFiles = 0;
 
@@ -48,23 +48,23 @@ function replaceAnyTypes() {
       {
         pattern: /: any\b/g,
         replacement: ': unknown',
-        description: 'any -> unknown'
+        description: 'any -> unknown',
       },
       {
         pattern: /Record<string, any>/g,
         replacement: 'Record<string, unknown>',
-        description: 'Record<string, any> -> Record<string, unknown>'
+        description: 'Record<string, any> -> Record<string, unknown>',
       },
       {
         pattern: /Promise<any>/g,
         replacement: 'Promise<unknown>',
-        description: 'Promise<any> -> Promise<unknown>'
+        description: 'Promise<any> -> Promise<unknown>',
       },
       {
         pattern: /Array<any>/g,
         replacement: 'Array<unknown>',
-        description: 'Array<any> -> Array<unknown>'
-      }
+        description: 'Array<any> -> Array<unknown>',
+      },
     ];
 
     for (const replacement of replacements) {
@@ -89,7 +89,7 @@ function replaceAnyTypes() {
  */
 function addMissingReturnTypes() {
   log.info('Adding missing return types...');
-  
+
   const files = getAllTypeScriptFiles(config.srcDir);
   let fixedFiles = 0;
 
@@ -102,18 +102,18 @@ function addMissingReturnTypes() {
       {
         pattern: /export const (\w+) = \(([^)]*)\) => {/g,
         replacement: 'export const $1 = ($2): void => {',
-        description: 'export const function'
+        description: 'export const function',
       },
       {
         pattern: /const (\w+) = \(([^)]*)\) => {/g,
         replacement: 'const $1 = ($2): void => {',
-        description: 'const function'
+        description: 'const function',
       },
       {
         pattern: /export function (\w+)\(([^)]*)\) {/g,
         replacement: 'export function $1($2): void {',
-        description: 'export function'
-      }
+        description: 'export function',
+      },
     ];
 
     for (const pattern of functionPatterns) {
@@ -138,7 +138,7 @@ function addMissingReturnTypes() {
  */
 function fixDesignSystemViolations() {
   log.info('Fixing design system violations...');
-  
+
   const files = getAllTypeScriptFiles(config.srcDir);
   let fixedFiles = 0;
 
@@ -151,12 +151,12 @@ function fixDesignSystemViolations() {
       {
         pattern: /<button\s/g,
         replacement: '<Button ',
-        description: 'raw button -> Button component'
+        description: 'raw button -> Button component',
       },
       {
         pattern: /<\/button>/g,
         replacement: '</Button>',
-        description: 'button closing tag'
+        description: 'button closing tag',
       },
       {
         pattern: /<div\s+className="[^"]*card[^"]*"/g,
@@ -168,8 +168,8 @@ function fixDesignSystemViolations() {
           }
           return match;
         },
-        description: 'div with card class -> Card component'
-      }
+        description: 'div with card class -> Card component',
+      },
     ];
 
     for (const violation of violations) {
@@ -194,7 +194,7 @@ function fixDesignSystemViolations() {
  */
 function addJSDocDocumentation() {
   log.info('Adding JSDoc documentation...');
-  
+
   const files = getAllTypeScriptFiles(config.srcDir);
   let documentedFiles = 0;
 
@@ -209,12 +209,12 @@ function addJSDocDocumentation() {
     while ((match = exportPattern.exec(content)) !== null) {
       const exportType = match[1];
       const functionName = match[2];
-      
+
       // Check if JSDoc already exists
       const beforeMatch = content.substring(0, match.index);
       const lastNewline = beforeMatch.lastIndexOf('\n');
       const beforeFunction = content.substring(lastNewline + 1, match.index);
-      
+
       if (!beforeFunction.includes('/**') && !beforeFunction.includes('@param')) {
         const jsdoc = `\n/**\n * ${functionName}\n * @description ${getFunctionDescription(functionName)}\n */\n`;
         content = content.substring(0, match.index) + jsdoc + content.substring(match.index);
@@ -238,7 +238,7 @@ function addJSDocDocumentation() {
  */
 function createPerformanceMonitoring() {
   log.info('Creating performance monitoring utilities...');
-  
+
   const performanceDir = path.join(config.srcDir, 'utils', 'performance');
   if (!fs.existsSync(performanceDir)) {
     fs.mkdirSync(performanceDir, { recursive: true });
@@ -392,33 +392,33 @@ export const monitorAPICall = (endpoint: string): (() => void) => {
 function getAllTypeScriptFiles(dir) {
   const files = [];
   const items = fs.readdirSync(dir);
-  
+
   for (const item of items) {
     const fullPath = path.join(dir, item);
     const stat = fs.statSync(fullPath);
-    
+
     if (stat.isDirectory()) {
       files.push(...getAllTypeScriptFiles(fullPath));
     } else if (item.endsWith('.ts') || item.endsWith('.tsx')) {
       files.push(fullPath);
     }
   }
-  
+
   return files;
 }
 
 function getFunctionDescription(functionName) {
   const descriptions = {
-    'Component': 'React component',
-    'Hook': 'Custom React hook',
-    'Handler': 'Event handler function',
-    'Validator': 'Validation function',
-    'Formatter': 'Data formatting function',
-    'Calculator': 'Calculation function',
-    'Fetcher': 'Data fetching function',
-    'Processor': 'Data processing function',
-    'Monitor': 'Monitoring function',
-    'Logger': 'Logging function'
+    Component: 'React component',
+    Hook: 'Custom React hook',
+    Handler: 'Event handler function',
+    Validator: 'Validation function',
+    Formatter: 'Data formatting function',
+    Calculator: 'Calculation function',
+    Fetcher: 'Data fetching function',
+    Processor: 'Data processing function',
+    Monitor: 'Monitoring function',
+    Logger: 'Logging function',
   };
 
   for (const [suffix, description] of Object.entries(descriptions)) {
@@ -433,17 +433,16 @@ function getFunctionDescription(functionName) {
 // Main execution
 function main() {
   log.info('Starting critical issues fix...');
-  
+
   try {
     replaceAnyTypes();
     addMissingReturnTypes();
     fixDesignSystemViolations();
     addJSDocDocumentation();
     createPerformanceMonitoring();
-    
+
     log.success('🎉 Critical issues fix completed successfully!');
     log.info('The codebase now follows better practices.');
-    
   } catch (error) {
     log.error('❌ Critical issues fix failed');
     log.error(`Error: ${error.message}`);
@@ -461,5 +460,5 @@ module.exports = {
   addMissingReturnTypes,
   fixDesignSystemViolations,
   addJSDocDocumentation,
-  createPerformanceMonitoring
-}; 
+  createPerformanceMonitoring,
+};

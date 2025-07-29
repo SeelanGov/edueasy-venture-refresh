@@ -12,13 +12,15 @@ const ciConfigPath = path.join(rootDir, '.github', 'workflows');
 // Check if CI configuration exists
 if (fs.existsSync(ciConfigPath)) {
   console.log('✅ CI configuration found at:', ciConfigPath);
-  
+
   // List workflow files
-  const workflowFiles = fs.readdirSync(ciConfigPath).filter(file => file.endsWith('.yml') || file.endsWith('.yaml'));
-  
+  const workflowFiles = fs
+    .readdirSync(ciConfigPath)
+    .filter((file) => file.endsWith('.yml') || file.endsWith('.yaml'));
+
   if (workflowFiles.length > 0) {
     console.log('📋 CI Workflow files:');
-    workflowFiles.forEach(file => {
+    workflowFiles.forEach((file) => {
       console.log(`  - ${file}`);
     });
   } else {
@@ -39,15 +41,16 @@ if (fs.existsSync(viteConfigCiPath)) {
 // Check for platform-specific dependencies
 try {
   console.log('🔍 Checking for platform-specific dependencies...');
-  
+
   // Check for Rollup platform-specific dependencies
   const nodeModulesPath = path.join(rootDir, 'node_modules');
-  const rollupPlatformDeps = fs.readdirSync(nodeModulesPath)
-    .filter(dir => dir.startsWith('@rollup/rollup-'));
-  
+  const rollupPlatformDeps = fs
+    .readdirSync(nodeModulesPath)
+    .filter((dir) => dir.startsWith('@rollup/rollup-'));
+
   if (rollupPlatformDeps.length > 0) {
     console.log('✅ Rollup platform-specific dependencies found:');
-    rollupPlatformDeps.forEach(dep => {
+    rollupPlatformDeps.forEach((dep) => {
       console.log(`  - ${dep}`);
     });
   } else {
@@ -62,12 +65,13 @@ try {
 const packageJsonPath = path.join(rootDir, 'package.json');
 try {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  const buildScripts = Object.keys(packageJson.scripts || {})
-    .filter(script => script.startsWith('build'));
-  
+  const buildScripts = Object.keys(packageJson.scripts || {}).filter((script) =>
+    script.startsWith('build'),
+  );
+
   if (buildScripts.length > 0) {
     console.log('📋 Available build scripts:');
-    buildScripts.forEach(script => {
+    buildScripts.forEach((script) => {
       console.log(`  - ${script}: ${packageJson.scripts[script]}`);
     });
   } else {

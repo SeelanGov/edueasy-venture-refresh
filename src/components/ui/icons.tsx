@@ -40,7 +40,18 @@ export {
 export { CreditCard, DollarSign, KeyRound, Lock, Shield, ShieldCheck } from 'lucide-react';
 
 // Communication Icons
-export { Bell, Bot, Crown, Mail, MessageSquare, Phone, Send, Sparkles, Zap } from 'lucide-react';
+export {
+  Bell,
+  Bot,
+  Crown,
+  Mail,
+  MessageSquare,
+  Phone,
+  Send,
+  Smartphone,
+  Sparkles,
+  Zap,
+} from 'lucide-react';
 
 // Location & Contact Icons
 export { MapPin } from 'lucide-react';

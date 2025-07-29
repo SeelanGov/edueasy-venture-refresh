@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -48,8 +49,9 @@ const CounselorLogin: React.FC = () => {
       toast.success('Successfully logged in!');
       navigate('/auth-redirect');
     } catch (err: unknown) {
-      setError(err.message || 'Login error');
-      toast.error(err.message || 'Login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Login error';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

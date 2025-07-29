@@ -1,7 +1,7 @@
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import type { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 interface SponsorGuardProps {
   children: ReactNode;
@@ -11,9 +11,8 @@ interface SponsorGuardProps {
  * SponsorGuard
  * @description Function
  */
-export const SponsorGuard = ({ children }: SponsorGuardProps): void => {
+export const SponsorGuard = ({ children }: SponsorGuardProps): JSX.Element => {
   const { userType, loading } = useAuth();
-  const location = useLocation();
 
   if (loading) {
     return (

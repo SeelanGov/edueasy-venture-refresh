@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document outlines the complete PayFast payment integration for EduEasy, enabling secure one-time payments for subscription plans.
+This document outlines the complete PayFast payment integration for EduEasy, enabling secure
+one-time payments for subscription plans.
 
 ## Architecture
 
@@ -25,7 +26,7 @@ User → Select Plan → Checkout → PayFast → Payment Success/Failure → Su
 
 ```sql
 -- PayFast-specific fields added to payments table
-ALTER TABLE public.payments 
+ALTER TABLE public.payments
 ADD COLUMN merchant_reference TEXT UNIQUE,
 ADD COLUMN tier TEXT CHECK (tier IN ('basic', 'premium')),
 ADD COLUMN gateway_provider TEXT DEFAULT 'payfast',
@@ -62,6 +63,7 @@ CREATE TABLE public.payment_audit_logs (
 **Endpoint**: `POST /functions/v1/create-payment-session`
 
 **Input**:
+
 ```json
 {
   "tier": "basic" | "premium",
@@ -70,6 +72,7 @@ CREATE TABLE public.payment_audit_logs (
 ```
 
 **Output**:
+
 ```json
 {
   "payment_url": "https://sandbox.payfast.co.za/eng/process?...",
@@ -85,6 +88,7 @@ CREATE TABLE public.payment_audit_logs (
 **Endpoint**: `POST /functions/v1/process-payment-webhook`
 
 **Features**:
+
 - IP address validation
 - PayFast signature verification
 - Payment status updates
@@ -98,6 +102,7 @@ CREATE TABLE public.payment_audit_logs (
 **Endpoint**: `POST /functions/v1/verify-payment-status`
 
 **Input**:
+
 ```json
 {
   "merchant_reference": "EDU-1234567890-abc123"
@@ -138,19 +143,23 @@ const subscribeToPlan = async (tierId: string, paymentMethod: string) => {
 ## Security Features
 
 ### 1. IP Validation
+
 - Validates webhook IP addresses against PayFast's known IP ranges
 - Rejects unauthorized webhook requests
 
 ### 2. Signature Verification
+
 - Verifies PayFast webhook signatures using MD5 hashing
 - Ensures webhook authenticity
 
 ### 3. Audit Logging
+
 - Comprehensive logging of all payment events
 - Tracks webhook attempts and failures
 - Enables payment monitoring and debugging
 
 ### 4. RLS Policies
+
 - Users can only access their own payments
 - Admins have full access to payment monitoring
 - Secure audit log access
@@ -174,7 +183,7 @@ SITE_URL=https://edueasy.co.za
 
 1. **Merchant Account**: Configured with EduEasy business details
 2. **Webhook URL**: Set to `https://your-project.supabase.co/functions/v1/process-payment-webhook`
-3. **Return URLs**: 
+3. **Return URLs**:
    - Success: `https://edueasy.co.za/payment-success`
    - Cancel: `https://edueasy.co.za/payment-cancelled`
 
@@ -192,6 +201,7 @@ chmod +x scripts/deploy-payfast.sh
 ### Manual Deployment
 
 1. **Set Secrets**:
+
 ```bash
 supabase secrets set PAYFAST_MERCHANT_ID=30987005
 supabase secrets set PAYFAST_MERCHANT_KEY=r4oukwctltbzv
@@ -201,11 +211,13 @@ supabase secrets set SITE_URL=https://edueasy.co.za
 ```
 
 2. **Deploy Database**:
+
 ```bash
 supabase db reset
 ```
 
 3. **Deploy Functions**:
+
 ```bash
 supabase functions deploy create-payment-session
 supabase functions deploy process-payment-webhook
@@ -234,7 +246,7 @@ supabase functions deploy verify-payment-status
 
 ```sql
 CREATE OR REPLACE VIEW public.payment_monitoring AS
-SELECT 
+SELECT
   p.id,
   p.merchant_reference,
   p.tier,
@@ -257,7 +269,7 @@ ORDER BY p.created_at DESC;
 Monitor payment events through the `payment_audit_logs` table:
 
 ```sql
-SELECT * FROM payment_audit_logs 
+SELECT * FROM payment_audit_logs
 WHERE event_type IN ('payment_session_created', 'webhook_processed', 'subscription_activated')
 ORDER BY created_at DESC;
 ```
@@ -309,6 +321,7 @@ curl -X POST http://localhost:54321/functions/v1/verify-payment-status \
 ## Support
 
 For technical support:
+
 - **Email**: support@edueasy.co.za
 - **Documentation**: This document and inline code comments
-- **Logs**: Supabase function logs and audit trails 
+- **Logs**: Supabase function logs and audit trails

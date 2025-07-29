@@ -2,7 +2,7 @@
 
 /**
  * Test Script: Student Tracking System Verification
- * 
+ *
  * This script tests the student tracking system fixes to ensure:
  * 1. All users have tracking IDs
  * 2. New registrations automatically get tracking IDs
@@ -31,7 +31,7 @@ async function testTrackingSystem() {
     // Test 1: Check tracking ID statistics
     console.log('📊 Test 1: Checking tracking ID statistics...');
     const { data: stats, error: statsError } = await supabase.rpc('get_tracking_id_stats');
-    
+
     if (statsError) {
       console.error('❌ Failed to get tracking ID stats:', statsError);
       return false;
@@ -59,7 +59,7 @@ async function testTrackingSystem() {
 
     if (usersWithoutTracking.length > 0) {
       console.error(`❌ Found ${usersWithoutTracking.length} users without tracking IDs:`);
-      usersWithoutTracking.forEach(user => {
+      usersWithoutTracking.forEach((user) => {
         console.error(`   - ${user.email} (${user.id})`);
       });
       return false;
@@ -80,11 +80,11 @@ async function testTrackingSystem() {
     }
 
     const formatRegex = /^EDU-ZA-\d{2}-\d{6}$/;
-    const invalidFormats = allUsers.filter(user => !formatRegex.test(user.tracking_id));
+    const invalidFormats = allUsers.filter((user) => !formatRegex.test(user.tracking_id));
 
     if (invalidFormats.length > 0) {
       console.error(`❌ Found ${invalidFormats.length} tracking IDs with invalid format:`);
-      invalidFormats.forEach(user => {
+      invalidFormats.forEach((user) => {
         console.error(`   - ${user.tracking_id}`);
       });
       return false;
@@ -95,7 +95,7 @@ async function testTrackingSystem() {
     // Test 4: Test tracking ID generation function
     console.log('🔍 Test 4: Testing tracking ID generation...');
     const { data: nextId, error: genError } = await supabase.rpc('peek_next_tracking_id');
-    
+
     if (genError) {
       console.error('❌ Failed to generate test tracking ID:', genError);
       return false;
@@ -120,7 +120,7 @@ async function testTrackingSystem() {
     console.log(`✅ Audit log contains ${auditLog.length} recent entries`);
     if (auditLog.length > 0) {
       console.log('   Recent assignments:');
-      auditLog.forEach(entry => {
+      auditLog.forEach((entry) => {
         console.log(`   - ${entry.tracking_id} (${entry.assignment_method})`);
       });
     }
@@ -129,13 +129,19 @@ async function testTrackingSystem() {
     // Test 6: Test manual assignment function
     console.log('🔍 Test 6: Testing manual tracking ID assignment...');
     const testUserId = '00000000-0000-0000-0000-000000000000'; // Dummy ID for testing
-    
-    const { data: manualId, error: manualError } = await supabase.rpc('assign_tracking_id_to_user', {
-      p_user_id: testUserId
-    });
+
+    const { data: manualId, error: manualError } = await supabase.rpc(
+      'assign_tracking_id_to_user',
+      {
+        p_user_id: testUserId,
+      },
+    );
 
     if (manualError) {
-      console.log('ℹ️  Manual assignment test (expected error for non-existent user):', manualError.message);
+      console.log(
+        'ℹ️  Manual assignment test (expected error for non-existent user):',
+        manualError.message,
+      );
     } else {
       console.log(`✅ Manual assignment function works: ${manualId}`);
     }
@@ -155,7 +161,6 @@ async function testTrackingSystem() {
     console.log('🚀 Student tracking system is ready for production!');
 
     return true;
-
   } catch (error) {
     console.error('❌ Test failed with error:', error);
     return false;
@@ -164,10 +169,10 @@ async function testTrackingSystem() {
 
 // Run the test
 testTrackingSystem()
-  .then(success => {
+  .then((success) => {
     process.exit(success ? 0 : 1);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('❌ Test script failed:', error);
     process.exit(1);
-  }); 
+  });

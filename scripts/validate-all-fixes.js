@@ -24,17 +24,19 @@ function validateAllFixes() {
     const securityPath = path.join(__dirname, '..', 'src', 'utils', 'security.ts');
     if (fs.existsSync(securityPath)) {
       const content = fs.readFileSync(securityPath, 'utf8');
-      
-      const hasOldPatterns = content.includes('sessionStorage.setItem') ||
-                            content.includes('sessionStorage.getItem') ||
-                            content.includes('sessionStorage.removeItem') ||
-                            content.includes('sessionStorage.clear');
-      
-      const hasNewPatterns = content.includes('window.sessionStorage.setItem') &&
-                            content.includes('window.sessionStorage.getItem') &&
-                            content.includes('window.sessionStorage.removeItem') &&
-                            content.includes('window.sessionStorage.clear');
-      
+
+      const hasOldPatterns =
+        content.includes('sessionStorage.setItem') ||
+        content.includes('sessionStorage.getItem') ||
+        content.includes('sessionStorage.removeItem') ||
+        content.includes('sessionStorage.clear');
+
+      const hasNewPatterns =
+        content.includes('window.sessionStorage.setItem') &&
+        content.includes('window.sessionStorage.getItem') &&
+        content.includes('window.sessionStorage.removeItem') &&
+        content.includes('window.sessionStorage.clear');
+
       if (!hasOldPatterns && hasNewPatterns) {
         console.log('✅ localStorage recursion bug: FIXED');
         results.localStorageRecursion = true;
@@ -68,12 +70,13 @@ function validateAllFixes() {
     const errorHandlingPath = path.join(__dirname, '..', 'src', 'utils', 'errorHandling.ts');
     if (fs.existsSync(errorHandlingPath)) {
       const content = fs.readFileSync(errorHandlingPath, 'utf8');
-      
-      const hasCentralizedSystem = content.includes('export const handleError') &&
-                                 content.includes('export const safeAsync') &&
-                                 content.includes('export const parseError') &&
-                                 content.includes('AppError');
-      
+
+      const hasCentralizedSystem =
+        content.includes('export const handleError') &&
+        content.includes('export const safeAsync') &&
+        content.includes('export const parseError') &&
+        content.includes('AppError');
+
       if (hasCentralizedSystem) {
         console.log('✅ Centralized error handling: IMPLEMENTED');
         results.errorHandling = true;
@@ -86,16 +89,24 @@ function validateAllFixes() {
 
     // Test 4: Security implementation
     console.log('\n🔧 Test 4: Security Implementation');
-    const securitySettingsPath = path.join(__dirname, '..', 'src', 'components', 'security', 'SecuritySettings.tsx');
+    const securitySettingsPath = path.join(
+      __dirname,
+      '..',
+      'src',
+      'components',
+      'security',
+      'SecuritySettings.tsx',
+    );
     if (fs.existsSync(securitySettingsPath)) {
       const content = fs.readFileSync(securitySettingsPath, 'utf8');
-      
-      const hasPasswordAPI = content.includes('supabase.auth.updateUser') &&
-                           !content.includes('TODO: Implement password change API call');
-      
-      const usesErrorHandling = content.includes('import { handleError, safeAsync }') &&
-                              content.includes('safeAsync(');
-      
+
+      const hasPasswordAPI =
+        content.includes('supabase.auth.updateUser') &&
+        !content.includes('TODO: Implement password change API call');
+
+      const usesErrorHandling =
+        content.includes('import { handleError, safeAsync }') && content.includes('safeAsync(');
+
       if (hasPasswordAPI && usesErrorHandling) {
         console.log('✅ Security implementation: COMPLETE');
         results.securityImplementation = true;
@@ -116,56 +127,55 @@ function validateAllFixes() {
     // Test 5: Design system violations
     console.log('\n🔧 Test 5: Design System Compliance');
     const designSystemViolations = [];
-    
+
     // Check for raw HTML elements
     const filesToCheck = [
       'src/components/security/SecuritySettings.tsx',
       'src/components/ui/Button.tsx',
       'src/components/ui/Card.tsx',
     ];
-    
+
     for (const file of filesToCheck) {
       const filePath = path.join(__dirname, '..', file);
       if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, 'utf8');
-        
+
         // Check for raw HTML elements instead of components
         if (content.includes('<button ') && !content.includes('import { Button }')) {
           designSystemViolations.push(`${file}: Raw <button> element`);
         }
-        
-        if (content.includes('<div ') && content.includes('className="bg-') && !content.includes('import { Card }')) {
+
+        if (
+          content.includes('<div ') &&
+          content.includes('className="bg-') &&
+          !content.includes('import { Card }')
+        ) {
           designSystemViolations.push(`${file}: Raw <div> with hardcoded colors`);
         }
       }
     }
-    
+
     if (designSystemViolations.length === 0) {
       console.log('✅ Design system compliance: GOOD');
       results.designSystem = true;
     } else {
       console.log('⚠️ Design system violations found:');
-      designSystemViolations.forEach(violation => {
+      designSystemViolations.forEach((violation) => {
         console.log(`   - ${violation}`);
       });
     }
 
     // Test 6: TODO items
     console.log('\n🔧 Test 6: TODO Items');
-    const todoPatterns = [
-      'TODO: Implement',
-      'FIXME:',
-      'BUG:',
-      'HACK:',
-    ];
-    
+    const todoPatterns = ['TODO: Implement', 'FIXME:', 'BUG:', 'HACK:'];
+
     const todoFiles = [];
     const searchInDirectory = (dir) => {
       const items = fs.readdirSync(dir);
       for (const item of items) {
         const fullPath = path.join(dir, item);
         const stat = fs.statSync(fullPath);
-        
+
         if (stat.isDirectory() && !item.startsWith('.') && item !== 'node_modules') {
           searchInDirectory(fullPath);
         } else if (stat.isFile() && (item.endsWith('.ts') || item.endsWith('.tsx'))) {
@@ -178,15 +188,15 @@ function validateAllFixes() {
         }
       }
     };
-    
+
     searchInDirectory(path.join(__dirname, '..', 'src'));
-    
+
     if (todoFiles.length === 0) {
       console.log('✅ No critical TODO items found');
       results.todos = true;
     } else {
       console.log('⚠️ Critical TODO items found:');
-      todoFiles.slice(0, 5).forEach(todo => {
+      todoFiles.slice(0, 5).forEach((todo) => {
         console.log(`   - ${todo}`);
       });
       if (todoFiles.length > 5) {
@@ -196,24 +206,24 @@ function validateAllFixes() {
 
     console.log('\n📊 VALIDATION SUMMARY');
     console.log('=====================');
-    
+
     const totalTests = Object.keys(results).length;
     const passedTests = Object.values(results).filter(Boolean).length;
-    
+
     console.log(`Tests Passed: ${passedTests}/${totalTests}`);
     console.log(`Success Rate: ${Math.round((passedTests / totalTests) * 100)}%`);
-    
+
     console.log('\n🎯 DETAILED RESULTS:');
     console.log('===================');
-    
+
     Object.entries(results).forEach(([test, passed]) => {
       const status = passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${test.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
     });
-    
+
     console.log('\n🚀 DEPLOYMENT READINESS:');
     console.log('=======================');
-    
+
     if (passedTests >= totalTests - 1) {
       console.log('🎉 READY FOR DEPLOYMENT');
       console.log('   - All critical issues resolved');
@@ -229,9 +239,8 @@ function validateAllFixes() {
       console.log('   - Critical issues remain');
       console.log('   - Address issues before deployment');
     }
-    
+
     return results;
-    
   } catch (error) {
     console.error('❌ Validation failed:', error.message);
     return results;
@@ -239,4 +248,4 @@ function validateAllFixes() {
 }
 
 // Run validation
-validateAllFixes(); 
+validateAllFixes();

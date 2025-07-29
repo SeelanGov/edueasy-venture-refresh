@@ -2,7 +2,8 @@
 
 ## Summary of Completed Work
 
-We've successfully fixed several critical issues in the EduEasy project and improved the CI/CD configuration:
+We've successfully fixed several critical issues in the EduEasy project and improved the CI/CD
+configuration:
 
 1. **Fixed Critical Build Errors**
    - Resolved syntax error in the Supabase client file that was preventing builds
@@ -64,11 +65,13 @@ To continue improving the project, consider the following next steps:
 ## How to Use the Utility Scripts
 
 ### Testing CI/CD Locally
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File test-ci-cd.ps1
 ```
 
 ### Pushing Changes to GitHub
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File push-changes.ps1 "Your commit message"
 ```

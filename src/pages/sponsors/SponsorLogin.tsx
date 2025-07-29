@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SponsorLogin = (): void => {
@@ -35,7 +36,8 @@ const SponsorLogin = (): void => {
 
       navigate('/sponsors/dashboard');
     } catch (err: unknown) {
-      setError(err.message || 'Login error');
+      const errorMessage = err instanceof Error ? err.message : 'Login error';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

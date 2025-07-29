@@ -25,6 +25,7 @@ export const ReviewSubmitStep = ({ onBack }: { onBack: () => void }) => {
     isDataSaved,
     setDataSaved,
   } = useProfileCompletionStore();
+  const [_isDataSaved, setIsDataSaved] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

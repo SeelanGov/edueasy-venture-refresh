@@ -44,7 +44,6 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState(30);
   const [loginNotifications, setLoginNotifications] = useState(true);
-  const [dataSharing, setDataSharing] = useState(false);
 
   // Privacy preferences
   const [analyticsConsent, setAnalyticsConsent] = useState(false);
@@ -138,17 +137,17 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
 
     setLoading(true);
-    
+
     const { error } = await safeAsync(
       async () => {
         const { error: updateError } = await supabase.auth.updateUser({
-          password: newPassword
+          password: newPassword,
         });
-        
+
         if (updateError) {
           throw updateError;
         }
-        
+
         return true;
       },
       {
@@ -156,7 +155,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         action: 'password_change',
         userId: user?.id,
         showToast: false, // We'll handle the success toast manually
-      }
+      },
     );
 
     if (error) {
@@ -181,21 +180,21 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       description: 'User changed password',
       userId: user?.id,
     });
-    
+
     setLoading(false);
   };
 
   const handleDataExport = async () => {
     setLoading(true);
-    
+
     const { error } = await safeAsync(
       async () => {
         const result = await gdpr.exportUserData(user?.id || '');
-        
+
         if (!result.success) {
           throw new Error(result.error || 'Export failed');
         }
-        
+
         return result;
       },
       {
@@ -203,7 +202,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         action: 'data_export',
         userId: user?.id,
         showToast: false,
-      }
+      },
     );
 
     if (error) {
@@ -213,9 +212,10 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
     toast({
       title: 'Data Export Requested',
-      description: "Your data export request has been submitted. You will receive an email when it's ready.",
+      description:
+        "Your data export request has been submitted. You will receive an email when it's ready.",
     });
-    
+
     setLoading(false);
   };
 
@@ -225,15 +225,15 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     }
 
     setLoading(true);
-    
+
     const { error } = await safeAsync(
       async () => {
         const result = await gdpr.requestDataDeletion(user?.id || '');
-        
+
         if (!result.success) {
           throw new Error('Failed to submit deletion request');
         }
-        
+
         return result;
       },
       {
@@ -241,7 +241,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         action: 'data_deletion',
         userId: user?.id,
         showToast: false,
-      }
+      },
     );
 
     if (error) {
@@ -251,9 +251,10 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
     toast({
       title: 'Deletion Request Submitted',
-      description: 'Your data deletion request has been submitted. You will receive a confirmation email.',
+      description:
+        'Your data deletion request has been submitted. You will receive a confirmation email.',
     });
-    
+
     setLoading(false);
   };
 

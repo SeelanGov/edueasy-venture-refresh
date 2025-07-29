@@ -1,5 +1,4 @@
-import React from 'react';
-import { useSubscription } from '@/hooks/useSubscription';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,9 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Lock } from 'lucide-react';
+import { useSubscription } from '@/hooks/useSubscription';
 import { SubscriptionTierName } from '@/types/SubscriptionTypes';
+import { Lock } from 'lucide-react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface PremiumFeatureProps {
@@ -27,7 +27,7 @@ interface PremiumFeatureProps {
  */
 export function PremiumFeature({
   title,
-  description,
+  description: _description,
   requiredTier,
   children,
   showPreview = false,

@@ -290,6 +290,70 @@ export interface Database {
           resolution_notes?: string;
         };
       };
+      user_consents: {
+        Row: {
+          id: string;
+          user_id: string;
+          consent_type: string;
+          consent_text: string;
+          consent_version: string;
+          accepted: boolean;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          consent_type: string;
+          consent_text: string;
+          consent_version: string;
+          accepted: boolean;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          consent_type?: string;
+          consent_text?: string;
+          consent_version?: string;
+          accepted?: boolean;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+      };
+      verifyid_audit_log: {
+        Row: {
+          id: string;
+          user_id: string;
+          api_request_id: string;
+          verification_status: string;
+          error_message?: string | null;
+          ip_address?: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          api_request_id: string;
+          verification_status: string;
+          error_message?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          api_request_id?: string;
+          verification_status?: string;
+          error_message?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+      };
       // Add other tables as needed
     };
     Views: Record<string, unknown>; // Using Record type instead of empty object

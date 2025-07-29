@@ -11,6 +11,7 @@ import {
   MessageSquare,
   RefreshCw,
   Save,
+  Smartphone,
   XCircle,
 } from '@/components/ui/icons';
 import {

@@ -50,20 +50,20 @@ try {
 try {
   logger.info('🔍 Running linting with auto-fix...');
   execSync('npm run lint:fix', { stdio: 'inherit', cwd: rootDir });
-  
+
   // Run regular lint to check if all issues are fixed
   logger.info('🔍 Verifying linting...');
   execSync('npm run lint', { stdio: 'inherit', cwd: rootDir });
 } catch (error) {
   logger.error('❌ Linting failed:', error.message);
   logger.info('⚠️ Some linting issues could not be fixed automatically. Please fix them manually.');
-  
+
   // Ask for confirmation to continue despite linting errors
   const readline = require('readline').createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
-  
+
   readline.question('Continue with deployment despite linting errors? (y/n): ', (answer) => {
     readline.close();
     if (answer.toLowerCase() !== 'y') {
@@ -92,7 +92,7 @@ try {
   }
 } catch (error) {
   logger.error('❌ Build failed:', error.message);
-  
+
   // Try fallback build
   logger.info('⚠️ Attempting fallback build...');
   try {
@@ -110,9 +110,12 @@ try {
   const isWindows = process.platform === 'win32';
   const deployScriptPs = path.join(rootDir, `scripts/deploy-${environment}.ps1`);
   const deployScriptSh = path.join(rootDir, `scripts/deploy-${environment}.sh`);
-  
+
   if (isWindows && fs.existsSync(deployScriptPs)) {
-    execSync(`powershell -File scripts/deploy-${environment}.ps1`, { stdio: 'inherit', cwd: rootDir });
+    execSync(`powershell -File scripts/deploy-${environment}.ps1`, {
+      stdio: 'inherit',
+      cwd: rootDir,
+    });
   } else if (fs.existsSync(deployScriptSh)) {
     execSync(`bash scripts/deploy-${environment}.sh`, { stdio: 'inherit', cwd: rootDir });
   } else {

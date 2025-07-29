@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/table';
 import { supabase } from '@/integrations/supabase/client';
 import { getConsentStatistics } from '@/utils/consent-recording';
-import { CheckCircle, Clock, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
+import { CheckCircle, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface ConsentRecord {
@@ -59,7 +59,7 @@ interface VerificationLog {
  * ConsentAuditPanel
  * @description Function
  */
-export const ConsentAuditPanel = (): void => {
+export const ConsentAuditPanel = (): JSX.Element => {
   const [consents, setConsents] = useState<ConsentRecord[]>([]);
   const [verificationLogs, setVerificationLogs] = useState<VerificationLog[]>([]);
   const [statistics, setStatistics] = useState<any>(null);
@@ -81,12 +81,7 @@ export const ConsentAuditPanel = (): void => {
       // Load consents with user data
       const { data: consentsData, error: consentsError } = await supabase
         .from('user_consents')
-        .select(
-          `
-          *,
-          user:users(email, full_name)
-        `,
-        )
+        .select('*, user:users(email, full_name)')
         .order('created_at', { ascending: false });
 
       if (consentsError) throw consentsError;
@@ -94,12 +89,7 @@ export const ConsentAuditPanel = (): void => {
       // Load verification logs with user data
       const { data: verificationData, error: verificationError } = await supabase
         .from('verifyid_audit_log')
-        .select(
-          `
-          *,
-          user:users(email, full_name)
-        `,
-        )
+        .select('*, user:users(email, full_name)')
         .order('created_at', { ascending: false });
 
       if (verificationError) throw verificationError;
@@ -110,10 +100,9 @@ export const ConsentAuditPanel = (): void => {
       setConsents(consentsData || []);
       setVerificationLogs(verificationData || []);
       setStatistics(stats);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load audit data');
-    } finally {
+    } catch (_err) {
       setIsLoading(false);
+      setError('Failed to load audit data');
     }
   };
 
@@ -179,38 +168,16 @@ export const ConsentAuditPanel = (): void => {
     window.URL.revokeObjectURL(url);
   };
 
-  const getStatusBadge = (status: string): void => {
+  const getStatusBadge = (status: string): string => {
     switch (status) {
-      case 'success':
-        return (
-          <Badge variant="default" className="bg-green-100 text-green-800">
-            <CheckCircle className="h-3 w-3 mr-1" />
-            Success
-          </Badge>
-        );
+      case 'verified':
+        return 'success';
+      case 'pending':
+        return 'warning';
       case 'failed':
-        return (
-          <Badge variant="destructive">
-            <XCircle className="h-3 w-3 mr-1" />
-            Failed
-          </Badge>
-        );
-      case 'consent_missing':
-        return (
-          <Badge variant="secondary">
-            <Shield className="h-3 w-3 mr-1" />
-            No Consent
-          </Badge>
-        );
-      case 'rate_limited':
-        return (
-          <Badge variant="outline">
-            <Clock className="h-3 w-3 mr-1" />
-            Rate Limited
-          </Badge>
-        );
+        return 'error';
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return 'default';
     }
   };
 

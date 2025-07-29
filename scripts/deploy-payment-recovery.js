@@ -1,4 +1,3 @@
-
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -33,15 +32,14 @@ try {
 // Deploy function
 try {
   console.log(`📤 Deploying ${FUNCTION_NAME}...`);
-  
+
   // Try with npx first
   execSync(`npx supabase functions deploy ${FUNCTION_NAME} --project-ref ${PROJECT_REF}`, {
-    stdio: 'inherit'
+    stdio: 'inherit',
   });
-  
+
   console.log(`✅ ${FUNCTION_NAME} deployed successfully!`);
   console.log(`🌐 Function URL: https://${PROJECT_REF}.supabase.co/functions/v1/${FUNCTION_NAME}`);
-  
 } catch (error) {
   console.error(`❌ Deployment failed: ${error.message}`);
   console.log('\n🔧 Alternative deployment methods:');
@@ -53,6 +51,6 @@ try {
   console.log('6. Paste and deploy');
   console.log('7. Check authentication: npx supabase login');
   console.log('8. Set access token: export SUPABASE_ACCESS_TOKEN=your_token');
-  
+
   process.exit(1);
 }

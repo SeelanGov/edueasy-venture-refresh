@@ -1,4 +1,3 @@
-
 // Enhanced cross-platform script to fix Rollup dependencies with better error handling
 const { execSync } = require('child_process');
 const fs = require('fs');
@@ -64,7 +63,7 @@ try {
   targetDeps = [...new Set(targetDeps)];
 
   logger.info(`🔍 Installing dependencies: ${targetDeps.join(', ')}`);
-  
+
   for (const dep of targetDeps) {
     try {
       execSync(`npm install ${dep} --no-save`, { stdio: 'inherit', cwd: rootDir });
@@ -79,11 +78,11 @@ try {
       }
     }
   }
-  
+
   logger.success('✅ Platform-specific Rollup dependencies installation completed');
 } catch (error) {
   logger.error('❌ Failed to install platform-specific dependencies:', error.message);
-  
+
   // Try alternative approach if the first one fails
   logger.info('🔄 Trying alternative approach...');
   try {
@@ -93,7 +92,7 @@ try {
       fs.unlinkSync(rollupBinPath);
       logger.success('✅ Removed rollup binary to force reinstallation');
     }
-    
+
     // Reinstall rollup
     execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
     logger.success('✅ Reinstalled rollup');
@@ -121,13 +120,13 @@ try {
   const packageJsonPath = path.join(rootDir, 'package.json');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   logger.success(`✅ Project: ${packageJson.name} v${packageJson.version}`);
-  
+
   if (fs.existsSync(nodeModulesPath)) {
     logger.success('✅ node_modules directory exists');
   } else {
     logger.warn('⚠️ node_modules directory not found');
   }
-  
+
   if (fs.existsSync(packageLockPath)) {
     logger.success('✅ package-lock.json exists');
   } else {

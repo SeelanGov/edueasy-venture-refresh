@@ -14,7 +14,7 @@ const oldPatterns = [
   /sessionStorage\.setItem\(key, value\)/g,
   /sessionStorage\.getItem\(key\)/g,
   /sessionStorage\.removeItem\(key\)/g,
-  /sessionStorage\.clear\(\)/g
+  /sessionStorage\.clear\(\)/g,
 ];
 
 // Check for the new fixed pattern (with window.)
@@ -23,7 +23,7 @@ const newPatterns = [
   /window\.sessionStorage\.setItem\(key, value\)/g,
   /window\.sessionStorage\.getItem\(key\)/g,
   /window\.sessionStorage\.removeItem\(key\)/g,
-  /window\.sessionStorage\.clear\(\)/g
+  /window\.sessionStorage\.clear\(\)/g,
 ];
 
 console.log('\n🔍 Checking for old recursive patterns (without window.):');
@@ -66,4 +66,4 @@ if (foundOldPatterns === 0 && foundNewPatterns >= 5) {
   if (foundNewPatterns < 5) {
     console.log(`❌ Missing ${5 - foundNewPatterns} new fixed patterns`);
   }
-} 
+}

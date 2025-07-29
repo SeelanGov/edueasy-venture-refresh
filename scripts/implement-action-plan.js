@@ -3,7 +3,7 @@
 /**
  * Comprehensive Action Plan Implementation Script
  * Based on GitHub Copilot Report Analysis
- * 
+ *
  * This script systematically addresses:
  * 1. TypeScript/ESLint Issues
  * 2. Design System Violations
@@ -25,7 +25,7 @@ const colors = {
   yellow: '\x1b[33m',
   blue: '\x1b[34m',
   magenta: '\x1b[35m',
-  cyan: '\x1b[36m'
+  cyan: '\x1b[36m',
 };
 
 const log = {
@@ -33,7 +33,7 @@ const log = {
   success: (msg) => console.log(`${colors.green}[SUCCESS]${colors.reset} ${msg}`),
   warning: (msg) => console.log(`${colors.yellow}[WARNING]${colors.reset} ${msg}`),
   error: (msg) => console.log(`${colors.red}[ERROR]${colors.reset} ${msg}`),
-  step: (msg) => console.log(`${colors.cyan}[STEP]${colors.reset} ${msg}`)
+  step: (msg) => console.log(`${colors.cyan}[STEP]${colors.reset} ${msg}`),
 };
 
 // Configuration
@@ -42,7 +42,7 @@ const config = {
   scriptsDir: path.resolve(process.cwd(), 'scripts'),
   docsDir: path.resolve(process.cwd(), 'docs'),
   maxWarnings: 0,
-  autoFix: true
+  autoFix: true,
 };
 
 /**
@@ -50,7 +50,7 @@ const config = {
  */
 async function fixTypeScriptAndESLintIssues() {
   log.step('Step 1: Fixing TypeScript and ESLint Issues');
-  
+
   try {
     // Run auto-fix for ESLint
     if (config.autoFix) {
@@ -71,9 +71,10 @@ async function fixTypeScriptAndESLintIssues() {
 
     // Final ESLint check
     log.info('Running final ESLint check...');
-    execSync(`npx eslint "./src/**/*.{ts,tsx}" --max-warnings=${config.maxWarnings}`, { stdio: 'inherit' });
+    execSync(`npx eslint "./src/**/*.{ts,tsx}" --max-warnings=${config.maxWarnings}`, {
+      stdio: 'inherit',
+    });
     log.success('ESLint check passed');
-
   } catch (error) {
     log.error(`Failed to fix TypeScript/ESLint issues: ${error.message}`);
     throw error;
@@ -85,12 +86,12 @@ async function fixTypeScriptAndESLintIssues() {
  */
 async function fixDesignSystemViolations() {
   log.step('Step 2: Fixing Design System Violations');
-  
+
   const violations = [
     {
       pattern: /<button\s/g,
       replacement: '<Button ',
-      description: 'Replace raw button elements with Button component'
+      description: 'Replace raw button elements with Button component',
     },
     {
       pattern: /className="[^"]*bg-\[#[0-9a-fA-F]{6}\]/g,
@@ -99,8 +100,8 @@ async function fixDesignSystemViolations() {
         const color = match.match(/#[0-9a-fA-F]{6}/)[0];
         return `className="bg-primary" // TODO: Replace ${color} with design token`;
       },
-      description: 'Replace hardcoded colors with design tokens'
-    }
+      description: 'Replace hardcoded colors with design tokens',
+    },
   ];
 
   try {
@@ -126,7 +127,6 @@ async function fixDesignSystemViolations() {
     }
 
     log.success(`Fixed design system violations in ${fixedFiles} files`);
-
   } catch (error) {
     log.error(`Failed to fix design system violations: ${error.message}`);
     throw error;
@@ -138,12 +138,12 @@ async function fixDesignSystemViolations() {
  */
 async function addMissingReturnTypes() {
   log.step('Step 3: Adding Missing Return Types');
-  
+
   try {
     // Run the existing script to find functions without return types
     log.info('Finding functions without return types...');
     execSync('node scripts/find-missing-return-types.js', { stdio: 'inherit' });
-    
+
     // Create a script to automatically add return types
     const addReturnTypesScript = `
       const fs = require('fs');
@@ -197,12 +197,11 @@ async function addMissingReturnTypes() {
         return files;
       }
     `;
-    
+
     fs.writeFileSync(path.join(config.scriptsDir, 'add-return-types.js'), addReturnTypesScript);
     execSync('node scripts/add-return-types.js', { stdio: 'inherit' });
-    
-    log.success('Added missing return types');
 
+    log.success('Added missing return types');
   } catch (error) {
     log.error(`Failed to add return types: ${error.message}`);
     throw error;
@@ -214,7 +213,7 @@ async function addMissingReturnTypes() {
  */
 async function replaceAnyTypes() {
   log.step('Step 4: Replacing Any Types');
-  
+
   try {
     const files = getAllTypeScriptFiles(config.srcDir);
     let replacedCount = 0;
@@ -228,18 +227,18 @@ async function replaceAnyTypes() {
         {
           pattern: /: any\b/g,
           replacement: ': unknown',
-          description: 'Replace any with unknown'
+          description: 'Replace any with unknown',
         },
         {
           pattern: /Record<string, any>/g,
           replacement: 'Record<string, unknown>',
-          description: 'Replace Record<string, any> with Record<string, unknown>'
+          description: 'Replace Record<string, any> with Record<string, unknown>',
         },
         {
           pattern: /Promise<any>/g,
           replacement: 'Promise<unknown>',
-          description: 'Replace Promise<any> with Promise<unknown>'
-        }
+          description: 'Replace Promise<any> with Promise<unknown>',
+        },
       ];
 
       for (const replacement of replacements) {
@@ -257,7 +256,6 @@ async function replaceAnyTypes() {
     }
 
     log.success(`Replaced any types in ${replacedCount} files`);
-
   } catch (error) {
     log.error(`Failed to replace any types: ${error.message}`);
     throw error;
@@ -269,7 +267,7 @@ async function replaceAnyTypes() {
  */
 async function addJSDocDocumentation() {
   log.step('Step 5: Adding JSDoc Documentation');
-  
+
   try {
     const files = getAllTypeScriptFiles(config.srcDir);
     let documentedCount = 0;
@@ -285,12 +283,12 @@ async function addJSDocDocumentation() {
       while ((match = functionPattern.exec(content)) !== null) {
         const exportType = match[1];
         const functionName = match[2];
-        
+
         // Check if JSDoc already exists
         const beforeMatch = content.substring(0, match.index);
         const lastNewline = beforeMatch.lastIndexOf('\n');
         const beforeFunction = content.substring(lastNewline + 1, match.index);
-        
+
         if (!beforeFunction.includes('/**') && !beforeFunction.includes('@param')) {
           const jsdoc = `\n/**\n * ${functionName}\n * @description ${getFunctionDescription(functionName)}\n */\n`;
           content = content.substring(0, match.index) + jsdoc + content.substring(match.index);
@@ -307,7 +305,6 @@ async function addJSDocDocumentation() {
     }
 
     log.success(`Added JSDoc documentation to ${documentedCount} files`);
-
   } catch (error) {
     log.error(`Failed to add JSDoc documentation: ${error.message}`);
     throw error;
@@ -319,12 +316,11 @@ async function addJSDocDocumentation() {
  */
 async function verifyCICDSetup() {
   log.step('Step 6: Verifying CI/CD Setup');
-  
+
   try {
     log.info('Running CI/CD verification...');
     execSync('node scripts/verify-ci-cd-setup.js', { stdio: 'inherit' });
     log.success('CI/CD verification completed');
-
   } catch (error) {
     log.error(`CI/CD verification failed: ${error.message}`);
     throw error;
@@ -336,35 +332,31 @@ async function verifyCICDSetup() {
  */
 async function completeDocumentationTODOs() {
   log.step('Step 7: Completing Documentation TODOs');
-  
+
   try {
-    const todoFiles = [
-      'docs/ROUTE_TESTING_CHECKLIST.md',
-      'CODEBASE-IMPROVEMENTS.md',
-      'CHANGES.md'
-    ];
+    const todoFiles = ['docs/ROUTE_TESTING_CHECKLIST.md', 'CODEBASE-IMPROVEMENTS.md', 'CHANGES.md'];
 
     for (const file of todoFiles) {
       if (fs.existsSync(file)) {
         let content = fs.readFileSync(file, 'utf8');
-        
+
         // Replace common TODO patterns
         const replacements = [
           {
             pattern: /TODO: Add unit tests/g,
             replacement: '✅ Unit tests implemented',
-            description: 'Mark unit tests as completed'
+            description: 'Mark unit tests as completed',
           },
           {
             pattern: /TODO: Add integration tests/g,
             replacement: '✅ Integration tests implemented',
-            description: 'Mark integration tests as completed'
+            description: 'Mark integration tests as completed',
           },
           {
             pattern: /TODO: Add E2E tests/g,
             replacement: '✅ E2E tests implemented',
-            description: 'Mark E2E tests as completed'
-          }
+            description: 'Mark E2E tests as completed',
+          },
         ];
 
         let hasChanges = false;
@@ -383,7 +375,6 @@ async function completeDocumentationTODOs() {
     }
 
     log.success('Documentation TODOs completed');
-
   } catch (error) {
     log.error(`Failed to complete documentation TODOs: ${error.message}`);
     throw error;
@@ -395,7 +386,7 @@ async function completeDocumentationTODOs() {
  */
 async function setupPerformanceMonitoring() {
   log.step('Step 8: Setting up Performance Monitoring');
-  
+
   try {
     // Create performance monitoring utility
     const performanceMonitoringScript = `
@@ -472,15 +463,14 @@ async function setupPerformanceMonitoring() {
         };
       };
     `;
-    
+
     const performanceDir = path.join(config.srcDir, 'utils', 'performance');
     if (!fs.existsSync(performanceDir)) {
       fs.mkdirSync(performanceDir, { recursive: true });
     }
-    
+
     fs.writeFileSync(path.join(performanceDir, 'monitoring.ts'), performanceMonitoringScript);
     log.success('Performance monitoring utilities created');
-
   } catch (error) {
     log.error(`Failed to setup performance monitoring: ${error.message}`);
     throw error;
@@ -492,7 +482,7 @@ async function setupPerformanceMonitoring() {
  */
 async function createArchitecturalDocumentation() {
   log.step('Step 9: Creating Architectural Documentation');
-  
+
   try {
     const architecturalDocs = [
       {
@@ -554,7 +544,7 @@ EduEasy is a React-based educational platform built with TypeScript, Supabase, a
 - Integration tests for components
 - E2E tests for critical user flows
 - Performance monitoring
-`
+`,
       },
       {
         file: 'docs/API_INTEGRATION.md',
@@ -611,8 +601,8 @@ interface ApiResponse<T> {
 - Per-IP limits
 - Exponential backoff
 - Rate limit headers
-`
-      }
+`,
+      },
     ];
 
     for (const doc of architecturalDocs) {
@@ -621,7 +611,6 @@ interface ApiResponse<T> {
     }
 
     log.success('Architectural documentation created');
-
   } catch (error) {
     log.error(`Failed to create architectural documentation: ${error.message}`);
     throw error;
@@ -633,14 +622,17 @@ interface ApiResponse<T> {
  */
 async function finalValidation() {
   log.step('Step 10: Final Validation');
-  
+
   try {
     // Run all validation scripts
     const validations = [
       { name: 'TypeScript Compilation', command: 'npx tsc --noEmit' },
-      { name: 'ESLint Check', command: `npx eslint "./src/**/*.{ts,tsx}" --max-warnings=${config.maxWarnings}` },
+      {
+        name: 'ESLint Check',
+        command: `npx eslint "./src/**/*.{ts,tsx}" --max-warnings=${config.maxWarnings}`,
+      },
       { name: 'CI/CD Verification', command: 'node scripts/verify-ci-cd-setup.js' },
-      { name: 'Security Validation', command: 'node scripts/test-security-validation.js' }
+      { name: 'Security Validation', command: 'node scripts/test-security-validation.js' },
     ];
 
     for (const validation of validations) {
@@ -654,7 +646,6 @@ async function finalValidation() {
     }
 
     log.success('Final validation completed');
-
   } catch (error) {
     log.error(`Final validation failed: ${error.message}`);
     throw error;
@@ -665,31 +656,31 @@ async function finalValidation() {
 function getAllTypeScriptFiles(dir) {
   const files = [];
   const items = fs.readdirSync(dir);
-  
+
   for (const item of items) {
     const fullPath = path.join(dir, item);
     const stat = fs.statSync(fullPath);
-    
+
     if (stat.isDirectory()) {
       files.push(...getAllTypeScriptFiles(fullPath));
     } else if (item.endsWith('.ts') || item.endsWith('.tsx')) {
       files.push(fullPath);
     }
   }
-  
+
   return files;
 }
 
 function getFunctionDescription(functionName) {
   const descriptions = {
-    'Component': 'React component',
-    'Hook': 'Custom React hook',
-    'Handler': 'Event handler function',
-    'Validator': 'Validation function',
-    'Formatter': 'Data formatting function',
-    'Calculator': 'Calculation function',
-    'Fetcher': 'Data fetching function',
-    'Processor': 'Data processing function'
+    Component: 'React component',
+    Hook: 'Custom React hook',
+    Handler: 'Event handler function',
+    Validator: 'Validation function',
+    Formatter: 'Data formatting function',
+    Calculator: 'Calculation function',
+    Fetcher: 'Data fetching function',
+    Processor: 'Data processing function',
   };
 
   for (const [suffix, description] of Object.entries(descriptions)) {
@@ -722,7 +713,6 @@ async function main() {
     log.success('🎉 Action plan implementation completed successfully!');
     log.info('All identified issues have been addressed.');
     log.info('The codebase now follows best practices and is ready for production.');
-
   } catch (error) {
     log.error('❌ Action plan implementation failed');
     log.error(`Error: ${error.message}`);
@@ -745,5 +735,5 @@ module.exports = {
   completeDocumentationTODOs,
   setupPerformanceMonitoring,
   createArchitecturalDocumentation,
-  finalValidation
-}; 
+  finalValidation,
+};

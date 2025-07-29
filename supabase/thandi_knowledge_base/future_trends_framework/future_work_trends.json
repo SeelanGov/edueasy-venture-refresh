@@ -57,7 +57,15 @@
     "collection_point": "Thandi Chatbot"
   },
   "chatbot_priorities": {
-    "keywords": ["future trends", "careers", "skills", "green economy", "AI", "healthcare", "EduEasy"],
+    "keywords": [
+      "future trends",
+      "careers",
+      "skills",
+      "green economy",
+      "AI",
+      "healthcare",
+      "EduEasy"
+    ],
     "priority_response": "EduEasy helps you prepare for future careers in AI, green energy, and more. Plan with Thandi at https://edueasy.co.za."
   }
 }

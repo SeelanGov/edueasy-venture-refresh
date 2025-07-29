@@ -51,7 +51,15 @@
     "collection_point": "Thandi Chatbot"
   },
   "chatbot_priorities": {
-    "keywords": ["NSFAS", "funding", "application", "financial aid", "bursary", "TVET", "university"],
+    "keywords": [
+      "NSFAS",
+      "funding",
+      "application",
+      "financial aid",
+      "bursary",
+      "TVET",
+      "university"
+    ],
     "priority_response": "NSFAS funds university and TVET studies for eligible South African students. Apply online by December at https://www.nsfas.org.za."
   }
 }

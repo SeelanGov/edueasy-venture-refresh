@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Mail, Phone, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { Calendar, Mail, Phone, Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface PartnerInquiry {
@@ -27,7 +27,7 @@ interface PartnerInquiry {
  * PartnerInquiries
  * @description Function
  */
-export const PartnerInquiries = (): void => {
+export const PartnerInquiries = (): JSX.Element => {
   const [inquiries, setInquiries] = useState<PartnerInquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -83,7 +83,7 @@ export const PartnerInquiries = (): void => {
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusColor = (status: string | null): void => {
+  const getStatusColor = (status: string | null): string => {
     const actualStatus = status || 'pending';
     switch (actualStatus) {
       case 'pending':

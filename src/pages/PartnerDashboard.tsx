@@ -1,11 +1,12 @@
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-const BackToHomeBtn = ({ className = '' }: { className?: string }): void => {
+const BackToHomeBtn = ({ className = '' }: { className?: string }): JSX.Element => {
   const navigate = useNavigate();
   return (
     <div className={`relative w-full ${className}`}>
@@ -124,7 +125,7 @@ const PartnerDashboard: React.FC = () => {
           >
             Register as Partner
           </Button>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -167,7 +168,7 @@ const PartnerDashboard: React.FC = () => {
             <br />
             or WhatsApp 060 123 4567
           </div>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -202,7 +203,7 @@ const PartnerDashboard: React.FC = () => {
                     : 'Unlimited applications'}
               </p>
             </div>
-          </div>
+          </Card>
 
           <Card className="bg-card p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-3">Payment History</h2>
@@ -234,14 +235,14 @@ const PartnerDashboard: React.FC = () => {
                 ))}
               </div>
             )}
-          </div>
+          </Card>
         </div>
 
         {/* Applications Overview */}
         <Card className="bg-card p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-3">Applications Overview</h2>
           <div className="text-muted">(API integration coming soon)</div>
-        </div>
+        </Card>
 
         {/* Invoice Download */}
         <Card className="bg-card p-6 rounded-lg shadow">
@@ -253,8 +254,8 @@ const PartnerDashboard: React.FC = () => {
               </a>
             </Button>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

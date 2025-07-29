@@ -48,7 +48,7 @@ try {
       }
     }
   }
-  
+
   if (fs.existsSync(packageLockPath)) {
     fs.unlinkSync(packageLockPath);
   }
@@ -65,7 +65,7 @@ try {
 } catch (error) {
   logger.error('❌ Failed to install dependencies:', error.message);
   logger.info('🔄 Trying alternative approach...');
-  
+
   // Try installing with legacy peer deps
   try {
     execSync('npm install --legacy-peer-deps', { stdio: 'inherit', cwd: rootDir });
@@ -109,12 +109,12 @@ try {
       targetDeps = [
         '@rollup/rollup-linux-x64-gnu',
         '@rollup/rollup-darwin-x64',
-        '@rollup/rollup-win32-x64-msvc'
+        '@rollup/rollup-win32-x64-msvc',
       ];
   }
 
   logger.info(`🔍 Detected platform: ${platform} (${arch}), installing: ${targetDeps.join(', ')}`);
-  
+
   for (const dep of targetDeps) {
     try {
       execSync(`npm install ${dep} --no-save`, { stdio: 'inherit', cwd: rootDir });
@@ -123,11 +123,11 @@ try {
       logger.warn(`⚠️ Failed to install ${dep}:`, error.message);
     }
   }
-  
+
   logger.success('✅ Platform-specific Rollup dependencies installation completed');
 } catch (error) {
   logger.error('❌ Failed to install platform-specific dependencies:', error.message);
-  
+
   // Try alternative approach if the first one fails
   logger.info('🔄 Trying alternative approach...');
   try {
@@ -137,7 +137,7 @@ try {
       fs.unlinkSync(rollupBinPath);
       logger.success('✅ Removed rollup binary to force reinstallation');
     }
-    
+
     // Reinstall rollup
     execSync('npm install rollup --no-save', { stdio: 'inherit', cwd: rootDir });
     logger.success('✅ Reinstalled rollup');
@@ -165,13 +165,13 @@ try {
   const packageJsonPath = path.join(rootDir, 'package.json');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   logger.success(`✅ Project: ${packageJson.name} v${packageJson.version}`);
-  
+
   if (fs.existsSync(nodeModulesPath)) {
     logger.success('✅ node_modules directory exists');
   } else {
     logger.warn('⚠️ node_modules directory not found');
   }
-  
+
   if (fs.existsSync(packageLockPath)) {
     logger.success('✅ package-lock.json exists');
   } else {

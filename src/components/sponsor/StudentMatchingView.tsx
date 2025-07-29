@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 export const StudentMatchingView = (): void => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {

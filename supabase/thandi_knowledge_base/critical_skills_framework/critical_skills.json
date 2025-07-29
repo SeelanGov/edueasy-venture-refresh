@@ -3,7 +3,19 @@
   "title": "Critical and Scarce Skills List",
   "language": "en",
   "summary": "Discover South Africa’s high-demand careers with EduEasy. Explore critical skills like nursing, engineering, and renewable energy, plus government initiatives like PYEI, guided by Thandi.",
-  "tags": ["Critical Skills", "Scarce Skills", "Careers", "Jobs", "Matric", "TVET", "University", "EduEasy", "PYEI", "DEL", "SETA"],
+  "tags": [
+    "Critical Skills",
+    "Scarce Skills",
+    "Careers",
+    "Jobs",
+    "Matric",
+    "TVET",
+    "University",
+    "EduEasy",
+    "PYEI",
+    "DEL",
+    "SETA"
+  ],
   "source_links": [
     "https://www.dhet.gov.za/SitePages/CriticalSkillsList.aspx",
     "https://www.labour.gov.za/labour-market-information",
@@ -101,7 +113,19 @@
     "collection_point": "Thandi Chatbot"
   },
   "chatbot_priorities": {
-    "keywords": ["critical skills", "scarce skills", "careers", "jobs", "qualifications", "EduEasy", "PYEI", "DEL", "SETA", "renewable energy", "teaching"],
+    "keywords": [
+      "critical skills",
+      "scarce skills",
+      "careers",
+      "jobs",
+      "qualifications",
+      "EduEasy",
+      "PYEI",
+      "DEL",
+      "SETA",
+      "renewable energy",
+      "teaching"
+    ],
     "priority_response": "EduEasy helps you explore high-demand careers like nursing, engineering, or renewable energy. Take Thandi’s career quiz or join job alerts at https://edueasy.co.za."
   }
 }

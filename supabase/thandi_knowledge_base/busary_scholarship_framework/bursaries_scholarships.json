@@ -3,7 +3,16 @@
   "title": "Bursaries and Scholarships",
   "language": "en",
   "summary": "Find bursaries and scholarships for South African students with EduEasy. Learn about government and university funding, eligibility, and applications, guided by Thandi.",
-  "tags": ["Bursary", "Scholarship", "Funding", "NSFAS", "Funza Lushaka", "University", "TVET", "EduEasy"],
+  "tags": [
+    "Bursary",
+    "Scholarship",
+    "Funding",
+    "NSFAS",
+    "Funza Lushaka",
+    "University",
+    "TVET",
+    "EduEasy"
+  ],
   "source_links": [
     "https://www.nsfas.org.za/content/eligibility.html",
     "https://www.education.gov.za/Programmes/FunzaLushaka.aspx",

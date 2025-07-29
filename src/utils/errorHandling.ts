@@ -32,11 +32,11 @@ export interface ErrorHandlingOptions {
  */
 export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): AppError => {
   const timestamp = new Date().toISOString();
-  
+
   // Handle Supabase/PostgreSQL errors
   if (typeof error === 'object' && error !== null && 'code' in error) {
     const pgError = error as { code?: string; message?: string };
-    
+
     if (pgError.code === 'PGRST301' || pgError.code === '42501') {
       return {
         message: "You don't have permission to perform this action",
@@ -50,7 +50,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
         retryable: false,
       };
     }
-    
+
     return {
       message: pgError.message || 'Database error',
       category: 'DATABASE',
@@ -63,7 +63,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
       retryable: true,
     };
   }
-  
+
   // Handle network errors
   if (error instanceof TypeError && error.message.includes('Network')) {
     return {
@@ -78,7 +78,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
       retryable: true,
     };
   }
-  
+
   // Handle validation errors
   if (error instanceof Error && error.message.includes('validation')) {
     return {
@@ -93,7 +93,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
       retryable: false,
     };
   }
-  
+
   // Handle security errors
   if (error instanceof Error && error.message.includes('security')) {
     return {
@@ -108,7 +108,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
       retryable: false,
     };
   }
-  
+
   // Fallback for Error objects
   if (error instanceof Error) {
     return {
@@ -123,7 +123,7 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
       retryable: options.retryable ?? true,
     };
   }
-  
+
   // Fallback for unknown errors
   return {
     message: typeof error === 'string' ? error : 'An unknown error occurred',
@@ -141,25 +141,19 @@ export const parseError = (error: unknown, options: ErrorHandlingOptions = {}): 
 /**
  * Handle an error with standardized logging and user feedback
  */
-export const handleError = (
-  error: unknown,
-  options: ErrorHandlingOptions = {}
-): AppError => {
+export const handleError = (error: unknown, options: ErrorHandlingOptions = {}): AppError => {
   const appError = parseError(error, options);
-  
+
   // Always log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.error(
-      `[${appError.category.toUpperCase()}] ${appError.message}`,
-      {
-        component: appError.component,
-        action: appError.action,
-        severity: appError.severity,
-        originalError: appError.originalError,
-      }
-    );
+    console.error(`[${appError.category.toUpperCase()}] ${appError.message}`, {
+      component: appError.component,
+      action: appError.action,
+      severity: appError.severity,
+      originalError: appError.originalError,
+    });
   }
-  
+
   // Show toast notification if requested
   if (options.showToast !== false) {
     toast({
@@ -168,12 +162,12 @@ export const handleError = (
       variant: getErrorVariant(appError.severity),
     });
   }
-  
+
   // Log to server if requested
   if (options.logToServer !== false) {
     logErrorToServer(appError);
   }
-  
+
   return appError;
 };
 
@@ -233,7 +227,7 @@ const logErrorToServer = async (error: AppError): Promise<void> => {
  */
 export const safeAsync = async <T>(
   asyncFn: () => Promise<T>,
-  options: ErrorHandlingOptions = {}
+  options: ErrorHandlingOptions = {},
 ): Promise<{ data: T | null; error: AppError | null }> => {
   try {
     const result = await asyncFn();
@@ -254,33 +248,33 @@ export const withRetry = async <T>(
     delay?: number;
     backoff?: boolean;
     errorOptions?: ErrorHandlingOptions;
-  } = {}
+  } = {},
 ): Promise<{ data: T | null; error: AppError | null }> => {
   const { maxRetries = 3, delay = 1000, backoff = true, errorOptions = {} } = options;
-  
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const result = await operation();
       return { data: result, error: null };
     } catch (error) {
       const appError = parseError(error, errorOptions);
-      
+
       // Don't retry if error is not retryable
       if (!appError.retryable) {
         return { data: null, error: appError };
       }
-      
+
       // If this is the last attempt, return the error
       if (attempt === maxRetries) {
         return { data: null, error: appError };
       }
-      
+
       // Wait before retrying
       const retryDelay = backoff ? delay * Math.pow(2, attempt - 1) : delay;
-      await new Promise(resolve => setTimeout(resolve, retryDelay));
+      await new Promise((resolve) => setTimeout(resolve, retryDelay));
     }
   }
-  
+
   return { data: null, error: parseError(new Error('Max retries exceeded'), errorOptions) };
 };
 
@@ -302,4 +296,4 @@ export const createSuccessResponse = <T>(data: T) => ({
   success: true,
   data,
   timestamp: new Date().toISOString(),
-}); 
+});

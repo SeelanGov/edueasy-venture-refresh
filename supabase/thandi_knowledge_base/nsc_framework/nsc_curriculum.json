@@ -3,7 +3,17 @@
   "title": "National Senior Certificate (NSC) Curriculum",
   "language": "en",
   "summary": "The National Senior Certificate (NSC) is your Matric qualification, earned by passing 7 subjects. Learn about subjects, pass requirements, and how to prepare for your future.",
-  "tags": ["NSC", "Matric", "Curriculum", "Subjects", "Education", "DBE", "Umalusi", "IEB", "Exams"],
+  "tags": [
+    "NSC",
+    "Matric",
+    "Curriculum",
+    "Subjects",
+    "Education",
+    "DBE",
+    "Umalusi",
+    "IEB",
+    "Exams"
+  ],
   "source_links": [
     "https://www.education.gov.za/Curriculum/NationalCurriculumStatementGradesR-12.aspx",
     "https://www.umalusi.org.za",
