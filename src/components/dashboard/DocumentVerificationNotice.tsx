@@ -1,24 +1,23 @@
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
-import { useAuth } from '@/hooks/useAuth';
-import { CheckCircle, AlertTriangle, Upload } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import type { ExtendedStatusType } from '@/lib/design-tokens';
+import { AlertTriangle, CheckCircle, Upload } from 'lucide-react';
+import { useState } from 'react';
 
 /**
  * DocumentVerificationNotice
  * @description Function
  */
-export const DocumentVerificationNotice = (): void => {
-  const { user } = useAuth();
-  const [documents, setDocuments] = useState([
+export const DocumentVerificationNotice = () => {
+  const [_documents] = useState([
     { name: 'ID Document', status: 'pending', required: true },
     { name: 'Proof of Residence', status: 'verified', required: true },
     { name: 'Academic Transcripts', status: 'rejected', required: true },
     { name: 'CV/Resume', status: 'pending', required: false },
   ]);
 
-  const getStatusIcon = (status: string): void => {
+  const getStatusIcon = (status: string): JSX.Element => {
     switch (status) {
       case 'verified':
         return <CheckCircle className="h-5 w-5 text-success" />;
@@ -29,7 +28,7 @@ export const DocumentVerificationNotice = (): void => {
     }
   };
 
-  const getStatusBadgeType = (status: string): void => {
+  const getStatusBadgeType = (status: string): ExtendedStatusType => {
     switch (status) {
       case 'verified':
         return 'success';
@@ -40,8 +39,8 @@ export const DocumentVerificationNotice = (): void => {
     }
   };
 
-  const pendingDocs = documents.filter((doc) => doc.status === 'pending' && doc.required);
-  const rejectedDocs = documents.filter((doc) => doc.status === 'rejected');
+  const pendingDocs = _documents.filter((doc) => doc.status === 'pending' && doc.required);
+  const rejectedDocs = _documents.filter((doc) => doc.status === 'rejected');
 
   if (pendingDocs.length === 0 && rejectedDocs.length === 0) {
     return null;

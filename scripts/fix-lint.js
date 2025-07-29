@@ -26,11 +26,17 @@ const typeCheckSuccess = runCommand('npm run type-check', 'TypeScript errors fou
 
 // ESLint fixes
 console.log('\n🛠️ Running ESLint with auto-fix...');
-const lintSuccess = runCommand('npm run lint:fix', 'Some linting issues could not be fixed automatically');
+const lintSuccess = runCommand(
+  'npm run lint:fix',
+  'Some linting issues could not be fixed automatically',
+);
 
 // Prettier formatting
 console.log('\n✨ Running Prettier formatting...');
-const formatSuccess = runCommand('npm run format', 'Some formatting issues could not be fixed automatically');
+const formatSuccess = runCommand(
+  'npm run format',
+  'Some formatting issues could not be fixed automatically',
+);
 
 // Report results
 console.log('\n📊 Results:');

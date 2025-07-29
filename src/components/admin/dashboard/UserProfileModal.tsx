@@ -1,23 +1,24 @@
-import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
+import { AuditTrail } from '@/components/admin/audit/AuditTrail';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader as CardHead,
   CardTitle as CardHeaderTitle,
 } from '@/components/ui/card';
-import { User, ShieldCheck, Clock, X, FileText } from 'lucide-react';
-import { useUserVerificationLogs } from '@/hooks/admin/useUserVerificationLogs';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { useSponsorAllocations } from '@/hooks/admin/useSponsorAllocations';
-import { AuditTrail } from '@/components/admin/audit/AuditTrail';
+import { useUserVerificationLogs } from '@/hooks/admin/useUserVerificationLogs';
+import { Clock, FileText, ShieldCheck, User, X } from 'lucide-react';
+import React from 'react';
 
 interface UserModalProps {
   user: {

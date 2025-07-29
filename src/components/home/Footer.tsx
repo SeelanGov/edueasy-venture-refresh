@@ -5,7 +5,7 @@ import { Building2, DollarSign, FileCheck, GraduationCap, Mail, MapPin, Users } 
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const partnerTypes = [
+const _partnerTypes = [
   {
     name: 'TVET Colleges',
     description: 'Technical and Vocational Education Training institutions',
@@ -44,7 +44,7 @@ const partnerTypes = [
 ];
 
 const Footer = (): void => {
-  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
+  const [_isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userType } = useAuth();
@@ -67,7 +67,7 @@ const Footer = (): void => {
     }
   };
 
-  const handlePartnerSelect = (partner: (typeof partnerTypes)[0]) => {
+  const _handlePartnerSelect = (partner: (typeof _partnerTypes)[0]) => {
     // If user is already logged in with this user type, redirect to auth-redirect
     if (user && userType === partner.userType) {
       navigate('/auth-redirect');
@@ -78,7 +78,7 @@ const Footer = (): void => {
     setIsPartnerModalOpen(false);
   };
 
-  const handleAdminAccess = (): void => {
+  const _handleAdminAccess = (): void => {
     if (user && isAdmin) {
       navigate('/admin/dashboard');
     } else {

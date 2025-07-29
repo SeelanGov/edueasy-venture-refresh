@@ -49,11 +49,14 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 
 ## Preview Mode
 
-In preview environments (determined by `import.meta.env.MODE === 'preview'` or when the hostname includes 'loveable.dev'), a mock Supabase client is used to prevent errors due to missing environment variables.
+In preview environments (determined by `import.meta.env.MODE === 'preview'` or when the hostname
+includes 'loveable.dev'), a mock Supabase client is used to prevent errors due to missing
+environment variables.
 
 ## Type Safety
 
-The Supabase client is fully typed using the database schema defined in `types.ts`. This provides type safety and autocompletion when interacting with the database.
+The Supabase client is fully typed using the database schema defined in `types.ts`. This provides
+type safety and autocompletion when interacting with the database.
 
 ## Error Handling
 
@@ -62,4 +65,5 @@ The client includes error handling for common issues:
 - Missing environment variables
 - Initialization failures
 
-Errors are logged to the console and, in non-preview environments, will throw exceptions to prevent the application from running with an improperly configured Supabase client.
+Errors are logged to the console and, in non-preview environments, will throw exceptions to prevent
+the application from running with an improperly configured Supabase client.

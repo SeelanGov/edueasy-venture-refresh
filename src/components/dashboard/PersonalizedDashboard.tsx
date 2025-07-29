@@ -25,12 +25,17 @@ interface PersonalizedDashboardProps {
 export const PersonalizedDashboard = ({
   applications,
   loading,
-}: PersonalizedDashboardProps): void => {
+}: PersonalizedDashboardProps): JSX.Element => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { currentSubscription } = useSubscription();
   const { applications: allApplications, loading: allApplicationsLoading } = useApplications();
-  const [applicationCount, setApplicationCount] = useState(0);
+  const [_applicationCount, setApplicationCount] = useState(0);
+  const [_applications, _setApplications] = useState<any[]>([]);
+  const [_loading, _setLoading] = useState(true);
+
+  // Sponsor data
+  const [_sponsors, _setSponsors] = useState<any[]>([]);
 
   // Tracking ID related
   const trackingId = (user as any)?.user_metadata?.tracking_id || (user as any)?.tracking_id;
@@ -48,7 +53,7 @@ export const PersonalizedDashboard = ({
   // SPONSOR ALLOCATION LOGIC (new!)
   // Query for an active sponsor allocation for this user, if they are sponsored
   const sponsoreeId = user?.id;
-  const { data: sponsorAllocation, isLoading: sponsorLoading } = useQuery({
+  const { data: sponsorAllocation, isLoading: sponsorAllocationLoading } = useQuery({
     queryKey: ['sponsor_allocation', sponsoreeId],
     queryFn: async () => {
       if (!sponsoreeId) return null;

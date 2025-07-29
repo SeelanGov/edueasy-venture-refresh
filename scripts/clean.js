@@ -31,7 +31,7 @@ if (fs.existsSync(nodeModulesPath)) {
     console.log('✅ node_modules removed successfully');
   } catch (error) {
     console.warn('⚠️ Failed to remove node_modules with rimraf:', error.message);
-    
+
     // Fallback to platform-specific commands
     try {
       if (process.platform === 'win32') {
@@ -69,7 +69,7 @@ try {
 } catch (error) {
   console.error('❌ Failed to install dependencies:', error.message);
   console.log('🔄 Trying with legacy peer deps...');
-  
+
   try {
     execSync('npm install --legacy-peer-deps', { stdio: 'inherit', cwd: rootDir });
     console.log('✅ Dependencies installed with legacy peer deps');
@@ -84,7 +84,7 @@ console.log('🔧 Installing platform-specific Rollup dependencies...');
 try {
   execSync('node scripts/fix-rollup-deps.js', { stdio: 'inherit', cwd: rootDir });
   console.log('✅ Platform-specific Rollup dependencies installed');
-  
+
   // Check if we're in a CI environment or need to force Linux dependency
   if (process.env.CI === 'true' || process.env.FORCE_LINUX_ROLLUP === 'true') {
     console.log('🐧 CI environment detected, ensuring Linux Rollup dependency is installed...');
@@ -92,7 +92,7 @@ try {
   }
 } catch (error) {
   console.error('❌ Failed to install platform-specific Rollup dependencies:', error.message);
-  
+
   // Try the Linux-specific script as a fallback
   console.log('🔄 Trying Linux-specific installation as fallback...');
   try {

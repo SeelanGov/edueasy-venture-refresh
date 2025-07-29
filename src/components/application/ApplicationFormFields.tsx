@@ -1,11 +1,14 @@
+import { Spinner } from '@/components/Spinner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
-  FormDescription,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -13,13 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import type { UseFormReturn } from 'react-hook-form';
-import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
-import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
+import { AlertCircle } from 'lucide-react';
+import type { UseFormReturn } from 'react-hook-form';
 
 export interface ApplicationFormValues {
   fullName: string;
@@ -54,6 +54,10 @@ export const ApplicationFormFields = ({
     selectedInstitutionId,
     setSelectedInstitutionId,
   } = useInstitutionsAndPrograms();
+
+  const handleFieldChange = (_value: string) => {
+    // Handle field change logic
+  };
 
   return (
     <>
@@ -234,7 +238,7 @@ export const ApplicationFormFields = ({
       <FormField
         control={form.control}
         name="documentFile"
-        render={({ field: { onChange, value, ...field } }) => (
+        render={({ field: { onChange, value: _value, ...field } }) => (
           <FormItem>
             <FormLabel>Upload Document (PDF only)</FormLabel>
             <FormControl>

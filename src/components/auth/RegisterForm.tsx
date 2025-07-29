@@ -52,7 +52,7 @@ interface RegisterFormProps {
  * RegisterForm
  * @description Function
  */
-export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): void => {
+export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX.Element => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): voi
   const [consentTerms, setConsentTerms] = useState(false);
   const [consentIdVerification, setConsentIdVerification] = useState(false);
   const location = useLocation();
-  const from = location.state?.from || '/profile-completion';
+  const _from = location.state?.from || '/profile-completion';
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),

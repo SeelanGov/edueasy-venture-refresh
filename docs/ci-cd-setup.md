@@ -1,10 +1,12 @@
 # CI/CD Setup Guide for EduEasy
 
-This document provides instructions for setting up the Continuous Integration and Continuous Deployment (CI/CD) pipeline for the EduEasy project.
+This document provides instructions for setting up the Continuous Integration and Continuous
+Deployment (CI/CD) pipeline for the EduEasy project.
 
 ## Overview
 
 The CI/CD pipeline is implemented using GitHub Actions and consists of the following stages:
+
 1. Build and Test
 2. (Optional) Deployment to staging and production environments
 
@@ -26,24 +28,24 @@ The CI/CD pipeline relies on several secrets that need to be configured in your 
 
 ### Build Environment Secrets
 
-| Secret Name | Description | Example |
-|-------------|-------------|---------|
-| `VITE_SUPABASE_URL` | Your Supabase project URL | `https://abcdefghijklm.supabase.co` |
+| Secret Name              | Description                 | Example                                   |
+| ------------------------ | --------------------------- | ----------------------------------------- |
+| `VITE_SUPABASE_URL`      | Your Supabase project URL   | `https://abcdefghijklm.supabase.co`       |
 | `VITE_SUPABASE_ANON_KEY` | Your Supabase anonymous key | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` |
 
 ### (Optional) Deployment Secrets
 
 If you want to enable automatic deployment, add these secrets:
 
-| Secret Name | Description | Example |
-|-------------|-------------|---------|
-| `DEPLOY_SSH_KEY` | Your SSH private key for deployment | `-----BEGIN OPENSSH PRIVATE KEY-----\n...` |
-| `STAGING_SERVER_IP` | IP address of your staging server | `192.168.1.100` |
-| `STAGING_SERVER_USER` | SSH username for staging server | `deploy` |
-| `STAGING_SERVER_PATH` | Path to deploy to on staging server | `/var/www/edueasy-staging` |
-| `PRODUCTION_SERVER_IP` | IP address of your production server | `192.168.1.200` |
-| `PRODUCTION_SERVER_USER` | SSH username for production server | `deploy` |
-| `PRODUCTION_SERVER_PATH` | Path to deploy to on production server | `/var/www/edueasy` |
+| Secret Name              | Description                            | Example                                    |
+| ------------------------ | -------------------------------------- | ------------------------------------------ |
+| `DEPLOY_SSH_KEY`         | Your SSH private key for deployment    | `-----BEGIN OPENSSH PRIVATE KEY-----\n...` |
+| `STAGING_SERVER_IP`      | IP address of your staging server      | `192.168.1.100`                            |
+| `STAGING_SERVER_USER`    | SSH username for staging server        | `deploy`                                   |
+| `STAGING_SERVER_PATH`    | Path to deploy to on staging server    | `/var/www/edueasy-staging`                 |
+| `PRODUCTION_SERVER_IP`   | IP address of your production server   | `192.168.1.200`                            |
+| `PRODUCTION_SERVER_USER` | SSH username for production server     | `deploy`                                   |
+| `PRODUCTION_SERVER_PATH` | Path to deploy to on production server | `/var/www/edueasy`                         |
 
 ## Workflow Configuration
 
@@ -69,6 +71,7 @@ npm run ci:verify-setup
 ```
 
 This script checks:
+
 - All required files are present
 - All required npm scripts are defined
 - The GitHub workflow contains all necessary jobs
@@ -106,6 +109,7 @@ This will show the status of recent workflow runs.
 #### Build Failures
 
 If the build fails, check:
+
 - GitHub Actions logs for specific error messages
 - Ensure all required environment variables are set
 - Check for Rollup dependency issues (the workflow includes special handling for this)
@@ -113,6 +117,7 @@ If the build fails, check:
 #### Deployment Failures
 
 If deployment fails, check:
+
 - SSH key is correctly set up in GitHub Secrets
 - Server IP, username, and path are correctly configured
 - The deployment user has write permissions to the target directory

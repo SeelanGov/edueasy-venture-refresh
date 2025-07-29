@@ -6,17 +6,14 @@ approach taken to resolve them.
 ## Issues Addressed
 
 1. **Unused React Imports**
-
    - Problem: Many files had `import React from 'react'` that's not needed in React 18
    - Solution: Removed unnecessary imports while preserving those that use React namespace
 
 2. **Missing Return Types**
-
    - Problem: Several functions didn't have explicit return types
    - Solution: Added proper return types (e.g., `JSX.Element`, `void`, etc.)
 
 3. **Footer Component Issue**
-
    - Problem: The footer.tsx file contained an AdminButton component instead
    - Solution: Created a proper Footer component and moved the AdminButton to its own file
 
@@ -80,12 +77,10 @@ node scripts/check-typescript-config.js
 ## Manual Fixes Applied
 
 1. Fixed the footer component:
-
    - Created a proper Footer component with named export
    - Moved AdminButton to its own file
 
 2. Added return types to key components:
-
    - Added `JSX.Element` return type to Skeleton component
    - Added `JSX.Element` return type to Toaster component
    - Added `SidebarContext` return type to useSidebar function

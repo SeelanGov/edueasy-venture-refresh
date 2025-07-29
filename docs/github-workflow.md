@@ -5,6 +5,7 @@
 Our codebase maintains high quality standards through automated checks:
 
 ### TypeScript Configuration
+
 - Strict type checking enabled
 - No implicit any types
 - Strict null checks
@@ -12,6 +13,7 @@ Our codebase maintains high quality standards through automated checks:
 - Exact optional property types
 
 ### Prettier Configuration
+
 - Line width: 100 characters
 - Single quotes for JavaScript/TypeScript
 - Double quotes for CSS/SCSS
@@ -20,7 +22,9 @@ Our codebase maintains high quality standards through automated checks:
 - Consistent arrow function parentheses
 
 ### Pre-commit Hooks
+
 All commits are automatically checked for:
+
 1. TypeScript compilation errors
 2. ESLint violations
 3. Prettier formatting
@@ -33,8 +37,7 @@ All commits are automatically checked for:
    - Bugfixes: `fix/description`
    - Documentation: `docs/description`
 
-2. **Commit Messages**
-   Follow conventional commits:
+2. **Commit Messages** Follow conventional commits:
    - feat: New features
    - fix: Bug fixes
    - docs: Documentation changes
@@ -58,6 +61,7 @@ All commits are automatically checked for:
 ## CI/CD Pipeline
 
 Our GitHub Actions workflow automatically:
+
 1. Builds the project
 2. Runs type checks
 3. Executes linting
@@ -66,12 +70,16 @@ Our GitHub Actions workflow automatically:
 6. Builds production bundle
 
 ### Environment Variables
+
 Required secrets in GitHub:
+
 - VITE_SUPABASE_URL
 - VITE_SUPABASE_ANON_KEY
 
 ### Branch Protection
+
 Main branch is protected:
+
 - Requires passing CI checks
 - Requires code review approval
 - No direct pushes allowed

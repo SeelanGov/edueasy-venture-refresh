@@ -9,7 +9,7 @@ interface SpinnerProps {
  * Spinner
  * @description Function
  */
-export const Spinner = ({ size = 'md', className }: SpinnerProps): void => {
+export const Spinner = ({ size = 'md', className }: SpinnerProps): JSX.Element => {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',

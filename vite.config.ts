@@ -1,19 +1,18 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
-import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
+import { componentTagger } from 'lovable-tagger';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: '::',
     port: 8080,
   },
   plugins: [
     react(),
-    (mode === 'development' || process.env.LOVEABLE_PREVIEW === 'true') &&
-    componentTagger(),
+    (mode === 'development' || process.env.LOVEABLE_PREVIEW === 'true') && componentTagger(),
     visualizer({
       filename: 'dist/stats.html',
       open: mode === 'analyze',
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => ({
   ].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
@@ -61,7 +60,7 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-tooltip',
           ],
           'data-libs': ['@tanstack/react-query', 'zustand'],
-          'utils': ['date-fns', 'clsx', 'tailwind-merge', 'zod'],
+          utils: ['date-fns', 'clsx', 'tailwind-merge', 'zod'],
         },
       },
     },

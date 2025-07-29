@@ -3,7 +3,17 @@
   "title": "SAQA National Qualifications Framework (NQF)",
   "language": "en",
   "summary": "The National Qualifications Framework (NQF) organizes South African qualifications into 10 levels, from high school to university degrees, helping you plan your education and career.",
-  "tags": ["SAQA", "NQF", "Qualifications", "Education", "Career Planning", "Matric", "TVET", "University", "RPL"],
+  "tags": [
+    "SAQA",
+    "NQF",
+    "Qualifications",
+    "Education",
+    "Career Planning",
+    "Matric",
+    "TVET",
+    "University",
+    "RPL"
+  ],
   "source_links": [
     "https://www.saqa.org.za/national-qualifications-framework",
     "https://www.dhet.gov.za/SitePages/NQF.aspx",
@@ -51,7 +61,16 @@
     "collection_point": "Thandi Chatbot"
   },
   "chatbot_priorities": {
-    "keywords": ["NQF", "qualification", "level", "SAQA", "education", "matric", "TVET", "university"],
+    "keywords": [
+      "NQF",
+      "qualification",
+      "level",
+      "SAQA",
+      "education",
+      "matric",
+      "TVET",
+      "university"
+    ],
     "priority_response": "The NQF organizes qualifications into 10 levels. For example, Matric is NQF Level 4, qualifying you for TVET or some university programs. Learn more at https://www.saqa.org.za."
   }
 }

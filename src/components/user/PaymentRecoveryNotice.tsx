@@ -1,5 +1,4 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -30,7 +29,7 @@ interface Payment {
  * PaymentRecoveryNotice
  * @description Function
  */
-export const PaymentRecoveryNotice = (): void => {
+export const PaymentRecoveryNotice = (): JSX.Element => {
   const [recoverablePayments, setRecoverablePayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -86,7 +85,7 @@ export const PaymentRecoveryNotice = (): void => {
     window.location.href = checkoutUrl;
   };
 
-  const getStatusIcon = (status: string): void => {
+  const getStatusIcon = (status: string): JSX.Element => {
     switch (status) {
       case 'pending':
         return <Clock className="h-4 w-4 text-yellow-500" />;
@@ -99,24 +98,27 @@ export const PaymentRecoveryNotice = (): void => {
     }
   };
 
-  const getStatusBadge = (status: string): void => {
-    const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-      pending: 'secondary',
-      failed: 'destructive',
-      expired: 'outline',
-    };
-
-    return <Badge variant={variants[status] || 'outline'}>{status.toUpperCase()}</Badge>;
+  const getStatusBadge = (status: string): string => {
+    switch (status) {
+      case 'pending':
+        return 'pending';
+      case 'failed':
+        return 'error';
+      case 'expired':
+        return 'warning';
+      default:
+        return 'default';
+    }
   };
 
-  const formatCurrency = (amount: number): void => {
+  const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',
-    }).format(amount);
+    }).format(amount / 100);
   };
 
-  const formatDate = (dateString: string): void => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'short',
@@ -124,14 +126,16 @@ export const PaymentRecoveryNotice = (): void => {
     });
   };
 
-  const getTierDisplayName = (tier: string): void => {
+  const getTierDisplayName = (tier: string): string => {
     switch (tier) {
       case 'basic':
-        return 'Essential Plan';
+        return 'Basic Plan';
+      case 'standard':
+        return 'Standard Plan';
       case 'premium':
-        return 'Pro + AI Plan';
+        return 'Premium Plan';
       default:
-        return tier;
+        return tier.charAt(0).toUpperCase() + tier.slice(1);
     }
   };
 

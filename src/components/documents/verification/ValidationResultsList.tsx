@@ -1,5 +1,5 @@
-import { CheckCircle, XCircle, ClipboardList } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { CheckCircle, ClipboardList, XCircle } from 'lucide-react';
 
 interface ValidationResultsListProps {
   validationResults: Record<string, unknown> | undefined;
@@ -92,7 +92,7 @@ export const ValidationResultsList = ({
                       </div>
                     );
                   }
-                } catch (e) {
+                } catch (_e) {
                   // If parsing fails, display as regular string
                 }
               }

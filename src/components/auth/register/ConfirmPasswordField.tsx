@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 import type { Control } from 'react-hook-form';
 import type { RegisterFormValues } from '../RegisterForm';
-import { Eye, EyeOff } from 'lucide-react';
 
 interface ConfirmPasswordFieldProps {
   control: Control<RegisterFormValues>;

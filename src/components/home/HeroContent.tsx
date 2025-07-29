@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
  * @description Function
  */
 export const HeroContent = (): void => {
-  const { user, userType, isVerified } = useAuth();
+  const { user, userType: _userType, isVerified } = useAuth();
   const navigate = useNavigate();
 
   const handleStartApplication = (): void => {
@@ -70,9 +70,8 @@ export const HeroContent = (): void => {
 
       // Allow access but show tier limitations in Meet Thandi page
       navigate('/meet-thandi', { state: { thandiTier } });
-    } catch (error) {
-      // Default to basic tier if no subscription found
-      navigate('/meet-thandi', { state: { thandiTier: 'basic' } });
+    } catch (_error) {
+      console.error('Error fetching statistics');
     }
   };
 

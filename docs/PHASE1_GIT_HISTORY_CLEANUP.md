@@ -3,17 +3,27 @@
 ## Introduction
 
 ### Purpose
-This runbook provides step-by-step instructions for scrubbing sensitive `.env` files from the EduEasy project's git history and rotating exposed Supabase credentials. This procedure aligns with our [Security Policy](../README.md#security) and ensures comprehensive protection of our authentication system.
+
+This runbook provides step-by-step instructions for scrubbing sensitive `.env` files from the
+EduEasy project's git history and rotating exposed Supabase credentials. This procedure aligns with
+our [Security Policy](../README.md#security) and ensures comprehensive protection of our
+authentication system.
 
 ### Critical Nature
+
 Scrubbing `.env` history is essential because:
-- **Exposed Supabase Credentials**: Anon keys and service role keys may have been committed to history
+
+- **Exposed Supabase Credentials**: Anon keys and service role keys may have been committed to
+  history
 - **Security Vulnerability**: Historical commits can be accessed by anyone with repository access
 - **Compliance Requirements**: POPIA compliance demands proper handling of sensitive data
 - **Production Safety**: Prevents unauthorized access to our Supabase backend
 
 ### Context
-EduEasy relies heavily on Supabase for authentication, database operations, and edge functions. Our `.env` file contains critical credentials including:
+
+EduEasy relies heavily on Supabase for authentication, database operations, and edge functions. Our
+`.env` file contains critical credentials including:
+
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -22,6 +32,7 @@ EduEasy relies heavily on Supabase for authentication, database operations, and 
 ## Prerequisites
 
 ### Required Tools
+
 Ensure you have the following tools installed with minimum versions:
 
 - **git-filter-repo ≥ 2.34.0**: Primary tool for history rewriting
@@ -49,11 +60,13 @@ Before proceeding, verify:
 - [ ] GitHub repository admin access for secrets management
 
 ### Point of Contact
+
 **Primary Contact**: Development Team Lead  
 **Role**: Repository Administrator  
 **Escalation**: Technical Director
 
-⚠️ **Warning**: This process rewrites git history and cannot be undone easily. Ensure all team members are coordinated before proceeding.
+⚠️ **Warning**: This process rewrites git history and cannot be undone easily. Ensure all team
+members are coordinated before proceeding.
 
 ## History Scrub Steps
 
@@ -78,17 +91,20 @@ git filter-repo --invert-paths --path .env
 ### 3. Team Coordination & Force Push
 
 **Before Force Pushing:**
+
 1. Notify all team members via Slack/email
 2. Ensure no one is actively working on the repository
 3. Schedule a maintenance window if necessary
 
 **Force Push Procedure:**
+
 ```bash
 git push origin --force --all
 git push origin --force --tags
 ```
 
 **Notification Template:**
+
 ```
 🚨 MAINTENANCE ALERT 🚨
 Repository: EduEasy
@@ -114,6 +130,7 @@ git ls-files | grep -E "\.env$"
 ```
 
 Expected results:
+
 - `git log --all -- .env` should return no results
 - `grep -R "\.env"` should only show references in documentation or scripts
 - `git ls-files | grep -E "\.env$"` should return no results
@@ -195,6 +212,7 @@ env:
 ### Masked Logging Confirmation
 
 Test that secrets are never printed in GitHub Actions logs:
+
 1. Trigger a workflow run
 2. Check Actions logs for any exposed credentials
 3. Verify all sensitive values show as `***`
@@ -253,6 +271,7 @@ bun install
 ```
 
 **Fork Cleanup Instructions:**
+
 - Notify team members to delete and re-fork the repository
 - Update any CI/CD pipelines that reference the old history
 - Clear any cached builds or deployments
@@ -316,6 +335,7 @@ Status Updates: Will be provided every 15 minutes
 ### Team Notification
 
 **Completion Message Template:**
+
 ```
 ✅ GIT HISTORY CLEANUP COMPLETE ✅
 
@@ -337,6 +357,7 @@ Questions? Contact: [Development Team Lead]
 ### Monitoring
 
 Set up monitoring for:
+
 - [ ] Supabase access logs for unusual activity
 - [ ] GitHub Actions success rates
 - [ ] Application error rates post-deployment
@@ -350,11 +371,13 @@ Set up monitoring for:
 **Escalation Path**: Technical Director → CTO
 
 **For Issues Related To:**
+
 - Git history problems: Development Team Lead
-- Supabase access issues: Backend Team Lead  
+- Supabase access issues: Backend Team Lead
 - CI/CD pipeline failures: DevOps Engineer
 - Security concerns: Security Officer
 
 ---
 
-⚠️ **Remember**: This runbook should be executed during a planned maintenance window with full team coordination. Keep this document updated as our infrastructure evolves.
+⚠️ **Remember**: This runbook should be executed during a planned maintenance window with full team
+coordination. Keep this document updated as our infrastructure evolves.

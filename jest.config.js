@@ -3,10 +3,7 @@ export default {
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'jsdom', // Use jsdom for React component tests
   transform: {
-    '^.+\\.(ts|tsx)$': [
-      'ts-jest',
-      { useESM: true }
-    ]
+    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: true }],
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
@@ -15,8 +12,8 @@ export default {
   },
   globals: {
     'ts-jest': {
-      tsconfig: './tsconfig.app.json'
-    }
-  }
+      tsconfig: './tsconfig.app.json',
+    },
+  },
 };
 // Jest configuration for React testing with TypeScript support

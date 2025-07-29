@@ -22,7 +22,7 @@ export interface TestStep {
 export interface TestResult {
   scenarioId: string;
   scenarioName: string;
-  status: 'passed' | 'failed' | 'timeout' | 'error';
+  status: 'pending' | 'passed' | 'failed' | 'timeout' | 'error';
   duration: number;
   timestamp: string;
   details: TestStep[];
@@ -301,7 +301,7 @@ class PaymentTestingService {
       const result: TestResult = {
         scenarioId: scenario.id,
         scenarioName: scenario.name,
-        status: 'pending' as any,
+        status: 'pending', // changed from 'pending' as any
         duration: 0,
         timestamp: new Date().toISOString(),
         details: [...scenario.steps],

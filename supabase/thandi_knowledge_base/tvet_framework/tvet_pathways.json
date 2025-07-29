@@ -3,7 +3,16 @@
   "title": "TV ETL College Pathways",
   "language": "en",
   "summary": "Explore Technical and Vocational Education and Training (TVET) colleges with EduEasy. Learn about programs, entry requirements, applications, and career paths, all guided by Thandi.",
-  "tags": ["TVET", "Vocational", "Programs", "Matric", "Application", "Careers", "EduEasy", "NSFAS"],
+  "tags": [
+    "TVET",
+    "Vocational",
+    "Programs",
+    "Matric",
+    "Application",
+    "Careers",
+    "EduEasy",
+    "NSFAS"
+  ],
   "source_links": [
     "https://www.dhet.gov.za/SitePages/TVETColleges.aspx",
     "https://www.tvetcolleges.co.za",

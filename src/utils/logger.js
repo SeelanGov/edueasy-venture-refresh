@@ -11,7 +11,7 @@ const logger = {
     if (process.env.NODE_ENV !== 'production') {
       console.log(chalk.cyan('[DEBUG]'), message, ...args);
     }
-  }
+  },
 };
 
 export default logger;

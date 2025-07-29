@@ -62,7 +62,7 @@ interface PaymentSummary {
  * AdminPaymentAuditView
  * @description Function
  */
-export const AdminPaymentAuditView = (): void => {
+export const AdminPaymentAuditView = (): JSX.Element => {
   const { toast } = useToast();
   const [payments, setPayments] = useState<PaymentAuditData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,10 +80,10 @@ export const AdminPaymentAuditView = (): void => {
   });
 
   // Filter states
-  const [dateRange, setDateRange] = useState('30d');
+  const [dateRange, setDateRange] = useState('7d');
   const [paymentStatus, setPaymentStatus] = useState('all');
   const [paymentMethod, setPaymentMethod] = useState('all');
-  const [gatewayProvider, setGatewayProvider] = useState('all');
+  const [gatewayProvider, _setGatewayProvider] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [amountRange, setAmountRange] = useState('all');
 
@@ -114,15 +114,13 @@ export const AdminPaymentAuditView = (): void => {
 
       setPayments(paymentsWithUserInfo);
       calculateSummary(paymentsWithUserInfo);
-    } catch (error) {
-      console.error('Error fetching payments:', error);
+    } catch (_error) {
+      setLoading(false);
       toast({
         title: 'Error',
         description: 'Failed to fetch payment data',
         variant: 'destructive',
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -276,7 +274,7 @@ export const AdminPaymentAuditView = (): void => {
         title: 'Export Successful',
         description: 'Payment audit data exported to CSV file',
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: 'Export Failed',
         description: 'Failed to export payment audit data',

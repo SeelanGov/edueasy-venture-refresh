@@ -14,7 +14,7 @@ const oldPatterns = [
   'sessionStorage.setItem(key, value)',
   'sessionStorage.getItem(key)',
   'sessionStorage.removeItem(key)',
-  'sessionStorage.clear()'
+  'sessionStorage.clear()',
 ];
 
 // Check for the new fixed pattern
@@ -23,12 +23,12 @@ const newPatterns = [
   'window.sessionStorage.setItem(key, value)',
   'window.sessionStorage.getItem(key)',
   'window.sessionStorage.removeItem(key)',
-  'window.sessionStorage.clear()'
+  'window.sessionStorage.clear()',
 ];
 
 console.log('\n🔍 Checking for old recursive patterns:');
 let foundOldPatterns = 0;
-oldPatterns.forEach(pattern => {
+oldPatterns.forEach((pattern) => {
   if (content.includes(pattern)) {
     console.log(`❌ Found: ${pattern}`);
     foundOldPatterns++;
@@ -39,7 +39,7 @@ oldPatterns.forEach(pattern => {
 
 console.log('\n🔍 Checking for new fixed patterns:');
 let foundNewPatterns = 0;
-newPatterns.forEach(pattern => {
+newPatterns.forEach((pattern) => {
   if (content.includes(pattern)) {
     console.log(`✅ Found: ${pattern}`);
     foundNewPatterns++;
@@ -56,4 +56,4 @@ if (foundOldPatterns === 0 && foundNewPatterns === newPatterns.length) {
   console.log('\n🎉 localStorage recursion bug is FIXED!');
 } else {
   console.log('\n⚠️ localStorage recursion bug needs attention.');
-} 
+}

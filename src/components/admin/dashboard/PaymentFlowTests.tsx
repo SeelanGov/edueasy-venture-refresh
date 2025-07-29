@@ -1,6 +1,5 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, CheckCircle, XCircle, Play, Download, Square } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
@@ -9,14 +8,26 @@ import {
   type TestResult,
   type TestScenario,
 } from '@/services/PaymentTestingService';
-import { AlertTriangle, BarChart3, Eye, RefreshCw, Shield, Zap } from 'lucide-react';
+import {
+  AlertTriangle,
+  BarChart3,
+  CheckCircle,
+  Clock,
+  Eye,
+  Play,
+  RefreshCw,
+  Shield,
+  Square,
+  XCircle,
+  Zap,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 /**
  * PaymentFlowTests
  * @description Function
  */
-export const PaymentFlowTests = (): void => {
+export const PaymentFlowTests = (): JSX.Element => {
   const { toast } = useToast();
   const [scenarios, setScenarios] = useState<TestScenario[]>([]);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -113,7 +124,7 @@ export const PaymentFlowTests = (): void => {
 
     try {
       // For single test, we'll simulate the process
-      const testData = paymentTestingService.generateTestData(scenario);
+      const _testData = paymentTestingService.generateTestData(scenario);
 
       // Simulate test execution
       for (let i = 0; i < scenario.steps.length; i++) {

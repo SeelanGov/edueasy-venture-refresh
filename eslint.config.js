@@ -1,4 +1,3 @@
-
 import js from '@eslint/js';
 import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
@@ -9,7 +8,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { 
+  {
     ignores: [
       'dist',
       'node_modules',
@@ -18,8 +17,8 @@ export default tseslint.config(
       'public',
       '*.config.js',
       '*.config.ts',
-      '.github'
-    ] 
+      '.github',
+    ],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
@@ -83,17 +82,23 @@ export default tseslint.config(
       'no-restricted-syntax': [
         'error',
         {
-          selector: 'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/bg-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
-          message: 'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.'
+          selector:
+            'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/bg-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
+          message:
+            'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.',
         },
         {
-          selector: 'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/text-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
-          message: 'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.'
+          selector:
+            'JSXAttribute[name.name="className"] JSXExpressionContainer Literal[value=/text-(blue|red|green|yellow|purple|pink|indigo|orange|cyan|teal|lime|emerald|sky|violet|fuchsia|rose)-/]',
+          message:
+            'Use design token colors instead of hardcoded Tailwind colors. Import from @/lib/design-tokens or use StatusBadge component.',
         },
         {
-          selector: 'JSXElement[openingElement.name.name="button"]:not([openingElement.attributes.0.name.name="type"]):not([openingElement.attributes.0.value.value="button"])',
-          message: 'Use Button component from @/components/ui/button instead of raw <button> elements.'
-        }
+          selector:
+            'JSXElement[openingElement.name.name="button"]:not([openingElement.attributes.0.name.name="type"]):not([openingElement.attributes.0.value.value="button"])',
+          message:
+            'Use Button component from @/components/ui/button instead of raw <button> elements.',
+        },
       ],
 
       // Prettier integration

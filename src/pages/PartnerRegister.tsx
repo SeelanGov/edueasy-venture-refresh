@@ -4,6 +4,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import supabase for registration (assume import path for client)
+import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 
 const PartnerRegister: React.FC = () => {

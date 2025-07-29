@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document describes the comprehensive VerifyID integration implemented in EduEasy, featuring POPIA-compliant consent tracking, audit trails, and secure data handling.
+This document describes the comprehensive VerifyID integration implemented in EduEasy, featuring
+POPIA-compliant consent tracking, audit trails, and secure data handling.
 
 ## Architecture
 
@@ -50,6 +51,7 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 **Purpose**: Handles VerifyID API integration with consent validation
 
 **Features**:
+
 - Consent-first validation (no API call without consent)
 - Rate limiting (5 attempts per hour per IP/user)
 - Comprehensive audit logging
@@ -57,6 +59,7 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 - Secure API key handling
 
 **Request Format**:
+
 ```json
 {
   "user_id": "uuid",
@@ -66,6 +69,7 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 ```
 
 **Response Format**:
+
 ```json
 {
   "verified": true,
@@ -93,11 +97,13 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 ### Components Updated
 
 #### `ConsentCheckboxes.tsx`
+
 - Added ID verification consent checkbox
 - Updated interface to include new consent type
 - Enhanced consent text with POPIA compliance
 
 #### `RegisterForm.tsx`
+
 - Implemented consent-first registration flow
 - Added VerifyID integration with proper error handling
 - Enhanced user experience with clear error messages
@@ -105,11 +111,13 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 ### New Hooks
 
 #### `useVerifyID.ts`
+
 - `verifyId()` - Main verification function
 - `useVerificationStatus()` - Check verification status
 - `useVerificationAudit()` - Get audit logs
 
 #### `consent-recording.ts`
+
 - `recordUserConsents()` - Record all consents
 - `hasValidConsent()` - Check consent validity
 - `getUserConsentHistory()` - Get consent history
@@ -120,18 +128,21 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 ## Security Features
 
 ### Data Protection
+
 - **Encrypted storage** of national IDs using `pgcrypto`
 - **Non-sensitive data only** stored in verification response
 - **IP address logging** for audit trails
 - **Rate limiting** to prevent abuse
 
 ### Consent Management
+
 - **Explicit consent** required before any processing
 - **Versioned consent texts** for legal compliance
 - **Audit trails** for all consent changes
 - **Withdrawal capability** for user rights
 
 ### Access Control
+
 - **Row Level Security (RLS)** on all tables
 - **User-specific access** to own data
 - **Admin access** for audit and compliance
@@ -140,6 +151,7 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 ## Compliance Features
 
 ### POPIA Compliance
+
 - **Explicit consent** for ID verification
 - **Purpose limitation** clearly stated
 - **Data minimization** - only necessary data stored
@@ -147,6 +159,7 @@ This document describes the comprehensive VerifyID integration implemented in Ed
 - **Audit trails** for regulatory review
 
 ### Audit Capabilities
+
 - **Complete consent history** with timestamps
 - **Verification attempt logs** with outcomes
 - **IP address tracking** for security
@@ -176,24 +189,28 @@ VITE_ENABLE_AUDIT_LOGGING=true
 ## Deployment Checklist
 
 ### Database Migration
+
 1. Run the migration: `supabase/migrations/20250115_verifyid_integration_consent_system.sql`
 2. Verify all tables are created
 3. Check RLS policies are active
 4. Test database functions
 
 ### Edge Function Deployment
+
 1. Deploy `verifyid-integration` function
 2. Set environment variables in Supabase
 3. Test function with sample data
 4. Verify error handling
 
 ### Frontend Deployment
+
 1. Update environment variables
 2. Deploy updated components
 3. Test registration flow end-to-end
 4. Verify consent recording
 
 ### Testing
+
 1. **Unit tests** for consent validation
 2. **Integration tests** for VerifyID API
 3. **Security tests** for consent bypass attempts
@@ -202,17 +219,20 @@ VITE_ENABLE_AUDIT_LOGGING=true
 ## Monitoring and Maintenance
 
 ### Regular Audits
+
 - **Monthly consent reviews** - Check consent statistics
 - **Quarterly compliance reviews** - Verify POPIA compliance
 - **Annual security reviews** - Audit access and data handling
 
 ### Monitoring
+
 - **Verification success rates** - Track API performance
 - **Consent withdrawal rates** - Monitor user satisfaction
 - **Error rates** - Identify and fix issues
 - **Rate limiting alerts** - Monitor for abuse
 
 ### Maintenance
+
 - **Consent text updates** - Keep current with legal requirements
 - **API key rotation** - Regular security updates
 - **Database optimization** - Performance monitoring
@@ -252,12 +272,14 @@ VITE_ENABLE_AUDIT_LOGGING=true
 ## Future Enhancements
 
 ### Planned Features
+
 - **Consent preference center** - User self-service
 - **Advanced analytics** - Consent trend analysis
 - **Automated compliance reports** - Regulatory reporting
 - **Multi-language consent** - International support
 
 ### Integration Opportunities
+
 - **Additional verification providers** - Backup options
 - **Enhanced security** - Two-factor authentication
 - **Mobile app support** - Native consent handling
@@ -266,13 +288,15 @@ VITE_ENABLE_AUDIT_LOGGING=true
 ## Support and Documentation
 
 ### Resources
+
 - **VerifyID API Documentation** - External provider docs
 - **POPIA Guidelines** - Legal compliance reference
 - **Supabase Documentation** - Database and edge functions
 - **React Hook Form** - Form handling library
 
 ### Contact
+
 - **Technical Support** - Development team
 - **Legal Compliance** - Legal team for consent questions
 - **Security Issues** - Security team for vulnerabilities
-- **User Support** - Customer service for user issues 
+- **User Support** - Customer service for user issues

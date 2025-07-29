@@ -3,7 +3,16 @@
   "title": "University Application Guide",
   "language": "en",
   "summary": "Apply to South African universities with EduEasy’s help. Learn about CAO, direct applications, APS calculations, and deadlines, all in one place with Thandi’s guidance.",
-  "tags": ["University", "Application", "CAO", "APS", "Matric", "Higher Education", "Admissions", "EduEasy"],
+  "tags": [
+    "University",
+    "Application",
+    "CAO",
+    "APS",
+    "Matric",
+    "Higher Education",
+    "Admissions",
+    "EduEasy"
+  ],
   "source_links": [
     "https://www.cao.ac.za",
     "https://www.dhet.gov.za/SitePages/UniversityEducation.aspx",

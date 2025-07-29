@@ -48,25 +48,18 @@ export const StatisticCard = ({
   const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    let timer2: NodeJS.Timeout | undefined;
+    const timer = setInterval(() => {
+      setCurrentValue((prev) => {
+        if (prev >= targetValue) {
+          clearInterval(timer);
+          return targetValue;
+        }
+        return prev + increment;
+      });
+    }, 50);
 
-    timer = setTimeout(() => {
-      setIsVisible(true);
-      if (animateCount) {
-        timer2 = setTimeout(() => {
-          setAnimatedValue(value);
-        }, 200);
-      }
-    }, delay);
-
-    return () => {
-      clearTimeout(timer);
-      if (timer2) {
-        clearTimeout(timer2);
-      }
-    };
-  }, [value, animateCount, delay]);
+    return () => clearInterval(timer);
+  }, [targetValue, increment]);
 
   const handleClick = (): void => {
     if (linkTo) {

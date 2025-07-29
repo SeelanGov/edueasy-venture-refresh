@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
 import { getThandiCapabilities, SubscriptionTierName } from '@/types/SubscriptionTypes';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface Message {
@@ -19,9 +19,11 @@ interface Message {
   timestamp: Date;
 }
 
-interface ThandiAgentProps {}
-
-const ThandiAgent = memo(() => {
+/**
+ * ThandiAgent
+ * @description Function
+ */
+export const ThandiAgent = (): JSX.Element => {
   const { user } = useAuth();
   const { userSubscription } = useSubscription();
   const [messages, setMessages] = useState<Message[]>([
@@ -345,6 +347,4 @@ const ThandiAgent = memo(() => {
       </CardContent>
     </Card>
   );
-});
-
-export default ThandiAgent;
+};

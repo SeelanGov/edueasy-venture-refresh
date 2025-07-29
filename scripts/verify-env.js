@@ -5,13 +5,10 @@ const fs = require('fs');
 logger.info('Verifying environment variables...');
 
 // Check if the required Supabase environment variables are set
-const requiredVars = [
-  'VITE_SUPABASE_URL',
-  'VITE_SUPABASE_ANON_KEY'
-];
+const requiredVars = ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY'];
 
 // Log the environment variables (without showing the full values for security)
-requiredVars.forEach(varName => {
+requiredVars.forEach((varName) => {
   const value = process.env[varName];
   if (value) {
     // Only show the first few characters of the value for security
@@ -25,10 +22,10 @@ requiredVars.forEach(varName => {
 // Check if .env file exists
 if (fs.existsSync('.env')) {
   logger.success('✓ .env file exists');
-  
+
   // Read the .env file to check if it contains the required variables
   const envContent = fs.readFileSync('.env', 'utf8');
-  requiredVars.forEach(varName => {
+  requiredVars.forEach((varName) => {
     if (envContent.includes(varName)) {
       logger.success(`✓ ${varName} is defined in .env file`);
     } else {

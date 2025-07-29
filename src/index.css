@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -505,12 +504,12 @@
     color: #6b7280 !important;
   }
   /* Fix for select placeholder text in dark mode */
-  .dark select option[value=''] {
+  .dark select option[value=""] {
     color: #9ca3af !important;
     background: #111827 !important;
   }
   /* Fix for select placeholder text in light mode */
-  select option[value=''] {
+  select option[value=""] {
     color: #6b7280 !important;
     background: #fff !important;
   }
@@ -573,7 +572,7 @@
     color: #d1d5db !important;
   }
   /* Checkbox input alignment and spacing */
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     accent-color: var(--color-primary, #14b8a6);
     margin-right: 0.5em;
   }
