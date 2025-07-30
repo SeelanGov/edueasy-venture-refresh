@@ -38,7 +38,12 @@ export const PersonalizedDashboard = ({
   const [_sponsors, _setSponsors] = useState<any[]>([]);
 
   // Tracking ID related
-  const trackingId = (user as any)?.user_metadata?.tracking_id || (user as any)?.tracking_id;
+  let trackingId: string | undefined;
+  if (user && isUserMetadata(user.user_metadata)) {
+    trackingId = user.user_metadata.tracking_id ?? (user as any).tracking_id;
+  } else if (user && 'tracking_id' in user) {
+    trackingId = (user as any).tracking_id;
+  }
 
   useEffect(() => {
     if (!allApplicationsLoading) {
@@ -53,12 +58,17 @@ export const PersonalizedDashboard = ({
   // SPONSOR ALLOCATION LOGIC (new!)
   // Query for an active sponsor allocation for this user, if they are sponsored
   const sponsoreeId = user?.id;
+  const sponsorEnabled = !!sponsoreeId && ((user && isUserMetadata(user.user_metadata) && !!user.user_metadata.sponsor_id) || (user && 'sponsor_id' in user));
   const { data: sponsorAllocation, isLoading: sponsorAllocationLoading } = useQuery({
     queryKey: ['sponsor_allocation', sponsoreeId],
     queryFn: async () => {
       if (!sponsoreeId) return null;
-      // Only fetch if user has a sponsor_id on their profile
-      const sponsorId = (user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id;
+      let sponsorId: string | undefined;
+      if (user && isUserMetadata(user.user_metadata)) {
+        sponsorId = user.user_metadata.sponsor_id ?? (user as any).sponsor_id;
+      } else if (user && 'sponsor_id' in user) {
+        sponsorId = (user as any).sponsor_id;
+      }
       if (!sponsorId) return null;
       const { data, error } = await supabase
         .from('sponsor_allocations')
@@ -70,13 +80,12 @@ export const PersonalizedDashboard = ({
       if (error) throw error;
       return data;
     },
-    enabled:
-      !!sponsoreeId && ((user as any)?.user_metadata?.sponsor_id || (user as any)?.sponsor_id),
+    enabled: sponsorEnabled,
     staleTime: 2 * 60 * 1000,
   });
 
   // Derived: determine if user is sponsored
-  const hasSponsorAllocation = sponsorAllocation && sponsorAllocation.status === 'active';
+  const hasSponsorAllocation = sponsorAllocation && typeof sponsorAllocation === 'object' && 'status' in sponsorAllocation && sponsorAllocation.status === 'active';
 
   // Use regular subscription logic if not sponsored
   const isSubscribed =
@@ -135,7 +144,7 @@ export const PersonalizedDashboard = ({
       <Card className="bg-gradient-to-br from-cap-teal/80 to-blue-300 text-white shadow-md">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
-            Welcome, {user?.user_metadata?.full_name || 'User'}!
+            Welcome, {user && isUserMetadata(user.user_metadata) && user.user_metadata.full_name ? user.user_metadata.full_name : 'User'}!
           </CardTitle>
           <CardDescription>
             {isSubscribed
@@ -211,3 +220,14 @@ export const PersonalizedDashboard = ({
     </div>
   );
 };
+
+interface UserMetadata {
+  tracking_id?: string;
+  sponsor_id?: string;
+  full_name?: string;
+  [key: string]: unknown;
+}
+
+function isUserMetadata(obj: unknown): obj is UserMetadata {
+  return obj !== null && typeof obj === 'object';
+}

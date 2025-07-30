@@ -1,27 +1,36 @@
 import { supabase } from '@/integrations/supabase/client';
 
+/**
+ * Represents a payment test scenario.
+ */
 export interface TestScenario {
-  id: string;
-  name: string;
-  description: string;
-  category: 'success' | 'failure' | 'timeout' | 'edge_case';
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  steps: TestStep[];
-  expectedResult: string;
-  automated: boolean;
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly category: 'success' | 'failure' | 'timeout' | 'edge_case';
+  readonly priority: 'low' | 'medium' | 'high' | 'critical';
+  readonly steps: ReadonlyArray<TestStep>;
+  readonly expectedResult: string;
+  readonly automated: boolean;
 }
 
+/**
+ * Represents a single step in a payment test scenario.
+ */
 export interface TestStep {
-  step: number;
-  action: string;
-  expectedOutcome: string;
+  readonly step: number;
+  readonly action: string;
+  readonly expectedOutcome: string;
   actualOutcome?: string;
   status: 'pending' | 'passed' | 'failed' | 'skipped';
 }
 
+/**
+ * Represents the result of a payment test scenario execution.
+ */
 export interface TestResult {
-  scenarioId: string;
-  scenarioName: string;
+  readonly scenarioId: string;
+  readonly scenarioName: string;
   status: 'pending' | 'passed' | 'failed' | 'timeout' | 'error';
   duration: number;
   timestamp: string;
@@ -29,13 +38,16 @@ export interface TestResult {
   error?: string;
 }
 
+/**
+ * Represents the data required to run a payment test.
+ */
 export interface PaymentTestData {
-  userId: string;
-  tier: 'basic' | 'premium';
-  amount: number;
-  paymentMethod: string;
-  merchantReference: string;
-  expectedStatus: string;
+  readonly userId: string;
+  readonly tier: 'basic' | 'premium';
+  readonly amount: number;
+  readonly paymentMethod: string;
+  readonly merchantReference: string;
+  readonly expectedStatus: string;
 }
 
 class PaymentTestingService {
@@ -596,6 +608,36 @@ class PaymentTestingService {
     });
 
     return report;
+  }
+
+  /**
+   * Validates that all scenario IDs are unique.
+   */
+  private validateScenarioIds(): void {
+    const ids = this.scenarios.map((s) => s.id);
+    const duplicates = ids.filter((id, idx) => ids.indexOf(id) !== idx);
+    if (duplicates.length > 0) {
+      throw new Error(`Duplicate scenario IDs found: ${duplicates.join(', ')}`);
+    }
+  }
+
+  /**
+   * Validates that all steps in each scenario are unique and well-formed.
+   */
+  private validateScenarioSteps(): void {
+    for (const scenario of this.scenarios) {
+      const stepNumbers = scenario.steps.map((s) => s.step);
+      const duplicates = stepNumbers.filter((n, idx) => stepNumbers.indexOf(n) !== idx);
+      if (duplicates.length > 0) {
+        throw new Error(`Duplicate step numbers in scenario '${scenario.id}': ${duplicates.join(', ')}`);
+      }
+      // Optionally, add more checks for step validity here
+    }
+  }
+
+  constructor() {
+    this.validateScenarioIds();
+    this.validateScenarioSteps();
   }
 }
 
