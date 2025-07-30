@@ -34,14 +34,9 @@ const commonSubjects = [
   'Tourism',
 ];
 
-interface SubjectEntryProps {
+interface SubjectEntryProps<T = EducationFormData> {
   index: number;
-  control: Control<{
-    [key: string]: Array<{
-      subject: string;
-      mark: number;
-    }>;
-  }>;
+  control: Control<T>;
   fieldName: string;
   canDelete: boolean;
   onDelete: () => void;
@@ -51,13 +46,13 @@ interface SubjectEntryProps {
  * SubjectEntry
  * @description Function
  */
-export const SubjectEntry: React.FC<SubjectEntryProps> = ({
+export const SubjectEntry = <T extends object = EducationFormData>({
   index,
   control,
   fieldName,
   canDelete,
   onDelete,
-}) => {
+}: SubjectEntryProps<T>) => {
   return (
     <div className="grid grid-cols-12 gap-4 items-center mb-4">
       <div className="col-span-8">

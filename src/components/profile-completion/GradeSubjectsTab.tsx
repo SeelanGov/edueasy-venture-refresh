@@ -42,7 +42,7 @@ export const GradeSubjectsTab: React.FC<GradeSubjectsTabProps> = ({
           <SubjectEntry
             key={field.id}
             index={index}
-            control={control as any}
+            control={control}
             fieldName={fieldName}
             canDelete={index > 5}
             onDelete={() => remove(index)}

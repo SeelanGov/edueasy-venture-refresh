@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react';
  * useSubscription
  * @description Function
  */
-export function useSubscription(): void {
+export function useSubscription() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [tiers, setTiers] = useState<SubscriptionTier[]>([]);
-  const [userSubscription, setUserSubscription] = useState<UserSubscription | null>(null);
+  const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // Mock data for subscription tiers
@@ -80,7 +80,7 @@ export function useSubscription(): void {
           (t) => t.name.toLowerCase() === subscription.plan?.toLowerCase(),
         );
         if (tier && subscription.created_at) {
-          setUserSubscription({
+          setCurrentSubscription({
             id: subscription.id,
             user_id: user.id,
             tier_id: tier.id,
@@ -187,14 +187,14 @@ export function useSubscription(): void {
   };
 
   const cancelSubscription = async () => {
-    if (!user || !userSubscription) return false;
+    if (!user || !currentSubscription) return false;
 
     try {
       const { error } = await supabase
         .from('user_plans')
         .update({ active: false })
         .eq('user_id', user.id)
-        .eq('id', userSubscription.id);
+        .eq('id', currentSubscription.id);
 
       if (error) throw error;
 
@@ -227,12 +227,7 @@ export function useSubscription(): void {
   return {
     loading,
     tiers,
-    userSubscription,
-    currentSubscription: userSubscription,
+    currentSubscription,
     transactions,
-    subscribeToPlan,
-    checkPaymentStatus,
-    cancelSubscription,
-    toggleAutoRenew,
   };
 }
