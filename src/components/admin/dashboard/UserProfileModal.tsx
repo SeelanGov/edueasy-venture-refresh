@@ -44,7 +44,7 @@ interface UserModalProps {
 export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose }) => {
   // Fetch verification logs and sponsor allocations for the user
   const verificationData = useUserVerificationLogs(user?.id);
-  const allocationData = useSponsorAllocations({ studentId: user?.id });
+  const allocationData = useSponsorAllocations(user?.id);
   
   const logs = verificationData?.logs || [];
   const logsLoading = verificationData?.loading || false;
