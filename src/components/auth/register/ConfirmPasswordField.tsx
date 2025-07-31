@@ -15,7 +15,7 @@ interface ConfirmPasswordFieldProps {
  * ConfirmPasswordField
  * @description Function
  */
-export const ConfirmPasswordField = ({ control, isLoading }: ConfirmPasswordFieldProps): void => {
+export const ConfirmPasswordField = ({ control, isLoading }: ConfirmPasswordFieldProps): JSX.Element => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (

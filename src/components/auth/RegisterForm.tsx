@@ -42,7 +42,7 @@ const registerFormSchema = z
     path: ['confirmPassword'],
   });
 
-type RegisterFormValues = z.infer<typeof registerFormSchema>;
+export type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
 interface RegisterFormProps {
   hasPendingPlan?: boolean;
