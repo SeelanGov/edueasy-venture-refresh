@@ -23,7 +23,7 @@ export const PolicyTestConfiguration = ({
   setSelectedRole,
   scenarioName,
   setScenarioName,
-}: PolicyTestConfigurationProps): void => {
+}: PolicyTestConfigurationProps): JSX.Element => {
   return (
     <div className="mb-6">
       <h3 className="text-lg font-medium mb-4">Policy Test Configuration</h3>

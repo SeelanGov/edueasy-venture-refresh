@@ -1,5 +1,11 @@
 import React from 'react';
-const PartnerPaymentHistory: React.FC<{ payments: unknown[] }> = ({ payments }) => (
+interface Payment {
+  payment_date: string;
+  amount: number;
+  status: string;
+}
+
+const PartnerPaymentHistory: React.FC<{ payments: Payment[] }> = ({ payments }) => (
   <div>
     <h3 className="font-semibold mb-2">Payment History</h3>
     {!payments?.length ? (

@@ -43,8 +43,13 @@ interface UserModalProps {
  */
 export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose }) => {
   // Fetch verification logs and sponsor allocations for the user
-  const { logs, loading: logsLoading } = useUserVerificationLogs(user?.id);
-  const { allocations, loading: allocationsLoading } = useSponsorAllocations(user?.id);
+  const verificationData = useUserVerificationLogs(user?.id);
+  const allocationData = useSponsorAllocations({ studentId: user?.id });
+  
+  const logs = verificationData?.logs || [];
+  const logsLoading = verificationData?.loading || false;
+  const allocations = allocationData?.allocations || [];
+  const allocationsLoading = allocationData?.loading || false;
 
   if (!user) return null;
 
@@ -122,7 +127,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {logs.map((log) => (
+                    {logs.map((log: any) => (
                       <li key={log.id} className="border-b py-1">
                         <span className="font-semibold">
                           {log.created_at
@@ -176,7 +181,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {allocations.map((a) => (
+                    {allocations.map((a: any) => (
                       <li key={a.id} className="border-b py-1">
                         <span className="font-semibold">{a.plan}</span>
                         <span className="ml-2 text-xs text-gray-500">({a.status})</span>

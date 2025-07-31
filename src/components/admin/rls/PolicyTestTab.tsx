@@ -29,7 +29,7 @@ export const PolicyTestTab = ({
   isLoading,
   onRunStandardTests,
   onRunRoleTests,
-}: PolicyTestTabProps): void => {
+}: PolicyTestTabProps): JSX.Element => {
   return (
     <>
       <CardContent>
