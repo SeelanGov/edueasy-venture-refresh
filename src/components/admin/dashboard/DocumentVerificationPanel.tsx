@@ -40,7 +40,7 @@ export function DocumentVerificationPanel({
   documents,
   updateDocumentStatus,
   userMap,
-}: Props): void {
+}: Props): JSX.Element {
   return (
     <Card>
       <CardHeader>

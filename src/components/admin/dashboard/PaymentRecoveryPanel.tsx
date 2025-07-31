@@ -43,7 +43,7 @@ interface Payment {
  * PaymentRecoveryPanel
  * @description Function
  */
-export const PaymentRecoveryPanel = (): void => {
+export const PaymentRecoveryPanel = (): JSX.Element => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [filteredPayments, setFilteredPayments] = useState<Payment[]>([]);
   const [view, setView] = useState<'orphaned' | 'failed'>('orphaned');
@@ -78,7 +78,7 @@ export const PaymentRecoveryPanel = (): void => {
     const result = view === 'orphaned' ? await listOrphanedPayments() : await listFailedPayments();
 
     if (result.success) {
-      setPayments(result.data || []);
+      setPayments(Array.isArray(result.data) ? result.data : []);
     } else {
       toast({
         title: 'Error',
@@ -163,7 +163,7 @@ export const PaymentRecoveryPanel = (): void => {
     }
   };
 
-  const getStatusIcon = (status: string): void => {
+  const getStatusIcon = (status: string): JSX.Element => {
     switch (status) {
       case 'pending':
         return <Clock className="h-4 w-4 text-yellow-500" />;
@@ -178,7 +178,7 @@ export const PaymentRecoveryPanel = (): void => {
     }
   };
 
-  const getStatusBadge = (status: string): void => {
+  const getStatusBadge = (status: string): JSX.Element => {
     const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
       pending: 'secondary',
       paid: 'default',
@@ -191,14 +191,14 @@ export const PaymentRecoveryPanel = (): void => {
     return <Badge variant={variants[status] || 'outline'}>{status.toUpperCase()}</Badge>;
   };
 
-  const formatCurrency = (amount: number): void => {
+  const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',
     }).format(amount);
   };
 
-  const formatDate = (dateString: string): void => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleString('en-ZA', {
       year: 'numeric',
       month: 'short',
