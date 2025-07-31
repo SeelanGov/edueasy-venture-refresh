@@ -8,6 +8,7 @@ export interface Partner {
   integration_status?: string;
   created_at?: string;
   updated_at?: string;
+  mou_uploaded_at?: string;
 }
 
 export interface Note {
