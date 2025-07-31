@@ -12,7 +12,7 @@ interface DocumentTypePerformanceChartProps {
  * DocumentTypePerformanceChart
  * @description Function
  */
-export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps): void => {
+export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceChartProps) => {
   // Format type names for display using the shared formatting utility
   const chartData = useMemo(() => {
     return data.map((item) => ({

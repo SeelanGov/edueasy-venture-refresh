@@ -19,7 +19,7 @@ export const AnalyticsHeader = ({
   onExport,
   loading,
   hasData,
-}: AnalyticsHeaderProps): void => {
+}: AnalyticsHeaderProps) => {
   return (
     <div className="space-y-4">
       <AnalyticsBreadcrumb />

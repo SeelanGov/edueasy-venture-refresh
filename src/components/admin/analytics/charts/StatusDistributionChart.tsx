@@ -16,7 +16,7 @@ export const StatusDistributionChart = ({
   rejected,
   pending,
   resubmission,
-}: StatusDistributionChartProps): void => {
+}: StatusDistributionChartProps) => {
   const data = [
     { name: 'Approved', value: approved, color: '#22c55e' },
     { name: 'Rejected', value: rejected, color: '#ef4444' },

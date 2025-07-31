@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
  * AnalyticsLoadingState
  * @description Function
  */
-export const AnalyticsLoadingState = (): void => {
+export const AnalyticsLoadingState = () => {
   return (
     <div className="space-y-6">
       {/* Stats Cards Loading */}
