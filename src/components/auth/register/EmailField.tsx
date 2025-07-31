@@ -13,7 +13,7 @@ interface EmailFieldProps {
  * EmailField
  * @description Function
  */
-export const EmailField = ({ control, isLoading }: EmailFieldProps): void => {
+export const EmailField = ({ control, isLoading }: EmailFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}

@@ -16,7 +16,7 @@ interface PasswordFieldProps {
  * PasswordField
  * @description Function
  */
-export const PasswordField = ({ control, isLoading }: PasswordFieldProps): void => {
+export const PasswordField = ({ control, isLoading }: PasswordFieldProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (

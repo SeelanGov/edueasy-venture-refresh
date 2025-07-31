@@ -25,7 +25,8 @@ interface Message {
  */
 export const ThandiAgent = (): JSX.Element => {
   const { user } = useAuth();
-  const { userSubscription } = useSubscription();
+  const subscriptionData = useSubscription();
+  const userSubscription = subscriptionData?.currentSubscription;
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -174,17 +175,17 @@ export const ThandiAgent = (): JSX.Element => {
 
       setMessages((prev) => [...prev, errorMessage]);
 
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to get AI response',
-        variant: 'destructive',
-      });
+        toast({
+          title: 'Error',
+          description: (error as Error).message || 'Failed to get AI response',
+          variant: 'destructive',
+        });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getTierIcon = (): void => {
+  const getTierIcon = (): JSX.Element => {
     switch (thandiCapabilities.tier) {
       case 'basic':
         return <HelpCircle className="h-4 w-4" />;
@@ -197,7 +198,7 @@ export const ThandiAgent = (): JSX.Element => {
     }
   };
 
-  const getTierColor = (): void => {
+  const getTierColor = (): string => {
     switch (thandiCapabilities.tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-700';

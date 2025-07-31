@@ -18,7 +18,7 @@ export const ConsentCheckboxes = ({
   setConsentPrivacy,
   setConsentTerms,
   setConsentIdVerification,
-}: ConsentCheckboxesProps): void => {
+}: ConsentCheckboxesProps): JSX.Element => {
   return (
     <div className="flex flex-col gap-3 my-4 p-4 bg-gray-50 rounded-lg">
       <div className="text-sm font-medium text-gray-700 mb-2">Required Agreements</div>

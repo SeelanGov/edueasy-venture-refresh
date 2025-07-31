@@ -13,7 +13,7 @@ interface IdNumberFieldProps {
  * IdNumberField
  * @description Function
  */
-export const IdNumberField = ({ control, isLoading }: IdNumberFieldProps): void => {
+export const IdNumberField = ({ control, isLoading }: IdNumberFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}
