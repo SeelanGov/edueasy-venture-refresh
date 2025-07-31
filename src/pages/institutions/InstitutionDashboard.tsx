@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Building2, Users, BookOpen, BarChart3 } from 'lucide-react';
 
-const InstitutionDashboard = (): void => {
+const InstitutionDashboard = () => {
   return (
     <PageLayout title="Institution Dashboard" showBackButton={false}>
       <div className="space-y-6">

@@ -25,7 +25,7 @@ interface Partner {
  * PartnerList
  * @description Function
  */
-export const PartnerList = (): void => {
+export const PartnerList = () => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

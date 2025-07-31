@@ -17,7 +17,7 @@ import { AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ProfileCompletion = (): void => {
+const ProfileCompletion = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
@@ -46,13 +46,13 @@ const ProfileCompletion = (): void => {
     checkSavedData();
   }, [hasSavedData]);
 
-  const handleNext = (): void => {
+  const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
-  const handlePrevious = (): void => {
+  const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
@@ -86,12 +86,12 @@ const ProfileCompletion = (): void => {
     }
   };
 
-  const handleStartNew = (): void => {
+  const handleStartNew = () => {
     resetFormData();
     setError(null);
   };
 
-  const renderStep = (): void => {
+  const renderStep = () => {
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep onComplete={handleNext} />;

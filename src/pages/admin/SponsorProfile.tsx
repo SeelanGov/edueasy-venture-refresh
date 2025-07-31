@@ -8,7 +8,7 @@ import SponsorPaymentHistory from '@/components/sponsor/SponsorPaymentHistory';
 import SponsorStudentTable from '@/components/sponsor/SponsorStudentTable';
 import { Spinner } from '@/components/Spinner';
 
-const SponsorProfile = (): void => {
+const SponsorProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { data: sponsor, isLoading: sponsorLoading } = useSponsor(id);
   const { allocations, loading: allocationsLoading } = useSponsorAllocations({ sponsorId: id });

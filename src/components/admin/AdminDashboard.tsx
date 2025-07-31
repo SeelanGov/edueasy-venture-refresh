@@ -45,7 +45,7 @@ interface ErrorLogEntry {
  * AdminDashboard
  * @description Function
  */
-export const AdminDashboard = (): void => {
+export const AdminDashboard = () => {
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     totalApplications: 0,
