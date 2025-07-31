@@ -16,7 +16,7 @@ interface PolicyAnalysisTabProps {
 export const PolicyAnalysisTab = ({
   policyAnalysis,
   onRefreshData,
-}: PolicyAnalysisTabProps): void => {
+}: PolicyAnalysisTabProps): JSX.Element => {
   return (
     <CardContent>
       <div className="flex justify-between items-center mb-4">

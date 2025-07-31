@@ -70,7 +70,7 @@ export const PartnerList = () => {
     return matchesSearch && matchesType && matchesTier;
   });
 
-  const getTierColor = (tier: string): void => {
+  const getTierColor = (tier: string): string => {
     switch (tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-800';
@@ -83,7 +83,7 @@ export const PartnerList = () => {
     }
   };
 
-  const getStatusColor = (status: string): void => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
       case 'active':
         return 'bg-green-100 text-green-800';
