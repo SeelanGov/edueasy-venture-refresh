@@ -11,7 +11,7 @@ interface PolicyTestResultsProps {
  * PolicyTestResults
  * @description Function
  */
-export const PolicyTestResults = ({ results }: PolicyTestResultsProps): void => {
+export const PolicyTestResults = ({ results }: PolicyTestResultsProps): JSX.Element => {
   // Group results by table name for better organization
   const groupedResults = results.reduce(
     (acc, result) => {

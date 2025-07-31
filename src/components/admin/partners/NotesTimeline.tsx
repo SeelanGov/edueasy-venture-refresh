@@ -1,5 +1,11 @@
 import React from 'react';
-const NotesTimeline: React.FC<{ notes: unknown[] }> = ({ notes }) => (
+interface Note {
+  note: string;
+  created_at: string;
+  created_by: string;
+}
+
+const NotesTimeline: React.FC<{ notes: Note[] }> = ({ notes }) => (
   <div>
     <h3 className="font-semibold mb-2">Notes</h3>
     {!notes?.length ? (
