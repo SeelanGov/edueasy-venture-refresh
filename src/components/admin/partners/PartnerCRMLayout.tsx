@@ -7,7 +7,7 @@ import { Building2, Settings, Mail, BarChart3 } from 'lucide-react';
  * PartnerCRMLayout
  * @description Function
  */
-export const PartnerCRMLayout = (): void => {
+export const PartnerCRMLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
  * useAdminRole
  * @description Function
  */
-export const useAdminRole = (): void => {
+export const useAdminRole = () => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);

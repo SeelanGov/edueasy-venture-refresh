@@ -7,7 +7,7 @@ import { SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Calendar, Clock, Video, Users, Star } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 
-const ConsultationsPage = (): void => {
+const ConsultationsPage = () => {
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
 
   const sessionTypes = [

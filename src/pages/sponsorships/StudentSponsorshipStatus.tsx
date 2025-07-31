@@ -1,6 +1,6 @@
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 
-const StudentSponsorshipStatus = (): void => {
+const StudentSponsorshipStatus = () => {
   const { applications, loading } = useSponsorApplications({ asSponsor: false });
 
   return (

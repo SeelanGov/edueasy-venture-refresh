@@ -12,7 +12,7 @@ import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-const Index = (): void => {
+const Index = () => {
   const navigate = useNavigate();
 
   return (

@@ -50,7 +50,7 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const AdminDashboard = (): void => {
+const AdminDashboard = () => {
   const { user } = useAuth();
   const {
     documents,
@@ -75,7 +75,7 @@ const AdminDashboard = (): void => {
     return doc.verification_status === tabValue;
   });
 
-  const getStatusBadgeVariant = (status: string | null): void => {
+  const getStatusBadgeVariant = (status: string | null) => {
     switch (status) {
       case 'approved':
         return 'default';
@@ -90,7 +90,7 @@ const AdminDashboard = (): void => {
     }
   };
 
-  const getStatusBadge = (status: string | null): void => {
+  const getStatusBadge = (status: string | null) => {
     let statusText = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown';
     if (status === 'request_resubmission') statusText = 'Needs Resubmission';
 
@@ -137,7 +137,7 @@ const AdminDashboard = (): void => {
     }
   };
 
-  const handlePageChange = (page: number): void => {
+  const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };

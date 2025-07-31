@@ -13,6 +13,7 @@ import {
   BarChart3,
   CheckCircle,
   Clock,
+  Download,
   Eye,
   Play,
   RefreshCw,
@@ -203,7 +204,7 @@ export const PaymentFlowTests = (): JSX.Element => {
     });
   };
 
-  const getStatusIcon = (status: string): void => {
+  const getStatusIcon = (status: string): JSX.Element => {
     switch (status) {
       case 'passed':
         return <CheckCircle className="h-4 w-4 text-green-600" />;
@@ -216,7 +217,7 @@ export const PaymentFlowTests = (): JSX.Element => {
     }
   };
 
-  const getPriorityColor = (priority: string): void => {
+  const getPriorityColor = (priority: string): string => {
     switch (priority) {
       case 'critical':
         return 'bg-red-100 text-red-800';
@@ -231,7 +232,7 @@ export const PaymentFlowTests = (): JSX.Element => {
     }
   };
 
-  const getCategoryIcon = (category: string): void => {
+  const getCategoryIcon = (category: string): JSX.Element => {
     switch (category) {
       case 'success':
         return <CheckCircle className="h-4 w-4" />;
@@ -388,7 +389,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                     {getCategoryIcon(scenario.category)}
                     <h3 className="font-medium">{scenario.name}</h3>
                   </div>
-                  <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
+                   <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
                 </div>
 
                 <p className="text-sm text-gray-600">{scenario.description}</p>
@@ -434,7 +435,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                 <div key={index} className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {getStatusIcon(result.status)}
+                     {getStatusIcon(result.status)}
                       <h3 className="font-medium">{result.scenarioName}</h3>
                     </div>
                     <div className="flex items-center space-x-2">

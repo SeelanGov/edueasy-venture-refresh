@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
  * StudentMatchingView
  * @description Function
  */
-export const StudentMatchingView = (): void => {
+export const StudentMatchingView = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [_loading, _setLoading] = useState(false);

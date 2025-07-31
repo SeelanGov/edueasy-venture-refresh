@@ -21,7 +21,7 @@ export function AdminDashboardStats({
   unverifiedUsers,
   pendingDocuments,
   totalApplications,
-}: Props): void {
+}: Props): JSX.Element {
   const [paymentRecoveryStats, setPaymentRecoveryStats] = useState({
     orphaned: 0,
     failed: 0,

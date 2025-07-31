@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 
-const NotFound = (): void => {
+const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {

@@ -9,7 +9,7 @@ interface RejectionReasonsChartProps {
  * RejectionReasonsChart
  * @description Function
  */
-export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps): void => {
+export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-muted-foreground">

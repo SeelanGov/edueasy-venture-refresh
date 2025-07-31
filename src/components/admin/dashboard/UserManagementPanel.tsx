@@ -40,7 +40,7 @@ export function UserManagementPanel({
   trackingIdSearch,
   setTrackingIdSearch,
   refreshUsers,
-}: Props): void {
+}: Props): JSX.Element {
   const [showOnlyVerified, setShowOnlyVerified] = useState<null | boolean>(null);
   const [exporting, setExporting] = useState(false);
   const [searchText, setSearchText] = useState('');

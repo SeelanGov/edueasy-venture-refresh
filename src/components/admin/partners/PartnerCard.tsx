@@ -1,7 +1,9 @@
 import React from 'react';
 import PartnerStatusBadge from './PartnerStatusBadge';
+import type { Partner } from '@/types/partner';
+
 type Props = {
-  partner: unknown;
+  partner: Partner;
   onClick?: () => void;
 };
 const PartnerCard: React.FC<Props> = ({ partner, onClick }) => (

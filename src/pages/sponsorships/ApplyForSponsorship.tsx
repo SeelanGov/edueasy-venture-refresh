@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ApplyForSponsorship = (): void => {
+const ApplyForSponsorship = () => {
   const { user } = useAuth();
   const [applicationId, setApplicationId] = useState('');
   const [requestedAmount, setRequestedAmount] = useState('');

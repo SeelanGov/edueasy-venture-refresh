@@ -32,7 +32,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     }
   }, [targetId, targetType, limit]);
 
-  const getSeverityColor = (severity: string): void => {
+  const getSeverityColor = (severity: string): string => {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'bg-red-100 text-red-800';
@@ -47,7 +47,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     }
   };
 
-  const getActionIcon = (action: string): void => {
+  const getActionIcon = (action: string): JSX.Element => {
     if (action.includes('verify') || action.includes('approve')) {
       return <Shield className="h-4 w-4" />;
     }
@@ -57,7 +57,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     return <User className="h-4 w-4" />;
   };
 
-  const formatDetails = (details: Record<string, unknown>): void => {
+  const formatDetails = (details: Record<string, unknown>): JSX.Element[] => {
     const relevantDetails = Object.entries(details)
       .filter(([key]) => !['timestamp', 'admin_id'].includes(key))
       .slice(0, 3);
@@ -105,11 +105,11 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
                   Action: <span className="font-mono text-xs">{log.action}</span>
                 </div>
 
-                {log.details.reason && (
-                  <div className="mt-1 text-sm text-gray-600">Reason: {log.details.reason}</div>
+                {log.details?.reason && typeof log.details.reason === 'string' && (
+                  <div className="mt-1 text-sm text-gray-600">Reason: {String(log.details.reason)}</div>
                 )}
 
-                <div className="mt-2 flex flex-wrap gap-2">{formatDetails(log.details)}</div>
+                <div className="mt-2 flex flex-wrap gap-2">{formatDetails(log.details || {})}</div>
               </div>
             ))}
           </div>
