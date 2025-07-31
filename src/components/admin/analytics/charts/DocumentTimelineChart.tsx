@@ -18,7 +18,7 @@ interface DocumentTimelineChartProps {
  * DocumentTimelineChart
  * @description Function
  */
-export const DocumentTimelineChart = ({ data }: DocumentTimelineChartProps): void => {
+export const DocumentTimelineChart = ({ data }: DocumentTimelineChartProps) => {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-muted-foreground">

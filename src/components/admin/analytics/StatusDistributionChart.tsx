@@ -14,7 +14,7 @@ interface StatusDistributionChartProps {
  * StatusDistributionChart
  * @description Function
  */
-export const StatusDistributionChart = ({ data }: StatusDistributionChartProps): void => {
+export const StatusDistributionChart = ({ data }: StatusDistributionChartProps) => {
   return (
     <div className="w-full h-[400px]">
       <ResponsiveContainer width="100%" height="100%">
