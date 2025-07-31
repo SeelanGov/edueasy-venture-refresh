@@ -36,7 +36,7 @@ interface PaymentSummary {
   failedCount: number;
 }
 
-const SponsorDashboard = (): void => {
+const SponsorDashboard = () => {
   const { applications, loading, refresh } = useSponsorApplications({ asSponsor: true });
   const { userType } = useAuth();
   const navigate = useNavigate();
@@ -166,7 +166,7 @@ const SponsorDashboard = (): void => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string): void => {
+  const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'paid':
         return 'default';
@@ -179,7 +179,7 @@ const SponsorDashboard = (): void => {
     }
   };
 
-  const formatCurrency = (amount: number): void => {
+  const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',

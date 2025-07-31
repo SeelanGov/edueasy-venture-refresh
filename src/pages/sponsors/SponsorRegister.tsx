@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SponsorRegister = (): void => {
+const SponsorRegister = () => {
   const [form, setForm] = useState({
     email: '',
     name: '',

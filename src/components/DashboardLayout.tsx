@@ -27,7 +27,7 @@ interface DashboardLayoutProps {
  * DashboardLayout
  * @description Function
  */
-export const DashboardLayout = ({ children }: DashboardLayoutProps): void => {
+export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { user, signOut, loading } = useAuth();
   const { isAdmin, loading: roleLoading } = useAdminRole();
   const navigate = useNavigate();
@@ -49,12 +49,12 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps): void => {
     return null;
   }
 
-  const handleSignOut = (): void => {
+  const handleSignOut = () => {
     signOut();
     navigate('/');
   };
 
-  const isActive = (path: string): void => {
+  const isActive = (path: string) => {
     return location.pathname === path;
   };
 
@@ -107,7 +107,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps): void => {
       ]
     : [];
 
-  const getPageTitle = (): void => {
+  const getPageTitle = () => {
     const allNavItems = [...navItems, ...adminNavItems];
     const currentNavItem = allNavItems.find(
       (item) => isActive(item.path) || location.pathname.startsWith(item.path + '/'),
