@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle2, Circle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import type { Partner } from '@/types/partner';
 
 // Demo: define milestones - in a real app, this would be backend-driven/configurable
 const INTEGRATION_STEPS = [
@@ -26,7 +27,7 @@ const INTEGRATION_STEPS = [
   },
 ];
 
-const getStepStatus = (partner: unknown, key: string): void => {
+const getStepStatus = (partner: Partner, key: string): string => {
   // Simulated logic: in production, fields like `mou_uploaded_at`, `api_connected`, etc. would exist
   switch (key) {
     case 'signed_mou':
@@ -48,14 +49,14 @@ const getStepStatus = (partner: unknown, key: string): void => {
   }
 };
 
-const statusToIcon = (status: string) =>
+const statusToIcon = (status: string): JSX.Element =>
   status === 'done' ? (
     <CheckCircle2 className="text-green-500 mr-2 h-5 w-5" />
   ) : (
     <Circle className="text-gray-300 mr-2 h-5 w-5" />
   );
 
-const PartnerIntegrationChecklist: React.FC<{ partner: unknown }> = ({ partner }) => (
+const PartnerIntegrationChecklist: React.FC<{ partner: Partner }> = ({ partner }) => (
   <div className="rounded border p-4 bg-white shadow text-gray-700 space-y-4">
     <div className="font-semibold mb-2">Integration Progress</div>
     <div>

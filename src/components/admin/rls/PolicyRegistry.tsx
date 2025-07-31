@@ -17,7 +17,7 @@ interface PolicyRegistryProps {
  * PolicyRegistry
  * @description Function
  */
-export const PolicyRegistry = ({ policies }: PolicyRegistryProps): void => {
+export const PolicyRegistry = ({ policies }: PolicyRegistryProps): JSX.Element => {
   // Group policies by table name for better organization
   const groupedPolicies = useMemo(() => {
     return policies.reduce(
@@ -38,7 +38,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps): void => {
   }, [policies]);
 
   // Get policy type badge variant
-  const getPolicyTypeVariant = (type: string): void => {
+  const getPolicyTypeVariant = (type: string): "outline" | "secondary" | "default" | "destructive" => {
     switch (type.toUpperCase()) {
       case 'SELECT':
         return 'outline';

@@ -22,7 +22,7 @@ interface PolicyRegistryTabProps {
 export const PolicyRegistryTab = ({
   registeredPolicies,
   onRefreshData,
-}: PolicyRegistryTabProps): void => {
+}: PolicyRegistryTabProps): JSX.Element => {
   return (
     <CardContent>
       <div className="flex justify-between items-center mb-4">
