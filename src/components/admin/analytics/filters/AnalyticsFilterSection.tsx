@@ -15,7 +15,7 @@ export const AnalyticsFilterSection = ({
   label,
   children,
   className = 'space-y-2',
-}: AnalyticsFilterSectionProps): void => {
+}: AnalyticsFilterSectionProps): JSX.Element => {
   return (
     <div className={className}>
       <Label>{label}</Label>

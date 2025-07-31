@@ -11,7 +11,7 @@ interface ChartsTabProps {
  * ChartsTab
  * @description Function
  */
-export const ChartsTab = ({ analytics }: ChartsTabProps): void => {
+export const ChartsTab = ({ analytics }: ChartsTabProps): JSX.Element => {
   return (
     <div className="space-y-6">
       <ChartContainer
