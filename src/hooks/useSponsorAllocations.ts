@@ -16,7 +16,7 @@ export interface SponsorAllocationsOptions {
  * useSponsorAllocations
  * @description Function
  */
-export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}): void => {
+export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}) => {
   const [allocations, setAllocations] = useState<SponsorAllocation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

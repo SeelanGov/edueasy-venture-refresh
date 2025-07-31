@@ -14,7 +14,7 @@ import type { RLSTestResult, RLSPolicyAnalysis } from '@/utils/security/types';
  * usePolicyTester
  * @description Function
  */
-export const usePolicyTester = (): void => {
+export const usePolicyTester = () => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [testResults, setTestResults] = useState<RLSTestResult[] | null>(null);
