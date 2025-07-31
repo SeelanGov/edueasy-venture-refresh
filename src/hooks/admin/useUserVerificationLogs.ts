@@ -14,7 +14,7 @@ export interface VerificationLog {
  * useUserVerificationLogs
  * @description Function
  */
-export function useUserVerificationLogs(userId?: string): void {
+export function useUserVerificationLogs(userId?: string): { logs: VerificationLog[]; loading: boolean } {
   const [logs, setLogs] = useState<VerificationLog[]>([]);
   const [loading, setLoading] = useState(false);
 

@@ -25,7 +25,16 @@ type GroupBy = 'date' | 'type' | 'none';
  * NotificationsPanel
  * @description Function
  */
-export const NotificationsPanel = () => {
+export const NotificationsPanel = (): JSX.Element => {
+  const notificationData = useNotificationSystem() || {
+    notifications: [],
+    unreadCount: 0,
+    loading: false,
+    markAsRead: () => {},
+    markAllAsRead: () => {},
+    deleteNotification: () => {},
+    deleteAllReadNotifications: () => {},
+  };
   const {
     notifications,
     unreadCount,
@@ -34,7 +43,7 @@ export const NotificationsPanel = () => {
     markAllAsRead,
     deleteNotification,
     deleteAllReadNotifications,
-  } = useNotificationSystem();
+  } = notificationData;
 
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<FilterOption>('all');
