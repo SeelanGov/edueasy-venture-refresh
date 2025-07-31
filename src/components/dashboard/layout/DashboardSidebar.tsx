@@ -39,7 +39,7 @@ export const DashboardSidebar = ({
   adminNavItems,
   isAdmin,
   onSignOut,
-}: DashboardSidebarProps): void => {
+}: DashboardSidebarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const { isDarkMode, toggleTheme } = useTheme();

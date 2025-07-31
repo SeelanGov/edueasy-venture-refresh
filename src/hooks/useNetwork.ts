@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
  * useNetwork
  * @description Function
  */
-export const useNetwork = (): void => {
+export const useNetwork = () => {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
 
   useEffect(() => {

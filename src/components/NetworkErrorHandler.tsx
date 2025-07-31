@@ -12,7 +12,7 @@ interface NetworkErrorHandlerProps {
  * NetworkErrorHandler
  * @description Event handler function
  */
-export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps): void => {
+export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
   const { isOnline } = useNetwork();
   const [showOfflineWarning, setShowOfflineWarning] = useState(false);
 

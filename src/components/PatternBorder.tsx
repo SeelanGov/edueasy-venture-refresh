@@ -7,7 +7,7 @@ type PatternBorderProps = {
  * PatternBorder
  * @description Function
  */
-export const PatternBorder = ({ position, className = '' }: PatternBorderProps): void => {
+export const PatternBorder = ({ position, className = '' }: PatternBorderProps) => {
   return (
     <div className={`w-full overflow-hidden ${position === 'top' ? 'mb-4' : 'mt-4'} ${className}`}>
       <div className="flex justify-center">
@@ -34,7 +34,7 @@ const PatternBorderWithChildren = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}): void => {
+}) => {
   return (
     <div className={`relative ${className}`}>
       <div className="absolute inset-0 bg-gradient-to-r from-cap-teal/20 to-cap-orange/20 rounded-lg"></div>

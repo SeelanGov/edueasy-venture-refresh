@@ -21,7 +21,7 @@ export const DashboardHeader = ({
   isDarkMode,
   toggleTheme,
   onOpenMobileMenu,
-}: DashboardHeaderProps): void => {
+}: DashboardHeaderProps) => {
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm">
       <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">

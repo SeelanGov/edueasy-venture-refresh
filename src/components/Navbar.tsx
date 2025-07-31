@@ -8,7 +8,7 @@ import { Logo } from './Logo';
  * Navbar
  * @description Function
  */
-export const Navbar = (): void => {
+export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

@@ -12,7 +12,7 @@ interface DashboardLayoutWithThandiProps {
  * DashboardLayoutWithThandi
  * @description Function
  */
-export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThandiProps): void => {
+export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThandiProps) => {
   return (
     <>
       <MobileFriendlyDashboardLayout>{children}</MobileFriendlyDashboardLayout>
