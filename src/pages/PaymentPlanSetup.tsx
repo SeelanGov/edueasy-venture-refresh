@@ -13,7 +13,7 @@ import { Building2, Calendar, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const PaymentPlanSetup = (): void => {
+const PaymentPlanSetup = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedPlan = searchParams.get('plan');

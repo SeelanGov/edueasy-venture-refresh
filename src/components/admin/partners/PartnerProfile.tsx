@@ -42,7 +42,7 @@ interface Payment {
  * PartnerProfile
  * @description Function
  */
-export const PartnerProfile = (): void => {
+export const PartnerProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [partner, setPartner] = useState<Partner | null>(null);

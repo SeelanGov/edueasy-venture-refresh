@@ -35,7 +35,7 @@ export const MobileMenu = ({
   isDarkMode,
   toggleTheme,
   isActive,
-}: MobileMenuProps): void => {
+}: MobileMenuProps) => {
   if (!isOpen) return null;
 
   return (

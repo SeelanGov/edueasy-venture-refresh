@@ -23,7 +23,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const CheckoutPage = (): void => {
+const CheckoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedPlan = searchParams.get('plan');
@@ -127,7 +127,7 @@ const CheckoutPage = (): void => {
     }
   };
 
-  const handlePaymentMethod = (method: string): void => {
+  const handlePaymentMethod = (method: string) => {
     setSelectedPaymentMethod(method);
 
     if (['card', 'airtime', 'qr', 'eft', 'store'].includes(method)) {

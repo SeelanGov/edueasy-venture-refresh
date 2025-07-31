@@ -7,7 +7,7 @@ import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Register = (): void => {
+const Register = () => {
   const pendingPlan = secureStorage.getItem('pending_plan');
 
   // Plan context for paid plans

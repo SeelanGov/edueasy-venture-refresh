@@ -10,8 +10,8 @@ interface AnalyticsStatCardsProps {
  * AnalyticsStatCards
  * @description Function
  */
-export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps): void => {
-  const calculateTrend = (current: number, total: number): void => {
+export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
+  const calculateTrend = (current: number, total: number) => {
     if (total === 0) return undefined;
     const percentage = (current / total) * 100;
     return {

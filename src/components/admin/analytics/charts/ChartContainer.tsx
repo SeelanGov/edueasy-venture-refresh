@@ -22,7 +22,7 @@ export const ChartContainer = ({
   loading = false,
   error = null,
   className = '',
-}: ChartContainerProps): void => {
+}: ChartContainerProps): JSX.Element => {
   return (
     <Card className={className}>
       <CardHeader>

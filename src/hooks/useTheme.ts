@@ -6,7 +6,7 @@ type Theme = 'light' | 'dark';
  * useTheme
  * @description Function
  */
-export function useTheme(): void {
+export function useTheme() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     // Check for saved theme preference in localStorage
     const savedTheme = localStorage.getItem('theme');
@@ -36,7 +36,7 @@ export function useTheme(): void {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleChange = (e: MediaQueryListEvent): void => {
+    const handleChange = (e: MediaQueryListEvent) => {
       // Only update if user hasn't explicitly set a preference
       if (!localStorage.getItem('theme')) {
         setIsDarkMode(e.matches);
@@ -50,11 +50,11 @@ export function useTheme(): void {
     };
   }, []);
 
-  const toggleTheme = (): void => {
+  const toggleTheme = () => {
     setIsDarkMode((prev) => !prev);
   };
 
-  const setTheme = (theme: Theme): void => {
+  const setTheme = (theme: Theme) => {
     setIsDarkMode(theme === 'dark');
   };
 

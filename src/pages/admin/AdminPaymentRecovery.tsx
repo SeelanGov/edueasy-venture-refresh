@@ -2,7 +2,7 @@ import { PaymentRecoveryPanel } from '@/components/admin/dashboard/PaymentRecove
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 import { PageLayout } from '@/components/layout/PageLayout';
 
-const AdminPaymentRecovery = (): void => {
+const AdminPaymentRecovery = () => {
   return (
     <AdminAuthGuard>
       <PageLayout

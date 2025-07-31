@@ -13,7 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
  * AnalyticsDashboard
  * @description Function
  */
-export const AnalyticsDashboard = (): void => {
+export const AnalyticsDashboard = () => {
   const { analytics, loading, error, filters, updateFilters, resetFilters, refreshAnalytics } =
     useDocumentAnalytics();
   const [documentTypes, setDocumentTypes] = useState<string[]>([]);

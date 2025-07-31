@@ -9,12 +9,12 @@ import { useInstitutions } from '@/hooks/useInstitutions';
 import { ArrowRight, Building2, Loader2, MapPin, Star, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Institutions = (): void => {
+const Institutions = () => {
   const navigate = useNavigate();
   const { institutions, loading, error } = useInstitutions();
   const { user } = useAuth();
 
-  const handleStartApplication = (): void => {
+  const handleStartApplication = () => {
     if (!user) {
       toast({
         title: 'Authentication Required',

@@ -12,7 +12,7 @@ import { FileText } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SponsorsPage = (): void => {
+const SponsorsPage = () => {
   // Search & filter state
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
@@ -42,11 +42,11 @@ const SponsorsPage = (): void => {
   const totalAllocations = allocations.length;
   const activeAllocations = allocations.filter((a) => a.status === 'active').length;
 
-  const handleAdd = (): void => {
+  const handleAdd = () => {
     setEditAlloc(null);
     setModalOpen(true);
   };
-  const handleEdit = (alloc: unknown): void => {
+  const handleEdit = (alloc: unknown) => {
     setEditAlloc(alloc);
     setModalOpen(true);
   };
@@ -90,7 +90,7 @@ const SponsorsPage = (): void => {
   };
 
   // Export Handlers
-  const handleExportAllocations = (): void => {
+  const handleExportAllocations = () => {
     if (allocations.length === 0) {
       toast({ title: 'No allocations to export', variant: 'destructive' });
       return;
@@ -110,7 +110,7 @@ const SponsorsPage = (): void => {
     toast({ title: 'Allocations exported!' });
   };
 
-  const handleExportSponsors = (): void => {
+  const handleExportSponsors = () => {
     if (!sponsorList || sponsorList.length === 0) {
       toast({ title: 'No sponsors to export', variant: 'destructive' });
       return;

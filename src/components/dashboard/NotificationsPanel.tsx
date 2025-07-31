@@ -25,7 +25,7 @@ type GroupBy = 'date' | 'type' | 'none';
  * NotificationsPanel
  * @description Function
  */
-export const NotificationsPanel = (): void => {
+export const NotificationsPanel = () => {
   const {
     notifications,
     unreadCount,
@@ -114,7 +114,7 @@ export const NotificationsPanel = (): void => {
     return 'Older';
   };
 
-  const getNotificationIcon = (type: string): void => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'document_status':
         return <AlertCircle className="h-4 w-4 text-blue-500" />;
@@ -127,7 +127,7 @@ export const NotificationsPanel = (): void => {
     }
   };
 
-  const renderNotificationContent = (notification: Notification): void => {
+  const renderNotificationContent = (notification: Notification) => {
     return (
       <div
         className={`p-4 ${notification.is_read ? 'bg-white dark:bg-gray-800' : 'bg-blue-50 dark:bg-blue-900/20'} transition-colors duration-200`}
@@ -172,7 +172,7 @@ export const NotificationsPanel = (): void => {
     );
   };
 
-  const renderNotificationGroups = (): void => {
+  const renderNotificationGroups = () => {
     return Object.entries(groupedNotifications).map(([groupName, groupNotifications]) => (
       <div key={groupName} className="mb-2">
         {groupName && (

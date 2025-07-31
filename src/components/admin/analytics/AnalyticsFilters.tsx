@@ -34,16 +34,16 @@ export const AnalyticsFilters = ({
   onResetFilters,
   documentTypes,
   institutions,
-}: AnalyticsFiltersProps): void => {
+}: AnalyticsFiltersProps) => {
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
-  const handleStartDateSelect = (date: Date | undefined): void => {
+  const handleStartDateSelect = (date: Date | undefined) => {
     onUpdateFilters({ startDate: date || null });
     setStartDateOpen(false);
   };
 
-  const handleEndDateSelect = (date: Date | undefined): void => {
+  const handleEndDateSelect = (date: Date | undefined) => {
     onUpdateFilters({ endDate: date || null });
     setEndDateOpen(false);
   };

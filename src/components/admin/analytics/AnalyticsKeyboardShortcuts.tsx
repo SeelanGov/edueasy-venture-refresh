@@ -15,11 +15,11 @@ export const AnalyticsKeyboardShortcuts = ({
   onRefresh,
   onExport,
   onResetFilters,
-}: AnalyticsKeyboardShortcutsProps): void => {
+}: AnalyticsKeyboardShortcutsProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent): void => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       // Only handle if Ctrl/Cmd is pressed
       if (!(event.ctrlKey || event.metaKey)) return;
 

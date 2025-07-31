@@ -22,7 +22,7 @@ interface TierConfig {
  * TiersManager
  * @description Function
  */
-export const TiersManager = (): void => {
+export const TiersManager = () => {
   const [tiers, setTiers] = useState<TierConfig[]>([]);
   const [loading, setLoading] = useState(true);
 

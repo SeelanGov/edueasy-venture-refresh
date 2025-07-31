@@ -30,7 +30,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
  * AuthProvider
  * @description Function
  */
-export function AuthProvider({ children }: { children: React.ReactNode }): void {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [isVerified, setIsVerified] = useState<boolean | null>(null);

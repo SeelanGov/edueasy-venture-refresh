@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
  * RefundPolicyRedirect
  * @description Function
  */
-export const RefundPolicyRedirect = (): void => {
+export const RefundPolicyRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {

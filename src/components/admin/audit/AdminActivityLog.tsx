@@ -35,7 +35,7 @@ export const AdminActivityLog: React.FC = () => {
         (log) =>
           log.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
           log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (log.details.target_id && log.details.target_id.includes(searchTerm)),
+          (log.details?.target_id && String(log.details.target_id).includes(searchTerm)),
       );
       setFilteredLogs(filtered);
     } else {
@@ -50,16 +50,16 @@ export const AdminActivityLog: React.FC = () => {
       Message: log.message,
       Component: log.component,
       Severity: log.severity,
-      TargetType: log.details.target_type || 'N/A',
-      TargetID: log.details.target_id || 'N/A',
+      TargetType: String(log.details?.target_type || 'N/A'),
+      TargetID: String(log.details?.target_id || 'N/A'),
       AdminID: log.user_id || 'System',
-      Reason: log.details.reason || 'N/A',
+      Reason: String(log.details?.reason || 'N/A'),
     }));
 
     exportToCsv(exportData, 'admin-activity-log.csv');
   };
 
-  const getSeverityColor = (severity: string): void => {
+  const getSeverityColor = (severity: string): string => {
     switch (severity.toLowerCase()) {
       case 'critical':
         return 'bg-red-100 text-red-800';
@@ -135,10 +135,10 @@ export const AdminActivityLog: React.FC = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-sm">{log.details.target_type || 'System'}</div>
+                        <div className="text-sm">{String(log.details?.target_type || 'System')}</div>
                         <div className="text-xs text-gray-500 font-mono">
-                          {log.details.target_id
-                            ? `${log.details.target_id.substring(0, 8)}...`
+                          {log.details?.target_id
+                            ? `${String(log.details.target_id).substring(0, 8)}...`
                             : 'N/A'}
                         </div>
                       </TableCell>
@@ -148,8 +148,8 @@ export const AdminActivityLog: React.FC = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="max-w-[200px]">
-                        {log.details.reason && (
-                          <div className="text-sm truncate">{log.details.reason}</div>
+                        {log.details?.reason && typeof log.details.reason === 'string' && (
+                          <div className="text-sm truncate">{String(log.details.reason)}</div>
                         )}
                         <div className="text-xs text-gray-500">
                           By: {log.user_id ? `${log.user_id.substring(0, 8)}...` : 'System'}

@@ -22,7 +22,7 @@ export const ChartWrapper = ({
   loading = false,
   error = null,
   className = '',
-}: ChartWrapperProps): void => {
+}: ChartWrapperProps): JSX.Element => {
   return (
     <>
       <CardHeader className={className}>

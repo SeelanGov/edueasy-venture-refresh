@@ -9,7 +9,7 @@ import { FAQCollapsible } from '@/components/sponsorships/FAQCollapsible';
 // Updated hero image for the sponsorship page
 const heroImage = '/lovable-uploads/decd8110-6ac2-48dc-a70d-85c81cf17629.png';
 
-const SponsorshipsPage = (): void => {
+const SponsorshipsPage = () => {
   const navigate = useNavigate();
 
   return (

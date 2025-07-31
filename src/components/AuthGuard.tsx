@@ -12,7 +12,7 @@ interface AuthGuardProps {
  * AuthGuard
  * @description Function
  */
-export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps): void => {
+export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 

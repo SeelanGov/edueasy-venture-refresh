@@ -40,28 +40,48 @@ export const StatisticCard = ({
   animateCount = true,
   delay = 0,
   isTarget = false,
-}: StatisticCardProps): void => {
+}: StatisticCardProps) => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [animatedValue, setAnimatedValue] = useState('0');
+  const [currentValue, setCurrentValue] = useState(0);
 
   const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
 
+  // Parse target value from the value string
+  const targetValue = parseInt(value.replace(/[^0-9]/g, '')) || 0;
+  const increment = Math.max(1, Math.ceil(targetValue / 50));
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentValue((prev) => {
-        if (prev >= targetValue) {
-          clearInterval(timer);
-          return targetValue;
-        }
-        return prev + increment;
-      });
-    }, 50);
+    if (!animateCount) {
+      setAnimatedValue(value);
+      setIsVisible(true);
+      return;
+    }
 
-    return () => clearInterval(timer);
-  }, [targetValue, increment]);
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+      
+      const animationTimer = setInterval(() => {
+        setCurrentValue((prev) => {
+          if (prev >= targetValue) {
+            clearInterval(animationTimer);
+            setAnimatedValue(value);
+            return targetValue;
+          }
+          const newValue = prev + increment;
+          setAnimatedValue(newValue.toString());
+          return newValue;
+        });
+      }, 50);
 
-  const handleClick = (): void => {
+      return () => clearInterval(animationTimer);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [targetValue, increment, value, animateCount, delay]);
+
+  const handleClick = () => {
     if (linkTo) {
       navigate(linkTo);
     }

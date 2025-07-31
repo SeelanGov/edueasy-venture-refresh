@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom';
  * RoleBasedRedirect
  * @description Function
  */
-export const RoleBasedRedirect = (): void => {
+export const RoleBasedRedirect = () => {
   const { user, userType, loading } = useAuth();
 
   if (loading) {

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  * AnalyticsBreadcrumb
  * @description Function
  */
-export const AnalyticsBreadcrumb = (): void => {
+export const AnalyticsBreadcrumb = () => {
   return (
     <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
       <Link
