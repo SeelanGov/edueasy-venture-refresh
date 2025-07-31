@@ -27,7 +27,7 @@ interface PaymentRecoveryResponse {
  * usePaymentRecovery
  * @description Function
  */
-export const usePaymentRecovery = (): void => {
+export const usePaymentRecovery = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();

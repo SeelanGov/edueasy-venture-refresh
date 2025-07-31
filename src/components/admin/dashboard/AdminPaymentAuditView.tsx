@@ -283,7 +283,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string): void => {
+  const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
     switch (status) {
       case 'paid':
         return 'default';
@@ -296,7 +296,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
     }
   };
 
-  const formatCurrency = (amount: number): void => {
+  const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',

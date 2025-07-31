@@ -33,7 +33,7 @@ function getStatusBadge(status: string | null) {
  * ApplicationListPanel
  * @description Function
  */
-export function ApplicationListPanel({ applications, userMap }: Props): void {
+export function ApplicationListPanel({ applications, userMap }: Props): JSX.Element {
   return (
     <Card>
       <CardHeader>
