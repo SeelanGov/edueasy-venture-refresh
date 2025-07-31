@@ -45,7 +45,15 @@ export const ApplicationFormFields = ({
   form,
   isSubmitting,
   handleFileChange,
-}: ApplicationFormFieldsProps): void => {
+}: ApplicationFormFieldsProps): JSX.Element => {
+  const institutionData = useInstitutionsAndPrograms() || {
+    institutions: [],
+    filteredPrograms: [],
+    loading: false,
+    error: null,
+    selectedInstitutionId: '',
+    setSelectedInstitutionId: () => {},
+  };
   const {
     institutions,
     filteredPrograms,
@@ -53,7 +61,7 @@ export const ApplicationFormFields = ({
     error,
     selectedInstitutionId,
     setSelectedInstitutionId,
-  } = useInstitutionsAndPrograms();
+  } = institutionData;
 
   const handleFieldChange = (_value: string) => {
     // Handle field change logic

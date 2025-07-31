@@ -120,7 +120,7 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX
       const response = await signUp(data.email, data.password, data.fullName);
 
       if (response?.error) {
-        setRegistrationError(response.error);
+        setRegistrationError(String(response.error));
         return;
       }
 

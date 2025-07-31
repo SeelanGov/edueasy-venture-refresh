@@ -82,7 +82,7 @@ export const TiersManager = () => {
     }
   };
 
-  const getTierColor = (tier: string): void => {
+  const getTierColor = (tier: string): string => {
     switch (tier) {
       case 'basic':
         return 'bg-gray-100 text-gray-800 border-gray-300';
