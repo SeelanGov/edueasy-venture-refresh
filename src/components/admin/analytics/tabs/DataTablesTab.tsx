@@ -18,7 +18,7 @@ interface DataTablesTabProps {
  * DataTablesTab
  * @description Function
  */
-export const DataTablesTab = ({ analytics }: DataTablesTabProps): void => {
+export const DataTablesTab = ({ analytics }: DataTablesTabProps): JSX.Element => {
   const documentTypeData = useDocumentTypeTableData(analytics);
 
   return (

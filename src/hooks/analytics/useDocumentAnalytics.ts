@@ -14,7 +14,7 @@ import {
  * useDocumentAnalytics
  * @description Function
  */
-export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>): void => {
+export const useDocumentAnalytics = (initialFilters?: Partial<AnalyticsFilters>) => {
   const { user } = useAuth();
   const [filters, setFilters] = useState<AnalyticsFilters>({
     ...DEFAULT_FILTERS,

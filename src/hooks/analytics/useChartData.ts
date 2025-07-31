@@ -5,7 +5,7 @@ import type { DocumentAnalytics } from './types';
  * useStatusDistributionData
  * @description Function
  */
-export const useStatusDistributionData = (analytics: DocumentAnalytics | null): void => {
+export const useStatusDistributionData = (analytics: DocumentAnalytics | null) => {
   return useMemo(() => {
     if (!analytics) return [];
 
@@ -39,7 +39,7 @@ export const useStatusDistributionData = (analytics: DocumentAnalytics | null): 
  * useDocumentTypeTableData
  * @description Function
  */
-export const useDocumentTypeTableData = (analytics: DocumentAnalytics | null): void => {
+export const useDocumentTypeTableData = (analytics: DocumentAnalytics | null) => {
   return useMemo(() => {
     if (!analytics) return [];
 

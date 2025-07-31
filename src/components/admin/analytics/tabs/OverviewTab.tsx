@@ -12,7 +12,7 @@ interface OverviewTabProps {
  * OverviewTab
  * @description Function
  */
-export const OverviewTab = ({ analytics }: OverviewTabProps): void => {
+export const OverviewTab = ({ analytics }: OverviewTabProps): JSX.Element => {
   const statusData = useStatusDistributionData(analytics);
 
   return (

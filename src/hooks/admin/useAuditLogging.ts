@@ -26,7 +26,7 @@ export interface AdminAction {
  * useAuditLogging
  * @description Function
  */
-export function useAuditLogging(): void {
+export function useAuditLogging() {
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(false);
 

@@ -12,7 +12,7 @@ import { toast } from 'sonner';
  * RLSPolicyTester
  * @description Function
  */
-export const RLSPolicyTester = (): void => {
+export const RLSPolicyTester = (): JSX.Element => {
   const [testQuery, setTestQuery] = useState('');
   const [userId, setUserId] = useState('');
   const [results, setResults] = useState<any[]>([]);
