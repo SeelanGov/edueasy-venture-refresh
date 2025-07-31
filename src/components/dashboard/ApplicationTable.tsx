@@ -34,7 +34,7 @@ interface ApplicationTableProps {
  * ApplicationTable
  * @description Function
  */
-export const ApplicationTable = ({ applications, loading }: ApplicationTableProps): void => {
+export const ApplicationTable = ({ applications, loading }: ApplicationTableProps) => {
   const [enrichedApplications, setEnrichedApplications] = useState<EnrichedApplication[]>([]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   }, [applications]);
 
-  const getStatusBadgeClass = (status: string | null = 'draft'): void => {
+  const getStatusBadgeClass = (status: string | null = 'draft') => {
     const statusValue = status || 'draft';
     switch (statusValue.toLowerCase()) {
       case 'draft':
@@ -97,7 +97,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
     }
   };
 
-  const getVerificationBadge = (status: string | null): void => {
+  const getVerificationBadge = (status: string | null) => {
     if (!status) return null;
 
     switch (status.toLowerCase()) {
@@ -231,7 +231,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
   );
 };
 
-const EmptyApplicationState = (): void => {
+const EmptyApplicationState = () => {
   return (
     <div className="text-center py-12 bg-gray-50 rounded-md">
       <div className="inline-flex justify-center items-center w-16 h-16 bg-gray-100 rounded-full mb-4">

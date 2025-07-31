@@ -70,7 +70,7 @@ export const ErrorLogsTable = ({
   loading,
   onRefresh,
   onResolve,
-}: ErrorLogsTableProps): void => {
+}: ErrorLogsTableProps) => {
   const [filter, setFilter] = useState<FilterState>({
     search: '',
     showResolved: false,
@@ -80,7 +80,7 @@ export const ErrorLogsTable = ({
   const [resolutionNotes, setResolutionNotes] = useState<Record<string, string>>({});
   const [resolvingIds, setResolvingIds] = useState<string[]>([]);
 
-  const toggleRowExpanded = (id: string): void => {
+  const toggleRowExpanded = (id: string) => {
     setExpandedRows((prev) => ({
       ...prev,
       [id]: !prev[id],
@@ -129,7 +129,7 @@ export const ErrorLogsTable = ({
     return true;
   });
 
-  const getSeverityIcon = (severity: string): void => {
+  const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'INFO':
         return <Info className="h-4 w-4 text-info" />;
@@ -144,7 +144,7 @@ export const ErrorLogsTable = ({
     }
   };
 
-  const getSeverityStatus = (severity: string): void => {
+  const getSeverityStatus = (severity: string) => {
     switch (severity) {
       case 'INFO':
         return 'info';
@@ -159,7 +159,7 @@ export const ErrorLogsTable = ({
     }
   };
 
-  const getCategoryStatus = (category: string): void => {
+  const getCategoryStatus = (category: string) => {
     switch (category) {
       case 'NETWORK':
       case 'DATABASE':

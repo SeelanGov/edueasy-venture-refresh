@@ -33,7 +33,7 @@ interface MobileFriendlyDashboardLayoutProps {
  */
 export const MobileFriendlyDashboardLayout = ({
   children,
-}: MobileFriendlyDashboardLayoutProps): void => {
+}: MobileFriendlyDashboardLayoutProps) => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -70,7 +70,7 @@ export const MobileFriendlyDashboardLayout = ({
     navigate('/');
   };
 
-  const isActive = (path: string): void => {
+  const isActive = (path: string) => {
     return location.pathname === path;
   };
 
