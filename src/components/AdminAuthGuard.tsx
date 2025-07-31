@@ -12,7 +12,7 @@ interface AdminAuthGuardProps {
  * AdminAuthGuard
  * @description Function
  */
-export const AdminAuthGuard = ({ children }: AdminAuthGuardProps): void => {
+export const AdminAuthGuard = ({ children }: AdminAuthGuardProps) => {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: roleLoading } = useAdminRole();
   const navigate = useNavigate();

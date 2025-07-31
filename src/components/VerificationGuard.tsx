@@ -16,7 +16,7 @@ interface VerificationGuardProps {
  * VerificationGuard
  * @description Function
  */
-export const VerificationGuard = ({ children }: VerificationGuardProps): void => {
+export const VerificationGuard = ({ children }: VerificationGuardProps) => {
   const { user, userType, loading, isVerified } = useAuth();
   const location = useLocation();
 

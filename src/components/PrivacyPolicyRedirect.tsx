@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
  * PrivacyPolicyRedirect
  * @description Function
  */
-export const PrivacyPolicyRedirect = (): void => {
+export const PrivacyPolicyRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {

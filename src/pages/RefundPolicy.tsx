@@ -6,12 +6,12 @@ import { ArrowLeft, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RefundPolicy = (): void => {
+const RefundPolicy = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
-    const handleScroll = (): void => {
+    const handleScroll = () => {
       const sections = document.querySelectorAll('[data-section]');
       let current = '';
 
@@ -29,7 +29,7 @@ const RefundPolicy = (): void => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string): void => {
+  const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
