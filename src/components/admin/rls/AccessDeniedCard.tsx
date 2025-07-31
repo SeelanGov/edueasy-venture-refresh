@@ -3,9 +3,9 @@ import { AlertCircle } from 'lucide-react';
 
 /**
  * AccessDeniedCard
- * @description Function
+ * @description React component for displaying access denied message
  */
-export const AccessDeniedCard = (): void => {
+export const AccessDeniedCard = (): JSX.Element => {
   return (
     <Card className="border-destructive">
       <CardHeader>
