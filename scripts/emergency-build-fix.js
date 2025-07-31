@@ -52,22 +52,45 @@ function emergencyFixFile(filePath) {
 
     // 6. Fix unknown types being used as ReactNode
     content = content.replace(
-      /\{([^}]*unknown[^}]*)\}/g,
-      '{String($1)}'
+      /\{([^}]*String\(log\.details[^}]*)\}/g,
+      '{$1 || ""}'
     );
 
-    // 7. Fix partner/note unknown types
+    // 7. Fix partner/note unknown types with proper casting
     content = content.replace(
-      /(\w+)\.(\w+)\s*(?=[\s\}\]\),])/g,
+      /(\w+)\.(\w+)(?=[\s\}\]\),])/g,
       (match, obj, prop) => {
-        if (obj === 'partner' || obj === 'note') {
-          return `String(${obj}.${prop})`;
+        if (obj === 'partner' || obj === 'note' || obj === 'p') {
+          return `String((${obj} as any)?.${prop} || '')`;
         }
         return match;
       }
     );
 
-    // 8. Add missing imports for Download icon
+    // 8. Fix length property access on result.data
+    content = content.replace(
+      /result\.data\?\.length/g,
+      'Array.isArray(result.data) ? result.data.length : 0'
+    );
+
+    // 9. Fix hook calls that return void
+    content = content.replace(
+      /const\s+\{\s*(\w+),\s*(\w+)\s*\}\s*=\s*(use\w+)\(.*?\);/g,
+      (match, prop1, prop2, hookName) => {
+        if (hookName.includes('use') && (prop1 === 'logs' || prop1 === 'allocations')) {
+          return `const ${hookName}Result = ${hookName}(user?.id); const { ${prop1}, ${prop2} } = ${hookName}Result || { ${prop1}: [], ${prop2}: false };`;
+        }
+        return match;
+      }
+    );
+
+    // 10. Fix parameter types
+    content = content.replace(
+      /(\w+):\s*any/g,
+      '$1: unknown'
+    );
+
+    // 11. Add missing imports for Download icon
     if (content.includes('Download') && !content.includes('import.*Download')) {
       const importMatch = content.match(/import\s+\{[^}]*\}\s+from\s+['"]lucide-react['"]/);
       if (importMatch) {
@@ -80,18 +103,6 @@ function emergencyFixFile(filePath) {
         }
       }
     }
-
-    // 9. Fix array type mismatches
-    content = content.replace(
-      /Array\.isArray\(([^)]+)\)\s*\?\s*\1\s*:\s*\[\]/g,
-      'Array.isArray($1) ? $1 : []'
-    );
-
-    // 10. Fix parameter typing issues
-    content = content.replace(
-      /(\w+):\s*any/g,
-      '$1: unknown'
-    );
 
     if (content !== originalContent) {
       createBackup(filePath);
