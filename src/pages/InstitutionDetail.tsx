@@ -18,7 +18,7 @@ import { Typography } from '@/components/ui/typography';
 import { supabase } from '@/integrations/supabase/client';
 import type { Institution } from '@/hooks/useInstitutions';
 
-const InstitutionDetail = (): void => {
+const InstitutionDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [institution, setInstitution] = useState<Institution | null>(null);

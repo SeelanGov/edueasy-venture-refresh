@@ -9,7 +9,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { JourneyMap } from '@/components/journey/JourneyMap';
 import { useApplicationJourneyStep } from '@/hooks/useApplicationJourneyStep';
 
-const Dashboard = (): void => {
+const Dashboard = () => {
   const { user } = useAuth();
   const { applications, loading } = useApplications();
   // ADDED: Use journey step hook

@@ -15,14 +15,14 @@ import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Pricing = (): void => {
+const Pricing = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<any>(null);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const { handleSessionStorageError } = useErrorRecovery();
 
   // Enhanced plan selection handler with error recovery
-  const handlePlanSelection = (planId: string): void => {
+  const handlePlanSelection = (planId: string) => {
     setSelectedPlan(planId);
 
     if (planId === 'starter') {
@@ -50,7 +50,7 @@ const Pricing = (): void => {
     }
   };
 
-  const handleRetry = (): void => {
+  const handleRetry = () => {
     setError(null);
     if (selectedPlan) {
       handlePlanSelection(selectedPlan);

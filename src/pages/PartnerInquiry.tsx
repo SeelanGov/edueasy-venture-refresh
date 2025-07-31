@@ -10,7 +10,7 @@ import { Typography } from '@/components/ui/typography';
 import { usePartnerInquiry } from '@/hooks/usePartnerInquiry';
 import { PageLayout } from '@/components/layout/PageLayout';
 
-const PartnerInquiry = (): void => {
+const PartnerInquiry = () => {
   const navigate = useNavigate();
   const { submitInquiry, isSubmitting, isSubmitted } = usePartnerInquiry();
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ const PartnerInquiry = (): void => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ): void => {
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,

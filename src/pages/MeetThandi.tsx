@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 
-const MeetThandi = (): void => {
+const MeetThandi = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="container mx-auto max-w-4xl">

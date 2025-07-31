@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
  * TermsOfServiceRedirect
  * @description Function
  */
-export const TermsOfServiceRedirect = (): void => {
+export const TermsOfServiceRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
