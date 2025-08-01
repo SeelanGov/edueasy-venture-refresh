@@ -45,7 +45,7 @@ export const IntentList = ({
   onEdit,
   onDelete,
   onCreate,
-}: IntentListProps): void => {
+}: IntentListProps): JSX.Element => {
   const [isCreating, setIsCreating] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [intentToDelete, setIntentToDelete] = useState<string | null>(null);

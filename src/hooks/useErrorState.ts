@@ -21,7 +21,7 @@ const DEFAULT_CONFIG: ErrorHandlingConfig = {
  * useErrorState
  * @description Function
  */
-export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}): void => {
+export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
   const [errors, setErrors] = useState<ErrorDetails[]>([]);
   const [reportCount, setReportCount] = useState(0);
   const { user } = useAuth();

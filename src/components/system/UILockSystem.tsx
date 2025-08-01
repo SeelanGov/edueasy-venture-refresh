@@ -28,7 +28,7 @@ interface ComponentInventory {
  * UILockSystem
  * @description Function
  */
-export const UILockSystem = (): void => {
+export const UILockSystem = (): JSX.Element => {
   const [snapshots, setSnapshots] = useState<UISnapshot[]>([]);
   const [currentLock, setCurrentLock] = useState<UISnapshot | null>(null);
   const [components, setComponents] = useState<ComponentInventory[]>([]);
