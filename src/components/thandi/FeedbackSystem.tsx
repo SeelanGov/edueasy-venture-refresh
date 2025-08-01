@@ -13,7 +13,7 @@ interface FeedbackSystemProps {
  * FeedbackSystem
  * @description Function
  */
-export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemProps): void => {
+export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemProps): JSX.Element => {
   const [feedback, setFeedback] = useState<'helpful' | 'unhelpful' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();

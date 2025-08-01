@@ -21,7 +21,7 @@ interface IntentFormProps {
  * IntentForm
  * @description Function
  */
-export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps): void => {
+export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps): JSX.Element => {
   const [name, setName] = useState(intent?.intent_name || '');
   const [description, setDescription] = useState(intent?.description || '');
   const [template, setTemplate] = useState(intent?.response_template || '');

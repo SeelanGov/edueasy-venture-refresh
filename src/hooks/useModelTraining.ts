@@ -26,7 +26,7 @@ export interface TrainingLog {
  * useModelTraining
  * @description Function
  */
-export const useModelTraining = (): void => {
+export const useModelTraining = () => {
   const [trainingStats, setTrainingStats] = useState<TrainingStats | null>(null);
   const [lastTrainingDate, setLastTrainingDate] = useState<Date | null>(null);
   const [isLoading, setIsLoading] = useState(true);

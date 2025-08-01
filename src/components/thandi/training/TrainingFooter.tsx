@@ -16,7 +16,7 @@ interface TrainingFooterProps {
  * TrainingFooter
  * @description Function
  */
-export const TrainingFooter = ({ page, setPage, hasMore }: TrainingFooterProps): void => {
+export const TrainingFooter = ({ page, setPage, hasMore }: TrainingFooterProps): JSX.Element => {
   return (
     <div className="flex justify-center">
       <Pagination>

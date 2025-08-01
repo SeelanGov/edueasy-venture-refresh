@@ -29,9 +29,9 @@ export function SponsorshipCard({
   isAdmin = false,
   onEdit,
   onDeactivate,
-}: SponsorshipCardProps): void {
+}: SponsorshipCardProps): JSX.Element {
   // Format dates
-  const formatDate = (dateString: string): void => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'short',
