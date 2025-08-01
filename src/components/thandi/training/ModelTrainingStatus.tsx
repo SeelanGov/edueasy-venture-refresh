@@ -25,7 +25,7 @@ export const ModelTrainingStatus = ({
   isLoading,
   isRetraining,
   onRetrain,
-}: ModelTrainingStatusProps): void => {
+}: ModelTrainingStatusProps): JSX.Element => {
   const [showStats, setShowStats] = useState(false);
 
   const handleRetrain = async () => {
@@ -38,7 +38,7 @@ export const ModelTrainingStatus = ({
     }
   };
 
-  const formatDate = (date: Date | null): void => {
+  const formatDate = (date: Date | null): string => {
     if (!date) return 'Never';
     return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',

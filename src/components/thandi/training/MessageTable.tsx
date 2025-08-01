@@ -32,8 +32,8 @@ export const MessageTable = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageTableProps): void => {
-  const getTrainingForMessage = (messageId: string): void => {
+}: MessageTableProps): JSX.Element => {
+  const getTrainingForMessage = (messageId: string): TrainingEntry | undefined => {
     return trainedMessages.find((t) => t.message_id === messageId);
   };
 
