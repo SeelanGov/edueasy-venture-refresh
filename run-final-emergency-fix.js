@@ -1,48 +1,120 @@
-const { execSync } = require('child_process');
 const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
 
-console.log('🚨 EXECUTING FINAL EMERGENCY FIX - PHASE 2');
-console.log('📊 Target: Systematic fix of remaining :void and type errors');
+console.log('🚨 RUNNING FINAL EMERGENCY BUILD FIX');
+console.log('📊 Target: Fix remaining TypeScript errors systematically');
 
-try {
-  console.log('\n🔧 Running Emergency Build Fix Script...');
-  const result = execSync('node execute-emergency-fix-now.js', { 
-    stdio: 'pipe', 
-    encoding: 'utf8' 
-  });
+// Emergency fix function
+const emergencyFixFile = (filePath) => {
+  if (!fs.existsSync(filePath)) return false;
   
-  console.log('✅ Emergency script completed');
-  console.log('📋 Script Output:');
-  console.log(result);
+  let content = fs.readFileSync(filePath, 'utf8');
+  const original = content;
   
-  console.log('\n🔍 Post-Fix Build Check...');
-  try {
-    execSync('npm run build 2>&1', { stdio: 'pipe' });
-    console.log('🎉 BUILD SUCCESSFUL! All errors resolved.');
-  } catch (buildError) {
-    const errorOutput = String(buildError.stdout || buildError.stderr || '');
-    const errorLines = errorOutput.split('\n').filter(line => 
-      line.includes('error TS') || line.includes('Error:')
-    );
-    console.log(`📊 Remaining errors: ${errorLines.length}`);
-    
-    if (errorLines.length <= 20) {
-      console.log('🎯 Remaining manageable errors:');
-      errorLines.slice(0, 20).forEach(error => console.log(`  - ${error.trim()}`));
-    } else {
-      console.log('🔧 High error count - showing first 10:');
-      errorLines.slice(0, 10).forEach(error => console.log(`  - ${error.trim()}`));
-    }
+  // 1. Fix React component return types (void → JSX.Element)
+  content = content.replace(
+    /^(\s*export\s+(?:const|function)\s+[A-Z]\w*[^=]*?):\s*void(\s*(?:=>\s*\{|\{))/gm,
+    '$1: JSX.Element$2'
+  );
+  
+  // 2. Fix hook return types (remove void entirely)
+  content = content.replace(
+    /^(\s*export\s+(?:const|function)\s+use[A-Z]\w*[^=]*?):\s*void(\s*(?:=>\s*\{|\{))/gm,
+    '$1$2'
+  );
+  
+  // 3. Fix utility function return types
+  content = content.replace(
+    /^(\s*(?:const|function)\s+(?:get|format|calculate|is|has|check)[A-Z]\w*[^=]*?):\s*void(\s*(?:=>\s*\{|\{))/gm,
+    '$1$2'
+  );
+  
+  // 4. Fix functions that return strings
+  content = content.replace(
+    /(\s*(?:const|function)\s+\w+[^=]*?):\s*void(\s*(?:=>\s*\{|\{)[^}]*return\s+['"`])/gm,
+    '$1: string$2'
+  );
+  
+  // 5. Fix functions that return JSX
+  content = content.replace(
+    /(\s*(?:const|function)\s+\w+[^=]*?):\s*void(\s*(?:=>\s*\{|\{)[^}]*return\s+<)/gm,
+    '$1: JSX.Element$2'
+  );
+  
+  // 6. Fix functions that return boolean
+  content = content.replace(
+    /(\s*(?:const|function)\s+\w+[^=]*?):\s*void(\s*(?:=>\s*\{|\{)[^}]*return\s+(?:true|false))/gm,
+    '$1: boolean$2'
+  );
+  
+  // 7. Fix functions that return null
+  content = content.replace(
+    /(\s*(?:const|function)\s+\w+[^=]*?):\s*void(\s*(?:=>\s*\{|\{)[^}]*return\s+null)/gm,
+    '$1: JSX.Element | null$2'
+  );
+  
+  // 8. Fix Element is not assignable to void
+  content = content.replace(
+    /(\s+return\s+\(\s*<[^>]+>[^<]*<\/[^>]+>\s*\);\s*[\r\n]+\s*})(\s*:\s*void)/g,
+    '$1: JSX.Element'
+  );
+  
+  // 9. Fix null is not assignable to void  
+  content = content.replace(
+    /(\s+return\s+null;\s*[\r\n]+\s*})(\s*:\s*void)/g,
+    '$1: JSX.Element | null'
+  );
+  
+  // 10. Fix unknown types to ReactNode
+  content = content.replace(
+    /(\s+return\s+.+;\s*[\r\n]+\s*})(\s*:\s*void)/g,
+    '$1: React.ReactNode'
+  );
+  
+  if (content !== original) {
+    // Create backup
+    fs.writeFileSync(filePath + '.backup', original);
+    fs.writeFileSync(filePath, content);
+    console.log(`✅ Fixed: ${filePath}`);
+    return true;
   }
-  
-} catch (error) {
-  console.error('❌ Emergency fix failed:', error.message);
-  console.log('\n🔄 FALLBACK: Manual intervention required');
-}
+  return false;
+};
 
-console.log('\n📋 FINAL EMERGENCY FIX COMPLETE');
-console.log('🎯 NEXT STEPS:');
-console.log('  1. Review remaining errors above');
-console.log('  2. Test user registration flow');
-console.log('  3. Test AI assistant (ThandiAgent)');
-console.log('  4. Test admin dashboard functionality');
+// Find all TypeScript files with errors
+const errorFiles = [
+  'src/components/admin/audit/AdminActivityLog.tsx',
+  'src/components/admin/audit/AuditTrail.tsx',
+  'src/components/application/FormActions.tsx',
+  'src/components/application/OfflineNotice.tsx',
+  'src/components/consultations/ConsultationBookingForm.tsx',
+  'src/components/dashboard/ApplicationHeader.tsx',
+  'src/components/dashboard/layout/AdminNavSection.tsx',
+  'src/components/dashboard/layout/DashboardSidebar.tsx',
+  'src/components/demo/JourneyMapDemo.tsx',
+  'src/components/docs/ColorSystem.tsx'
+];
+
+console.log(`📋 Found ${errorFiles.length} files to process`);
+
+let fixedCount = 0;
+errorFiles.forEach(file => {
+  if (fs.existsSync(file) && emergencyFixFile(file)) {
+    fixedCount++;
+  }
+});
+
+// Also run on all remaining tsx files
+const allFiles = glob.sync('src/**/*.{ts,tsx}', { 
+  ignore: ['**/*.test.*', '**/*.spec.*', '**/node_modules/**']
+});
+
+allFiles.forEach(file => {
+  if (!errorFiles.includes(file) && emergencyFixFile(file)) {
+    fixedCount++;
+  }
+});
+
+console.log(`🎯 Emergency fixes applied: ${fixedCount} files`);
+console.log('✅ Final emergency build fix complete');

@@ -7,7 +7,7 @@ import { Typography } from '@/components/ui/typography';
  * ApplicationHeader
  * @description Function
  */
-export const ApplicationHeader = (): void => {
+export const ApplicationHeader = (): JSX.Element => {
   return (
     <div className="flex justify-between items-center mb-8 animate-fade-in">
       <Typography variant="h2" className="text-gray-800">

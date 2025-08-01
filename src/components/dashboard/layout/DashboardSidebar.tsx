@@ -44,7 +44,7 @@ export const DashboardSidebar = ({
   const location = useLocation();
   const { isDarkMode, toggleTheme } = useTheme();
 
-  const isActive = (path: string): void => {
+  const isActive = (path: string): boolean => {
     return location.pathname === path;
   };
 
