@@ -18,10 +18,10 @@ interface ErrorRecoveryProps {
  * ErrorRecovery
  * @description Function
  */
-export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecoveryProps): void => {
+export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecoveryProps): JSX.Element => {
   const navigate = useNavigate();
 
-  const getErrorIcon = (): void => {
+  const getErrorIcon = (): JSX.Element => {
     switch (error.type) {
       case 'sessionStorage':
         return <AlertCircle className="h-5 w-5 text-orange-500" />;
@@ -36,7 +36,7 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
     }
   };
 
-  const getErrorTitle = (): void => {
+  const getErrorTitle = (): string => {
     switch (error.type) {
       case 'sessionStorage':
         return 'Storage Issue Detected';
@@ -51,7 +51,7 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
     }
   };
 
-  const getRecoveryActions = (): void => {
+  const getRecoveryActions = (): JSX.Element => {
     switch (error.type) {
       case 'sessionStorage':
         return (
@@ -176,8 +176,8 @@ export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecove
  * useErrorRecovery
  * @description Function
  */
-export const useErrorRecovery = (): void => {
-  const handleSessionStorageError = (operation: string): void => {
+export const useErrorRecovery = () => {
+  const handleSessionStorageError = (operation: string) => {
     console.error(`SessionStorage error during ${operation}`);
     return {
       type: 'sessionStorage' as const,
@@ -186,7 +186,7 @@ export const useErrorRecovery = (): void => {
     };
   };
 
-  const handleNetworkError = (operation: string): void => {
+  const handleNetworkError = (operation: string) => {
     console.error(`Network error during ${operation}`);
     return {
       type: 'network' as const,
@@ -195,7 +195,7 @@ export const useErrorRecovery = (): void => {
     };
   };
 
-  const handlePaymentError = (operation: string, details?: string): void => {
+  const handlePaymentError = (operation: string, details?: string) => {
     console.error(`Payment error during ${operation}`);
     return {
       type: 'payment' as const,
@@ -204,7 +204,7 @@ export const useErrorRecovery = (): void => {
     };
   };
 
-  const handleAuthenticationError = (operation: string): void => {
+  const handleAuthenticationError = (operation: string) => {
     console.error(`Authentication error during ${operation}`);
     return {
       type: 'authentication' as const,
