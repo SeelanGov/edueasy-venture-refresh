@@ -17,7 +17,7 @@ import { ProvinceSelector } from './ProvinceSelector';
 import { AddressTypeSelector } from './AddressTypeSelector';
 
 // South African postal code validation
-const validatePostalCode = (code: string): void => {
+const validatePostalCode = (code: string): boolean => {
   return /^\d{4}$/.test(code);
 };
 
@@ -50,7 +50,7 @@ export const AddressForm = ({
   onSubmit,
   onBack,
   isSubmitting,
-}: AddressFormProps): void => {
+}: AddressFormProps): JSX.Element => {
   const form = useForm<AddressFormValues>({
     resolver: zodResolver(addressSchema),
     defaultValues: initialValues,

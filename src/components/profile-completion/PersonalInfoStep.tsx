@@ -16,7 +16,7 @@ interface PersonalInfoStepProps {
  * PersonalInfoStep
  * @description Function
  */
-export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): void => {
+export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

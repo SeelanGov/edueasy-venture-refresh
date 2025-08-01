@@ -71,7 +71,7 @@ export const PersonalInfoForm = ({
   initialValues,
   onSubmit,
   isSubmitting,
-}: PersonalInfoFormProps): void => {
+}: PersonalInfoFormProps): JSX.Element => {
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: initialValues,
