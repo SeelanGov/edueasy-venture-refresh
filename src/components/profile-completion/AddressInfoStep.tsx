@@ -18,7 +18,7 @@ interface AddressInfoStepProps {
  * AddressInfoStep
  * @description Function
  */
-export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps): void => {
+export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
