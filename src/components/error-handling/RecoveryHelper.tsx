@@ -23,7 +23,7 @@ export const RecoveryHelper = ({
   onCancel,
   recoveryButtonText = 'Recover',
   cancelButtonText = 'Cancel',
-}: RecoveryHelperProps): void => {
+}: RecoveryHelperProps): JSX.Element => {
   const [isRecovering, setIsRecovering] = useState(false);
   const [isRecovered, setIsRecovered] = useState(false);
   const [error, setError] = useState<string | null>(null);

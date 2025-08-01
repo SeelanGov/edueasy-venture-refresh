@@ -25,7 +25,7 @@ interface ResponsiveProps {
  * @description Function
  */
 export const Responsive: React.FC<ResponsiveProps> = ({ children, show, hide, className }) => {
-  const getResponsiveClasses = (): void => {
+  const getResponsiveClasses = (): string => {
     const classes: string[] = [];
 
     // Handle show breakpoints

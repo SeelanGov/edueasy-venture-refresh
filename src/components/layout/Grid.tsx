@@ -74,7 +74,7 @@ export const Grid: React.FC<GridProps> = ({
     evenly: 'justify-items-stretch',
   };
 
-  const getColsClass = (): void => {
+  const getColsClass = (): string => {
     const classes = ['grid'];
 
     if (cols.default) classes.push(gridCols[cols.default as keyof typeof gridCols]);

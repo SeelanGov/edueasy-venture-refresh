@@ -36,7 +36,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   }, [onClose]);
 
   // Get description based on milestone title
-  const getDescription = (): void => {
+  const getDescription = (): string => {
     switch (true) {
       case title.includes('Personal'):
         return 'Basic personal information including your full name, ID number, and gender.';
@@ -56,7 +56,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
   };
 
   // Get status text
-  const getStatusText = (): void => {
+  const getStatusText = (): string => {
     switch (status) {
       case 'completed':
         return 'Completed';
@@ -71,7 +71,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
     }
   };
 
-  const getStatusColor = (): void => {
+  const getStatusColor = (): string => {
     switch (status) {
       case 'completed':
         return 'text-green-600';
