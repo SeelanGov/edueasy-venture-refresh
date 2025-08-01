@@ -124,19 +124,21 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX
         return;
       }
 
-      if (!response?.user?.id) {
+      const signUpResult = response as { user?: { id: string; email: string; name: string }; error?: unknown };
+      const user = signUpResult?.user;
+      if (!user?.id) {
         throw new Error('Failed to create user account');
       }
 
       // Step 3: Record consents in database
-      await recordUserConsents(response.user.id, {
+      await recordUserConsents(user.id, {
         privacy: consentPrivacy,
         terms: consentTerms,
         idVerification: consentIdVerification,
       });
 
       // Step 4: Now perform ID verification with VerifyID
-      const verificationResult = await verifyIdWithVerifyID(response.user.id, data.idNumber);
+      const verificationResult = await verifyIdWithVerifyID(user.id, data.idNumber);
 
       if (!verificationResult.success) {
         setRegistrationError(
@@ -215,7 +217,7 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX
           </Alert>
         )}
 
-        <SecurityInfoPanel />
+        <SecurityInfoPanel badgeType="encryption" />
 
         <Form {...form}>
           <form onSubmit={handleRegister} className="space-y-4">

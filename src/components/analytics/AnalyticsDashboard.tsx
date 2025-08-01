@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { SkeletonButton, SkeletonDashboardCard } from '@/components/ui/Skeleton';
+import { SkeletonButton, SkeletonDashboardCard } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -76,7 +76,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
 
       if (report) {
         // Create and download CSV
-        const csvContent = convertToCSV(report);
+        const csvContent = convertToCSV(report as Record<string, unknown>[]);
         downloadCSV(csvContent, `${reportType}_analytics_${timeRange}.csv`);
 
         toast({
@@ -94,13 +94,13 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
     }
   };
 
-  const convertToCSV = (data: unknown[]): string => {
+  const convertToCSV = (data: Record<string, unknown>[]): string => {
     if (!data || data.length === 0) return '';
 
-    const headers = Object.keys(data[0]);
+    const headers = Object.keys(data[0] || {});
     const csvRows = [
       headers.join(','),
-      ...data.map((row) => headers.map((header) => JSON.stringify(row[header])).join(',')),
+      ...data.map((row) => headers.map((header) => JSON.stringify((row as Record<string, unknown>)[header])).join(',')),
     ];
 
     return csvRows.join('\n');
