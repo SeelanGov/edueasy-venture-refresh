@@ -34,10 +34,10 @@ export const MessageRow = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageRowProps): void => {
+}: MessageRowProps): JSX.Element => {
   const [selectedIntent, setSelectedIntent] = useState<string>('');
 
-  const formatConfidence = (score: number | null | undefined): void => {
+  const formatConfidence = (score: number | null | undefined): string => {
     if (score === null || score === undefined) return '-';
     return `${Math.round(score * 100)}%`;
   };

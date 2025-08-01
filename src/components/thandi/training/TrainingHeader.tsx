@@ -25,7 +25,7 @@ export const TrainingHeader = ({
   isLoading,
   isRetraining,
   onRetrain,
-}: TrainingHeaderProps): void => {
+}: TrainingHeaderProps): JSX.Element => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
