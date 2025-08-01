@@ -118,7 +118,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
  * useErrorHandler
  * @description Event handler function
  */
-export const useErrorHandler = (): void => {
+export const useErrorHandler = () => {
   const handleError = (error: Error, errorInfo?: ErrorInfo): void => {
     console.error('Error caught by useErrorHandler:', error, errorInfo);
 

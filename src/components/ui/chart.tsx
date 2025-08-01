@@ -86,7 +86,7 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = 'Chart';
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): void => {
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): JSX.Element | null => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
 
   if (!colorConfig.length) {
@@ -94,7 +94,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): void =
   }
 
   // Generate CSS styles safely without dangerouslySetInnerHTML
-  const generateStyles = (): void => {
+  const generateStyles = () => {
     const baseStyles: Record<string, string> = {};
     const darkStyles: Record<string, string> = {};
 

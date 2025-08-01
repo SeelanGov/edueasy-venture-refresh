@@ -49,7 +49,7 @@ const students: Student[] = [
  * TestimonialsSection
  * @description Function
  */
-export function TestimonialsSection(): void {
+export function TestimonialsSection(): JSX.Element {
   return (
     <section className="container mx-auto py-12 px-4">
       <div className="text-center mb-12">

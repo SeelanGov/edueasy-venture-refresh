@@ -27,7 +27,7 @@ export function SubscriptionTierCard({
   isCurrentTier = false,
   onSelectTier,
   disabled = false,
-}: SubscriptionTierCardProps): void {
+}: SubscriptionTierCardProps): JSX.Element {
   const price = tier.price_once_off;
 
   return (
