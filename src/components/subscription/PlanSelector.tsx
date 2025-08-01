@@ -16,7 +16,7 @@ interface PlanSelectorProps {
  * PlanSelector
  * @description Function
  */
-export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): void => {
+export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): JSX.Element => {
   const [plans, setPlans] = useState<SubscriptionTier[]>([]);
   const [loading, setLoading] = useState(true);
   const { getAvailablePlans, upgradePlan } = usePlanManagement();
@@ -48,7 +48,7 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): 
     }
   };
 
-  const getPlanIcon = (tierName: string): void => {
+  const getPlanIcon = (tierName: string) => {
     switch (tierName) {
       case 'Starter':
         return <Users className="h-5 w-5" />;
@@ -61,7 +61,7 @@ export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): 
     }
   };
 
-  const getPlanColor = (tierName: string): void => {
+  const getPlanColor = (tierName: string) => {
     switch (tierName) {
       case 'Starter':
         return 'border-gray-200 hover:border-gray-300';

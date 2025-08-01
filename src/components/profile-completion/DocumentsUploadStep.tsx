@@ -59,19 +59,19 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     : '';
 
   // Convert hook's DocumentUploadState to component's DocumentUploadState
-  const convertDocumentState = (state: unknown): ComponentDocumentUploadState => {
+  const convertDocumentState = (state: any): ComponentDocumentUploadState => {
     return {
-      file: state.file,
-      uploading: state.uploading || false,
-      progress: state.progress || 0,
-      error: state.error || null,
-      uploaded: state.uploaded || false,
-      documentId: state.documentId,
-      filePath: state.filePath,
-      verificationTriggered: state.verificationTriggered,
-      previouslyRejected: state.previouslyRejected,
-      isResubmission: state.isResubmission,
-      retryData: state.retryData,
+      file: state?.file || null,
+      uploading: state?.uploading || false,
+      progress: state?.progress || 0,
+      error: state?.error || null,
+      uploaded: state?.uploaded || false,
+      documentId: state?.documentId,
+      filePath: state?.filePath,
+      verificationTriggered: state?.verificationTriggered || false,
+      previouslyRejected: state?.previouslyRejected || false,
+      isResubmission: state?.isResubmission || false,
+      retryData: state?.retryData || null,
     };
   };
 

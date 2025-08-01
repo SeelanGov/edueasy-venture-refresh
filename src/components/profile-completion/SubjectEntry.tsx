@@ -34,9 +34,13 @@ const commonSubjects = [
   'Tourism',
 ];
 
-interface SubjectEntryProps<T = EducationFormData> {
+interface EducationFormData {
+  subjects: Array<{ subject: string; mark: number }>;
+}
+
+interface SubjectEntryProps {
   index: number;
-  control: Control<T>;
+  control: Control<any>;
   fieldName: string;
   canDelete: boolean;
   onDelete: () => void;
@@ -46,19 +50,19 @@ interface SubjectEntryProps<T = EducationFormData> {
  * SubjectEntry
  * @description Function
  */
-export const SubjectEntry = <T extends object = EducationFormData>({
+export const SubjectEntry = ({
   index,
   control,
   fieldName,
   canDelete,
   onDelete,
-}: SubjectEntryProps<T>) => {
+}: SubjectEntryProps) => {
   return (
     <div className="grid grid-cols-12 gap-4 items-center mb-4">
       <div className="col-span-8">
         <FormField
           control={control}
-          name={`${fieldName}.${index}.subject`}
+          name={`${fieldName}.${index}.subject` as any}
           render={({ field }) => (
             <FormItem>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -85,7 +89,7 @@ export const SubjectEntry = <T extends object = EducationFormData>({
       <div className="col-span-3">
         <FormField
           control={control}
-          name={`${fieldName}.${index}.mark`}
+          name={`${fieldName}.${index}.mark` as any}
           render={({ field }) => (
             <FormItem>
               <FormControl>
