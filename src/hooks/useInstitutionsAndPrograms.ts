@@ -3,10 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Institution, Program } from '@/types/Institution';
 
 /**
- * useInstitutionsAndPrograms
- * @description Function
+ * useInstitutionsAndPrograms hook for managing institutions and programs data
+ * @returns Object with institutions, programs, and related state
  */
-export const useInstitutionsAndPrograms = (): void => {
+export const useInstitutionsAndPrograms = () => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);

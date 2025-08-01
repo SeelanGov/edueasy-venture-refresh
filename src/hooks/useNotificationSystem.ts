@@ -7,10 +7,10 @@ import { toast } from '@/components/ui/use-toast';
 export type { Notification } from '@/types/Notification';
 
 /**
- * useNotificationSystem
- * @description Function
+ * useNotificationSystem hook for managing user notifications
+ * @returns Object with notification state and functions
  */
-export function useNotificationSystem(): void {
+export function useNotificationSystem() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);

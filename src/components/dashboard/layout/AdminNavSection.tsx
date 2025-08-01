@@ -17,7 +17,7 @@ interface AdminNavSectionProps {
  * AdminNavSection
  * @description Function
  */
-export const AdminNavSection = ({ items, sidebarOpen, isActive }: AdminNavSectionProps): void => {
+export const AdminNavSection = ({ items, sidebarOpen, isActive }: AdminNavSectionProps): JSX.Element | null => {
   if (items.length === 0) {
     return null;
   }

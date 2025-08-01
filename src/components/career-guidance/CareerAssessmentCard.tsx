@@ -12,6 +12,23 @@ import { AssessmentType } from '@/types/RevenueTypes';
 import { formatDistanceToNow } from 'date-fns';
 import { Calendar, FileText, Star } from 'lucide-react';
 
+interface CareerGuidance {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: string;
+  duration: string;
+  assessment_date: string;
+  assessment_type: string;
+  is_premium: boolean;
+  recommendations?: {
+    careers?: string[];
+    paths?: string[];
+  };
+  results?: Record<string, any>;
+}
+
 interface CareerAssessmentCardProps {
   assessment: CareerGuidance;
   onView: (assessmentId: string) => void;

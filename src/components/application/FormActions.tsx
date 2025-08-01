@@ -23,7 +23,7 @@ export const FormActions = ({
   onSaveDraft,
   className,
   formId,
-}: FormActionsProps): void => {
+}: FormActionsProps): JSX.Element => {
   const navigate = useNavigate();
   const statusId = `form-status-${formId || 'main'}`;
 

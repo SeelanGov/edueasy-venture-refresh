@@ -229,5 +229,9 @@ export function useSubscription() {
     tiers,
     currentSubscription,
     transactions,
+    subscribeToPlan,
+    cancelSubscription,
+    toggleAutoRenew,
+    checkPaymentStatus,
   };
 }

@@ -27,6 +27,7 @@ export const ThandiAgent = (): JSX.Element => {
   const { user } = useAuth();
   const subscriptionData = useSubscription();
   const userSubscription = subscriptionData?.currentSubscription;
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -40,9 +41,10 @@ export const ThandiAgent = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Determine current tier and capabilities
-  const currentTier =
-    (userSubscription?.tier?.name as SubscriptionTierName) || SubscriptionTierName.STARTER;
-  const thandiCapabilities = getThandiCapabilities(currentTier);
+  const currentTier = userSubscription?.tier?.thandi_tier || 'basic';
+  const thandiCapabilities = {
+    features: ['Chat', 'Application Help', 'Career Guidance', 'Document Review']
+  };
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || !user) return;
