@@ -34,7 +34,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
   const [showDetail, setShowDetail] = useState(false);
 
   // Get icon based on milestone title
-  const getMilestoneIcon = (): void => {
+  const getMilestoneIcon = () => {
     if (title.includes('Personal')) return User;
     if (title.includes('Contact')) return Phone;
     if (title.includes('Address')) return MapPin;
@@ -52,7 +52,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
   };
 
   // Define inline color styles to avoid CSS variable issues
-  const getStatusColors = (): void => {
+  const getStatusColors = () => {
     switch (status) {
       case 'active':
         return {

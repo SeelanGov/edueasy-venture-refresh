@@ -36,7 +36,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   showDetails = false,
   className = '',
 }) => {
-  const getSeverityColor = (severity: string = 'medium'): void => {
+  const getSeverityColor = (severity: string = 'medium'): string => {
     switch (severity) {
       case 'low':
         return 'border-yellow-200 bg-yellow-50';
@@ -49,7 +49,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     }
   };
 
-  const renderErrorDetails = (): void => {
+  const renderErrorDetails = (): JSX.Element | null => {
     if (!showDetails) return null;
 
     return (

@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
  * TypographyGuide
  * @description Function
  */
-export const TypographyGuide = (): void => {
+export const TypographyGuide = (): JSX.Element => {
   return (
     <div className="container mx-auto py-12 px-4">
       <Typography variant="h1" className="mb-6">
