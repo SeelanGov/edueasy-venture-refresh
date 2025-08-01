@@ -52,7 +52,7 @@ const students: Student[] = [
  * TestimonialsSection
  * @description Function
  */
-export const TestimonialsSection = (): void => {
+export const TestimonialsSection = (): JSX.Element => {
   return (
     <section
       id="testimonials"

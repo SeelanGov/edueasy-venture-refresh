@@ -21,7 +21,7 @@ export const DocumentPreview = ({
   fileType,
   className = '',
   size = 'md',
-}: DocumentPreviewProps): void => {
+}: DocumentPreviewProps): JSX.Element => {
   const [url, setUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

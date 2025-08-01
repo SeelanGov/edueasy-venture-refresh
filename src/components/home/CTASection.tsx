@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
  * CTASection
  * @description Function
  */
-export const CTASection = (): void => {
+export const CTASection = (): JSX.Element => {
   const { user } = useAuth();
   const navigate = useNavigate();
 

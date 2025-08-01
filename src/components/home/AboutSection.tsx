@@ -7,7 +7,7 @@ import { FeatureCard } from './FeatureCard';
  * AboutSection
  * @description Function
  */
-export const AboutSection = (): void => {
+export const AboutSection = (): JSX.Element => {
   return (
     <section id="learn-more" className="py-20 px-4 bg-white text-gray-900">
       <div className="container mx-auto">

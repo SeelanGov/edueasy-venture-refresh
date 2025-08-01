@@ -19,7 +19,7 @@ interface TestimonialCardProps {
  * TestimonialCard
  * @description Function
  */
-export const TestimonialCard = ({ testimonial }: TestimonialCardProps): void => {
+export const TestimonialCard = ({ testimonial }: TestimonialCardProps): JSX.Element => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 

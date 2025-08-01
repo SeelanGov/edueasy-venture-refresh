@@ -18,7 +18,7 @@ interface StudentSuccessCardProps {
  * StudentSuccessCard
  * @description Function
  */
-export const StudentSuccessCard = ({ student }: StudentSuccessCardProps): void => {
+export const StudentSuccessCard = ({ student }: StudentSuccessCardProps): JSX.Element => {
   return (
     <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
       <CardContent className="p-6">

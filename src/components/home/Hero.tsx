@@ -11,7 +11,7 @@ import { StatisticsGrid } from './StatisticsGrid';
  * Hero
  * @description Function
  */
-export const Hero = (): void => {
+export const Hero = (): JSX.Element => {
   const { user } = useAuth();
   const navigate = useNavigate();
 

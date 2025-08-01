@@ -22,9 +22,9 @@ export const OfflineErrorDisplay = ({
   className = '',
   timeSinceLastConnection = null,
   lastConnectedTime = null,
-}: OfflineErrorDisplayProps): void => {
+}: OfflineErrorDisplayProps): JSX.Element => {
   // Format the time since last connection
-  const formatTimeSince = (seconds: number): void => {
+  const formatTimeSince = (seconds: number): string => {
     if (seconds < 60) return `${seconds} seconds`;
     if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
     return `${Math.floor(seconds / 3600)} hours`;
