@@ -149,7 +149,7 @@ export const AdminActivityLog: React.FC = () => {
                       </TableCell>
                       <TableCell className="max-w-[200px]">
                         {log.details?.reason && typeof log.details.reason === 'string' && (
-                          <div className="text-sm truncate">{log.details.reason}</div>
+                          <div className="text-sm truncate">{String(log.details.reason)}</div>
                         )}
                         <div className="text-xs text-gray-500">
                           By: {log.user_id ? `${log.user_id.substring(0, 8)}...` : 'System'}

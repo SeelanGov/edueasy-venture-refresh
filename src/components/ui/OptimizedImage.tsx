@@ -30,7 +30,7 @@ export const OptimizedImage = ({
   enableWebP = true,
   enableIntersectionObserver = true,
   ...props
-}: OptimizedImageProps & React.ImgHTMLAttributes<HTMLImageElement>): void => {
+}: OptimizedImageProps & React.ImgHTMLAttributes<HTMLImageElement>): JSX.Element => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);

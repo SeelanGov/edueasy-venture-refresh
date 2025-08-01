@@ -4,7 +4,7 @@ import { OptimizedImage } from '@/components/ui/OptimizedImage';
  * AboutImage
  * @description Function
  */
-export const AboutImage = (): void => {
+export const AboutImage = (): JSX.Element => {
   // Use the new uploaded image for the About EduEasy section
   const imagePath = '/lovable-uploads/406bcd90-d00d-49f6-b0f2-0af152cc1707.png';
 
