@@ -31,7 +31,7 @@ export function PaymentForm({
   description = 'Complete your payment',
   onPaymentComplete,
   onCancel,
-}: PaymentFormProps): void {
+}: PaymentFormProps): JSX.Element {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvc, setCardCvc] = useState('');
@@ -65,7 +65,7 @@ export function PaymentForm({
   };
 
   // Format card number with spaces
-  const formatCardNumber = (value: string): void => {
+  const formatCardNumber = (value: string): string => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
     const match = (matches && matches[0]) || '';
@@ -83,7 +83,7 @@ export function PaymentForm({
   };
 
   // Format card expiry date
-  const formatCardExpiry = (value: string): void => {
+  const formatCardExpiry = (value: string): string => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
 
     if (v.length > 2) {

@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
  * JourneyMapDemo
  * @description Function
  */
-export const JourneyMapDemo = (): void => {
+export const JourneyMapDemo = (): JSX.Element => {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [
     'Personal Information',

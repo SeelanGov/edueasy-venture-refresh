@@ -59,7 +59,7 @@ export function ConsultationBookingForm({
   onSubmit,
   onCancel,
   consultationPrice,
-}: ConsultationBookingFormProps): void {
+}: ConsultationBookingFormProps): JSX.Element {
   const [showPayment, setShowPayment] = useState(false);
   const [formData, setFormData] = useState<{
     date: Date;
