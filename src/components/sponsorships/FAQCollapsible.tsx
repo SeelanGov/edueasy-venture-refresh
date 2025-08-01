@@ -21,7 +21,7 @@ const faq = [
  * FAQCollapsible
  * @description Function
  */
-export function FAQCollapsible(): void {
+export function FAQCollapsible(): JSX.Element {
   const [openIdx, setOpenIdx] = React.useState<number | null>(null);
 
   return (

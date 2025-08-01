@@ -31,12 +31,12 @@ export function PremiumFeature({
   requiredTier,
   children,
   showPreview = false,
-}: PremiumFeatureProps): void {
+}: PremiumFeatureProps): JSX.Element {
   const { currentSubscription } = useSubscription();
   const navigate = useNavigate();
 
   // Check if user has access to this feature
-  const hasAccess = (): void => {
+  const hasAccess = (): boolean => {
     if (!currentSubscription || !currentSubscription.tier) {
       return false;
     }

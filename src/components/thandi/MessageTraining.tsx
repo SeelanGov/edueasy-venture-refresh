@@ -37,7 +37,7 @@ export const MessageTraining = ({
   onTrain,
   onUpdateTraining,
   onDeleteTraining,
-}: MessageTrainingProps): void => {
+}: MessageTrainingProps): JSX.Element => {
   const {
     trainingStats,
     lastTrainingDate,

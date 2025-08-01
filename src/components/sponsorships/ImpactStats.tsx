@@ -4,7 +4,7 @@ import { StatisticsGrid } from '@/components/home/StatisticsGrid';
  * ImpactStats
  * @description Function
  */
-export function ImpactStats(): void {
+export function ImpactStats(): JSX.Element {
   return (
     <div className="my-8">
       <StatisticsGrid
