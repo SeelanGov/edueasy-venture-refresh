@@ -45,7 +45,7 @@ interface ProfileFormProps {
  * ProfileForm
  * @description Function
  */
-export const ProfileForm = ({ user, initialData }: ProfileFormProps): void => {
+export const ProfileForm = ({ user, initialData }: ProfileFormProps): JSX.Element => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

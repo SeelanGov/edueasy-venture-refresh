@@ -36,7 +36,7 @@ export const DocumentUploadInput = ({
   setCurrentDocumentType,
   currentDocumentType,
   uploadSteps,
-}: DocumentUploadInputProps): void => {
+}: DocumentUploadInputProps): JSX.Element => {
   const { file, uploading, progress, error, uploaded, isResubmission } = state;
 
   const handleDocumentClick = (): void => {

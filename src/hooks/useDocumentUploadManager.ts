@@ -32,7 +32,7 @@ export interface DocumentUploadState {
  * useDocumentUploadManager
  * @description Function
  */
-export const useDocumentUploadManager = (): void => {
+export const useDocumentUploadManager = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | undefined>();
   const [uploadSteps, setUploadSteps] = useState<Record<string, unknown>[]>([]);

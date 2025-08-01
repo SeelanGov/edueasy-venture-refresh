@@ -32,7 +32,7 @@ interface UserProfile {
  * UserProfileCard
  * @description Function
  */
-export const UserProfileCard = (): void => {
+export const UserProfileCard = (): JSX.Element => {
   const [isFollowing, toggleFollowing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);

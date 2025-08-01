@@ -8,7 +8,7 @@ import logger from '@/utils/logger';
  * usePlanManagement
  * @description Function
  */
-export const usePlanManagement = (): void => {
+export const usePlanManagement = () => {
   const [loading, setLoading] = useState(false);
 
   // Mock data for subscription tiers until types are updated
