@@ -13,7 +13,7 @@ interface ColorCardProps {
   textClassName?: string;
 }
 
-const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps): void => {
+const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps): JSX.Element => {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = (): void => {
@@ -48,7 +48,7 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
  * ColorSystem
  * @description Function
  */
-export const ColorSystem = (): void => {
+export const ColorSystem = (): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
 
   return (
