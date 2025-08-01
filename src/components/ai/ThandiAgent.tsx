@@ -168,7 +168,7 @@ export const ThandiAgent = (): JSX.Element => {
 
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: `Sorry, I'm having trouble responding right now. ${error.message || 'Please try again later.'}`,
+        content: `Sorry, I'm having trouble responding right now. ${(error as Error)?.message || 'Please try again later.'}`,
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -186,7 +186,7 @@ export const ThandiAgent = (): JSX.Element => {
   };
 
   const getTierIcon = (): JSX.Element => {
-    switch (thandiCapabilities.tier) {
+    switch (subscriptionData?.currentSubscription?.tier?.name || 'basic') {
       case 'basic':
         return <HelpCircle className="h-4 w-4" />;
       case 'guidance':
@@ -199,7 +199,7 @@ export const ThandiAgent = (): JSX.Element => {
   };
 
   const getTierColor = (): string => {
-    switch (thandiCapabilities.tier) {
+    switch (subscriptionData?.currentSubscription?.tier?.name || 'basic') {
       case 'basic':
         return 'bg-gray-100 text-gray-700';
       case 'guidance':
@@ -211,7 +211,7 @@ export const ThandiAgent = (): JSX.Element => {
     }
   };
 
-  const quickActions = thandiCapabilities.features.slice(0, 4);
+  const quickActions = thandiCapabilities?.features?.slice(0, 4) || [];
 
   return (
     <Card className="h-[600px] flex flex-col">
@@ -226,7 +226,7 @@ export const ThandiAgent = (): JSX.Element => {
         </CardTitle>
 
         <div className="text-xs text-gray-600">
-          Current capabilities: {thandiCapabilities.features.join(', ')}
+          Current capabilities: {thandiCapabilities?.features?.join(', ') || 'Basic features'}
         </div>
       </CardHeader>
 
@@ -290,14 +290,14 @@ export const ThandiAgent = (): JSX.Element => {
 
         <Separator className="mb-4" />
 
-        {thandiCapabilities.tier !== 'advanced' && (
+        {(subscriptionData?.currentSubscription?.tier?.name || 'basic') !== 'advanced' && (
           <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-800">Want more from Thandi?</p>
                 <p className="text-xs text-gray-600">
                   Upgrade for{' '}
-                  {thandiCapabilities.tier === 'basic'
+                  {(subscriptionData?.currentSubscription?.tier?.name || 'basic') === 'basic'
                     ? 'detailed guidance'
                     : 'advanced career counseling'}
                 </p>
@@ -314,7 +314,7 @@ export const ThandiAgent = (): JSX.Element => {
 
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
-            {quickActions.map((action) => (
+            {quickActions.map((action: string) => (
               <Button
                 key={action}
                 variant="outline"

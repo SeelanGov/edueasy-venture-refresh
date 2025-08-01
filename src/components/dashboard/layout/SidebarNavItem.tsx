@@ -21,7 +21,7 @@ export const SidebarNavItem = ({
   isActive,
   sidebarOpen,
   onClick,
-}: SidebarNavItemProps): void => {
+}: SidebarNavItemProps): JSX.Element => {
   return (
     <Link
       to={path}
