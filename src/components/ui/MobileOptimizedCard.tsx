@@ -29,8 +29,8 @@ export const MobileOptimizedCard = ({
   loading = false,
   variant = 'default',
   icon,
-}: MobileOptimizedCardProps): void => {
-  const getVariantStyles = (): void => {
+}: MobileOptimizedCardProps): JSX.Element => {
+  const getVariantStyles = (): string => {
     switch (variant) {
       case 'primary':
         return 'border-cap-teal hover:border-cap-teal/80 bg-gradient-to-r from-cap-teal/5 to-blue-50 hover:from-cap-teal/10 hover:to-blue-100';
@@ -99,7 +99,7 @@ export const MobileButton = ({
   icon?: ReactNode;
   fullWidth?: boolean;
 }) => {
-  const getButtonStyles = (): void => {
+  const getButtonStyles = (): string => {
     switch (variant) {
       case 'primary':
         return 'bg-gradient-to-r from-cap-teal to-blue-600 hover:from-cap-teal/90 hover:to-blue-700 text-white shadow-lg';
@@ -156,7 +156,7 @@ export const MobileProgressIndicator = ({
   steps: { id: string; label: string; status: 'completed' | 'current' | 'upcoming' }[];
   currentStep: number;
   className?: string;
-}): void => {
+}): JSX.Element => {
   return (
     <div className={cn('w-full', className)}>
       <div className="flex items-center justify-between mb-4">
