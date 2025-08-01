@@ -19,7 +19,7 @@ export const RejectedDocument = ({
   result,
   documentType,
   onResubmit,
-}: RejectedDocumentProps): void => {
+}: RejectedDocumentProps): JSX.Element => {
   const { failureReason, validationResults, extractedFields } = result;
 
   return (

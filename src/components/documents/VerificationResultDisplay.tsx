@@ -24,7 +24,7 @@ export const VerificationResultDisplay = ({
   documentType,
   onResubmit,
   isResubmission = false,
-}: VerificationResultDisplayProps): void => {
+}: VerificationResultDisplayProps): JSX.Element | null => {
   if (isVerifying) {
     return (
       <VerifyingDocument

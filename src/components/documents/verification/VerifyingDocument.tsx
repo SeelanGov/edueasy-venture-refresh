@@ -13,7 +13,7 @@ interface VerifyingDocumentProps {
 export const VerifyingDocument = ({
   documentType,
   isResubmission = false,
-}: VerifyingDocumentProps): void => {
+}: VerifyingDocumentProps): JSX.Element => {
   return (
     <Alert className="bg-blue-50 border-blue-200 text-blue-800 mt-4">
       <div className="flex items-center">
