@@ -10,7 +10,7 @@ interface FeatureCardProps {
  * FeatureCard
  * @description Function
  */
-export const FeatureCard = ({ icon, title, description }: FeatureCardProps): void => {
+export const FeatureCard = ({ icon, title, description }: FeatureCardProps): JSX.Element => {
   return (
     <div className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow bg-white">
       <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-teal-600 flex items-center justify-center">

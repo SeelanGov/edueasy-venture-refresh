@@ -19,7 +19,7 @@ export const StatisticsGrid = ({
   selectedStats,
   animateOnScroll = true,
   className = '',
-}: StatisticsGridProps): void => {
+}: StatisticsGridProps): JSX.Element => {
   const statsToShow = selectedStats
     ? selectedStats.map((key) => ({ key, ...EDUEASY_STATISTICS[key] }))
     : Object.entries(EDUEASY_STATISTICS).map(([key, value]) => ({ key, ...value }));
