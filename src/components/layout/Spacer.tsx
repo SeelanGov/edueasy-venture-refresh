@@ -24,7 +24,7 @@ export const Spacer: React.FC<SpacerProps> = ({
   responsive,
   className,
 }) => {
-  const getSpacingClasses = (): void => {
+  const getSpacingClasses = (): string => {
     const classes: string[] = [];
 
     // Base spacing

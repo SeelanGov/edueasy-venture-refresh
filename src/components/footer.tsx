@@ -67,7 +67,7 @@ const partnerTypes = [
  * Footer
  * @description Function
  */
-export function Footer(): void {
+export function Footer(): JSX.Element {
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const { user, userType } = useAuth();
   const navigate = useNavigate();

@@ -43,7 +43,7 @@ const _partnerTypes = [
   },
 ];
 
-const Footer = (): void => {
+const Footer = (): JSX.Element => {
   const [_isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

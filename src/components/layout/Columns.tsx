@@ -60,7 +60,7 @@ export const Column: React.FC<ColumnProps> = ({
   className,
   as: Component = 'div',
 }) => {
-  const getSpanClasses = (): void => {
+  const getSpanClasses = (): string => {
     if (!span) return 'flex-1';
 
     const classes: string[] = [];

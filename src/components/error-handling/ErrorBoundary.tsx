@@ -137,7 +137,7 @@ export const withErrorBoundary = <P extends object>(
 ) => {
   const { fallback, componentName, onReset } = options;
 
-  const WrappedComponent = (props: P): void => {
+  const WrappedComponent = (props: P): JSX.Element => {
     // Build props object conditionally to satisfy exactOptionalPropertyTypes
     const boundaryProps: {
       children: ReactNode;
