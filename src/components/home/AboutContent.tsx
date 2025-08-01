@@ -4,7 +4,7 @@ import { Typography } from '@/components/ui/typography';
  * AboutContent
  * @description Function
  */
-export const AboutContent = (): void => {
+export const AboutContent = (): JSX.Element => {
   return (
     <div className="md:w-1/2">
       <Typography variant="h3" className="mb-4 text-primary">

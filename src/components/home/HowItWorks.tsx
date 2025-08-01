@@ -11,7 +11,7 @@ interface StepProps {
   isActive?: boolean;
 }
 
-const Step = ({ number, title, description, icon, isActive = false }: StepProps): void => {
+const Step = ({ number, title, description, icon, isActive = false }: StepProps): JSX.Element => {
   return (
     <Card
       className={`border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 ${isActive ? 'border-l-4 border-l-primary' : ''}`}
@@ -45,7 +45,7 @@ const Step = ({ number, title, description, icon, isActive = false }: StepProps)
  * HowItWorks
  * @description Function
  */
-export const HowItWorks = (): void => {
+export const HowItWorks = (): JSX.Element => {
   return (
     <section id="how-it-works" className="py-24 bg-gray-50">
       <div className="container mx-auto px-4">

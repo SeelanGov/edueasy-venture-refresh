@@ -6,7 +6,7 @@ import { Typography } from '@/components/ui/typography';
  * AISupportSection
  * @description Function
  */
-export const AISupportSection = (): void => {
+export const AISupportSection = (): JSX.Element => {
   const imagePath = '/lovable-uploads/ea352049-18bb-49a0-b8e3-d00ae059e1f1.png';
 
   return (

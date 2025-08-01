@@ -6,7 +6,7 @@ import { Typography } from '@/components/ui/typography';
  * CommunitySection
  * @description Function
  */
-export const CommunitySection = (): void => {
+export const CommunitySection = (): JSX.Element => {
   // Reverting to the previously used image, as requested
   const imagePath = '/lovable-uploads/6739c361-94ae-4f3b-ab45-3e22e34af1ff.png';
 

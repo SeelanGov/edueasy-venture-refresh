@@ -16,7 +16,7 @@ const universities = [
  * PartnersSection
  * @description Function
  */
-export const PartnersSection = (): void => {
+export const PartnersSection = (): JSX.Element => {
   // Use the uploaded image for the section illustration
   const imagePath = '/lovable-uploads/ff2bcb31-3f70-423b-a4e0-4483fff9d5f6.png';
 

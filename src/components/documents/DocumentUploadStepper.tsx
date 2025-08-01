@@ -15,7 +15,7 @@ interface DocumentUploadStepperProps {
  * DocumentUploadStepper
  * @description Function
  */
-export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): void => {
+export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JSX.Element => {
   return (
     <div className="w-full">
       <ol className="flex items-center w-full">
