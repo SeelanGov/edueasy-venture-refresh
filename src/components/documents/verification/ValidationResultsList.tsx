@@ -13,7 +13,7 @@ interface ValidationResultsListProps {
 export const ValidationResultsList = ({
   validationResults,
   extractedFields,
-}: ValidationResultsListProps): void => {
+}: ValidationResultsListProps): JSX.Element | null => {
   if (!validationResults && !extractedFields) {
     return null;
   }
@@ -82,7 +82,7 @@ export const ValidationResultsList = ({
                             ) {
                               return (
                                 <div key={index}>
-                                  {subject.name}: {subject.mark}
+                                  {String(subject.name || "")}: {String(subject.mark || "")}
                                 </div>
                               );
                             }

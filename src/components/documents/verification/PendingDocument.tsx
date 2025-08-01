@@ -13,7 +13,7 @@ interface PendingDocumentProps {
 export const PendingDocument = ({
   documentType,
   isResubmission = false,
-}: PendingDocumentProps): void => {
+}: PendingDocumentProps): JSX.Element => {
   return (
     <Alert className="bg-blue-50 border-blue-200 text-blue-800 mt-4">
       <div className="flex items-center">

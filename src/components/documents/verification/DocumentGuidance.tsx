@@ -12,7 +12,7 @@ interface DocumentGuidanceProps {
 export const DocumentGuidance = ({
   failureReason,
   documentType = 'document',
-}: DocumentGuidanceProps): void => {
+}: DocumentGuidanceProps): JSX.Element => {
   // Helper function to get guidance based on failure reason
   const getGuidanceForFailure = (reason: string | null | undefined): string => {
     if (!reason) return `Make sure your ${documentType} is clear and all information is visible.`;
@@ -45,7 +45,7 @@ export const DocumentGuidance = ({
   };
 
   // Get specific document tips based on document type
-  const getDocumentSpecificTips = (): void => {
+  const getDocumentSpecificTips = (): string => {
     if (documentType.toLowerCase().includes('id')) {
       return 'For ID documents: Ensure both sides are clearly visible if needed, and all text is legible.';
     }
