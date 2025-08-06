@@ -1,0 +1,4 @@
+  backup/local-improvements-20250712-180616[m 90302a3 Apply users table RLS policy
+  backup/pre-alignment-20250115            [m d66841f feat: local-only Thandi edge function with mock GPT response and full Supabase logic
+  backup/pre-cleanup-                      [m d157ebb Add verification after operations
+* [32mmain                                     [m 06a56ec Fix void errors in secondary files

@@ -1,0 +1,10 @@
+[33m36687fd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m refactor: remove all as any usages, improve type safety, and align local with best practices
+[33m181866d[m fix: add 'pending' to TestResult.status and remove 'as any' for type safety
+[33mdc68af9[m Fix: Complete security and error handling improvements - Fixed localStorage recursion bug in security.ts - Implemented password change API in SecuritySettings - Created centralized error handling system - Added comprehensive validation scripts - Fixed TypeScript compilation errors - All critical security issues resolved
+[33me927cba[m fix: resolve critical JSX and lint errors, align with best practices, prep for safe push
+[33mf1cfc60[m Merge remote changes from loveable.dev with comprehensive action plan implementation
+[33m81a3d34[m feat: Implement comprehensive action plan with TypeScript fixes, performance monitoring, and security enhancements
+[33m005bb03[m Fix: Resolve security and utility errors
+[33m5bf447c[m Fix: Run SQL and update analytics service
+[33m52c65cf[m feat: Implement comprehensive VerifyID integration with POPIA-compliant consent system
+[33m0c8afdd[m feat: Implement comprehensive Analytics, Security & Accessibility features
