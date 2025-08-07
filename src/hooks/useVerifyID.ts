@@ -1,6 +1,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import { hasValidConsent } from '@/utils/consent-recording';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
+// ===== INTERFACES =====
 
 interface VerifyIDResult {
   success: boolean;
@@ -14,15 +16,32 @@ interface UseVerifyIDReturn {
   error: string | null;
 }
 
+interface UseVerificationStatusReturn {
+  isVerified: boolean | null;
+  isLoading: boolean;
+  error: string | null;
+  checkVerificationStatus: () => Promise<void>;
+}
+
+interface UseVerificationAuditReturn {
+  auditLog: any[];
+  isLoading: boolean;
+  error: string | null;
+  fetchAuditLog: () => Promise<void>;
+}
+
+// ===== MAIN VERIFYID HOOK =====
+
 /**
- * useVerifyID
- * @description Function
+ * useVerifyID Hook
+ * @description Main hook for ID verification with VerifyID API
+ * @returns {UseVerifyIDReturn} Object containing verification function and state
  */
 export const useVerifyID = (): UseVerifyIDReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const verifyId = async (userId: string, idNumber: string): Promise<VerifyIDResult> => {
+  const verifyId = useCallback(async (userId: string, idNumber: string): Promise<VerifyIDResult> => {
     setIsLoading(true);
     setError(null);
 
@@ -83,7 +102,7 @@ export const useVerifyID = (): UseVerifyIDReturn => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return {
     verifyId,
@@ -92,21 +111,24 @@ export const useVerifyID = (): UseVerifyIDReturn => {
   };
 };
 
-/**
- * Hook for checking verification status
- */
+// ===== VERIFICATION STATUS HOOK =====
 
 /**
- * useVerificationStatus
- * @description Function
+ * useVerificationStatus Hook
+ * @description Hook for checking user verification status
+ * @param {string} userId - The user ID to check verification status for
+ * @returns {UseVerificationStatusReturn} Object containing verification status and state
  */
-export const useVerificationStatus = (userId: string): void => {
+export const useVerificationStatus = (userId: string): UseVerificationStatusReturn => {
   const [isVerified, setIsVerified] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const checkVerificationStatus = async () => {
+  const checkVerificationStatus = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+
       const { data, error: fetchError } = await supabase
         .from('users')
         .select('verifyid_verified, verifyid_verification_date, id_verified')
@@ -123,7 +145,7 @@ export const useVerificationStatus = (userId: string): void => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   return {
     isVerified,
@@ -133,21 +155,24 @@ export const useVerificationStatus = (userId: string): void => {
   };
 };
 
-/**
- * Hook for getting verification audit log
- */
+// ===== VERIFICATION AUDIT HOOK =====
 
 /**
- * useVerificationAudit
- * @description Function
+ * useVerificationAudit Hook
+ * @description Hook for fetching verification audit log
+ * @param {string} userId - The user ID to fetch audit log for
+ * @returns {UseVerificationAuditReturn} Object containing audit log and state
  */
-export const useVerificationAudit = (userId: string): void => {
+export const useVerificationAudit = (userId: string): UseVerificationAuditReturn => {
   const [auditLog, setAuditLog] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAuditLog = async () => {
+  const fetchAuditLog = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+
       const { data, error: fetchError } = await supabase
         .from('verifyid_audit_log')
         .select('*')
@@ -164,7 +189,7 @@ export const useVerificationAudit = (userId: string): void => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   return {
     auditLog,
