@@ -6,7 +6,7 @@ import type { Sponsor } from '@/types/SponsorTypes';
  * useSponsor
  * @description Function
  */
-export const useSponsor = (id: string | undefined): void => {
+export const useSponsor = (id: string | undefined) => {
   return useQuery({
     queryKey: ['sponsor', id],
     queryFn: async () => {

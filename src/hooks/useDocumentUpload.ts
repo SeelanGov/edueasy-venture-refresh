@@ -13,7 +13,7 @@ export interface DocumentUploadResult {
  * useDocumentUpload
  * @description Function
  */
-export const useDocumentUpload = (): void => {
+export const useDocumentUpload = () => {
   const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
 
