@@ -29,13 +29,13 @@ export const PlanLimitWarning = ({
     <Alert
       variant={isAtLimit ? 'destructive' : 'default'}
       className={`mb-4 border-l-4 bg-white shadow-sm ${
-        isAtLimit ? 'border-l-red-500 border-red-200' : 'border-l-cap-teal border-blue-200'
+        isAtLimit ? 'border-l-red-500 border-[#FFCDD2]' : 'border-l-cap-teal border-[#BBDEFB]'
       }`}
     >
-      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-red-500' : 'text-cap-teal'}`} />
+      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-[#D32F2F]' : 'text-cap-teal'}`} />
       <AlertDescription className="flex items-center justify-between">
         <div className="flex-1">
-          <div className={`font-medium ${isAtLimit ? 'text-red-800' : 'text-gray-800'} mb-1`}>
+          <div className={`font-medium ${isAtLimit ? 'text-[#B71C1C]' : 'text-[#424242]'} mb-1`}>
             {isAtLimit ? 'Limit Reached' : 'Approaching Limit'}
           </div>
           <div className={`text-sm ${isAtLimit ? 'text-red-700' : 'text-gray-600'}`}>

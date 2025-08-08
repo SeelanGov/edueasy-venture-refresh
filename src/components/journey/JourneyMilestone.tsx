@@ -63,23 +63,23 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
         };
       case 'completed':
         return {
-          bg: 'bg-green-500',
-          border: 'border-green-500',
+          bg: 'bg-[#388E3C]',
+          border: 'border-[#388E3C]',
           text: 'text-white',
           animation: '',
         };
       case 'error':
         return {
           bg: 'bg-red-50',
-          border: 'border-red-500',
-          text: 'text-red-500',
+          border: 'border-[#D32F2F]',
+          text: 'text-[#D32F2F]',
           animation: '',
         };
       default: // pending
         return {
-          bg: 'bg-gray-100',
+          bg: 'bg-[#F5F5F5]',
           border: 'border-gray-300',
-          text: 'text-gray-400',
+          text: 'text-[#BDBDBD]',
           animation: '',
         };
     }
@@ -113,8 +113,8 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
           'mt-2 text-xs font-medium whitespace-nowrap max-w-28 text-center',
           status === 'active' && 'text-primary',
           status === 'completed' && 'text-green-600',
-          status === 'pending' && 'text-gray-500',
-          status === 'error' && 'text-red-500',
+          status === 'pending' && 'text-[#757575]',
+          status === 'error' && 'text-[#D32F2F]',
         )}
       >
         {title}
@@ -127,7 +127,7 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
             'absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs',
             status === 'active' && 'bg-primary text-white',
             status === 'pending' && 'bg-gray-200 text-gray-600',
-            status === 'error' && 'bg-red-100 text-red-600',
+            status === 'error' && 'bg-[#FFEBEE] text-red-600',
           )}
         >
           {stepNumber}

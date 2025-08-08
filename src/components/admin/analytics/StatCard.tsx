@@ -18,14 +18,7 @@ interface StatCardProps {
  * StatCard
  * @description Function
  */
-export const StatCard = ({
-  title,
-  value,
-  icon,
-  description,
-  trend,
-  className,
-}: StatCardProps) => {
+export const StatCard = ({ title, value, icon, description, trend, className }: StatCardProps) => {
   return (
     <Card className={cn('transition-all hover:shadow-md', className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -45,7 +38,7 @@ export const StatCard = ({
               <span
                 className={cn(
                   'ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium',
-                  trend.positive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
+                  trend.positive ? 'bg-[#F0F9F0] text-[#1B5E20]' : 'bg-[#FFEBEE] text-[#B71C1C]',
                 )}
               >
                 {trend.positive ? '+' : '-'}

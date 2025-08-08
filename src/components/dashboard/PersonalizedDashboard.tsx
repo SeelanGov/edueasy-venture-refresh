@@ -58,7 +58,10 @@ export const PersonalizedDashboard = ({
   // SPONSOR ALLOCATION LOGIC (new!)
   // Query for an active sponsor allocation for this user, if they are sponsored
   const sponsoreeId = user?.id;
-  const sponsorEnabled = !!sponsoreeId && ((user && isUserMetadata(user.user_metadata) && !!user.user_metadata.sponsor_id) || (user && 'sponsor_id' in user));
+  const sponsorEnabled =
+    !!sponsoreeId &&
+    ((user && isUserMetadata(user.user_metadata) && !!user.user_metadata.sponsor_id) ||
+      (user && 'sponsor_id' in user));
   const { data: sponsorAllocation, isLoading: sponsorAllocationLoading } = useQuery({
     queryKey: ['sponsor_allocation', sponsoreeId],
     queryFn: async () => {
@@ -85,7 +88,11 @@ export const PersonalizedDashboard = ({
   });
 
   // Derived: determine if user is sponsored
-  const hasSponsorAllocation = sponsorAllocation && typeof sponsorAllocation === 'object' && 'status' in sponsorAllocation && sponsorAllocation.status === 'active';
+  const hasSponsorAllocation =
+    sponsorAllocation &&
+    typeof sponsorAllocation === 'object' &&
+    'status' in sponsorAllocation &&
+    sponsorAllocation.status === 'active';
 
   // Use regular subscription logic if not sponsored
   const isSubscribed =
@@ -144,7 +151,11 @@ export const PersonalizedDashboard = ({
       <Card className="bg-gradient-to-br from-cap-teal/80 to-blue-300 text-white shadow-md">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
-            Welcome, {user && isUserMetadata(user.user_metadata) && user.user_metadata.full_name ? user.user_metadata.full_name : 'User'}!
+            Welcome,{' '}
+            {user && isUserMetadata(user.user_metadata) && user.user_metadata.full_name
+              ? user.user_metadata.full_name
+              : 'User'}
+            !
           </CardTitle>
           <CardDescription>
             {isSubscribed

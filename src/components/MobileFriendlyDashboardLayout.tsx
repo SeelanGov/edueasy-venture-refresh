@@ -31,9 +31,7 @@ interface MobileFriendlyDashboardLayoutProps {
  * MobileFriendlyDashboardLayout
  * @description Function
  */
-export const MobileFriendlyDashboardLayout = ({
-  children,
-}: MobileFriendlyDashboardLayoutProps) => {
+export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashboardLayoutProps) => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();

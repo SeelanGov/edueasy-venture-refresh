@@ -8,7 +8,6 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
-import { getThandiCapabilities, SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +26,7 @@ export const ThandiAgent = (): JSX.Element => {
   const { user } = useAuth();
   const subscriptionData = useSubscription();
   const userSubscription = subscriptionData?.currentSubscription;
-  
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -43,7 +42,7 @@ export const ThandiAgent = (): JSX.Element => {
   // Determine current tier and capabilities
   const currentTier = userSubscription?.tier?.thandi_tier || 'basic';
   const thandiCapabilities = {
-    features: ['Chat', 'Application Help', 'Career Guidance', 'Document Review']
+    features: ['Chat', 'Application Help', 'Career Guidance', 'Document Review'],
   };
 
   const handleSendMessage = async () => {
@@ -177,11 +176,11 @@ export const ThandiAgent = (): JSX.Element => {
 
       setMessages((prev) => [...prev, errorMessage]);
 
-        toast({
-          title: 'Error',
-          description: (error as Error).message || 'Failed to get AI response',
-          variant: 'destructive',
-        });
+      toast({
+        title: 'Error',
+        description: (error as Error).message || 'Failed to get AI response',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }

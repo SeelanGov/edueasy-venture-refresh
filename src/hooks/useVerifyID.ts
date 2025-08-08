@@ -41,68 +41,71 @@ export const useVerifyID = (): UseVerifyIDReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const verifyId = useCallback(async (userId: string, idNumber: string): Promise<VerifyIDResult> => {
-    setIsLoading(true);
-    setError(null);
+  const verifyId = useCallback(
+    async (userId: string, idNumber: string): Promise<VerifyIDResult> => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      // Step 1: Check if user has valid consent
-      const hasConsent = await hasValidConsent(userId, 'ID_verification');
+      try {
+        // Step 1: Check if user has valid consent
+        const hasConsent = await hasValidConsent(userId, 'ID_verification');
 
-      if (!hasConsent) {
+        if (!hasConsent) {
+          const errorMsg =
+            'ID verification consent not found. Please provide consent before verification.';
+          setError(errorMsg);
+          return {
+            success: false,
+            error: errorMsg,
+          };
+        }
+
+        // Step 2: Call VerifyID integration edge function
+        const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'pensvamtfjtpsaoeflbx'}.functions.supabase.co/verifyid-integration`;
+
+        const response = await fetch(edgeUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            national_id: idNumber,
+            api_key: import.meta.env.VITE_VERIFYID_API_KEY,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          const errorMsg =
+            result.error || 'ID Verification failed. Please check your ID number and try again.';
+          setError(errorMsg);
+          return {
+            success: false,
+            error: errorMsg,
+          };
+        }
+
+        return {
+          success: true,
+          data: result,
+        };
+      } catch (err) {
         const errorMsg =
-          'ID verification consent not found. Please provide consent before verification.';
+          err instanceof Error ? err.message : 'Failed to verify ID. Please try again later.';
         setError(errorMsg);
         return {
           success: false,
           error: errorMsg,
         };
+      } finally {
+        setIsLoading(false);
       }
-
-      // Step 2: Call VerifyID integration edge function
-      const edgeUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'pensvamtfjtpsaoeflbx'}.functions.supabase.co/verifyid-integration`;
-
-      const response = await fetch(edgeUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          national_id: idNumber,
-          api_key: import.meta.env.VITE_VERIFYID_API_KEY,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        const errorMsg =
-          result.error || 'ID Verification failed. Please check your ID number and try again.';
-        setError(errorMsg);
-        return {
-          success: false,
-          error: errorMsg,
-        };
-      }
-
-      return {
-        success: true,
-        data: result,
-      };
-    } catch (err) {
-      const errorMsg =
-        err instanceof Error ? err.message : 'Failed to verify ID. Please try again later.';
-      setError(errorMsg);
-      return {
-        success: false,
-        error: errorMsg,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   return {
     verifyId,

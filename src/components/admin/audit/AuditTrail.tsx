@@ -106,7 +106,9 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
                 </div>
 
                 {log.details?.reason && typeof log.details.reason === 'string' ? (
-                  <div className="mt-1 text-sm text-gray-600">Reason: {String(log.details.reason)}</div>
+                  <div className="mt-1 text-sm text-gray-600">
+                    Reason: {String(log.details.reason)}
+                  </div>
                 ) : null}
 
                 <div className="mt-2 flex flex-wrap gap-2">{formatDetails(log.details || {})}</div>

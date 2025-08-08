@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { supabase } from '@/integrations/supabase/client';
 import { getConsentStatistics } from '@/utils/consent-recording';
 import { CheckCircle, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';

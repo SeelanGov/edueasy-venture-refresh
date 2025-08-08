@@ -47,10 +47,10 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
       render={({ field, fieldState }) => (
         <FormItem className="relative">
           <div className="flex items-center gap-1 mb-1">
-            <FormLabel className="font-semibold text-gray-800">
+            <FormLabel className="font-semibold text-[#424242]">
               {label}
               {required && (
-                <span className="text-red-500 ml-0.5" aria-label="required">
+                <span className="text-[#D32F2F] ml-0.5" aria-label="required">
                   *
                 </span>
               )}
@@ -86,7 +86,7 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
                     aria-label={`Info about ${label}`}
                     className="ml-1 cursor-pointer"
                   >
-                    <Info className="h-4 w-4 text-gray-400" />
+                    <Info className="h-4 w-4 text-[#BDBDBD]" />
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>{tooltip}</TooltipContent>
@@ -95,7 +95,7 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
           </div>
           <FormControl>
             <div
-              className={`relative transition-all duration-200 ${fieldState.invalid ? 'border-red-500 bg-red-50 animate-shake' : fieldState.isTouched && !fieldState.invalid ? 'border-green-500 bg-green-50' : ''} rounded-md`}
+              className={`relative transition-all duration-200 ${fieldState.invalid ? 'border-[#D32F2F] bg-red-50 animate-shake' : fieldState.isTouched && !fieldState.invalid ? 'border-[#388E3C] bg-green-50' : ''} rounded-md`}
             >
               <Input
                 {...field}
@@ -103,34 +103,34 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
                 placeholder={placeholder}
                 disabled={disabled}
                 maxLength={maxLength}
-                className={`pr-10 ${fieldState.invalid ? 'border-red-500' : fieldState.isTouched && !fieldState.invalid ? 'border-green-500' : ''}`}
+                className={`pr-10 ${fieldState.invalid ? 'border-[#D32F2F]' : fieldState.isTouched && !fieldState.invalid ? 'border-[#388E3C]' : ''}`}
                 aria-invalid={fieldState.invalid}
                 aria-describedby={fieldState.invalid ? `${name}-error` : undefined}
               />
               {validationStatus === 'valid' && (
                 <CheckCircle
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-green-500 h-5 w-5"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#388E3C] h-5 w-5"
                   aria-label="Valid"
                 />
               )}
               {fieldState.invalid && (
                 <XCircle
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 h-5 w-5 animate-shake"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#D32F2F] h-5 w-5 animate-shake"
                   aria-label="Invalid"
                 />
               )}
             </div>
           </FormControl>
           {helperText && !fieldState.invalid && (
-            <div className="text-xs text-gray-500 mt-1 animate-fade-in">{helperText}</div>
+            <div className="text-xs text-[#757575] mt-1 animate-fade-in">{helperText}</div>
           )}
           {patternExample && (
-            <div className="text-xs text-blue-500 mt-1 animate-fade-in">
+            <div className="text-xs text-[#1976D2] mt-1 animate-fade-in">
               Example: {patternExample}
             </div>
           )}
           {maxLength && (
-            <div className="text-xs text-gray-400 mt-1 animate-fade-in" aria-live="polite">
+            <div className="text-xs text-[#BDBDBD] mt-1 animate-fade-in" aria-live="polite">
               {field.value?.length || 0}/{maxLength} characters
             </div>
           )}

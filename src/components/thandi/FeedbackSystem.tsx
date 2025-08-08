@@ -13,7 +13,10 @@ interface FeedbackSystemProps {
  * FeedbackSystem
  * @description Function
  */
-export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemProps): JSX.Element => {
+export const FeedbackSystem = ({
+  messageId,
+  onFeedbackSubmit,
+}: FeedbackSystemProps): JSX.Element => {
   const [feedback, setFeedback] = useState<'helpful' | 'unhelpful' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
@@ -43,11 +46,11 @@ export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemPr
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <span className="text-xs text-gray-500">Was this response helpful?</span>
+      <span className="text-xs text-[#757575]">Was this response helpful?</span>
       <Button
         variant="outline"
         size="sm"
-        className={`p-1 h-8 w-8 ${feedback === 'helpful' ? 'bg-green-100 text-green-600 border-green-200' : ''}`}
+        className={`p-1 h-8 w-8 ${feedback === 'helpful' ? 'bg-[#F0F9F0] text-green-600 border-[#C8E6C9]' : ''}`}
         disabled={feedback !== null || isSubmitting}
         onClick={() => handleFeedback('helpful')}
       >
@@ -56,7 +59,7 @@ export const FeedbackSystem = ({ messageId, onFeedbackSubmit }: FeedbackSystemPr
       <Button
         variant="outline"
         size="sm"
-        className={`p-1 h-8 w-8 ${feedback === 'unhelpful' ? 'bg-red-100 text-red-600 border-red-200' : ''}`}
+        className={`p-1 h-8 w-8 ${feedback === 'unhelpful' ? 'bg-[#FFEBEE] text-red-600 border-[#FFCDD2]' : ''}`}
         disabled={feedback !== null || isSubmitting}
         onClick={() => handleFeedback('unhelpful')}
       >

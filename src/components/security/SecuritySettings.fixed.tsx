@@ -12,15 +12,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { safeAsync } from '@/utils/errorHandling';
 import { gdpr, inputValidation, securityMonitoring } from '@/utils/security';
 import {
-    AlertTriangle,
-    CheckCircle,
-    Clock,
-    Download,
-    Eye,
-    EyeOff,
-    Key,
-    Shield,
-    Trash2
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Download,
+  Eye,
+  EyeOff,
+  Key,
+  Shield,
+  Trash2,
 } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 
@@ -37,7 +37,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
   const [showPasswords, setShowPasswords] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<{ valid: boolean; errors: string[] }>({
     valid: false,
-    errors: []
+    errors: [],
   });
 
   // Security preferences
@@ -79,21 +79,21 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     const preferences = {
       twoFactorEnabled,
       sessionTimeout,
-      loginNotifications
+      loginNotifications,
     };
 
     localStorage.setItem('security-preferences', JSON.stringify(preferences));
 
     toast({
       title: 'Security Preferences Updated',
-      description: 'Your security preferences have been saved successfully.'
+      description: 'Your security preferences have been saved successfully.',
     });
 
     securityMonitoring.logSecurityEvent({
       type: 'suspicious_activity',
       severity: 'low',
       description: 'User updated security preferences',
-      userId: user?.id
+      userId: user?.id,
     });
   };
 
@@ -104,7 +104,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
     toast({
       title: 'Privacy Preferences Updated',
-      description: 'Your privacy preferences have been saved successfully.'
+      description: 'Your privacy preferences have been saved successfully.',
     });
   };
 
@@ -113,7 +113,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       toast({
         title: 'Missing Information',
         description: 'Please fill in all password fields.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return;
     }
@@ -122,7 +122,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       toast({
         title: 'Password Mismatch',
         description: 'New password and confirmation password do not match.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return;
     }
@@ -131,7 +131,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       toast({
         title: 'Weak Password',
         description: 'Please ensure your password meets all security requirements.',
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return;
     }
@@ -141,7 +141,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     const { error } = await safeAsync(
       async () => {
         const { error: updateError } = await supabase.auth.updateUser({
-          password: newPassword
+          password: newPassword,
         });
 
         if (updateError) {
@@ -154,8 +154,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         component: 'SecuritySettings',
         action: 'password_change',
         userId: user?.id,
-        showToast: false // We'll handle the success toast manually
-      }
+        showToast: false, // We'll handle the success toast manually
+      },
     );
 
     if (error) {
@@ -166,7 +166,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
 
     toast({
       title: 'Password Updated',
-      description: 'Your password has been changed successfully.'
+      description: 'Your password has been changed successfully.',
     });
 
     // Clear form
@@ -178,7 +178,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
       type: 'password_change',
       severity: 'medium',
       description: 'User changed password',
-      userId: user?.id
+      userId: user?.id,
     });
 
     setLoading(false);
@@ -201,8 +201,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         component: 'SecuritySettings',
         action: 'data_export',
         userId: user?.id,
-        showToast: false
-      }
+        showToast: false,
+      },
     );
 
     if (error) {
@@ -213,7 +213,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     toast({
       title: 'Data Export Requested',
       description:
-        "Your data export request has been submitted. You will receive an email when it's ready."
+        "Your data export request has been submitted. You will receive an email when it's ready.",
     });
 
     setLoading(false);
@@ -240,8 +240,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
         component: 'SecuritySettings',
         action: 'data_deletion',
         userId: user?.id,
-        showToast: false
-      }
+        showToast: false,
+      },
     );
 
     if (error) {
@@ -252,7 +252,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
     toast({
       title: 'Deletion Request Submitted',
       description:
-        'Your data deletion request has been submitted. You will receive a confirmation email.'
+        'Your data deletion request has been submitted. You will receive a confirmation email.',
     });
 
     setLoading(false);
@@ -292,7 +292,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                   type={showPasswords ? 'text' : 'password'}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Enter current password" />
+                  placeholder="Enter current password"
+                />
               </div>
             </div>
           </div>
@@ -306,7 +307,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                   type={showPasswords ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Enter new password" />
+                  placeholder="Enter new password"
+                />
                 <Button
                   type="button"
                   variant="ghost"
@@ -326,7 +328,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 type={showPasswords ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm new password" />
+                placeholder="Confirm new password"
+              />
             </div>
           </div>
 
@@ -359,7 +362,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
           <Button
             onClick={handlePasswordChange}
             disabled={loading || !passwordStrength.valid}
-            className="w-full md:w-auto">
+            className="w-full md:w-auto"
+          >
             {loading ? 'Updating...' : 'Change Password'}
           </Button>
         </CardContent>
@@ -495,7 +499,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
               onClick={handleDataExport}
               disabled={loading}
               variant="outline"
-              className="flex items-center gap-2">
+              className="flex items-center gap-2"
+            >
               <Download className="h-4 w-4" />
               Export My Data
             </Button>
@@ -504,7 +509,8 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
               onClick={handleDataDeletion}
               disabled={loading}
               variant="destructive"
-              className="flex items-center gap-2">
+              className="flex items-center gap-2"
+            >
               <Trash2 className="h-4 w-4" />
               Delete My Data
             </Button>

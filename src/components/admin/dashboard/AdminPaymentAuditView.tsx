@@ -283,7 +283,9 @@ export const AdminPaymentAuditView = (): JSX.Element => {
     }
   };
 
-  const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+  const getStatusBadgeVariant = (
+    status: string,
+  ): 'default' | 'secondary' | 'destructive' | 'outline' => {
     switch (status) {
       case 'paid':
         return 'default';

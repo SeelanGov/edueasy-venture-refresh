@@ -126,13 +126,13 @@ export const NotificationsPanel = (): JSX.Element => {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'document_status':
-        return <AlertCircle className="h-4 w-4 text-blue-500" />;
+        return <AlertCircle className="h-4 w-4 text-[#1976D2]" />;
       case 'application_status':
-        return <Clock className="h-4 w-4 text-green-500" />;
+        return <Clock className="h-4 w-4 text-[#388E3C]" />;
       case 'admin_feedback':
         return <MessageSquare className="h-4 w-4 text-purple-500" />;
       default:
-        return <Bell className="h-4 w-4 text-gray-500" />;
+        return <Bell className="h-4 w-4 text-[#757575]" />;
     }
   };
 
@@ -160,7 +160,7 @@ export const NotificationsPanel = (): JSX.Element => {
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 ml-6">{notification.message}</p>
         <div className="flex justify-between items-center mt-2 ml-6">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-[#757575] dark:text-[#BDBDBD]">
             {format(new Date(notification.created_at), 'MMM d, h:mm a')}
           </span>
           {!notification.is_read && (
@@ -206,7 +206,7 @@ export const NotificationsPanel = (): JSX.Element => {
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge
-              className="absolute -top-1 -right-1 px-1 min-w-[1.2rem] h-5 flex items-center justify-center bg-red-500 animate-pulse"
+              className="absolute -top-1 -right-1 px-1 min-w-[1.2rem] h-5 flex items-center justify-center bg-[#D32F2F] animate-pulse"
               variant="destructive"
             >
               {unreadCount > 99 ? '99+' : unreadCount}
@@ -261,7 +261,7 @@ export const NotificationsPanel = (): JSX.Element => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full justify-start text-xs text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/10"
+                  className="w-full justify-start text-xs text-[#D32F2F] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/10"
                   onClick={deleteAllReadNotifications}
                 >
                   <Trash2 className="h-3 w-3 mr-1" /> Delete read notifications
@@ -279,7 +279,7 @@ export const NotificationsPanel = (): JSX.Element => {
           ) : filteredNotifications.length > 0 ? (
             renderNotificationGroups()
           ) : (
-            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+            <div className="p-8 text-center text-[#757575] dark:text-[#BDBDBD]">
               <p>No notifications</p>
             </div>
           )}

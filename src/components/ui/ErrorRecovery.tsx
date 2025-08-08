@@ -18,7 +18,12 @@ interface ErrorRecoveryProps {
  * ErrorRecovery
  * @description Function
  */
-export const ErrorRecovery = ({ error, onRetry, onBack, className }: ErrorRecoveryProps): JSX.Element => {
+export const ErrorRecovery = ({
+  error,
+  onRetry,
+  onBack,
+  className,
+}: ErrorRecoveryProps): JSX.Element => {
   const navigate = useNavigate();
 
   const getErrorIcon = (): JSX.Element => {

@@ -64,10 +64,10 @@ export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps): JSX.Element =
             value={overallScore}
             className={`h-2 ${
               overallScore >= 90
-                ? 'bg-green-100'
+                ? 'bg-[#F0F9F0]'
                 : overallScore >= 70
-                  ? 'bg-yellow-100'
-                  : 'bg-red-100'
+                  ? 'bg-[#FFF8E1]'
+                  : 'bg-[#FFEBEE]'
             }`}
           />
 

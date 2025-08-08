@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
-import { UserCheck, UserPlus } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
-import { logError } from '@/utils/logging';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { parseError } from '@/utils/errorHandler';
+import { logError } from '@/utils/logging';
+import { UserCheck, UserPlus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import VerifyId from '../VerifyId';
 
 // Mock data interfaces
 interface Post {
@@ -140,6 +141,13 @@ export const UserProfileCard = (): JSX.Element => {
             <div className="text-xs text-gray-400 dark:text-gray-500 mb-2" aria-live="polite">
               {profileData.bio ? profileData.bio.length : 0}/160 characters
             </div>
+
+            {/* VerifyID Section */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-lg mb-3">Identity Verification</h3>
+              <VerifyId userId={profileData.id} />
+            </div>
+
             <div>
               <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
                 Recent Posts

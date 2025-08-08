@@ -38,7 +38,9 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps): JSX.Element =
   }, [policies]);
 
   // Get policy type badge variant
-  const getPolicyTypeVariant = (type: string): "outline" | "secondary" | "default" | "destructive" => {
+  const getPolicyTypeVariant = (
+    type: string,
+  ): 'outline' | 'secondary' | 'default' | 'destructive' => {
     switch (type.toUpperCase()) {
       case 'SELECT':
         return 'outline';

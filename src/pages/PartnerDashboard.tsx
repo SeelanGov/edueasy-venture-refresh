@@ -158,7 +158,7 @@ const PartnerDashboard: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-4 text-sm text-[#757575]">
             <strong>Need help?</strong>
             <br />
             Email{' '}
@@ -181,10 +181,10 @@ const PartnerDashboard: React.FC = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-primary mb-2">Partner Dashboard</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded">
+            <span className="text-sm font-medium bg-[#E3F2FD] text-[#1565C0] px-2 py-1 rounded">
               {partner.tier} Tier
             </span>
-            <span className="text-sm font-medium bg-green-100 text-green-800 px-2 py-1 rounded">
+            <span className="text-sm font-medium bg-[#F0F9F0] text-[#1B5E20] px-2 py-1 rounded">
               {partner.status}
             </span>
           </div>
@@ -225,8 +225,8 @@ const PartnerDashboard: React.FC = () => {
                     <span
                       className={`text-sm px-2 py-1 rounded ${
                         payment.status === 'paid'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
+                          ? 'bg-[#F0F9F0] text-[#1B5E20]'
+                          : 'bg-[#FFF8E1] text-[#F57F17]'
                       }`}
                     >
                       {payment.status}

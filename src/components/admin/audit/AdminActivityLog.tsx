@@ -135,7 +135,9 @@ export const AdminActivityLog: React.FC = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-sm">{String(log.details?.target_type || 'System')}</div>
+                        <div className="text-sm">
+                          {String(log.details?.target_type || 'System')}
+                        </div>
                         <div className="text-xs text-gray-500 font-mono">
                           {log.details?.target_id
                             ? `${String(log.details.target_id).substring(0, 8)}...`

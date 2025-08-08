@@ -16,7 +16,10 @@ interface EducationHistoryStepProps {
  * EducationHistoryStep
  * @description Function
  */
-export const EducationHistoryStep = ({ onComplete, onBack }: EducationHistoryStepProps): JSX.Element => {
+export const EducationHistoryStep = ({
+  onComplete,
+  onBack,
+}: EducationHistoryStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -25,7 +25,7 @@ export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ pa
       <tbody>
         {payments.length === 0 ? (
           <tr>
-            <td colSpan={6} className="py-6 text-center text-gray-400">
+            <td colSpan={6} className="py-6 text-center text-[#BDBDBD]">
               No payment records found.
             </td>
           </tr>
@@ -36,7 +36,7 @@ export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ pa
               <td className="px-3 py-2">{payment.payment_method || '-'}</td>
               <td className="px-3 py-2">
                 <span
-                  className={`px-2 py-1 rounded text-xs ${payment.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-800'}`}
+                  className={`px-2 py-1 rounded text-xs ${payment.status === 'paid' ? 'bg-[#F0F9F0] text-green-700' : 'bg-gray-200 text-[#424242]'}`}
                 >
                   {payment.status}
                 </span>

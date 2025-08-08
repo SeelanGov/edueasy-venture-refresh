@@ -389,7 +389,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                     {getCategoryIcon(scenario.category)}
                     <h3 className="font-medium">{scenario.name}</h3>
                   </div>
-                   <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
+                  <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
                 </div>
 
                 <p className="text-sm text-gray-600">{scenario.description}</p>
@@ -435,7 +435,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                 <div key={index} className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                     {getStatusIcon(result.status)}
+                      {getStatusIcon(result.status)}
                       <h3 className="font-medium">{result.scenarioName}</h3>
                     </div>
                     <div className="flex items-center space-x-2">

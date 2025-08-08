@@ -38,8 +38,16 @@ export function AdminDashboardStats({
         ]);
 
         setPaymentRecoveryStats({
-          orphaned: orphanedResult.success ? (Array.isArray(orphanedResult.data) ? orphanedResult.data.length : 0) : 0,
-          failed: failedResult.success ? (Array.isArray(failedResult.data) ? failedResult.data.length : 0) : 0,
+          orphaned: orphanedResult.success
+            ? Array.isArray(orphanedResult.data)
+              ? orphanedResult.data.length
+              : 0
+            : 0,
+          failed: failedResult.success
+            ? Array.isArray(failedResult.data)
+              ? failedResult.data.length
+              : 0
+            : 0,
         });
       } catch (error) {
         console.error('Error loading payment recovery stats:', error);

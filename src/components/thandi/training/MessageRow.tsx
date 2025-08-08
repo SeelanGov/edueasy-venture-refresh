@@ -60,13 +60,13 @@ export const MessageRow = ({
     <TableRow>
       <TableCell className="font-medium">
         <div className="line-clamp-3">{message.message}</div>
-        <div className="text-xs text-gray-500 mt-1">
+        <div className="text-xs text-[#757575] mt-1">
           {new Date(message.created_at).toLocaleString()}
         </div>
       </TableCell>
       <TableCell>
         <div className="text-sm font-medium">{message.user_name}</div>
-        <div className="text-xs text-gray-500">{message.user_email}</div>
+        <div className="text-xs text-[#757575]">{message.user_email}</div>
       </TableCell>
       <TableCell>
         {message.intent_id ? (

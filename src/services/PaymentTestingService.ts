@@ -629,7 +629,9 @@ class PaymentTestingService {
       const stepNumbers = scenario.steps.map((s) => s.step);
       const duplicates = stepNumbers.filter((n, idx) => stepNumbers.indexOf(n) !== idx);
       if (duplicates.length > 0) {
-        throw new Error(`Duplicate step numbers in scenario '${scenario.id}': ${duplicates.join(', ')}`);
+        throw new Error(
+          `Duplicate step numbers in scenario '${scenario.id}': ${duplicates.join(', ')}`,
+        );
       }
       // Optionally, add more checks for step validity here
     }

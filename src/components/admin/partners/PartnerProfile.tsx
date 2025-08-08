@@ -167,10 +167,10 @@ export const PartnerProfile = () => {
         <Badge
           className={
             partner.status === 'active'
-              ? 'bg-green-100 text-green-800'
+              ? 'bg-[#F0F9F0] text-[#1B5E20]'
               : partner.status === 'pending'
-                ? 'bg-yellow-100 text-yellow-800'
-                : 'bg-red-100 text-red-800'
+                ? 'bg-[#FFF8E1] text-[#F57F17]'
+                : 'bg-[#FFEBEE] text-[#B71C1C]'
           }
         >
           {partner.status}
@@ -197,42 +197,42 @@ export const PartnerProfile = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Name</label>
+                  <label className="text-sm font-medium text-[#757575]">Name</label>
                   <p className="text-sm">{partner.name}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Type</label>
+                  <label className="text-sm font-medium text-[#757575]">Type</label>
                   <p className="text-sm capitalize">{partner.type}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Email</label>
+                  <label className="text-sm font-medium text-[#757575]">Email</label>
                   <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-gray-400" />
+                    <Mail className="h-4 w-4 text-[#BDBDBD]" />
                     <a
                       href={`mailto:${partner.contact_email}`}
-                      className="text-sm text-blue-600 hover:underline"
+                      className="text-sm text-[#1976D2] hover:underline"
                     >
                       {partner.contact_email}
                     </a>
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Phone</label>
+                  <label className="text-sm font-medium text-[#757575]">Phone</label>
                   <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-gray-400" />
+                    <Phone className="h-4 w-4 text-[#BDBDBD]" />
                     <span className="text-sm">{partner.contact_phone || 'Not provided'}</span>
                   </div>
                 </div>
                 {partner.website && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Website</label>
+                    <label className="text-sm font-medium text-[#757575]">Website</label>
                     <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-gray-400" />
+                      <Globe className="h-4 w-4 text-[#BDBDBD]" />
                       <a
                         href={partner.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-[#1976D2] hover:underline"
                       >
                         {partner.website}
                       </a>
@@ -242,7 +242,7 @@ export const PartnerProfile = () => {
               </div>
 
               <div className="pt-4">
-                <label className="text-sm font-medium text-gray-500">Tier</label>
+                <label className="text-sm font-medium text-[#757575]">Tier</label>
                 <div className="flex gap-2 mt-2">
                   {(['basic', 'standard', 'premium'] as const).map((tier) => (
                     <Button
@@ -269,7 +269,7 @@ export const PartnerProfile = () => {
             </CardHeader>
             <CardContent>
               {payments.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No payment records found</p>
+                <p className="text-[#757575] text-center py-8">No payment records found</p>
               ) : (
                 <div className="space-y-4">
                   {payments.map((payment) => (
@@ -279,15 +279,15 @@ export const PartnerProfile = () => {
                     >
                       <div>
                         <p className="font-medium">R{payment.amount.toLocaleString()}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[#757575]">
                           {payment.reference_number && `Ref: ${payment.reference_number} • `}
                           {new Date(payment.payment_date).toLocaleDateString()}
                         </p>
                         {payment.tier && (
-                          <p className="text-sm text-gray-500">Tier: {payment.tier}</p>
+                          <p className="text-sm text-[#757575]">Tier: {payment.tier}</p>
                         )}
                         {payment.due_date && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-[#757575]">
                             Due: {new Date(payment.due_date).toLocaleDateString()}
                           </p>
                         )}
@@ -296,10 +296,10 @@ export const PartnerProfile = () => {
                         <Badge
                           className={
                             payment.status === 'paid'
-                              ? 'bg-green-100 text-green-800'
+                              ? 'bg-[#F0F9F0] text-[#1B5E20]'
                               : payment.status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-red-100 text-red-800'
+                                ? 'bg-[#FFF8E1] text-[#F57F17]'
+                                : 'bg-[#FFEBEE] text-[#B71C1C]'
                           }
                         >
                           {payment.status}
@@ -332,14 +332,14 @@ export const PartnerProfile = () => {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Integration Status</label>
+                  <label className="text-sm font-medium text-[#757575]">Integration Status</label>
                   <Badge
                     className={
                       partner.integration_status === 'completed'
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-[#F0F9F0] text-[#1B5E20]'
                         : partner.integration_status === 'in_progress'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-gray-100 text-gray-800'
+                          ? 'bg-[#E3F2FD] text-[#1565C0]'
+                          : 'bg-[#F5F5F5] text-[#424242]'
                     }
                   >
                     {partner.integration_status || 'Not Started'}
@@ -366,7 +366,7 @@ export const PartnerProfile = () => {
                     <p>{partner.notes}</p>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">No notes available</p>
+                  <p className="text-[#757575] text-center py-8">No notes available</p>
                 )}
                 <Button variant="outline">
                   <MessageSquare className="h-4 w-4 mr-2" />

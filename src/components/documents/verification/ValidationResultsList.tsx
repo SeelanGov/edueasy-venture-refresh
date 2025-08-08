@@ -82,7 +82,7 @@ export const ValidationResultsList = ({
                             ) {
                               return (
                                 <div key={index}>
-                                  {String(subject.name || "")}: {String(subject.mark || "")}
+                                  {String(subject.name || '')}: {String(subject.mark || '')}
                                 </div>
                               );
                             }

@@ -61,7 +61,7 @@ export const StatisticCard = ({
 
     const timer = setTimeout(() => {
       setIsVisible(true);
-      
+
       const animationTimer = setInterval(() => {
         setCurrentValue((prev) => {
           if (prev >= targetValue) {

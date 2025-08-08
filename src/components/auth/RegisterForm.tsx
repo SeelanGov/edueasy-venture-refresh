@@ -124,7 +124,10 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX
         return;
       }
 
-      const signUpResult = response as { user?: { id: string; email: string; name: string }; error?: unknown };
+      const signUpResult = response as {
+        user?: { id: string; email: string; name: string };
+        error?: unknown;
+      };
       const user = signUpResult?.user;
       if (!user?.id) {
         throw new Error('Failed to create user account');

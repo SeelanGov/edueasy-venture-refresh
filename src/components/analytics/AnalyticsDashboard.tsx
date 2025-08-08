@@ -100,7 +100,9 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
     const headers = Object.keys(data[0] || {});
     const csvRows = [
       headers.join(','),
-      ...data.map((row) => headers.map((header) => JSON.stringify((row as Record<string, unknown>)[header])).join(',')),
+      ...data.map((row) =>
+        headers.map((header) => JSON.stringify((row as Record<string, unknown>)[header])).join(','),
+      ),
     ];
 
     return csvRows.join('\n');

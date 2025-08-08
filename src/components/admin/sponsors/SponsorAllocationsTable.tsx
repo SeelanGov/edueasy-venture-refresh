@@ -38,7 +38,7 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
               <span
                 className={`px-2 py-1 rounded text-xs ${
                   alloc.status === 'active'
-                    ? 'bg-green-200 text-green-800'
+                    ? 'bg-green-200 text-[#1B5E20]'
                     : 'bg-gray-200 text-gray-700'
                 }`}
               >
@@ -49,7 +49,7 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
             <td className="px-3 py-2">{alloc.notes || '-'}</td>
             <td className="px-3 py-2 space-x-2">
               <Button
-                className="text-blue-600 hover:underline"
+                className="text-[#1976D2] hover:underline"
                 variant="link"
                 size="sm"
                 onClick={() => onEdit(alloc)}
@@ -57,7 +57,7 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
                 Edit
               </Button>
               <Button
-                className="text-red-500 hover:underline"
+                className="text-[#D32F2F] hover:underline"
                 variant="link"
                 size="sm"
                 onClick={() => onDelete(alloc.id)}
@@ -69,7 +69,7 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
         ))}
         {allocations.length === 0 && (
           <tr>
-            <td colSpan={6} className="text-center text-gray-400 py-8">
+            <td colSpan={6} className="text-center text-[#BDBDBD] py-8">
               No allocations found.
             </td>
           </tr>

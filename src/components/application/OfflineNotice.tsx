@@ -12,7 +12,11 @@ interface OfflineNoticeProps {
  * OfflineNotice
  * @description Function
  */
-export const OfflineNotice = ({ isOnline, onSyncNow, className }: OfflineNoticeProps): JSX.Element | null => {
+export const OfflineNotice = ({
+  isOnline,
+  onSyncNow,
+  className,
+}: OfflineNoticeProps): JSX.Element | null => {
   if (isOnline) return null;
 
   return (
