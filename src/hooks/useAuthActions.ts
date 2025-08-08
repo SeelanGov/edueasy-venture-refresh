@@ -20,7 +20,7 @@ interface DatabaseResult {
  * useAuthActions
  * @description Function
  */
-export const useAuthActions = (): void => {
+export const useAuthActions = () => {
   const verifyIdentity = async (
     email: string,
     nationalId: string,

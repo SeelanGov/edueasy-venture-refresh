@@ -9,7 +9,7 @@ import logger from '@/utils/logger';
  * useSession
  * @description Function
  */
-export const useSession = (): void => {
+export const useSession = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);

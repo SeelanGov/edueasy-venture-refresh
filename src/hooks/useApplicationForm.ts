@@ -11,7 +11,7 @@ import type { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTy
  * useApplicationForm
  * @description Function
  */
-export const useApplicationForm = (): void => {
+export const useApplicationForm = () => {
   const navigate = useNavigate();
   const { isOnline } = useNetwork();
 
