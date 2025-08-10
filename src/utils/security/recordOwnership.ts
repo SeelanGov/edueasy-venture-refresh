@@ -16,7 +16,7 @@ export const recordBelongsToUser = async (
   if (!userId || !recordId) return false;
 
   try {
-    const { data, error } = await supabase.rpc('belongs_to_user', {
+    const { data } = await supabase.rpc('belongs_to_user', {
       table_name: tableName,
       record_id: recordId,
     });

@@ -1,8 +1,15 @@
-import PartnerCard from '@/components/admin/partners/PartnerCard';
+import { PartnerCard } from '@/components/admin/partners/PartnerCard';
 import { Button } from '@/components/ui/button';
 import { usePartners, type PartnerType } from '@/hooks/usePartners';
-import React, { useCallback, useState } from 'react';
+import { useCallback   } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+
+
+
+
 // Show toast notifications
 
 const PARTNER_TYPES = [
@@ -17,12 +24,13 @@ const PartnersPage: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<PartnerType | undefined>(undefined);
   const [search, setSearch] = useState<string>('');
   const navigate = useNavigate();
-  const { partners, isLoading } = usePartners({ type: typeFilter, search });
+  const { partners } = usePartners({ type: typeFilter, search });
 
   // Error handling feedback (You can add usePartners error logic if fetch can fail — for now just safe fallback)
   const [hasError, setHasError] = useState(false);
 
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = // eslint-disable-next-line react-hooks/exhaustive-deps
+useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setHasError(false); // reset on edit
   }, []);
@@ -49,16 +57,14 @@ const PartnersPage: React.FC = () => {
           placeholder="Search partners"
           value={search}
           onChange={handleSearchChange}
-          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64"
-        />
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64" />
         <select
           value={typeFilter || ''}
           onChange={(e) => {
             const val = e.target.value;
             setTypeFilter(val === '' ? undefined : (val as PartnerType));
           }}
-          className="rounded border border-gray-300 px-3 py-2 text-sm w-44"
-        >
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-44">
           {PARTNER_TYPES.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}

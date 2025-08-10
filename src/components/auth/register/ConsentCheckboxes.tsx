@@ -28,8 +28,7 @@ export const ConsentCheckboxes = ({
           type="checkbox"
           checked={consentPrivacy}
           onChange={(e) => setConsentPrivacy(e.target.checked)}
-          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
-        />
+          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal" />
         <span className="text-sm text-gray-600">
           I agree to the{' '}
           <a href="/privacy-policy" className="text-cap-teal underline hover:text-cap-teal/80">
@@ -45,8 +44,7 @@ export const ConsentCheckboxes = ({
           type="checkbox"
           checked={consentTerms}
           onChange={(e) => setConsentTerms(e.target.checked)}
-          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal"
-        />
+          className="mt-1 w-4 h-4 text-cap-teal border-gray-300 rounded focus:ring-cap-teal" />
         <span className="text-sm text-gray-600">
           I agree to the{' '}
           <a href="/terms-of-service" className="text-cap-teal underline hover:text-cap-teal/80">

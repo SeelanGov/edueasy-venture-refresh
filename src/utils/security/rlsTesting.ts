@@ -1,7 +1,11 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logSecurityEvent } from './logging';
-import type { RLSPolicyTestResult, RLSTestResult, RLSPolicyAnalysis } from './types';
+import { type RLSPolicyTestResult, RLSTestResult, RLSPolicyAnalysis  } from './types';
+
+
+
+
 
 /**
  * Utility for testing and validating Row Level Security (RLS) policies
@@ -19,7 +23,7 @@ export const testRLSPolicies = async (userId: string | undefined): Promise<RLSPo
 
   try {
     // Use the enhanced audit_rls_policies function
-    const { data, error } = await supabase.rpc('audit_rls_policies');
+    const { data } = await supabase.rpc('audit_rls_policies');
 
     if (error) throw error;
 
@@ -80,7 +84,7 @@ export const testRLSPoliciesWithRole = async (
 
   try {
     // Use the new function that supports role-based testing
-    const { data, error } = await supabase.rpc('test_rls_policies_with_role', {
+    const { data } = await supabase.rpc('test_rls_policies_with_role', {
       p_role: role,
       p_scenario: scenario,
     });
@@ -154,7 +158,7 @@ export const analyzeRLSPolicies = async (
   }
 
   try {
-    const { data, error } = await supabase.rpc('analyze_rls_policies');
+    const { data } = await supabase.rpc('analyze_rls_policies');
 
     if (error) throw error;
 
@@ -181,7 +185,7 @@ export const analyzeRLSPolicies = async (
  */
 export const getRegisteredPolicies = async () => {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('rls_policy_registry')
       .select('*')
       .order('table_name', { ascending: true });

@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { PremiumFeature } from '@/components/subscription/PremiumFeature';
-import { SubscriptionTierName } from '@/types/SubscriptionTypes';
-import { Calendar, Clock, Video, Users, Star } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { PremiumFeature } from '@/components/subscription/PremiumFeature';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SubscriptionTierName } from '@/types/SubscriptionTypes';
+import { Calendar, Clock, Star, Users, Video } from 'lucide-react';
+import { useState } from 'react';
+
+
+
+
+
+
+
+
 
 const ConsultationsPage = () => {
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
@@ -68,8 +76,7 @@ const ConsultationsPage = () => {
             {sessionTypes.map((session) => (
               <Card
                 key={session.id}
-                className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200"
-              >
+                className="shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-200">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg text-gray-800">{session.title}</CardTitle>

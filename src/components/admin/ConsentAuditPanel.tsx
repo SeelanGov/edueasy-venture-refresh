@@ -1,10 +1,14 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getConsentStatistics } from '@/utils/consent-recording';
+import { CheckCircle, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
+import { useEffect } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -20,9 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getConsentStatistics } from '@/utils/consent-recording';
-import { CheckCircle, Download, Eye, FileText, Shield, XCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface ConsentRecord {
   id: string;
@@ -68,6 +69,7 @@ export const ConsentAuditPanel = (): JSX.Element => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'consents' | 'verifications' | 'stats'>('consents');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadData();
   }, []);
@@ -87,7 +89,7 @@ export const ConsentAuditPanel = (): JSX.Element => {
       setConsents(consentsData || []);
       setVerificationLogs(verificationData || []);
       setStatistics(stats);
-    } catch (_err) {
+    } catch {
       setIsLoading(false);
       setError('Failed to load audit data');
     }
@@ -128,12 +130,12 @@ export const ConsentAuditPanel = (): JSX.Element => {
 
       const csv = convertToCSV(csvData);
       downloadCSV(csv, 'consent-audit-data.csv');
-    } catch (err) {
+    } catch {
       setError('Failed to export data');
     }
   };
 
-  const convertToCSV = (data: Record<string, any>[]): string => {
+  const convertToCSV = (data: Record<string, string | number | boolean>[]): string => {
     if (data.length === 0) return '';
 
     const headers = Object.keys(data[0] as object);
@@ -278,24 +280,21 @@ export const ConsentAuditPanel = (): JSX.Element => {
         <Button
           variant={activeTab === 'consents' ? 'default' : 'ghost'}
           onClick={() => setActiveTab('consents')}
-          className="flex items-center gap-2"
-        >
+          className="flex items-center gap-2">
           <FileText className="h-4 w-4" />
           Consents ({filteredConsents.length})
         </Button>
         <Button
           variant={activeTab === 'verifications' ? 'default' : 'ghost'}
           onClick={() => setActiveTab('verifications')}
-          className="flex items-center gap-2"
-        >
+          className="flex items-center gap-2">
           <Shield className="h-4 w-4" />
           Verifications ({filteredVerifications.length})
         </Button>
         <Button
           variant={activeTab === 'stats' ? 'default' : 'ghost'}
           onClick={() => setActiveTab('stats')}
-          className="flex items-center gap-2"
-        >
+          className="flex items-center gap-2">
           <Eye className="h-4 w-4" />
           Statistics
         </Button>

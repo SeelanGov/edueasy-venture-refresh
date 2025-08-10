@@ -1,8 +1,13 @@
 import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Card, CardContent } from '@/components/ui/card';
-import type { RLSPolicyAnalysis } from '@/utils/security/types';
-import { AlertCircle, CheckCircle, ShieldAlert, AlertTriangle } from 'lucide-react';
+import { type RLSPolicyAnalysis  } from '@/utils/security/types';
+import { AlertCircle, AlertTriangle, CheckCircle, ShieldAlert } from 'lucide-react';
+
+
+
+
+
 
 interface PolicyAnalysisProps {
   analysis: RLSPolicyAnalysis[];
@@ -63,11 +68,7 @@ export const PolicyAnalysis = ({ analysis }: PolicyAnalysisProps): JSX.Element =
           <Progress
             value={overallScore}
             className={`h-2 ${
-              overallScore >= 90
-                ? 'bg-[#F0F9F0]'
-                : overallScore >= 70
-                  ? 'bg-[#FFF8E1]'
-                  : 'bg-[#FFEBEE]'
+              overallScore >= 90 ? 'bg-green-50' : overallScore >= 70 ? 'bg-yellow-50' : 'bg-red-50'
             }`}
           />
 

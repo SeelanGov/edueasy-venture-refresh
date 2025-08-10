@@ -1,4 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { formatCurrency } from '@/types/SubscriptionTypes';
+import { CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+
 import {
   Card,
   CardContent,
@@ -7,11 +13,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { formatCurrency } from '@/types/SubscriptionTypes';
-import { CheckCircle, CreditCard } from 'lucide-react';
-import React, { useState } from 'react';
+
+
+
+
+
 
 interface PaymentFormProps {
   amount: number;
@@ -27,11 +33,10 @@ interface PaymentFormProps {
  */
 export function PaymentForm({
   amount,
-  currency = 'ZAR',
   description = 'Complete your payment',
   onPaymentComplete,
   onCancel,
-}: PaymentFormProps): JSX.Element {
+}: any): JSX.Element {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvc, setCardCvc] = useState('');
@@ -67,7 +72,7 @@ export function PaymentForm({
   // Format card number with spaces
   const formatCardNumber = (value: string): string => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = v.match(/\d{4,16}/g);
+    const matches = v.match(/\d{4}/g);
     const match = (matches && matches[0]) || '';
     const parts = [];
 
@@ -91,13 +96,6 @@ export function PaymentForm({
     }
 
     return v;
-  };
-
-  const formatAmount = (_currency: string, amount: number): string => {
-    return new Intl.NumberFormat('en-ZA', {
-      style: 'currency',
-      currency: 'ZAR',
-    }).format(amount);
   };
 
   if (paymentSuccess) {

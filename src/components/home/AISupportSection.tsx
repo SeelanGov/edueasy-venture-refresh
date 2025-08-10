@@ -64,8 +64,7 @@ export const AISupportSection = (): JSX.Element => {
             <div className="pt-6">
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8"
-              >
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8">
                 Chat with Thandi
               </Button>
             </div>
@@ -79,8 +78,7 @@ export const AISupportSection = (): JSX.Element => {
                 alt="Thandi - AI Education Assistant"
                 className="w-full h-64 object-cover rounded-xl"
                 skeletonClassName="w-full h-64 rounded-xl"
-                fallbackSrc="/images/journey-bg.png"
-              />
+                fallbackSrc="/images/journey-bg.png" />
               {/* Overlay Thandi's branded card */}
               <div
                 className="absolute bottom-6 right-6 bg-white/90 rounded-xl shadow-lg flex flex-col items-center p-4 z-20"
@@ -91,8 +89,7 @@ export const AISupportSection = (): JSX.Element => {
                   alt="Thandi - AI Avatar"
                   className="w-16 h-16 object-cover rounded-full shadow-md mb-2 border-2 border-blue-100"
                   skeletonClassName="w-16 h-16 rounded-full"
-                  fallbackSrc="/images/journey-bg.png"
-                />
+                  fallbackSrc="/images/journey-bg.png" />
                 <div className="text-gray-800 font-semibold text-base mb-1">
                   AI Assistant Thandi
                 </div>

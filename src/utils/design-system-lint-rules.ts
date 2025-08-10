@@ -59,5 +59,5 @@ export const validateDesignSystemUsage = (
     suggestions.push('Use Card component from @/components/ui/card');
   }
 
-  return { violations, suggestions };
+  return { violations };
 };

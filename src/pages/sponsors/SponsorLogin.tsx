@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
 
 const SponsorLogin = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +19,7 @@ const SponsorLogin = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });

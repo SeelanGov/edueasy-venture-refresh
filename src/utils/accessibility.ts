@@ -1,4 +1,5 @@
-import type * as React from 'react';
+import type * as React  from 'react';
+
 
 /**
  * Accessibility utilities for WCAG compliance and screen reader support

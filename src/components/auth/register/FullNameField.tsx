@@ -1,8 +1,13 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import type { Control } from 'react-hook-form';
-import type { RegisterFormValues } from '../RegisterForm';
+import { type Control  } from 'react-hook-form';
+import { type RegisterFormValues  } from '../RegisterForm';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
+
+
+
+
+
 
 interface FullNameFieldProps {
   control: Control<RegisterFormValues>;
@@ -13,7 +18,7 @@ interface FullNameFieldProps {
  * FullNameField
  * @description Function
  */
-export const FullNameField = ({ control, isLoading }: FullNameFieldProps): JSX.Element => {
+export const FullNameField = ({ control }: FullNameFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}
@@ -31,8 +36,7 @@ export const FullNameField = ({ control, isLoading }: FullNameFieldProps): JSX.E
               disabled={isLoading}
               className="text-gray-900"
               maxLength={50}
-              aria-describedby="fullname-helper"
-            />
+              aria-describedby="fullname-helper" />
           </FormControl>
           <div id="fullname-helper" className="text-xs text-gray-500 mt-1">
             Enter your full legal name as it appears on your ID document.

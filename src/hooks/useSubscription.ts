@@ -1,9 +1,16 @@
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import type { SubscriptionTier, Transaction, UserSubscription } from '@/types/SubscriptionTypes';
+import { type SubscriptionTier, Transaction, UserSubscription  } from '@/types/SubscriptionTypes';
 import { secureStorage } from '@/utils/secureStorage';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+
+
+
+
+
 
 /**
  * useSubscription
@@ -136,7 +143,7 @@ export function useSubscription() {
       const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
       // Call PayFast payment session creation with payment method
-      const { data, error } = await supabase.functions.invoke('create-payment-session', {
+      const { data } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: payfastTier,
           user_id: user.id,
@@ -174,7 +181,7 @@ export function useSubscription() {
   // Add payment status polling
   const checkPaymentStatus = async (merchantReference: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('verify-payment-status', {
+      const { data } = await supabase.functions.invoke('verify-payment-status', {
         body: { merchant_reference: merchantReference },
       });
 

@@ -1,3 +1,4 @@
+import { type DocumentTypeData  } from '@/hooks/analytics/types';
 import {
   BarChart,
   Bar,
@@ -8,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import type { DocumentTypeData } from '@/hooks/analytics/types';
+
 
 interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];

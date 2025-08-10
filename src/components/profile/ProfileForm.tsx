@@ -1,3 +1,4 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -7,7 +8,20 @@ import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { User } from '@supabase/supabase-js';
+import { type User  } from '@supabase/supabase-js';
+import { AlertCircle } from 'lucide-react';
+import { parseError } from '@/utils/errorHandler';
+import { logError } from '@/utils/logging';
+
+
+
+
+
+
+
+
+
+
 import {
   Form,
   FormControl,
@@ -16,10 +30,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
-import { parseError } from '@/utils/errorHandler';
-import { logError } from '@/utils/logging';
+
+
+
+
 
 const profileFormSchema = z.object({
   email: z.string().email('Please enter a valid email address').optional(),
@@ -45,7 +59,7 @@ interface ProfileFormProps {
  * ProfileForm
  * @description Function
  */
-export const ProfileForm = ({ user, initialData }: ProfileFormProps): JSX.Element => {
+export const ProfileForm = ({ user }: ProfileFormProps): JSX.Element => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

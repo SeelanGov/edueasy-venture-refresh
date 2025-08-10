@@ -140,16 +140,14 @@ const SponsorsPage = () => {
           className={tab === 'allocations' ? 'font-bold underline' : ''}
           onClick={() => setTab('allocations')}
           variant="ghost"
-          size="sm"
-        >
+          size="sm">
           Student Allocations
         </Button>
         <Button
           className={tab === 'sponsors' ? 'font-bold underline' : ''}
           onClick={() => setTab('sponsors')}
           variant="ghost"
-          size="sm"
-        >
+          size="sm">
           Sponsors List
         </Button>
       </div>
@@ -160,13 +158,11 @@ const SponsorsPage = () => {
           placeholder="Search sponsor name or email"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64"
-        />
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-64" />
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-auto"
-        >
+          className="rounded border border-gray-300 px-3 py-2 text-sm w-full sm:w-auto">
           <option value="">All Types</option>
           <option value="corporate">Corporate</option>
           <option value="foundation">Foundation</option>
@@ -179,8 +175,7 @@ const SponsorsPage = () => {
             disabled
             title="Bulk operations coming soon"
             variant="outline"
-            size="sm"
-          >
+            size="sm">
             Bulk Operations (soon)
           </Button>
         )}
@@ -205,8 +200,7 @@ const SponsorsPage = () => {
               title="Export Allocations"
               type="button"
               variant="outline"
-              size="sm"
-            >
+              size="sm">
               <FileText size={18} className="mr-1" />
               Export CSV
             </Button>
@@ -236,8 +230,7 @@ const SponsorsPage = () => {
               title="Export Sponsors"
               type="button"
               variant="outline"
-              size="sm"
-            >
+              size="sm">
               <FileText size={18} className="mr-1" />
               Export CSV
             </Button>

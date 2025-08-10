@@ -1,19 +1,16 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { z } from 'zod';
-
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 import { useAuth } from '@/hooks/useAuth';
 import { recordUserConsents } from '@/utils/consent-recording';
 import { secureStorage } from '@/utils/secureStorage';
-
-// Refactored atomic fields
 import { ConfirmPasswordField } from './register/ConfirmPasswordField';
 import { ConsentCheckboxes } from './register/ConsentCheckboxes';
 import { EmailField } from './register/EmailField';
@@ -21,9 +18,11 @@ import { FullNameField } from './register/FullNameField';
 import { GenderField } from './register/GenderField';
 import { IdNumberField } from './register/IdNumberField';
 import { PasswordField } from './register/PasswordField';
+import { Form } from '@/components/ui/form';
+
+// Refactored atomic fields
 
 // IMPORTANT: Import the shadcn/ui Form provider to wrap around the form
-import { Form } from '@/components/ui/form';
 
 const registerFormSchema = z
   .object({
@@ -60,8 +59,6 @@ export const RegisterForm = ({ hasPendingPlan = false }: RegisterFormProps): JSX
   const [consentPrivacy, setConsentPrivacy] = useState(false);
   const [consentTerms, setConsentTerms] = useState(false);
   const [consentIdVerification, setConsentIdVerification] = useState(false);
-  const location = useLocation();
-  const _from = location.state?.from || '/profile-completion';
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),

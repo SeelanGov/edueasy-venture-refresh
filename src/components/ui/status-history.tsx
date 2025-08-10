@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { StatusBadge, type ExtendedStatusType } from './status-badge';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';

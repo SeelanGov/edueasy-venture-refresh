@@ -26,7 +26,7 @@ export const RLSPolicyTester = (): JSX.Element => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('test_rls_policies_with_role', {
+      const { data } = await supabase.rpc('test_rls_policies_with_role', {
         p_role: 'user',
         p_scenario: 'test',
       });
@@ -61,8 +61,7 @@ export const RLSPolicyTester = (): JSX.Element => {
             id="userId"
             value={userId}
             onChange={(e) => setUserId(e.target.value)}
-            placeholder="Enter user ID to test with"
-          />
+            placeholder="Enter user ID to test with" />
         </div>
 
         <div>

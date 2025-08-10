@@ -1,8 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Spinner } from '@/components/Spinner';
+import { ApplicationTable } from '@/components/dashboard/ApplicationTable';
+import { ErrorLogsTable } from './ErrorLogsTable';
+
 import {
   Users,
   GraduationCap,
@@ -12,11 +18,6 @@ import {
   Clock,
   CheckCircle,
 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { Spinner } from '@/components/Spinner';
-import { ApplicationTable } from '@/components/dashboard/ApplicationTable';
-import { ErrorLogsTable } from './ErrorLogsTable';
 
 interface DashboardStats {
   totalUsers: number;
@@ -101,7 +102,7 @@ export const AdminDashboard = () => {
 
   const fetchApplications = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('applications')
         .select('*, documents(*)')
         .order('created_at', { ascending: false })
@@ -118,7 +119,7 @@ export const AdminDashboard = () => {
   const fetchErrorLogs = async () => {
     setErrorLogsLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('system_error_logs')
         .select('*')
         .order('occurred_at', { ascending: false })
@@ -175,6 +176,7 @@ export const AdminDashboard = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchStats();
     fetchApplications();

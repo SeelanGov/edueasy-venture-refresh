@@ -1,8 +1,8 @@
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
-import { Card, CardContent } from '@/components/ui/card';
-import { ProgressIndicator, createAuthFlowSteps } from '@/components/ui/ProgressIndicator';
+import { Card } from '@/components/ui/card';
+import { ProgressIndicator } from '@/components/ui/ProgressIndicator';
 import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -34,8 +34,7 @@ const Register = () => {
           <div className="mb-8">
             <ProgressIndicator
               steps={createAuthFlowSteps('register')}
-              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
-            />
+              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100" />
           </div>
         )}
 
@@ -122,8 +121,7 @@ const Register = () => {
                 Already have an account?{' '}
                 <Link
                   to="/login"
-                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
-                >
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                   Sign in
                 </Link>
               </p>
@@ -134,8 +132,7 @@ const Register = () => {
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
-          >
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

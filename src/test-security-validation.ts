@@ -1,15 +1,14 @@
+import { supabase } from '@/integrations/supabase/client';
 // Security validation test for Phase 4.1.2 - FINAL SECURITY LOCKDOWN
 // This file validates all critical security fixes
-
-import { supabase } from '@/integrations/supabase/client';
 
 /**
  * runSecurityTests
  * @description Function
  */
 export const runSecurityTests = async () => {
-  console.log('🔐 PHASE 4.1.2 FINAL SECURITY VALIDATION');
-  console.log('========================================');
+  console.warn('🔐 PHASE 4.1.2 FINAL SECURITY VALIDATION');
+  console.warn('========================================');
 
   const results = {
     localStorage: false,
@@ -20,15 +19,15 @@ export const runSecurityTests = async () => {
   };
 
   // Test 1: Verify localStorage bypass eliminated
-  console.log('\n📋 Test 1: localStorage Bypass Elimination');
+  console.warn('\n📋 Test 1: localStorage Bypass Elimination');
   const hasLocalStorageSponsorId = document.body.innerHTML.includes(
     'localStorage.getItem("sponsor_id")',
   );
   results.localStorage = !hasLocalStorageSponsorId;
-  console.log(`✅ localStorage sponsor_id eliminated: ${results.localStorage ? 'PASS' : 'FAIL'}`);
+  console.warn(`✅ localStorage sponsor_id eliminated: ${results.localStorage ? 'PASS' : 'FAIL'}`);
 
   // Test 2: CRITICAL - Test users table RLS hardening
-  console.log('\n📋 Test 2: CRITICAL - Users Table RLS Security');
+  console.warn('\n📋 Test 2: CRITICAL - Users Table RLS Security');
   try {
     const { data: userData } = await supabase.auth.getUser();
     if (userData.user) {
@@ -49,17 +48,17 @@ export const runSecurityTests = async () => {
 
       results.usersTableRLS = canAccessOwn && cannotAccessAll;
 
-      console.log(`  ✅ Can access own user data: ${canAccessOwn ? 'PASS' : 'FAIL'}`);
-      console.log(`  ✅ Cannot access all users: ${cannotAccessAll ? 'PASS' : 'FAIL'}`);
-      console.log(`  🔒 Users table RLS secured: ${results.usersTableRLS ? 'PASS' : 'FAIL'}`);
+      console.warn(`  ✅ Can access own user data: ${canAccessOwn ? 'PASS' : 'FAIL'}`);
+      console.warn(`  ✅ Cannot access all users: ${cannotAccessAll ? 'PASS' : 'FAIL'}`);
+      console.warn(`  🔒 Users table RLS secured: ${results.usersTableRLS ? 'PASS' : 'FAIL'}`);
     }
   } catch (err) {
-    console.log('🔒 Users table access properly restricted:', err);
+    console.warn('🔒 Users table access properly restricted:', err);
     results.usersTableRLS = true; // Error means access is blocked, which is good
   }
 
   // Test 3: Sponsor data scoping
-  console.log('\n📋 Test 3: Sponsor Data Access Scoping');
+  console.warn('\n📋 Test 3: Sponsor Data Access Scoping');
   try {
     const { data: userData } = await supabase.auth.getUser();
     if (userData.user) {
@@ -81,23 +80,23 @@ export const runSecurityTests = async () => {
 
       results.sponsorAccess = hasRestrictedAccess;
 
-      console.log(`  ✅ Own sponsor data accessible: ${hasOwnSponsorAccess ? 'PASS' : 'FAIL'}`);
-      console.log(`  ✅ All sponsors access restricted: ${hasRestrictedAccess ? 'PASS' : 'FAIL'}`);
+      console.warn(`  ✅ Own sponsor data accessible: ${hasOwnSponsorAccess ? 'PASS' : 'FAIL'}`);
+      console.warn(`  ✅ All sponsors access restricted: ${hasRestrictedAccess ? 'PASS' : 'FAIL'}`);
     }
   } catch (err) {
-    console.log('🔒 Sponsor access properly scoped:', err);
+    console.warn('🔒 Sponsor access properly scoped:', err);
     results.sponsorAccess = true;
   }
 
   // Test 4: Admin route protection verification
-  console.log('\n📋 Test 4: Admin Route Protection');
+  console.warn('\n📋 Test 4: Admin Route Protection');
   const adminRoutes = ['/admin/sponsors', '/admin/sponsors/:id'];
-  console.log(`  🛡️ Protected routes: ${adminRoutes.join(', ')}`);
-  console.log(`  ✅ AdminAuthGuard implemented: PASS`); // Already confirmed in code
+  console.warn(`  🛡️ Protected routes: ${adminRoutes.join(', ')}`);
+  console.warn(`  ✅ AdminAuthGuard implemented: PASS`); // Already confirmed in code
   results.adminGuards = true;
 
   // Test 5: Cross-user data access prevention
-  console.log('\n📋 Test 5: Cross-User Data Access Prevention');
+  console.warn('\n📋 Test 5: Cross-User Data Access Prevention');
   try {
     const { data: userData } = await supabase.auth.getUser();
     if (userData.user) {
@@ -111,31 +110,31 @@ export const runSecurityTests = async () => {
       const crossAccessBlocked = !!appError || (applications?.length || 0) === 0;
       results.crossUserAccess = crossAccessBlocked;
 
-      console.log(`  ✅ Cross-user data access blocked: ${crossAccessBlocked ? 'PASS' : 'FAIL'}`);
+      console.warn(`  ✅ Cross-user data access blocked: ${crossAccessBlocked ? 'PASS' : 'FAIL'}`);
     }
   } catch (err) {
-    console.log('🔒 Cross-user access properly blocked:', err);
+    console.warn('🔒 Cross-user access properly blocked:', err);
     results.crossUserAccess = true;
   }
 
   // Final Security Assessment
-  console.log('\n🏁 PHASE 4.1.2 SECURITY ASSESSMENT');
-  console.log('===================================');
+  console.warn('\n🏁 PHASE 4.1.2 SECURITY ASSESSMENT');
+  console.warn('===================================');
 
   const totalTests = Object.keys(results).length;
   const passedTests = Object.values(results).filter(Boolean).length;
   const securityScore = Math.round((passedTests / totalTests) * 100);
 
-  console.log(`📊 Security Score: ${securityScore}% (${passedTests}/${totalTests} tests passed)`);
+  console.warn(`📊 Security Score: ${securityScore}% (${passedTests}/${totalTests} tests passed)`);
 
   Object.entries(results).forEach(([test, passed]) => {
-    console.log(`  ${passed ? '✅' : '❌'} ${test}: ${passed ? 'PASS' : 'FAIL'}`);
+    console.warn(`  ${passed ? '✅' : '❌'} ${test}: ${passed ? 'PASS' : 'FAIL'}`);
   });
 
   if (securityScore === 100) {
-    console.log('\n🎉 PHASE 4.1.2 COMPLETE - SYSTEM IS PRODUCTION READY!');
+    console.warn('\n🎉 PHASE 4.1.2 COMPLETE - SYSTEM IS PRODUCTION READY!');
   } else {
-    console.log(`\n⚠️  PHASE 4.1.2 INCOMPLETE - ${100 - securityScore}% issues remain`);
+    console.warn(`\n⚠️  PHASE 4.1.2 INCOMPLETE - ${100 - securityScore}% issues remain`);
   }
 
   return { securityScore, results, passedTests, totalTests };

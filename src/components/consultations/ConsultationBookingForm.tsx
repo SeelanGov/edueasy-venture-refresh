@@ -3,12 +3,25 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-
+import * as z  from 'zod';
 import { PaymentForm } from '@/components/subscription/PaymentForm';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+
+
+
+
+
+
+
+
+
+
+
 import {
   Form,
   FormControl,
@@ -18,7 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
 import {
   Select,
   SelectContent,
@@ -26,8 +39,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
+
+
 
 // Define the form schema
 const formSchema = z.object({
@@ -59,7 +72,7 @@ export function ConsultationBookingForm({
   onSubmit,
   onCancel,
   consultationPrice,
-}: ConsultationBookingFormProps): JSX.Element {
+}: any): JSX.Element {
   const [showPayment, setShowPayment] = useState(false);
   const [formData, setFormData] = useState<{
     date: Date;

@@ -2,6 +2,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/Spinner';
+import { type AddressFormValues  } from './types';
+import { ProvinceSelector } from './ProvinceSelector';
+import { AddressTypeSelector } from './AddressTypeSelector';
+
+
+
+
 import {
   Form,
   FormControl,
@@ -10,11 +19,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/Spinner';
-import type { AddressFormValues } from './types';
-import { ProvinceSelector } from './ProvinceSelector';
-import { AddressTypeSelector } from './AddressTypeSelector';
+
+
+
+
+
 
 // South African postal code validation
 const validatePostalCode = (code: string): boolean => {
@@ -126,16 +135,14 @@ export const AddressForm = ({
             type="button"
             variant="outline"
             onClick={onBack}
-            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-          >
+            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10">
             Back
           </Button>
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-cap-teal hover:bg-cap-teal/90"
-          >
+            className="bg-cap-teal hover:bg-cap-teal/90">
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
             {isSubmitting ? 'Saving...' : 'Continue'}
           </Button>

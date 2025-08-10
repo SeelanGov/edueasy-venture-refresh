@@ -2,6 +2,16 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { type AnalyticsFilters as AnalyticsFiltersType  } from '@/hooks/analytics/types';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Card } from '@/components/ui/card';
+
+
+
+
 import {
   Select,
   SelectContent,
@@ -9,12 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { AnalyticsFilters as AnalyticsFiltersType } from '@/hooks/analytics/types';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { CalendarIcon, X } from 'lucide-react';
-import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+
+
+
+
+
+
 
 interface AnalyticsFiltersProps {
   filters: AnalyticsFiltersType;
@@ -62,8 +72,7 @@ export const AnalyticsFilters = ({
                 variant="ghost"
                 size="sm"
                 onClick={onResetFilters}
-                className="h-8 px-2 text-xs"
-              >
+                className="h-8 px-2 text-xs">
                 <X className="h-3 w-3 mr-1" />
                 Clear All
               </Button>
@@ -84,8 +93,7 @@ export const AnalyticsFilters = ({
                       'w-full justify-start text-left font-normal text-xs',
                       !filters.startDate && 'text-muted-foreground',
                     )}
-                    size="sm"
-                  >
+                    size="sm">
                     <CalendarIcon className="mr-2 h-3 w-3" />
                     {filters.startDate ? (
                       format(filters.startDate, 'MMM dd, yyyy')
@@ -100,8 +108,7 @@ export const AnalyticsFilters = ({
                     selected={filters.startDate || undefined}
                     onSelect={handleStartDateSelect}
                     initialFocus
-                    className="pointer-events-auto"
-                  />
+                    className="pointer-events-auto" />
                 </PopoverContent>
               </Popover>
             </div>
@@ -119,8 +126,7 @@ export const AnalyticsFilters = ({
                       'w-full justify-start text-left font-normal text-xs',
                       !filters.endDate && 'text-muted-foreground',
                     )}
-                    size="sm"
-                  >
+                    size="sm">
                     <CalendarIcon className="mr-2 h-3 w-3" />
                     {filters.endDate ? (
                       format(filters.endDate, 'MMM dd, yyyy')
@@ -135,8 +141,7 @@ export const AnalyticsFilters = ({
                     selected={filters.endDate || undefined}
                     onSelect={handleEndDateSelect}
                     initialFocus
-                    className="pointer-events-auto"
-                  />
+                    className="pointer-events-auto" />
                 </PopoverContent>
               </Popover>
             </div>

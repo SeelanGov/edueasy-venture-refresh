@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Building2, Mail, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
+
+
+
+
 
 interface Partner {
   id: string;
@@ -33,13 +41,14 @@ export const PartnerList = () => {
   const [filterTier, setFilterTier] = useState('all');
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
     fetchPartners();
   }, []);
 
   const fetchPartners = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partners')
         .select('*')
         .order('created_at', { ascending: false });
@@ -123,14 +132,12 @@ export const PartnerList = () => {
                 placeholder="Search partners..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+                className="pl-10" />
             </div>
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2"
-            >
+              className="border border-gray-300 rounded-md px-3 py-2">
               <option value="all">All Types</option>
               <option value="university">Universities</option>
               <option value="tvet">TVET Colleges</option>
@@ -140,8 +147,7 @@ export const PartnerList = () => {
             <select
               value={filterTier}
               onChange={(e) => setFilterTier(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2"
-            >
+              className="border border-gray-300 rounded-md px-3 py-2">
               <option value="all">All Tiers</option>
               <option value="basic">Basic</option>
               <option value="standard">Standard</option>

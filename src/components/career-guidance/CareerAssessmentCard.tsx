@@ -1,5 +1,10 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { AssessmentType } from '@/types/RevenueTypes';
+import { formatDistanceToNow } from 'date-fns';
+import { Calendar, FileText, Star } from 'lucide-react';
+
+
 import {
   Card,
   CardContent,
@@ -8,9 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { AssessmentType } from '@/types/RevenueTypes';
-import { formatDistanceToNow } from 'date-fns';
-import { Calendar, FileText, Star } from 'lucide-react';
+
+
+
 
 interface CareerGuidance {
   id: string;
@@ -41,7 +46,7 @@ interface CareerAssessmentCardProps {
 export function CareerAssessmentCard({
   assessment,
   onView,
-}: CareerAssessmentCardProps): JSX.Element {
+}: any): JSX.Element {
   // Format the assessment date
   const formattedDate = formatDistanceToNow(new Date(assessment.assessment_date), {
     addSuffix: true,
@@ -75,17 +80,12 @@ export function CareerAssessmentCard({
       const recommendations =
         assessment.recommendations.careers || assessment.recommendations.paths || [];
       return Array.isArray(recommendations) ? recommendations.slice(0, 3) : [];
-    } catch (_e) {
+    } catch {
       return [];
     }
   };
 
   const topRecommendations = getTopRecommendations();
-
-  const handleAssessmentClick = () => {
-    // Navigate to assessment or show details
-    console.log('Assessment clicked');
-  };
 
   return (
     <Card className="w-full">

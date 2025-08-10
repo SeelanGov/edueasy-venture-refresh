@@ -1,4 +1,7 @@
 import { ChartContainer } from '../charts/ChartContainer';
+import { useDocumentTypeTableData } from '@/hooks/analytics/useChartData';
+import { type DocumentAnalytics  } from '@/hooks/analytics/types';
+
 import {
   Table,
   TableBody,
@@ -7,8 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useDocumentTypeTableData } from '@/hooks/analytics/useChartData';
-import type { DocumentAnalytics } from '@/hooks/analytics/types';
+
+
 
 interface DataTablesTabProps {
   analytics: DocumentAnalytics;
@@ -25,8 +28,7 @@ export const DataTablesTab = ({ analytics }: DataTablesTabProps): JSX.Element =>
     <div className="space-y-6">
       <ChartContainer
         title="Rejection Reasons"
-        description="Detailed breakdown of document rejection causes"
-      >
+        description="Detailed breakdown of document rejection causes">
         <Table>
           <TableHeader>
             <TableRow>

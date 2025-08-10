@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Session, User } from '@supabase/supabase-js';
+import { type Session  } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
-import logger from '@/utils/logger';
+import { logger } from '@/utils/logger';
+
+
+
+
+
+
 
 /**
  * useSession
@@ -48,7 +55,7 @@ export const useSession = (): void => {
     const checkSession = async () => {
       try {
         logger.debug('Checking for existing session...');
-        const { data, error } = await supabase.auth.getSession();
+        const { data } = await supabase.auth.getSession();
 
         if (error) {
           logger.error('Session check error:', error);

@@ -1,3 +1,10 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { SponsorshipLevel, formatSponsorshipLevel, type Sponsorship } from '@/types/RevenueTypes';
+import { formatCurrency } from '@/types/SubscriptionTypes';
+import { Building, Calendar, ExternalLink } from 'lucide-react';
+
+
 import {
   Card,
   CardContent,
@@ -6,12 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import type { Sponsorship } from '@/types/RevenueTypes';
-import { SponsorshipLevel, formatSponsorshipLevel } from '@/types/RevenueTypes';
-import { ExternalLink, Building, Calendar } from 'lucide-react';
-import { formatCurrency } from '@/types/SubscriptionTypes';
+
+
+
 
 interface SponsorshipCardProps {
   sponsorship: Sponsorship;
@@ -29,7 +33,7 @@ export function SponsorshipCard({
   isAdmin = false,
   onEdit,
   onDeactivate,
-}: SponsorshipCardProps): JSX.Element {
+}: any): JSX.Element {
   // Format dates
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
@@ -78,8 +82,7 @@ export function SponsorshipCard({
               <img
                 src={sponsorship.logo_url}
                 alt={`${sponsorship.organization_name} logo`}
-                className="max-h-full max-w-full object-contain"
-              />
+                className="max-h-full max-w-full object-contain" />
             </div>
           )}
 

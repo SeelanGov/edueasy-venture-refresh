@@ -1,6 +1,6 @@
+import { Menu, LogOut, Moon, Sun, X } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { LogOut, Moon, Sun, X } from 'lucide-react';
 import { SidebarNavItem } from './SidebarNavItem';
 
 interface NavItem {
@@ -48,8 +48,7 @@ export const MobileMenu = ({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-gray-500 dark:text-gray-400"
-          >
+            className="text-gray-500 dark:text-gray-400">
             <X />
           </Button>
         </div>
@@ -100,8 +99,7 @@ export const MobileMenu = ({
             <Button
               variant="ghost"
               onClick={onSignOut}
-              className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-            >
+              className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20">
               <LogOut className="h-5 w-5 mr-3" />
               Sign Out
             </Button>

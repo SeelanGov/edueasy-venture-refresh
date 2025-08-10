@@ -1,9 +1,16 @@
-import { useCallback, useState } from 'react';
-import type { ErrorDetails, ErrorHandlingConfig } from '@/types/errorTypes';
-import { ErrorSeverity, logError } from '@/utils/errorLogging';
-import { ErrorCategory, parseError } from '@/utils/errorHandler';
+import { useCallback } from 'react';
+import { useState } from 'react';
+import { type ErrorDetails  } from '@/types/errorTypes';
+import { ErrorSeverity } from '@/utils/errorLogging';
+import { ErrorCategory } from '@/utils/errorHandler';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+
+
+
+
+
+
 
 const DEFAULT_CONFIG: ErrorHandlingConfig = {
   showToasts: true,
@@ -117,14 +124,16 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
   /**
    * Clear a specific error by its timestamp
    */
-  const clearError = useCallback((timestamp: string) => {
+  const clearError = // eslint-disable-next-line react-hooks/exhaustive-deps
+useCallback((timestamp: string) => {
     setErrors((prev) => prev.filter((error) => error.timestamp !== timestamp));
   }, []);
 
   /**
    * Clear all errors
    */
-  const clearAllErrors = useCallback(() => {
+  const clearAllErrors = // eslint-disable-next-line react-hooks/exhaustive-deps
+useCallback(() => {
     setErrors([]);
   }, []);
 

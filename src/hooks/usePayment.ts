@@ -1,9 +1,9 @@
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { paymentService, type PaymentMethod, type PaymentStatus } from '@/services/paymentService';
-import { handleError, parseError } from '@/utils/errorHandler';
+import { handleError } from '@/utils/errorHandler';
 import { secureStorage } from '@/utils/secureStorage';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 export type PaymentState = 'idle' | 'processing' | 'success' | 'failed' | 'redirected';
 
@@ -109,10 +109,11 @@ export function usePayment(): UsePaymentReturn {
     [],
   );
 
-  const resetPayment = useCallback(() => {
-    setPaymentState('idle');
-    setError(null);
-  }, []);
+  const resetPayment = // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      setPaymentState('idle');
+      setError(null);
+    }, []);
 
   const getAvailablePaymentMethods = useCallback((tierId: string): PaymentMethod[] => {
     return paymentService.getAvailablePaymentMethods(tierId);
@@ -125,9 +126,10 @@ export function usePayment(): UsePaymentReturn {
     [],
   );
 
-  const getPaymentPlan = useCallback((tierId: string) => {
-    return paymentService.getPaymentPlan(tierId);
-  }, []);
+  const getPaymentPlan = // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback((tierId: string) => {
+      return paymentService.getPaymentPlan(tierId);
+    }, []);
 
   return {
     paymentState,

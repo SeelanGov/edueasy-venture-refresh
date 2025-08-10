@@ -16,8 +16,7 @@ export const ApplicationHeader = (): JSX.Element => {
       <Link to="/apply">
         <Button
           className="bg-cap-teal hover:bg-cap-teal/90 text-white shadow-sm hover:shadow transition-all"
-          rounded="full"
-        >
+          rounded="full">
           <PlusIcon className="h-4 w-4 mr-1" />
           New Application
         </Button>

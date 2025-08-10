@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Building2, CheckCircle, Users, BarChart3, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Typography } from '@/components/ui/typography';
 import { usePartnerInquiry } from '@/hooks/usePartnerInquiry';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { ArrowLeft, BarChart3, Building2, CheckCircle, Shield, Users } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
+
+
+
+
+
+
+
+
+
 
 const PartnerInquiry = () => {
   const navigate = useNavigate();
@@ -141,8 +152,7 @@ const PartnerInquiry = () => {
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}
-            className="text-gray-600 hover:text-cap-teal hover:bg-cap-teal/10"
-          >
+            className="text-gray-600 hover:text-cap-teal hover:bg-cap-teal/10">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -227,8 +237,7 @@ const PartnerInquiry = () => {
                       {tier.features.map((feature, featureIndex) => (
                         <li
                           key={featureIndex}
-                          className="flex items-center gap-2 text-sm text-gray-600"
-                        >
+                          className="flex items-center gap-2 text-sm text-gray-600">
                           <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
                           {feature}
                         </li>
@@ -261,8 +270,7 @@ const PartnerInquiry = () => {
                       onChange={handleChange}
                       placeholder="University of Example"
                       required
-                      className="border-gray-200 focus:border-cap-teal"
-                    />
+                      className="border-gray-200 focus:border-cap-teal" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">
@@ -295,8 +303,7 @@ const PartnerInquiry = () => {
                       onChange={handleChange}
                       placeholder="John Smith"
                       required
-                      className="border-gray-200 focus:border-cap-teal"
-                    />
+                      className="border-gray-200 focus:border-cap-teal" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">
@@ -309,8 +316,7 @@ const PartnerInquiry = () => {
                       onChange={handleChange}
                       placeholder="john@example.com"
                       required
-                      className="border-gray-200 focus:border-cap-teal"
-                    />
+                      className="border-gray-200 focus:border-cap-teal" />
                   </div>
                 </div>
 
@@ -324,8 +330,7 @@ const PartnerInquiry = () => {
                       value={formData.contactPhone}
                       onChange={handleChange}
                       placeholder="+27 123 456 789"
-                      className="border-gray-200 focus:border-cap-teal"
-                    />
+                      className="border-gray-200 focus:border-cap-teal" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">Website</label>
@@ -334,8 +339,7 @@ const PartnerInquiry = () => {
                       value={formData.website}
                       onChange={handleChange}
                       placeholder="https://example.edu"
-                      className="border-gray-200 focus:border-cap-teal"
-                    />
+                      className="border-gray-200 focus:border-cap-teal" />
                   </div>
                 </div>
 
@@ -348,8 +352,7 @@ const PartnerInquiry = () => {
                       name="studentCount"
                       value={formData.studentCount}
                       onChange={handleChange}
-                      className="w-full border border-gray-200 rounded-md px-3 py-2 focus:border-cap-teal focus:outline-none"
-                    >
+                      className="w-full border border-gray-200 rounded-md px-3 py-2 focus:border-cap-teal focus:outline-none">
                       <option value="">Select range</option>
                       <option value="<1000">Less than 1,000</option>
                       <option value="1000-5000">1,000 - 5,000</option>
@@ -365,8 +368,7 @@ const PartnerInquiry = () => {
                       name="interestedTier"
                       value={formData.interestedTier}
                       onChange={handleChange}
-                      className="w-full border border-gray-200 rounded-md px-3 py-2 focus:border-cap-teal focus:outline-none"
-                    >
+                      className="w-full border border-gray-200 rounded-md px-3 py-2 focus:border-cap-teal focus:outline-none">
                       <option value="">Select tier</option>
                       <option value="basic">Basic - R2,500/month</option>
                       <option value="standard">Standard - R5,000/month</option>
@@ -384,8 +386,7 @@ const PartnerInquiry = () => {
                     onChange={handleChange}
                     placeholder="Tell us more about your needs and requirements..."
                     rows={4}
-                    className="border-gray-200 focus:border-cap-teal"
-                  />
+                    className="border-gray-200 focus:border-cap-teal" />
                 </div>
 
                 <Button

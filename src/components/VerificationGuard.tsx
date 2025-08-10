@@ -1,6 +1,6 @@
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 interface VerificationGuardProps {
@@ -16,8 +16,9 @@ interface VerificationGuardProps {
  * VerificationGuard
  * @description Function
  */
-export const VerificationGuard = ({ children }: VerificationGuardProps) => {
-  const { user, userType, loading, isVerified } = useAuth();
+export const VerificationGuard = ({ children }: VerificationGuardProps): JSX.Element => {
+  const { user, userType, isVerified } = useAuth();
+  const [loading, _setLoading] = useState(false);
   const location = useLocation();
 
   // SSR safety + loading
@@ -31,7 +32,7 @@ export const VerificationGuard = ({ children }: VerificationGuardProps) => {
   }
 
   // If not logged in, let regular AuthGuard handle
-  if (!user) return null;
+  if (!user) return <Navigate to="/login" replace />;
 
   // Admin bypass - skip verification for admin users
   if (userType === 'admin') {

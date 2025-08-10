@@ -3,10 +3,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { PersonalInfoForm } from './personal/PersonalInfoForm';
-import type { PersonalInfoFormValues } from './personal/types';
+import { type PersonalInfoFormValues  } from './personal/types';
 import { logError } from '@/utils/logging';
 import { parseError } from '@/utils/errorHandler';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+
+
+
+
+
+
+
+
+
 
 interface PersonalInfoStepProps {
   onComplete: () => void;
@@ -20,7 +29,7 @@ export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): JSX.Ele
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { personalInfo, setPersonalInfo } = useProfileCompletionStore();
+  const { personalInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: PersonalInfoFormValues) => {
     if (!user) return;
@@ -66,8 +75,7 @@ export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): JSX.Ele
           {error && (
             <div
               className="bg-red-50 border border-red-200 text-red-700 p-3 mb-5 rounded-lg text-center"
-              role="alert"
-            >
+              role="alert">
               {error}
             </div>
           )}

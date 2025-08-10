@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
-import { ArrowLeft, Download } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const TermsOfService = () => {
   const navigate = useNavigate();
@@ -67,8 +67,7 @@ const TermsOfService = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2"
-              >
+                className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
@@ -107,8 +106,7 @@ const TermsOfService = () => {
                           : 'hover:bg-gray-100 text-gray-700'
                       }`}
                       variant="ghost"
-                      size="sm"
-                    >
+                      size="sm">
                       {section.title}
                     </Button>
                   ))}
@@ -180,8 +178,7 @@ const TermsOfService = () => {
                 <section
                   id="eligibility-registration"
                   data-section="eligibility-registration"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     3. ELIGIBILITY AND ACCOUNT REGISTRATION
                   </Typography>
@@ -227,8 +224,7 @@ const TermsOfService = () => {
                 <section
                   id="services-description"
                   data-section="services-description"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     4. SERVICES DESCRIPTION
                   </Typography>
@@ -372,8 +368,7 @@ const TermsOfService = () => {
                 <section
                   id="privacy-data-protection"
                   data-section="privacy-data-protection"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     8. PRIVACY AND DATA PROTECTION
                   </Typography>
@@ -452,8 +447,7 @@ const TermsOfService = () => {
                         Our refund and cancellation procedures are governed by our comprehensive{' '}
                         <Link
                           to="/refund-policy"
-                          className="text-cap-teal hover:underline font-medium"
-                        >
+                          className="text-cap-teal hover:underline font-medium">
                           Refund and Cancellation Policy
                         </Link>
                         , which forms part of these Terms and Conditions. Please review this policy
@@ -470,8 +464,7 @@ const TermsOfService = () => {
                 <section
                   id="limitation-liability"
                   data-section="limitation-liability"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     11. LIMITATION OF LIABILITY
                   </Typography>
@@ -514,8 +507,7 @@ const TermsOfService = () => {
                 <section
                   id="general-provisions"
                   data-section="general-provisions"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     15. GENERAL PROVISIONS
                   </Typography>
@@ -554,8 +546,7 @@ const TermsOfService = () => {
                 <section
                   id="contact-information"
                   data-section="contact-information"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     17. CONTACT INFORMATION
                   </Typography>
@@ -571,8 +562,7 @@ const TermsOfService = () => {
                             <strong>Email:</strong>{' '}
                             <a
                               href="mailto:info@edueasy.co"
-                              className="text-cap-teal hover:underline"
-                            >
+                              className="text-cap-teal hover:underline">
                               info@edueasy.co
                             </a>
                           </div>
@@ -604,8 +594,7 @@ const TermsOfService = () => {
                     </div>
                     <Button
                       onClick={() => navigate('/')}
-                      className="bg-cap-teal hover:bg-cap-teal/90"
-                    >
+                      className="bg-cap-teal hover:bg-cap-teal/90">
                       Return to EduEasy
                     </Button>
                   </div>

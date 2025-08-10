@@ -26,7 +26,7 @@ export {
 } from './accessibility-helpers';
 
 // Re-export existing testing utilities
-export { VISUAL_DIFF_CONFIG, generateVisualDiffReport } from './visual-diff-config';
+export { VISUAL_DIFF_CONFIG } from './visual-diff-config';
 export {
   CRITICAL_USER_FLOWS,
   validateDesignSystemCompliance,

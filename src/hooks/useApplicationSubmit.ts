@@ -1,9 +1,15 @@
-import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import { type ApplicationFormValues  } from '@/components/application/ApplicationFormFields';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+
+
+
+
+
+
 
 // This hook is now simplified as most functionality has moved to useApplicationForm
 

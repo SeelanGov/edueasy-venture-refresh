@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '@/lib/utils';
 
 const typographyVariants = cva('', {
@@ -40,7 +39,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, as, ...props }, ref) => {
     const Comp = as || getDefaultTag(variant) || 'p';
     return React.createElement(Comp, {
-      className: cn(typographyVariants({ variant, className })),
+      className: cn(typographyVariants({ variant })),
       ref,
       ...props,
     });
@@ -48,7 +47,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
 );
 Typography.displayName = 'Typography';
 
-function getDefaultTag(variant: TypographyProps['variant']) {
+function getDefaultTag(variant: TypographyProps['']) {
   switch (variant) {
     case 'h1':
       return 'h1';
@@ -75,4 +74,4 @@ function getDefaultTag(variant: TypographyProps['variant']) {
   }
 }
 
-export { Typography, typographyVariants };
+export { Typography };

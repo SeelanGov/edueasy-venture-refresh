@@ -1,8 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronRight, X } from 'lucide-react';
-import React, { useEffect, useRef } from 'react';
-import type { MilestoneStatus } from './JourneyMilestone';
+import { ChevronRight } from 'lucide-react';
+import { useEffect   } from 'react';
+import { type MilestoneStatus  } from './JourneyMilestone';
+
+
+
+
+
 
 interface MilestoneDetailProps {
   title: string;
@@ -89,8 +94,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
       className="absolute z-20 top-20 -left-32 w-64 animate-scale-in"
       ref={detailRef}
       role="dialog"
-      aria-labelledby="milestone-detail-title"
-    >
+      aria-labelledby="milestone-detail-title">
       <Card className="shadow-lg border-t-4 border-t-primary">
         <CardHeader className="pb-2 pt-4 px-4">
           <div className="flex justify-between items-start">
@@ -102,8 +106,7 @@ export const MilestoneDetail: React.FC<MilestoneDetailProps> = ({
               size="sm"
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full p-1 h-auto"
-              aria-label="Close details"
-            >
+              aria-label="Close details">
               <X className="h-4 w-4" />
             </Button>
           </div>

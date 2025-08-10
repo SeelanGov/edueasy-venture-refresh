@@ -1,5 +1,5 @@
+import { RefreshCw, Download, Keyboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Download, RefreshCw, Keyboard } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AnalyticsBreadcrumb } from './AnalyticsBreadcrumb';
 
@@ -41,8 +41,7 @@ export const AnalyticsHeader = ({
                   size="sm"
                   onClick={onRefresh}
                   disabled={loading}
-                  className="flex items-center gap-2"
-                >
+                  className="flex items-center gap-2">
                   <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                   <span className="hidden sm:inline">Refresh</span>
                 </Button>
@@ -61,8 +60,7 @@ export const AnalyticsHeader = ({
                   size="sm"
                   onClick={onExport}
                   disabled={loading || !hasData}
-                  className="flex items-center gap-2"
-                >
+                  className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
                   <span className="hidden sm:inline">Export</span>
                 </Button>

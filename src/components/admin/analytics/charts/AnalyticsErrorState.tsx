@@ -1,7 +1,7 @@
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface AnalyticsErrorStateProps {
   error: string;
@@ -12,7 +12,7 @@ interface AnalyticsErrorStateProps {
  * AnalyticsErrorState
  * @description Function
  */
-export const AnalyticsErrorState = ({ error, onRetry }: AnalyticsErrorStateProps) => {
+export const AnalyticsErrorState = ({ error }: AnalyticsErrorStateProps) => {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">

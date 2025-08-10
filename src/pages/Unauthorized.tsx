@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Shield, ArrowLeft } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 const Unauthorized = () => {
   const navigate = useNavigate();
@@ -23,8 +23,7 @@ const Unauthorized = () => {
           <Button
             onClick={() => navigate(-1)}
             variant="outline"
-            className="w-full flex items-center justify-center"
-          >
+            className="w-full flex items-center justify-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
           </Button>

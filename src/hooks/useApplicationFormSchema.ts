@@ -53,5 +53,5 @@ export const useApplicationFormSchema = (): void => {
     personalStatement: z.string().optional(),
   });
 
-  return { formSchema, draftSchema };
+  return { formSchema };
 };

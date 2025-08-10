@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, Globe, Mail, MessageSquare, Phone } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface Partner {
@@ -159,18 +159,17 @@ export const PartnerProfile = () => {
           variant="ghost"
           size="sm"
           onClick={() => navigate('/admin/partners')}
-          className="p-2"
-        >
+          className="p-2">
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <h1 className="text-2xl sm:text-3xl font-bold">{partner.name}</h1>
         <Badge
           className={
             partner.status === 'active'
-              ? 'bg-[#F0F9F0] text-[#1B5E20]'
+              ? 'bg-green-50 text-green-800'
               : partner.status === 'pending'
-                ? 'bg-[#FFF8E1] text-[#F57F17]'
-                : 'bg-[#FFEBEE] text-[#B71C1C]'
+                ? 'bg-yellow-50 text-yellow-800'
+                : 'bg-red-50 text-red-800'
           }
         >
           {partner.status}
@@ -210,8 +209,7 @@ export const PartnerProfile = () => {
                     <Mail className="h-4 w-4 text-[#BDBDBD]" />
                     <a
                       href={`mailto:${partner.contact_email}`}
-                      className="text-sm text-[#1976D2] hover:underline"
-                    >
+                      className="text-sm text-[#1976D2] hover:underline">
                       {partner.contact_email}
                     </a>
                   </div>
@@ -232,8 +230,7 @@ export const PartnerProfile = () => {
                         href={partner.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-[#1976D2] hover:underline"
-                      >
+                        className="text-sm text-[#1976D2] hover:underline">
                         {partner.website}
                       </a>
                     </div>
@@ -250,8 +247,7 @@ export const PartnerProfile = () => {
                       variant={partner.tier === tier ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => updatePartnerTier(tier)}
-                      className="capitalize"
-                    >
+                      className="capitalize">
                       {tier}
                     </Button>
                   ))}
@@ -275,8 +271,7 @@ export const PartnerProfile = () => {
                   {payments.map((payment) => (
                     <div
                       key={payment.id}
-                      className="flex justify-between items-center p-4 border rounded-lg"
-                    >
+                      className="flex justify-between items-center p-4 border rounded-lg">
                       <div>
                         <p className="font-medium">R{payment.amount.toLocaleString()}</p>
                         <p className="text-sm text-[#757575]">
@@ -296,10 +291,10 @@ export const PartnerProfile = () => {
                         <Badge
                           className={
                             payment.status === 'paid'
-                              ? 'bg-[#F0F9F0] text-[#1B5E20]'
+                              ? 'bg-green-50 text-green-800'
                               : payment.status === 'pending'
-                                ? 'bg-[#FFF8E1] text-[#F57F17]'
-                                : 'bg-[#FFEBEE] text-[#B71C1C]'
+                                ? 'bg-yellow-50 text-yellow-800'
+                                : 'bg-red-50 text-red-800'
                           }
                         >
                           {payment.status}
@@ -309,8 +304,7 @@ export const PartnerProfile = () => {
                             size="sm"
                             onClick={() => handleMarkAsPaid(payment.id)}
                             disabled={isProcessingPayment}
-                            className="bg-green-600 hover:bg-green-700"
-                          >
+                            className="bg-green-600 hover:bg-green-700">
                             {isProcessingPayment ? 'Processing...' : 'Mark as Paid'}
                           </Button>
                         )}
@@ -336,10 +330,10 @@ export const PartnerProfile = () => {
                   <Badge
                     className={
                       partner.integration_status === 'completed'
-                        ? 'bg-[#F0F9F0] text-[#1B5E20]'
+                        ? 'bg-green-50 text-green-800'
                         : partner.integration_status === 'in_progress'
-                          ? 'bg-[#E3F2FD] text-[#1565C0]'
-                          : 'bg-[#F5F5F5] text-[#424242]'
+                          ? 'bg-blue-50 text-blue-800'
+                          : 'bg-gray-50 text-gray-800'
                     }
                   >
                     {partner.integration_status || 'Not Started'}

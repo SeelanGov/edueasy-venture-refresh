@@ -1,8 +1,13 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from 'recharts';
-import type { DocumentTypeData } from '@/hooks/analytics';
-import { formatDisplayName, STATUS_CONFIG } from '@/lib/chart-config';
+import { type DocumentTypeData  } from '@/hooks/analytics';
+import { formatDisplayName } from '@/lib/chart-config';
 import { useMemo } from 'react';
+
+
+
+
+
 
 interface DocumentTypePerformanceChartProps {
   data: DocumentTypeData[];
@@ -31,8 +36,7 @@ export const DocumentTypePerformanceChart = ({ data }: DocumentTypePerformanceCh
           height={60}
           interval={0}
           angle={-45}
-          textAnchor="end"
-        />
+          textAnchor="end" />
         <YAxis tick={{ fontSize: 12 }} />
         <ChartTooltip content={<ChartTooltipContent />} />
         <Bar dataKey="approved" stackId="a" fill={STATUS_CONFIG.approved.color} />

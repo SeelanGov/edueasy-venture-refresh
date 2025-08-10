@@ -1,7 +1,7 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { useMemo } from 'react';
-import { STATUS_CONFIG, CHART_COLORS } from '@/lib/chart-config';
+import { STATUS_CONFIG } from '@/lib/chart-config';
 
 interface TimelineChartProps {
   data: {

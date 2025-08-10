@@ -1,8 +1,8 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { render } from '@testing-library/react';
+import { FormProvider } from 'react-hook-form';
 import { EnhancedFormField } from './EnhancedFormField';
 import { TooltipProvider } from './tooltip';
+import '@testing-library/jest-dom';
 
 // Create a test component that uses the hooks
 const TestComponent = (): void => {
@@ -16,8 +16,7 @@ const TestComponent = (): void => {
           name="password"
           label="Password"
           helperText="Use a strong password."
-          securityBadgeType="encryption"
-        />
+          securityBadgeType="encryption" />
       </FormProvider>
     </TooltipProvider>
   );

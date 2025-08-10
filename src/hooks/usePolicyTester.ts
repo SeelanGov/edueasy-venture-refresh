@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { type RLSTestResult  } from '@/utils/security/types';
+
+
+
+
 import {
   testRLSPolicies,
   testRLSPoliciesWithRole,
   analyzeRLSPolicies,
   getRegisteredPolicies,
 } from '@/utils/security';
-import type { RLSTestResult, RLSPolicyAnalysis } from '@/utils/security/types';
+
 
 /**
  * usePolicyTester

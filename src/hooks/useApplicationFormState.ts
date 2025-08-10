@@ -1,10 +1,18 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import { type ApplicationFormValues  } from '@/components/application/ApplicationFormFields';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAuth } from '@/hooks/useAuth';
+
+
+
+
+
+
+
 
 /**
  * Hook for managing application form state and validation

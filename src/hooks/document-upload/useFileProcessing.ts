@@ -1,11 +1,11 @@
 import { validateFile } from '@/components/profile-completion/documents/documentUtils';
+import { compressImage } from '@/utils/imageCompression';
+import { safeAsyncWithLogging } from '@/utils/errorLogging';
+
 import type {
   DocumentType,
   DocumentUploadState,
 } from '@/components/profile-completion/documents/types';
-
-import { compressImage } from '@/utils/imageCompression';
-import { safeAsyncWithLogging, ErrorSeverity } from '@/utils/errorLogging';
 
 /**
  * useFileProcessing

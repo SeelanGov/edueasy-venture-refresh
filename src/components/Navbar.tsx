@@ -1,5 +1,5 @@
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { X, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
@@ -55,26 +55,22 @@ export const Navbar = () => {
               variant="ghost"
               onClick={() => scrollToSection('how-it-works')}
               className="text-gray-700 hover:text-cap-teal font-medium"
-              aria-label="Navigate to How It Works section"
-            >
+              aria-label="Navigate to How It Works section">
               How It Works
             </Button>
             <Link
               to="/meet-thandi"
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
-            >
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Meet Thandi
             </Link>
             <Link
               to="/pricing"
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
-            >
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Pricing
             </Link>
             <Link
               to="/institutions"
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium"
-            >
+              className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               For Institutions
             </Link>
             <div className="flex items-center space-x-3">
@@ -82,16 +78,14 @@ export const Navbar = () => {
                 variant="ghost"
                 onClick={handleLogin}
                 className="text-gray-700 hover:text-cap-teal font-medium px-4 py-2 h-10"
-                aria-label="Login to your account"
-              >
+                aria-label="Login to your account">
                 Login
               </Button>
               <Button
                 variant="primary"
                 onClick={handleAuthNavigation}
                 className="font-medium px-6 py-2 min-w-[120px] h-10"
-                aria-label="Get started with registration"
-              >
+                aria-label="Get started with registration">
                 Get Started
               </Button>
             </div>
@@ -125,8 +119,7 @@ export const Navbar = () => {
                 size="icon"
                 onClick={() => setIsOpen(false)}
                 className="text-gray-700 hover:bg-gray-100"
-                aria-label="Close mobile menu"
-              >
+                aria-label="Close mobile menu">
                 <X className="h-6 w-6" />
               </Button>
             </div>
@@ -136,8 +129,7 @@ export const Navbar = () => {
               <Button
                 variant="ghost"
                 onClick={() => scrollToSection('how-it-works')}
-                className="text-gray-800 hover:text-cap-teal text-lg font-medium text-left py-3 border-b border-gray-100 justify-start"
-              >
+                className="text-gray-800 hover:text-cap-teal text-lg font-medium text-left py-3 border-b border-gray-100 justify-start">
                 How It Works
               </Button>
               <Link
@@ -168,16 +160,14 @@ export const Navbar = () => {
                   variant="ghost"
                   onClick={handleLogin}
                   className="font-medium w-full py-4 text-lg rounded-lg border border-gray-300"
-                  aria-label="Login to your account"
-                >
+                  aria-label="Login to your account">
                   Login
                 </Button>
                 <Button
                   variant="primary"
                   onClick={handleAuthNavigation}
                   className="font-medium w-full py-4 text-lg rounded-lg shadow-sm"
-                  aria-label="Get started with registration"
-                >
+                  aria-label="Get started with registration">
                   Get Started
                 </Button>
               </div>

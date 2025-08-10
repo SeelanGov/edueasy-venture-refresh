@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { RefreshCw, RotateCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+
+
+
+
 
 interface RecoveryHelperProps {
   title: string;
@@ -82,8 +86,7 @@ export const RecoveryHelper = ({
             size="sm"
             onClick={handleRecover}
             disabled={isRecovering}
-            className="bg-amber-600 hover:bg-amber-700"
-          >
+            className="bg-amber-600 hover:bg-amber-700">
             {isRecovering ? (
               <>
                 <RefreshCw className="h-3 w-3 mr-2 animate-spin" />
@@ -98,8 +101,7 @@ export const RecoveryHelper = ({
             variant="default"
             size="sm"
             onClick={onCancel}
-            className="bg-green-600 hover:bg-green-700"
-          >
+            className="bg-green-600 hover:bg-green-700">
             Continue
           </Button>
         )}

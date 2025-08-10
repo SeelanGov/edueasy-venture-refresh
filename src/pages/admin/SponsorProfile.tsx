@@ -3,9 +3,9 @@ import { useSponsor } from '@/hooks/useSponsor';
 import { useSponsorAllocations } from '@/hooks/useSponsorAllocations';
 import { useSponsorNotes } from '@/hooks/useSponsorNotes';
 import { useSponsorPayments } from '@/hooks/useSponsorPayments';
-import SponsorNoteTimeline from '@/components/sponsor/SponsorNoteTimeline';
-import SponsorPaymentHistory from '@/components/sponsor/SponsorPaymentHistory';
-import SponsorStudentTable from '@/components/sponsor/SponsorStudentTable';
+import { SponsorNoteTimeline } from '@/components/sponsor/SponsorNoteTimeline';
+import { SponsorPaymentHistory } from '@/components/sponsor/SponsorPaymentHistory';
+import { SponsorStudentTable } from '@/components/sponsor/SponsorStudentTable';
 import { Spinner } from '@/components/Spinner';
 
 const SponsorProfile = () => {
@@ -51,8 +51,7 @@ const SponsorProfile = () => {
                 href={sponsor.website}
                 className="text-blue-600 underline"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 {sponsor.website}
               </a>
             ) : (

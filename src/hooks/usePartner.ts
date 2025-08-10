@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { type Partner  } from '@/types/partner';
 
-import type { Partner } from '@/types/partner';
+
+
+
 
 /**
  * usePartner
@@ -29,5 +32,5 @@ export const usePartner = (id?: string) => {
     };
   }, [id]);
 
-  return { partner, isLoading };
+  return { partner };
 };

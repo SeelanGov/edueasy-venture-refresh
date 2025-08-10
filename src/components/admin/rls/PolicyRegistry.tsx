@@ -67,8 +67,7 @@ export const PolicyRegistry = ({ policies }: PolicyRegistryProps): JSX.Element =
               {tablePolicies?.map((policy, idx) => (
                 <div
                   key={idx}
-                  className="flex justify-between items-center px-2 py-1 hover:bg-muted rounded"
-                >
+                  className="flex justify-between items-center px-2 py-1 hover:bg-muted rounded">
                   <div>
                     <span className="font-medium">{policy.policy_name}</span>
                     <Badge variant={getPolicyTypeVariant(policy.policy_type)} className="ml-2">

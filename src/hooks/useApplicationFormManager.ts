@@ -2,12 +2,22 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useNetwork } from '@/hooks/useNetwork';
 import { supabase } from '@/integrations/supabase/client';
-import type { ApplicationFormValues } from '@/types/ApplicationTypes';
+import { type ApplicationFormValues  } from '@/types/ApplicationTypes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+
+
+
+
+
+
+
+
+
+
 
 // Define the form schema with Zod
 const applicationFormSchema = z.object({

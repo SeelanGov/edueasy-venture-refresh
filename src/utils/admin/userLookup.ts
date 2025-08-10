@@ -18,7 +18,7 @@ export function makeUserMap(
     tracking_id: string | null;
     full_name?: string | null;
     email?: string | null;
-    id_verified?: boolean | null;
+    id_verified?: boolean | ;
   }>,
 ): void {
   const map: Record<string, UserSummary> = {};

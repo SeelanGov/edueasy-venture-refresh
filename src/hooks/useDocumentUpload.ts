@@ -42,7 +42,7 @@ export const useDocumentUpload = (): void => {
       const filePath = `/documents/${fileName}`;
 
       // Insert document record
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('documents')
         .insert({
           user_id: user.id,

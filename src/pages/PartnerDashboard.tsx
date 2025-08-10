@@ -2,9 +2,17 @@ import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import React, { useEffect, useState } from 'react';
+import { useEffect   } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+
+
+
+
+
+
+
 
 const BackToHomeBtn = ({ className = '' }: { className?: string }): JSX.Element => {
   const navigate = useNavigate();
@@ -17,7 +25,7 @@ const BackToHomeBtn = ({ className = '' }: { className?: string }): JSX.Element 
           className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
           onClick={() => navigate('/')}
         >
-          <span className="mr-2 text-lg">&#8592;</span>
+          <span className="mr-2 text-lg">&#8592</span>
           Back to Home
         </Button>
       </div>
@@ -158,7 +166,7 @@ const PartnerDashboard: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-4 text-sm text-[#757575]">
+          <div className="mt-4 text-sm text-gray-600">
             <strong>Need help?</strong>
             <br />
             Email{' '}
@@ -181,10 +189,10 @@ const PartnerDashboard: React.FC = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-primary mb-2">Partner Dashboard</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium bg-[#E3F2FD] text-[#1565C0] px-2 py-1 rounded">
+            <span className="text-sm font-medium bg-blue-50 text-blue-800 px-2 py-1 rounded">
               {partner.tier} Tier
             </span>
-            <span className="text-sm font-medium bg-[#F0F9F0] text-[#1B5E20] px-2 py-1 rounded">
+            <span className="text-sm font-medium bg-green-50 text-green-800 px-2 py-1 rounded">
               {partner.status}
             </span>
           </div>
@@ -214,8 +222,7 @@ const PartnerDashboard: React.FC = () => {
                 {payments.slice(0, 3).map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex justify-between items-center p-2 border rounded"
-                  >
+                    className="flex justify-between items-center p-2 border rounded">
                     <div>
                       <p className="font-medium">R{payment.amount.toLocaleString()}</p>
                       <p className="text-sm text-muted-foreground">
@@ -225,8 +232,8 @@ const PartnerDashboard: React.FC = () => {
                     <span
                       className={`text-sm px-2 py-1 rounded ${
                         payment.status === 'paid'
-                          ? 'bg-[#F0F9F0] text-[#1B5E20]'
-                          : 'bg-[#FFF8E1] text-[#F57F17]'
+                          ? 'bg-green-50 text-green-800'
+                          : 'bg-yellow-50 text-yellow-800'
                       }`}
                     >
                       {payment.status}

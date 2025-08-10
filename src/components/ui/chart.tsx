@@ -1,7 +1,10 @@
 import * as React from 'react';
-import * as RechartsPrimitive from 'recharts';
-
+import * as RechartsPrimitive  from 'recharts';
 import { cn } from '@/lib/utils';
+
+
+
+
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
@@ -36,7 +39,7 @@ function useChart() {
 const sanitizeColor = (color: string): string => {
   // Only allow valid CSS color formats
   const validColorRegex =
-    /^(#[0-9A-Fa-f]{3,6}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)|hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)|hsla\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*,\s*[\d.]+\s*\)|transparent|inherit|initial|unset|currentColor)$/;
+    /^(#[0-9A-Fa-f]{3}|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)|hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)|hsla\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*,\s*[\d.]+\s*\)|transparent|inherit|initial|unset|currentColor)$/;
 
   if (!validColorRegex.test(color)) {
     return 'transparent'; // Fallback to safe default
@@ -86,7 +89,7 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = 'Chart';
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): JSX.Element | null => {
+const ChartStyle = ({ id }: { id: string; config: ChartConfig }): JSX.Element | null => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
 
   if (!colorConfig.length) {
@@ -116,10 +119,10 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): JSX.El
       });
     });
 
-    return { baseStyles, darkStyles };
+    return { baseStyles };
   };
 
-  const { baseStyles, darkStyles } = generateStyles();
+  const { baseStyles } = generateStyles();
 
   return (
     <style>
@@ -350,7 +353,7 @@ const ChartLegendContent = React.forwardRef<
 ChartLegendContent.displayName = 'ChartLegend';
 
 // Helper to extract item config from a payload.
-function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
+function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: ): unknown): unknown) {
   if (typeof payload !== 'object' || payload === null) {
     return undefined;
   }

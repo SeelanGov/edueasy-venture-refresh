@@ -1,3 +1,4 @@
+import { type DocumentDateData  } from '@/hooks/analytics/types';
 import {
   LineChart,
   Line,
@@ -8,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import type { DocumentDateData } from '@/hooks/analytics/types';
+
 
 interface DocumentTimelineChartProps {
   data: DocumentDateData[];

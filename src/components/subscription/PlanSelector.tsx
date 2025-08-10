@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePlanManagement } from '@/hooks/usePlanManagement';
 import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
 import { CheckCircle, Star, Users, Zap } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface PlanSelectorProps {
   onPlanSelect?: (tier: SubscriptionTier) => void;
@@ -16,12 +16,13 @@ interface PlanSelectorProps {
  * PlanSelector
  * @description Function
  */
-export const PlanSelector = ({ onPlanSelect, currentPlan }: PlanSelectorProps): JSX.Element => {
+export const PlanSelector = ({ onPlanSelect }: PlanSelectorProps): JSX.Element => {
   const [plans, setPlans] = useState<SubscriptionTier[]>([]);
   const [loading, setLoading] = useState(true);
-  const { getAvailablePlans, upgradePlan } = usePlanManagement();
+  const { getAvailablePlans } = usePlanManagement();
   const { user } = useAuth();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadPlans();
   }, []);

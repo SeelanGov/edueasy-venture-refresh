@@ -1,7 +1,11 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { CheckCircle } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import type { VerificationResult } from '@/hooks/useDocumentVerification';
+import { type VerificationResult  } from '@/hooks/useDocumentVerification';
 import { ValidationResultsList } from './ValidationResultsList';
+
+
+
+
 
 interface ApprovedDocumentProps {
   result: VerificationResult;
@@ -12,7 +16,7 @@ interface ApprovedDocumentProps {
  * ApprovedDocument
  * @description Function
  */
-export const ApprovedDocument = ({ result, documentType }: ApprovedDocumentProps): JSX.Element => {
+export const ApprovedDocument = ({ result }: ApprovedDocumentProps): JSX.Element => {
   const { validationResults, confidence, extractedFields } = result;
 
   const confidencePercent = confidence ? Math.round(confidence * 100) : undefined;

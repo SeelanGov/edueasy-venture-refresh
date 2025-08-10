@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -61,8 +61,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={onBackClick}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                    className="text-muted-foreground hover:text-foreground">
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back
                   </Button>

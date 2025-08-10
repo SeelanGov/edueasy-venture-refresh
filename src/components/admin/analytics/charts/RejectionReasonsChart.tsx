@@ -1,5 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import type { RejectionReason } from '@/hooks/analytics/types';
+import { type RejectionReason  } from '@/hooks/analytics/types';
+
+
 
 interface RejectionReasonsChartProps {
   data: RejectionReason[];

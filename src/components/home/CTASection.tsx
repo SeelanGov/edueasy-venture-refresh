@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Typography } from '@/components/ui/typography';
 import { useAuth } from '@/hooks/useAuth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 /**
  * CTASection
@@ -49,8 +49,7 @@ export const CTASection = (): JSX.Element => {
                   </Typography>
                   <Typography
                     variant="body-lg"
-                    className="text-gray-600 mb-8 max-w-2xl mx-auto md:text-xl"
-                  >
+                    className="text-gray-600 mb-8 max-w-2xl mx-auto md:text-xl">
                     Join thousands of students already on their path to success through South
                     Africa's leading educational institutions.
                   </Typography>
@@ -114,8 +113,7 @@ export const CTASection = (): JSX.Element => {
                           <Button
                             variant="outline"
                             size="lg"
-                            className="w-full text-lg py-6 md:py-7 md:px-10"
-                          >
+                            className="w-full text-lg py-6 md:py-7 md:px-10">
                             Already Have Account? Login
                           </Button>
                         </Link>
@@ -132,8 +130,7 @@ export const CTASection = (): JSX.Element => {
                   <Link to="/profile-demo">
                     <Button
                       variant="ghost"
-                      className="text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal md:text-lg"
-                    >
+                      className="text-cap-teal hover:bg-cap-teal/10 hover:text-cap-teal md:text-lg">
                       View Profile Demo
                     </Button>
                   </Link>

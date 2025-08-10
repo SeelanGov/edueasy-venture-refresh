@@ -134,8 +134,7 @@ export const ThandiAgent = (): JSX.Element => {
               "You've used all 5 daily queries. Please try again tomorrow or upgrade your plan.",
             variant: 'destructive',
           });
-          responseText =
-            "I'm sorry, but you've reached your daily limit of 5 questions. Please try again tomorrow or consider upgrading to a premium plan for unlimited access.";
+          responseText="I'm sorry, but you've reached your daily limit of 5 questions. Please try again tomorrow or consider upgrading to a premium plan for unlimited access.";
         }
       } else if (edgeResponse.ok) {
         // Success from edge function
@@ -321,8 +320,7 @@ export const ThandiAgent = (): JSX.Element => {
                 variant="outline"
                 size="sm"
                 onClick={() => setInputMessage(action)}
-                className="text-xs"
-              >
+                className="text-xs">
                 <HelpCircle className="h-3 w-3 mr-1" />
                 {action}
               </Button>
@@ -340,8 +338,7 @@ export const ThandiAgent = (): JSX.Element => {
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              size="sm"
-            >
+              size="sm">
               <Send className="h-4 w-4" />
             </Button>
           </div>

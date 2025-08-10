@@ -2,10 +2,18 @@ import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { useState } from 'react';
-import type { Control } from 'react-hook-form';
-import type { RegisterFormValues } from '../RegisterForm';
+import { type Control  } from 'react-hook-form';
+import { type RegisterFormValues  } from '../RegisterForm';
+
+
+
+
+
+
+
+
 
 interface PasswordFieldProps {
   control: Control<RegisterFormValues>;
@@ -16,7 +24,7 @@ interface PasswordFieldProps {
  * PasswordField
  * @description Function
  */
-export const PasswordField = ({ control, isLoading }: PasswordFieldProps): JSX.Element => {
+export const PasswordField = ({ control }: PasswordFieldProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -38,8 +46,7 @@ export const PasswordField = ({ control, isLoading }: PasswordFieldProps): JSX.E
                 disabled={isLoading}
                 className="text-gray-900 pr-10"
                 maxLength={32}
-                aria-describedby="password-helper"
-              />
+                aria-describedby="password-helper" />
               <Button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}

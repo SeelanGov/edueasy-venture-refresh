@@ -1,7 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import type { RLSTestResult } from '@/utils/security/types';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { type RLSTestResult  } from '@/utils/security/types';
+import { CheckCircle } from 'lucide-react';
+
+
+
+
 
 interface PolicyTestResultsProps {
   results: RLSTestResult[];
@@ -86,8 +90,7 @@ export const PolicyTestResults = ({ results }: PolicyTestResultsProps): JSX.Elem
             {tableResults.map((result, idx) => (
               <div
                 key={idx}
-                className="flex items-start justify-between px-2 py-1 hover:bg-muted rounded"
-              >
+                className="flex items-start justify-between px-2 py-1 hover:bg-muted rounded">
                 <div className="flex items-center gap-2">
                   {result.success ? (
                     <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />

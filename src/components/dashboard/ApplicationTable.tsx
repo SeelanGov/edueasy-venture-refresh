@@ -1,6 +1,16 @@
+import { RefreshCw } from 'lucide-react';
+import { useState } from 'react';
 import { Spinner } from '@/components/Spinner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { type Application  } from '@/types/ApplicationTypes';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+
+
 import {
   Table,
   TableBody,
@@ -10,9 +20,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import type { Application, EnrichedApplication } from '@/types/ApplicationTypes';
+
+
+
 import {
   AlertCircle,
   CheckCircle,
@@ -22,8 +32,8 @@ import {
   RefreshCw,
   XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+
+
 
 interface ApplicationTableProps {
   applications: Application[];
@@ -34,7 +44,7 @@ interface ApplicationTableProps {
  * ApplicationTable
  * @description Function
  */
-export const ApplicationTable = ({ applications, loading }: ApplicationTableProps) => {
+export const ApplicationTable = ({ applications }: ApplicationTableProps) => {
   const [enrichedApplications, setEnrichedApplications] = useState<EnrichedApplication[]>([]);
 
   useEffect(() => {
@@ -136,7 +146,7 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
 
   const getDocumentUrl = async (filePath: string) => {
     try {
-      const { data, error } = await supabase.storage
+      const { data } = await supabase.storage
         .from('user_documents')
         .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 

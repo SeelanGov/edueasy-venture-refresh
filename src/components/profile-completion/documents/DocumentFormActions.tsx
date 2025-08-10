@@ -1,6 +1,6 @@
-import React from 'react';
+import { React } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 interface DocumentFormActionsProps {
   onBack: () => void;
@@ -11,7 +11,10 @@ interface DocumentFormActionsProps {
  * DocumentFormActions
  * @description Function
  */
-export const DocumentFormActions: React.FC<DocumentFormActionsProps> = ({ onBack, isComplete }) => {
+export const DocumentFormActions: React.FC<DocumentFormActionsProps> = ({
+  onBack,
+  _isComplete,
+}) => {
   return (
     <div className="flex justify-between pt-6">
       <Button type="button" variant="outline" onClick={onBack} className="transition-all">

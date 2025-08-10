@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Award, Bot, CheckCircle, Flag, School, Target, TrendingUp, Users } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface StatisticCardProps {
@@ -44,13 +44,8 @@ export const StatisticCard = ({
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [animatedValue, setAnimatedValue] = useState('0');
-  const [currentValue, setCurrentValue] = useState(0);
 
   const IconComponent = iconMap[icon as keyof typeof iconMap] || CheckCircle;
-
-  // Parse target value from the value string
-  const targetValue = parseInt(value.replace(/[^0-9]/g, '')) || 0;
-  const increment = Math.max(1, Math.ceil(targetValue / 50));
 
   useEffect(() => {
     if (!animateCount) {
@@ -61,25 +56,11 @@ export const StatisticCard = ({
 
     const timer = setTimeout(() => {
       setIsVisible(true);
-
-      const animationTimer = setInterval(() => {
-        setCurrentValue((prev) => {
-          if (prev >= targetValue) {
-            clearInterval(animationTimer);
-            setAnimatedValue(value);
-            return targetValue;
-          }
-          const newValue = prev + increment;
-          setAnimatedValue(newValue.toString());
-          return newValue;
-        });
-      }, 50);
-
-      return () => clearInterval(animationTimer);
+      setAnimatedValue(value);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [targetValue, increment, value, animateCount, delay]);
+  }, [value, animateCount, delay]);
 
   const handleClick = () => {
     if (linkTo) {

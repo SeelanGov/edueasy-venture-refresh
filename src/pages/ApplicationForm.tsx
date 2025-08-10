@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { SkipToContent } from '@/components/ui/skip-to-content';
 import { Toaster } from '@/components/ui/toaster';
 import { useApplicationFormManager } from '@/hooks/useApplicationFormManager';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 const ApplicationForm = () => {
   const {
@@ -42,8 +42,7 @@ const ApplicationForm = () => {
         title="Program Application"
         subtitle="Apply to your desired educational institution and program"
         className="pt-24 md:pt-28"
-        containerClassName="max-w-3xl"
-      >
+        containerClassName="max-w-3xl">
         <main
           id="main-content"
           className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 md:p-8"
@@ -54,8 +53,7 @@ const ApplicationForm = () => {
             <div
               className="mb-6 text-sm md:text-base text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20 p-2 md:p-3 rounded border border-green-200 dark:border-green-800"
               role="status"
-              aria-live="polite"
-            >
+              aria-live="polite">
               You have a saved draft application that has been loaded.
             </div>
           )}
@@ -69,8 +67,7 @@ const ApplicationForm = () => {
               onSubmit={onSubmit}
               className="space-y-6 md:space-y-8"
               id={formId}
-              aria-label="Program application form"
-            >
+              aria-label="Program application form">
               <fieldset disabled={isSubmitting || isSavingDraft}>
                 <legend className="sr-only">Application Information</legend>
                 <ApplicationFormFields

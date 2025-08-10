@@ -1,15 +1,27 @@
-import NotesTimeline from '@/components/admin/partners/NotesTimeline';
-import PartnerIntegrationChecklist from '@/components/admin/partners/PartnerIntegrationChecklist';
-import PartnerPaymentHistory from '@/components/admin/partners/PartnerPaymentHistory';
-import PartnerStatusBadge from '@/components/admin/partners/PartnerStatusBadge';
+import { NotesTimeline } from '@/components/admin/partners/NotesTimeline';
+import { PartnerIntegrationChecklist } from '@/components/admin/partners/PartnerIntegrationChecklist';
+import { PartnerPaymentHistory } from '@/components/admin/partners/PartnerPaymentHistory';
+import { PartnerStatusBadge } from '@/components/admin/partners/PartnerStatusBadge';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/use-toast'; // show toast on error
+import { toast } from '@/components/ui/use-toast';
 import { usePartner } from '@/hooks/usePartner';
 import { usePartnerNotes } from '@/hooks/usePartnerNotes';
 import { usePartnerPayments } from '@/hooks/usePartnerPayments';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+
+
+
+
+
+ // show toast on error
+
+
+
+
+
 
 const TAB_HEADINGS = [
   { id: 'details', label: 'Details' },
@@ -22,7 +34,7 @@ const TAB_HEADINGS = [
 const PartnerProfilePage: React.FC = () => {
   const { id = '' } = useParams<{ id: string }>();
   const [tab, setTab] = useState('details');
-  const { partner, isLoading } = usePartner(id);
+  const { partner } = usePartner(id);
   const { payments } = usePartnerPayments(id);
   const { notes } = usePartnerNotes(id);
 

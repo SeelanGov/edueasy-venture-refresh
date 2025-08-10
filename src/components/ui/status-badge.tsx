@@ -1,7 +1,10 @@
-import React from 'react';
+import { RefreshCw } from 'lucide-react';
+import { React } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { statusColors, extendedStatusColors, type ExtendedStatusType } from '@/lib/design-tokens';
 import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
+
 import {
   CheckCircle,
   XCircle,
@@ -12,7 +15,6 @@ import {
   RefreshCw,
   type LucideIcon,
 } from 'lucide-react';
-import { cva, type VariantProps } from 'class-variance-authority';
 
 const statusBadgeVariants = cva(
   'inline-flex items-center gap-1 font-medium transition-all duration-200',
@@ -77,7 +79,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   return (
     <Badge
       className={cn(
-        statusBadgeVariants({ size, animation }),
+        statusBadgeVariants({ size }),
         statusStyle.bg,
         statusStyle.text,
         statusStyle.border,
@@ -94,8 +96,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
             'shrink-0',
             size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4',
           )}
-          aria-hidden="true"
-        />
+          aria-hidden="true" />
       )}
       <span>{children}</span>
     </Badge>

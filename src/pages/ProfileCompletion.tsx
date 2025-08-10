@@ -1,3 +1,4 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PatternBorder } from '@/components/PatternBorder';
 import { AddressInfoStep } from '@/components/profile-completion/AddressInfoStep';
@@ -8,13 +9,12 @@ import { PersonalInfoStep } from '@/components/profile-completion/PersonalInfoSt
 import { ProfileCompletionStepper } from '@/components/profile-completion/ProfileCompletionStepper';
 import { ReviewSubmitStep } from '@/components/profile-completion/ReviewSubmitStep';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { AlertCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ProfileCompletion = () => {
@@ -115,8 +115,7 @@ const ProfileCompletion = () => {
       <PageLayout
         title="Continue Your Profile"
         subtitle="Resume your profile completion progress"
-        containerClassName="max-w-3xl mt-20"
-      >
+        containerClassName="max-w-3xl mt-20">
         <div className="bg-white rounded-lg shadow-md p-8">
           <p className="text-gray-600 mb-6">
             You have previously saved your profile completion progress. Would you like to continue
@@ -127,16 +126,14 @@ const ProfileCompletion = () => {
             <Button
               onClick={handleContinueSavedData}
               variant="primary"
-              className="bg-cap-teal hover:bg-cap-teal/90"
-            >
+              className="bg-cap-teal hover:bg-cap-teal/90">
               Continue Saved Progress
             </Button>
 
             <Button
               variant="outline"
               onClick={handleStartNew}
-              className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-            >
+              className="border-cap-teal text-cap-teal hover:bg-cap-teal/10">
               Start New
             </Button>
           </div>
@@ -154,8 +151,7 @@ const ProfileCompletion = () => {
       <PageLayout
         title="Complete Your Profile"
         subtitle="Please complete the following steps to finalize your registration with EduEasy"
-        containerClassName="max-w-4xl py-12"
-      >
+        containerClassName="max-w-4xl py-12">
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -174,8 +170,7 @@ const ProfileCompletion = () => {
             variant="outline"
             onClick={handleSaveAndExit}
             disabled={isLoading}
-            className="text-cap-teal border-cap-teal hover:bg-cap-teal/10"
-          >
+            className="text-cap-teal border-cap-teal hover:bg-cap-teal/10">
             {isLoading ? <Spinner size="sm" className="mr-2" /> : null}
             Save & Exit
           </Button>

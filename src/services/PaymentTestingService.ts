@@ -306,7 +306,7 @@ class PaymentTestingService {
     const results: TestResult[] = [];
     const automatedScenarios = this.scenarios.filter((s) => s.automated);
 
-    console.log(`Starting ${automatedScenarios.length} automated test scenarios...`);
+    console.warn(`Starting ${automatedScenarios.length} automated test scenarios...`);
 
     for (const scenario of automatedScenarios) {
       const startTime = Date.now();
@@ -320,7 +320,7 @@ class PaymentTestingService {
       };
 
       try {
-        console.log(`Running scenario: ${scenario.name}`);
+        console.warn(`Running scenario: ${scenario.name}`);
 
         // Generate test data
         const testData = this.generateTestData(scenario);
@@ -343,11 +343,11 @@ class PaymentTestingService {
         }
 
         result.status = 'passed';
-        console.log(`✅ Scenario passed: ${scenario.name}`);
+        console.warn(`✅ Scenario passed: ${scenario.name}`);
       } catch (error) {
         result.status = 'failed';
         result.error = error instanceof Error ? error.message : 'Unknown error';
-        console.log(`❌ Scenario failed: ${scenario.name} - ${result.error}`);
+        console.warn(`❌ Scenario failed: ${scenario.name} - ${result.error}`);
       } finally {
         result.duration = Date.now() - startTime;
         results.push(result);
@@ -397,7 +397,7 @@ class PaymentTestingService {
    */
   private async createTestPaymentSession(testData: PaymentTestData): Promise<void> {
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment-session', {
+      const { data } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: testData.tier,
           user_id: testData.userId,
@@ -517,7 +517,7 @@ class PaymentTestingService {
    */
   private async storeTestData(testData: PaymentTestData): Promise<void> {
     // Store test data in memory instead of non-existent table
-    console.log('Test data stored in memory:', testData);
+    console.warn('Test data stored in memory:', testData);
   }
 
   /**
@@ -526,7 +526,7 @@ class PaymentTestingService {
    */
   private async logTestResults(results: TestResult[]): Promise<void> {
     // Log results to console instead of non-existent table
-    console.log('Test results logged to console:', results);
+    console.warn('Test results logged to console:', results);
   }
 
   /**

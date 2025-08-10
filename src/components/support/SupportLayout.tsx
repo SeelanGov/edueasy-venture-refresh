@@ -1,6 +1,6 @@
-import React from 'react';
-import HelpWidget from './HelpWidget';
-import FAQPage from './FAQPage';
+import { React } from 'react';
+import { HelpWidget } from './HelpWidget';
+import { FAQPage } from './FAQPage';
 
 /**
  * SupportLayout

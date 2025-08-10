@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/status-badge';
-import type { ExtendedStatusType } from '@/lib/design-tokens';
+import { type ExtendedStatusType  } from '@/lib/design-tokens';
 import { AlertTriangle, CheckCircle, Upload } from 'lucide-react';
 import { useState } from 'react';
+
+
+
+
+
+
 
 /**
  * DocumentVerificationNotice
@@ -62,8 +68,7 @@ export const DocumentVerificationNotice = () => {
           {pendingDocs.map((doc, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200"
-            >
+              className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
                 <span className="ml-3 font-medium text-gray-800">{doc.name}</span>
@@ -76,8 +81,7 @@ export const DocumentVerificationNotice = () => {
           {rejectedDocs.map((doc, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 bg-white rounded-lg border border-error-light"
-            >
+              className="flex items-center justify-between p-3 bg-white rounded-lg border border-error-light">
               <div className="flex items-center">
                 {getStatusIcon(doc.status)}
                 <span className="ml-3 font-medium text-gray-800">{doc.name}</span>

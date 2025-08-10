@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import { RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { format } from 'date-fns';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+
 import {
   Table,
   TableHeader,
@@ -7,8 +14,8 @@ import {
   TableBody,
   TableCell,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+
+
 import {
   Select,
   SelectContent,
@@ -16,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { StatusBadge } from '@/components/ui/status-badge';
+
 import {
   AlertCircle,
   AlertOctagon,
@@ -27,8 +34,8 @@ import {
   ChevronDown,
   Check,
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { SecurityBadge } from '@/components/ui/SecurityBadge';
+
+
 
 interface ErrorLogEntry {
   id: string;
@@ -181,8 +188,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
           size="sm"
           onClick={onRefresh}
           disabled={loading}
-          className="flex items-center"
-        >
+          className="flex items-center">
           <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
@@ -194,8 +200,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
             placeholder="Search by message or action..."
             value={filter.search}
             onChange={(e) => setFilter((prev) => ({ ...prev, search: e.target.value }))}
-            className="w-full"
-          />
+            className="w-full" />
         </div>
 
         <Select
@@ -272,8 +277,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
             id="show-resolved"
             checked={filter.showResolved}
             onChange={(e) => setFilter((prev) => ({ ...prev, showResolved: e.target.checked }))}
-            className="mr-2"
-          />
+            className="mr-2" />
           <label htmlFor="show-resolved" className="text-sm text-gray-700">
             Show Resolved
           </label>
@@ -423,8 +427,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                               <div className="mb-2">
                                 <label
                                   htmlFor={`resolution-${error.id}`}
-                                  className="text-sm font-medium block mb-1 text-gray-800"
-                                >
+                                  className="text-sm font-medium block mb-1 text-gray-800">
                                   Resolution Notes:
                                 </label>
                                 <textarea
@@ -438,8 +441,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                                   }
                                   className="w-full p-2 border border-gray-300 rounded-md text-sm resize-none focus:border-primary focus:ring-1 focus:ring-primary"
                                   rows={2}
-                                  placeholder="Describe how this error was resolved..."
-                                />
+                                  placeholder="Describe how this error was resolved..." />
                               </div>
 
                               <Button
@@ -447,8 +449,7 @@ export const ErrorLogsTable = ({ errors, loading, onRefresh, onResolve }: ErrorL
                                 size="sm"
                                 onClick={() => handleResolve(error.id)}
                                 disabled={resolvingIds.includes(error.id)}
-                                className="bg-success hover:bg-success-dark"
-                              >
+                                className="bg-success hover:bg-success-dark">
                                 {resolvingIds.includes(error.id) ? (
                                   <>
                                     <RefreshCw className="h-3 w-3 mr-2 animate-spin" />

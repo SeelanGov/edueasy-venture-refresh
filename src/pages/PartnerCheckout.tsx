@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import React from 'react';
+import { React } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PartnerCheckout: React.FC = () => {
@@ -29,7 +29,7 @@ const PartnerCheckout: React.FC = () => {
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
-            <span className="mr-2 text-lg">&#8592;</span>
+            <span className="mr-2 text-lg">&#8592</span>
             Back to Home
           </Button>
         </div>
@@ -70,8 +70,7 @@ const PartnerCheckout: React.FC = () => {
             href={thirdPartyAppLink}
             target="_blank"
             rel="noopener"
-            className="underline text-cap-coral font-medium"
-          >
+            className="underline text-cap-coral font-medium">
             Launch Secure Bank Payment App
           </a>
         </div>

@@ -1,8 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
+
 
 const ApplyForSponsorship = () => {
   const { user } = useAuth();

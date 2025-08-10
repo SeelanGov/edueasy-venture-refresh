@@ -1,12 +1,15 @@
-import React from 'react';
-import PartnerStatusBadge from './PartnerStatusBadge';
-import type { Partner } from '@/types/partner';
+import { React } from 'react';
+import { PartnerStatusBadge } from './PartnerStatusBadge';
+import { type Partner  } from '@/types/partner';
+
+
+
 
 type Props = {
   partner: Partner;
   onClick?: () => void;
 };
-const PartnerCard: React.FC<Props> = ({ partner, onClick }) => (
+const PartnerCard: React.FC<Props> = ({ partner }) => (
   <div
     className="rounded border p-4 bg-white shadow-md transition hover:shadow-lg cursor-pointer"
     onClick={onClick}

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 interface ActionTrackingData {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface ActionTrackingOptions {
@@ -42,7 +42,7 @@ export const useActionTracking = () => {
 
         // Log to console in development
         if (import.meta.env.DEV) {
-          console.log('Action tracked:', trackingPayload);
+          console.warn('Action tracked:', trackingPayload);
         }
 
         // Store in local storage for offline tracking

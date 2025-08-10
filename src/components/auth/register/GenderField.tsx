@@ -1,4 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { type Control  } from 'react-hook-form';
+import { type RegisterFormValues  } from '../RegisterForm';
+
 import {
   Select,
   SelectContent,
@@ -6,8 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Control } from 'react-hook-form';
-import type { RegisterFormValues } from '../RegisterForm';
+
+
 
 interface GenderFieldProps {
   control: Control<RegisterFormValues>;
@@ -18,7 +21,7 @@ interface GenderFieldProps {
  * GenderField
  * @description Function
  */
-export const GenderField = ({ control, isLoading }: GenderFieldProps): JSX.Element => {
+export const GenderField = ({ control }: GenderFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}

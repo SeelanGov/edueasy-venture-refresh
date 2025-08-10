@@ -1,7 +1,7 @@
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 
 const StudentSponsorshipStatus = () => {
-  const { applications, loading } = useSponsorApplications({ asSponsor: false });
+  const { applications } = useSponsorApplications({ asSponsor: false });
 
   return (
     <div className="max-w-3xl mx-auto mt-10">

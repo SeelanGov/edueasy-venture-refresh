@@ -58,8 +58,7 @@ export const JourneyMapDemo = (): JSX.Element => {
               <Button
                 onClick={handleNext}
                 disabled={currentStep === steps.length - 1}
-                className="bg-cap-teal hover:bg-cap-teal/90"
-              >
+                className="bg-cap-teal hover:bg-cap-teal/90">
                 Next Step
               </Button>
 

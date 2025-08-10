@@ -92,7 +92,7 @@ export const ValidationResultsList = ({
                       </div>
                     );
                   }
-                } catch (_e) {
+                } catch {
                   // If parsing fails, display as regular string
                 }
               }

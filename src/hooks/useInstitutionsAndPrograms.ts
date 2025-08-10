@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Institution, Program } from '@/types/Institution';
+import { type Institution  } from '@/types/Institution';
+
+
+
 
 /**
  * useInstitutionsAndPrograms hook for managing institutions and programs data
@@ -17,7 +20,7 @@ export const useInstitutionsAndPrograms = () => {
   useEffect(() => {
     const fetchInstitutions = async () => {
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('institutions')
           .select('*')
           .eq('active', true)
@@ -55,7 +58,7 @@ export const useInstitutionsAndPrograms = () => {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('programs')
           .select('*')
           .eq('active', true)

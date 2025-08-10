@@ -1,6 +1,8 @@
 import { Spinner } from '@/components/Spinner';
-import type { ComponentType } from 'react';
-import React, { Suspense, lazy } from 'react';
+import { type ComponentType, React, { Suspense  } from 'react';
+
+
+
 
 interface LazyComponentProps {
   component: () => Promise<{ default: ComponentType<any> }>;

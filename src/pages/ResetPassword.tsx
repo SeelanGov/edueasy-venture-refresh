@@ -1,11 +1,17 @@
-import { useState, useEffect } from 'react';
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
+import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Spinner } from '@/components/Spinner';
+import { useAuth } from '@/hooks/useAuth';
+import { AlertCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { PageLayout } from '@/components/layout/PageLayout';
+
 import {
   Form,
   FormControl,
@@ -14,11 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Spinner } from '@/components/Spinner';
-import { useAuth } from '@/hooks/useAuth';
-import { AlertCircle, Shield } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { PageLayout } from '@/components/layout/PageLayout';
 
 const resetPasswordSchema = z
   .object({
@@ -136,8 +137,7 @@ const ResetPassword = (): void => {
                             type="password"
                             {...field}
                             disabled={isLoading}
-                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
-                          />
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -156,8 +156,7 @@ const ResetPassword = (): void => {
                             type="password"
                             {...field}
                             disabled={isLoading}
-                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
-                          />
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -185,8 +184,7 @@ const ResetPassword = (): void => {
                 </Alert>
                 <Link
                   to="/forgot-password"
-                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
-                >
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                   Request a new reset link
                 </Link>
               </div>
@@ -197,8 +195,7 @@ const ResetPassword = (): void => {
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
-          >
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

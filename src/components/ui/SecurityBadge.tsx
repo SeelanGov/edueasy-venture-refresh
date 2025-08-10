@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { ShieldCheck, Lock, KeyRound, FileCheck2 } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';

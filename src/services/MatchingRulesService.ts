@@ -32,7 +32,7 @@ class MatchingRulesService {
     try {
       // Create default rules
       this.createDefaultRules();
-      console.log(`Loaded ${this.rules.length} matching rules`);
+      console.warn(`Loaded ${this.rules.length} matching rules`);
     } catch (error) {
       console.error('Error initializing matching rules:', error);
       this.rules = [];

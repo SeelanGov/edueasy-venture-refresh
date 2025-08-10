@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Sponsor } from '@/types/SponsorTypes';
+import { type Sponsor  } from '@/types/SponsorTypes';
+
+
+
 
 /**
  * useSponsor
@@ -11,7 +14,7 @@ export const useSponsor = (id: string | undefined): void => {
     queryKey: ['sponsor', id],
     queryFn: async () => {
       if (!id) return null;
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partners')
         .select('*')
         .eq('id', id)

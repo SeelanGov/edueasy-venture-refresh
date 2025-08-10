@@ -1,5 +1,11 @@
-import React from 'react';
-import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Trash2 } from 'lucide-react';
+import { type Control  } from 'react-hook-form';
+
+
+
 import {
   Select,
   SelectContent,
@@ -7,10 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
-import type { Control } from 'react-hook-form';
+
+
 
 // Common South African high school subjects
 const commonSubjects = [
@@ -33,10 +37,6 @@ const commonSubjects = [
   'Consumer Studies',
   'Tourism',
 ];
-
-interface EducationFormData {
-  subjects: Array<{ subject: string; mark: number }>;
-}
 
 interface SubjectEntryProps {
   index: number;

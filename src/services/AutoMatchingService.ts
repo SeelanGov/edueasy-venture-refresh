@@ -1,6 +1,9 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { SponsorAllocation } from '@/types/SponsorTypes';
+import { type SponsorAllocation  } from '@/types/SponsorTypes';
 import { matchingRulesService, type MatchingResult } from './MatchingRulesService';
+
+
+
 
 export interface AutoMatchingConfig {
   enabled: boolean;
@@ -45,7 +48,7 @@ class AutoMatchingService {
     try {
       // Initialize matching rules
       await matchingRulesService.initializeRules();
-      console.log('Auto-matching service initialized successfully');
+      console.warn('Auto-matching service initialized successfully');
     } catch (error) {
       console.error('Error initializing auto-matching service:', error);
       throw error;
@@ -308,7 +311,7 @@ class AutoMatchingService {
         query = query.eq('status', filters.status);
       }
 
-      const { data, error } = await query;
+      const { data } = await query;
       if (error) throw error;
       return data || [];
     } catch (error) {
@@ -366,7 +369,7 @@ class AutoMatchingService {
     expired: number;
   }> {
     try {
-      const { data, error } = await supabase.from('sponsor_allocations').select('status');
+      const { data } = await supabase.from('sponsor_allocations').select('status');
 
       if (error) throw error;
 

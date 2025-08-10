@@ -2,6 +2,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/Spinner';
+import { type ContactFormValues  } from './types';
+import { EmergencyContactSection } from './EmergencyContactSection';
+
+
+
+
 import {
   Form,
   FormControl,
@@ -11,10 +19,10 @@ import {
   FormMessage,
   FormDescription,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/Spinner';
-import type { ContactFormValues } from './types';
-import { EmergencyContactSection } from './EmergencyContactSection';
+
+
+
+
 
 // South African phone number validation
 const validateSAPhoneNumber = (phone: string): boolean => {
@@ -96,16 +104,14 @@ export const ContactForm = ({
             type="button"
             variant="outline"
             onClick={onBack}
-            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-          >
+            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10">
             Back
           </Button>
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-cap-teal hover:bg-cap-teal/90"
-          >
+            className="bg-cap-teal hover:bg-cap-teal/90">
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
             {isSubmitting ? 'Saving...' : 'Continue'}
           </Button>

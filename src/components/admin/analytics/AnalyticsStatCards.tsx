@@ -1,6 +1,9 @@
 import { FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { StatCard } from './StatCard';
-import type { DocumentAnalytics } from '@/hooks/analytics/types';
+import { type DocumentAnalytics  } from '@/hooks/analytics/types';
+
+
+
 
 interface AnalyticsStatCardsProps {
   analytics: DocumentAnalytics;
@@ -26,8 +29,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
         title="Total Documents"
         value={analytics.totalDocuments.toLocaleString()}
         icon={<FileText className="h-4 w-4" />}
-        description="All submitted documents"
-      />
+        description="All submitted documents" />
 
       <StatCard
         title="Approved"
@@ -38,8 +40,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
           value: Math.round(analytics.passRate),
           positive: analytics.passRate > 70,
         }}
-        className="border-green-200"
-      />
+        className="border-green-200" />
 
       <StatCard
         title="Rejected"
@@ -52,8 +53,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
           value: Math.round(analytics.failRate),
           positive: analytics.failRate < 30,
         }}
-        className="border-red-200"
-      />
+        className="border-red-200" />
 
       <StatCard
         title="Pending Review"
@@ -61,8 +61,7 @@ export const AnalyticsStatCards = ({ analytics }: AnalyticsStatCardsProps) => {
         icon={<Clock className="h-4 w-4" />}
         description={`${((analytics.pendingDocuments / (analytics.totalDocuments || 1)) * 100).toFixed(1)}% of total`}
         trend={calculateTrend(analytics.pendingDocuments, analytics.totalDocuments)}
-        className="border-yellow-200"
-      />
+        className="border-yellow-200" />
     </div>
   );
 };

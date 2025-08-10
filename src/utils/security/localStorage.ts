@@ -1,5 +1,5 @@
-// Secure localStorage utility with encryption and session management
 import { toast } from '@/components/ui/use-toast';
+// Secure localStorage utility with encryption and session management
 
 // Simple encryption key (in production, this should be environment-specific)
 const ENCRYPTION_KEY = 'edueasy-secure-storage-v1';

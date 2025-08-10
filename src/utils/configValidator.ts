@@ -219,7 +219,7 @@ export class ConfigValidator {
    */
   private isValidPayFastMerchantId(merchantId: string): boolean {
     // PayFast merchant IDs are typically numeric and 6-8 digits
-    return /^\d{6,8}$/.test(merchantId);
+    return /^\d{6}$/.test(merchantId);
   }
 
   /**
@@ -227,7 +227,7 @@ export class ConfigValidator {
    */
   private isValidPayFastMerchantKey(merchantKey: string): boolean {
     // PayFast merchant keys are typically alphanumeric and 8-16 characters
-    return /^[a-zA-Z0-9]{8,16}$/.test(merchantKey);
+    return /^[a-zA-Z0-9]{8}$/.test(merchantKey);
   }
 
   /**

@@ -1,8 +1,13 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle } from 'lucide-react';
-import type { UserSummary } from '@/utils/admin/userLookup';
+import { CheckCircle } from 'lucide-react';
+import { type UserSummary  } from '@/utils/admin/userLookup';
+
+
+
+
+
 
 interface Document {
   id: string;
@@ -20,7 +25,7 @@ type Props = {
   userMap?: Record<string, UserSummary>;
 };
 
-function getStatusBadge(status: string | null) {
+function getStatusBadge(status: string | ) {
   switch (status) {
     case 'approved':
       return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
@@ -40,7 +45,7 @@ export function DocumentVerificationPanel({
   documents,
   updateDocumentStatus,
   userMap,
-}: Props): JSX.Element {
+}: any): JSX.Element {
   return (
     <Card>
       <CardHeader>
@@ -76,8 +81,7 @@ export function DocumentVerificationPanel({
                       <Button
                         size="sm"
                         onClick={() => updateDocumentStatus(doc.id, 'approved')}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
+                        className="bg-green-600 hover:bg-green-700">
                         <CheckCircle className="h-4 w-4 mr-1" />
                         Approve
                       </Button>

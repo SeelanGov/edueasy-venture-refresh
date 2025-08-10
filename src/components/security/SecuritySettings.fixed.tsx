@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +11,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { safeAsync } from '@/utils/errorHandling';
 import { gdpr, inputValidation, securityMonitoring } from '@/utils/security';
+import { memo, useEffect, useState } from 'react';
+
 import {
   AlertTriangle,
   CheckCircle,
@@ -22,7 +24,6 @@ import {
   Shield,
   Trash2,
 } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
 
 interface SecuritySettingsProps {
   className?: string;
@@ -50,6 +51,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [thirdPartyConsent, setThirdPartyConsent] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadSecurityPreferences();
     loadPrivacyPreferences();
@@ -292,8 +294,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                   type={showPasswords ? 'text' : 'password'}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Enter current password"
-                />
+                  placeholder="Enter current password" />
               </div>
             </div>
           </div>
@@ -307,8 +308,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                   type={showPasswords ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Enter new password"
-                />
+                  placeholder="Enter new password" />
                 <Button
                   type="button"
                   variant="ghost"
@@ -328,8 +328,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
                 type={showPasswords ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm new password"
-              />
+                placeholder="Confirm new password" />
             </div>
           </div>
 
@@ -362,8 +361,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
           <Button
             onClick={handlePasswordChange}
             disabled={loading || !passwordStrength.valid}
-            className="w-full md:w-auto"
-          >
+            className="w-full md:w-auto">
             {loading ? 'Updating...' : 'Change Password'}
           </Button>
         </CardContent>
@@ -499,8 +497,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
               onClick={handleDataExport}
               disabled={loading}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <Download className="h-4 w-4" />
               Export My Data
             </Button>
@@ -509,8 +506,7 @@ const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
               onClick={handleDataDeletion}
               disabled={loading}
               variant="destructive"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <Trash2 className="h-4 w-4" />
               Delete My Data
             </Button>

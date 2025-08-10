@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
@@ -40,7 +40,7 @@ export function useDocumentsManagement(): void {
       setTotalCount(count || 0);
 
       // Get paginated documents with user info - using proper join
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('documents')
         .select(
           `

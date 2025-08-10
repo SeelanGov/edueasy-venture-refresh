@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { RefreshCw, Download, Search } from 'lucide-react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
+import { Spinner } from '@/components/Spinner';
+import { exportToCsv } from '@/utils/exportToCsv';
+
+
+
+
+
 import {
   Table,
   TableBody,
@@ -11,10 +20,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
-import { Spinner } from '@/components/Spinner';
-import { Download, Search, RefreshCw } from 'lucide-react';
-import { exportToCsv } from '@/utils/exportToCsv';
+
+
+
+
 
 /**
  * AdminActivityLog
@@ -25,7 +34,8 @@ export const AdminActivityLog: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredLogs, setFilteredLogs] = useState(auditLogs);
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
     fetchRecentActivity(100);
   }, []);
 
@@ -85,8 +95,7 @@ export const AdminActivityLog: React.FC = () => {
               placeholder="Search activities..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+              className="pl-10" />
           </div>
           <Button variant="outline" onClick={() => fetchRecentActivity(100)} disabled={loading}>
             <RefreshCw className="h-4 w-4 mr-2" />

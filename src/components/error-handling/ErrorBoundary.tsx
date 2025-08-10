@@ -1,8 +1,11 @@
 import { parseError } from '@/utils/errorHandler';
-import { ErrorSeverity, logError } from '@/utils/errorLogging';
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
-import type { ErrorInfo as AppError } from './ErrorDisplay';
-import { ErrorDisplay } from './ErrorDisplay';
+import { ErrorSeverity } from '@/utils/errorLogging';
+import { Component, type ErrorInfo, type ReactNode   } from 'react';
+import { ErrorDisplay, type ErrorInfo as AppError } from './ErrorDisplay';
+
+
+
+
 
 interface Props {
   children: ReactNode;

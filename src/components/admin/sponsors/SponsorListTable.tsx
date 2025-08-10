@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/button';
-import type { Sponsor } from '@/types/SponsorTypes';
-import React from 'react';
+import { type Sponsor  } from '@/types/SponsorTypes';
+import { React } from 'react';
+
+
+
 
 interface SponsorListTableProps {
   sponsors: Sponsor[];
@@ -11,7 +14,7 @@ interface SponsorListTableProps {
  * SponsorListTable
  * @description Function
  */
-export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, onView }) => (
+export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors }) => (
   <div className="overflow-x-auto">
     <table className="min-w-full border rounded">
       <thead>
@@ -35,7 +38,7 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, on
               <span
                 className={`px-2 py-1 rounded text-xs ${
                   sponsor.status === 'active'
-                    ? 'bg-green-200 text-[#1B5E20]'
+                    ? 'bg-green-200 text-green-800'
                     : 'bg-gray-200 text-gray-700'
                 }`}
               >
@@ -56,7 +59,7 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, on
         ))}
         {sponsors.length === 0 && (
           <tr>
-            <td colSpan={6} className="text-center text-[#BDBDBD] py-8">
+            <td colSpan={6} className="text-center text-gray-400 py-8">
               No sponsors found.
             </td>
           </tr>

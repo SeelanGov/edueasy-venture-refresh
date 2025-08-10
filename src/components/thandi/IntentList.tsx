@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import type { IntentWithStats } from '@/hooks/useIntentManagement';
+import { type IntentWithStats  } from '@/hooks/useIntentManagement';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Edit, Trash2, Plus, Info } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { IntentForm } from './IntentForm';
+
+
 import {
   Table,
   TableBody,
@@ -8,11 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Plus, Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { IntentForm } from './IntentForm';
+
+
+
+
+
 import {
   Dialog,
   DialogContent,

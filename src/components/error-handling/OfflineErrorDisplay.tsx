@@ -1,6 +1,6 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { WifiOff, RefreshCw, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 interface OfflineErrorDisplayProps {
   message?: string;
@@ -53,8 +53,7 @@ export const OfflineErrorDisplay = ({
               size="sm"
               onClick={onRetryConnection}
               disabled={isRetrying}
-              className="flex items-center border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900"
-            >
+              className="flex items-center border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900">
               {isRetrying ? (
                 <>
                   <RefreshCw className="h-3 w-3 mr-2 animate-spin" />

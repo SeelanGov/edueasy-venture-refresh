@@ -1,5 +1,5 @@
-// Security utilities for authentication, authorization, and data protection
 import { supabase } from '@/integrations/supabase/client';
+// Security utilities for authentication, authorization, and data protection
 
 // Security configuration constants
 export const SECURITY_CONFIG = {
@@ -18,11 +18,11 @@ export const VALIDATION_PATTERNS = {
   PHONE: /^(\+27|0)[6-8][0-9]{8}$/,
   ID_NUMBER: /^[0-9]{13}$/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/,
+  URL: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1}\.[a-zA-Z0-9()]{1}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/,
   ALPHANUMERIC: /^[a-zA-Z0-9]+$/,
   ALPHANUMERIC_SPACES: /^[a-zA-Z0-9\s]+$/,
   NUMERIC: /^[0-9]+$/,
-  DECIMAL: /^[0-9]+(\.[0-9]{1,2})?$/,
+  DECIMAL: /^[0-9]+(\.[0-9]{1})?$/,
 } as const;
 
 // Sensitive data patterns for detection
@@ -31,7 +31,7 @@ export const SENSITIVE_DATA_PATTERNS = {
   PHONE_NUMBER: /(\+27|0)[6-8][0-9]{8}/g,
   EMAIL: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
   CREDIT_CARD: /\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g,
-  BANK_ACCOUNT: /\b\d{10,12}\b/g,
+  BANK_ACCOUNT: /\b\d{10}\b/g,
 } as const;
 
 // Rate limiting store
@@ -521,7 +521,7 @@ export const gdpr = {
 
   setConsent: (type: string, consent: boolean): void => {
     // Implementation would update user consent records
-    console.log(`Setting consent: ${type} = ${consent}`);
+    console.warn(`Setting consent: ${type} = ${consent}`);
   },
 
   /**

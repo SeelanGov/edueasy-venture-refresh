@@ -1,5 +1,9 @@
-import React from 'react';
+import { React } from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { type Control  } from 'react-hook-form';
+import { type PersonalInfoFormValues  } from './types';
+
+
 import {
   Select,
   SelectContent,
@@ -7,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Control } from 'react-hook-form';
-import type { PersonalInfoFormValues } from './types';
+
+
 
 interface GenderSelectorProps {
   control: Control<PersonalInfoFormValues>;
@@ -33,15 +37,13 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({ control }) => {
               <SelectTrigger
                 aria-required="true"
                 aria-invalid={field.value === '' ? 'true' : 'false'}
-                className="focus-visible-ring rounded-lg transition-all hover:border-primary/50"
-              >
+                className="focus-visible-ring rounded-lg transition-all hover:border-primary/50">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
             </FormControl>
             <SelectContent
               position="popper"
-              className="bg-background border rounded-lg shadow-soft"
-            >
+              className="bg-background border rounded-lg shadow-soft">
               <SelectItem value="male">Male</SelectItem>
               <SelectItem value="female">Female</SelectItem>
               <SelectItem value="other">Other</SelectItem>

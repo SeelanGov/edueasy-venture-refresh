@@ -49,7 +49,7 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
  * @description Function
  */
 export const ColorSystem = (): JSX.Element => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <div className="container mx-auto py-8">
@@ -86,20 +86,17 @@ export const ColorSystem = (): JSX.Element => {
                   name="Teal (Primary)"
                   variable="var(--color-primary)"
                   className="bg-primary"
-                  textClassName="text-primary"
-                />
+                  textClassName="text-primary" />
                 <ColorCard
                   name="Coral (Secondary)"
                   variable="var(--color-secondary)"
                   className="bg-secondary"
-                  textClassName="text-secondary"
-                />
+                  textClassName="text-secondary" />
                 <ColorCard name="Dark" variable="var(--cap-dark)" className="bg-cap-dark" />
                 <ColorCard
                   name="Light"
                   variable="var(--cap-light)"
-                  className="bg-cap-light border"
-                />
+                  className="bg-cap-light border" />
               </div>
             </CardContent>
           </Card>
@@ -129,28 +126,23 @@ export const ColorSystem = (): JSX.Element => {
                 <ColorCard
                   name="Text Primary"
                   variable="var(--text-primary)"
-                  className="bg-text-primary"
-                />
+                  className="bg-text-primary" />
                 <ColorCard
                   name="Text Secondary"
                   variable="var(--text-secondary)"
-                  className="bg-text-secondary"
-                />
+                  className="bg-text-secondary" />
                 <ColorCard
                   name="Text Muted"
                   variable="var(--text-muted)"
-                  className="bg-text-muted"
-                />
+                  className="bg-text-muted" />
                 <ColorCard
                   name="On Primary"
                   variable="var(--text-on-primary)"
-                  className="bg-text-on-primary border"
-                />
+                  className="bg-text-on-primary border" />
                 <ColorCard
                   name="On Secondary"
                   variable="var(--text-on-secondary)"
-                  className="bg-text-on-secondary border"
-                />
+                  className="bg-text-on-secondary border" />
               </div>
             </CardContent>
           </Card>
@@ -164,18 +156,15 @@ export const ColorSystem = (): JSX.Element => {
                 <ColorCard
                   name="BG Subtle"
                   variable="var(--bg-subtle)"
-                  className="bg-bg-subtle border"
-                />
+                  className="bg-bg-subtle border" />
                 <ColorCard
                   name="BG Muted"
                   variable="var(--bg-muted)"
-                  className="bg-bg-muted border"
-                />
+                  className="bg-bg-muted border" />
                 <ColorCard
                   name="BG Emphasis"
                   variable="var(--bg-emphasis)"
-                  className="bg-bg-emphasis"
-                />
+                  className="bg-bg-emphasis" />
               </div>
             </CardContent>
           </Card>
@@ -190,13 +179,11 @@ export const ColorSystem = (): JSX.Element => {
                 <ColorCard
                   name="Border Subtle"
                   variable="var(--border-subtle)"
-                  className="bg-border-subtle"
-                />
+                  className="bg-border-subtle" />
                 <ColorCard
                   name="Border Focus"
                   variable="var(--border-focus)"
-                  className="bg-border-focus"
-                />
+                  className="bg-border-focus" />
               </div>
             </CardContent>
           </Card>
@@ -212,23 +199,19 @@ export const ColorSystem = (): JSX.Element => {
                 <ColorCard
                   name="Chart Approved"
                   variable="var(--chart-approved)"
-                  className="bg-[color:var(--chart-approved)]"
-                />
+                  className="bg-[color:var(--chart-approved)]" />
                 <ColorCard
                   name="Chart Rejected"
                   variable="var(--chart-rejected)"
-                  className="bg-[color:var(--chart-rejected)]"
-                />
+                  className="bg-[color:var(--chart-rejected)]" />
                 <ColorCard
                   name="Chart Pending"
                   variable="var(--chart-pending)"
-                  className="bg-[color:var(--chart-pending)]"
-                />
+                  className="bg-[color:var(--chart-pending)]" />
                 <ColorCard
                   name="Chart Resubmission"
                   variable="var(--chart-request-resubmission)"
-                  className="bg-[color:var(--chart-request-resubmission)]"
-                />
+                  className="bg-[color:var(--chart-request-resubmission)]" />
               </div>
             </CardContent>
           </Card>
@@ -269,7 +252,7 @@ export const ColorSystem = (): JSX.Element => {
                   <code className="text-sm">
                     {/* Use Tailwind class */}
                     &lt;button className="bg-primary
-                    text-primary-foreground"&gt;Submit&lt;/button&gt;
+                    text-primary-foreground"&gt;Submit&lt;/button&gt
                   </code>
                 </div>
               </div>

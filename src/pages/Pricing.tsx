@@ -1,5 +1,12 @@
 import { PatternBorder } from '@/components/PatternBorder';
 import { Button } from '@/components/ui/button';
+import { ErrorRecovery } from '@/components/ui/ErrorRecovery';
+import { Typography } from '@/components/ui/typography';
+import { secureStorage } from '@/utils/secureStorage';
+import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Card,
   CardContent,
@@ -8,12 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ErrorRecovery, useErrorRecovery } from '@/components/ui/ErrorRecovery';
-import { Typography } from '@/components/ui/typography';
-import { secureStorage } from '@/utils/secureStorage';
-import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -137,9 +138,8 @@ const Pricing = () => {
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
-          className="px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10 transition-colors"
-        >
-          <span className="mr-2 text-lg">&#8592;</span>
+          className="px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10 transition-colors">
+          <span className="mr-2 text-lg">&#8592</span>
           Back to Home
         </Button>
       </div>

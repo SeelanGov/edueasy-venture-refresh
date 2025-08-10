@@ -26,7 +26,7 @@ export const useSponsorPayments = (sponsorId: string | undefined): void => {
     queryKey: ['sponsorPayments', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partner_payments')
         .select('*')
         .eq('partner_id', sponsorId)

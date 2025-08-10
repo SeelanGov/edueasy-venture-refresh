@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+
+
+
+
+
+
 
 const CounselorLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +33,7 @@ const CounselorLogin: React.FC = () => {
     }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data } = await supabase.auth.signInWithPassword({
         email: form.email,
         password: form.password,
       });
@@ -67,7 +73,7 @@ const CounselorLogin: React.FC = () => {
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-purple-600 hover:bg-purple-600/10"
             onClick={() => navigate('/')}
           >
-            <span className="mr-2 text-lg">&#8592;</span>
+            <span className="mr-2 text-lg">&#8592</span>
             Back to Home
           </Button>
         </div>
@@ -97,8 +103,7 @@ const CounselorLogin: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
-          >
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150">
             {loading ? 'Logging in...' : 'Log In'}
           </Button>
         </form>

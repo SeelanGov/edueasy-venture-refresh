@@ -1,6 +1,9 @@
 import { useDocumentAnalytics } from '@/hooks/analytics';
-import type { AnalyticsFilters, DocumentAnalytics } from '@/hooks/analytics/types';
+import { type AnalyticsFilters  } from '@/hooks/analytics/types';
 import { createContext, useContext, type ReactNode } from 'react';
+
+
+
 
 interface AnalyticsContextType {
   analytics: DocumentAnalytics | null;
@@ -23,7 +26,7 @@ interface AnalyticsProviderProps {
  * AnalyticsProvider
  * @description Function
  */
-export const AnalyticsProvider = ({ children, initialFilters }: AnalyticsProviderProps) => {
+export const AnalyticsProvider = ({ children }: AnalyticsProviderProps) => {
   const analyticsData = useDocumentAnalytics(initialFilters);
 
   return <AnalyticsContext.Provider value={analyticsData}>{children}</AnalyticsContext.Provider>;

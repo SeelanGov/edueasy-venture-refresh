@@ -17,7 +17,7 @@ interface ProgressIndicatorProps {
  * ProgressIndicator
  * @description Function
  */
-export const ProgressIndicator = ({ steps, className }: ProgressIndicatorProps): void => {
+export const ProgressIndicator = ({ steps }: ProgressIndicatorProps): void => {
   return (
     <div className={cn('w-full', className)}>
       <div className="flex items-center justify-between mb-4">

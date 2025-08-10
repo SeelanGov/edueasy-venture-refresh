@@ -1,8 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import type { ErrorSeverity } from '@/utils/errorLogging';
-import logger from '../utils/logger';
+import { type ErrorSeverity  } from '@/utils/errorLogging';
+import { logger } from '../utils/logger';
+
+
+
+
+
 
 export interface ErrorLogEntry {
   id: string;
@@ -48,7 +54,7 @@ export const useAdminErrorNotifications = (): void => {
 
     try {
       // Use direct query instead of RPC function
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('system_error_logs')
         .select('*')
         .eq('is_resolved', false)

@@ -14,7 +14,7 @@ export const verifyAdminAccess = async (userId: string | undefined): Promise<boo
 
   try {
     // Use the enhanced is_admin function with better error handling
-    const { data, error } = await supabase.rpc('is_admin', {
+    const { data } = await supabase.rpc('is_admin', {
       user_uuid: userId,
     });
 

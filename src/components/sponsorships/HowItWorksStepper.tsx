@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { CircleCheck, BookOpen, Star } from 'lucide-react';
 
 const steps = [
@@ -30,8 +30,7 @@ export function HowItWorksStepper(): JSX.Element {
         <Card
           key={idx}
           className="w-full md:w-80 card-interactive bg-white flex-1 flex flex-col items-center p-6 gap-4 
-            shadow-md border border-cap-teal/10"
-        >
+            shadow-md border border-cap-teal/10">
           <CardContent className="flex flex-col items-center">
             <div className="w-12 h-12 bg-cap-teal/20 text-cap-teal flex items-center justify-center rounded-full mb-2 text-xl">
               <step.icon className="w-7 h-7" />

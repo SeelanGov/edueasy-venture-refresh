@@ -1,7 +1,14 @@
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, Download, FileText, RefreshCw, Target, Users } from '@/components/ui/icons';
+import { SkeletonButton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { memo, useEffect, useState } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -9,17 +16,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { SkeletonButton, SkeletonDashboardCard } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
-import { useAuth } from '@/hooks/useAuth';
+
 import {
   analyticsService,
   type ApplicationAnalytics,
   type RevenueAnalytics,
   type UserAnalytics,
 } from '@/services/AnalyticsService';
-import { memo, useEffect, useState } from 'react';
 
 interface AnalyticsDashboardProps {
   className?: string;
@@ -354,8 +357,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
                 <Button
                   onClick={() => handleExportReport('application')}
                   variant="outline"
-                  size="sm"
-                >
+                  size="sm">
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>

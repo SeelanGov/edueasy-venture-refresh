@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { UseFormReturn } from 'react-hook-form';
-import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
+import { type UseFormReturn  } from 'react-hook-form';
+import { type ApplicationFormValues  } from '@/components/application/ApplicationFormFields';
+
+
+
+
 
 /**
  * Hook for loading draft applications from Supabase
@@ -23,7 +27,7 @@ export const useDraftLoading = (
       if (!userId) return;
 
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('applications')
           .select('*')
           .eq('user_id', userId)

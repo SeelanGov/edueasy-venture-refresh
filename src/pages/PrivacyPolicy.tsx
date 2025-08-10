@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
 import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PrivacyPolicy = () => {
@@ -64,8 +64,7 @@ const PrivacyPolicy = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2"
-              >
+                className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
@@ -104,8 +103,7 @@ const PrivacyPolicy = () => {
                           : 'hover:bg-gray-100 text-gray-700'
                       }`}
                       variant="ghost"
-                      size="sm"
-                    >
+                      size="sm">
                       {section.title}
                     </Button>
                   ))}
@@ -145,8 +143,7 @@ const PrivacyPolicy = () => {
                 <section
                   id="information-we-collect"
                   data-section="information-we-collect"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     2. INFORMATION WE COLLECT
                   </Typography>
@@ -250,8 +247,7 @@ const PrivacyPolicy = () => {
                 <section
                   id="how-we-use-information"
                   data-section="how-we-use-information"
-                  className="mb-12"
-                >
+                  className="mb-12">
                   <Typography variant="h2" className="text-cap-teal mb-6">
                     3. HOW WE USE YOUR INFORMATION
                   </Typography>
@@ -365,8 +361,7 @@ const PrivacyPolicy = () => {
                             <strong>Email:</strong>{' '}
                             <a
                               href="mailto:info@edueasy.co"
-                              className="text-cap-teal hover:underline"
-                            >
+                              className="text-cap-teal hover:underline">
                               info@edueasy.co
                             </a>
                           </div>
@@ -420,8 +415,7 @@ const PrivacyPolicy = () => {
                               href="https://www.justice.gov.za/inforeg"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-cap-teal hover:underline ml-2 inline-flex items-center gap-1"
-                            >
+                              className="text-cap-teal hover:underline ml-2 inline-flex items-center gap-1">
                               https://www.justice.gov.za/inforeg
                               <ExternalLink className="h-3 w-3" />
                             </a>
@@ -443,8 +437,7 @@ const PrivacyPolicy = () => {
                     </div>
                     <Button
                       onClick={() => navigate('/')}
-                      className="bg-cap-teal hover:bg-cap-teal/90"
-                    >
+                      className="bg-cap-teal hover:bg-cap-teal/90">
                       Return to EduEasy
                     </Button>
                   </div>

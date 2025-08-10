@@ -1,6 +1,13 @@
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { memo, useEffect, useState } from 'react';
+
 import {
   AlertTriangle,
   Bell,
@@ -21,16 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
+
 import {
   notificationService,
   type NotificationRecord,
   type UserNotificationPreferences,
 } from '@/services/NotificationService';
-import { memo, useEffect, useState } from 'react';
 
 const NotificationPreferences = memo(() => {
   const { toast } = useToast();
@@ -504,8 +507,7 @@ const NotificationPreferences = memo(() => {
                           <Button
                             onClick={() => handleMarkAsRead(notification.id)}
                             size="sm"
-                            variant="ghost"
-                          >
+                            variant="ghost">
                             <Eye className="h-4 w-4 mr-1" />
                             Mark as Read
                           </Button>

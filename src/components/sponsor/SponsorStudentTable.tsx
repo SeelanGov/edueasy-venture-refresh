@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/button';
-import type { SponsorAllocation } from '@/types/SponsorTypes';
-import React from 'react';
+import { type SponsorAllocation  } from '@/types/SponsorTypes';
+import { React } from 'react';
+
+
+
 
 interface SponsorStudentTableProps {
   allocations: SponsorAllocation[];

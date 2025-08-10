@@ -1,8 +1,8 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 
 const NotFound = () => {
@@ -51,8 +51,7 @@ const NotFound = () => {
           <Button
             variant="ghost"
             onClick={() => window.history.back()}
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2"
-          >
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
             Go Back
           </Button>

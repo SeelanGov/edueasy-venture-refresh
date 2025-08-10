@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode   } from 'react';
+import { useState } from 'react';
+
 
 interface AccessibilityContextType {
   // High contrast mode
@@ -44,7 +45,8 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
   const [enableKeyboardNavigation, setEnableKeyboardNavigation] = useState(true);
 
   // Load accessibility preferences from localStorage
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
     const savedHighContrast = localStorage.getItem('accessibility-high-contrast') === 'true';
     const savedReducedMotion = localStorage.getItem('accessibility-reduced-motion') === 'true';
     const savedFontSize =

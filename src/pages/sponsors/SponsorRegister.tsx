@@ -1,8 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
+
 
 const SponsorRegister = () => {
   const [form, setForm] = useState({
@@ -127,8 +132,7 @@ const SponsorRegister = () => {
           value={form.name}
           className="input"
           required
-          placeholder="Name"
-        />
+          placeholder="Name" />
         <input
           name="email"
           onChange={handleChange}
@@ -136,15 +140,13 @@ const SponsorRegister = () => {
           className="input"
           required
           type="email"
-          placeholder="Email"
-        />
+          placeholder="Email" />
         <input
           name="phone"
           onChange={handleChange}
           value={form.phone}
           className="input"
-          placeholder="Phone"
-        />
+          placeholder="Phone" />
         <select
           name="organization_type"
           onChange={handleChange}

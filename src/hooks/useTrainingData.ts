@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTrainingMessages } from './training/useTrainingMessages';
 import { useTrainingEntries } from './training/useTrainingEntries';
-import type { TrainingFilters, ChatMessage } from '@/types/TrainingTypes';
+import { type TrainingFilters  } from '@/types/TrainingTypes';
+
+
+
+
+
 
 // Define TrainingEntry interface locally to avoid conflicts
 interface TrainingEntry {

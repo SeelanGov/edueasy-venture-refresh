@@ -1,11 +1,13 @@
 import { toast } from '@/components/ui/use-toast';
-import type { StandardError } from './errorHandler';
+import { type StandardError } from './errorHandler';
+
+
 
 /**
  * logError
  * @description Function
  */
-export function logError(error: StandardError, notifyUser = true): void {
+export function logError(error: StandardError, notifyUser = false): void {
   // Always log to console for devs
   console.error(`[${error.category}] ${error.message}`, error);
 

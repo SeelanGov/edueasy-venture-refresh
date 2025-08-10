@@ -1,18 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import { useNetwork } from '@/hooks/useNetwork';
-import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
 import { useApplicationFormState } from '@/hooks/useApplicationFormState';
-import { useDraftManagement } from '@/hooks/useDraftManagement';
 import { useApplicationSubmission } from '@/hooks/useApplicationSubmission';
 import { useDraftLoading } from '@/hooks/useDraftLoading';
-import type { ApplicationFormValues, DraftFormData } from '@/types/ApplicationTypes';
+import { useDraftManagement } from '@/hooks/useDraftManagement';
+import { useNetwork } from '@/hooks/useNetwork';
+import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
+import { type ApplicationFormValues  } from '@/types/ApplicationTypes';
+
+
+
+
+
+
+
 
 /**
  * useApplicationForm
  * @description Function
  */
 export const useApplicationForm = (): void => {
-  const navigate = useNavigate();
   const { isOnline } = useNetwork();
 
   // Get form state from the specialized hook
@@ -34,13 +39,13 @@ export const useApplicationForm = (): void => {
   };
 
   // Initialize the storage hooks
-  const { loadSavedForm, clearSavedForm } = useOfflineFormStorage(form, isOnline);
+  const { clearSavedForm } = useOfflineFormStorage(form, isOnline);
 
   // Load draft from Supabase
   useDraftLoading(user?.id, isOnline, form, setHasSavedDraft);
 
   // Initialize draft management with proper type conversion
-  const { isSavingDraft, saveDraft } = useDraftManagement(
+  const { isSavingDraft } = useDraftManagement(
     user?.id,
     isOnline,
     documentFile,
@@ -49,11 +54,7 @@ export const useApplicationForm = (): void => {
   );
 
   // Initialize application submission
-  const {
-    isSubmitting,
-    onSubmit: submitFormData,
-    handleSyncNow: syncNow,
-  } = useApplicationSubmission(
+  const { isSubmitting, onSubmit: submitFormData } = useApplicationSubmission(
     user?.id,
     isOnline,
     documentFile,

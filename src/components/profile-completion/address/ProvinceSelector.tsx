@@ -1,5 +1,9 @@
-import React from 'react';
+import { React } from 'react';
 import { FormField, FormItem, FormControl, FormMessage, FormLabel } from '@/components/ui/form';
+import { type Control  } from 'react-hook-form';
+import { type AddressFormValues  } from './types';
+
+
 import {
   Select,
   SelectContent,
@@ -7,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Control } from 'react-hook-form';
-import type { AddressFormValues } from './types';
+
+
 
 // South African provinces
 const provinces = [

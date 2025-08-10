@@ -1,10 +1,17 @@
-import React from 'react';
-import type { SubjectMark } from '@/hooks/useProfileCompletionStore';
+import { React } from 'react';
+import { type SubjectMark  } from '@/hooks/useProfileCompletionStore';
 import { SubjectEntry } from './SubjectEntry';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import type { Control } from 'react-hook-form';
+import { type Control  } from 'react-hook-form';
+
+
+
+
+
+
+
 
 interface EducationFormData {
   province: string;
@@ -54,8 +61,7 @@ export const GradeSubjectsTab: React.FC<GradeSubjectsTabProps> = ({
           variant="outline"
           size="sm"
           onClick={() => append(createSubject())}
-          className="mt-2 text-cap-teal border-cap-teal hover:bg-cap-teal/10"
-        >
+          className="mt-2 text-cap-teal border-cap-teal hover:bg-cap-teal/10">
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Subject
         </Button>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export interface Intent {
@@ -21,7 +21,7 @@ export interface IntentWithStats extends Intent {
  * useIntentManagement
  * @description Function
  */
-export const useIntentManagement = (): void => {
+export const useIntentManagement = () => {
   const [intents, setIntents] = useState<IntentWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIntent, setSelectedIntent] = useState<IntentWithStats | null>(null);
@@ -32,7 +32,7 @@ export const useIntentManagement = (): void => {
     setLoading(true);
     try {
       // Get all intents with aggregated stats
-      const { data, error } = await supabase.rpc('get_intents_with_stats');
+      const { data } = await supabase.rpc('get_intents_with_stats');
 
       if (error) throw error;
 
@@ -65,7 +65,7 @@ export const useIntentManagement = (): void => {
     sample_queries?: string[];
   }) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('thandi_intents')
         .insert({
           intent_name: intentData.intent_name,
@@ -150,6 +150,7 @@ export const useIntentManagement = (): void => {
   };
 
   // Load intents when component mounts
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchIntents();
   }, []);

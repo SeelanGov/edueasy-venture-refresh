@@ -1,9 +1,16 @@
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
-import type { DocumentType } from '@/components/profile-completion/documents/types';
-import type { DocumentInfo } from '@/types/ApplicationTypes';
-import logger from '@/utils/logger';
+import { type DocumentType  } from '@/components/profile-completion/documents/types';
+import { type DocumentInfo  } from '@/types/ApplicationTypes';
+import { logger } from '@/utils/logger';
+import { type DocumentUploadState  } from '@/hooks/useDocumentUploadManager';
+
+
+
+
+
+
 
 // Extended interface with index signature
 export interface DocumentsStore {
@@ -37,7 +44,7 @@ export const useSupabaseUpload = (
       const filePath = `users/${userId}/applications/${applicationId}/${documentType}/${documentId}-${file.name}`;
 
       try {
-        const { data, error } = await supabase.storage.from('documents').upload(filePath, file, {
+        const { data } = await supabase.storage.from('documents').upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
         });
@@ -132,4 +139,4 @@ export const useSupabaseUpload = (
 };
 
 // Import the type so that it's available in this file
-import type { DocumentUploadState } from '@/hooks/useDocumentUploadManager';
+

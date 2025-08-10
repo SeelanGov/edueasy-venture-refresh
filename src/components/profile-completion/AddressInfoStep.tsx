@@ -1,13 +1,23 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { AddressForm } from './address/AddressForm';
-import type { AddressFormValues } from './address/types';
+import { type AddressFormValues  } from './address/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+
+
+
+
+
+
+
+
+
+
 
 interface AddressInfoStepProps {
   onComplete: () => void;
@@ -18,11 +28,11 @@ interface AddressInfoStepProps {
  * AddressInfoStep
  * @description Function
  */
-export const AddressInfoStep = ({ onComplete, onBack }: AddressInfoStepProps): JSX.Element => {
+export const AddressInfoStep = ({ onComplete }: AddressInfoStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { addressInfo, setAddressInfo } = useProfileCompletionStore();
+  const { addressInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: AddressFormValues) => {
     if (!user) return;

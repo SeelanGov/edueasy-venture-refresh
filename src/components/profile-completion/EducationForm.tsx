@@ -1,8 +1,16 @@
-import React from 'react';
-import { z } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { type SubjectMark  } from '@/hooks/useProfileCompletionStore';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { React } from 'react';
+import { useFieldArray } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+import { GradeSubjectsTab } from './GradeSubjectsTab';
+
+
 import {
   Form,
   FormControl,
@@ -11,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+
 import {
   Select,
   SelectContent,
@@ -19,11 +27,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/Spinner';
-import type { SubjectMark } from '@/hooks/useProfileCompletionStore';
-import { GradeSubjectsTab } from './GradeSubjectsTab';
+
+
+
+
+
+
+
+
 
 // South African provinces
 const provinces = [
@@ -82,8 +93,6 @@ export const EducationForm: React.FC<EducationFormProps> = ({
   onBack,
   isSubmitting,
 }) => {
-  const [activeTab, setActiveTab] = React.useState('grade11');
-
   // Helper function to create a properly typed SubjectMark object
   const createSubject = (): SubjectMark => {
     return {
@@ -218,16 +227,14 @@ export const EducationForm: React.FC<EducationFormProps> = ({
             type="button"
             variant="outline"
             onClick={onBack}
-            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10"
-          >
+            className="border-cap-teal text-cap-teal hover:bg-cap-teal/10">
             Back
           </Button>
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-cap-teal hover:bg-cap-teal/90"
-          >
+            className="bg-cap-teal hover:bg-cap-teal/90">
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : null}
             {isSubmitting ? 'Saving...' : 'Continue'}
           </Button>

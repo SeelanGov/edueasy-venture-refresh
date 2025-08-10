@@ -5,8 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { secureStorage } from '@/utils/secureStorage';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
@@ -123,8 +123,7 @@ export default function PaymentSuccess() {
                 <Button
                   onClick={() => navigate('/subscription')}
                   variant="outline"
-                  className="flex-1"
-                >
+                  className="flex-1">
                   View Subscription
                 </Button>
               </div>
@@ -171,8 +170,7 @@ export default function PaymentSuccess() {
                 <Button
                   onClick={() => window.location.reload()}
                   variant="outline"
-                  className="flex-1"
-                >
+                  className="flex-1">
                   Check Again
                 </Button>
               </div>

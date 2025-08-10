@@ -1,4 +1,5 @@
-import type { DocumentFileValidation } from './types';
+import { type DocumentFileValidation  } from './types';
+
 
 /**
  * validateFile

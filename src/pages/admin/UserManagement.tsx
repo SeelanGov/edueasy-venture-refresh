@@ -1,6 +1,13 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/components/ui/use-toast';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { Building2, Heart, Shield, UserCheck, Users } from 'lucide-react';
+import { useEffect } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -8,12 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { toast } from '@/components/ui/use-toast';
-import { useAdminRole } from '@/hooks/useAdminRole';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { Building2, Heart, Shield, UserCheck, Users } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface UserWithRole {
   id: string;

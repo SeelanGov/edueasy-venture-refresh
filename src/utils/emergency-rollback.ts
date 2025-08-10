@@ -61,5 +61,5 @@ export const clearEmergencyRollback = (): void => {
   localStorage.removeItem('VITE_ENABLE_NEW_COLORS');
   localStorage.removeItem('VITE_ENABLE_NEW_LAYOUTS');
 
-  console.log('✅ Emergency rollback cleared');
+  console.warn('✅ Emergency rollback cleared');
 };

@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, Lock, Unlock, AlertTriangle, Save, History } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+
+
+
+
+
+
+
 
 interface UISnapshot {
   id: string;
@@ -35,7 +42,8 @@ export const UILockSystem = (): JSX.Element => {
   const [isLockActive, setIsLockActive] = useState(false);
 
   // Initialize with current state
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
     initializeUIState();
   }, []);
 
@@ -254,8 +262,7 @@ export const UILockSystem = (): JSX.Element => {
             {snapshots.map((snapshot) => (
               <div
                 key={snapshot.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
-              >
+                className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-medium">{snapshot.name}</h4>
@@ -299,8 +306,7 @@ export const UILockSystem = (): JSX.Element => {
             {components.map((component, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between py-2 border-b last:border-b-0"
-              >
+                className="flex items-center justify-between py-2 border-b last:border-b-0">
                 <div>
                   <p className="font-medium">{component.name}</p>
                   <p className="text-sm text-muted-foreground">{component.path}</p>

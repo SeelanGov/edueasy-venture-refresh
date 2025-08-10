@@ -1,5 +1,7 @@
-import type { DocumentDateData, DocumentTypeData, RejectionReason } from './types';
-import type { Database } from '@/integrations/supabase/types';
+import { type DocumentDateData, DocumentTypeData, RejectionReason  } from './types';
+import { type Database  } from '@/integrations/supabase/types';
+
+
 
 type Document = Database['public']['Tables']['documents']['Row'];
 
@@ -99,7 +101,7 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
     }, {});
 
   return Object.entries(rejectionReasons)
-    .map(([reason, count]) => ({ reason, count }))
+    .map(([reason, count]) => ({ reason }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 };

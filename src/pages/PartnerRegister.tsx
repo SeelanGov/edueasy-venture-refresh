@@ -1,11 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import React, { useState } from 'react';
+import { RadioGroup } from '@/components/ui/radio-group';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Import supabase for registration (assume import path for client)
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
+
+
+
+
+
+// Import supabase for registration (assume import path for client)
+
+
 
 const PartnerRegister: React.FC = () => {
   const navigate = useNavigate();
@@ -120,7 +127,7 @@ const PartnerRegister: React.FC = () => {
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
-            <span className="mr-2 text-lg">&#8592;</span>
+            <span className="mr-2 text-lg">&#8592</span>
             Back to Home
           </Button>
         </div>
@@ -186,8 +193,7 @@ const PartnerRegister: React.FC = () => {
               {tierOptions.map((option) => (
                 <div
                   key={option.value}
-                  className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50"
-                >
+                  className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50">
                   <RadioGroupItem value={option.value} id={option.value} />
                   <Label htmlFor={option.value} className="flex-1 cursor-pointer">
                     <div className="font-medium">{option.label}</div>
@@ -204,8 +210,7 @@ const PartnerRegister: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
-          >
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150">
             {loading ? 'Registering...' : 'Register'}
           </Button>
         </form>

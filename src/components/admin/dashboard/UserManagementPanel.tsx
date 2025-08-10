@@ -9,6 +9,16 @@ import { Check, Download, X } from 'lucide-react';
 import { useState } from 'react';
 import { UserProfileModal } from './UserProfileModal';
 
+
+
+
+
+
+
+
+
+
+
 interface DatabaseUser {
   id: string;
   created_at: string;
@@ -40,7 +50,7 @@ export function UserManagementPanel({
   trackingIdSearch,
   setTrackingIdSearch,
   refreshUsers,
-}: Props): JSX.Element {
+}: any): JSX.Element {
   const [showOnlyVerified, setShowOnlyVerified] = useState<null | boolean>(null);
   const [exporting, setExporting] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -64,7 +74,7 @@ export function UserManagementPanel({
   });
 
   // Manual verify toggle with audit logging
-  async function handleToggleVerified(user: DatabaseUser) {
+  async function handleToggleVerified(user: any): unknown): unknown) {
     const newStatus = !user.id_verified;
     const { error } = await supabase
       .from('users')
@@ -123,7 +133,7 @@ export function UserManagementPanel({
     setTimeout(() => setExporting(false), 500);
   }
 
-  function handleOpenProfile(user: DatabaseUser) {
+  function handleOpenProfile(user: any): unknown): unknown) {
     setProfileUser(user);
     setOpenProfileModal(true);
   }
@@ -147,15 +157,13 @@ export function UserManagementPanel({
               placeholder="Search Tracking ID..."
               value={trackingIdSearch}
               onChange={(e) => setTrackingIdSearch(e.target.value)}
-              className="input input-bordered px-3 py-2 border rounded w-52"
-            />
+              className="input input-bordered px-3 py-2 border rounded w-52" />
             <input
               type="text"
               placeholder="Search Name/Email..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="input input-bordered px-3 py-2 border rounded w-56"
-            />
+              className="input input-bordered px-3 py-2 border rounded w-56" />
             <div className="flex gap-2 mt-2 md:mt-0">
               <Button
                 type="button"
@@ -179,8 +187,7 @@ export function UserManagementPanel({
                 variant="outline"
                 onClick={handleExport}
                 disabled={exporting}
-                className="ml-4"
-              >
+                className="ml-4">
                 <Download className="h-4 w-4 mr-1" /> Export CSV
               </Button>
             </div>
@@ -191,8 +198,7 @@ export function UserManagementPanel({
             {filteredUsers.map((userData) => (
               <div
                 key={userData.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
-              >
+                className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium flex items-center gap-2">
                     <span className="text-blue-700 font-mono">{userData.tracking_id || 'N/A'}</span>

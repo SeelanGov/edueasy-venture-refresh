@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
  * @description Function
  */
 export const HeroContent = (): JSX.Element => {
-  const { user, userType: _userType, isVerified } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleStartApplication = (): void => {
@@ -70,7 +70,7 @@ export const HeroContent = (): JSX.Element => {
 
       // Allow access but show tier limitations in Meet Thandi page
       navigate('/meet-thandi', { state: { thandiTier } });
-    } catch (_error) {
+    } catch {
       console.error('Error fetching statistics');
     }
   };
@@ -83,8 +83,7 @@ export const HeroContent = (): JSX.Element => {
         </div>
         <Typography
           variant="h1"
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight"
-        >
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
           Empowering SA Youth, Online and Offline
         </Typography>
 

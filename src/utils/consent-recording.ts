@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 
+
 export interface ConsentData {
   privacy: boolean;
   terms: boolean;
@@ -70,7 +71,7 @@ export async function recordUserConsents(userId: string, consents: ConsentData):
  * Check if user has valid consent for a specific type
  */
 export async function hasValidConsent(userId: string, consentType: string): Promise<boolean> {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('user_consents')
     .select('accepted')
     .eq('user_id', userId)
@@ -89,7 +90,7 @@ export async function hasValidConsent(userId: string, consentType: string): Prom
  * Get user's consent history
  */
 export async function getUserConsentHistory(userId: string): Promise<ConsentRecord[]> {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('user_consents')
     .select('*')
     .eq('user_id', userId)
@@ -195,7 +196,7 @@ export async function getConsentStatistics(): Promise<{
   idVerificationConsent: number;
   marketingConsent: number;
 }> {
-  const { data, error } = await supabase.from('user_consents').select('consent_type, accepted');
+  const { data } = await supabase.from('user_consents').select('consent_type, accepted');
 
   if (error) {
     console.error('Failed to fetch consent statistics:', error);

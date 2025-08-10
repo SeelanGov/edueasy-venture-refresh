@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { React } from 'react';
+import { Card } from '@/components/ui/card';
 import { Stepper } from '@/components/ui/stepper';
 
 // Define the step type to fix TypeScript error

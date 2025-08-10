@@ -1,7 +1,11 @@
-import React from 'react';
+import { React } from 'react';
 import { DocumentUploadInput } from './DocumentUploadInput';
-import type { DocumentType, DocumentUploadState, Step } from './types';
-import type { VerificationResult } from '@/hooks/useDocumentVerification';
+import { type DocumentType, DocumentUploadState, Step  } from './types';
+import { type VerificationResult  } from '@/hooks/useDocumentVerification';
+
+
+
+
 
 interface DocumentUploadGridProps {
   documentStates: Record<DocumentType, DocumentUploadState>;
@@ -52,8 +56,7 @@ export const DocumentUploadGrid: React.FC<DocumentUploadGridProps> = ({
         currentDocumentType={currentDocumentType}
         uploadSteps={uploadSteps}
         currentStep={currentStep}
-        accept="image/*, application/pdf"
-      />
+        accept="image/*, application/pdf" />
 
       <DocumentUploadInput
         documentType="proofOfResidence"
@@ -70,8 +73,7 @@ export const DocumentUploadGrid: React.FC<DocumentUploadGridProps> = ({
         currentDocumentType={currentDocumentType}
         uploadSteps={uploadSteps}
         currentStep={currentStep}
-        accept="image/*, application/pdf"
-      />
+        accept="image/*, application/pdf" />
 
       <DocumentUploadInput
         documentType="grade11Results"
@@ -88,8 +90,7 @@ export const DocumentUploadGrid: React.FC<DocumentUploadGridProps> = ({
         currentDocumentType={currentDocumentType}
         uploadSteps={uploadSteps}
         currentStep={currentStep}
-        accept="image/*, application/pdf"
-      />
+        accept="image/*, application/pdf" />
 
       <DocumentUploadInput
         documentType="grade12Results"
@@ -106,8 +107,7 @@ export const DocumentUploadGrid: React.FC<DocumentUploadGridProps> = ({
         currentDocumentType={currentDocumentType}
         uploadSteps={uploadSteps}
         currentStep={currentStep}
-        accept="image/*, application/pdf"
-      />
+        accept="image/*, application/pdf" />
     </div>
   );
 };

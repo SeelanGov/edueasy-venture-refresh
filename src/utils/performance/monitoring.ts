@@ -97,7 +97,7 @@ export const monitorWebVitals = (): void => {
   if (typeof window !== 'undefined') {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        console.log(`Web Vital: ${entry.name} = ${entry.value}`);
+        console.warn(`Web Vital: ${entry.name} = ${entry.value}`);
       }
     });
 
@@ -118,7 +118,7 @@ export const monitorRouteLoad = (routeName: string): (() => void) => {
 
   return () => {
     const duration = monitor.endTimer(`route-load-${routeName}`);
-    console.log(`Route ${routeName} loaded in ${duration.toFixed(2)}ms`);
+    console.warn(`Route ${routeName} loaded in ${duration.toFixed(2)}ms`);
   };
 };
 
@@ -133,6 +133,6 @@ export const monitorAPICall = (endpoint: string): (() => void) => {
 
   return () => {
     const duration = monitor.endTimer(`api-${endpoint}`);
-    console.log(`API ${endpoint} completed in ${duration.toFixed(2)}ms`);
+    console.warn(`API ${endpoint} completed in ${duration.toFixed(2)}ms`);
   };
 };

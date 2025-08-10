@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
 
 interface Application {
   id: string;
@@ -32,7 +32,7 @@ export const useApplications = () => {
       }
 
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('applications')
           .select('*')
           .eq('user_id', user.id)
@@ -41,7 +41,7 @@ export const useApplications = () => {
         if (error) throw error;
 
         setApplications(data || []);
-      } catch (err) {
+      } catch {
         setApplications([]);
       } finally {
         setLoading(false);
@@ -51,5 +51,5 @@ export const useApplications = () => {
     fetchApplications();
   }, [user]);
 
-  return { applications, loading };
+  return { applications };
 };

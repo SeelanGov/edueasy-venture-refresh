@@ -1,6 +1,9 @@
 import { supabase } from '@/integrations/supabase/client';
 import { ErrorSeverity } from '@/utils/errorLogging';
-import type { Json } from '@/integrations/supabase/types';
+import { type Json  } from '@/integrations/supabase/types';
+
+
+
 
 /**
  * Create a standardized logging helper for security-related events

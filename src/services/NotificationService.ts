@@ -83,11 +83,11 @@ class NotificationService {
     userId: string,
     preferences: Partial<UserNotificationPreferences>,
   ): Promise<void> {
-    console.log('Updating preferences for', userId, preferences);
+    console.warn('Updating preferences for', userId, preferences);
   }
 
   async markNotificationAsRead(notificationId: string): Promise<void> {
-    console.log('Marking notification as read:', notificationId);
+    console.warn('Marking notification as read:', notificationId);
   }
 }
 

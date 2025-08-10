@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import type { DocumentUploadState } from '@/components/profile-completion/documents/types';
+import { type DocumentUploadState  } from '@/components/profile-completion/documents/types';
+
+
 
 /**
  * useDocumentUploadState

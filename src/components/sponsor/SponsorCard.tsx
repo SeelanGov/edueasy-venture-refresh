@@ -1,5 +1,7 @@
-import React from 'react';
-import type { Sponsor } from '@/types/SponsorTypes';
+import { React } from 'react';
+import { type Sponsor  } from '@/types/SponsorTypes';
+
+
 
 interface SponsorCardProps {
   sponsor: Sponsor;
@@ -18,7 +20,7 @@ const tierColor: Record<string, string> = {
  * SponsorCard
  * @description Function
  */
-export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor, onClick }) => (
+export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor }) => (
   <div
     className={`rounded-lg border shadow hover:shadow-lg transition cursor-pointer p-4 mb-2 w-full max-w-md bg-white`}
     onClick={() => onClick?.(sponsor.id)}

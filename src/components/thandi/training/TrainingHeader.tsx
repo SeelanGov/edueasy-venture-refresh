@@ -1,7 +1,11 @@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { ModelTrainingStatus } from './ModelTrainingStatus';
-import type { TrainingStats } from '@/hooks/useModelTraining';
+import { type TrainingStats  } from '@/hooks/useModelTraining';
+
+
+
+
 
 interface TrainingHeaderProps {
   lowConfidenceOnly: boolean;

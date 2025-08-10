@@ -47,8 +47,7 @@ export const FormActions = ({
         onClick={() => navigate('/auth-redirect')}
         disabled={isSubmitting || isSaving}
         className="md:py-6 md:px-6 md:text-base"
-        aria-label="Cancel and return to dashboard"
-      >
+        aria-label="Cancel and return to dashboard">
         Cancel
       </Button>
 
@@ -60,8 +59,7 @@ export const FormActions = ({
           disabled={isSubmitting || isSaving}
           className="md:py-6 md:px-6 md:text-base"
           aria-busy={isSaving}
-          aria-live="polite"
-        >
+          aria-live="polite">
           {isSaving ? (
             <>
               <Spinner size="sm" className="mr-2" aria-hidden="true" />
@@ -82,8 +80,7 @@ export const FormActions = ({
         disabled={isSubmitting || isSaving}
         className="md:py-6 md:px-8 md:text-base"
         aria-busy={isSubmitting}
-        aria-live="assertive"
-      >
+        aria-live="assertive">
         {isSubmitting ? (
           <>
             <Spinner size="sm" className="mr-2" aria-hidden="true" />
@@ -100,8 +97,7 @@ export const FormActions = ({
       {(isSubmitting || isSaving) && (
         <div
           className="flex items-center mt-2 text-sm sm:mt-0 md:ml-4 md:text-base"
-          aria-live="polite"
-        >
+          aria-live="polite">
           <AlertTriangle size={16} className="mr-1 text-warning md:size-5" aria-hidden="true" />
           <Typography variant="small" color="warning" className="md:text-sm">
             {isSubmitting

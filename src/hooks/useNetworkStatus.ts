@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
 import { playNotificationSound } from '@/utils/notificationSound';
+import { useCallback, useEffect, useState } from 'react';
 
 /**
  * useNetworkStatus
  * @description Function
  */
-export const useNetworkStatus = (): void => {
+export const useNetworkStatus = () => {
   const [isOnline, setIsOnline] = useState(
     typeof navigator !== 'undefined' ? navigator.onLine : true,
   );
@@ -68,7 +68,7 @@ export const useNetworkStatus = (): void => {
         setIsOnline(false);
         return false;
       }
-    } catch (error) {
+    } catch {
       setIsOnline(false);
       return false;
     } finally {

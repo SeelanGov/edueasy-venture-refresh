@@ -88,7 +88,7 @@ export const validateDesignSystemCompliance = (
  */
 export const runSmokeTest = async (testCase: SmokeTestCase): Promise<boolean> => {
   try {
-    console.log(`Running smoke test: ${testCase.name}`);
+    console.warn(`Running smoke test: ${testCase.name}`);
 
     // Mock implementation - in real scenario this would render the component
     // and verify all expected elements are present
@@ -101,7 +101,7 @@ export const runSmokeTest = async (testCase: SmokeTestCase): Promise<boolean> =>
       return false;
     }
 
-    console.log(`✅ Smoke test passed: ${testCase.name}`);
+    console.warn(`✅ Smoke test passed: ${testCase.name}`);
     return true;
   } catch (error) {
     console.error(`Smoke test error for ${testCase.name}:`, error);

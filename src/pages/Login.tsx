@@ -1,10 +1,20 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EnhancedFormField } from '@/components/ui/EnhancedFormField';
+import { Input } from '@/components/ui/input';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { useAuth } from '@/hooks/useAuth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+
 import {
   Form,
   FormControl,
@@ -13,21 +23,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { useAuth } from '@/hooks/useAuth';
+
 import {
   secureGetItem,
   secureRemoveItem,
   secureSetItem,
   startSession,
 } from '@/utils/security/localStorage';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
 
 const loginFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -38,7 +40,7 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const Login = () => {
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -154,15 +156,13 @@ const Login = () => {
                           type="password"
                           {...field}
                           disabled={isLoading}
-                          className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
-                        />
+                          className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20" />
                       </FormControl>
                       <FormMessage />
                       <div className="text-right">
                         <Link
                           to="/forgot-password"
-                          className="text-sm text-cap-teal hover:text-cap-teal/80 hover:underline"
-                        >
+                          className="text-sm text-cap-teal hover:text-cap-teal/80 hover:underline">
                           Forgot password?
                         </Link>
                       </div>
@@ -203,8 +203,7 @@ const Login = () => {
                     Don't have an account?{' '}
                     <Link
                       to="/register"
-                      className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
-                    >
+                      className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                       Sign up
                     </Link>
                   </p>
@@ -217,8 +216,7 @@ const Login = () => {
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
-          >
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

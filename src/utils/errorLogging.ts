@@ -1,7 +1,11 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { StandardError } from './errorHandler';
 import { toast } from 'sonner';
+import { type StandardError } from './errorHandler';
 import logger from './logger';
+
+
+
+
 
 export enum ErrorSeverity {
   INFO = 'info',
@@ -123,7 +127,7 @@ export const safeAsyncWithLogging = async <T>(
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
     // Fixed: Use proper count method with Supabase
-    const { error, count } = await supabase.from('documents').select('*');
+    const { error } = await supabase.from('documents').select('*');
 
     if (error) throw error;
     return count || 0;

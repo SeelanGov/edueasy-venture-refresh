@@ -56,7 +56,7 @@ export interface ConsultationBooking {
  * formatCurrency
  * @description Function
  */
-export function formatCurrency(amount: number, currency: string = 'ZAR'): string {
+export function formatCurrency(amount: number, currency: string = ''): string {
   return new Intl.NumberFormat('en-ZA', {
     style: 'currency',
     currency: currency,
@@ -67,7 +67,7 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
  * getSubscriptionPrice
  * @description Function
  */
-export function getSubscriptionPrice(tier: SubscriptionTier): number {
+export function getSubscriptionPrice(tier: any): number {
   return tier.price_once_off;
 }
 
@@ -75,7 +75,10 @@ export function getSubscriptionPrice(tier: SubscriptionTier): number {
  * getThandiCapabilities
  * @description Function
  */
-export function getThandiCapabilities(tierName: SubscriptionTierName): void {
+export function getThandiCapabilities(tierName: any): {
+  tier: 'basic' | 'guidance' | 'advanced';
+  features: string[];
+} {
   switch (tierName) {
     case SubscriptionTierName.STARTER:
       return {

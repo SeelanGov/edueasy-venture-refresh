@@ -1,14 +1,6 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +10,15 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { PageLayout } from '@/components/layout/PageLayout';
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -79,8 +80,7 @@ const ForgotPassword = (): void => {
                 </div>
                 <Link
                   to="/login"
-                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium inline-flex items-center gap-2"
-                >
+                  className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium inline-flex items-center gap-2">
                   <ArrowLeft className="h-4 w-4" /> Back to Login
                 </Link>
               </div>
@@ -107,8 +107,7 @@ const ForgotPassword = (): void => {
                             type="email"
                             {...field}
                             disabled={isLoading}
-                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20"
-                          />
+                            className="border-gray-200 focus:border-cap-teal focus:ring-cap-teal/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -129,8 +128,7 @@ const ForgotPassword = (): void => {
                       Remember your password?{' '}
                       <Link
                         to="/login"
-                        className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium"
-                      >
+                        className="text-cap-teal hover:text-cap-teal/80 hover:underline font-medium">
                         Sign in
                       </Link>
                     </p>
@@ -144,8 +142,7 @@ const ForgotPassword = (): void => {
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors"
-          >
+            className="text-gray-600 hover:text-cap-teal inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

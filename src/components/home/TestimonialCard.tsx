@@ -75,8 +75,7 @@ export const TestimonialCard = ({ testimonial }: TestimonialCardProps): JSX.Elem
         <div className="flex-grow text-center lg:text-left">
           <Typography
             variant="body-lg"
-            className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700"
-          >
+            className="italic mb-6 md:text-xl md:leading-relaxed text-gray-700">
             "{testimonial.quote}"
           </Typography>
 

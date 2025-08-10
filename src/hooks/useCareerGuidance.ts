@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -57,7 +57,7 @@ export const useCareerGuidance = (): void => {
     setError(null);
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('career_assessments')
         .select('*')
         .eq('user_id', user.id)
@@ -85,7 +85,7 @@ export const useCareerGuidance = (): void => {
     setError(null);
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('career_guidance')
         .select('*')
         .eq('user_id', user.id)
@@ -110,7 +110,7 @@ export const useCareerGuidance = (): void => {
     if (!user) return null;
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('career_assessments')
         .select('*')
         .eq('id', assessmentId)
@@ -205,7 +205,7 @@ export const useCareerGuidance = (): void => {
         areas_for_growth: ['Communication', 'Leadership'],
       };
 
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('career_assessments')
         .update({
           responses,
@@ -264,7 +264,7 @@ export const useCareerGuidance = (): void => {
           : null,
       };
 
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('career_guidance')
         .insert({
           user_id: user.id,

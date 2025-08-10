@@ -1,9 +1,15 @@
-import { useState, useEffect } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
+import { useState } from 'react';
+import { type UseFormReturn  } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { ApplicationFormValues } from '@/components/application/ApplicationFormFields';
-import type { UserProfile } from '@/types/UserProfile';
+import { type ApplicationFormValues  } from '@/components/application/ApplicationFormFields';
+import { type UserProfile  } from '@/types/UserProfile';
+
+
+
+
+
+
 
 /**
  * useUserProfile
@@ -20,7 +26,7 @@ export const useUserProfile = (
       if (!userId) return;
 
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('users')
           .select('id, full_name, id_number, email')
           .eq('id', userId)

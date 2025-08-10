@@ -1,5 +1,7 @@
 import { Spinner } from '@/components/Spinner';
-import React, { Suspense } from 'react';
+import { Suspense   } from 'react';
+
+
 
 /**
  * Utility function for lazy loading components with a consistent loading state

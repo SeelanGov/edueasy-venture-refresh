@@ -1,9 +1,15 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { XCircle } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import type { VerificationResult } from '@/hooks/useDocumentVerification';
+import { type VerificationResult  } from '@/hooks/useDocumentVerification';
 import { ValidationResultsList } from './ValidationResultsList';
 import { DocumentGuidance } from './DocumentGuidance';
+
+
+
+
+
+
 
 interface RejectedDocumentProps {
   result: VerificationResult;
@@ -42,8 +48,7 @@ export const RejectedDocument = ({
             onClick={onResubmit}
             size="sm"
             variant="outline"
-            className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium"
-          >
+            className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium">
             Resubmit Document
           </Button>
           <p className="text-xs mt-2 text-red-600">

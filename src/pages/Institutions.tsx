@@ -56,8 +56,7 @@ const Institutions = () => {
               </Typography>
               <Button
                 onClick={() => window.location.reload()}
-                className="bg-cap-coral hover:bg-cap-coral/90"
-              >
+                className="bg-cap-coral hover:bg-cap-coral/90">
                 Try Again
               </Button>
             </CardContent>
@@ -78,15 +77,13 @@ const Institutions = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={() => navigate('/partner-inquiry')}
-            className="bg-cap-teal hover:bg-cap-teal/90"
-          >
+            className="bg-cap-teal hover:bg-cap-teal/90">
             Become a Partner Institution
           </Button>
           <Button
             variant="outline"
             onClick={handleStartApplication}
-            className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
-          >
+            className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal">
             Start Application
           </Button>
         </div>
@@ -128,8 +125,7 @@ const Institutions = () => {
               </Typography>
               <Button
                 onClick={() => navigate('/partner-inquiry')}
-                className="bg-cap-teal hover:bg-cap-teal/90"
-              >
+                className="bg-cap-teal hover:bg-cap-teal/90">
                 Partner with Us
               </Button>
             </CardContent>
@@ -240,15 +236,13 @@ const Institutions = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   onClick={() => navigate('/partner-inquiry')}
-                  className="bg-cap-teal hover:bg-cap-teal/90"
-                >
+                  className="bg-cap-teal hover:bg-cap-teal/90">
                   Request Partnership Info
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => navigate('/consultations')}
-                  className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal"
-                >
+                  className="border-gray-200 text-gray-600 hover:border-cap-teal hover:text-cap-teal">
                   Schedule a Demo
                 </Button>
               </div>

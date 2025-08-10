@@ -64,7 +64,7 @@ export function useAuditLogging() {
       // Also log as security event
       await logSecurityEvent(user.id, adminAction.action, auditEntry.details, true);
 
-      console.log('Admin action logged:', adminAction);
+      console.warn('Admin action logged:', adminAction);
     } catch (error) {
       console.error('Failed to log admin action:', error);
       throw error;
@@ -85,7 +85,7 @@ export function useAuditLogging() {
         query = query.contains('details', { target_id: targetId, target_type: targetType });
       }
 
-      const { data, error } = await query.limit(100);
+      const { data } = await query.limit(100);
       if (error) throw error;
 
       setAuditLogs(data as AuditLogEntry[]);
@@ -100,7 +100,7 @@ export function useAuditLogging() {
   const fetchRecentActivity = async (limit = 50) => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('system_error_logs')
         .select('*')
         .eq('category', 'ADMIN_ACTION')

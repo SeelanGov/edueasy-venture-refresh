@@ -1,7 +1,12 @@
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -9,8 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+
 import {
   CheckCircle,
   Clock,
@@ -23,7 +27,6 @@ import {
   Search,
   XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface PaymentAuditData {
   id: string;
@@ -83,7 +86,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
   const [dateRange, setDateRange] = useState('7d');
   const [paymentStatus, setPaymentStatus] = useState('all');
   const [paymentMethod, setPaymentMethod] = useState('all');
-  const [gatewayProvider, _setGatewayProvider] = useState('all');
+  const [gatewayProvider] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [amountRange, setAmountRange] = useState('all');
 
@@ -100,7 +103,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
         query = query.gte('created_at', cutoffDate.toISOString());
       }
 
-      const { data, error } = await query;
+      const { data } = await query;
 
       if (error) throw error;
 
@@ -114,7 +117,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
 
       setPayments(paymentsWithUserInfo);
       calculateSummary(paymentsWithUserInfo);
-    } catch (_error) {
+    } catch {
       setLoading(false);
       toast({
         title: 'Error',
@@ -168,6 +171,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
     setSummary(summary);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchPayments();
   }, []);
@@ -274,7 +278,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
         title: 'Export Successful',
         description: 'Payment audit data exported to CSV file',
       });
-    } catch (_error) {
+    } catch {
       toast({
         title: 'Export Failed',
         description: 'Failed to export payment audit data',
@@ -471,8 +475,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
                   placeholder="Search payments..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
               </div>
             </div>
 

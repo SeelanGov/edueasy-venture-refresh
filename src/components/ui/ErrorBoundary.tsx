@@ -1,9 +1,15 @@
+import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle, Home, RefreshCw } from '@/components/ui/icons';
-import type { ErrorInfo, ReactNode } from 'react';
-import React, { Component } from 'react';
+import { Component, type ErrorInfo, type ReactNode   } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+
+
+
+
 
 interface Props {
   children: ReactNode;
@@ -36,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
     // Log to error reporting service in production
     if (process.env.NODE_ENV === 'production') {
       // TODO: Send to error reporting service
-      console.error('Production error:', { error, errorInfo });
+      console.error('Production error:', { error });
     }
   }
 
@@ -125,7 +131,7 @@ export const useErrorHandler = () => {
     // Log to error reporting service in production
     if (process.env.NODE_ENV === 'production') {
       // TODO: Send to error reporting service
-      console.error('Production error:', { error, errorInfo });
+      console.error('Production error:', { error });
     }
   };
 

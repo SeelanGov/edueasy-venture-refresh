@@ -8,7 +8,7 @@
  */
 export function exportToCsv(
   rows: Record<string, string | number | null | undefined>[],
-  filename = 'export.csv',
+  filename = 'export.',
 ): void {
   if (!rows || rows.length === 0) {
     return;

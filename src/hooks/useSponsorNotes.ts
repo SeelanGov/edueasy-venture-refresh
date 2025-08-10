@@ -19,7 +19,7 @@ export const useSponsorNotes = (sponsorId: string | undefined): void => {
     queryKey: ['sponsorNotes', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partner_notes')
         .select('*')
         .eq('partner_id', sponsorId)
@@ -45,11 +45,7 @@ export const useAddSponsorNote = (): void => {
         ...input,
         note_type: input.note_type ?? 'general',
       };
-      const { data, error } = await supabase
-        .from('partner_notes')
-        .insert([payload])
-        .select('*')
-        .single();
+      const { data } = await supabase.from('partner_notes').insert([payload]).select('*').single();
       if (error) throw error;
       return data as SponsorNote;
     },

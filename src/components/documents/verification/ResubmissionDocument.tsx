@@ -1,9 +1,15 @@
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { FileWarning } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import type { VerificationResult } from '@/hooks/useDocumentVerification';
+import { type VerificationResult  } from '@/hooks/useDocumentVerification';
 import { DocumentGuidance } from './DocumentGuidance';
 import { ValidationResultsList } from './ValidationResultsList';
+
+
+
+
+
+
 
 interface ResubmissionDocumentProps {
   result: VerificationResult;
@@ -42,8 +48,7 @@ export const ResubmissionDocument = ({
             onClick={onResubmit}
             size="sm"
             variant="outline"
-            className="border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 font-medium"
-          >
+            className="border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 font-medium">
             Resubmit Document
           </Button>
           <p className="text-xs mt-2 text-amber-700">

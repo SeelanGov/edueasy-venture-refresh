@@ -1,10 +1,17 @@
-import type { VerificationResult } from '@/hooks/useDocumentVerification';
+import { type VerificationResult  } from '@/hooks/useDocumentVerification';
 import { VerifyingDocument } from './verification/VerifyingDocument';
 import { ApprovedDocument } from './verification/ApprovedDocument';
 import { RejectedDocument } from './verification/RejectedDocument';
 import { ResubmissionDocument } from './verification/ResubmissionDocument';
 import { PendingDocument } from './verification/PendingDocument';
 import { formatDocumentType } from './verification/DocumentTypeFormatter';
+
+
+
+
+
+
+
 
 interface VerificationResultDisplayProps {
   result: VerificationResult | null;

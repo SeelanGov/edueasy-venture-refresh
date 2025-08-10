@@ -3,9 +3,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfileCompletionStore } from '@/hooks/useProfileCompletionStore';
 import { ContactForm } from './contact/ContactForm';
-import type { ContactFormValues } from './contact/types';
+import { type ContactFormValues  } from './contact/types';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
+
+
+
+
+
+
+
+
 
 interface ContactInfoStepProps {
   onComplete: () => void;
@@ -16,11 +24,11 @@ interface ContactInfoStepProps {
  * ContactInfoStep
  * @description Function
  */
-export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps): JSX.Element => {
+export const ContactInfoStep = ({ onComplete }: ContactInfoStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { contactInfo, setContactInfo } = useProfileCompletionStore();
+  const { contactInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: ContactFormValues) => {
     if (!user) return;

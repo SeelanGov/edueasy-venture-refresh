@@ -1,7 +1,11 @@
-import { Button } from '@/components/ui/button';
 import { Menu, Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
-import type { User } from '@supabase/supabase-js';
+import { type User  } from '@supabase/supabase-js';
+
+
+
+
 
 interface DashboardHeaderProps {
   title: string;
@@ -30,8 +34,7 @@ export const DashboardHeader = ({
             variant="ghost"
             size="icon"
             onClick={onOpenMobileMenu}
-            className="text-gray-500 dark:text-gray-400"
-          >
+            className="text-gray-500 dark:text-gray-400">
             <Menu />
           </Button>
         </div>
@@ -47,8 +50,7 @@ export const DashboardHeader = ({
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="text-gray-500 dark:text-gray-400"
-            >
+              className="text-gray-500 dark:text-gray-400">
               {isDarkMode ? <Sun /> : <Moon />}
             </Button>
           </div>

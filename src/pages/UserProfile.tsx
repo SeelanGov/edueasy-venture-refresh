@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 import { DashboardLayoutWithThandi } from '@/components/DashboardLayoutWithThandi';
@@ -20,7 +20,7 @@ const UserProfile = (): void => {
       if (!user) return;
 
       try {
-        const { data, error } = await supabase.from('users').select('*').eq('id', user.id).single();
+        const { data } = await supabase.from('users').select('*').eq('id', user.id).single();
 
         if (error) {
           throw error;

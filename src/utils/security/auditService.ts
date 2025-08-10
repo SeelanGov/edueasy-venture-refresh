@@ -1,7 +1,11 @@
 import { supabase } from '@/integrations/supabase/client';
 import { verifyAdminAccess } from './adminAccess';
 import { testRLSPolicies } from './rlsTesting';
-import type { SecurityAuditResult } from './types';
+import { type SecurityAuditResult  } from './types';
+
+
+
+
 
 /**
  * Check for security issues in the application

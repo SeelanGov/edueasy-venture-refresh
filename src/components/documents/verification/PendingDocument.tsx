@@ -1,5 +1,5 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Clock } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface PendingDocumentProps {
   documentType: string;

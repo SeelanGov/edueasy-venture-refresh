@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { HelpCircle, MessageSquare, Phone, Mail } from 'lucide-react';
@@ -92,8 +92,7 @@ export const FAQPage: React.FC = () => {
           {filteredFaqs.map((faq, idx) => (
             <Card
               key={idx}
-              className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
-            >
+              className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-start gap-3 text-lg font-semibold text-gray-800">
                   <HelpCircle className="h-5 w-5 text-cap-teal mt-0.5 flex-shrink-0" />

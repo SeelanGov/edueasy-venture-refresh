@@ -1,7 +1,11 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { SubscriptionTier } from '@/types/SubscriptionTypes';
-import { handleError, parseError } from '@/utils/errorHandler';
+import { type SubscriptionTier  } from '@/types/SubscriptionTypes';
+import { handleError } from '@/utils/errorHandler';
 import { secureStorage } from '@/utils/secureStorage';
+
+
+
+
 
 // Types aligned with existing project structure
 export type PaymentMethod = 'card' | 'airtime' | 'qr' | 'eft' | 'store' | 'payment-plan';
@@ -89,7 +93,7 @@ class PaymentService {
       const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
       // Create payment session using existing edge function
-      const { data, error } = await supabase.functions.invoke('create-payment-session', {
+      const { data } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: payfastTier,
           user_id: request.userId,
@@ -129,7 +133,7 @@ class PaymentService {
    */
   async checkPaymentStatus(merchantReference: string): Promise<PaymentStatus | null> {
     try {
-      const { data, error } = await supabase.functions.invoke('verify-payment-status', {
+      const { data } = await supabase.functions.invoke('verify-payment-status', {
         body: { merchant_reference: merchantReference },
       });
 
@@ -233,4 +237,4 @@ class PaymentService {
 export const paymentService = PaymentService.getInstance();
 
 // Export types for use in components
-export type { PaymentRequest, PaymentSession };
+export type { PaymentRequest };

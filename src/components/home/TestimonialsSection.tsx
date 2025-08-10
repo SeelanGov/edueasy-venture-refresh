@@ -56,8 +56,7 @@ export const TestimonialsSection = (): JSX.Element => {
   return (
     <section
       id="testimonials"
-      className="py-20 px-4 md:py-24 bg-gradient-to-br from-gray-50 to-white"
-    >
+      className="py-20 px-4 md:py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <div className="mb-6 flex justify-center">

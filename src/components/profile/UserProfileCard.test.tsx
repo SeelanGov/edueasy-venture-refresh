@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { UserProfileCard } from './UserProfileCard';
 import { TooltipProvider } from '@/components/ui/tooltip';
+
 import '@testing-library/jest-dom';
 
 describe('UserProfileCard', () => {

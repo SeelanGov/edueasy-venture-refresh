@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Sponsor } from '@/types/SponsorTypes';
+import { type Sponsor  } from '@/types/SponsorTypes';
+
+
+
 
 export type UseSponsorsOptions = {
   search?: string;
@@ -25,7 +28,7 @@ export const useSponsors = (options: UseSponsorsOptions = {}): void => {
         const to = from + options.pageSize - 1;
         query = query.range(from, to);
       }
-      const { data, error } = await query;
+      const { data } = await query;
       if (error) throw error;
       return (data as Sponsor[]) || [];
     },

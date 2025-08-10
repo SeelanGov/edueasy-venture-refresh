@@ -1,4 +1,5 @@
 import { Input } from '@/components/ui/input';
+
 import {
   Select,
   SelectContent,
@@ -50,8 +51,7 @@ export const PolicyTestConfiguration = ({
           <Input
             value={scenarioName}
             onChange={(e) => setScenarioName(e.target.value)}
-            placeholder="Enter a test scenario name"
-          />
+            placeholder="Enter a test scenario name" />
         </div>
       </div>
     </div>

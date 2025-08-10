@@ -3,15 +3,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Typography } from '@/components/ui/typography';
 import { PaymentRecoveryNotice } from '@/components/user/PaymentRecoveryNotice';
 import { toast } from '@/hooks/use-toast';
-import { useApplications } from '@/hooks/useApplications';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
-import type { Application } from '@/types/ApplicationTypes';
+import { type Application } from '@/types/ApplicationTypes';
 import { useQuery } from '@tanstack/react-query';
 import { Copy, Medal, Sparkles } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface PersonalizedDashboardProps {
   applications: Application[];
@@ -29,13 +40,6 @@ export const PersonalizedDashboard = ({
   const { user } = useAuth();
   const navigate = useNavigate();
   const { currentSubscription } = useSubscription();
-  const { applications: allApplications, loading: allApplicationsLoading } = useApplications();
-  const [_applicationCount, setApplicationCount] = useState(0);
-  const [_applications, _setApplications] = useState<any[]>([]);
-  const [_loading, _setLoading] = useState(true);
-
-  // Sponsor data
-  const [_sponsors, _setSponsors] = useState<any[]>([]);
 
   // Tracking ID related
   let trackingId: string | undefined;
@@ -44,12 +48,6 @@ export const PersonalizedDashboard = ({
   } else if (user && 'tracking_id' in user) {
     trackingId = (user as any).tracking_id;
   }
-
-  useEffect(() => {
-    if (!allApplicationsLoading) {
-      setApplicationCount(allApplications.length);
-    }
-  }, [allApplications, allApplicationsLoading]);
 
   const handleStartApplication = (): void => {
     navigate('/apply');
@@ -62,7 +60,7 @@ export const PersonalizedDashboard = ({
     !!sponsoreeId &&
     ((user && isUserMetadata(user.user_metadata) && !!user.user_metadata.sponsor_id) ||
       (user && 'sponsor_id' in user));
-  const { data: sponsorAllocation, isLoading: sponsorAllocationLoading } = useQuery({
+  const { data: sponsorAllocation } = useQuery({
     queryKey: ['sponsor_allocation', sponsoreeId],
     queryFn: async () => {
       if (!sponsoreeId) return null;
@@ -73,7 +71,7 @@ export const PersonalizedDashboard = ({
         sponsorId = (user as any).sponsor_id;
       }
       if (!sponsorId) return null;
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsor_allocations')
         .select('*')
         .eq('student_id', sponsoreeId)
@@ -132,8 +130,7 @@ export const PersonalizedDashboard = ({
                 title="Copy tracking ID"
                 type="button"
                 variant="ghost"
-                size="sm"
-              >
+                size="sm">
                 <Copy className="h-5 w-5" />
               </Button>
             </div>

@@ -1,8 +1,13 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import type { Control } from 'react-hook-form';
-import type { RegisterFormValues } from '../RegisterForm';
+import { type Control  } from 'react-hook-form';
+import { type RegisterFormValues  } from '../RegisterForm';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
+
+
+
+
+
 
 interface IdNumberFieldProps {
   control: Control<RegisterFormValues>;
@@ -13,7 +18,7 @@ interface IdNumberFieldProps {
  * IdNumberField
  * @description Function
  */
-export const IdNumberField = ({ control, isLoading }: IdNumberFieldProps): JSX.Element => {
+export const IdNumberField = ({ control }: IdNumberFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}

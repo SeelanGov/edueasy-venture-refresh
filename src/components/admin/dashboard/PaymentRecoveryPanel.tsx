@@ -1,8 +1,13 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
+import { useEffect } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -10,8 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
+
 import {
   AlertTriangle,
   CheckCircle,
@@ -22,7 +26,6 @@ import {
   User,
   XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface Payment {
   id: string;
@@ -247,8 +250,7 @@ export const PaymentRecoveryPanel = (): JSX.Element => {
             placeholder="Search by reference, email, or tracking ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
+            className="max-w-sm" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-48">
@@ -369,16 +371,14 @@ export const PaymentRecoveryPanel = (): JSX.Element => {
                 <Input
                   value={linkUserId}
                   onChange={(e) => setLinkUserId(e.target.value)}
-                  placeholder="Enter user ID"
-                />
+                  placeholder="Enter user ID" />
               </div>
               <div>
                 <label className="text-sm font-medium">Notes (optional)</label>
                 <Input
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
-                  placeholder="Add notes about this action"
-                />
+                  placeholder="Add notes about this action" />
               </div>
               <div className="flex gap-2">
                 <Button onClick={handleLinkPayment} className="flex-1">
@@ -387,8 +387,7 @@ export const PaymentRecoveryPanel = (): JSX.Element => {
                 <Button
                   variant="outline"
                   onClick={() => setShowLinkModal(false)}
-                  className="flex-1"
-                >
+                  className="flex-1">
                   Cancel
                 </Button>
               </div>
@@ -413,8 +412,7 @@ export const PaymentRecoveryPanel = (): JSX.Element => {
                 <Input
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
-                  placeholder="Add notes about the resolution"
-                />
+                  placeholder="Add notes about the resolution" />
               </div>
               <div className="flex gap-2">
                 <Button onClick={handleResolvePayment} className="flex-1">
@@ -423,8 +421,7 @@ export const PaymentRecoveryPanel = (): JSX.Element => {
                 <Button
                   variant="outline"
                   onClick={() => setShowResolveModal(false)}
-                  className="flex-1"
-                >
+                  className="flex-1">
                   Cancel
                 </Button>
               </div>

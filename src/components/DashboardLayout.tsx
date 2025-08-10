@@ -3,6 +3,12 @@ import { DashboardHeader } from '@/components/dashboard/layout/DashboardHeader';
 import { DashboardSidebar } from '@/components/dashboard/layout/DashboardSidebar';
 import { MobileMenu } from '@/components/dashboard/layout/MobileMenu';
 import { Spinner } from '@/components/Spinner';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
+import { useState, type ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import {
   BarChart,
   BookOpen,
@@ -13,11 +19,6 @@ import {
   Settings,
   User,
 } from '@/components/ui/icons';
-import { useAdminRole } from '@/hooks/useAdminRole';
-import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '@/hooks/useTheme';
-import { useState, type ReactNode } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -33,7 +34,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode } = useTheme();
 
   if (loading || roleLoading) {
     return (

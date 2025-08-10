@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { X } from 'lucide-react';
-import type { IntentWithStats } from '@/hooks/useIntentManagement';
+import { type IntentWithStats  } from '@/hooks/useIntentManagement';
+
+
+
+
+
+
+
 
 interface IntentFormProps {
   intent?: IntentWithStats;
@@ -153,8 +160,7 @@ export const IntentForm = ({ intent, onSubmit, onCancel }: IntentFormProps): JSX
             {queries.map((query, index) => (
               <div
                 key={index}
-                className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm flex items-center"
-              >
+                className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm flex items-center">
                 <span className="truncate max-w-[200px]">{query}</span>
                 <Button
                   type="button"

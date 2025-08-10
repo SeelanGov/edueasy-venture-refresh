@@ -1,9 +1,17 @@
 import { useState } from 'react';
-import type { Intent } from '@/hooks/useIntentManagement';
-import type { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
-import { TableRow, TableCell } from '@/components/ui/table';
+import { type Intent  } from '@/hooks/useIntentManagement';
+import { type ChatMessage  } from '@/hooks/useTrainingData';
+import { TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AlertCircle, CheckCircle, Clock, XCircle, Tag } from 'lucide-react';
+
+
+
+
+
+
 import {
   Select,
   SelectContent,
@@ -11,8 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AlertCircle, CheckCircle, Clock, XCircle, Tag } from 'lucide-react';
+
+
 
 interface MessageRowProps {
   message: ChatMessage;

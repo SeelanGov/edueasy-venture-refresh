@@ -1,8 +1,8 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
+import { WifiOff, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNetwork } from '@/hooks/useNetwork';
-import { AlertCircle, WifiOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface NetworkErrorHandlerProps {
   children: React.ReactNode;
@@ -43,8 +43,7 @@ export const NetworkErrorHandler = ({ children }: NetworkErrorHandlerProps) => {
           </p>
           <Button
             onClick={() => window.location.reload()}
-            className="bg-cap-teal hover:bg-cap-teal/90"
-          >
+            className="bg-cap-teal hover:bg-cap-teal/90">
             Try Again
           </Button>
         </div>

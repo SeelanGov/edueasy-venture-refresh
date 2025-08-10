@@ -1,6 +1,10 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { SponsorAllocation } from '@/types/SponsorTypes';
+import { type SponsorAllocation  } from '@/types/SponsorTypes';
 import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+
+
+
 
 // Filtering/search/pagination options
 export interface SponsorAllocationsOptions {
@@ -72,7 +76,7 @@ export const useSponsorAllocations = (options: SponsorAllocationsOptions = {}) =
 
   // Helper to coerce plan and notes to string or undefined
   const normalizeAllocationPayload = (
-    data: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated_at'>,
+    data: Omit<SponsorAllocation, 'id' | 'created_at' | 'updated'>,
   ) => ({
     ...data,
     plan: data.plan ?? '',

@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
+
+
 
 const PartnerLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -33,7 +37,7 @@ const PartnerLogin: React.FC = () => {
             className="bg-transparent px-3 py-1 rounded-lg flex items-center text-cap-teal hover:bg-cap-teal/10"
             onClick={() => navigate('/')}
           >
-            <span className="mr-2 text-lg">&#8592;</span>
+            <span className="mr-2 text-lg">&#8592</span>
             Back to Home
           </Button>
         </div>
@@ -62,8 +66,7 @@ const PartnerLogin: React.FC = () => {
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150"
-          >
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg px-5 py-2 mt-2 transition-colors duration-150">
             Log In
           </Button>
         </form>

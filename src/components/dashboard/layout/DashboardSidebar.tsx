@@ -1,6 +1,11 @@
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { AdminNavSection } from './AdminNavSection';
+import { SidebarNavItem } from './SidebarNavItem';
+
 import {
   ChevronLeft,
   ChevronRight,
@@ -12,10 +17,6 @@ import {
   ChartBarIcon,
   Users,
 } from 'lucide-react';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { AdminNavSection } from './AdminNavSection';
-import { SidebarNavItem } from './SidebarNavItem';
 
 interface NavItem {
   name: string;
@@ -42,7 +43,7 @@ export const DashboardSidebar = ({
 }: DashboardSidebarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode } = useTheme();
 
   const isActive = (path: string): boolean => {
     return location.pathname === path;
@@ -90,8 +91,7 @@ export const DashboardSidebar = ({
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-gray-500 dark:text-gray-400"
-          >
+            className="text-gray-500 dark:text-gray-400">
             {sidebarOpen ? <ChevronLeft /> : <ChevronRight />}
           </Button>
         </div>
@@ -123,8 +123,7 @@ export const DashboardSidebar = ({
               variant="ghost"
               size={sidebarOpen ? 'default' : 'icon'}
               onClick={toggleTheme}
-              className="w-full justify-start text-gray-700 dark:text-gray-300"
-            >
+              className="w-full justify-start text-gray-700 dark:text-gray-300">
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               {sidebarOpen && (
                 <span className="ml-2">{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
@@ -134,8 +133,7 @@ export const DashboardSidebar = ({
               variant="ghost"
               size={sidebarOpen ? 'default' : 'icon'}
               onClick={onSignOut}
-              className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-            >
+              className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20">
               <LogOut className="h-5 w-5" />
               {sidebarOpen && <span className="ml-2">Sign Out</span>}
             </Button>

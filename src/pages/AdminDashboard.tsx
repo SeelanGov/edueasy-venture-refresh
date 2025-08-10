@@ -1,3 +1,4 @@
+import { RefreshCw } from 'lucide-react';
 import { AdminActivityLog } from '@/components/admin/audit/AdminActivityLog';
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 import { DashboardLayout } from '@/components/DashboardLayout';
@@ -6,6 +7,14 @@ import { Spinner } from '@/components/Spinner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/hooks/useAuth';
+import { useDocumentsManagement, type DocumentWithUserInfo } from '@/hooks/useDocumentsManagement';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   Dialog,
   DialogContent,
@@ -13,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+
 import {
   Pagination,
   PaginationContent,
@@ -31,10 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { useAuth } from '@/hooks/useAuth';
-import { useDocumentsManagement, type DocumentWithUserInfo } from '@/hooks/useDocumentsManagement';
+
 import {
   AlertCircle,
   BarChart,
@@ -47,8 +53,6 @@ import {
   XCircle,
   Zap,
 } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -149,8 +153,7 @@ const AdminDashboard = () => {
           title="Admin Dashboard"
           subtitle="Manage document verification and system administration"
           gradient={false}
-          containerClassName="max-w-7xl py-8"
-        >
+          containerClassName="max-w-7xl py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Link to="/admin/analytics">
               <Card className="hover:shadow-md transition-shadow">
@@ -223,8 +226,7 @@ const AdminDashboard = () => {
             defaultValue="documents"
             value={tabValue}
             onValueChange={setTabValue}
-            className="mb-6"
-          >
+            className="mb-6">
             <TabsList>
               <TabsTrigger value="documents">Document Verification</TabsTrigger>
               <TabsTrigger value="audit">Admin Activity Log</TabsTrigger>
@@ -360,8 +362,7 @@ const AdminDashboard = () => {
                                             onClick={() =>
                                               handleUpdateStatus(selectedDocument.id, 'rejected')
                                             }
-                                            className="w-full"
-                                          >
+                                            className="w-full">
                                             <XCircle className="h-4 w-4 mr-2" /> Reject
                                           </Button>
 

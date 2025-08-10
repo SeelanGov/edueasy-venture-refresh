@@ -1,5 +1,9 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
+import { Check } from 'lucide-react';
+
+
 import {
   Card,
   CardContent,
@@ -8,8 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
-import { Check, X } from 'lucide-react';
+
+
 
 interface SubscriptionTierCardProps {
   tier: SubscriptionTier;
@@ -27,7 +31,7 @@ export function SubscriptionTierCard({
   isCurrentTier = false,
   onSelectTier,
   disabled = false,
-}: SubscriptionTierCardProps): JSX.Element {
+}: any): JSX.Element {
   const price = tier.price_once_off;
 
   return (
@@ -99,7 +103,7 @@ interface FeatureItemProps {
   included: boolean;
 }
 
-function FeatureItem({ feature, included }: FeatureItemProps) {
+function FeatureItem({ feature }: any) {
   return (
     <div className="flex items-center gap-2">
       {included ? (

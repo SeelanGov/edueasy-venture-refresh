@@ -1,7 +1,10 @@
+import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
+
 import {
   AlertTriangle,
   CheckCircle,
@@ -12,7 +15,6 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 /**
  * StudentMatchingView
@@ -21,7 +23,6 @@ import { useEffect, useState } from 'react';
 export const StudentMatchingView = () => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [_loading, _setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -30,7 +31,7 @@ export const StudentMatchingView = () => {
   }, [user]);
 
   const checkMigrationStatus = (): void => {
-    console.log('Database migration required for sponsor matching system');
+    console.warn('Database migration required for sponsor matching system');
     toast({
       title: 'Migration Required',
       description: 'The sponsor matching system requires database migration to function properly.',

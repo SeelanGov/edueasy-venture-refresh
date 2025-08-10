@@ -1,4 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAuth } from '@/hooks/useAuth';
+import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   Dialog,
   DialogContent,
@@ -6,11 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAuth } from '@/hooks/useAuth';
-import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
 const partnerTypes = [
   {
@@ -69,7 +70,7 @@ const partnerTypes = [
  */
 export function Footer(): JSX.Element {
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
-  const { user, userType } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handlePartnerSelect = (partner: (typeof partnerTypes)[0], isLogin: boolean = false) => {
@@ -121,32 +122,28 @@ export function Footer(): JSX.Element {
                 <Button
                   variant="ghost"
                   onClick={() => scrollToSection('how-it-works')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal">
                   How It Works
                 </Button>
               </li>
               <li>
                 <Link
                   to="/dashboard"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Dashboard
                 </Link>
               </li>
               <li>
                 <Link
                   to="/pricing"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Pricing
                 </Link>
               </li>
               <li>
                 <Link
                   to="/faqs"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   FAQs
                 </Link>
               </li>
@@ -160,16 +157,14 @@ export function Footer(): JSX.Element {
               <li>
                 <Link
                   to="/career-guidance"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Career Guidance
                 </Link>
               </li>
               <li>
                 <Link
                   to="/consultations"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Consultations
                 </Link>
               </li>
@@ -177,16 +172,14 @@ export function Footer(): JSX.Element {
                 <Button
                   variant="ghost"
                   onClick={() => scrollToSection('testimonials')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal">
                   Success Stories
                 </Button>
               </li>
               <li>
                 <Link
                   to="/sponsorships"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Sponsorships
                 </Link>
               </li>
@@ -200,32 +193,28 @@ export function Footer(): JSX.Element {
               <li>
                 <Link
                   to="/partner-dashboard"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   EduEasy Admin
                 </Link>
               </li>
               <li>
                 <Link
                   to="/privacy-policy"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
                   Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
                   to="/terms-of-service"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
                   Terms of Service
                 </Link>
               </li>
               <li>
                 <Link
                   to="/refund-policy"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Refund Policy
                 </Link>
               </li>
@@ -238,8 +227,7 @@ export function Footer(): JSX.Element {
                   <Button
                     variant="outline"
                     className="w-full justify-start text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white"
-                    data-testid="partner-access-trigger"
-                  >
+                    data-testid="partner-access-trigger">
                     <Building2 className="mr-2 h-4 w-4" />
                     Partner Login
                   </Button>
@@ -262,14 +250,12 @@ export function Footer(): JSX.Element {
                       <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 p-1 rounded-lg">
                         <TabsTrigger
                           value="login"
-                          className="font-semibold text-base h-10 rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200"
-                        >
+                          className="font-semibold text-base h-10 rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200">
                           Existing Partner
                         </TabsTrigger>
                         <TabsTrigger
                           value="register"
-                          className="font-semibold text-base h-10 rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200"
-                        >
+                          className="font-semibold text-base h-10 rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all duration-200">
                           New Partner
                         </TabsTrigger>
                       </TabsList>

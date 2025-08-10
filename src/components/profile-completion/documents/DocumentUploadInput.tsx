@@ -1,8 +1,18 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw, AlertCircle, CheckCircle, Upload } from 'lucide-react';
 import { DocumentPreview } from '@/components/documents/DocumentPreview';
 import { DocumentUploadStepper } from '@/components/documents/DocumentUploadStepper';
 import { VerificationResultDisplay } from '@/components/documents/VerificationResultDisplay';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { SecurityBadge } from '@/components/ui/SecurityBadge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { type DocumentUploadInputProps  } from './types';
+
+
+
+
+
 import {
   FormControl,
   FormDescription,
@@ -11,11 +21,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Progress } from '@/components/ui/progress';
-import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { AlertCircle, CheckCircle, RefreshCw, Upload } from 'lucide-react';
-import type { DocumentUploadInputProps } from './types';
+
+
+
+
+
 
 /**
  * DocumentUploadInput
@@ -60,8 +70,7 @@ export const DocumentUploadInput = ({
                         <span
                           tabIndex={0}
                           aria-label="Data protection info"
-                          className="ml-1 cursor-pointer"
-                        >
+                          className="ml-1 cursor-pointer">
                           <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="10" stroke="#60A5FA" strokeWidth="2" />
                             <text x="12" y="16" textAnchor="middle" fontSize="12" fill="#60A5FA">
@@ -145,8 +154,7 @@ export const DocumentUploadInput = ({
                       filePath={state.filePath || ''}
                       fileName={file?.name || label}
                       fileType={file?.type || undefined}
-                      size="sm"
-                    />
+                      size="sm" />
                   </div>
 
                   <div className="flex-1">
@@ -187,8 +195,7 @@ export const DocumentUploadInput = ({
                             size="sm"
                             variant="outline"
                             onClick={() => onRetry(documentType, state)}
-                            className="text-xs"
-                          >
+                            className="text-xs">
                             Retry
                           </Button>
 
@@ -206,8 +213,7 @@ export const DocumentUploadInput = ({
                               // Trigger onResubmit to reset state
                               onResubmit();
                             }}
-                            className="text-xs"
-                          >
+                            className="text-xs">
                             Change File
                           </Button>
                         </div>

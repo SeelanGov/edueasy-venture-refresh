@@ -1,8 +1,13 @@
-import React from 'react';
+import { React } from 'react';
 import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import type { Control } from 'react-hook-form';
-import type { AddressFormValues } from './types';
+import { RadioGroup } from '@/components/ui/radio-group';
+import { type Control  } from 'react-hook-form';
+import { type AddressFormValues  } from './types';
+
+
+
+
+
 
 interface AddressTypeSelectorProps {
   control: Control<AddressFormValues>;
@@ -23,8 +28,7 @@ export const AddressTypeSelector: React.FC<AddressTypeSelectorProps> = ({ contro
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className="flex space-x-4"
-            >
+              className="flex space-x-4">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="residential" id="residential" />
                 <label htmlFor="residential" className="cursor-pointer">

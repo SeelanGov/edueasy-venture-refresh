@@ -1,9 +1,12 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
+import { useEffect } from 'react';
+
 import {
   AlertTriangle,
   CheckCircle,
@@ -13,7 +16,6 @@ import {
   HelpCircle,
   RefreshCw,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 interface Payment {
   id: string;
@@ -34,7 +36,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const { user } = useAuth();
-  const { checkUserRecovery, claimPayment } = usePaymentRecovery();
+  const { checkUserRecovery } = usePaymentRecovery();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -174,8 +176,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowDetails(!showDetails)}
-                className="text-amber-700 border-amber-300 hover:bg-amber-100"
-              >
+                className="text-amber-700 border-amber-300 hover:bg-amber-100">
                 {showDetails ? 'Hide Details' : 'Show Details'}
               </Button>
             </div>
@@ -215,8 +216,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
                           <Button
                             size="sm"
                             onClick={() => handleClaimPayment(payment.id)}
-                            className="bg-amber-600 hover:bg-amber-700"
-                          >
+                            className="bg-amber-600 hover:bg-amber-700">
                             <CheckCircle className="h-4 w-4 mr-2" />
                             Claim Payment
                           </Button>
@@ -227,8 +227,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
                             size="sm"
                             variant="outline"
                             onClick={() => handleRetryPayment(payment)}
-                            className="border-amber-300 text-amber-700 hover:bg-amber-100"
-                          >
+                            className="border-amber-300 text-amber-700 hover:bg-amber-100">
                             <RefreshCw className="h-4 w-4 mr-2" />
                             Retry Payment
                           </Button>

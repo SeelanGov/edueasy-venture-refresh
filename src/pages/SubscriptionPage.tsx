@@ -3,6 +3,13 @@ import { SubscriptionTierCard } from '@/components/subscription/SubscriptionTier
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useSubscription } from '@/hooks/useSubscription';
+import { formatCurrency } from '@/types/SubscriptionTypes';
+import { CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   Dialog,
   DialogContent,
@@ -10,12 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
-import { useSubscription } from '@/hooks/useSubscription';
-import { formatCurrency } from '@/types/SubscriptionTypes';
-import { CheckCircle, CreditCard } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export default function SubscriptionPage() {
   const { loading, tiers, userSubscription, transactions, subscribeToPlan, cancelSubscription } =

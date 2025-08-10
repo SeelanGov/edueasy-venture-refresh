@@ -1,10 +1,10 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw, AlertTriangle, CheckCircle, Mail, Phone } from 'lucide-react';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthActions } from '@/hooks/useAuthActions';
-import { AlertTriangle, CheckCircle, Mail, Phone, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -109,8 +109,7 @@ const VerificationRequired = () => {
                 onClick={handleRetryVerification}
                 disabled={isRetrying || retrySuccess}
                 className="w-full bg-cap-teal hover:bg-cap-teal/90"
-                size="lg"
-              >
+                size="lg">
                 {isRetrying ? (
                   <>
                     <Spinner size="sm" className="mr-2" />

@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { SubscriptionTier, UserSubscription } from '@/types/SubscriptionTypes';
-import logger from '@/utils/logger';
+import { type SubscriptionTier  } from '@/types/SubscriptionTypes';
+import { logger } from '@/utils/logger';
+
+
+
+
+
 
 /**
  * usePlanManagement
@@ -181,7 +186,7 @@ export const usePlanManagement = () => {
 
       if (action === 'application') {
         // Check application limits
-        const { count, error } = await supabase
+        const { count } = await supabase
           .from('applications')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', userId);
@@ -196,7 +201,7 @@ export const usePlanManagement = () => {
 
       if (action === 'document' && userPlan.tier.max_documents) {
         // Check document limits using existing documents table
-        const { count, error } = await supabase
+        const { count } = await supabase
           .from('documents')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', userId);

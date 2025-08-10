@@ -1,4 +1,5 @@
-import type { User } from '@supabase/supabase-js';
+import { type User  } from '@supabase/supabase-js';
+
 
 /**
  * Generic error type for error handling

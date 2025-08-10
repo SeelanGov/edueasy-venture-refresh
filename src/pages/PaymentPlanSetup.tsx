@@ -1,6 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { toast } from '@/hooks/use-toast';
+import { Building2, Calendar, CreditCard, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Select,
   SelectContent,
@@ -8,10 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
-import { Building2, Calendar, CreditCard, Loader2 } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const PaymentPlanSetup = () => {
   const [searchParams] = useSearchParams();
@@ -169,8 +170,7 @@ const PaymentPlanSetup = () => {
               onClick={handlePaymentPlanSetup}
               disabled={loading || !selectedPaymentMethod}
               className="w-full"
-              size="lg"
-            >
+              size="lg">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

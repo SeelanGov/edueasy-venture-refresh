@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PremiumFeature } from '@/components/subscription/PremiumFeature';
 import { SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Bot, TrendingUp, Users, BookOpen } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
+
+
+
+
+
+
+
 
 const CareerGuidancePage = () => {
   const [activeTab, setActiveTab] = useState('assessment');

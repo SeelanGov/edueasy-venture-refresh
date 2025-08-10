@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import { analyticsService } from '@/services/AnalyticsService';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**

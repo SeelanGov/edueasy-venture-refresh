@@ -1,7 +1,14 @@
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useSponsorApplications } from '@/hooks/useSponsorApplications';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Select,
   SelectContent,
@@ -9,9 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
-import { useSponsorApplications } from '@/hooks/useSponsorApplications';
+
 import {
   CheckCircle,
   Clock,
@@ -22,8 +27,6 @@ import {
   Search,
   XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface PaymentSummary {
   totalAmount: number;
@@ -325,8 +328,7 @@ const SponsorDashboard = () => {
                   placeholder="Search by ID or amount..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
               </div>
             </div>
 

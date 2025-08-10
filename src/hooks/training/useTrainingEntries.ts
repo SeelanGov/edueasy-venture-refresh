@@ -58,7 +58,7 @@ export const useTrainingEntries = (): void => {
     if (!user) return null;
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('thandi_intent_training')
         .insert({
           message_id: messageId,

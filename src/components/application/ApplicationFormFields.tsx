@@ -1,5 +1,12 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Spinner } from '@/components/Spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
+import { AlertCircle } from 'lucide-react';
+import { type UseFormReturn  } from 'react-hook-form';
+
+
 import {
   FormControl,
   FormDescription,
@@ -8,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+
 import {
   Select,
   SelectContent,
@@ -16,10 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { useInstitutionsAndPrograms } from '@/hooks/useInstitutionsAndPrograms';
-import { AlertCircle } from 'lucide-react';
-import type { UseFormReturn } from 'react-hook-form';
+
+
+
+
 
 export interface ApplicationFormValues {
   fullName: string;
@@ -63,10 +70,6 @@ export const ApplicationFormFields = ({
     setSelectedInstitutionId,
   } = institutionData;
 
-  const handleFieldChange = (_value: string) => {
-    // Handle field change logic
-  };
-
   return (
     <>
       <FormField
@@ -81,8 +84,7 @@ export const ApplicationFormFields = ({
                 {...field}
                 readOnly
                 disabled
-                className="md:text-base"
-              />
+                className="md:text-base" />
             </FormControl>
             <FormDescription className="md:text-sm">
               Name as it appears in your ID document
@@ -104,8 +106,7 @@ export const ApplicationFormFields = ({
                 {...field}
                 readOnly
                 disabled
-                className="md:text-base"
-              />
+                className="md:text-base" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -123,8 +124,7 @@ export const ApplicationFormFields = ({
                 placeholder="e.g. 80%"
                 {...field}
                 disabled={isSubmitting}
-                className="md:text-base"
-              />
+                className="md:text-base" />
             </FormControl>
             <FormDescription className="md:text-sm">Your final overall percentage</FormDescription>
             <FormMessage />
@@ -232,8 +232,7 @@ export const ApplicationFormFields = ({
                 placeholder="Tell us why you're interested in this program..."
                 {...field}
                 disabled={isSubmitting}
-                className="min-h-[120px] md:min-h-[150px] md:text-base"
-              />
+                className="min-h-[120px] md:min-h-[150px] md:text-base" />
             </FormControl>
             <FormDescription className="md:text-sm">
               Briefly explain why you're applying for this program
@@ -260,8 +259,7 @@ export const ApplicationFormFields = ({
                     handleFileChange(e);
                     onChange(e.target.files?.[0] || null);
                   }}
-                  className="md:text-base md:py-2"
-                />
+                  className="md:text-base md:py-2" />
               </div>
             </FormControl>
             <FormDescription className="md:text-sm">

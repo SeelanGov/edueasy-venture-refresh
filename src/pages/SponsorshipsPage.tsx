@@ -19,8 +19,7 @@ const SponsorshipsPage = () => {
         <div className="flex flex-col items-center gap-6">
           <Typography
             variant="h1"
-            className="font-extrabold tablet-heading text-cap-teal drop-shadow mb-2"
-          >
+            className="font-extrabold tablet-heading text-cap-teal drop-shadow mb-2">
             The EduEasy Sponsor Ecosystem
           </Typography>
           <Typography variant="lead" className="text-gray-600 mb-2 max-w-2xl mx-auto">
@@ -32,8 +31,7 @@ const SponsorshipsPage = () => {
             <img
               src={heroImage}
               alt="African students receiving mentorship"
-              className="w-full h-56 sm:h-64 object-cover object-center"
-            />
+              className="w-full h-56 sm:h-64 object-cover object-center" />
           </div>
           <div className="flex flex-col md:flex-row gap-4 w-full md:justify-center my-4">
             <Button

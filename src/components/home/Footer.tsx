@@ -1,54 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { useAdminRole } from '@/hooks/useAdminRole';
-import { useAuth } from '@/hooks/useAuth';
-import { Building2, DollarSign, FileCheck, GraduationCap, Mail, MapPin, Users } from 'lucide-react';
-import { useState } from 'react';
+import { Mail } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const _partnerTypes = [
-  {
-    name: 'TVET Colleges',
-    description: 'Technical and Vocational Education Training institutions',
-    icon: GraduationCap,
-    route: '/institutions/register',
-    userType: 'institution',
-  },
-  {
-    name: 'Universities',
-    description: 'Higher education institutions',
-    icon: Building2,
-    route: '/institutions/register',
-    userType: 'institution',
-  },
-  {
-    name: 'Bursary Sponsors',
-    description: 'Organizations providing financial support',
-    icon: DollarSign,
-    route: '/sponsors/register',
-    userType: 'sponsor',
-  },
-  {
-    name: 'NSFAS',
-    description: 'National Student Financial Aid Scheme',
-    icon: FileCheck,
-    route: '/nsfas/register',
-    userType: 'nsfas',
-  },
-  {
-    name: 'Guidance Counselors',
-    description: 'Career and educational guidance professionals',
-    icon: Users,
-    route: '/counselors/register',
-    userType: 'consultant',
-  },
-];
-
 const Footer = (): JSX.Element => {
-  const [_isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, userType } = useAuth();
-  const { isAdmin } = useAdminRole();
 
   const scrollToSection = (sectionId: string): void => {
     if (location.pathname !== '/') {
@@ -64,25 +20,6 @@ const Footer = (): JSX.Element => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
-    }
-  };
-
-  const _handlePartnerSelect = (partner: (typeof _partnerTypes)[0]) => {
-    // If user is already logged in with this user type, redirect to auth-redirect
-    if (user && userType === partner.userType) {
-      navigate('/auth-redirect');
-    } else {
-      // Navigate to registration/login flow
-      navigate(partner.route);
-    }
-    setIsPartnerModalOpen(false);
-  };
-
-  const _handleAdminAccess = (): void => {
-    if (user && isAdmin) {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/login');
     }
   };
 
@@ -121,32 +58,28 @@ const Footer = (): JSX.Element => {
                 <Button
                   variant="ghost"
                   onClick={() => scrollToSection('how-it-works')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal">
                   How It Works
                 </Button>
               </li>
               <li>
                 <Link
                   to="/meet-thandi"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Meet Thandi
                 </Link>
               </li>
               <li>
                 <Link
                   to="/pricing"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Pricing
                 </Link>
               </li>
               <li>
                 <Link
                   to="/institutions"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   For Institutions
                 </Link>
               </li>
@@ -160,16 +93,14 @@ const Footer = (): JSX.Element => {
               <li>
                 <Link
                   to="/career-guidance"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Career Guidance
                 </Link>
               </li>
               <li>
                 <Link
                   to="/consultations"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Consultations
                 </Link>
               </li>
@@ -177,24 +108,21 @@ const Footer = (): JSX.Element => {
                 <Button
                   variant="ghost"
                   onClick={() => scrollToSection('testimonials')}
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200 p-0 h-auto font-normal">
                   Success Stories
                 </Button>
               </li>
               <li>
                 <Link
                   to="/faqs"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   FAQs
                 </Link>
               </li>
               <li>
                 <Link
                   to="/sponsorships"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Sponsorships
                 </Link>
               </li>
@@ -208,32 +136,28 @@ const Footer = (): JSX.Element => {
               <li>
                 <Link
                   to="/partner-dashboard"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   EduEasy Admin
                 </Link>
               </li>
               <li>
                 <Link
                   to="/privacy-policy"
-                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
-                >
+                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
                   Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
                   to="/terms-of-service"
-                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm"
-                >
+                  className="block text-gray-300 hover:text-cap-teal transition-colors duration-200 text-sm">
                   Terms of Service
                 </Link>
               </li>
               <li>
                 <Link
                   to="/refund-policy"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200"
-                >
+                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Refund Policy
                 </Link>
               </li>

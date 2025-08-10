@@ -1,5 +1,7 @@
-import React from 'react';
-import type { SponsorPayment } from '@/hooks/useSponsorPayments';
+import { React } from 'react';
+import { type SponsorPayment  } from '@/hooks/useSponsorPayments';
+
+
 
 interface SponsorPaymentHistoryProps {
   payments: SponsorPayment[];

@@ -1,6 +1,6 @@
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 interface AuthGuardProps {
@@ -13,8 +13,9 @@ interface AuthGuardProps {
  * @description Function
  */
 export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
+  const [loading, _setLoading] = useState(true);
 
   // If authentication is still loading, show spinner
   if (loading) {

@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import logger from '@/utils/logger';
+import { logger } from '@/utils/logger';
 
 interface VerificationResult {
   verified: boolean;
@@ -178,7 +178,7 @@ export const useAuthActions = (): void => {
 
   const signIn = async (email: string, password: string, rememberMe?: boolean) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });

@@ -7,16 +7,24 @@ import { CheckCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+
+
+
+
+
+
+
 interface CheckoutPageProps {
   tierId: string;
 }
 
-export default function CheckoutPage({ tierId }: CheckoutPageProps) {
+export default function CheckoutPage({ tierId }: any) {
   const [loading, setLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>(
     'idle',
   );
-  const { tiers, subscribeToPlan } = useSubscription();
+  const { tiers } = useSubscription();
   const navigate = useNavigate();
 
   const selectedTier = tiers.find((tier) => tier.id === tierId);
@@ -128,8 +136,7 @@ export default function CheckoutPage({ tierId }: CheckoutPageProps) {
               onClick={handlePayFastPayment}
               disabled={loading || paymentStatus === 'processing'}
               className="w-full"
-              size="lg"
-            >
+              size="lg">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

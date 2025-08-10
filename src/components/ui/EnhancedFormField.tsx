@@ -3,7 +3,13 @@ import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { CheckCircle, Info, XCircle } from 'lucide-react';
-import type { Control, FieldValues, Path } from 'react-hook-form';
+import { type Control, FieldValues, Path  } from 'react-hook-form';
+
+
+
+
+
+
 
 interface EnhancedFormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   control: Control<TFieldValues>;
@@ -44,13 +50,13 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
     <FormField
       control={control}
       name={name}
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <FormItem className="relative">
           <div className="flex items-center gap-1 mb-1">
-            <FormLabel className="font-semibold text-[#424242]">
+            <FormLabel className="font-semibold text-gray-800">
               {label}
               {required && (
-                <span className="text-[#D32F2F] ml-0.5" aria-label="required">
+                <span className="text-red-600 ml-0.5" aria-label="required">
                   *
                 </span>
               )}
@@ -61,8 +67,7 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
                   <span
                     tabIndex={0}
                     aria-label={`${securityBadgeType} badge`}
-                    className="outline-none"
-                  >
+                    className="outline-none">
                     <SecurityBadge type={securityBadgeType} size="sm" showLabel={false} />
                   </span>
                 </TooltipTrigger>
@@ -84,9 +89,8 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
                   <span
                     tabIndex={0}
                     aria-label={`Info about ${label}`}
-                    className="ml-1 cursor-pointer"
-                  >
-                    <Info className="h-4 w-4 text-[#BDBDBD]" />
+                    className="ml-1 cursor-pointer">
+                    <Info className="h-4 w-4 text-gray-400" />
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>{tooltip}</TooltipContent>
@@ -95,7 +99,7 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
           </div>
           <FormControl>
             <div
-              className={`relative transition-all duration-200 ${fieldState.invalid ? 'border-[#D32F2F] bg-red-50 animate-shake' : fieldState.isTouched && !fieldState.invalid ? 'border-[#388E3C] bg-green-50' : ''} rounded-md`}
+              className={`relative transition-all duration-200 ${fieldState.invalid ? 'border-red-600 bg-red-50 animate-shake' : fieldState.isTouched && !fieldState.invalid ? 'border-green-600 bg-green-50' : ''} rounded-md`}
             >
               <Input
                 {...field}
@@ -110,14 +114,12 @@ export const EnhancedFormField = <TFieldValues extends FieldValues = FieldValues
               {validationStatus === 'valid' && (
                 <CheckCircle
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-[#388E3C] h-5 w-5"
-                  aria-label="Valid"
-                />
+                  aria-label="Valid" />
               )}
               {fieldState.invalid && (
                 <XCircle
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-[#D32F2F] h-5 w-5 animate-shake"
-                  aria-label="Invalid"
-                />
+                  aria-label="Invalid" />
               )}
             </div>
           </FormControl>

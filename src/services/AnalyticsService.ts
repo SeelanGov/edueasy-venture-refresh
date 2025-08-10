@@ -316,7 +316,7 @@ class AnalyticsService {
    */
   public async getUserAnalytics(userId: string): Promise<UserAnalytics | null> {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('user_analytics')
         .select('*')
         .eq('user_id', userId)
@@ -339,7 +339,7 @@ class AnalyticsService {
    */
   public async getApplicationAnalytics(): Promise<ApplicationAnalytics | null> {
     try {
-      const { data, error } = await supabase.from('application_analytics').select('*').single();
+      const { data } = await supabase.from('application_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get application analytics:', error);
@@ -358,7 +358,7 @@ class AnalyticsService {
    */
   public async getRevenueAnalytics(): Promise<RevenueAnalytics | null> {
     try {
-      const { data, error } = await supabase.from('revenue_analytics').select('*').single();
+      const { data } = await supabase.from('revenue_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get revenue analytics:', error);
@@ -380,7 +380,7 @@ class AnalyticsService {
     filters?: Record<string, unknown>,
   ): Promise<unknown> {
     try {
-      const { data, error } = await supabase.rpc('generate_analytics_report', {
+      const { data } = await supabase.rpc('generate_analytics_report', {
         report_type: reportType,
         filters: filters || {},
       });

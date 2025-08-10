@@ -61,8 +61,7 @@ export const Hero = (): JSX.Element => {
 
             <Typography
               variant="h1"
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight"
-            >
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
               <span className="text-primary">EduEasy</span> <br />
               Bridging Education to Employment
             </Typography>
@@ -111,8 +110,7 @@ export const Hero = (): JSX.Element => {
         <div className="mt-20 flex justify-center">
           <a
             href="#how-it-works"
-            className="flex flex-col items-center text-gray-500 animate-bounce hover:text-primary transition-colors"
-          >
+            className="flex flex-col items-center text-gray-500 animate-bounce hover:text-primary transition-colors">
             <Typography variant="small" className="mb-2">
               EXPLORE MORE
             </Typography>

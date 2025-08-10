@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Json } from '@/integrations/supabase/types';
+import { type Json  } from '@/integrations/supabase/types';
+
+
+
+
+
+
+
 
 interface TierConfig {
   id: string;
@@ -26,13 +33,14 @@ export const TiersManager = () => {
   const [tiers, setTiers] = useState<TierConfig[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
     fetchTiers();
   }, []);
 
   const fetchTiers = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partner_tier_config')
         .select('*')
         .order('annual_fee', { ascending: true });

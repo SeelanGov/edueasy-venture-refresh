@@ -1,7 +1,7 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { SecurityInfoPanel } from './SecurityInfoPanel';
 import { TooltipProvider } from './tooltip';
+import '@testing-library/jest-dom';
 
 describe('SecurityInfoPanel', () => {
   it('renders with provided badgeType and correct description', () => {

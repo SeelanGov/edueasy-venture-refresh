@@ -1,5 +1,7 @@
-import type { ErrorCategory } from '@/utils/errorHandler';
-import type { ErrorSeverity } from '@/utils/errorLogging';
+import { type ErrorCategory  } from '@/utils/errorHandler';
+import { type ErrorSeverity  } from '@/utils/errorLogging';
+
+
 
 /**
  * Represents detailed error information for the application

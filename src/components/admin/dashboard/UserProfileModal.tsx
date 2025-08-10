@@ -1,6 +1,11 @@
 import { AuditTrail } from '@/components/admin/audit/AuditTrail';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useSponsorAllocations } from '@/hooks/admin/useSponsorAllocations';
+import { useUserVerificationLogs } from '@/hooks/admin/useUserVerificationLogs';
+import { Clock, FileText, ShieldCheck, User, X } from 'lucide-react';
+import { React } from 'react';
+
 import {
   Card,
   CardContent,
@@ -15,10 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useSponsorAllocations } from '@/hooks/admin/useSponsorAllocations';
-import { useUserVerificationLogs } from '@/hooks/admin/useUserVerificationLogs';
-import { Clock, FileText, ShieldCheck, User, X } from 'lucide-react';
-import React from 'react';
 
 interface UserModalProps {
   user: {
@@ -127,7 +128,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {logs.map((log: any) => (
+                    {logs.map((log: unknown) => (
                       <li key={log.id} className="border-b py-1">
                         <span className="font-semibold">
                           {log.created_at
@@ -181,7 +182,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {allocations.map((a: any) => (
+                    {allocations.map((a: unknown) => (
                       <li key={a.id} className="border-b py-1">
                         <span className="font-semibold">{a.plan}</span>
                         <span className="ml-2 text-xs text-gray-500">({a.status})</span>

@@ -1,7 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
 import { AlertCircle, AlertTriangle, Check, FileText, Users, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+
+
+
 
 interface Props {
   totalUsers: number;
@@ -21,13 +26,13 @@ export function AdminDashboardStats({
   unverifiedUsers,
   pendingDocuments,
   totalApplications,
-}: Props): JSX.Element {
+}: any): JSX.Element {
   const [paymentRecoveryStats, setPaymentRecoveryStats] = useState({
     orphaned: 0,
     failed: 0,
   });
 
-  const { listOrphanedPayments, listFailedPayments } = usePaymentRecovery();
+  const { listOrphanedPayments } = usePaymentRecovery();
 
   useEffect(() => {
     const loadPaymentRecoveryStats = async () => {

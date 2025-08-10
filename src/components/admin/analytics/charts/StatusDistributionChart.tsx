@@ -42,8 +42,7 @@ export const StatusDistributionChart = ({
           innerRadius={60}
           outerRadius={100}
           paddingAngle={5}
-          dataKey="value"
-        >
+          dataKey="value">
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}

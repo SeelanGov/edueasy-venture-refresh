@@ -1,5 +1,7 @@
-import type { ReactNode } from 'react';
+import { type ReactNode  } from 'react';
 import { Link } from 'react-router-dom';
+
+
 
 interface SidebarNavItemProps {
   path: string;
@@ -32,8 +34,7 @@ export const SidebarNavItem = ({
       } ${sidebarOpen ? '' : 'justify-center'} focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900`}
       onClick={onClick}
       aria-current={isActive ? 'page' : undefined}
-      role="menuitem"
-    >
+      role="menuitem">
       <span className="flex-shrink-0" aria-hidden="true">
         {icon}
       </span>

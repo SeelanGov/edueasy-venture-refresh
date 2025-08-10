@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  ArrowLeft,
-  Building2,
-  Mail,
-  Phone,
-  Globe,
-  GraduationCap,
-  CheckCircle,
-  Star,
-  Loader2,
-} from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
+import { type Institution } from '@/hooks/useInstitutions';
 import { supabase } from '@/integrations/supabase/client';
-import type { Institution } from '@/hooks/useInstitutions';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+
+
+
+
+import {
+    ArrowLeft,
+    Building2,
+    CheckCircle,
+    Globe,
+    GraduationCap,
+    Loader2,
+    Mail,
+    Phone,
+    Star,
+} from 'lucide-react';
+
+
+
 
 const InstitutionDetail = () => {
   const { id } = useParams();
@@ -269,8 +277,7 @@ const InstitutionDetail = () => {
                   {tiers.map((tier, index) => (
                     <div
                       key={index}
-                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-                    >
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                       <div className="text-center mb-4">
                         <h3 className="font-semibold text-lg">{tier.name}</h3>
                         <div className="text-2xl font-bold text-cap-teal">{tier.price}</div>
@@ -305,8 +312,7 @@ const InstitutionDetail = () => {
                       <Mail className="h-4 w-4 text-gray-400" />
                       <a
                         href={`mailto:${institution.email}`}
-                        className="text-blue-600 hover:underline"
-                      >
+                        className="text-blue-600 hover:underline">
                         {institution.email}
                       </a>
                     </div>
@@ -316,8 +322,7 @@ const InstitutionDetail = () => {
                       <Phone className="h-4 w-4 text-gray-400" />
                       <a
                         href={`tel:${institution.phone}`}
-                        className="text-blue-600 hover:underline"
-                      >
+                        className="text-blue-600 hover:underline">
                         {institution.phone}
                       </a>
                     </div>
@@ -329,8 +334,7 @@ const InstitutionDetail = () => {
                         href={institution.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
+                        className="text-blue-600 hover:underline">
                         Visit Website
                       </a>
                     </div>

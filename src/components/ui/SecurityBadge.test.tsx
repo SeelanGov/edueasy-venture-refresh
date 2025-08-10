@@ -1,7 +1,7 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { SecurityBadge, badgeConfig, type SecurityBadgeType } from './SecurityBadge';
 import { TooltipProvider } from './tooltip';
+import '@testing-library/jest-dom';
 
 describe('SecurityBadge', () => {
   it('renders all badge types with correct tooltip', () => {

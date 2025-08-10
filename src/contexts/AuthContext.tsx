@@ -1,6 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react';
-import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { type User } from '@supabase/supabase-js';
+import { createContext, useEffect, useState } from 'react';
+
+
+
 
 export interface AuthContextType {
   user: User | null;
@@ -39,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('users')
         .select('user_type, id_verified, profile_status')
         .eq('id', userId)
@@ -110,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signIn = async (email: string, password: string, rememberMe?: boolean) => {
+  const signIn = async (email: string, password: string, _rememberMe?: boolean) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,

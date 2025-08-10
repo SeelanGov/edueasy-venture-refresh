@@ -1,6 +1,6 @@
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { ErrorCategory, handleError } from '@/utils/errorHandler';
+import { ErrorCategory } from '@/utils/errorHandler';
 import { useState } from 'react';
 
 export interface VerificationResult {
@@ -52,7 +52,7 @@ export const useDocumentVerification = (): void => {
       }
 
       // Call the verification edge function
-      const { data, error } = await supabase.functions.invoke('verify-document', {
+      const { data } = await supabase.functions.invoke('verify-document', {
         body: {
           documentId,
           userId,

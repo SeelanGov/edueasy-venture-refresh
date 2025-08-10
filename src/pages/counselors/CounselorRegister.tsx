@@ -1,13 +1,16 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, Users } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { z } from 'zod';
-
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
 import {
   Form,
   FormControl,
@@ -16,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+
 import {
   Select,
   SelectContent,
@@ -24,8 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 const counselorRegisterSchema = z
   .object({
@@ -398,8 +399,7 @@ export default function CounselorRegister() {
         <div className="mt-6 text-center">
           <Link
             to="/"
-            className="text-muted-foreground hover:text-purple-600 inline-flex items-center gap-2 transition-colors"
-          >
+            className="text-muted-foreground hover:text-purple-600 inline-flex items-center gap-2 transition-colors">
             ← Back to Home
           </Link>
         </div>

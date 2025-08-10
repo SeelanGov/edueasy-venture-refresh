@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import type { Sponsorship } from '@/types/RevenueTypes';
-import { SponsorshipStatus, SponsorshipLevel } from '@/types/RevenueTypes';
+import { supabase } from '@/integrations/supabase/client';
+import { SponsorshipLevel, SponsorshipStatus, type Sponsorship } from '@/types/RevenueTypes';
+import { useEffect } from 'react';
 
 /**
  * useSponsorships
@@ -37,7 +36,7 @@ export const useSponsorships = (): void => {
     setError(null);
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsorships')
         .select('*')
         .eq('is_active', true)
@@ -83,7 +82,7 @@ export const useSponsorships = (): void => {
     }
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsorships')
         .insert(sponsorshipData)
         .select()
@@ -155,7 +154,7 @@ export const useSponsorships = (): void => {
 
   const updateSponsorship = async (id: string, updates: Partial<Sponsorship>) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsorships')
         .update(updates)
         .eq('id', id)
@@ -206,7 +205,7 @@ export const useSponsorships = (): void => {
 
   const activateSponsorship = async (id: string) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsorships')
         .update({ is_active: true, status: SponsorshipStatus.ACTIVE })
         .eq('id', id)
@@ -234,7 +233,7 @@ export const useSponsorships = (): void => {
 
   const deactivateSponsorship = async (id: string) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('sponsorships')
         .update({ is_active: false, status: SponsorshipStatus.INACTIVE })
         .eq('id', id)
@@ -260,6 +259,7 @@ export const useSponsorships = (): void => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchSponsorships();
   }, []);

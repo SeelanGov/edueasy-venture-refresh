@@ -1,5 +1,8 @@
-import type { ChatMessage, TrainingEntry } from '@/hooks/useTrainingData';
-import type { Intent } from '@/hooks/useIntentManagement';
+import { type ChatMessage  } from '@/hooks/useTrainingData';
+import { type Intent  } from '@/hooks/useIntentManagement';
+import { MessageRow } from './MessageRow';
+
+
 import {
   Table,
   TableBody,
@@ -8,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MessageRow } from './MessageRow';
+
 
 interface MessageTableProps {
   messages: ChatMessage[];

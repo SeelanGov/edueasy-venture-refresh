@@ -94,8 +94,7 @@ export const CommunitySection = (): JSX.Element => {
             <div className="pt-6">
               <Button
                 size="lg"
-                className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8"
-              >
+                className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8">
                 Join Our Community
               </Button>
             </div>

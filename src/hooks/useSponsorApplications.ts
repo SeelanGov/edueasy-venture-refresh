@@ -2,11 +2,18 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useCallback, useEffect, useState } from 'react';
 
+
+
+
 /**
  * useSponsorApplications
  * @description Function
  */
-export function useSponsorApplications({ asSponsor = false } = {}): void {
+export function useSponsorApplications({ asSponsor = false } = {}): {
+  applications: any[];
+  loading: boolean;
+  refresh: () => Promise<void>;
+} {
   const { user } = useAuth();
   const [applications, setApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

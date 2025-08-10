@@ -1,5 +1,13 @@
+import { Menu, AlertCircle, Bell, Check, Clock, Filter, MessageSquare, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { useNotificationSystem, type Notification } from '@/hooks/useNotificationSystem';
+import { format, isThisMonth, isThisWeek, isToday, isYesterday } from 'date-fns';
+import { useMemo } from 'react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import type { Notification } from '@/hooks/useNotificationSystem';
-import { useNotificationSystem } from '@/hooks/useNotificationSystem';
-import { format, isThisMonth, isThisWeek, isToday, isYesterday } from 'date-fns';
-import { AlertCircle, Bell, Check, Clock, Filter, MessageSquare, Trash2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
 
 type FilterOption = 'all' | 'unread' | 'document' | 'application' | 'admin' | 'system';
 type GroupBy = 'date' | 'type' | 'none';
@@ -126,13 +126,13 @@ export const NotificationsPanel = (): JSX.Element => {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'document_status':
-        return <AlertCircle className="h-4 w-4 text-[#1976D2]" />;
+        return <AlertCircle className="h-4 w-4 text-blue-600" />;
       case 'application_status':
-        return <Clock className="h-4 w-4 text-[#388E3C]" />;
+        return <Clock className="h-4 w-4 text-green-600" />;
       case 'admin_feedback':
         return <MessageSquare className="h-4 w-4 text-purple-500" />;
       default:
-        return <Bell className="h-4 w-4 text-[#757575]" />;
+        return <Bell className="h-4 w-4 text-gray-500" />;
     }
   };
 
@@ -160,7 +160,7 @@ export const NotificationsPanel = (): JSX.Element => {
         </div>
         <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 ml-6">{notification.message}</p>
         <div className="flex justify-between items-center mt-2 ml-6">
-          <span className="text-xs text-[#757575] dark:text-[#BDBDBD]">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             {format(new Date(notification.created_at), 'MMM d, h:mm a')}
           </span>
           {!notification.is_read && (
@@ -206,9 +206,8 @@ export const NotificationsPanel = (): JSX.Element => {
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge
-              className="absolute -top-1 -right-1 px-1 min-w-[1.2rem] h-5 flex items-center justify-center bg-[#D32F2F] animate-pulse"
-              variant="destructive"
-            >
+              className="absolute -top-1 -right-1 px-1 min-w-[1.2rem] h-5 flex items-center justify-center bg-error animate-pulse"
+              variant="destructive">
               {unreadCount > 99 ? '99+' : unreadCount}
             </Badge>
           )}
@@ -261,7 +260,7 @@ export const NotificationsPanel = (): JSX.Element => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full justify-start text-xs text-[#D32F2F] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/10"
+                  className="w-full justify-start text-xs text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/10"
                   onClick={deleteAllReadNotifications}
                 >
                   <Trash2 className="h-3 w-3 mr-1" /> Delete read notifications
@@ -279,7 +278,7 @@ export const NotificationsPanel = (): JSX.Element => {
           ) : filteredNotifications.length > 0 ? (
             renderNotificationGroups()
           ) : (
-            <div className="p-8 text-center text-[#757575] dark:text-[#BDBDBD]">
+            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
               <p>No notifications</p>
             </div>
           )}

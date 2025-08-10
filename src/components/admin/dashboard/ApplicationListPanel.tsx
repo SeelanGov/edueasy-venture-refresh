@@ -1,6 +1,9 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import type { UserSummary } from '@/utils/admin/userLookup';
+import { type UserSummary  } from '@/utils/admin/userLookup';
+
+
+
 
 interface Application {
   id: string;
@@ -17,7 +20,7 @@ type Props = {
   userMap?: Record<string, UserSummary>;
 };
 
-function getStatusBadge(status: string | null) {
+function getStatusBadge(status: string | ) {
   switch (status) {
     case 'approved':
       return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
@@ -33,7 +36,7 @@ function getStatusBadge(status: string | null) {
  * ApplicationListPanel
  * @description Function
  */
-export function ApplicationListPanel({ applications, userMap }: Props): JSX.Element {
+export function ApplicationListPanel({ applications }: any): JSX.Element {
   return (
     <Card>
       <CardHeader>

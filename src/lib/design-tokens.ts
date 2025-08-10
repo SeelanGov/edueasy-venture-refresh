@@ -102,7 +102,7 @@ export const designTokens = {
 // Utility functions for design tokens
 export const getColor = (path: string): string => {
   const keys = path.split('.');
-  let value: any = designTokens.colors;
+  let value: unknown = designTokens.colors;
 
   for (const key of keys) {
     if (value && typeof value === 'object' && key in value) {

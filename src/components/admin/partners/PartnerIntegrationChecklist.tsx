@@ -1,7 +1,11 @@
-import React from 'react';
-import { CheckCircle2, Circle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import type { Partner } from '@/types/partner';
+import { type Partner  } from '@/types/partner';
+import { CheckCircle2 } from 'lucide-react';
+import { React } from 'react';
+
+
+
+
 
 // Demo: define milestones - in a real app, this would be backend-driven/configurable
 const INTEGRATION_STEPS = [
@@ -61,11 +65,11 @@ const PartnerIntegrationChecklist: React.FC<{ partner: Partner }> = ({ partner }
     <div className="font-semibold mb-2">Integration Progress</div>
     <div>
       Integration Status:{' '}
-      <span className="font-mono bg-[#F5F5F5] px-2 rounded">
+      <span className="font-mono bg-gray-100 px-2 rounded">
         {partner.integration_status || '-'}
       </span>
       {partner.integration_status === 'completed' && (
-        <Badge variant="default" className="ml-2 bg-[#F0F9F0] text-[#1B5E20] border-[#C8E6C9]">
+        <Badge variant="default" className="ml-2 bg-green-50 text-green-800 border-green-200">
           Integration Complete
         </Badge>
       )}

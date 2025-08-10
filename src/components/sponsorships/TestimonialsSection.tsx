@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Star } from 'lucide-react';
 import { StatisticsGrid } from '@/components/home/StatisticsGrid';
 
@@ -69,8 +69,7 @@ export function TestimonialsSection(): JSX.Element {
         {students.map((student) => (
           <Card
             key={student.id}
-            className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100"
-          >
+            className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
             <CardContent className="p-6">
               {/* Achievement Badge */}
               <div className="mb-4">
@@ -85,8 +84,7 @@ export function TestimonialsSection(): JSX.Element {
                   <img
                     src={student.image}
                     alt={student.name}
-                    className="w-full h-full object-cover"
-                  />
+                    className="w-full h-full object-cover" />
                 </div>
               </div>
 

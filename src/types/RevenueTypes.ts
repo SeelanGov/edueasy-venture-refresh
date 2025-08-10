@@ -114,4 +114,4 @@ export const formatSponsorshipLevel = (level: SponsorshipLevel): string => {
 };
 
 // Re-export subscription types for convenience
-export type { SubscriptionTier, UserSubscription } from './SubscriptionTypes';
+export type { SubscriptionTier } from './SubscriptionTypes';

@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { FileIcon, FileText, FileWarning } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface DocumentPreviewProps {
   filePath: string;
@@ -43,7 +43,7 @@ export const DocumentPreview = ({
   useEffect(() => {
     const fetchUrl = async () => {
       try {
-        const { data, error } = await supabase.storage
+        const { data } = await supabase.storage
           .from('user_documents')
           .createSignedUrl(filePath, 60);
 
@@ -119,8 +119,7 @@ export const DocumentPreview = ({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-blue-600 hover:underline mt-2"
-        >
+          className="text-xs text-blue-600 hover:underline mt-2">
           View PDF
         </a>
       </div>
@@ -140,8 +139,7 @@ export const DocumentPreview = ({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs text-blue-600 hover:underline mt-2"
-      >
+        className="text-xs text-blue-600 hover:underline mt-2">
         Download File
       </a>
     </div>

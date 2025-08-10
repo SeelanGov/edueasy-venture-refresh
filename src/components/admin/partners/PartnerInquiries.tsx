@@ -4,8 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { Calendar, Mail, Phone, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface PartnerInquiry {
   id: string;
@@ -32,15 +31,15 @@ export const PartnerInquiries = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const navigate = useNavigate();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchInquiries();
   }, []);
 
   const fetchInquiries = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('partner_inquiries')
         .select('*')
         .order('created_at', { ascending: false });
@@ -121,14 +120,12 @@ export const PartnerInquiries = (): JSX.Element => {
                 placeholder="Search inquiries..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+                className="pl-10" />
             </div>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2"
-            >
+              className="border border-gray-300 rounded-md px-3 py-2">
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
               <option value="contacted">Contacted</option>
@@ -162,8 +159,7 @@ export const PartnerInquiries = (): JSX.Element => {
                     <Mail className="h-4 w-4 text-gray-400" />
                     <a
                       href={`mailto:${inquiry.contact_email}`}
-                      className="text-blue-600 hover:underline"
-                    >
+                      className="text-blue-600 hover:underline">
                       {inquiry.contact_email}
                     </a>
                   </div>
@@ -172,8 +168,7 @@ export const PartnerInquiries = (): JSX.Element => {
                       <Phone className="h-4 w-4 text-gray-400" />
                       <a
                         href={`tel:${inquiry.contact_phone}`}
-                        className="text-blue-600 hover:underline"
-                      >
+                        className="text-blue-600 hover:underline">
                         {inquiry.contact_phone}
                       </a>
                     </div>
@@ -201,8 +196,7 @@ export const PartnerInquiries = (): JSX.Element => {
                         href={inquiry.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline ml-1"
-                      >
+                        className="text-blue-600 hover:underline ml-1">
                         {inquiry.website}
                       </a>
                     </p>

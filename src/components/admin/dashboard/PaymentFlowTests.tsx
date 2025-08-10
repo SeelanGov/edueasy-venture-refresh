@@ -1,8 +1,11 @@
+import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+
 import {
   paymentTestingService,
   type TestResult,
@@ -22,7 +25,6 @@ import {
   XCircle,
   Zap,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 /**
  * PaymentFlowTests
@@ -37,6 +39,7 @@ export const PaymentFlowTests = (): JSX.Element => {
   const [progress, setProgress] = useState(0);
   const [currentTest, setCurrentTest] = useState<string | null>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadScenarios();
     loadTestResults();
@@ -125,7 +128,7 @@ export const PaymentFlowTests = (): JSX.Element => {
 
     try {
       // For single test, we'll simulate the process
-      const _testData = paymentTestingService.generateTestData(scenario);
+      paymentTestingService.generateTestData(scenario);
 
       // Simulate test execution
       for (let i = 0; i < scenario.steps.length; i++) {
@@ -143,7 +146,7 @@ export const PaymentFlowTests = (): JSX.Element => {
         status: 'passed',
         duration: 5000,
         timestamp: new Date().toISOString(),
-        details: scenario.steps.map((step, index) => ({
+        details: scenario.steps.map((step) => ({
           ...step,
           status: 'passed',
           actualOutcome: 'Step completed successfully',
@@ -406,8 +409,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                     onClick={() => handleRunSingleTest(scenario.id)}
                     disabled={isRunning}
                     size="sm"
-                    variant="outline"
-                  >
+                    variant="outline">
                     <Play className="h-3 w-3 mr-1" />
                     Run
                   </Button>
@@ -464,8 +466,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                         )
                       }
                       size="sm"
-                      variant="ghost"
-                    >
+                      variant="ghost">
                       <Eye className="h-4 w-4 mr-1" />
                       {selectedScenario === result.scenarioId ? 'Hide' : 'View'} Details
                     </Button>
@@ -479,8 +480,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                           <span className="flex-1">{step.action}</span>
                           <Badge
                             variant={step.status === 'passed' ? 'default' : 'destructive'}
-                            className="text-xs"
-                          >
+                            className="text-xs">
                             {step.status}
                           </Badge>
                         </div>

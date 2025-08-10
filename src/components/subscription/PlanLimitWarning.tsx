@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, ArrowUpRight, CreditCard } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -55,8 +55,7 @@ export const PlanLimitWarning = ({
         <Button
           asChild
           size="sm"
-          className="bg-cap-teal hover:bg-cap-teal/90 text-white ml-4 shadow-sm"
-        >
+          className="bg-cap-teal hover:bg-cap-teal/90 text-white ml-4 shadow-sm">
           <Link to="/subscription" className="flex items-center gap-2">
             <CreditCard className="h-3 w-3" />
             Upgrade Plan

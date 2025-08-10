@@ -1,3 +1,4 @@
+import { Menu, RefreshCw } from 'lucide-react';
 // Centralized icon imports for bundle optimization
 // Only import the icons that are actually used in the application
 
@@ -76,10 +77,10 @@ export {
 } from 'lucide-react';
 
 // Form & Input Icons
-export { CheckIcon, CircleDashed } from 'lucide-react';
+export { CheckIcon } from 'lucide-react';
 
 // Analytics & Data Icons
-export { ChartBarIcon, Keyboard } from 'lucide-react';
+export { ChartBarIcon } from 'lucide-react';
 
 // Theme & Display Icons
 export { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from 'lucide-react';

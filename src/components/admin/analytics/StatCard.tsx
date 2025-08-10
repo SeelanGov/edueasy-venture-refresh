@@ -1,6 +1,9 @@
-import type { ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { type ReactNode  } from 'react';
+
+
+
 
 interface StatCardProps {
   title: string;
@@ -38,7 +41,7 @@ export const StatCard = ({ title, value, icon, description, trend, className }: 
               <span
                 className={cn(
                   'ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium',
-                  trend.positive ? 'bg-[#F0F9F0] text-[#1B5E20]' : 'bg-[#FFEBEE] text-[#B71C1C]',
+                  trend.positive ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800',
                 )}
               >
                 {trend.positive ? '+' : '-'}

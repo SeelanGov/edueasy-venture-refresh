@@ -1,13 +1,16 @@
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ProgressIndicator, createAuthFlowSteps } from '@/components/ui/ProgressIndicator';
+import { ProgressIndicator } from '@/components/ui/ProgressIndicator';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { secureStorage } from '@/utils/secureStorage';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Building2,
   Calendar,
@@ -20,8 +23,6 @@ import {
   Smartphone,
   Store,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const [searchParams] = useSearchParams();
@@ -151,8 +152,7 @@ const CheckoutPage = () => {
         <div className="mb-8">
           <ProgressIndicator
             steps={createAuthFlowSteps('payment')}
-            className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
-          />
+            className="bg-white rounded-lg p-6 shadow-sm border border-gray-100" />
         </div>
 
         <div className="text-center mb-8">
@@ -337,8 +337,7 @@ const CheckoutPage = () => {
           <Button
             variant="ghost"
             onClick={() => navigate('/pricing')}
-            className="text-gray-600 hover:text-cap-teal"
-          >
+            className="text-gray-600 hover:text-cap-teal">
             ← Back to Plans
           </Button>
         </div>

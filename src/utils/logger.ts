@@ -28,7 +28,7 @@ class Logger {
 
   info(message: string, data?: unknown) {
     const entry = this.formatMessage('info', message, data);
-    console.info(`[${entry.timestamp}] INFO: ${entry.message}`, entry.data || '');
+    console.warn(`[${entry.timestamp}] INFO: ${entry.message}`, entry.data || '');
   }
 
   warn(message: string, data?: unknown) {

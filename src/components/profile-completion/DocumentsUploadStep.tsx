@@ -1,11 +1,12 @@
 import { useDocumentUploadManager } from '@/hooks/useDocumentUploadManager';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
-import React from 'react';
+import { React } from 'react';
 import { DocumentFormActions } from './documents/DocumentFormActions';
 import { DocumentStepperCard } from './documents/DocumentStepperCard';
 import { DocumentUploadGrid } from './documents/DocumentUploadGrid';
 import { DocumentUploadHeader } from './documents/DocumentUploadHeader';
+
 import type {
   DocumentUploadState as ComponentDocumentUploadState,
   DocumentType,
@@ -21,7 +22,10 @@ interface DocumentsUploadStepProps {
  * DocumentsUploadStep
  * @description Function
  */
-export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComplete, onBack }) => {
+export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
+  onComplete,
+  _onBack,
+}) => {
   const {
     form,
     uploadSteps,
@@ -59,7 +63,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     : '';
 
   // Convert hook's DocumentUploadState to component's DocumentUploadState
-  const convertDocumentState = (state: any): ComponentDocumentUploadState => {
+  const convertDocumentState = (state: unknown): ComponentDocumentUploadState => {
     return {
       file: state?.file || null,
       uploading: state?.uploading || false,
@@ -95,11 +99,8 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
   };
 
   // Wrapper for handleRetry to match expected signature
-  const handleRetryWrapper = (
-    _documentType: DocumentType,
-    _state: ComponentDocumentUploadState,
-  ): void => {
-    handleRetry(_documentType);
+  const handleRetryWrapper = (documentType: DocumentType): void => {
+    handleRetry(documentType);
   };
 
   // Wrapper for handleResubmit to match expected signature
@@ -111,8 +112,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({ onComp
     <div className="space-y-6">
       <DocumentUploadHeader
         title="Document Upload"
-        description="Please upload the required documents. We need your ID document and Grade 12 results. Grade 11 results and proof of residence are optional."
-      />
+        description="Please upload the required documents. We need your ID document and Grade 12 results. Grade 11 results and proof of residence are optional." />
 
       <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-6">
         {error && (

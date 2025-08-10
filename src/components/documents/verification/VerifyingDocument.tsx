@@ -1,5 +1,5 @@
+import { AlertDescription, Alert } from '@/components/ui/alert';
 import { Loader } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface VerifyingDocumentProps {
   documentType: string;

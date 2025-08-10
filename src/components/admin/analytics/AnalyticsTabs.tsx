@@ -1,5 +1,12 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { type DocumentAnalytics  } from '@/hooks/analytics/types';
+import { ChartWrapper } from './charts/ChartWrapper';
+import { DocumentTimelineChart } from './charts/DocumentTimelineChart';
+import { DocumentTypePerformanceChart } from './charts/DocumentTypePerformanceChart';
+import { RejectionReasonsChart } from './charts/RejectionReasonsChart';
+import { StatusDistributionChart } from './charts/StatusDistributionChart';
+
 import {
   Table,
   TableBody,
@@ -8,12 +15,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChartWrapper } from './charts/ChartWrapper';
-import { StatusDistributionChart } from './charts/StatusDistributionChart';
-import { DocumentTimelineChart } from './charts/DocumentTimelineChart';
-import { RejectionReasonsChart } from './charts/RejectionReasonsChart';
-import { DocumentTypePerformanceChart } from './charts/DocumentTypePerformanceChart';
-import type { DocumentAnalytics } from '@/hooks/analytics/types';
+
+
+
+
+
+
+
 
 interface AnalyticsTabsProps {
   analytics: DocumentAnalytics;
@@ -41,8 +49,7 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
           <Card>
             <ChartWrapper
               title="Document Status Distribution"
-              description="Breakdown of document verification statuses"
-            >
+              description="Breakdown of document verification statuses">
               <StatusDistributionChart
                 approved={analytics.approvedDocuments}
                 rejected={analytics.rejectedDocuments}
@@ -55,8 +62,7 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
           <Card>
             <ChartWrapper
               title="Top Rejection Reasons"
-              description="Most common causes for document rejection"
-            >
+              description="Most common causes for document rejection">
               <RejectionReasonsChart data={analytics.commonRejectionReasons} />
             </ChartWrapper>
           </Card>
@@ -67,8 +73,7 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
         <Card>
           <ChartWrapper
             title="Document Processing Timeline"
-            description="Documents processed over time by status"
-          >
+            description="Documents processed over time by status">
             <DocumentTimelineChart data={analytics.documentsByDate} />
           </ChartWrapper>
         </Card>
@@ -76,8 +81,7 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
         <Card>
           <ChartWrapper
             title="Document Type Performance"
-            description="Approval and rejection rates by document type"
-          >
+            description="Approval and rejection rates by document type">
             <DocumentTypePerformanceChart data={analytics.documentsByType} />
           </ChartWrapper>
         </Card>
@@ -162,19 +166,19 @@ export const AnalyticsTabs = ({ analytics }: AnalyticsTabsProps) => {
                           {formatDocumentType(type.type)}
                         </TableCell>
                         <TableCell className="text-right">{total}</TableCell>
-                        <TableCell className="text-right text-green-600">{type.approved}</TableCell>
-                        <TableCell className="text-right text-red-600">
+                        <TableCell className="text-right text-success">{type.approved}</TableCell>
+                        <TableCell className="text-right text-error">
                           {type.rejected + type.request_resubmission}
                         </TableCell>
-                        <TableCell className="text-right text-yellow-600">{type.pending}</TableCell>
+                        <TableCell className="text-right text-warning">{type.pending}</TableCell>
                         <TableCell className="text-right">
                           <span
                             className={
                               passRate >= 70
-                                ? 'text-green-600'
+                                ? 'text-success'
                                 : passRate >= 50
-                                  ? 'text-yellow-600'
-                                  : 'text-red-600'
+                                  ? 'text-warning'
+                                  : 'text-error'
                             }
                           >
                             {passRate.toFixed(1)}%

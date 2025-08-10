@@ -1,6 +1,9 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import type { DocumentInfo } from '@/types/ApplicationTypes';
+import { persist } from 'zustand/middleware';
+import { type DocumentInfo  } from '@/types/ApplicationTypes';
+
+
+
 
 interface PersonalInfo {
   fullName: string;

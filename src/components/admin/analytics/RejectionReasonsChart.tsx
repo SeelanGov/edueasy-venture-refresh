@@ -16,7 +16,7 @@ const COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'
  * @description Function
  */
 export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
-  const renderCustomLabel = (entry: any) => {
+  const renderCustomLabel = (entry: unknown) => {
     const RADIAN = Math.PI / 180;
     const radius = entry.innerRadius + (entry.outerRadius - entry.innerRadius) * 0.5;
     const x = entry.cx + radius * Math.cos(-entry.midAngle * RADIAN);
@@ -30,8 +30,7 @@ export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
         textAnchor={x > entry.cx ? 'start' : 'end'}
         dominantBaseline="central"
         fontSize={12}
-        fontWeight="bold"
-      >
+        fontWeight="bold">
         {`${entry.count}`}
       </text>
     );
@@ -49,8 +48,7 @@ export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
             label={renderCustomLabel}
             outerRadius={120}
             fill="#8884d8"
-            dataKey="count"
-          >
+            dataKey="count">
             {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
+
 
 interface FocusTrapProps {
   children: React.ReactNode;
@@ -10,7 +12,7 @@ interface FocusTrapProps {
  * FocusTrap
  * @description Function
  */
-export function FocusTrap({ children, active = true, className }: FocusTrapProps): void {
+export function FocusTrap({ children, active = true, className }: any): void {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [focusableElements, setFocusableElements] = React.useState<HTMLElement[]>([]);
 

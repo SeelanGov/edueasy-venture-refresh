@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface VerificationLog {
@@ -24,7 +24,7 @@ export const useUserVerificationLogs = (userId?: string) => {
       setLoading(true);
       try {
         // Mock implementation - replace with actual Supabase query
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('system_error_logs')
           .select('*')
           .eq('user_id', userId)
@@ -44,5 +44,5 @@ export const useUserVerificationLogs = (userId?: string) => {
     fetchLogs();
   }, [userId]);
 
-  return { logs, loading };
+  return { logs };
 };

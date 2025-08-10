@@ -1,6 +1,6 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { RefreshCw, AlertCircle, ArrowLeft, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, ArrowLeft, Home, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ErrorRecoveryProps {
@@ -68,8 +68,7 @@ export const ErrorRecovery = ({
             <Button
               onClick={() => navigate('/pricing')}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
               Select Plan Again
             </Button>
@@ -85,8 +84,7 @@ export const ErrorRecovery = ({
             <Button
               onClick={() => window.location.reload()}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <RefreshCw className="h-4 w-4" />
               Refresh Page
             </Button>
@@ -111,16 +109,14 @@ export const ErrorRecovery = ({
             <Button
               onClick={() => navigate('/login')}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <RefreshCw className="h-4 w-4" />
               Sign In Again
             </Button>
             <Button
               onClick={() => navigate('/register')}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <RefreshCw className="h-4 w-4" />
               Create New Account
             </Button>
@@ -136,8 +132,7 @@ export const ErrorRecovery = ({
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="flex items-center gap-2"
-            >
+              className="flex items-center gap-2">
               <Home className="h-4 w-4" />
               Go Home
             </Button>

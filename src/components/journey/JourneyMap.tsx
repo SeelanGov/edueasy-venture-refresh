@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import { JourneyMilestone } from './JourneyMilestone';
 import { JourneyPath } from './JourneyPath';
 import { cn } from '@/lib/utils';

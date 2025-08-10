@@ -1,13 +1,18 @@
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import type { ConsultationBooking } from '@/types/RevenueTypes';
-import { useEffect, useState } from 'react';
+import { type ConsultationBooking  } from '@/types/RevenueTypes';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+
+
+
 
 /**
  * useConsultations
  * @description Function
  */
-export function useConsultations(): void {
+export function useConsultations() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<ConsultationBooking[]>([]);
@@ -47,7 +52,7 @@ export function useConsultations(): void {
   };
 
   // Fetch a specific booking
-  const fetchBooking = async (bookingId: string) => {
+  const fetchBooking = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -63,10 +68,10 @@ export function useConsultations(): void {
 
   // Create a new consultation booking
   const createBooking = async (
-    bookingDate: Date,
-    durationMinutes: number,
-    notes?: string,
-    paymentId?: string,
+    _bookingDate: Date,
+    _durationMinutes: number,
+    _notes?: string,
+    _paymentId?: string,
   ) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
@@ -95,7 +100,7 @@ export function useConsultations(): void {
   };
 
   // Update an existing booking
-  const updateBooking = async (bookingId: string, updates: Partial<ConsultationBooking>) => {
+  const updateBooking = async (_bookingId: string, _updates: Partial<ConsultationBooking>) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;
@@ -123,7 +128,7 @@ export function useConsultations(): void {
   };
 
   // Cancel a booking
-  const cancelBooking = async (bookingId: string, reason?: string) => {
+  const cancelBooking = async (_bookingId: string, _reason?: string) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return false;
@@ -151,7 +156,7 @@ export function useConsultations(): void {
   };
 
   // Reschedule a booking
-  const rescheduleBooking = async (bookingId: string, newBookingDate: Date) => {
+  const rescheduleBooking = async (_bookingId: string, _newBookingDate: Date) => {
     if (!user?.id) {
       handleError(new Error('User not authenticated'), 'Authentication required');
       return null;

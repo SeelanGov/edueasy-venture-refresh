@@ -1,6 +1,7 @@
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface InstitutionGuardProps {
@@ -12,7 +13,8 @@ interface InstitutionGuardProps {
  * @description Function
  */
 export const InstitutionGuard = ({ children }: InstitutionGuardProps): JSX.Element => {
-  const { userType, loading } = useAuth();
+  const { userType } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   if (loading) {
     return (

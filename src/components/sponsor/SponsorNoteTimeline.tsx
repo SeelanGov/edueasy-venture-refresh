@@ -1,5 +1,7 @@
-import React from 'react';
-import type { SponsorNote } from '@/hooks/useSponsorNotes';
+import { React } from 'react';
+import { type SponsorNote  } from '@/hooks/useSponsorNotes';
+
+
 
 interface SponsorNoteTimelineProps {
   notes: SponsorNote[];

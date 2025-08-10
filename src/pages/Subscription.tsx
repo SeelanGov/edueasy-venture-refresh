@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePlanManagement } from '@/hooks/usePlanManagement';
 import { formatCurrency, type UserSubscription } from '@/types/SubscriptionTypes';
 import { CreditCard, Shield, Star } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const Subscription = (): void => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
@@ -62,8 +62,7 @@ const Subscription = (): void => {
                 </div>
                 <Badge
                   variant="secondary"
-                  className="bg-cap-teal/10 text-cap-teal border-cap-teal/20"
-                >
+                  className="bg-cap-teal/10 text-cap-teal border-cap-teal/20">
                   {currentSubscription.tier?.name}
                 </Badge>
               </CardTitle>

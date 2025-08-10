@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import type { SponsorAllocation } from '@/types/SponsorTypes';
+import { type SponsorAllocation  } from '@/types/SponsorTypes';
+
+
+
 
 interface SponsorFormModalProps {
   open: boolean;

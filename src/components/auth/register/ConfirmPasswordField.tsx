@@ -1,10 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { useState } from 'react';
-import type { Control } from 'react-hook-form';
-import type { RegisterFormValues } from '../RegisterForm';
+import { type Control  } from 'react-hook-form';
+import { type RegisterFormValues  } from '../RegisterForm';
+
+
+
+
+
+
+
 
 interface ConfirmPasswordFieldProps {
   control: Control<RegisterFormValues>;
@@ -35,8 +42,7 @@ export const ConfirmPasswordField = ({
                 type={showConfirmPassword ? 'text' : 'password'}
                 {...field}
                 disabled={isLoading}
-                className="text-gray-900 pr-10"
-              />
+                className="text-gray-900 pr-10" />
               <Button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}

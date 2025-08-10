@@ -1,7 +1,11 @@
 import { ChartContainer } from '../charts/ChartContainer';
 import { DocumentTimelineChart } from '../DocumentTimelineChart';
 import { DocumentTypePerformanceChart } from '../DocumentTypePerformanceChart';
-import type { DocumentAnalytics } from '@/hooks/analytics/types';
+import { type DocumentAnalytics  } from '@/hooks/analytics/types';
+
+
+
+
 
 interface ChartsTabProps {
   analytics: DocumentAnalytics;
@@ -16,15 +20,13 @@ export const ChartsTab = ({ analytics }: ChartsTabProps): JSX.Element => {
     <div className="space-y-6">
       <ChartContainer
         title="Document Processing Timeline"
-        description="Documents processed over time by status"
-      >
+        description="Documents processed over time by status">
         <DocumentTimelineChart data={analytics.documentsByDate} />
       </ChartContainer>
 
       <ChartContainer
         title="Document Type Performance"
-        description="Approval and rejection rates by document type"
-      >
+        description="Approval and rejection rates by document type">
         <DocumentTypePerformanceChart data={analytics.documentsByType} />
       </ChartContainer>
     </div>

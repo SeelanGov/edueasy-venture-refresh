@@ -1,11 +1,19 @@
+import { RefreshCw, Check, AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Spinner } from '@/components/Spinner';
-import type { TrainingStats } from '@/hooks/useModelTraining';
+import { type TrainingStats  } from '@/hooks/useModelTraining';
 import { toast } from 'sonner';
-import { RefreshCw, Check, AlertTriangle } from 'lucide-react';
+
+
+
+
+
+
+
+
 
 interface ModelTrainingStatusProps {
   trainingStats: TrainingStats | null;

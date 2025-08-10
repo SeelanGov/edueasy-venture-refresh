@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { hasValidConsent } from '@/utils/consent-recording';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
+import { useState } from 'react';
 
 // ===== INTERFACES =====
 
@@ -24,7 +25,7 @@ interface UseVerificationStatusReturn {
 }
 
 interface UseVerificationAuditReturn {
-  auditLog: any[];
+  auditLog: unknown[];
   isLoading: boolean;
   error: string | null;
   fetchAuditLog: () => Promise<void>;

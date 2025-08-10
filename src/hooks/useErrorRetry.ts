@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
 interface RetryOptions {
@@ -69,10 +69,11 @@ export const useErrorRetry = (
     }
   }, [operation, retryCount, maxRetries, delay, backoff]);
 
-  const resetRetry = useCallback(() => {
-    setRetryCount(0);
-    setIsRetrying(false);
-  }, []);
+  const resetRetry = // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      setRetryCount(0);
+      setIsRetrying(false);
+    }, []);
 
   const canRetry = retryCount < maxRetries;
 

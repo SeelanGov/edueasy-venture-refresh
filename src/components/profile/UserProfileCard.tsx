@@ -6,9 +6,9 @@ import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
-import { UserCheck, UserPlus } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import VerifyId from '../VerifyId';
+import { UserCheck } from 'lucide-react';
+import { useEffect } from 'react';
+import { VerifyId } from '../VerifyId';
 
 // Mock data interfaces
 interface Post {
