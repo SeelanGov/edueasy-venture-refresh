@@ -11,9 +11,8 @@ const createMockClient = (): SupabaseClient<Database> => {
   return {
     auth: {
       onAuthStateChange: () => ({
-        data: null,
+        data: { subscription: { unsubscribe: () => {} } },
         error: null,
-        subscription: { unsubscribe: () => {} },
       }),
       getSession: () => Promise.resolve({ data: { session: null }, error: null }),
       getUser: () => Promise.resolve({ data: { user: null }, error: null }),
