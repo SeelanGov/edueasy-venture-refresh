@@ -3,7 +3,11 @@ import { toast } from 'react-toastify';
 import { isFeatureEnabled } from '../config/feature-flags';
 import { useActionTracking } from '../hooks/useActionTracking';
 import { designTokens } from '../lib/design-tokens';
-import { type VerifyIdRequest  } from '../types/api';
+interface VerifyIdResponse {
+  verified: boolean;
+  auditLogId?: string;
+  error?: string;
+}
 import { Button } from './ui/button';
 
 
@@ -44,12 +48,17 @@ const VerifyId = ({ userId }: VerifyIdProps): JSX.Element => {
     setState('verifying');
 
     try {
-      const response = await fetch('/api/verify-id', {
+      const response = await fetch(`https://pensvamtfjtpsaoeflbx.functions.supabase.co/verifyid-integration`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbnN2YW10Zmp0cHNhb2VmbGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MzcyOTcsImV4cCI6MjA1OTQxMzI5N30.ZGFT9bcxwFuDVRF7ZYtLTQDPP3LKmt5Yo8BsJAFQyPM`,
         },
-        body: JSON.stringify({ idNumber } as VerifyIdRequest),
+        body: JSON.stringify({ 
+          user_id: userId, 
+          national_id: idNumber,
+          api_key: 'VERIFYID_API_KEY_PLACEHOLDER'
+        }),
       });
 
       const result: VerifyIdResponse = await response.json();
