@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 /**

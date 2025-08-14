@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnalyticsFilters } from './AnalyticsFilters';
 import { AnalyticsStatCards } from './AnalyticsStatCards';
 import { AnalyticsTabs } from './AnalyticsTabs';
