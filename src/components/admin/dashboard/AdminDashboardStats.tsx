@@ -37,9 +37,8 @@ export function AdminDashboardStats({
   useEffect(() => {
     const loadPaymentRecoveryStats = async () => {
       try {
-        const [orphanedResult, failedResult] = await Promise.all([
+        const [orphanedResult] = await Promise.all([
           listOrphanedPayments(),
-          // listFailedPayments(),
         ]);
 
         setPaymentRecoveryStats({

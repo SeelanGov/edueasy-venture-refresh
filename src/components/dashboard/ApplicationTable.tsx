@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { Spinner } from '@/components/Spinner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { supabase } from '@/integrations/supabase/client';
-import { type Application  } from '@/types/ApplicationTypes';
-import { useEffect } from 'react';
+import { type Application } from '@/types/ApplicationTypes';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 
@@ -49,7 +47,7 @@ interface ApplicationTableProps {
  * ApplicationTable
  * @description Function
  */
-export const ApplicationTable = ({ applications }: ApplicationTableProps) => {
+export const ApplicationTable = ({ applications, loading }: ApplicationTableProps): JSX.Element => {
   const [enrichedApplications, setEnrichedApplications] = useState<EnrichedApplication[]>([]);
 
   useEffect(() => {
@@ -159,6 +157,7 @@ export const ApplicationTable = ({ applications }: ApplicationTableProps) => {
       return data.signedUrl;
     } catch (error) {
       console.error('Error creating signed URL:', error);
+      const { useToast } = require('@/hooks/use-toast');
       const { toast } = useToast();
       toast({
         title: 'Error',

@@ -6,7 +6,6 @@ import { SkeletonButton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { useAuth } from '@/hooks/useAuth';
 import { memo, useEffect, useState } from 'react';
 
 import {
@@ -60,6 +59,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
       setRevenueAnalytics(revenueData);
     } catch (error) {
       console.error('Failed to load analytics:', error);
+      const { useToast } = require('@/hooks/use-toast');
       const { toast } = useToast();
       toast({
         title: 'Analytics Error',
@@ -83,6 +83,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
         const csvContent = convertToCSV(report as Record<string, unknown>[]);
         downloadCSV(csvContent, `${reportType}_analytics_${timeRange}.csv`);
 
+        const { useToast } = require('@/hooks/use-toast');
         const { toast } = useToast();
         toast({
           title: 'Report Exported',
@@ -91,6 +92,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
       }
     } catch (error) {
       console.error('Failed to export report:', error);
+      const { useToast } = require('@/hooks/use-toast');
       const { toast } = useToast();
       toast({
         title: 'Export Error',
@@ -151,7 +153,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <SkeletonDashboardCard key={i} />
+            <div className="h-32 bg-gray-200 animate-pulse rounded"></div>
           ))}
         </div>
       </div>

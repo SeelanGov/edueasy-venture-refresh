@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ export const Hero = (): JSX.Element => {
 
   const handleStartApplication = (): void => {
     if (!user) {
+      const { toast } = useToast();
       toast({
         title: 'Registration Required',
         description: 'Please create an account to start your application journey.',

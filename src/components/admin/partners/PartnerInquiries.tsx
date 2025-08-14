@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { Calendar, Mail, Phone, Search } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PartnerInquiry {
   id: string;
@@ -44,11 +44,10 @@ export const PartnerInquiries = (): JSX.Element => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching inquiries:', error);
-        setInquiries([]);
+      if (data) {
+        setInquiries(data);
       } else {
-        setInquiries(data || []);
+        setInquiries([]);
       }
     } catch (error) {
       console.error('Error fetching inquiries:', error);

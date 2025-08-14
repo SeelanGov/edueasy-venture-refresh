@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bot, Crown, HelpCircle, Send, Sparkles, User, Zap } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
@@ -119,6 +119,7 @@ export const ThandiAgent = (): JSX.Element => {
             const fallbackData = await fallbackResponse.json();
             responseText = fallbackData.choices[0].message.content;
 
+            const { toast } = useToast();
             toast({
               title: 'Rate Limit Reached',
               description: "You've reached your daily limit. Using fallback AI for this response.",
@@ -128,6 +129,7 @@ export const ThandiAgent = (): JSX.Element => {
             throw new Error('Fallback AI also unavailable');
           }
         } else {
+          const { toast } = useToast();
           toast({
             title: 'Daily Limit Reached',
             description:
@@ -141,14 +143,13 @@ export const ThandiAgent = (): JSX.Element => {
         const data = await edgeResponse.json();
         responseText = data.content;
 
-        if (data.queries_remaining !== undefined) {
+          const { toast } = useToast();
           if (data.queries_remaining <= 1) {
             toast({
               title: 'Almost at daily limit',
               description: `Only ${data.queries_remaining} queries remaining today.`,
             });
           }
-        }
       } else {
         // Other error from edge function
         const errorData = await edgeResponse.json();
@@ -175,6 +176,7 @@ export const ThandiAgent = (): JSX.Element => {
 
       setMessages((prev) => [...prev, errorMessage]);
 
+      const { toast } = useToast();
       toast({
         title: 'Error',
         description: (error as Error).message || 'Failed to get AI response',
