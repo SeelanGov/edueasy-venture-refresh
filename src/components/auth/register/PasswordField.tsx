@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
-import { Eye } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { type Control  } from 'react-hook-form';
 import { type RegisterFormValues  } from '../RegisterForm';
@@ -24,7 +24,7 @@ interface PasswordFieldProps {
  * PasswordField
  * @description Function
  */
-export const PasswordField = ({ control }: PasswordFieldProps): JSX.Element => {
+export const PasswordField = ({ control, isLoading }: PasswordFieldProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (

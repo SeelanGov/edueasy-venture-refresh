@@ -18,7 +18,7 @@ interface FullNameFieldProps {
  * FullNameField
  * @description Function
  */
-export const FullNameField = ({ control }: FullNameFieldProps): JSX.Element => {
+export const FullNameField = ({ control, isLoading }: FullNameFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}

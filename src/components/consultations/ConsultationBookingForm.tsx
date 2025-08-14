@@ -207,7 +207,7 @@ export function ConsultationBookingForm({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) =>
+                    disabled={(date: Date) =>
                       date < new Date() || date.getDay() === 0 || date.getDay() === 6
                     }
                     initialFocus

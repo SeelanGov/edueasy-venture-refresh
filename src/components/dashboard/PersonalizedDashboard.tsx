@@ -71,7 +71,7 @@ export const PersonalizedDashboard = ({
         sponsorId = (user as any).sponsor_id;
       }
       if (!sponsorId) return null;
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsor_allocations')
         .select('*')
         .eq('student_id', sponsoreeId)

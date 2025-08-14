@@ -1,13 +1,12 @@
-import { React } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import { type spacing  } from '@/lib/design-tokens';
 
 
 
 
 interface ColumnsProps {
   children: React.ReactNode;
-  gap?: keyof typeof spacing | 'none';
+  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   className?: string;
   as?: 'div' | 'section' | 'main' | 'article';
 }
@@ -21,7 +20,7 @@ export const Columns: React.FC<ColumnsProps> = ({
   gap = 'md',
   className,
   as: Component = 'div',
-}) => {
+}: ColumnsProps) => {
   const columnGaps = {
     none: 'gap-0',
     xs: 'gap-2',
@@ -34,7 +33,7 @@ export const Columns: React.FC<ColumnsProps> = ({
   };
 
   return (
-    <Component className={cn('flex flex-col md:flex-row', columnGaps[gap], className)}>
+    <Component className={cn('flex flex-col md:flex-row', columnGaps[gap as keyof typeof columnGaps], className)}>
       {children}
     </Component>
   );
@@ -62,7 +61,7 @@ export const Column: React.FC<ColumnProps> = ({
   span,
   className,
   as: Component = 'div',
-}) => {
+}: ColumnProps) => {
   const getSpanClasses = (): string => {
     if (!span) return 'flex-1';
 

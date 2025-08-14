@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { CardContent } from '@/components/ui/card';
+import { CardContent, CardFooter } from '@/components/ui/card';
 import { Shield } from 'lucide-react';
 import { PolicyTestConfiguration } from './PolicyTestConfiguration';
 import { PolicyTestResults } from './PolicyTestResults';

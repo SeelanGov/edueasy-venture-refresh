@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Menu, AlertCircle, Bell, Check, Clock, Filter, MessageSquare, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

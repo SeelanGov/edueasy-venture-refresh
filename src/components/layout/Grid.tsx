@@ -1,6 +1,5 @@
-import { React } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import { type spacing  } from '@/lib/design-tokens';
 
 
 
@@ -15,7 +14,7 @@ interface GridProps {
     xl?: number;
     '2xl'?: number;
   };
-  gap?: keyof typeof spacing | 'none';
+  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   className?: string;
   as?: 'div' | 'section' | 'main' | 'article';
   align?: 'start' | 'center' | 'end' | 'stretch';
@@ -34,7 +33,7 @@ export const Grid: React.FC<GridProps> = ({
   as: Component = 'div',
   align = 'stretch',
   justify = 'start',
-}) => {
+}: GridProps) => {
   const gridCols = {
     1: 'grid-cols-1',
     2: 'grid-cols-2',

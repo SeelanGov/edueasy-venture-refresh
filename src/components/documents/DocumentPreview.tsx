@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { FileIcon, FileText, FileWarning } from 'lucide-react';
-import { useEffect } from 'react';
 
 interface DocumentPreviewProps {
   filePath: string;
@@ -47,8 +47,9 @@ export const DocumentPreview = ({
           .from('user_documents')
           .createSignedUrl(filePath, 60);
 
-        if (error) throw error;
-        setUrl(data.signedUrl);
+        if (data?.signedUrl) {
+          setUrl(data.signedUrl);
+        }
       } catch (err: unknown) {
         console.error('Error fetching document URL:', err);
         const message = err instanceof Error ? err.message : String(err);

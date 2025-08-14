@@ -1,5 +1,5 @@
+import React from 'react';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
-import { React } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -35,7 +35,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   onDismiss,
   showDetails = false,
   className = '',
-}) => {
+}: ErrorDisplayProps) => {
   const getSeverityColor = (severity: string = 'medium'): string => {
     switch (severity) {
       case 'low':

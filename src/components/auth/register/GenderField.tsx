@@ -21,7 +21,7 @@ interface GenderFieldProps {
  * GenderField
  * @description Function
  */
-export const GenderField = ({ control }: GenderFieldProps): JSX.Element => {
+export const GenderField = ({ control, isLoading }: GenderFieldProps): JSX.Element => {
   return (
     <FormField
       control={control}
