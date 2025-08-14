@@ -7,7 +7,7 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import { useState, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   BarChart,
@@ -30,13 +30,13 @@ interface DashboardLayoutProps {
  */
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { user, signOut, loading } = useAuth();
-  const { isAdmin, loading: roleLoading } = useAdminRole();
+  const { isAdmin } = useAdminRole();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
 
-  if (loading || roleLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Spinner size="lg" />

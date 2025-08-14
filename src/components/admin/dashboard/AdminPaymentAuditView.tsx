@@ -1,11 +1,10 @@
-import { RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useEffect } from 'react';
 
 import {
   Select,
@@ -103,7 +102,7 @@ export const AdminPaymentAuditView = (): JSX.Element => {
         query = query.gte('created_at', cutoffDate.toISOString());
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
 
       if (error) throw error;
 

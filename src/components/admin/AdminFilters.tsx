@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 
 interface AdminFiltersProps {
   onFilterChange: (filters: Record<string, unknown>) => void;

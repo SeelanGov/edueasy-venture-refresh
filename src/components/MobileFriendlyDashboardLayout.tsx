@@ -1,4 +1,3 @@
-import { Menu } from 'lucide-react';
 import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
 import { Logo } from '@/components/Logo';
 import { Spinner } from '@/components/Spinner';
@@ -39,7 +38,7 @@ export const MobileFriendlyDashboardLayout = ({ children }: MobileFriendlyDashbo
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleResize = (): void => {

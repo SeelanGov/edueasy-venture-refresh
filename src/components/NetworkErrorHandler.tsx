@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { WifiOff, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNetwork } from '@/hooks/useNetwork';
-import { useEffect } from 'react';
 
 interface NetworkErrorHandlerProps {
   children: React.ReactNode;
