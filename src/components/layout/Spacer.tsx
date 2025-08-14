@@ -1,18 +1,17 @@
-import { React } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import { type spacing  } from '@/lib/design-tokens';
 
 
 
 
 interface SpacerProps {
-  size?: keyof typeof spacing | 'auto';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'auto';
   direction?: 'vertical' | 'horizontal' | 'both';
   responsive?: {
-    sm?: keyof typeof spacing;
-    md?: keyof typeof spacing;
-    lg?: keyof typeof spacing;
-    xl?: keyof typeof spacing;
+    sm?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+    md?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+    lg?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+    xl?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   };
   className?: string;
 }
@@ -26,7 +25,7 @@ export const Spacer: React.FC<SpacerProps> = ({
   direction = 'vertical',
   responsive,
   className,
-}) => {
+}: SpacerProps) => {
   const getSpacingClasses = (): string => {
     const classes: string[] = [];
 
@@ -46,7 +45,7 @@ export const Spacer: React.FC<SpacerProps> = ({
         '3xl': '4rem',
       };
 
-      const spacingValue = spacingMap[size];
+      const spacingValue = spacingMap[size as keyof typeof spacingMap];
 
       if (direction === 'vertical') {
         classes.push(`h-[${spacingValue}]`);
@@ -60,7 +59,7 @@ export const Spacer: React.FC<SpacerProps> = ({
     // Responsive spacing
     if (responsive) {
       Object.entries(responsive).forEach(([breakpoint, responsiveSize]) => {
-        const responsiveSpacingValue = {
+        const responsiveSpacingMap = {
           xs: '0.5rem',
           sm: '0.75rem',
           md: '1rem',
@@ -68,7 +67,8 @@ export const Spacer: React.FC<SpacerProps> = ({
           xl: '2rem',
           '2xl': '3rem',
           '3xl': '4rem',
-        }[responsiveSize];
+        };
+        const responsiveSpacingValue = responsiveSpacingMap[responsiveSize as keyof typeof responsiveSpacingMap];
 
         if (direction === 'vertical') {
           classes.push(`${breakpoint}:h-[${responsiveSpacingValue}]`);

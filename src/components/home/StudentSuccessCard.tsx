@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
 import { Star } from 'lucide-react';
 

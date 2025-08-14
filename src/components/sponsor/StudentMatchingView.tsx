@@ -1,10 +1,3 @@
-import { RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
-import { useEffect } from 'react';
-
 import {
   AlertTriangle,
   CheckCircle,
@@ -15,6 +8,11 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
 
 /**
  * StudentMatchingView

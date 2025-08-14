@@ -1,5 +1,5 @@
 import { Typography } from '@/components/ui/typography';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
 import { StatisticsGrid } from './StatisticsGrid';
 

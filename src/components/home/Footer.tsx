@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Mail } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Footer = (): JSX.Element => {

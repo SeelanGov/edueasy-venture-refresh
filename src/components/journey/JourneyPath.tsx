@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 
 interface JourneyPathProps {
   totalSteps: number;
@@ -9,7 +9,7 @@ interface JourneyPathProps {
  * JourneyPath
  * @description Function
  */
-export const JourneyPath: React.FC<JourneyPathProps> = ({ totalSteps }) => {
+export const JourneyPath: React.FC<JourneyPathProps> = ({ totalSteps, currentStep }) => {
   // Calculate the percentage of the journey completed
   const completedPercentage = (currentStep / (totalSteps - 1)) * 100;
 

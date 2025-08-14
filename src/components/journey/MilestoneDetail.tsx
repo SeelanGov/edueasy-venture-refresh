@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronRight } from 'lucide-react';
-import { useEffect   } from 'react';
+import { ChevronRight, X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { type MilestoneStatus  } from './JourneyMilestone';
 
 
