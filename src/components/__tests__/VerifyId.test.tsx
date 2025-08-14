@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { VerifyId } from '../VerifyId';
+import VerifyId from '../VerifyId';
 
 // Mock dependencies
 const mockIsFeatureEnabled = vi.fn();

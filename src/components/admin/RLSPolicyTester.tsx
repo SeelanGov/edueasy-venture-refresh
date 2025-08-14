@@ -26,7 +26,7 @@ export const RLSPolicyTester = (): JSX.Element => {
 
     setLoading(true);
     try {
-      const { data } = await supabase.rpc('test_rls_policies_with_role', {
+      const { data, error } = await supabase.rpc('test_rls_policies_with_role', {
         p_role: 'user',
         p_scenario: 'test',
       });
