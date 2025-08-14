@@ -1,5 +1,5 @@
 import { Spinner } from '@/components/Spinner';
-import { type ComponentType, React, { Suspense  } from 'react';
+import React, { Suspense, lazy, type ComponentType } from 'react';
 
 
 

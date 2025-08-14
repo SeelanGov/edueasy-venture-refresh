@@ -20,7 +20,7 @@ type Props = {
   userMap?: Record<string, UserSummary>;
 };
 
-function getStatusBadge(status: string | ) {
+function getStatusBadge(status: string | null) {
   switch (status) {
     case 'approved':
       return <Badge className="bg-green-100 text-green-800">Approved</Badge>;

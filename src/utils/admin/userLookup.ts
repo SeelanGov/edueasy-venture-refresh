@@ -18,9 +18,9 @@ export function makeUserMap(
     tracking_id: string | null;
     full_name?: string | null;
     email?: string | null;
-    id_verified?: boolean | ;
+    id_verified?: boolean | null;
   }>,
-): void {
+): Record<string, UserSummary> {
   const map: Record<string, UserSummary> = {};
   users.forEach((u) => {
     map[u.id] = {

@@ -17,7 +17,7 @@ export const LOCAL_STORAGE_FORM_KEY = 'edueasy-application-form';
  */
 export const useOfflineFormStorage = (
   form: UseFormReturn<ApplicationFormValues>,
-  : boolean,
+  enabled: boolean = true,
 ) => {
   const saveFormToStorage = (data: ApplicationFormValues): void => {
     localStorage.setItem(

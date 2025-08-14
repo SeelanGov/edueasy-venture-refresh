@@ -74,7 +74,7 @@ export function UserManagementPanel({
   });
 
   // Manual verify toggle with audit logging
-  async function handleToggleVerified(user: any): unknown): unknown) {
+  async function handleToggleVerified(user: any) {
     const newStatus = !user.id_verified;
     const { error } = await supabase
       .from('users')
@@ -133,7 +133,7 @@ export function UserManagementPanel({
     setTimeout(() => setExporting(false), 500);
   }
 
-  function handleOpenProfile(user: any): unknown): unknown) {
+  function handleOpenProfile(user: any) {
     setProfileUser(user);
     setOpenProfileModal(true);
   }
