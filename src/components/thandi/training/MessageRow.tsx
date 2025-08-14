@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { type Intent  } from '@/hooks/useIntentManagement';
 import { type ChatMessage  } from '@/hooks/useTrainingData';
-import { TableRow } from '@/components/ui/table';
+
+interface TrainingEntry {
+  id: string;
+  message_id?: string;
+  intent_id: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+import { TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';

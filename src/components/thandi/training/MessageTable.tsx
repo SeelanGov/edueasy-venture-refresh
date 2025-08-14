@@ -2,6 +2,14 @@ import { type ChatMessage  } from '@/hooks/useTrainingData';
 import { type Intent  } from '@/hooks/useIntentManagement';
 import { MessageRow } from './MessageRow';
 
+interface TrainingEntry {
+  id: string;
+  message_id?: string;
+  intent_id: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 
 import {
   Table,

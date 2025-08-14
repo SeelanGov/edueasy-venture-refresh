@@ -1,7 +1,6 @@
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, AlertTriangle, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertTriangle, Home, RefreshCw } from '@/components/ui/icons';
 import { Component, type ErrorInfo, type ReactNode   } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';

@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode   } from 'react';
-import { useState } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 
 interface AccessibilityContextType {

@@ -1,10 +1,8 @@
-import { RefreshCw } from 'lucide-react';
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { statusColors, extendedStatusColors, type ExtendedStatusType } from '@/lib/design-tokens';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import {
   CheckCircle,
   XCircle,
