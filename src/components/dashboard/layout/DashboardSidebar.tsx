@@ -43,7 +43,7 @@ export const DashboardSidebar = ({
 }: DashboardSidebarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const isActive = (path: string): boolean => {
     return location.pathname === path;

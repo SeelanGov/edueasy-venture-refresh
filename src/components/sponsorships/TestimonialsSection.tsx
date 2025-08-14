@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Star } from 'lucide-react';
 import { StatisticsGrid } from '@/components/home/StatisticsGrid';
 

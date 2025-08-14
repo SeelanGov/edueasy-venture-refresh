@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, Lock, Unlock, AlertTriangle, Save, History } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 
 
@@ -40,6 +40,7 @@ export const UILockSystem = (): JSX.Element => {
   const [currentLock, setCurrentLock] = useState<UISnapshot | null>(null);
   const [components, setComponents] = useState<ComponentInventory[]>([]);
   const [isLockActive, setIsLockActive] = useState(false);
+  const { toast } = useToast();
 
   // Initialize with current state
   // eslint-disable-next-line react-hooks/exhaustive-deps

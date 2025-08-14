@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { type Control  } from 'react-hook-form';
 import { type PersonalInfoFormValues  } from './types';

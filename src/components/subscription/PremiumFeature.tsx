@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { useSubscription } from '@/hooks/useSubscription';
 import { SubscriptionTierName } from '@/types/SubscriptionTypes';
 import { Lock } from 'lucide-react';
-import { React } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {

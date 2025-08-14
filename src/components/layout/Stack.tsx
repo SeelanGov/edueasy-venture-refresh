@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 interface StackProps {
   children: React.ReactNode;
-  space?: keyof typeof spacing | 'none';
+  space?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   direction?: 'vertical' | 'horizontal';
   align?: 'start' | 'center' | 'end' | 'stretch';
   className?: string;
@@ -57,7 +57,7 @@ export const Stack: React.FC<StackProps> = ({
       className={cn(
         'flex',
         stackDirection[direction],
-        stackSpacing[space],
+        stackSpacing[space as keyof typeof stackSpacing],
         alignItems[align],
         className,
       )}

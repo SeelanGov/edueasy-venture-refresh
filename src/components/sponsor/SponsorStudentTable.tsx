@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { type SponsorAllocation  } from '@/types/SponsorTypes';
-import { React } from 'react';
+import React from 'react';
 
 
 

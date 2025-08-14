@@ -6,8 +6,8 @@ import { SecurityInfoPanel } from '@/components/ui/SecurityInfoPanel';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
-import { UserCheck } from 'lucide-react';
-import { useEffect } from 'react';
+import { UserCheck, UserPlus } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import VerifyId from '../VerifyId';
 
 // Mock data interfaces
@@ -78,7 +78,7 @@ export const UserProfileCard = (): JSX.Element => {
   }, []);
 
   const handleFollowToggle = (): void => {
-    toggleFollowing((prev) => !prev);
+    toggleFollowing((prev: boolean) => !prev);
   };
 
   return (
@@ -163,7 +163,7 @@ export const UserProfileCard = (): JSX.Element => {
                 ) : null}
               </h3>
               <div className="space-y-3">
-                {profileData.posts.map((post) => (
+                {profileData.posts.map((post: Post) => (
                   <div key={post.id} className="bg-gray-50 dark:bg-zinc-800 p-3 rounded-md">
                     <div className="flex justify-between">
                       <h4 className="font-medium text-zinc-900 dark:text-zinc-100">{post.title}</h4>

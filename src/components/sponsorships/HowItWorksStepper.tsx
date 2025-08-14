@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { CircleCheck, BookOpen, Star } from 'lucide-react';
 
 const steps = [

@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { HelpCircle, MessageSquare, Phone, Mail } from 'lucide-react';

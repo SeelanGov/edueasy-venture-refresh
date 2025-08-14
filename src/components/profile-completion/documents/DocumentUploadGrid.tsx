@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { DocumentUploadInput } from './DocumentUploadInput';
 import { type DocumentType, DocumentUploadState, Step  } from './types';
 import { type VerificationResult  } from '@/hooks/useDocumentVerification';
