@@ -4,6 +4,17 @@ import { cn } from '@/lib/utils';
 
 
 
+interface SpacingOptions {
+  none: string;
+  xs: string;
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+  '2xl': string;
+  '3xl': string;
+}
+
 interface GridProps {
   children: React.ReactNode;
   cols?: {
@@ -109,7 +120,7 @@ interface FlexProps {
   direction?: 'row' | 'col' | 'row-reverse' | 'col-reverse';
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-  gap?: keyof typeof spacing | 'none';
+  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   wrap?: boolean | 'reverse';
   className?: string;
   as?: 'div' | 'section' | 'main' | 'article' | 'header' | 'footer' | 'nav';
@@ -177,7 +188,7 @@ export const Flex: React.FC<FlexProps> = ({
         flexDirections[direction],
         alignItems[align],
         justifyContent[justify],
-        flexGaps[gap],
+        flexGaps[gap as keyof typeof flexGaps],
         flexWrap[wrap as keyof typeof flexWrap],
         className,
       )}
@@ -191,7 +202,7 @@ export const Flex: React.FC<FlexProps> = ({
 interface ContainerProps {
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
-  padding?: keyof typeof spacing | 'none';
+  padding?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   className?: string;
   as?: 'div' | 'section' | 'main' | 'article';
 }
@@ -229,7 +240,7 @@ export const Container: React.FC<ContainerProps> = ({
 
   return (
     <Component
-      className={cn('mx-auto w-full', containerSizes[size], containerPadding[padding], className)}
+      className={cn('mx-auto w-full', containerSizes[size], containerPadding[padding as keyof typeof containerPadding], className)}
     >
       {children}
     </Component>

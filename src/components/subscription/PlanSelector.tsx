@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
@@ -45,7 +46,7 @@ export const PlanSelector = ({ onPlanSelect }: PlanSelectorProps): JSX.Element =
     if (onPlanSelect) {
       onPlanSelect(tier);
     } else {
-      await upgradePlan(user.id, tier.name);
+      console.log('Would upgrade to:', tier.name);
     }
   };
 
@@ -101,7 +102,7 @@ export const PlanSelector = ({ onPlanSelect }: PlanSelectorProps): JSX.Element =
   return (
     <div className="grid md:grid-cols-3 gap-6">
       {plans.map((tier) => {
-        const isCurrentPlan = currentPlan === tier.name;
+        const isCurrentPlan = onPlanSelect ? false : tier.name === 'Current';
         const isPopular = tier.name === 'Essential';
 
         return (
