@@ -6,13 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { safeAsync } from '@/utils/errorHandling';
 import { gdpr, inputValidation, securityMonitoring } from '@/utils/security';
 import { memo, useEffect, useState } from 'react';
-import { useState } from 'react';
 import {
   AlertTriangle,
   CheckCircle,
@@ -32,7 +31,6 @@ interface SecuritySettingsProps {
 const SecuritySettings = memo<SecuritySettingsProps>(({ className }) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

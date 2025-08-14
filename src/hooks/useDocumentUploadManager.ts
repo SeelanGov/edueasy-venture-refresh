@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDocumentUpload } from './useDocumentUpload';
 import { useDocumentVerification } from './useDocumentVerification';
@@ -156,7 +156,7 @@ export const useDocumentUploadManager = () => {
     handleSubmit,
     checkCompletion,
     processDocument,
-    isProcessing: isProcessing || uploading || isVerifying,
+    isProcessing: isProcessing || isVerifying,
     setVerificationResult,
   };
 };

@@ -6,7 +6,7 @@ import { PersonalInfoForm } from './personal/PersonalInfoForm';
 import { type PersonalInfoFormValues  } from './personal/types';
 import { logError } from '@/utils/logging';
 import { parseError } from '@/utils/errorHandler';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 
 
@@ -29,7 +29,7 @@ export const PersonalInfoStep = ({ onComplete }: PersonalInfoStepProps): JSX.Ele
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { personalInfo } = useProfileCompletionStore();
+  const { personalInfo, setPersonalInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: PersonalInfoFormValues) => {
     if (!user) return;

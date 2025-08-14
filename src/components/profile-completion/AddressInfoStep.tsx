@@ -32,7 +32,7 @@ export const AddressInfoStep = ({ onComplete }: AddressInfoStepProps): JSX.Eleme
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { addressInfo } = useProfileCompletionStore();
+  const { addressInfo, setAddressInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: AddressFormValues) => {
     if (!user) return;

@@ -28,7 +28,7 @@ export const ContactInfoStep = ({ onComplete }: ContactInfoStepProps): JSX.Eleme
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { contactInfo } = useProfileCompletionStore();
+  const { contactInfo, setContactInfo } = useProfileCompletionStore();
 
   const onSubmit = async (data: ContactFormValues) => {
     if (!user) return;

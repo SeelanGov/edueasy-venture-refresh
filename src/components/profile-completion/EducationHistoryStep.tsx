@@ -23,7 +23,7 @@ export const EducationHistoryStep = ({
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { educationInfo } = useProfileCompletionStore();
+  const { educationInfo, setEducationInfo } = useProfileCompletionStore();
 
   // Helper function to create a properly typed SubjectMark object
   const createSubject = (subject: string = '', mark: number = 0): SubjectMark => {

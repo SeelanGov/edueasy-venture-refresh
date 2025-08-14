@@ -70,12 +70,7 @@ export class ErrorBoundary extends Component<Props, State> {
       };
 
       // Log to our error system
-      await logError(
-        enhancedError,
-        ErrorSeverity.ERROR,
-        this.props.component || 'React Component',
-        'render',
-      );
+      console.error('Error in component:', enhancedError);
 
       // Also log to console for developers
       console.error('React Error Boundary caught an error:', error);

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { type User  } from '@supabase/supabase-js';
 import { AlertCircle } from 'lucide-react';
 import { parseError } from '@/utils/errorHandler';
@@ -59,7 +59,7 @@ interface ProfileFormProps {
  * ProfileForm
  * @description Function
  */
-export const ProfileForm = ({ user }: ProfileFormProps): JSX.Element => {
+export const ProfileForm = ({ user, initialData }: ProfileFormProps): JSX.Element => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -7,7 +7,7 @@ import { type DocumentUploadState  } from '@/components/profile-completion/docum
  * useDocumentUploadState
  * @description Function
  */
-export const useDocumentUploadState = (): void => {
+export const useDocumentUploadState = () => {
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [uploadSteps, setUploadSteps] = useState<any[]>([

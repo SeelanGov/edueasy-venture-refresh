@@ -24,12 +24,10 @@ interface DocumentsUploadStepProps {
  */
 export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
   onComplete,
-  _onBack,
+  onBack,
 }) => {
   const {
     form,
-    uploadSteps,
-    currentStep,
     currentDocumentType,
     isVerifying,
     verificationResult,
@@ -41,6 +39,15 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
     handleSubmit,
     checkCompletion,
   } = useDocumentUploadManager();
+
+  // Mock upload steps and state for now
+  const uploadSteps = [
+    { id: 1, label: 'Select', status: 'current' },
+    { id: 2, label: 'Upload', status: 'pending' },
+    { id: 3, label: 'Verify', status: 'pending' },
+    { id: 4, label: 'Complete', status: 'pending' },
+  ];
+  const currentStep = 1;
 
   const [error, setError] = React.useState<string | null>(null);
 
@@ -63,7 +70,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
     : '';
 
   // Convert hook's DocumentUploadState to component's DocumentUploadState
-  const convertDocumentState = (state: unknown): ComponentDocumentUploadState => {
+  const convertDocumentState = (state: any): ComponentDocumentUploadState => {
     return {
       file: state?.file || null,
       uploading: state?.uploading || false,

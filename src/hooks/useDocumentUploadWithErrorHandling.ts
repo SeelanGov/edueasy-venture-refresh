@@ -12,7 +12,7 @@ interface DocumentUploadError {
  * useDocumentUploadWithErrorHandling
  * @description Function
  */
-export const useDocumentUploadWithErrorHandling = (): void => {
+export const useDocumentUploadWithErrorHandling = () => {
   const [error, setError] = useState<DocumentUploadError | null>(null);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [currentDocType, setCurrentDocType] = useState<string>('');
