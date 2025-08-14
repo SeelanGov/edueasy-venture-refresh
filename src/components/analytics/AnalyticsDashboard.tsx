@@ -1,11 +1,11 @@
-import { RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Download, FileText, RefreshCw, Target, Users } from '@/components/ui/icons';
+import { DollarSign, Download, FileText, RefreshCw, Target, Users } from 'lucide-react';
 import { SkeletonButton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { useAuth } from '@/hooks/useAuth';
 import { memo, useEffect, useState } from 'react';
 
@@ -60,6 +60,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
       setRevenueAnalytics(revenueData);
     } catch (error) {
       console.error('Failed to load analytics:', error);
+      const { toast } = useToast();
       toast({
         title: 'Analytics Error',
         description: 'Failed to load analytics data. Please try again.',
@@ -82,6 +83,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
         const csvContent = convertToCSV(report as Record<string, unknown>[]);
         downloadCSV(csvContent, `${reportType}_analytics_${timeRange}.csv`);
 
+        const { toast } = useToast();
         toast({
           title: 'Report Exported',
           description: `${reportType} analytics report has been downloaded.`,
@@ -89,6 +91,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
       }
     } catch (error) {
       console.error('Failed to export report:', error);
+      const { toast } = useToast();
       toast({
         title: 'Export Error',
         description: 'Failed to export analytics report.',

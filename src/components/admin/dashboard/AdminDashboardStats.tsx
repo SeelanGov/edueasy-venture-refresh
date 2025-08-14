@@ -39,7 +39,7 @@ export function AdminDashboardStats({
       try {
         const [orphanedResult, failedResult] = await Promise.all([
           listOrphanedPayments(),
-          listFailedPayments(),
+          // listFailedPayments(),
         ]);
 
         setPaymentRecoveryStats({
@@ -48,11 +48,11 @@ export function AdminDashboardStats({
               ? orphanedResult.data.length
               : 0
             : 0,
-          failed: failedResult.success
-            ? Array.isArray(failedResult.data)
-              ? failedResult.data.length
-              : 0
-            : 0,
+          failed: 0, // failedResult.success
+            // ? Array.isArray(failedResult.data)
+            //   ? failedResult.data.length
+            //   : 0
+            // : 0,
         });
       } catch (error) {
         console.error('Error loading payment recovery stats:', error);
@@ -60,7 +60,7 @@ export function AdminDashboardStats({
     };
 
     loadPaymentRecoveryStats();
-  }, [listOrphanedPayments, listFailedPayments]);
+  }, [listOrphanedPayments]); // , listFailedPayments]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">

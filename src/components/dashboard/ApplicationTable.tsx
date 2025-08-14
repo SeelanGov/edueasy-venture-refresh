@@ -1,9 +1,9 @@
-import { RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { Spinner } from '@/components/Spinner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { supabase } from '@/integrations/supabase/client';
 import { type Application  } from '@/types/ApplicationTypes';
 import { useEffect } from 'react';
@@ -32,6 +32,11 @@ import {
   RefreshCw,
   XCircle,
 } from 'lucide-react';
+
+interface EnrichedApplication extends Application {
+  institution?: { id: string; name: string } | null;
+  program_detail?: { id: string; name: string } | null;
+}
 
 
 
@@ -146,7 +151,7 @@ export const ApplicationTable = ({ applications }: ApplicationTableProps) => {
 
   const getDocumentUrl = async (filePath: string) => {
     try {
-      const { data } = await supabase.storage
+      const { data, error } = await supabase.storage
         .from('user_documents')
         .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 
@@ -154,6 +159,7 @@ export const ApplicationTable = ({ applications }: ApplicationTableProps) => {
       return data.signedUrl;
     } catch (error) {
       console.error('Error creating signed URL:', error);
+      const { toast } = useToast();
       toast({
         title: 'Error',
         description: 'Could not generate document link',
