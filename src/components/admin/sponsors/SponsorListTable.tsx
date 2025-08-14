@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { type Sponsor  } from '@/types/SponsorTypes';
-import { React } from 'react';
+import React from 'react';
 
 
 
@@ -28,7 +28,7 @@ export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors }) 
         </tr>
       </thead>
       <tbody>
-        {sponsors.map((sponsor) => (
+        {sponsors.map((sponsor: Sponsor) => (
           <tr key={sponsor.id}>
             <td className="px-3 py-2">{sponsor.name}</td>
             <td className="px-3 py-2">{sponsor.email}</td>

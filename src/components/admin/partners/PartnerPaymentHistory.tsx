@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 
 interface Payment {
   payment_date: string;
@@ -21,7 +21,7 @@ const PartnerPaymentHistory: React.FC<{ payments: Payment[] }> = ({ payments }) 
           </tr>
         </thead>
         <tbody>
-          {payments.map((p, i) => (
+          {payments.map((p: Payment, i: number) => (
             <tr key={i}>
               <td className="p-2 border">{p.payment_date?.slice(0, 10)}</td>
               <td className="p-2 border">{p.amount}</td>

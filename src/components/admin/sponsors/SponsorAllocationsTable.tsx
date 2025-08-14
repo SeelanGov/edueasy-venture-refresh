@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { type SponsorAllocation  } from '@/types/SponsorTypes';
-import { React } from 'react';
+import React from 'react';
 
 
 
@@ -33,7 +33,7 @@ export const SponsorAllocationsTable: React.FC<SponsorAllocationsTableProps> = (
         </tr>
       </thead>
       <tbody>
-        {allocations.map((alloc) => (
+        {allocations.map((alloc: SponsorAllocation) => (
           <tr key={alloc.id}>
             <td className="px-3 py-2">{alloc.sponsor_id}</td>
             <td className="px-3 py-2">{alloc.student_id}</td>

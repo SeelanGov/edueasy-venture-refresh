@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 
 interface Note {
   note: string;
@@ -13,7 +13,7 @@ const NotesTimeline: React.FC<{ notes: Note[] }> = ({ notes }) => (
       <div className="text-gray-400 italic py-4">No notes found.</div>
     ) : (
       <ul className="space-y-2">
-        {notes.map((note, i) => (
+        {notes.map((note: Note, i: number) => (
           <li key={i} className="bg-gray-50 border rounded p-2">
             <div className="text-sm">{note.note}</div>
             <div className="text-xs text-gray-400">
