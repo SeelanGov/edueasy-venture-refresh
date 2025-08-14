@@ -14,7 +14,7 @@ interface SponsorListTableProps {
  * SponsorListTable
  * @description Function
  */
-export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors }) => (
+export const SponsorListTable: React.FC<SponsorListTableProps> = ({ sponsors, onView }) => (
   <div className="overflow-x-auto">
     <table className="min-w-full border rounded">
       <thead>

@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { type RLSPolicyAnalysis  } from '@/utils/security/types';
 import { AlertCircle, AlertTriangle, CheckCircle, ShieldAlert } from 'lucide-react';

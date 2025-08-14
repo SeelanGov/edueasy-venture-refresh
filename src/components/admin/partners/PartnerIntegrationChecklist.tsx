@@ -1,7 +1,8 @@
 import { Badge } from '@/components/ui/badge';
 import { type Partner  } from '@/types/partner';
 import { CheckCircle2 } from 'lucide-react';
-import { React } from 'react';
+import React from 'react';
+import { Circle } from 'lucide-react';
 
 
 
@@ -60,7 +61,7 @@ const statusToIcon = (status: string): JSX.Element =>
     <Circle className="text-gray-300 mr-2 h-5 w-5" />
   );
 
-const PartnerIntegrationChecklist: React.FC<{ partner: Partner }> = ({ partner }) => (
+const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) => (
   <div className="rounded border p-4 bg-white shadow text-gray-700 space-y-4">
     <div className="font-semibold mb-2">Integration Progress</div>
     <div>

@@ -59,7 +59,7 @@ export function UserManagementPanel({
   const { logAdminAction } = useAuditLogging();
 
   // Apply search, trackingId filter, and verification filter
-  const filteredUsers = users.filter((userRec) => {
+  const filteredUsers = users.filter((userRec: any) => {
     const matchesTrackingId = trackingIdSearch
       ? (userRec.tracking_id || '').toLowerCase().includes(trackingIdSearch.toLowerCase())
       : true;
@@ -121,7 +121,7 @@ export function UserManagementPanel({
 
   function handleExport() {
     setExporting(true);
-    const toExport = filteredUsers.map((u) => ({
+    const toExport = filteredUsers.map((u: any) => ({
       TrackingID: u.tracking_id || '',
       Name: u.full_name || '',
       Email: u.email || u.contact_email || '',
@@ -195,7 +195,7 @@ export function UserManagementPanel({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {filteredUsers.map((userData) => (
+            {filteredUsers.map((userData: any) => (
               <div
                 key={userData.id}
                 className="flex items-center justify-between p-4 border rounded-lg">

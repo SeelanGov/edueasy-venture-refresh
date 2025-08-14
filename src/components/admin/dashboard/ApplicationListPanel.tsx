@@ -36,7 +36,7 @@ function getStatusBadge(status: string | null) {
  * ApplicationListPanel
  * @description Function
  */
-export function ApplicationListPanel({ applications }: any): JSX.Element {
+export function ApplicationListPanel({ applications, userMap }: any): JSX.Element {
   return (
     <Card>
       <CardHeader>
@@ -45,8 +45,8 @@ export function ApplicationListPanel({ applications }: any): JSX.Element {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {applications.map((app) => {
-            const user = userMap?.[app.user_id];
+          {applications.map((app: any) => {
+            const user = (userMap as any)?.[app.user_id];
             return (
               <div key={app.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex-1">
