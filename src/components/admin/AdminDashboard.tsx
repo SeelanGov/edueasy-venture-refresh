@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -108,10 +108,9 @@ export const AdminDashboard = () => {
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (error) throw error;
       setApplications(data || []);
-    } catch (error) {
-      console.error('Error fetching applications:', error);
+    } catch (err) {
+      console.error('Error fetching applications:', err);
       toast.error('Failed to load applications');
     }
   };
@@ -125,7 +124,6 @@ export const AdminDashboard = () => {
         .order('occurred_at', { ascending: false })
         .limit(100);
 
-      if (error) throw error;
 
       // Transform the data to match ErrorLogEntry interface
       const transformedData = (data || []).map((item) => ({
