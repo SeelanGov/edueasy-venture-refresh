@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { type SubjectMark  } from '@/hooks/useProfileCompletionStore';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { React } from 'react';
-import { useFieldArray } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { GradeSubjectsTab } from './GradeSubjectsTab';
@@ -192,7 +192,10 @@ export const EducationForm: React.FC<EducationFormProps> = ({
         <div className="pt-4">
           <h3 className="text-lg font-medium mb-4">Subject Marks</h3>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          {(() => {
+            const [activeTab, setActiveTab] = useState('grade11');
+            return (
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="grade11">Grade 11</TabsTrigger>
               <TabsTrigger value="grade12">Grade 12</TabsTrigger>
@@ -220,6 +223,8 @@ export const EducationForm: React.FC<EducationFormProps> = ({
               />
             </TabsContent>
           </Tabs>
+        );
+      })()}
         </div>
 
         <div className="flex justify-between pt-4">

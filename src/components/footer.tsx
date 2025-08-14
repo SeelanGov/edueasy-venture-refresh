@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { Building2, DollarSign, FileCheck, GraduationCap, Users } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Dialog,
@@ -74,6 +74,7 @@ export function Footer(): JSX.Element {
   const navigate = useNavigate();
 
   const handlePartnerSelect = (partner: (typeof partnerTypes)[0], isLogin: boolean = false) => {
+    const userType = user?.user_metadata?.user_type;
     if (user && userType === partner.userType) {
       navigate('/auth-redirect');
     } else {

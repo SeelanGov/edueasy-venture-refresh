@@ -1,7 +1,7 @@
-import { React } from 'react';
+import React from 'react';
 import { type SubjectMark  } from '@/hooks/useProfileCompletionStore';
 import { SubjectEntry } from './SubjectEntry';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { type Control  } from 'react-hook-form';

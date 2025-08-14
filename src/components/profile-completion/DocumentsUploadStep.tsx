@@ -1,7 +1,7 @@
 import { useDocumentUploadManager } from '@/hooks/useDocumentUploadManager';
 import { parseError } from '@/utils/errorHandler';
 import { logError } from '@/utils/logging';
-import { React } from 'react';
+import React from 'react';
 import { DocumentFormActions } from './documents/DocumentFormActions';
 import { DocumentStepperCard } from './documents/DocumentStepperCard';
 import { DocumentUploadGrid } from './documents/DocumentUploadGrid';

@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { Input } from '@/components/ui/input';
 import { type Control  } from 'react-hook-form';
 import { type ContactFormValues  } from './types';
