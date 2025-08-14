@@ -16,7 +16,7 @@ const COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'
  * @description Function
  */
 export const RejectionReasonsChart = ({ data }: RejectionReasonsChartProps) => {
-  const renderCustomLabel = (entry: unknown) => {
+  const renderCustomLabel = (entry: any) => {
     const RADIAN = Math.PI / 180;
     const radius = entry.innerRadius + (entry.outerRadius - entry.innerRadius) * 0.5;
     const x = entry.cx + radius * Math.cos(-entry.midAngle * RADIAN);

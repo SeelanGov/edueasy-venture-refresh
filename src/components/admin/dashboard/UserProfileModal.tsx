@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useSponsorAllocations } from '@/hooks/admin/useSponsorAllocations';
 import { useUserVerificationLogs } from '@/hooks/admin/useUserVerificationLogs';
 import { Clock, FileText, ShieldCheck, User, X } from 'lucide-react';
-import { React } from 'react';
+import React from 'react';
 
 import {
   Card,
@@ -128,7 +128,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {logs.map((log: unknown) => (
+                    {logs.map((log: any) => (
                       <li key={log.id} className="border-b py-1">
                         <span className="font-semibold">
                           {log.created_at
@@ -182,7 +182,7 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
                   </div>
                 ) : (
                   <ul className="space-y-1">
-                    {allocations.map((a: unknown) => (
+                    {allocations.map((a: any) => (
                       <li key={a.id} className="border-b py-1">
                         <span className="font-semibold">{a.plan}</span>
                         <span className="ml-2 text-xs text-gray-500">({a.status})</span>

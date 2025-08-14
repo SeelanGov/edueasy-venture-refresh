@@ -12,7 +12,7 @@ interface AnalyticsErrorStateProps {
  * AnalyticsErrorState
  * @description Function
  */
-export const AnalyticsErrorState = ({ error }: AnalyticsErrorStateProps) => {
+export const AnalyticsErrorState = ({ error, onRetry }: AnalyticsErrorStateProps) => {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">

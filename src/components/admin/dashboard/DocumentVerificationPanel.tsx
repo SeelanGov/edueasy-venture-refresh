@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import { type UserSummary  } from '@/utils/admin/userLookup';
 
 
@@ -54,7 +54,7 @@ export function DocumentVerificationPanel({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {documents.map((doc) => {
+          {documents.map((doc: any) => {
             const user = userMap?.[doc.user_id];
             return (
               <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg">
