@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 
@@ -32,7 +32,7 @@ export function useSponsorAllocations(userId?: any): {
       .select('*')
       .eq('student_id', userId)
       .order('allocated_on', { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
         if (!error && data) {
           setAllocations(data as SponsorAllocation[]);
         }
@@ -40,5 +40,5 @@ export function useSponsorAllocations(userId?: any): {
       });
   }, [userId]);
 
-  return { allocations };
+  return { allocations, loading };
 }

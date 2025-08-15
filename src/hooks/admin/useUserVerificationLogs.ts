@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 
@@ -31,7 +31,7 @@ export function useUserVerificationLogs(userId?: any): {
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
         if (!error && data) {
           setLogs(data as VerificationLog[]);
         }
@@ -39,5 +39,5 @@ export function useUserVerificationLogs(userId?: any): {
       });
   }, [userId]);
 
-  return { logs };
+  return { logs, loading };
 }

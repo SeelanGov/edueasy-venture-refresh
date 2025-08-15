@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { type ErrorSeverity  } from '@/utils/errorLogging';
-import { logger } from '../utils/logger';
+import { type ErrorSeverity } from '@/utils/errorLogging';
+import logger from '../utils/logger';
 
 
 
@@ -39,9 +38,9 @@ export interface ErrorNotification {
 
 /**
  * useAdminErrorNotifications
- * @description Function
+ * @description Hook for fetching and managing system error logs for admins
  */
-export const useAdminErrorNotifications = (): void => {
+export const useAdminErrorNotifications = () => {
   const [notifications, setNotifications] = useState<ErrorNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,7 +80,7 @@ export const useAdminErrorNotifications = (): void => {
       }
     } catch (err: unknown) {
       console.error('Error fetching error notifications:', err);
-      setError(err.message || 'Failed to load error notifications');
+      setError((err as Error).message || 'Failed to load error notifications');
     } finally {
       setLoading(false);
     }

@@ -5,7 +5,7 @@ import { useState } from 'react';
  * useIsTablet
  * @description Function
  */
-export function useIsTablet(): void {
+export function useIsTablet() {
   const [isTablet, setIsTablet] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
