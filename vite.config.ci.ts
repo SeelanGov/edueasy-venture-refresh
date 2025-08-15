@@ -30,8 +30,4 @@ export default defineConfig({
     // Set a higher timeout for CI builds
     chunkSizeWarningLimit: 1000,
   },
-  // Disable watch mode in CI
-  optimizeDeps: {
-    disabled: process.env.CI === 'true',
-  },
 });
