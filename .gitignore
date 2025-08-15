@@ -54,3 +54,9 @@ deploy-keys/
 .cache
 tmp/
 temp/
+
+# secrets
+.env
+.env.*
+*.env
+supabase/.env

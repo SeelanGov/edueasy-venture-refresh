@@ -1,0 +1,16 @@
+# never let Cursor touch these by default
+.env
+*.env
+supabase/.env
+scripts/*
+src/types/*
+dist
+build
+node_modules
+.git
+*.log
+coverage
+.nyc_output
+package-lock.json
+bun.lockb
+public/lovable-uploads/*
