@@ -47,7 +47,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
 );
 Typography.displayName = 'Typography';
 
-function getDefaultTag(variant: TypographyProps['']) {
+function getDefaultTag(variant: TypographyProps['variant']) {
   switch (variant) {
     case 'h1':
       return 'h1';

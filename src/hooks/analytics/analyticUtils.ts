@@ -101,7 +101,7 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
     }, {});
 
   return Object.entries(rejectionReasons)
-    .map(([reason, count]) => ({ reason }))
+    .map(([reason, count]) => ({ reason, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 };
@@ -112,7 +112,7 @@ export const extractRejectionReasons = (documents: Document[]): RejectionReason[
  * calculateAnalytics
  * @description Function
  */
-export const calculateAnalytics = (filteredDocuments: Document[]): void => {
+export const calculateAnalytics = (filteredDocuments: Document[]) => {
   const totalDocuments = filteredDocuments.length;
   const approvedDocuments = filteredDocuments.filter(
     (doc) => doc.verification_status === 'approved',

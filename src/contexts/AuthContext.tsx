@@ -48,13 +48,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .single();
 
-      if (error) throw error;
+      if (data) {
 
-      setUserType(data?.user_type || 'student');
-      setIsVerified(data?.id_verified || false);
-      setProfileStatus(data?.profile_status || null);
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
+        setUserType(data?.user_type || 'student');
+        setIsVerified(data?.id_verified || false);
+        setProfileStatus(data?.profile_status || null);
+      }
+    } catch (err: unknown) {
+      console.error('Error fetching user profile:', err);
       setUserType('student');
       setIsVerified(false);
       setProfileStatus(null);

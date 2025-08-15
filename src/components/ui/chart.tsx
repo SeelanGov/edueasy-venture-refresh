@@ -89,8 +89,8 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = 'Chart';
 
-const ChartStyle = ({ id }: { id: string; config: ChartConfig }): JSX.Element | null => {
-  const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }): JSX.Element | null => {
+  const colorConfig = Object.entries(config).filter(([_, itemConfig]) => itemConfig.theme || itemConfig.color);
 
   if (!colorConfig.length) {
     return null;
@@ -119,10 +119,10 @@ const ChartStyle = ({ id }: { id: string; config: ChartConfig }): JSX.Element | 
       });
     });
 
-    return { baseStyles };
+    return { baseStyles, darkStyles };
   };
 
-  const { baseStyles } = generateStyles();
+  const { baseStyles, darkStyles } = generateStyles();
 
   return (
     <style>

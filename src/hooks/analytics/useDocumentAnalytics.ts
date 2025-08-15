@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { type AnalyticsFilters  } from './types';
+import { type AnalyticsFilters, type DocumentAnalytics } from './types';
 import { DEFAULT_FILTERS } from './constants';
 
 

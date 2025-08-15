@@ -17,7 +17,7 @@ import { type ApplicationFormValues  } from '@/types/ApplicationTypes';
  * useApplicationForm
  * @description Function
  */
-export const useApplicationForm = (): void => {
+export const useApplicationForm = () => {
   const { isOnline } = useNetwork();
 
   // Get form state from the specialized hook
@@ -25,11 +25,11 @@ export const useApplicationForm = (): void => {
     useApplicationFormState();
 
   // Create a proper conversion function for storage
-  const saveFormToStorageWrapper = (data: DraftFormData): void => {
-    // Convert DraftFormData to ApplicationFormValues for storage
+  const saveFormToStorageWrapper = (data: ApplicationFormValues): void => {
+    // Convert form data for storage
     const applicationFormData: ApplicationFormValues = {
-      fullName: form.getValues('fullName') || '',
-      idNumber: form.getValues('idNumber') || '',
+      fullName: data.fullName || form.getValues('fullName') || '',
+      idNumber: data.idNumber || form.getValues('idNumber') || '',
       university: data.university,
       program: data.program,
       grade12Results: data.grade12Results,
@@ -71,6 +71,11 @@ export const useApplicationForm = (): void => {
     if (isOnline) {
       onSubmit();
     }
+  };
+
+  const saveDraft = () => {
+    const currentData = form.getValues();
+    saveFormToStorageWrapper(currentData);
   };
 
   return {
