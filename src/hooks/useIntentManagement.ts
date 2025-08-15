@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -32,7 +33,7 @@ export const useIntentManagement = () => {
     setLoading(true);
     try {
       // Get all intents with aggregated stats
-      const { data } = await supabase.rpc('get_intents_with_stats');
+      const { data, error } = await supabase.rpc('get_intents_with_stats');
 
       if (error) throw error;
 
@@ -65,7 +66,7 @@ export const useIntentManagement = () => {
     sample_queries?: string[];
   }) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('thandi_intents')
         .insert({
           intent_name: intentData.intent_name,
@@ -79,7 +80,7 @@ export const useIntentManagement = () => {
 
       toast.success('Intent created successfully');
       fetchIntents(); // Refresh intents list
-      return data[0];
+      return data?.[0] || null;
     } catch (error) {
       console.error('Error creating intent:', error);
       toast.error('Failed to create intent');

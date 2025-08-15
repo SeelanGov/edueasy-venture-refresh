@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 // Step 1: Define the valid partner types as a type and an array
@@ -18,7 +18,7 @@ const VALID_PARTNER_TYPES: PartnerType[] = [
  * usePartners
  * @description Function
  */
-export const usePartners = ({ type }: { type?: PartnerType; search?: string }): void => {
+export const usePartners = ({ type, search }: { type?: PartnerType; search?: string } = {}) => {
   const [partners, setPartners] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

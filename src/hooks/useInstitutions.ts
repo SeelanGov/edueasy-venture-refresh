@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface Institution {
@@ -24,7 +24,7 @@ export interface Institution {
  * useInstitutions
  * @description Function
  */
-export const useInstitutions = (): void => {
+export const useInstitutions = () => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
