@@ -1,11 +1,10 @@
+import { useState, useEffect } from 'react';
 import { AlertDescription, Alert } from '@/components/ui/alert';
-import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaymentRecovery } from '@/hooks/usePaymentRecovery';
-import { useEffect } from 'react';
 
 import {
   AlertTriangle,
@@ -51,7 +50,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
     setLoading(true);
     const result = await checkUserRecovery(user.email);
 
-    if (result.success && result.data) {
+    if (result.success && result.data && Array.isArray(result.data)) {
       // Filter payments that are not linked to the current user
       const unclaimedPayments = result.data.filter(
         (payment: Payment) => !payment.user_id || payment.user_id !== user.id,
@@ -63,6 +62,8 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
   };
 
   const handleClaimPayment = async (paymentId: string) => {
+    const { claimPayment } = usePaymentRecovery();
+    if (!claimPayment) return;
     const result = await claimPayment(paymentId);
 
     if (result.success) {
@@ -143,7 +144,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
 
   // Don't show anything if no recoverable payments
   if (recoverablePayments.length === 0 && !loading) {
-    return null;
+    return <></>;
   }
 
   return (

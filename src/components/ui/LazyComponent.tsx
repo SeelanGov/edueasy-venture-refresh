@@ -36,12 +36,7 @@ export const LazyComponent: React.FC<LazyComponentProps> = ({
  */
 export const LazyThandiAgent = () => import('@/components/ai/ThandiAgent');
 
-/**
- * LazyNotificationPreferences
- * @description Function
- */
-export const LazyNotificationPreferences = () =>
-  import('@/components/user/NotificationPreferences');
+// Removed LazyNotificationPreferences - component no longer exists
 
 /**
  * LazyAdminDashboard
