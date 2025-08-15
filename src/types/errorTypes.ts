@@ -1,5 +1,7 @@
 import { type ErrorCategory  } from '@/utils/errorHandler';
-import { type ErrorSeverity  } from '@/utils/errorLogging';
+import { ErrorSeverity  } from '@/utils/errorLogging';
+
+export { ErrorSeverity };
 
 
 

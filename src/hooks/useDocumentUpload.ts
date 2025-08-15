@@ -13,7 +13,7 @@ export interface DocumentUploadResult {
  * useDocumentUpload
  * @description Function
  */
-export const useDocumentUpload = (): void => {
+export const useDocumentUpload = () => {
   const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
 
@@ -42,7 +42,7 @@ export const useDocumentUpload = (): void => {
       const filePath = `/documents/${fileName}`;
 
       // Insert document record
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('documents')
         .insert({
           user_id: user.id,
@@ -60,6 +60,8 @@ export const useDocumentUpload = (): void => {
         title: 'Success',
         description: 'Document uploaded successfully',
       });
+
+      if (!data) throw new Error('No data returned from document insert');
 
       return {
         id: data.id,

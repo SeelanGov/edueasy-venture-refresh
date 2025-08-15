@@ -6,13 +6,6 @@ import { useNetwork } from '@/hooks/useNetwork';
 import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
 import { type ApplicationFormValues, type DraftFormData  } from '@/types/ApplicationTypes';
 
-
-
-
-
-
-
-
 /**
  * useApplicationForm
  * @description Function
@@ -72,6 +65,7 @@ export const useApplicationForm = () => {
       university: currentData.university,
       program: currentData.program,
       grade12Results: currentData.grade12Results,
+      personalStatement: currentData.personalStatement,
     };
     saveFormToStorageWrapper(draftData);
   };

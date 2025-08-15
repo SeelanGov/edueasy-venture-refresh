@@ -17,7 +17,7 @@ export interface VerificationResult {
  * useDocumentVerification
  * @description Function
  */
-export const useDocumentVerification = (): void => {
+export const useDocumentVerification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
 
@@ -52,7 +52,7 @@ export const useDocumentVerification = (): void => {
       }
 
       // Call the verification edge function
-      const { data } = await supabase.functions.invoke('verify-document', {
+      const { data, error } = await supabase.functions.invoke('verify-document', {
         body: {
           documentId,
           userId,
@@ -66,19 +66,20 @@ export const useDocumentVerification = (): void => {
         let errorMessage = 'Document verification failed';
         let errorCategory = ErrorCategory.UNKNOWN;
 
-        if (error.message.includes('network') || error.message.includes('fetch')) {
+        const errorMsg = (error as any)?.message || '';
+        if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
           errorCategory = ErrorCategory.NETWORK;
           errorMessage = 'Network error during document verification';
-        } else if (error.message.includes('processing')) {
+        } else if (errorMsg.includes('processing')) {
           errorCategory = ErrorCategory.FILE;
           errorMessage = 'Error processing document';
-        } else if (error.message.includes('parameter')) {
+        } else if (errorMsg.includes('parameter')) {
           errorCategory = ErrorCategory.VALIDATION;
           errorMessage = 'Invalid document information';
         }
 
         throw {
-          message: error.message || errorMessage,
+          message: errorMsg || errorMessage,
           category: errorCategory,
           originalError: error,
         };
@@ -118,12 +119,13 @@ export const useDocumentVerification = (): void => {
 
       return result;
     } catch (error: unknown) {
-      handleError(error, 'Document verification failed');
+      console.error('Document verification failed:', error);
 
+      const errorObj = error as any;
       const errorResult: VerificationResult = {
         status: 'pending',
-        failureReason: error.message || 'An error occurred during verification',
-        errorCategory: error.category || ErrorCategory.UNKNOWN,
+        failureReason: errorObj?.message || 'An error occurred during verification',
+        errorCategory: errorObj?.category || ErrorCategory.UNKNOWN,
       };
 
       setVerificationResult(errorResult);

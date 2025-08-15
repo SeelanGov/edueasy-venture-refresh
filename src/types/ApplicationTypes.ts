@@ -56,4 +56,5 @@ export interface DraftFormData {
   university: string;
   program: string;
   grade12Results: string;
+  personalStatement?: string;
 }

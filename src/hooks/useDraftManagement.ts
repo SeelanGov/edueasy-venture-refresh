@@ -28,7 +28,7 @@ export const useDraftManagement = (
   setHasSavedDraft: (value: boolean) => void,
 ) => {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  const { draftSchema } = useApplicationFormSchema();
+  const { formSchema } = useApplicationFormSchema();
 
   // Save as draft
   const saveDraft = async () => {
@@ -65,8 +65,8 @@ export const useDraftManagement = (
         personalStatement,
       };
 
-      // Validate with the draft schema (less strict validation)
-      const result = draftSchema.safeParse(collectedFormData);
+      // Validate with the form schema (basic validation)
+      const result = formSchema.partial().safeParse(collectedFormData);
 
       if (!result.success) {
         toast({
@@ -153,7 +153,7 @@ export const useDraftManagement = (
       console.error('Error saving draft:', error);
       toast({
         title: 'Error',
-        description: `Failed to save draft: ${error.message}`,
+        description: `Failed to save draft: ${(error as any)?.message || 'Unknown error'}`,
         variant: 'destructive',
       });
     } finally {

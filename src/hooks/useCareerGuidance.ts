@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -43,7 +43,7 @@ export interface CareerGuidance {
  * useCareerGuidance
  * @description Function
  */
-export const useCareerGuidance = (): void => {
+export const useCareerGuidance = () => {
   const [assessments, setAssessments] = useState<CareerAssessment[]>([]);
   const [guidance, setGuidance] = useState<CareerGuidance[]>([]);
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ export const useCareerGuidance = (): void => {
     setError(null);
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('career_assessments')
         .select('*')
         .eq('user_id', user.id)
@@ -85,7 +85,7 @@ export const useCareerGuidance = (): void => {
     setError(null);
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('career_guidance')
         .select('*')
         .eq('user_id', user.id)
@@ -110,7 +110,7 @@ export const useCareerGuidance = (): void => {
     if (!user) return null;
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('career_assessments')
         .select('*')
         .eq('id', assessmentId)
@@ -145,9 +145,9 @@ export const useCareerGuidance = (): void => {
         .insert({
           user_id: user.id,
           assessment_type: assessmentType,
-          questions: {},
-          responses: {},
-          results,
+          questions: {} as any,
+          responses: {} as any,
+          results: results as any,
           completed_at: new Date().toISOString(),
         })
         .select()
@@ -163,8 +163,8 @@ export const useCareerGuidance = (): void => {
           assessment_id: assessmentData.id,
           assessment_type: assessmentType,
           assessment_date: new Date().toISOString(),
-          recommendations,
-          results,
+          recommendations: recommendations as any,
+          results: results as any,
           is_premium: isPremium,
         })
         .select()
@@ -208,8 +208,8 @@ export const useCareerGuidance = (): void => {
       const { data } = await supabase
         .from('career_assessments')
         .update({
-          responses,
-          results: mockResults,
+          responses: responses as any,
+          results: mockResults as any,
           completed_at: new Date().toISOString(),
         })
         .eq('id', assessmentId)
@@ -264,14 +264,14 @@ export const useCareerGuidance = (): void => {
           : null,
       };
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('career_guidance')
         .insert({
           user_id: user.id,
           assessment_id: assessmentId,
           assessment_type: assessment.assessment_type,
           assessment_date: assessment.created_at,
-          recommendations: mockGuidance,
+          recommendations: mockGuidance as any,
           results: assessment.results,
           is_premium: isPremium,
         })

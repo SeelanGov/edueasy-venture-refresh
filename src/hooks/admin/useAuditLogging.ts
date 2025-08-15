@@ -85,7 +85,7 @@ export function useAuditLogging() {
         query = query.contains('details', { target_id: targetId, target_type: targetType });
       }
 
-      const { data } = await query.limit(100);
+      const { data, error } = await query.limit(100);
       if (error) throw error;
 
       setAuditLogs(data as AuditLogEntry[]);
@@ -100,7 +100,7 @@ export function useAuditLogging() {
   const fetchRecentActivity = async (limit = 50) => {
     setLoading(true);
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('system_error_logs')
         .select('*')
         .eq('category', 'ADMIN_ACTION')
