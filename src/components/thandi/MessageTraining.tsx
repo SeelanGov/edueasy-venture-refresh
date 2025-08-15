@@ -1,8 +1,7 @@
 import { TrainingHeader } from './training/TrainingHeader';
 import { MessageTable } from './training/MessageTable';
 import { TrainingFooter } from './training/TrainingFooter';
-import { type ChatMessage } from '@/types/TrainingTypes';
-import { type TrainingEntry } from '@/hooks/useTrainingData';
+import { type ChatMessage, type TrainingEntry } from '@/types/TrainingTypes';
 import { type Intent } from '@/hooks/useIntentManagement';
 import { useModelTraining } from '@/hooks/useModelTraining';
 

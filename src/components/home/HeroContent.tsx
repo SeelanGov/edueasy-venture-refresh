@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
  * @description Function
  */
 export const HeroContent = (): JSX.Element => {
-  const { user } = useAuth();
+  const { user, isVerified } = useAuth();
   const navigate = useNavigate();
 
   const handleStartApplication = (): void => {

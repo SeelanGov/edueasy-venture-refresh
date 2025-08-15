@@ -23,7 +23,7 @@ export const FadeIn = ({
   delay = 0,
   direction = 'up',
   ...props
-}: FadeInProps): void => {
+}: FadeInProps): JSX.Element => {
   // Map duration to CSS values
   const durationClasses = {
     fast: 'duration-300',
@@ -79,7 +79,7 @@ export const ScaleIn = ({
   duration = 'normal',
   delay = 0,
   ...props
-}: ScaleInProps): void => {
+}: ScaleInProps): JSX.Element => {
   // Map duration to CSS values
   const durationClasses = {
     fast: 'duration-300',
@@ -117,7 +117,7 @@ export const AnimateOnScroll = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): void => {
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => {
   return (
     <div
       className={cn(

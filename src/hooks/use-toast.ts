@@ -7,10 +7,17 @@ import * as React from 'react';
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
-type ToasterToast = ToastProps & {
-  id: string;
+interface ToastProps {
+  variant?: 'default' | 'destructive';
+  className?: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+type ToasterToast = ToastProps & {
+  id: string;
   action?: ToastActionElement;
 };
 
@@ -138,7 +145,7 @@ function dispatch(action: Action): void {
 
 type Toast = Omit<ToasterToast, 'id'>;
 
-function toast({ ...props }: any) {
+function toast({ ...props }: Toast) {
   const id = genId();
 
   const update = (props: ToasterToast) =>
@@ -154,7 +161,7 @@ function toast({ ...props }: any) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
+      onOpenChange: (open: boolean) => {
         if (!open) dismiss();
       },
     },

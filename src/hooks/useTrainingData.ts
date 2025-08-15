@@ -9,15 +9,7 @@ import { type TrainingFilters, type TrainingEntry as TrainingEntryType } from '@
 
 
 
-// Use canonical TrainingEntry from types
-interface TrainingEntry extends TrainingEntryType {
-  intents: {
-    intent_name: string;
-  } | null;
-}
-
-export { type ChatMessage };
-export type { TrainingEntry };
+export { type ChatMessage } from '@/types/TrainingTypes';
 
 /**
  * useTrainingData
@@ -61,12 +53,11 @@ export const useTrainingData = () => {
     }
   }, [user, page, lowConfidenceOnly]);
 
-  // Cast trainedMessages to our local TrainingEntry type to avoid conflicts
-  const typedTrainedMessages = trainedMessages as TrainingEntry[];
+  // trainedMessages are already properly typed from useTrainingEntries
 
   return {
     messages,
-    trainedMessages: typedTrainedMessages,
+    trainedMessages,
     loading,
     lowConfidenceOnly,
     setLowConfidenceOnly,

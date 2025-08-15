@@ -5,6 +5,9 @@ export interface TrainingEntry {
   confidence: number | null;
   admin_id: string;
   created_at: string;
+  intents?: {
+    intent_name: string;
+  } | null;
 }
 
 export interface IntentWithStats {

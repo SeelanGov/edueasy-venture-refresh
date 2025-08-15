@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import { analyticsService } from '@/services/AnalyticsService';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom';
  * usePageTracking
  * @description Function
  */
-export const usePageTracking = (): void => {
+export const usePageTracking = () => {
   const location = useLocation();
   const { user } = useAuth();
 
@@ -33,7 +33,7 @@ export const usePageTracking = (): void => {
  * useActionTracking
  * @description Function
  */
-export const useActionTracking = (): void => {
+export const useActionTracking = () => {
   const { user } = useAuth();
 
   const trackAction = useCallback(
@@ -57,7 +57,7 @@ export const useActionTracking = (): void => {
  * useApplicationTracking
  * @description Function
  */
-export const useApplicationTracking = (): void => {
+export const useApplicationTracking = () => {
   const { user } = useAuth();
 
   const trackApplicationSubmitted = useCallback(
@@ -86,7 +86,7 @@ export const useApplicationTracking = (): void => {
  * usePaymentTracking
  * @description Function
  */
-export const usePaymentTracking = (): void => {
+export const usePaymentTracking = () => {
   const { user } = useAuth();
 
   const trackPaymentCompleted = useCallback(
@@ -116,7 +116,7 @@ export const usePaymentTracking = (): void => {
  * useErrorTracking
  * @description Function
  */
-export const useErrorTracking = (): void => {
+export const useErrorTracking = () => {
   const { user } = useAuth();
 
   const trackError = useCallback(
@@ -145,7 +145,7 @@ export const useErrorTracking = (): void => {
  * useFeatureTracking
  * @description Function
  */
-export const useFeatureTracking = (): void => {
+export const useFeatureTracking = () => {
   const { user } = useAuth();
 
   const trackFeatureUsed = useCallback(
@@ -169,7 +169,7 @@ export const useFeatureTracking = (): void => {
  * useConversionTracking
  * @description Function
  */
-export const useConversionTracking = (): void => {
+export const useConversionTracking = () => {
   const { user } = useAuth();
 
   const trackConversion = useCallback(
@@ -198,7 +198,7 @@ export const useConversionTracking = (): void => {
  * useEngagementTracking
  * @description Function
  */
-export const useEngagementTracking = (): void => {
+export const useEngagementTracking = () => {
   const { user } = useAuth();
 
   const trackEngagement = useCallback(
@@ -227,7 +227,7 @@ export const useEngagementTracking = (): void => {
  * useAnalyticsData
  * @description Function
  */
-export const useAnalyticsData = (): void => {
+export const useAnalyticsData = () => {
   const { user } = useAuth();
 
   const getUserAnalytics = useCallback(async () => {
@@ -266,7 +266,7 @@ export const useAnalyticsData = (): void => {
  * useAnalytics
  * @description Function
  */
-export const useAnalytics = (): void => {
+export const useAnalytics = () => {
   const { trackAction } = useActionTracking();
   const { trackApplicationSubmitted } = useApplicationTracking();
   const { trackPaymentCompleted } = usePaymentTracking();

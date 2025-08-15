@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
  * Fonts
  * @description Function
  */
-export const Fonts = (): void => {
+export const Fonts = (): JSX.Element => {
   return (
     <Helmet>
       <link rel="preconnect" href="https://fonts.googleapis.com" />

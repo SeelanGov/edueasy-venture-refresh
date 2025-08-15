@@ -49,7 +49,7 @@ const ColorCard = ({ name, variable, className, textClassName }: ColorCardProps)
  * @description Function
  */
 export const ColorSystem = (): JSX.Element => {
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="container mx-auto py-8">
