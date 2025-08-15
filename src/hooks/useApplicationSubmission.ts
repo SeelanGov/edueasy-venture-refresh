@@ -135,7 +135,7 @@ export const useApplicationSubmission = (
       console.error('Application submission error:', error);
       toast({
         title: 'Error',
-        description: `Failed to submit application: ${error.message}`,
+        description: `Failed to submit application: ${(error as any)?.message || 'Unknown error'}`,
         variant: 'destructive',
       });
     } finally {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
@@ -19,7 +19,7 @@ export interface DocumentWithUserInfo {
  * useDocumentsManagement
  * @description Function
  */
-export function useDocumentsManagement(): void {
+export function useDocumentsManagement() {
   const [documents, setDocuments] = useState<DocumentWithUserInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +40,7 @@ export function useDocumentsManagement(): void {
       setTotalCount(count || 0);
 
       // Get paginated documents with user info - using proper join
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('documents')
         .select(
           `

@@ -27,7 +27,7 @@ export const useDraftLoading = (
       if (!userId) return;
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('applications')
           .select('*')
           .eq('user_id', userId)

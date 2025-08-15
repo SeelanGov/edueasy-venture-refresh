@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
+import { type ApplicationFormValues } from '@/types/ApplicationTypes';
 
 // Define a simpler type for draft data that matches what we're collecting
 type DraftFormData = {
@@ -24,7 +25,7 @@ export const useDraftManagement = (
   userId: string | undefined,
   isOnline: boolean,
   documentFile: File | null,
-  saveFormToStorage: (data: DraftFormData) => void,
+  saveFormToStorage: (data: ApplicationFormValues) => void,
   setHasSavedDraft: (value: boolean) => void,
 ) => {
   const [isSavingDraft, setIsSavingDraft] = useState(false);
@@ -58,11 +59,12 @@ export const useDraftManagement = (
       const personalStatement =
         (document.getElementById('personalStatement') as HTMLTextAreaElement)?.value || '';
 
-      const collectedFormData: DraftFormData = {
+      const collectedFormData: ApplicationFormValues = {
+        fullName: '', // We'll use empty values for draft since these aren't required
+        idNumber: '',
         university,
         program,
         grade12Results,
-        personalStatement,
       };
 
       // Validate with the form schema (basic validation)
@@ -100,7 +102,6 @@ export const useDraftManagement = (
             institution_id: collectedFormData.university || null,
             program_id: collectedFormData.program || null,
             status: 'Draft',
-            personal_statement: collectedFormData.personalStatement,
             updated_at: new Date().toISOString(),
           },
         ]);

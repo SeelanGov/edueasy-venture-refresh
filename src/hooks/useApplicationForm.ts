@@ -17,9 +17,8 @@ export const useApplicationForm = () => {
   const { form, documentFile, handleFileChange, hasSavedDraft, setHasSavedDraft, user } =
     useApplicationFormState();
 
-  // Create a proper conversion function for storage
-  const saveFormToStorageWrapper = (data: DraftFormData): void => {
-    // Convert form data for storage
+  // Create a proper conversion function for storage that matches the expected type
+  const saveFormToStorageWrapper = (data: ApplicationFormValues): void => {
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
     saveFormToStorage(data);
   };
@@ -61,13 +60,7 @@ export const useApplicationForm = () => {
 
   const saveDraft = () => {
     const currentData = form.getValues();
-    const draftData: DraftFormData = {
-      university: currentData.university,
-      program: currentData.program,
-      grade12Results: currentData.grade12Results,
-      personalStatement: currentData.personalStatement,
-    };
-    saveFormToStorageWrapper(draftData);
+    saveFormToStorageWrapper(currentData);
   };
 
   return {
