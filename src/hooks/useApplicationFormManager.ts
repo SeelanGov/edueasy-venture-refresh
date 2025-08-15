@@ -33,7 +33,7 @@ const applicationFormSchema = z.object({
  * useApplicationFormManager
  * @description Function
  */
-export const useApplicationFormManager = (): void => {
+export const useApplicationFormManager = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { isOnline } = useNetwork();

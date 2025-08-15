@@ -1,11 +1,11 @@
-import { type ChatMessage  } from '@/hooks/useTrainingData';
+import { type ChatMessage } from '@/types/TrainingTypes';
 import { type Intent  } from '@/hooks/useIntentManagement';
 import { MessageRow } from './MessageRow';
 
-interface TrainingEntry {
+interface LocalTrainingEntry {
   id: string;
   message_id?: string;
-  intent_id: string;
+  intent_id: string | null; // Allow null to match database
   created_at?: string;
   updated_at?: string;
 }
@@ -23,7 +23,7 @@ import {
 
 interface MessageTableProps {
   messages: ChatMessage[];
-  trainedMessages: TrainingEntry[];
+  trainedMessages: LocalTrainingEntry[];
   loading: boolean;
   intents: Intent[];
   onTrain: (messageId: string, intentId: string) => void;
@@ -44,7 +44,7 @@ export const MessageTable = ({
   onUpdateTraining,
   onDeleteTraining,
 }: MessageTableProps): JSX.Element => {
-  const getTrainingForMessage = (messageId: string): TrainingEntry | undefined => {
+  const getTrainingForMessage = (messageId: string): LocalTrainingEntry | undefined => {
     return trainedMessages.find((t) => t.message_id === messageId);
   };
 

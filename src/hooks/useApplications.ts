@@ -1,19 +1,8 @@
-import { useAuth } from '@/hooks/useAuth';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useEffect } from 'react';
-
-interface Application {
-  id: string;
-  user_id: string;
-  created_at: string | null;
-  institution_id: string | null;
-  program_id: string | null;
-  grade12_results: string | null;
-  university: string | null;
-  program: string | null;
-  status: string | null;
-  documents?: unknown[];
-}
+import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
+import { type Application } from '@/types/ApplicationTypes';
 
 /**
  * useApplications
@@ -32,7 +21,7 @@ export const useApplications = () => {
       }
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('applications')
           .select('*')
           .eq('user_id', user.id)
@@ -41,7 +30,8 @@ export const useApplications = () => {
         if (error) throw error;
 
         setApplications(data || []);
-      } catch {
+      } catch (error) {
+        console.error('Error fetching applications:', error);
         setApplications([]);
       } finally {
         setLoading(false);
@@ -51,5 +41,5 @@ export const useApplications = () => {
     fetchApplications();
   }, [user]);
 
-  return { applications };
+  return { applications, loading };
 };

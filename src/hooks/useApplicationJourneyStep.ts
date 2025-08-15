@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -10,7 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
  * useApplicationJourneyStep
  * @description Function
  */
-export function useApplicationJourneyStep(): void {
+export function useApplicationJourneyStep() {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [stepStatus, setStepStatus] = useState<(boolean | undefined)[]>([]);

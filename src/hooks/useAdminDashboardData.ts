@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -41,7 +41,7 @@ export interface Application {
  * useAdminDashboardData
  * @description Function
  */
-export function useAdminDashboardData(): void {
+export function useAdminDashboardData() {
   const [users, setUsers] = useState<DatabaseUser[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);

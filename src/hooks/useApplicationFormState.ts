@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import { type ApplicationFormValues  } from '@/components/application/ApplicationFormFields';
 import { useApplicationFormSchema } from '@/hooks/useApplicationFormSchema';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -22,7 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
  * useApplicationFormState
  * @description Function
  */
-export const useApplicationFormState = (): void => {
+export const useApplicationFormState = () => {
   const { user } = useAuth();
   const { formSchema } = useApplicationFormSchema();
   const [documentFile, setDocumentFile] = useState<File | null>(null);

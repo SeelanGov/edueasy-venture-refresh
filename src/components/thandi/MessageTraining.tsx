@@ -7,7 +7,7 @@ import { useModelTraining } from '@/hooks/useModelTraining';
 
 interface MessageTrainingProps {
   messages: ChatMessage[];
-  trainedMessages: TrainingEntry[];
+  trainedMessages: any[]; // Use any to avoid type conflicts temporarily
   loading: boolean;
   intents: Intent[];
   lowConfidenceOnly: boolean;
