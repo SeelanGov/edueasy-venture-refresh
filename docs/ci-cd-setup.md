@@ -69,6 +69,7 @@ You can verify that your CI/CD setup is complete and correctly configured by run
 ```sh
 npm run ci:verify-setup
 ```
+This npm script runs `node scripts/verify-ci-cd-setup.js` to check that required files and workflows are properly configured.
 
 This script checks:
 
