@@ -12,7 +12,7 @@ interface VerificationResult {
  * useDocumentNotifications
  * @description Function
  */
-export const useDocumentNotifications = (): void => {
+export const useDocumentNotifications = () => {
   // Create notification for document resubmission
   const createResubmissionNotification = useCallback(
     async (userId: string, documentId: string, documentType: string) => {

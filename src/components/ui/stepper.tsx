@@ -18,11 +18,11 @@ export interface StepperProps {
  * Stepper
  * @description Function
  */
-export function Stepper({ steps, currentStep, className }: any): JSX.Element {
+export function Stepper({ steps, currentStep, className }: StepperProps): JSX.Element {
   return (
     <div className={cn('w-full space-y-4', className)}>
       <ol className="flex flex-col gap-2">
-        {steps.map((step) => {
+        {steps.map((step: { id: number; label: string; description?: string; status: 'pending' | 'current' | 'complete' | 'error' }) => {
           const isActive = step.id === currentStep;
 
           return (

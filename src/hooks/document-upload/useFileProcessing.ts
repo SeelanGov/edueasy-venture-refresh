@@ -1,6 +1,7 @@
 import { validateFile } from '@/components/profile-completion/documents/documentUtils';
 import { compressImage } from '@/utils/imageCompression';
 import { safeAsyncWithLogging } from '@/utils/errorLogging';
+import { ErrorSeverity } from '@/types/errorTypes';
 
 import type {
   DocumentType,

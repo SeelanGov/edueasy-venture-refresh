@@ -1,9 +1,9 @@
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { type ApiError  } from '@/types/common';
-import { logger } from '@/utils/logger';
+import logger from '@/utils/logger';
 import { type Session  } from '@supabase/supabase-js';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 
@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom';
  * useAuthOperations
  * @description Function
  */
-export const useAuthOperations = (): void => {
+export const useAuthOperations = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,10 +24,19 @@ export const useAuthOperations = (): void => {
     password: string,
     fullName: string,
     idNumber: string,
-  ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
+  ) => {
     try {
       logger.debug('Attempting signup for:', email);
-      const { data } = await supabase.auth.signUp({ email });
+      const { data, error } = await supabase.auth.signUp({ 
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            id_number: idNumber,
+          },
+        },
+      });
 
       if (error) {
         logger.error('Signup error:', error);
@@ -96,11 +105,11 @@ export const useAuthOperations = (): void => {
     email: string,
     password: string,
     rememberMe = false,
-  ): Promise<{ user: User | null; session: Session | null; error?: string | null }> => {
+  ) => {
     try {
       logger.debug('Attempting signin for:', email);
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });

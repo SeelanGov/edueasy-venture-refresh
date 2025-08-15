@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { type DocumentType  } from '@/components/profile-completion/documents/types';
 import { type DocumentInfo  } from '@/types/ApplicationTypes';
-import { logger } from '@/utils/logger';
+import logger from '@/utils/logger';
 import { type DocumentUploadState  } from '@/hooks/useDocumentUploadManager';
 
 
@@ -44,7 +44,7 @@ export const useSupabaseUpload = (
       const filePath = `users/${userId}/applications/${applicationId}/${documentType}/${documentId}-${file.name}`;
 
       try {
-        const { data } = await supabase.storage.from('documents').upload(filePath, file, {
+        const { data, error } = await supabase.storage.from('documents').upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
         });
@@ -56,7 +56,7 @@ export const useSupabaseUpload = (
         }
 
         // Generate public URL using path
-        const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
+        const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data?.path}`;
 
         // Validate required fields before inserting into the database
         if (!userId || !documentType || !filePath || !publicURL) {
@@ -128,7 +128,8 @@ export const useSupabaseUpload = (
         return { success: true, documentId: documentId, filePath: filePath };
       } catch (err: unknown) {
         logger.error('Supabase general error:', err);
-        setDocumentState(documentType, { uploading: false, error: err.message, progress: 0 });
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+        setDocumentState(documentType, { uploading: false, error: errorMessage, progress: 0 });
         return { success: false };
       }
     },

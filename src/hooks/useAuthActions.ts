@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { logger } from '@/utils/logger';
+import logger from '@/utils/logger';
 
 interface VerificationResult {
   verified: boolean;
@@ -20,7 +20,7 @@ interface DatabaseResult {
  * useAuthActions
  * @description Function
  */
-export const useAuthActions = (): void => {
+export const useAuthActions = () => {
   const verifyIdentity = async (
     email: string,
     nationalId: string,
@@ -61,7 +61,7 @@ export const useAuthActions = (): void => {
       }
 
       return { verified: true };
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Identity verification error:', error);
       return {
         verified: false,
@@ -170,7 +170,7 @@ export const useAuthActions = (): void => {
         tracking_id: result.tracking_id,
       };
     } catch (error: unknown) {
-      const message = error.message || 'Registration failed';
+      const message = error instanceof Error ? error.message : 'Registration failed';
       logger.error('Sign up failed:', error);
       return { user: null, session: null, error: message };
     }
@@ -178,7 +178,7 @@ export const useAuthActions = (): void => {
 
   const signIn = async (email: string, password: string, rememberMe?: boolean) => {
     try {
-      const { data } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -197,7 +197,7 @@ export const useAuthActions = (): void => {
 
       return { user: data.user, session: data.session, error: null };
     } catch (error: unknown) {
-      const message = error.message || 'Sign in failed';
+      const message = error instanceof Error ? error.message : 'Sign in failed';
       logger.error('Sign in failed:', error);
       throw new Error(message);
     }
@@ -215,7 +215,7 @@ export const useAuthActions = (): void => {
 
       return true;
     } catch (error: unknown) {
-      const message = error.message || 'Password reset failed';
+      const message = error instanceof Error ? error.message : 'Password reset failed';
       logger.error('Password reset failed:', error);
       throw new Error(message);
     }
@@ -238,7 +238,7 @@ export const useAuthActions = (): void => {
 
       return true;
     } catch (error: unknown) {
-      const message = error.message || 'Password update failed';
+      const message = error instanceof Error ? error.message : 'Password update failed';
       logger.error('Password update failed:', error);
       throw new Error(message);
     }

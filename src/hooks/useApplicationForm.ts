@@ -4,7 +4,7 @@ import { useDraftLoading } from '@/hooks/useDraftLoading';
 import { useDraftManagement } from '@/hooks/useDraftManagement';
 import { useNetwork } from '@/hooks/useNetwork';
 import { useOfflineFormStorage } from '@/hooks/useOfflineFormStorage';
-import { type ApplicationFormValues  } from '@/types/ApplicationTypes';
+import { type ApplicationFormValues, type DraftFormData  } from '@/types/ApplicationTypes';
 
 
 
@@ -25,17 +25,10 @@ export const useApplicationForm = () => {
     useApplicationFormState();
 
   // Create a proper conversion function for storage
-  const saveFormToStorageWrapper = (data: ApplicationFormValues): void => {
+  const saveFormToStorageWrapper = (data: DraftFormData): void => {
     // Convert form data for storage
-    const applicationFormData: ApplicationFormValues = {
-      fullName: data.fullName || form.getValues('fullName') || '',
-      idNumber: data.idNumber || form.getValues('idNumber') || '',
-      university: data.university,
-      program: data.program,
-      grade12Results: data.grade12Results,
-    };
     const { saveFormToStorage } = useOfflineFormStorage(form, isOnline);
-    saveFormToStorage(applicationFormData);
+    saveFormToStorage(data);
   };
 
   // Initialize the storage hooks
@@ -75,7 +68,12 @@ export const useApplicationForm = () => {
 
   const saveDraft = () => {
     const currentData = form.getValues();
-    saveFormToStorageWrapper(currentData);
+    const draftData: DraftFormData = {
+      university: currentData.university,
+      program: currentData.program,
+      grade12Results: currentData.grade12Results,
+    };
+    saveFormToStorageWrapper(draftData);
   };
 
   return {
