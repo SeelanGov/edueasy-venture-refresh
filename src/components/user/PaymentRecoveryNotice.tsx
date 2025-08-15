@@ -61,7 +61,7 @@ export const PaymentRecoveryNotice = (): JSX.Element => {
     setLoading(false);
   };
 
-  const handleClaimPayment = async (paymentId: string) => {
+  const handleClaimPayment = async (paymentId: string): Promise<void> => {
     const { claimPayment } = usePaymentRecovery();
     if (!claimPayment) return;
     const result = await claimPayment(paymentId);

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { type ChatMessage  } from '@/types/TrainingTypes';
+import { type ChatMessage, type TrainingFilters } from '@/types/TrainingTypes';
 
 
 
@@ -11,9 +11,9 @@ import { type ChatMessage  } from '@/types/TrainingTypes';
 
 /**
  * useTrainingMessages
- * @description Function
+ * @description Hook for fetching training messages
  */
-export const useTrainingMessages = (): void => {
+export const useTrainingMessages = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);

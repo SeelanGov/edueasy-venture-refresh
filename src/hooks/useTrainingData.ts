@@ -2,21 +2,15 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTrainingMessages } from './training/useTrainingMessages';
 import { useTrainingEntries } from './training/useTrainingEntries';
-import { type TrainingFilters } from '@/types/TrainingTypes';
+import { type TrainingFilters, type TrainingEntry as TrainingEntryType } from '@/types/TrainingTypes';
 
 
 
 
 
 
-// Define TrainingEntry interface locally to avoid conflicts
-interface TrainingEntry {
-  id: string;
-  message_id: string;
-  intent_id: string | null;
-  admin_id: string;
-  confidence: number | null;
-  created_at: string;
+// Use canonical TrainingEntry from types
+interface TrainingEntry extends TrainingEntryType {
   intents: {
     intent_name: string;
   } | null;

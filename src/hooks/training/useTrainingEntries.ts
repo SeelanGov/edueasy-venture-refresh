@@ -18,9 +18,9 @@ interface TrainingEntry {
 
 /**
  * useTrainingEntries
- * @description Function
+ * @description Hook for managing training entries
  */
-export const useTrainingEntries = (): void => {
+export const useTrainingEntries = () => {
   const [trainedMessages, setTrainedMessages] = useState<TrainingEntry[]>([]);
   const { user } = useAuth();
 
@@ -58,7 +58,7 @@ export const useTrainingEntries = (): void => {
     if (!user) return null;
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('thandi_intent_training')
         .insert({
           message_id: messageId,

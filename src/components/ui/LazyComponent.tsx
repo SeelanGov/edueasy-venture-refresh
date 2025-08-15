@@ -49,3 +49,5 @@ export const LazyAdminDashboard = () => import('@/pages/AdminDashboard');
  * @description Function
  */
 export const LazyAnalytics = () => import('@/pages/AdminAnalytics');
+
+// Remove deprecated NotificationPreferences - component no longer exists
