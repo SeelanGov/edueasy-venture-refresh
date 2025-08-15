@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatCurrency, type SubscriptionTier } from '@/types/SubscriptionTypes';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 
 import {
@@ -103,7 +103,7 @@ interface FeatureItemProps {
   included: boolean;
 }
 
-function FeatureItem({ feature }: any) {
+function FeatureItem({ feature, included }: FeatureItemProps) {
   return (
     <div className="flex items-center gap-2">
       {included ? (

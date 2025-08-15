@@ -24,7 +24,7 @@ interface ContactInfoStepProps {
  * ContactInfoStep
  * @description Function
  */
-export const ContactInfoStep = ({ onComplete }: ContactInfoStepProps): JSX.Element => {
+export const ContactInfoStep = ({ onComplete, onBack }: ContactInfoStepProps): JSX.Element => {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
