@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { parseError } from '@/utils/errors';
 import { Spinner } from '@/components/Spinner';
 import { ApplicationTable } from '@/components/dashboard/ApplicationTable';
 import { ErrorLogsTable } from './ErrorLogsTable';
@@ -92,8 +93,8 @@ export const AdminDashboard = () => {
         pendingDocuments: pendingDocsData?.[0]?.count || 0,
         completedApplications: completedAppsData?.[0]?.count || 0,
       });
-    } catch (error) {
-      console.error('Error fetching admin stats:', error);
+    } catch (e: unknown) {
+      console.error('Error fetching admin stats:', parseError(e));
       toast.error('Failed to load dashboard statistics');
     } finally {
       setLoading(false);
@@ -143,8 +144,8 @@ export const AdminDashboard = () => {
       }));
 
       setErrorLogs(transformedData);
-    } catch (error) {
-      console.error('Error fetching error logs:', error);
+    } catch (e: unknown) {
+      console.error('Error fetching error logs:', parseError(e));
       toast.error('Failed to load error logs');
     } finally {
       setErrorLogsLoading(false);
@@ -167,8 +168,8 @@ export const AdminDashboard = () => {
       toast.success('Error marked as resolved');
       await fetchErrorLogs();
       return true;
-    } catch (error) {
-      console.error('Error resolving error log:', error);
+    } catch (e: unknown) {
+      console.error('Error resolving error log:', parseError(e));
       toast.error('Failed to resolve error');
       return false;
     }

@@ -2,6 +2,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useNetwork } from '@/hooks/useNetwork';
 import { supabase } from '@/integrations/supabase/client';
+import { parseError } from '@/utils/errors';
 import { type ApplicationFormValues  } from '@/types/ApplicationTypes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -62,8 +63,8 @@ export const useApplicationFormManager = () => {
         const parsedForm = JSON.parse(savedForm);
         form.reset(parsedForm);
         setHasSavedDraft(true);
-      } catch (e) {
-        console.error('Failed to load saved draft:', e);
+      } catch (e: unknown) {
+        console.error('Failed to load saved draft:', parseError(e));
       }
     }
   };
@@ -128,8 +129,8 @@ export const useApplicationFormManager = () => {
       });
 
       setHasSavedDraft(true);
-    } catch (error) {
-      console.error('Error saving draft:', error);
+    } catch (e: unknown) {
+      console.error('Error saving draft:', parseError(e));
       toast({
         title: 'Error',
         description: 'Failed to save draft. Please try again.',
@@ -205,8 +206,8 @@ export const useApplicationFormManager = () => {
 
       // Redirect to dashboard
       navigate('/auth-redirect');
-    } catch (error) {
-      console.error('Error submitting application:', error);
+    } catch (e: unknown) {
+      console.error('Error submitting application:', parseError(e));
       toast({
         title: 'Error',
         description: 'Failed to submit application. Please try again.',

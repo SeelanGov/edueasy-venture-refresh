@@ -1,9 +1,10 @@
 import { supabase } from '@/integrations/supabase/client';
+import { parseError } from '@/utils/errors';
 
 export interface NotificationRequest {
   userId: string;
   templateId: string;
-  variables: Record<string, string>;
+  variables: Record<string, unknown>;
 }
 
 export interface NotificationRecord {
@@ -53,8 +54,8 @@ class NotificationService {
       if (error) {
         console.error('Error creating notification:', error);
       }
-    } catch (error) {
-      console.error('Error sending notification:', error);
+    } catch (e: unknown) {
+      console.error('Error sending notification:', parseError(e));
     }
   }
 
