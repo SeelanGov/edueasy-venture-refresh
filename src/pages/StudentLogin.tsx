@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 
@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 
 
-const StudentLogin: React.FC = () => {
+const StudentLogin = (): JSX.Element => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -41,10 +41,15 @@ const StudentLogin: React.FC = () => {
       if (error) throw error;
 
       // Check if user is a student or no user_type set (defaults to student)
+      const user = data?.user ?? null;
+      if (!user) {
+        throw new Error('Login failed - no user data');
+      }
+
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('user_type')
-        .eq('id', data.user.id)
+        .eq('id', user.id)
         .single();
 
       if (userError) {
@@ -57,8 +62,9 @@ const StudentLogin: React.FC = () => {
       toast.success('Successfully logged in!');
       navigate('/auth-redirect');
     } catch (err: unknown) {
-      setError(err.message || 'Login error');
-      toast.error(err.message || 'Login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Login error';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

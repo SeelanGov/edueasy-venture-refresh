@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 
@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 
 
-const NSFASLogin: React.FC = () => {
+const NSFASLogin = (): JSX.Element => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -41,10 +41,15 @@ const NSFASLogin: React.FC = () => {
       if (error) throw error;
 
       // Check if user is NSFAS
+      const user = data?.user ?? null;
+      if (!user) {
+        throw new Error('Login failed - no user data');
+      }
+
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('user_type')
-        .eq('id', data.user.id)
+        .eq('id', user.id)
         .single();
 
       if (userError || userData?.user_type !== 'nsfas') {

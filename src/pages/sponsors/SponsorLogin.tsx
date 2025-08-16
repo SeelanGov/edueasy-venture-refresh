@@ -1,13 +1,13 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 
 
 
 
-const SponsorLogin = () => {
+const SponsorLogin = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -27,10 +27,15 @@ const SponsorLogin = () => {
       if (error) throw error;
 
       // Check if user is a sponsor
+      const user = data?.user ?? null;
+      if (!user) {
+        throw new Error('Login failed - no user data');
+      }
+
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('user_type')
-        .eq('id', data.user.id)
+        .eq('id', user.id)
         .single();
 
       if (userError || userData?.user_type !== 'sponsor') {
