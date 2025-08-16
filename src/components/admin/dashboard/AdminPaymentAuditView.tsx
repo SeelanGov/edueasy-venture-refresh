@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { adminAnalytics } from '@/api/adminAnalytics';
+import { showErrorToast } from '@/components/ui/error-toast';
 
 import {
   Select,
@@ -92,37 +93,32 @@ export const AdminPaymentAuditView = (): JSX.Element => {
   const fetchPayments = async () => {
     setLoading(true);
     try {
-      let query = supabase.from('payments').select('*').order('created_at', { ascending: false });
+      // Use RPC for secure payment data access
+      let paymentData = await adminAnalytics.getPaymentMonitoring(100);
 
-      // Apply date range filter
+      // Apply date range filter client-side
       if (dateRange !== 'all') {
         const daysAgo = parseInt(dateRange.replace('d', ''));
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - daysAgo);
-        query = query.gte('created_at', cutoffDate.toISOString());
+        paymentData = paymentData.filter((payment: any) => 
+          new Date(payment.created_at) >= cutoffDate
+        );
       }
 
-      const { data, error } = await query;
-
-      if (error) throw error;
-
-      const paymentsWithUserInfo =
-        data?.map((payment) => ({
-          ...payment,
-          user_email: 'N/A',
-          user_name: 'N/A',
-          tier: payment.tier || 'N/A',
-        })) || [];
+      const paymentsWithUserInfo = paymentData.map((payment: any) => ({
+        ...payment,
+        user_email: payment.user_email || 'N/A',
+        user_name: 'N/A',
+        tier: payment.tier || 'N/A',
+      }));
 
       setPayments(paymentsWithUserInfo);
       calculateSummary(paymentsWithUserInfo);
-    } catch {
+    } catch (error: unknown) {
+      showErrorToast(error, 'Failed to fetch payment data');
+    } finally {
       setLoading(false);
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch payment data',
-        variant: 'destructive',
-      });
     }
   };
 
