@@ -4,7 +4,7 @@ import { Logo } from '@/components/Logo';
 import { Card } from '@/components/ui/card';
 import { ProgressIndicator } from '@/components/ui/ProgressIndicator';
 import { secureStorage } from '@/utils/secureStorage';
-import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
+import { CheckCircle, CreditCard, Shield, UserCheck } from '@/ui/icons';
 import { Link } from 'react-router-dom';
 import { createAuthFlowSteps } from '@/utils/authFlowSteps';
 import { CardContent } from '@/components/ui/card';

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ErrorRecovery } from '@/components/ui/ErrorRecovery';
 import { Typography } from '@/components/ui/typography';
 import { secureStorage } from '@/utils/secureStorage';
-import { Bot, Check, CreditCard, Shield, Sparkles } from 'lucide-react';
+import { Bot, Check, CreditCard, Shield, Sparkles } from '@/ui/icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,14 @@ const Pricing = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<any>(null);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const { handleSessionStorageError } = useErrorRecovery();
+
+  // Simplified error handler for demonstration  
+  const handleSessionStorageError = (operation: string) => ({
+    title: 'Storage Error',
+    message: `Failed during ${operation}. Using fallback method.`,
+    variant: 'warning' as const,
+    canRetry: true
+  });
 
   // Enhanced plan selection handler with error recovery
   const handlePlanSelection = (planId: string) => {

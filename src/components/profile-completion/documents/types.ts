@@ -27,11 +27,12 @@ export interface DocumentUploadState {
   retryData?: RetryData | null;
 }
 
+// Local step interface for profile completion (has description and different id type)
 export type Step = {
   id: number;
   label: string;
   description?: string;
-  status: 'pending' | 'current' | 'complete' | 'error';
+  status: 'pending' | 'active' | 'complete' | 'error';
 };
 
 export interface DocumentUploadInputProps {

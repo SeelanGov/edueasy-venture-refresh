@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { usePlanManagement } from '@/hooks/usePlanManagement';
 import { formatCurrency, type UserSubscription } from '@/types/SubscriptionTypes';
-import { CreditCard, Shield, Star } from 'lucide-react';
+import { CreditCard, Shield, Star } from '@/ui/icons';
 
 const Subscription = (): JSX.Element => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);

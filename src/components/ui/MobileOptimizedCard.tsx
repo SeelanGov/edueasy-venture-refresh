@@ -157,7 +157,7 @@ export const MobileProgressIndicator = ({
   currentStep,
   className,
 }: {
-  steps: { id: string; label: string; status: 'completed' | 'current' | 'upcoming' }[];
+  steps: { id: string; label: string; status: 'complete' | 'active' | 'pending' }[];
   currentStep: number;
   className?: string;
 }): JSX.Element => {
@@ -172,20 +172,20 @@ export const MobileProgressIndicator = ({
                   'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300',
                   'text-sm sm:text-base font-medium',
                   {
-                    'bg-cap-teal border-cap-teal text-white': step.status === 'completed',
-                    'bg-white border-cap-teal text-cap-teal': step.status === 'current',
-                    'bg-gray-100 border-gray-300 text-gray-400': step.status === 'upcoming',
+                    'bg-cap-teal border-cap-teal text-white': step.status === 'complete',
+                    'bg-white border-cap-teal text-cap-teal': step.status === 'active',
+                    'bg-gray-100 border-gray-300 text-gray-400': step.status === 'pending',
                   },
                 )}
               >
-                {step.status === 'completed' ? '✓' : index + 1}
+                {step.status === 'complete' ? '✓' : index + 1}
               </div>
 
               <div className="mt-2 text-center">
                 <p
                   className={cn('text-xs sm:text-sm font-medium transition-colors duration-300', {
-                    'text-cap-teal': step.status === 'completed' || step.status === 'current',
-                    'text-gray-500': step.status === 'upcoming',
+                    'text-cap-teal': step.status === 'complete' || step.status === 'active',
+                    'text-gray-500': step.status === 'pending',
                   })}
                 >
                   {step.label}
@@ -196,8 +196,8 @@ export const MobileProgressIndicator = ({
             {index < steps.length - 1 && (
               <div
                 className={cn('flex-1 h-0.5 mx-2 sm:mx-4 transition-colors duration-300', {
-                  'bg-cap-teal': step.status === 'completed',
-                  'bg-gray-200': step.status === 'current' || step.status === 'upcoming',
+                  'bg-cap-teal': step.status === 'complete',
+                  'bg-gray-200': step.status === 'active' || step.status === 'pending',
                 })}
               />
             )}

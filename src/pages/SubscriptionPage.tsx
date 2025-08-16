@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { useSubscription } from '@/hooks/useSubscription';
 import { formatCurrency } from '@/types/SubscriptionTypes';
-import { CheckCircle, CreditCard } from 'lucide-react';
+import { CheckCircle, CreditCard } from '@/ui/icons';
 
 import {
   Dialog,

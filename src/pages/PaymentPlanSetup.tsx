@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
-import { Building2, Calendar, CreditCard, Loader2 } from 'lucide-react';
+import { Building2, Calendar, CreditCard, Loader2 } from '@/ui/icons';
 
 import {
   Select,

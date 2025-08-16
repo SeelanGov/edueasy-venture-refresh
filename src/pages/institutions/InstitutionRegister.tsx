@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlertDescription, Alert } from '@/components/ui/alert';
-import { AlertCircle, Building2 } from 'lucide-react';
+import { AlertCircle, Building2 } from '@/ui/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

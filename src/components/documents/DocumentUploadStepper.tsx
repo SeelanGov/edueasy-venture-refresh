@@ -1,14 +1,15 @@
 import { ArrowRight, CheckCircle, CircleDashed } from 'lucide-react';
 
-export type Step = {
+// Local step interface for document upload (has description and different id type)
+export type DocumentStep = {
   id: number;
   label: string;
   description?: string;
-  status: 'pending' | 'current' | 'complete' | 'error';
+  status: 'pending' | 'active' | 'complete' | 'error';
 };
 
 interface DocumentUploadStepperProps {
-  steps: Step[];
+  steps: DocumentStep[];
 }
 
 /**
@@ -22,7 +23,7 @@ export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JS
         {steps.map((step, index) => {
           const isLast = index === steps.length - 1;
           const isPending = step.status === 'pending';
-          const isCurrent = step.status === 'current';
+          const isCurrent = step.status === 'active';
           const isComplete = step.status === 'complete';
           const isError = step.status === 'error';
 

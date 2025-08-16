@@ -11,7 +11,7 @@ export const useDocumentUploadState = () => {
   const [currentDocumentType, setCurrentDocumentType] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [uploadSteps, setUploadSteps] = useState<any[]>([
-    { id: 1, label: 'Select', status: 'current' },
+    { id: 1, label: 'Select', status: 'active' },
     { id: 2, label: 'Upload', status: 'pending' },
     { id: 3, label: 'Verify', status: 'pending' },
     { id: 4, label: 'Complete', status: 'pending' },

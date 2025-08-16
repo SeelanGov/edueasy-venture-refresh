@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { useAuth } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle } from '@/ui/icons';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';

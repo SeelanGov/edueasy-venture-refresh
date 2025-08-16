@@ -12,6 +12,6 @@ export const createAuthFlowSteps = (currentStep: string): Step[] => {
   return steps.map((step, index) => ({
     id: step.id,
     label: step.title,
-    status: index < currentIndex ? 'completed' as const : (index === currentIndex ? 'current' as const : 'upcoming' as const),
+    status: index < currentIndex ? 'complete' as const : (index === currentIndex ? 'active' as const : 'pending' as const),
   }));
 };
