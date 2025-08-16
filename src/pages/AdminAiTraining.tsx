@@ -9,7 +9,7 @@ import { useIntentManagement, type IntentWithStats } from '@/hooks/useIntentMana
 import { useTrainingData } from '@/hooks/useTrainingData';
 import { useState } from 'react';
 
-const AdminAiTraining = (): void => {
+const AdminAiTraining = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState('messages');
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
 

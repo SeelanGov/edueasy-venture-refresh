@@ -5,7 +5,8 @@ import { Typography } from '@/components/ui/typography';
 import { type Institution } from '@/hooks/useInstitutions';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 

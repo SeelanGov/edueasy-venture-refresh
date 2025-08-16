@@ -3,8 +3,9 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
 import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CardContent } from '@/components/ui/card';
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();

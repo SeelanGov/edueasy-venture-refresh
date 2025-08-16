@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/typography';
-import { ArrowLeft } from 'lucide-react';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { ArrowLeft, Download } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { CardContent } from '@/components/ui/card';
 
 const TermsOfService = () => {
   const navigate = useNavigate();

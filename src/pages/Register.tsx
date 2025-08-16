@@ -6,6 +6,8 @@ import { ProgressIndicator } from '@/components/ui/ProgressIndicator';
 import { secureStorage } from '@/utils/secureStorage';
 import { CheckCircle, CreditCard, Shield, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { createAuthFlowSteps } from '@/utils/authFlowSteps';
+import { CardContent } from '@/components/ui/card';
 
 const Register = () => {
   const pendingPlan = secureStorage.getItem('pending_plan');

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/Spinner';
 import { DashboardLayoutWithThandi } from '@/components/DashboardLayoutWithThandi';
@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 
-const UserProfile = (): void => {
+const UserProfile = (): JSX.Element => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState({
@@ -20,7 +20,7 @@ const UserProfile = (): void => {
       if (!user) return;
 
       try {
-        const { data } = await supabase.from('users').select('*').eq('id', user.id).single();
+        const { data, error } = await supabase.from('users').select('*').eq('id', user.id).single();
 
         if (error) {
           throw error;

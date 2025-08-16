@@ -1,6 +1,7 @@
 import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Shield } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
 
@@ -33,7 +34,7 @@ const resetPasswordSchema = z
 
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-const ResetPassword = (): void => {
+const ResetPassword = (): JSX.Element => {
   const { updatePassword } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);

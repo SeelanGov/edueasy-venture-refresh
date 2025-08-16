@@ -26,7 +26,7 @@ const forgotPasswordSchema = z.object({
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
-const ForgotPassword = (): void => {
+const ForgotPassword = (): JSX.Element => {
   const { resetPassword } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
