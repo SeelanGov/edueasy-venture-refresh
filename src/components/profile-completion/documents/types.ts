@@ -27,13 +27,16 @@ export interface DocumentUploadState {
   retryData?: RetryData | null;
 }
 
-// Local step interface for profile completion (has description and different id type)
-export type Step = {
+// Re-export centralized Step type
+export type { Step } from '@/types/ui';
+
+// Create a local step interface for numeric IDs used in profile completion
+export interface ProfileStep {
   id: number;
   label: string;
   description?: string;
   status: 'pending' | 'active' | 'complete' | 'error';
-};
+}
 
 export interface DocumentUploadInputProps {
   documentType: DocumentType;
@@ -49,6 +52,6 @@ export interface DocumentUploadInputProps {
   isVerifying: boolean;
   setCurrentDocumentType: (type: string) => void;
   currentDocumentType: string | null;
-  uploadSteps: Step[];
+  uploadSteps: ProfileStep[];
   currentStep: number;
 }

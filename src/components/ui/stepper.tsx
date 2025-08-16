@@ -8,7 +8,7 @@ export interface StepperProps {
     id: number;
     label: string;
     description?: string;
-    status: 'pending' | 'current' | 'complete' | 'error';
+    status: 'pending' | 'active' | 'complete' | 'error';
   }[];
   currentStep: number;
   className?: string;
@@ -22,7 +22,7 @@ export function Stepper({ steps, currentStep, className }: StepperProps): JSX.El
   return (
     <div className={cn('w-full space-y-4', className)}>
       <ol className="flex flex-col gap-2">
-        {steps.map((step: { id: number; label: string; description?: string; status: 'pending' | 'current' | 'complete' | 'error' }) => {
+        {steps.map((step: { id: number; label: string; description?: string; status: 'pending' | 'active' | 'complete' | 'error' }) => {
           const isActive = step.id === currentStep;
 
           return (
@@ -39,7 +39,7 @@ export function Stepper({ steps, currentStep, className }: StepperProps): JSX.El
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-red-600">
                     <AlertTriangle className="h-3.5 w-3.5" />
                   </div>
-                ) : step.status === 'current' ? (
+                ) : step.status === 'active' ? (
                   <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary bg-primary/10 text-primary">
                     <Circle className="h-3.5 w-3.5 fill-current" />
                   </div>
@@ -56,7 +56,7 @@ export function Stepper({ steps, currentStep, className }: StepperProps): JSX.El
                     'text-sm',
                     step.status === 'complete' && 'text-green-600',
                     step.status === 'error' && 'text-red-600',
-                    step.status === 'current' && 'text-primary',
+                    step.status === 'active' && 'text-primary',
                     step.status === 'pending' && 'text-gray-500',
                   )}
                 >

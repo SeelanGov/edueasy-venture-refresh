@@ -35,7 +35,7 @@ export const useStepperManager = (
         id: 1,
         label: getStepLabel('Select'),
         description: isResubmission ? 'Choose new file' : 'Choose file',
-        status: documentState.file ? 'complete' : 'current',
+        status: documentState.file ? 'complete' : 'active',
       },
       {
         id: 2,
@@ -44,9 +44,9 @@ export const useStepperManager = (
         status: documentState.uploaded
           ? 'complete'
           : documentState.uploading
-            ? 'current'
+            ? 'active'
             : documentState.file
-              ? 'current'
+              ? 'active'
               : 'pending',
       },
       {
@@ -55,15 +55,15 @@ export const useStepperManager = (
         description: isResubmission ? 'Re-verification' : 'AI verification',
         status: documentState.verificationTriggered
           ? isVerifying
-            ? 'current'
+            ? 'active'
             : verificationResult?.status === 'approved'
               ? 'complete'
               : verificationResult?.status === 'rejected' ||
                   verificationResult?.status === 'request_resubmission'
                 ? 'error'
-                : 'current'
+                : 'active'
           : documentState.uploaded
-            ? 'current'
+            ? 'active'
             : 'pending',
       },
       {
