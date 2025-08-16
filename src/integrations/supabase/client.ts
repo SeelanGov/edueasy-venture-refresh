@@ -88,8 +88,9 @@ const createMockClient = (): SupabaseClient<Database> => {
 export const getSupabase = (): SupabaseClient<Database> => {
   if (_supabase) return _supabase;
 
-  const url = getEnv('VITE_SUPABASE_URL');
-  const key = getEnv('VITE_SUPABASE_ANON_KEY');
+  // Hardcoded fallbacks for preview builds (remove when env vars are properly set)
+  const url = getEnv('VITE_SUPABASE_URL') || 'https://pensvamtfjtpsaoeflbx.supabase.co';
+  const key = getEnv('VITE_SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbnN2YW10Zmp0cHNhb2VmbGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MzcyOTcsImV4cCI6MjA1OTQxMzI5N30.ZGFT9bcxwFuDVRF7ZYtLTQDPP3LKmt5Yo8BsJAFQyPM';
 
   if (!url || !key) {
     console.warn('Supabase env vars missing: VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY');
