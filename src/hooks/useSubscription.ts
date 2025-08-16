@@ -143,7 +143,7 @@ export function useSubscription() {
       const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
       // Call PayFast payment session creation with payment method
-      const { data } = await supabase.functions.invoke('create-payment-session', {
+      const { data, error } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: payfastTier,
           user_id: user.id,
@@ -181,14 +181,14 @@ export function useSubscription() {
   // Add payment status polling
   const checkPaymentStatus = async (merchantReference: string) => {
     try {
-      const { data } = await supabase.functions.invoke('verify-payment-status', {
+      const { data, error } = await supabase.functions.invoke('verify-payment-status', {
         body: { merchant_reference: merchantReference },
       });
 
       if (error) throw error;
       return data;
-    } catch (error) {
-      console.error('Error checking payment status:', error);
+    } catch (err) {
+      console.error('Error checking payment status:', err);
       return null;
     }
   };

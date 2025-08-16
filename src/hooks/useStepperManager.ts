@@ -24,7 +24,7 @@ export const useStepperManager = (
     const documentState = getDocumentState(currentDocumentType);
     const isResubmission = documentState.isResubmission || false;
 
-    const getStepLabel = (stepName: string): void => {
+    const getStepLabel = (stepName: string): string => {
       if (isResubmission && stepName === 'Upload') return 'Resubmit';
       if (isResubmission && stepName === 'Verify') return 'Re-verify';
       return stepName;

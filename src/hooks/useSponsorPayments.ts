@@ -21,12 +21,12 @@ export type SponsorPayment = {
  * useSponsorPayments
  * @description Function
  */
-export const useSponsorPayments = (sponsorId: string | undefined): void => {
+export const useSponsorPayments = (sponsorId: string | undefined) => {
   return useQuery({
     queryKey: ['sponsorPayments', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('partner_payments')
         .select('*')
         .eq('partner_id', sponsorId)

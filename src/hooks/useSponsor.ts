@@ -9,12 +9,12 @@ import { type Sponsor  } from '@/types/SponsorTypes';
  * useSponsor
  * @description Function
  */
-export const useSponsor = (id: string | undefined): void => {
+export const useSponsor = (id: string | undefined) => {
   return useQuery({
     queryKey: ['sponsor', id],
     queryFn: async () => {
       if (!id) return null;
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('partners')
         .select('*')
         .eq('id', id)

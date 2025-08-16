@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { type UseFormReturn  } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
@@ -18,7 +18,7 @@ import { type UserProfile  } from '@/types/UserProfile';
 export const useUserProfile = (
   userId: string | undefined,
   form: UseFormReturn<ApplicationFormValues>,
-): void => {
+) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const useUserProfile = (
       if (!userId) return;
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('users')
           .select('id, full_name, id_number, email')
           .eq('id', userId)
@@ -36,10 +36,10 @@ export const useUserProfile = (
 
         // Handle null values from database
         const profile: UserProfile = {
-          id: data.id,
-          full_name: data.full_name || '',
-          id_number: data.id_number || '',
-          email: data.email || '',
+          id: data?.id || '',
+          full_name: data?.full_name || '',
+          id_number: data?.id_number || '',
+          email: data?.email || '',
         };
 
         setUserProfile(profile);

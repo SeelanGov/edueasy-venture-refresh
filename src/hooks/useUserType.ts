@@ -1,6 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { useEffect } from 'react';
 
 export interface UserTypeProfile {
   id: string;
@@ -15,7 +15,7 @@ export interface UserTypeProfile {
  * useUserType
  * @description Function
  */
-export const useUserType = (): void => {
+export const useUserType = () => {
   const { user } = useAuth();
   const [userType, setUserType] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserTypeProfile | null>(null);
@@ -31,7 +31,7 @@ export const useUserType = (): void => {
       }
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('users')
           .select('id, email, full_name, user_type, current_plan, tier_level')
           .eq('id', user.id)

@@ -7,7 +7,7 @@ type PartnerTier = 'basic' | 'standard' | 'premium';
  * useUpdatePartnerTier
  * @description Function
  */
-export const useUpdatePartnerTier = (): void => {
+export const useUpdatePartnerTier = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const updateTier = async (partnerId: string, newTier: PartnerTier) => {

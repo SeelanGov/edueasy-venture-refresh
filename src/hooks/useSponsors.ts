@@ -16,7 +16,7 @@ export type UseSponsorsOptions = {
  * useSponsors
  * @description Function
  */
-export const useSponsors = (options: UseSponsorsOptions = {}): void => {
+export const useSponsors = (options: UseSponsorsOptions = {}) => {
   return useQuery({
     queryKey: ['sponsors', options],
     queryFn: async () => {
@@ -28,7 +28,7 @@ export const useSponsors = (options: UseSponsorsOptions = {}): void => {
         const to = from + options.pageSize - 1;
         query = query.range(from, to);
       }
-      const { data } = await query;
+      const { data, error } = await query;
       if (error) throw error;
       return (data as Sponsor[]) || [];
     },

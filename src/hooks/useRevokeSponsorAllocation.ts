@@ -1,11 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
  * useRevokeSponsorAllocation
  * @description Function
  */
-export const useRevokeSponsorAllocation = (): void => {
+export const useRevokeSponsorAllocation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { allocationId: string; sponsorId: string }) => {

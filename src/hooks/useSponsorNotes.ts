@@ -14,12 +14,12 @@ export type SponsorNote = {
  * useSponsorNotes
  * @description Function
  */
-export const useSponsorNotes = (sponsorId: string | undefined): void => {
+export const useSponsorNotes = (sponsorId: string | undefined) => {
   return useQuery({
     queryKey: ['sponsorNotes', sponsorId],
     queryFn: async () => {
       if (!sponsorId) return [];
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('partner_notes')
         .select('*')
         .eq('partner_id', sponsorId)
@@ -35,7 +35,7 @@ export const useSponsorNotes = (sponsorId: string | undefined): void => {
  * useAddSponsorNote
  * @description Function
  */
-export const useAddSponsorNote = (): void => {
+export const useAddSponsorNote = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (
@@ -45,7 +45,7 @@ export const useAddSponsorNote = (): void => {
         ...input,
         note_type: input.note_type ?? 'general',
       };
-      const { data } = await supabase.from('partner_notes').insert([payload]).select('*').single();
+      const { data, error } = await supabase.from('partner_notes').insert([payload]).select('*').single();
       if (error) throw error;
       return data as SponsorNote;
     },

@@ -175,7 +175,6 @@ export const useProfileCompletionStore = create<ProfileCompletionState>()(
     }),
     {
       name: 'edueasy-profile-completion',
-      storage: localStorage,
       partialize: (state) => {
         // Don't persist file objects
         const { documents, ...rest } = state;
