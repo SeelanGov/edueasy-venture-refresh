@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
+import { parseError } from '@/utils/errors';
 import type { Json } from '@/types/supabase';
 import type { UserAnalytics, ApplicationAnalytics, RevenueAnalytics } from '@/types/analytics';
 
@@ -147,8 +148,8 @@ class AnalyticsService {
       if (error) {
         console.error('Failed to send analytics event:', error);
       }
-    } catch (error) {
-      console.error('Analytics error:', error);
+    } catch (e: unknown) {
+      console.error('Analytics error:', parseError(e));
     }
   }
 
@@ -179,8 +180,8 @@ class AnalyticsService {
         first_seen: data.first_seen ?? '',
         last_active: data.last_active ?? ''
       } : null;
-    } catch (error) {
-      console.error('Error fetching user analytics:', error);
+    } catch (e: unknown) {
+      console.error('Error fetching user analytics:', parseError(e));
       return null;
     }
   }
@@ -204,8 +205,8 @@ class AnalyticsService {
         created_at: data.created_at ?? '',
         updated_at: data.updated_at ?? ''
       } : null;
-    } catch (error) {
-      console.error('Error fetching application analytics:', error);
+    } catch (e: unknown) {
+      console.error('Error fetching application analytics:', parseError(e));
       return null;
     }
   }
@@ -230,8 +231,8 @@ class AnalyticsService {
         created_at: data.created_at ?? '',
         updated_at: data.updated_at ?? ''
       } : null;
-    } catch (error) {
-      console.error('Error fetching revenue analytics:', error);
+    } catch (e: unknown) {
+      console.error('Error fetching revenue analytics:', parseError(e));
       return null;
     }
   }

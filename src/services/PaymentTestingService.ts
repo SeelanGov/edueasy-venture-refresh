@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { toMessage } from '@/utils/errors';
 
 /**
  * Represents a payment test scenario.
@@ -410,9 +411,9 @@ class PaymentTestingService {
 
       // Store test data for verification
       await this.storeTestData(testData);
-    } catch (error) {
+    } catch (e: unknown) {
       throw new Error(
-        `Failed to create test payment session: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        `Failed to create test payment session: ${toMessage(e)}`,
       );
     }
   }
