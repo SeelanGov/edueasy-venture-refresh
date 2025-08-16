@@ -56,7 +56,7 @@ const PaymentPlanSetup = (): JSX.Element => {
         title: 'Coming Soon',
         description: 'Payment plans will be available soon',
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Payment plan setup error:', error);
       toast({
         title: 'Error',

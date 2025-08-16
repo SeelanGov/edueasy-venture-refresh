@@ -125,7 +125,7 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
       },
     });
     console.warn('Supabase client initialized successfully');
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to initialize Supabase client:', error);
     throw new Error(
       'Failed to initialize Supabase client. Please check your environment variables and network connection.',

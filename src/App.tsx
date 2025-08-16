@@ -75,14 +75,13 @@ import VerificationRequired from './pages/VerificationRequired';
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = (): JSX.Element => (
   <GlobalErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
+        <AuthProvider>
             <PrivacyPolicyRedirect />
             <TermsOfServiceRedirect />
             <RefundPolicyRedirect />
@@ -354,7 +353,6 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
-        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   </GlobalErrorBoundary>
