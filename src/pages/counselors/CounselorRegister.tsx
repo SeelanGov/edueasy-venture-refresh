@@ -1,10 +1,11 @@
-import { AlertDescription, Alert } from '@/components/ui/alert';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { AlertCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -81,7 +82,7 @@ const experienceLevels = [
   'More than 10 years',
 ];
 
-export default function CounselorRegister() {
+export default function CounselorRegister(): JSX.Element {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
@@ -148,7 +149,8 @@ export default function CounselorRegister() {
         },
       });
     } catch (error: unknown) {
-      setRegistrationError(error.message || 'Failed to register counselor account');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to register counselor account';
+      setRegistrationError(errorMessage);
     } finally {
       setIsLoading(false);
     }

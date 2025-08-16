@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Spinner } from '@/components/Spinner';
 import { PlanSelector } from '@/components/subscription/PlanSelector';
@@ -7,9 +8,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePlanManagement } from '@/hooks/usePlanManagement';
 import { formatCurrency, type UserSubscription } from '@/types/SubscriptionTypes';
 import { CreditCard, Shield, Star } from 'lucide-react';
-import { useEffect } from 'react';
 
-const Subscription = (): void => {
+const Subscription = (): JSX.Element => {
   const [currentSubscription, setCurrentSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
   const { getUserPlan } = usePlanManagement();

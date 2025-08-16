@@ -1,10 +1,11 @@
-import { AlertDescription, Alert } from '@/components/ui/alert';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { AlertDescription, Alert } from '@/components/ui/alert';
+import { AlertCircle, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -62,7 +63,7 @@ const provinces = [
   'Western Cape',
 ];
 
-export default function InstitutionRegister() {
+export default function InstitutionRegister(): JSX.Element {
   // const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -135,7 +136,8 @@ export default function InstitutionRegister() {
       });
     } catch (error: unknown) {
       console.error('Registration error:', error);
-      setRegistrationError(error.message || 'Failed to register institution');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to register institution';
+      setRegistrationError(errorMessage);
     } finally {
       setIsLoading(false);
     }

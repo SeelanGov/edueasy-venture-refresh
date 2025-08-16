@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PaymentForm } from '@/components/subscription/PaymentForm';
 import { SubscriptionTierCard } from '@/components/subscription/SubscriptionTierCard';
 import { Badge } from '@/components/ui/badge';
@@ -6,9 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { useSubscription } from '@/hooks/useSubscription';
 import { formatCurrency } from '@/types/SubscriptionTypes';
-import { CheckCircle } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { CheckCircle, CreditCard } from 'lucide-react';
 
 import {
   Dialog,
@@ -18,8 +18,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-export default function SubscriptionPage() {
-  const { loading, tiers, userSubscription, transactions, subscribeToPlan, cancelSubscription } =
+export default function SubscriptionPage(): JSX.Element {
+  const { loading, tiers, currentSubscription, transactions, subscribeToPlan, cancelSubscription } =
     useSubscription();
 
   const [selectedTierId, setSelectedTierId] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export default function SubscriptionPage() {
   };
 
   // Format date for display
-  const formatDate = (dateString: string): void => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-ZA', {
       year: 'numeric',
       month: 'long',
@@ -68,7 +68,7 @@ export default function SubscriptionPage() {
         </p>
       </div>
 
-      {userSubscription && userSubscription.tier && (
+      {currentSubscription && currentSubscription.tier && (
         <Card>
           <CardHeader>
             <CardTitle>Current Subscription</CardTitle>
@@ -78,13 +78,13 @@ export default function SubscriptionPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Plan</h3>
-                <p className="text-lg font-semibold">{userSubscription.tier.name}</p>
+                <p className="text-lg font-semibold">{currentSubscription.tier.name}</p>
               </div>
 
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Purchase Date</h3>
                 <p className="text-lg font-semibold">
-                  {formatDate(userSubscription.purchase_date)}
+                  {formatDate(currentSubscription.purchase_date)}
                 </p>
               </div>
 
@@ -125,7 +125,7 @@ export default function SubscriptionPage() {
               <Button
                 variant="destructive"
                 onClick={handleCancelSubscription}
-                disabled={userSubscription.tier.name === 'Starter'}
+                disabled={currentSubscription.tier.name === 'Starter'}
               >
                 Cancel Subscription
               </Button>
@@ -153,7 +153,7 @@ export default function SubscriptionPage() {
             <SubscriptionTierCard
               key={tier.id}
               tier={tier}
-              isCurrentTier={userSubscription?.tier_id === tier.id}
+              isCurrentTier={currentSubscription?.tier_id === tier.id}
               onSelectTier={handleSelectTier}
               disabled={loading}
             />
