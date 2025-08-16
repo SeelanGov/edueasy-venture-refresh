@@ -124,7 +124,7 @@ class PaymentService {
       };
     } catch (error) {
       const appError = parseError(error);
-      handleError(appError, 'Failed to create payment session');
+      console.error('[PAYMENT_SERVICE]', appError.message);
       throw appError;
     }
   }

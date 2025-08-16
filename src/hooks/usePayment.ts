@@ -32,7 +32,12 @@ export function usePayment(): UsePaymentReturn {
     async (tierId: string, paymentMethod: PaymentMethod): Promise<boolean> => {
       if (!user) {
         const appError = parseError(new Error('User not authenticated'));
-        handleError(appError, 'Authentication required for payment');
+        console.error('[PAYMENT]', appError.message);
+        toast({
+          title: 'Authentication required for payment',
+          description: appError.message,
+          variant: 'destructive',
+        });
         return false;
       }
 
