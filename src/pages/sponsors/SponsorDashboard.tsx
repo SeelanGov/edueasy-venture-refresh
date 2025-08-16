@@ -1,4 +1,4 @@
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, CheckCircle, Clock, DollarSign, Download, Filter, Search, XCircle } from '@/ui/icons';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,15 +17,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import {
-  CheckCircle,
-  Clock,
-  DollarSign,
-  Download,
-  Filter,
-  Search,
-  XCircle,
-} from 'lucide-react';
 
 interface PaymentSummary {
   totalAmount: number;
@@ -381,27 +372,27 @@ const SponsorDashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredApplications.map((row: unknown) => (
-                    <tr key={row.id} className="hover:bg-gray-50">
+                  {filteredApplications.map((row: any) => (
+                    <tr key={row?.id || Math.random()} className="hover:bg-gray-50">
                       <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {row.sponsor_application_id}
+                        {row?.sponsor_application_id || '-'}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        {row.sponsor_applications?.student_id}
+                        {row?.sponsor_applications?.student_id || '-'}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900 font-medium">
-                        {formatCurrency(parseFloat(row.sponsored_amount) || 0)}
+                        {formatCurrency(parseFloat(row?.sponsored_amount) || 0)}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <Badge variant={getStatusBadgeVariant(row.payment_status)}>
-                          {row.payment_status}
+                        <Badge variant={getStatusBadgeVariant(row?.payment_status || 'pending')}>
+                          {row?.payment_status || 'pending'}
                         </Badge>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        {row.paid_at ? new Date(row.paid_at).toLocaleString() : '-'}
+                        {row?.paid_at ? new Date(row.paid_at).toLocaleString() : '-'}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(row.created_at).toLocaleDateString()}
+                        {row?.created_at ? new Date(row.created_at).toLocaleDateString() : '-'}
                       </td>
                     </tr>
                   ))}

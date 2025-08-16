@@ -22,14 +22,17 @@ const icons = new Set();
 for (const f of files) {
   const s = readFileSync(f, 'utf8');
   if (!ICON_IMPORT.test(s)) continue;
-  const m = s.match(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"]/g);
-  if (!m) continue;
+  const matches = s.match(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?/g);
+  if (!matches) continue;
   
-  m.forEach(match => {
+  matches.forEach(match => {
     const iconList = match.match(/\{([^}]+)\}/);
     if (iconList) {
-      iconList[1].split(',').map(x => x.trim()).forEach(n => {
-        if (n) icons.add(n);
+      iconList[1].split(',').forEach(iconStr => {
+        const icon = iconStr.trim().split(' as ')[0].trim();
+        if (icon && !icon.startsWith('//')) {
+          icons.add(icon);
+        }
       });
     }
   });

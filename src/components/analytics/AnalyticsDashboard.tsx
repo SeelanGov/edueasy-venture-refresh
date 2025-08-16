@@ -1,12 +1,13 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Download, FileText, RefreshCw, Target, Users } from 'lucide-react';
+import { DollarSign, Download, FileText, RefreshCw, Target, Users } from '@/ui/icons';
 import { SkeletonButton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { memo, useEffect, useState } from 'react';
+import { toNumber } from '@/lib/errors';
 
 import {
   Select,
@@ -300,7 +301,7 @@ const AnalyticsDashboard = memo<AnalyticsDashboardProps>(({ className }) => {
                     Object.entries(applicationAnalytics.conversion_funnel).map(([stage, count]) => (
                       <div key={stage} className="flex items-center justify-between">
                         <span className="capitalize">{stage.replace('_', ' ')}</span>
-                        <Badge variant="secondary">{formatNumber(count)}</Badge>
+                        <Badge variant="secondary">{formatNumber(toNumber(count))}</Badge>
                       </div>
                     ))}
                 </div>
