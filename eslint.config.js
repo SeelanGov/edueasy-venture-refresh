@@ -101,6 +101,19 @@ export default tseslint.config(
         },
       ],
 
+      // Import restrictions - Lock error layer
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/utils/errorHandler',
+              message: "Use '@/utils/errors' instead (compat layer is for legacy only).",
+            },
+          ],
+        },
+      ],
+
       // Prettier integration
       'prettier/prettier': ['warn', {}, { usePrettierrc: true }],
     },
