@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -2601,12 +2601,12 @@ export type Database = {
       analyze_rls_policies: {
         Args: Record<PropertyKey, never>
         Returns: {
-          table_name: string
-          has_select_policy: boolean
-          has_insert_policy: boolean
-          has_update_policy: boolean
           has_delete_policy: boolean
+          has_insert_policy: boolean
+          has_select_policy: boolean
+          has_update_policy: boolean
           recommendation: string
+          table_name: string
         }[]
       }
       assign_tracking_id_to_user: {
@@ -2615,24 +2615,24 @@ export type Database = {
       }
       assign_user_role: {
         Args: {
+          p_additional_data?: Json
           p_user_id: string
           p_user_type: string
-          p_additional_data?: Json
         }
         Returns: boolean
       }
       audit_rls_policies: {
         Args: { p_user_id?: string }
         Returns: {
-          table_name: string
-          policy_name: string
-          operation: string
-          success: boolean
           details: string
+          operation: string
+          policy_name: string
+          success: boolean
+          table_name: string
         }[]
       }
       belongs_to_user: {
-        Args: { table_name: string; record_id: string }
+        Args: { record_id: string; table_name: string }
         Returns: boolean
       }
       decrypt_national_id: {
@@ -2650,15 +2650,15 @@ export type Database = {
       get_intents_with_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
+          avg_confidence: number
+          created_at: string
+          description: string
           id: string
           intent_name: string
-          description: string
+          message_count: number
           response_template: string
           sample_queries: Json
-          created_at: string
           updated_at: string
-          message_count: number
-          avg_confidence: number
         }[]
       }
       get_tracking_id_stats: {
@@ -2667,11 +2667,11 @@ export type Database = {
       }
       handle_verification_success: {
         Args: {
-          p_user_id: string
           p_email: string
           p_full_name: string
           p_national_id: string
           p_phone_number?: string
+          p_user_id: string
         }
         Returns: Json
       }
@@ -2685,21 +2685,21 @@ export type Database = {
       }
       register_rls_policy: {
         Args: {
-          p_table_name: string
+          p_description: string
           p_policy_name: string
           p_policy_type: string
-          p_description: string
+          p_table_name: string
         }
         Returns: string
       }
       test_rls_policies_with_role: {
         Args: { p_role?: string; p_scenario?: string }
         Returns: {
-          table_name: string
-          policy_name: string
-          operation: string
-          success: boolean
           details: string
+          operation: string
+          policy_name: string
+          success: boolean
+          table_name: string
           test_session_id: string
         }[]
       }
