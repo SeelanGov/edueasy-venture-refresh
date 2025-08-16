@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { type Institution  } from '@/types/Institution';
+import { type Institution } from '@/types/Institution';
 
-
-
+interface Program {
+  id: string;
+  institution_id: string;
+  name: string;
+  code: string;
+  faculty?: string;
+  qualification_type?: string;
+  study_mode?: string;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 /**
  * useInstitutionsAndPrograms hook for managing institutions and programs data

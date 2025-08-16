@@ -1,13 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { type Notification  } from '@/types/Notification';
+import { type Notification } from '@/types/Notification';
 import { toast } from '@/components/ui/use-toast';
-
-
-
-
-
 
 export type { Notification } from '@/types/Notification';
 
@@ -29,7 +24,7 @@ export function useNotificationSystem() {
     }
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('notifications')
         .select('*')
         .eq('user_id', user.id)

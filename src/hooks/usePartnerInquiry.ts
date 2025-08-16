@@ -18,7 +18,7 @@ interface PartnerInquiryData {
  * usePartnerInquiry
  * @description Function
  */
-export const usePartnerInquiry = (): void => {
+export const usePartnerInquiry = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 

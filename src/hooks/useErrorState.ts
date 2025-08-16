@@ -1,16 +1,11 @@
 import { useCallback } from 'react';
 import { useState } from 'react';
-import { type ErrorDetails  } from '@/types/errorTypes';
-import { ErrorSeverity } from '@/utils/errorLogging';
+import { type ErrorDetails, type ErrorHandlingConfig } from '@/types/errorTypes';
+import { ErrorSeverity, logError } from '@/utils/errorLogging';
 import { ErrorCategory } from '@/utils/errorHandler';
+import { parseError } from '@/utils/errorHandling';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-
-
-
-
-
-
 
 const DEFAULT_CONFIG: ErrorHandlingConfig = {
   showToasts: true,
@@ -53,10 +48,10 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
       // Parse error to standard format if needed
       const standardError =
         error instanceof Error
-          ? parseError(error)
+          ? parseError(error, { component, action, userId: user?.id })
           : {
               message: 'Unknown error occurred',
-              category: ErrorCategory.UNKNOWN,
+              category: 'UNKNOWN' as any,
               originalError: error,
             };
 
@@ -99,7 +94,7 @@ export const useErrorState = (config: Partial<ErrorHandlingConfig> = {}) => {
             severity === ErrorSeverity.WARNING) ||
           errorConfig.reportingThreshold === ErrorSeverity.INFO)
       ) {
-        errorId = await logError(standardError, severity, component, action, user?.id);
+        errorId = await logError(standardError as any, severity, component, action, user?.id);
 
         if (errorId) {
           // Update local state with reported status and ID

@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
  * usePartnerPayments
  * @description Function
  */
-export const usePartnerPayments = (partnerId?: string): void => {
+export const usePartnerPayments = (partnerId?: string) => {
   const [payments, setPayments] = useState<any[]>([]);
+  
   useEffect(() => {
     if (!partnerId) return;
     supabase
@@ -16,5 +17,6 @@ export const usePartnerPayments = (partnerId?: string): void => {
       .order('payment_date', { ascending: false })
       .then(({ data }) => setPayments(data ?? []));
   }, [partnerId]);
+  
   return { payments };
 };
