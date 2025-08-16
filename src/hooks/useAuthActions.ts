@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
+import { parseError } from '@/utils/errors';
 import logger from '@/utils/logger';
 
 interface VerificationResult {
@@ -251,9 +252,9 @@ export const useAuthActions = () => {
         logger.error('Error signing out:', error);
         throw error;
       }
-    } catch (error) {
-      logger.error('Failed to sign out:', error);
-      throw error;
+    } catch (e: unknown) {
+      logger.error('Failed to sign out:', parseError(e));
+      throw e;
     }
   };
 

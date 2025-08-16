@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { parseError } from '@/utils/errors';
 import { type User } from '@supabase/supabase-js';
 import { createContext, useEffect, useState } from 'react';
 
@@ -127,8 +128,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
       return true;
-    } catch (error) {
-      console.error('Reset password error:', error);
+    } catch (e: unknown) {
+      console.error('Reset password error:', parseError(e));
       return false;
     }
   };
@@ -138,8 +139,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
       return true;
-    } catch (error) {
-      console.error('Update password error:', error);
+    } catch (e: unknown) {
+      console.error('Update password error:', parseError(e));
       return false;
     }
   };

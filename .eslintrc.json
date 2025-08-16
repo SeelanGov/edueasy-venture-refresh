@@ -54,6 +54,19 @@
     ],
 
     // Code style rules
-    "prettier/prettier": ["warn", {}, { "usePrettierrc": true }]
+    "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
+
+    // Type safety rules
+    "@typescript-eslint/no-implicit-any-catch": ["error", { "allowExplicitAny": false }],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "TSTypeReference[typeName.name='Record']:not(:has(TSTypeParameterInstantiation))",
+        "message": "Use Record<string, unknown>."
+      }
+    ],
+    "no-restricted-imports": ["error", {
+      "paths": [{ "name": "lucide-react", "message": "Import icons from '@/ui/icons' only." }]
+    }]
   }
 }

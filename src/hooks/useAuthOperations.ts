@@ -1,6 +1,7 @@
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { type ApiError  } from '@/types/common';
+import { parseError } from '@/utils/errors';
 import logger from '@/utils/logger';
 import { type Session  } from '@supabase/supabase-js';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -89,15 +90,15 @@ export const useAuthOperations = () => {
       }
 
       return { user: null, session: null };
-    } catch (error) {
-      const apiError = error as ApiError;
-      logger.error('Signup error:', apiError);
+    } catch (e: unknown) {
+      logger.error('Signup error:', parseError(e));
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
       toast({
         title: 'Error signing up',
-        description: apiError.message || 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
-      return { user: null, session: null, error: apiError.message };
+      return { user: null, session: null, error: errorMessage };
     }
   };
 
@@ -128,15 +129,15 @@ export const useAuthOperations = () => {
       logger.debug(`Signin successful for user: ${data?.user?.id}`);
       // Navigation is now handled in Login component
       return { user: data.user, session: data.session };
-    } catch (error) {
-      const apiError = error as ApiError;
-      logger.error('Signin error:', apiError);
+    } catch (e: unknown) {
+      logger.error('Signin error:', parseError(e));
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
       toast({
         title: 'Error signing in',
-        description: apiError.message || 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
-      return { user: null, session: null, error: apiError.message };
+      return { user: null, session: null, error: errorMessage };
     }
   };
 
@@ -152,12 +153,12 @@ export const useAuthOperations = () => {
 
       logger.debug('Signout successful');
       // Navigation is handled in the onAuthStateChange handler
-    } catch (error) {
-      const apiError = error as ApiError;
-      logger.error('Signout error:', apiError);
+    } catch (e: unknown) {
+      logger.error('Signout error:', parseError(e));
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
       toast({
         title: 'Error signing out',
-        description: apiError.message || 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
     }
@@ -180,15 +181,15 @@ export const useAuthOperations = () => {
       });
 
       return true;
-    } catch (error) {
-      const apiError = error as ApiError;
-      logger.error('Reset password error:', apiError);
+    } catch (e: unknown) {
+      logger.error('Reset password error:', parseError(e));
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
       toast({
         title: 'Error resetting password',
-        description: apiError.message || 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
-      throw apiError;
+      throw e;
     }
   };
 
@@ -210,15 +211,15 @@ export const useAuthOperations = () => {
 
       navigate('/auth-redirect');
       return true;
-    } catch (error) {
-      const apiError = error as ApiError;
-      logger.error('Update password error:', apiError);
+    } catch (e: unknown) {
+      logger.error('Update password error:', parseError(e));
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
       toast({
         title: 'Error updating password',
-        description: apiError.message || 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
-      throw apiError;
+      throw e;
     }
   };
 
