@@ -16,7 +16,7 @@ export function exportToCsv(
 
   // Extract CSV header
   const headers = Object.keys(rows[0]);
-  const escapeValue = (val: unknown): void => {
+  const escapeValue = (val: unknown): string => {
     if (val == null) return '';
     let s = String(val);
     // Escape quotes by doubling them

@@ -71,26 +71,26 @@ export async function recordUserConsents(userId: string, consents: ConsentData):
  * Check if user has valid consent for a specific type
  */
 export async function hasValidConsent(userId: string, consentType: string): Promise<boolean> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('user_consents')
-    .select('accepted')
+    .select('consent_given')
     .eq('user_id', userId)
     .eq('consent_type', consentType)
-    .eq('accepted', true)
+    .eq('consent_given', true)
     .single();
 
   if (error || !data) {
     return false;
   }
 
-  return data.accepted;
+  return data.consent_given;
 }
 
 /**
  * Get user's consent history
  */
 export async function getUserConsentHistory(userId: string): Promise<ConsentRecord[]> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('user_consents')
     .select('*')
     .eq('user_id', userId)
@@ -101,7 +101,14 @@ export async function getUserConsentHistory(userId: string): Promise<ConsentReco
     throw new Error(`Failed to fetch consent history: ${error.message}`);
   }
 
-  return data || [];
+  return (data || []).map(item => ({
+    ...item,
+    consent_text: '',
+    consent_version: '1.0',
+    accepted: item.consent_given,
+    ip_address: (item.ip_address as string) || undefined,
+    user_agent: (item.user_agent as string) || undefined
+  }));
 }
 
 /**
@@ -196,7 +203,7 @@ export async function getConsentStatistics(): Promise<{
   idVerificationConsent: number;
   marketingConsent: number;
 }> {
-  const { data } = await supabase.from('user_consents').select('consent_type, accepted');
+  const { data, error } = await supabase.from('user_consents').select('user_id, consent_type, consent_given');
 
   if (error) {
     console.error('Failed to fetch consent statistics:', error);
@@ -213,10 +220,10 @@ export async function getConsentStatistics(): Promise<{
 
   const uniqueUsers = new Set<string>();
 
-  data?.forEach((consent) => {
+  data?.forEach((consent: any) => {
     uniqueUsers.add(consent.user_id);
 
-    if (consent.accepted) {
+    if (consent.consent_given) {
       switch (consent.consent_type) {
         case 'privacy_policy':
           stats.privacyConsent++;

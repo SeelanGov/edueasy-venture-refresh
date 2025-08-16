@@ -195,10 +195,10 @@ export class ConfigValidator {
       return process.env[key];
     }
 
-    // In Deno environment
-    if (typeof Deno !== 'undefined') {
-      return Deno.env.get(key);
-    }
+    // In Deno environment (not available in frontend)
+    // if (typeof Deno !== 'undefined') {
+    //   return Deno.env.get(key);
+    // }
 
     return undefined;
   }

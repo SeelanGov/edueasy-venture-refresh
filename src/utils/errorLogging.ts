@@ -127,7 +127,7 @@ export const safeAsyncWithLogging = async <T>(
 export const getCriticalErrorCount = async (): Promise<number> => {
   try {
     // Fixed: Use proper count method with Supabase
-    const { error } = await supabase.from('documents').select('*');
+    const { count, error } = await supabase.from('documents').select('*', { count: 'exact' });
 
     if (error) throw error;
     return count || 0;

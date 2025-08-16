@@ -189,7 +189,7 @@ class MatchingRulesService {
   /**
    * Calculate match score between student and sponsor
    */
-  private calculateMatchScore(studentProfile: unknown, sponsorProfile: unknown): number {
+  private calculateMatchScore(studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): number {
     let totalScore = 0;
     let totalWeight = 0;
 
@@ -207,10 +207,10 @@ class MatchingRulesService {
   /**
    * Apply a single matching rule
    */
-  private applyRule(rule: MatchingRule, studentProfile: unknown, sponsorProfile: unknown): number {
+  private applyRule(rule: MatchingRule, studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): number {
     try {
-      const criteria = rule.criteria;
-      const field = criteria.field;
+      const criteria = rule.criteria as Record<string, unknown>;
+      const field = criteria.field as string;
 
       switch (field) {
         case 'academic_level':
@@ -235,9 +235,9 @@ class MatchingRulesService {
   /**
    * Match academic level
    */
-  private matchAcademicLevel(studentProfile: unknown, sponsorProfile: unknown): number {
-    const studentLevel = studentProfile.academic_level;
-    const preferredLevels = sponsorProfile.preferred_academic_levels || [];
+  private matchAcademicLevel(studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): number {
+    const studentLevel = studentProfile.academic_level as string;
+    const preferredLevels = (sponsorProfile.preferred_academic_levels as string[]) || [];
 
     return preferredLevels.includes(studentLevel) ? 1 : 0;
   }
@@ -245,9 +245,9 @@ class MatchingRulesService {
   /**
    * Match field of study
    */
-  private matchFieldOfStudy(studentProfile: unknown, sponsorProfile: unknown): number {
-    const studentField = studentProfile.field_of_study;
-    const preferredFields = sponsorProfile.preferred_fields || [];
+  private matchFieldOfStudy(studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): number {
+    const studentField = studentProfile.field_of_study as string;
+    const preferredFields = (sponsorProfile.preferred_fields as string[]) || [];
 
     return preferredFields.includes(studentField) ? 1 : 0.5;
   }
@@ -255,9 +255,9 @@ class MatchingRulesService {
   /**
    * Match location
    */
-  private matchLocation(studentProfile: unknown, sponsorProfile: unknown): number {
-    const studentLocation = studentProfile.location;
-    const sponsorLocation = sponsorProfile.location;
+  private matchLocation(studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): number {
+    const studentLocation = studentProfile.location as string;
+    const sponsorLocation = sponsorProfile.location as string;
 
     return studentLocation === sponsorLocation ? 1 : 0.3;
   }
@@ -265,17 +265,17 @@ class MatchingRulesService {
   /**
    * Score financial need
    */
-  private scoreFinancialNeed(studentProfile: unknown): number {
-    const needScore = studentProfile.financial_need_score || 0;
+  private scoreFinancialNeed(studentProfile: Record<string, unknown>): number {
+    const needScore = (studentProfile.financial_need_score as number) || 0;
     return Math.min(needScore / 100, 1);
   }
 
   /**
    * Score GPA
    */
-  private scoreGPA(studentProfile: unknown, criteria: unknown): number {
-    const gpa = studentProfile.gpa || 0;
-    const threshold = criteria.minimum_threshold || 3.0;
+  private scoreGPA(studentProfile: Record<string, unknown>, criteria: Record<string, unknown>): number {
+    const gpa = (studentProfile.gpa as number) || 0;
+    const threshold = (criteria.minimum_threshold as number) || 3.0;
 
     return gpa >= threshold ? Math.min(gpa / 4.0, 1) : 0;
   }
@@ -283,22 +283,22 @@ class MatchingRulesService {
   /**
    * Calculate funding amount
    */
-  private calculateFundingAmount(sponsorProfile: unknown): number {
-    const range = sponsorProfile.funding_amount_range || { min: 1000, max: 5000 };
+  private calculateFundingAmount(sponsorProfile: Record<string, unknown>): number {
+    const range = (sponsorProfile.funding_amount_range as { min: number; max: number }) || { min: 1000, max: 5000 };
     return (range.min + range.max) / 2;
   }
 
   /**
    * Get match criteria
    */
-  private getMatchCriteria(studentProfile: unknown, sponsorProfile: unknown): string[] {
+  private getMatchCriteria(studentProfile: Record<string, unknown>, sponsorProfile: Record<string, unknown>): string[] {
     const criteria: string[] = [];
 
-    if (sponsorProfile.preferred_academic_levels?.includes(studentProfile.academic_level)) {
+    if ((sponsorProfile.preferred_academic_levels as string[])?.includes(studentProfile.academic_level as string)) {
       criteria.push('Academic Level Match');
     }
 
-    if (sponsorProfile.preferred_fields?.includes(studentProfile.field_of_study)) {
+    if ((sponsorProfile.preferred_fields as string[])?.includes(studentProfile.field_of_study as string)) {
       criteria.push('Field of Study Match');
     }
 
