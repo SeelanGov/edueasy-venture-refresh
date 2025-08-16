@@ -41,6 +41,6 @@ export const withFeatureFlag = <T>(flag: FeatureFlag, component: T, fallback: T)
  * useDesignSystemFeature
  * @description Function
  */
-export const useDesignSystemFeature = (flag: FeatureFlag): void => {
+export const useDesignSystemFeature = (flag: FeatureFlag) => {
   return isFeatureEnabled(flag);
 };

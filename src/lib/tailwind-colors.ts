@@ -1,4 +1,4 @@
-import { colors } from './design-tokens';
+import { designTokens } from './design-tokens';
 
 // Export colors in format expected by Tailwind CSS
 
@@ -8,25 +8,17 @@ import { colors } from './design-tokens';
  */
 export const tailwindColors = {
   // Brand colors with full scale
-  'cap-teal': colors.primary.DEFAULT,
-  'cap-coral': colors.secondary.DEFAULT,
-  primary: colors.primary,
-  secondary: colors.secondary,
+  'cap-teal': designTokens.colors.primary,
+  'cap-coral': designTokens.colors.secondary,
+  primary: designTokens.colors.primary,
+  secondary: designTokens.colors.secondary,
 
   // Status colors
-  success: colors.success.DEFAULT,
-  'success-light': colors.success.light,
-  'success-dark': colors.success.dark,
-  warning: colors.warning.DEFAULT,
-  'warning-light': colors.warning.light,
-  'warning-dark': colors.warning.dark,
-  error: colors.error.DEFAULT,
-  'error-light': colors.error.light,
-  'error-dark': colors.error.dark,
-  info: colors.info.DEFAULT,
-  'info-light': colors.info.light,
-  'info-dark': colors.info.dark,
+  success: designTokens.colors.success,
+  warning: designTokens.colors.warning,
+  error: designTokens.colors.error,
+  info: designTokens.colors.info,
 
   // Gray scale
-  gray: colors.gray,
+  gray: designTokens.colors.gray,
 };

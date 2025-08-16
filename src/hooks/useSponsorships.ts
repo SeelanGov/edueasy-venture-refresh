@@ -84,7 +84,10 @@ export const useSponsorships = () => {
     try {
       const { data, error } = await supabase
         .from('sponsorships')
-        .insert(sponsorshipData)
+        .insert({
+          ...sponsorshipData,
+          requirements: sponsorshipData.requirements ? JSON.stringify(sponsorshipData.requirements) : null
+        } as any)
         .select()
         .single();
 
@@ -154,9 +157,13 @@ export const useSponsorships = () => {
 
   const updateSponsorship = async (id: string, updates: Partial<Sponsorship>) => {
     try {
+      const updateData = {
+        ...updates,
+        requirements: updates.requirements ? JSON.stringify(updates.requirements) : undefined
+      };
       const { data, error } = await supabase
         .from('sponsorships')
-        .update(updates)
+        .update(updateData as any)
         .eq('id', id)
         .select()
         .single();

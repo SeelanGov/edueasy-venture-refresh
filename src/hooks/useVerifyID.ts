@@ -143,7 +143,7 @@ export const useVerificationStatus = (userId: string): UseVerificationStatusRetu
         throw fetchError;
       }
 
-      setIsVerified(data?.verifyid_verified || data?.id_verified || false);
+      setIsVerified(false); // Column doesn't exist, default to false
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to check verification status');
     } finally {

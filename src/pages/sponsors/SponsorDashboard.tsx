@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -23,7 +23,6 @@ import {
   DollarSign,
   Download,
   Filter,
-  RefreshCw,
   Search,
   XCircle,
 } from 'lucide-react';

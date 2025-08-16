@@ -102,7 +102,7 @@ export const designTokens = {
 // Utility functions for design tokens
 export const getColor = (path: string): string => {
   const keys = path.split('.');
-  let value: unknown = designTokens.colors;
+  let value: any = designTokens.colors;
 
   for (const key of keys) {
     if (value && typeof value === 'object' && key in value) {
@@ -113,7 +113,7 @@ export const getColor = (path: string): string => {
     }
   }
 
-  return value;
+  return String(value);
 };
 
 export const getSpacing = (size: keyof typeof designTokens.spacing): string => {
