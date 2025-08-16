@@ -1,24 +1,17 @@
-// DEPRECATED: Use @/utils/errors instead
-// TODO: Remove this file after migration is complete
+// DEPRECATED: use "@/utils/errors". This file is a compatibility layer only.
 
-import { parseError as parseErrorCore, toMessage, toNumber } from './errors';
-import type { Result } from './errors';
+import {
+  parseError as parseErrorCore,
+  toMessage,
+  toNumber,
+  type Result,
+  type ErrorCategory as CanonicalCategory,
+} from './errors';
 
-// Re-export types and functions from canonical errors module
-export { toMessage, toNumber } from './errors';
-export type { Result } from './errors';
+// Re-export non-conflicting symbols directly
+export { toMessage, toNumber, type Result } from './errors';
 
-// Override parseError to return proper enum category
-export const parseError = (e: unknown): { message: string; category: ErrorCategory; originalError?: unknown } => {
-  const core = parseErrorCore(e);
-  return {
-    message: core.message,
-    category: ErrorCategory.UNKNOWN,  // All canonical errors are UNKNOWN category
-    originalError: e
-  };
-};
-
-// Legacy ErrorCategory enum for backward compatibility
+// Legacy enum used across older code
 export enum ErrorCategory {
   AUTHENTICATION = 'AUTHENTICATION',
   DATABASE = 'DATABASE',
@@ -31,36 +24,54 @@ export enum ErrorCategory {
   UNKNOWN = 'UNKNOWN',
 }
 
-// Legacy interfaces for backward compatibility
-export interface AppError {
+export type AppError = {
   message: string;
   category: ErrorCategory;
   details?: Record<string, unknown>;
   originalError?: unknown;
   timestamp?: string;
-}
+};
 
-export interface StandardError {
-  message: string;
-  category: ErrorCategory;
-  details?: Record<string, unknown>;
-  originalError?: unknown;
-  timestamp?: string;
-}
+// Legacy alias for backward compatibility
+export type StandardError = AppError;
 
-// Legacy function exports (compatibility layer)
-export const handleError = (error: unknown, userMessage?: string, showToast: boolean = true): AppError => {
-  const parsed = parseErrorCore(error);
-  console.error(`[${parsed.category}]`, parsed.message);
-  
-  // Map canonical category to legacy enum
-  const legacyCategory = ErrorCategory[parsed.category as keyof typeof ErrorCategory] || ErrorCategory.UNKNOWN;
-  
+const mapCategory = (c: CanonicalCategory): ErrorCategory => {
+  switch (c) {
+    case 'AUTHENTICATION': return ErrorCategory.AUTHENTICATION;
+    case 'DATABASE':       return ErrorCategory.DATABASE;
+    case 'NETWORK':        return ErrorCategory.NETWORK;
+    case 'FILE':           return ErrorCategory.FILE;
+    case 'VALIDATION':     return ErrorCategory.VALIDATION;
+    case 'API':            return ErrorCategory.API;
+    case 'OCR':            return ErrorCategory.OCR;
+    case 'PERMISSION':     return ErrorCategory.PERMISSION;
+    default:               return ErrorCategory.UNKNOWN;
+  }
+};
+
+// Legacy-compatible parseError that returns the enum
+export const parseError = (e: unknown): AppError => {
+  const core = parseErrorCore(e);
   return {
-    message: parsed.message,
-    category: legacyCategory,
+    message: core.message,
+    category: mapCategory(core.category),
+    originalError: e,
     timestamp: new Date().toISOString(),
-    originalError: error,
-    details: {}
   };
 };
+
+// UI side-effect (toasts) does NOT belong here. Keep this pure.
+// If you need a helper, make it pure and let callers show toasts.
+export const handleError = (e: unknown): AppError => parseError(e);
+
+// Properly generic safeAsync
+export async function safeAsync<T>(
+  asyncFn: () => Promise<T>,
+): Promise<{ data: T | null; error: AppError | null }> {
+  try {
+    const data = await asyncFn();
+    return { data, error: null };
+  } catch (e: unknown) {
+    return { data: null, error: parseError(e) };
+  }
+}
