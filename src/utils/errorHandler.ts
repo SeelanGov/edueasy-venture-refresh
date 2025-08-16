@@ -1,8 +1,8 @@
-import { toast } from '@/components/ui/use-toast';
+// DEPRECATED: Use @/utils/errors instead
+// TODO: Remove this file after migration is complete
+export * from './errors';
 
-/**
- * Unified error categories for both frontend and backend
- */
+// Legacy exports for backward compatibility
 export enum ErrorCategory {
   AUTHENTICATION = 'AUTHENTICATION',
   DATABASE = 'DATABASE',

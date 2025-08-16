@@ -2661,6 +2661,35 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_payment_method_analytics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          actual_payment_method: string
+          avg_amount: number
+          preferred_payment_method: string
+          success_rate: number
+          successful_payments: number
+          total_revenue: number
+          usage_count: number
+        }[]
+      }
+      get_payment_monitoring: {
+        Args: { limit_count?: number }
+        Returns: {
+          amount: number
+          created_at: string
+          gateway_provider: string
+          id: string
+          last_webhook_attempt: string
+          merchant_reference: string
+          payment_expiry: string
+          retry_count: number
+          status: string
+          tier: string
+          user_email: string
+          user_tracking_id: string
+        }[]
+      }
       get_tracking_id_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
