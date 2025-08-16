@@ -48,7 +48,6 @@ import {
   DollarSign,
   ExternalLinkIcon,
   FileIcon,
-  RefreshCw,
   Users,
   XCircle,
   Zap,
