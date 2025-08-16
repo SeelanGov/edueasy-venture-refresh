@@ -1,9 +1,8 @@
 import { useState, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { parseError } from '@/utils/errorHandling';
+import { parseError } from '@/utils/errorHandler';
 import { paymentService, type PaymentMethod, type PaymentStatus } from '@/services/paymentService';
-import { handleError } from '@/utils/errorHandler';
 import { secureStorage } from '@/utils/secureStorage';
 
 export type PaymentState = 'idle' | 'processing' | 'success' | 'failed' | 'redirected';
