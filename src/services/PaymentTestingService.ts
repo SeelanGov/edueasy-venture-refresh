@@ -397,7 +397,7 @@ class PaymentTestingService {
    */
   private async createTestPaymentSession(testData: PaymentTestData): Promise<void> {
     try {
-      const { data } = await supabase.functions.invoke('create-payment-session', {
+      const { data, error } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: testData.tier,
           user_id: testData.userId,

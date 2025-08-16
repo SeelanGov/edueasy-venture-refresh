@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
+import { toMessage } from '@/lib/errors';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -39,7 +40,7 @@ const ApplyForSponsorship = () => {
       if (error) throw error;
       setDone(true);
     } catch (err: unknown) {
-      setError(err.message || 'Submission error');
+      setError(toMessage(err));
     } finally {
       setLoading(false);
     }

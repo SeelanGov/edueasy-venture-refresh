@@ -1,6 +1,16 @@
 import { useSponsorApplications } from '@/hooks/useSponsorApplications';
 
-const StudentSponsorshipStatus = () => {
+// Type-safe interface for application row
+interface ApplicationRow {
+  id: string;
+  application_id: string;
+  requested_amount: number;
+  status: string;
+  purpose: string;
+  created_at: string;
+}
+
+export default function StudentSponsorshipStatus(): JSX.Element {
   const { applications, loading } = useSponsorApplications({ asSponsor: false });
 
   return (
@@ -20,7 +30,7 @@ const StudentSponsorshipStatus = () => {
             </tr>
           </thead>
           <tbody>
-            {applications.map((row: unknown) => (
+            {applications.map((row: ApplicationRow) => (
               <tr key={row.id}>
                 <td className="px-2 py-1">{row.application_id}</td>
                 <td className="px-2 py-1">{row.requested_amount}</td>
@@ -43,6 +53,4 @@ const StudentSponsorshipStatus = () => {
       )}
     </div>
   );
-};
-
-export default StudentSponsorshipStatus;
+}

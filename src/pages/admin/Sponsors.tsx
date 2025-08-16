@@ -69,12 +69,12 @@ const SponsorsPage = () => {
   const handleSave = async (values: unknown) => {
     try {
       if (editAlloc) {
-        await updateAllocation(editAlloc.id, values);
+        await updateAllocation(editAlloc.id, values as any);
         toast({
           title: 'Allocation updated',
         });
       } else {
-        await createAllocation(values);
+        await createAllocation(values as any);
         toast({
           title: 'Allocation created',
         });

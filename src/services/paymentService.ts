@@ -216,10 +216,10 @@ class PaymentService {
     eventData: Record<string, unknown>,
   ): Promise<void> {
     try {
-      await supabase.from('audit_logs').insert({
-        user_id: paymentId,
-        action: eventType,
-        details: eventData as any,
+      await supabase.from('payment_audit_logs').insert({
+        payment_id: paymentId,
+        event_type: eventType,
+        event_data: eventData as any,
       });
     } catch (e: unknown) {
       const appError = parseError(e);

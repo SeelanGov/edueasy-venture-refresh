@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
+import { toMessage } from '@/lib/errors';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -92,10 +93,11 @@ const SponsorRegister = () => {
         variant: 'default',
       });
     } catch (err: unknown) {
-      setError(err.message || 'Error registering sponsor');
+      const errorMsg = toMessage(err);
+      setError(errorMsg);
       toast({
         title: 'Registration Failed',
-        description: err.message || 'Error registering sponsor',
+        description: errorMsg,
         variant: 'destructive',
       });
     } finally {
