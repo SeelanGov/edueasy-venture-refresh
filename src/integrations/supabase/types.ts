@@ -2555,47 +2555,7 @@ export type Database = {
       }
     }
     Views: {
-      payment_method_analytics: {
-        Row: {
-          actual_payment_method: string | null
-          avg_amount: number | null
-          preferred_payment_method: string | null
-          success_rate: number | null
-          successful_payments: number | null
-          total_revenue: number | null
-          usage_count: number | null
-        }
-        Relationships: []
-      }
-      payment_method_summary: {
-        Row: {
-          avg_amount: number | null
-          failed_payments: number | null
-          payment_method: string | null
-          success_rate: number | null
-          successful_payments: number | null
-          total_attempts: number | null
-          total_revenue: number | null
-        }
-        Relationships: []
-      }
-      payment_monitoring: {
-        Row: {
-          amount: number | null
-          created_at: string | null
-          gateway_provider: string | null
-          id: string | null
-          last_webhook_attempt: string | null
-          merchant_reference: string | null
-          payment_expiry: string | null
-          retry_count: number | null
-          status: string | null
-          tier: string | null
-          user_email: string | null
-          user_tracking_id: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       analyze_rls_policies: {

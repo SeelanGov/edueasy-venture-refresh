@@ -1,8 +1,24 @@
 // DEPRECATED: Use @/utils/errors instead
 // TODO: Remove this file after migration is complete
-export * from './errors';
 
-// Legacy exports for backward compatibility
+import { parseError as parseErrorCore, toMessage, toNumber } from './errors';
+import type { Result } from './errors';
+
+// Re-export types and functions from canonical errors module
+export { toMessage, toNumber } from './errors';
+export type { Result } from './errors';
+
+// Override parseError to return proper enum category
+export const parseError = (e: unknown): { message: string; category: ErrorCategory; originalError?: unknown } => {
+  const core = parseErrorCore(e);
+  return {
+    message: core.message,
+    category: ErrorCategory.UNKNOWN,  // All canonical errors are UNKNOWN category
+    originalError: e
+  };
+};
+
+// Legacy ErrorCategory enum for backward compatibility
 export enum ErrorCategory {
   AUTHENTICATION = 'AUTHENTICATION',
   DATABASE = 'DATABASE',
@@ -15,9 +31,7 @@ export enum ErrorCategory {
   UNKNOWN = 'UNKNOWN',
 }
 
-/**
- * Unified error interface
- */
+// Legacy interfaces for backward compatibility
 export interface AppError {
   message: string;
   category: ErrorCategory;
@@ -26,9 +40,6 @@ export interface AppError {
   timestamp?: string;
 }
 
-/**
- * Standard Error type used across the application
- */
 export interface StandardError {
   message: string;
   category: ErrorCategory;
@@ -37,108 +48,19 @@ export interface StandardError {
   timestamp?: string;
 }
 
-/**
- * Parse an error into a standardized AppError format
- */
-
-/**
- * parseError
- * @description Function
- */
-export const parseError = (error: unknown): AppError => {
-  const timestamp = new Date().toISOString();
-  // Handle PostgreSQL/Supabase errors
-  if (typeof error === 'object' && error !== null && 'code' in error) {
-    const pgError = error as { code?: string; message?: string };
-    if (pgError.code === 'PGRST301' || pgError.code === '42501') {
-      return {
-        message: "You don't have permission to perform this action",
-        category: ErrorCategory.AUTHENTICATION,
-        originalError: error,
-        timestamp,
-      };
-    }
-    return {
-      message: pgError.message || 'Database error',
-      category: ErrorCategory.DATABASE,
-      originalError: error,
-      timestamp,
-    };
-  }
-  // Network errors
-  if (error instanceof TypeError && error.message.includes('Network')) {
-    return {
-      message: error.message,
-      category: ErrorCategory.NETWORK,
-      originalError: error,
-      timestamp,
-    };
-  }
-  // Fallback for Error objects
-  if (error instanceof Error) {
-    return {
-      message: error.message,
-      category: ErrorCategory.UNKNOWN,
-      originalError: error,
-      timestamp,
-    };
-  }
-  // Fallback for unknown
+// Legacy function exports (compatibility layer)
+export const handleError = (error: unknown, userMessage?: string, showToast: boolean = true): AppError => {
+  const parsed = parseErrorCore(error);
+  console.error(`[${parsed.category}]`, parsed.message);
+  
+  // Map canonical category to legacy enum
+  const legacyCategory = ErrorCategory[parsed.category as keyof typeof ErrorCategory] || ErrorCategory.UNKNOWN;
+  
   return {
-    message: typeof error === 'string' ? error : 'Unknown error',
-    category: ErrorCategory.UNKNOWN,
+    message: parsed.message,
+    category: legacyCategory,
+    timestamp: new Date().toISOString(),
     originalError: error,
-    timestamp,
+    details: {}
   };
 };
-
-/**
- * Handle an error with standardized logging and user feedback
- */
-
-/**
- * handleError
- * @description Function
- */
-export const handleError = (
-  error: unknown,
-  userMessage?: string,
-  showToast: boolean = true,
-): AppError => {
-  const standardError = parseError(error);
-
-  // Always log to console
-  console.error(
-    `[${standardError.category.toUpperCase()}]`,
-    standardError.message,
-    standardError.originalError,
-  );
-
-  // Show toast notification if requested
-  if (showToast) {
-    toast({
-      title: userMessage || 'Error',
-      description: standardError.message,
-      variant: 'destructive',
-    });
-  }
-
-  return standardError;
-};
-
-/**
- * Try/catch wrapper for async functions with standardized error handling
- */
-export async function safeAsync<T>(
-  asyncFn: () => Promise<T>,
-  errorMessage?: string,
-  showToast: boolean = true,
-): Promise<{ data: T | null; error: AppError | null }> {
-  try {
-    const result = await asyncFn();
-    return { data: result, error: null };
-  } catch (error) {
-    const standardError = handleError(error, errorMessage, showToast);
-    return { data: null, error: standardError };
-  }
-}
