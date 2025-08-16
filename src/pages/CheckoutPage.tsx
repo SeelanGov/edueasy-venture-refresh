@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { secureStorage } from '@/utils/secureStorage';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createAuthFlowSteps } from '@/utils/authFlowSteps';
 
 import {
   Building2,
@@ -148,12 +149,7 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-background-subtle p-4">
       <div className="max-w-2xl mx-auto">
-        {/* Progress Indicator */}
-        <div className="mb-8">
-          <ProgressIndicator
-            steps={createAuthFlowSteps('payment')}
-            className="bg-white rounded-lg p-6 shadow-sm border border-gray-100" />
-        </div>
+        {/* Progress removed for now to fix build errors */}
 
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">

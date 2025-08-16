@@ -32,20 +32,20 @@ const CounselorLogin: React.FC = () => {
       return;
     }
 
-    try {
-      const { data } = await supabase.auth.signInWithPassword({
-        email: form.email,
-        password: form.password,
-      });
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
 
-      if (error) throw error;
+    if (error) throw error;
 
-      // Check if user is a consultant
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('user_type')
-        .eq('id', data.user.id)
-        .single();
+    // Check if user is a consultant
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('user_type')
+      .eq('id', data.user?.id)
+      .single();
 
       if (userError || userData?.user_type !== 'consultant') {
         await supabase.auth.signOut();

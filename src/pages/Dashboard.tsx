@@ -11,7 +11,7 @@ import { useApplicationJourneyStep } from '@/hooks/useApplicationJourneyStep';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { applications } = useApplications();
+  const { applications, loading } = useApplications();
   // ADDED: Use journey step hook
   const { steps, currentStep, loading: journeyLoading } = useApplicationJourneyStep();
 

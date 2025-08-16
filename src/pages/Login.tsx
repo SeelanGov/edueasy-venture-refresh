@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { AlertDescription, Alert, AlertTitle } from '@/components/ui/alert';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { Logo } from '@/components/Logo';
@@ -10,7 +11,6 @@ import { SecurityBadge } from '@/components/ui/SecurityBadge';
 import { useAuth } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle } from 'lucide-react';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -40,7 +40,7 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const Login = () => {
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
