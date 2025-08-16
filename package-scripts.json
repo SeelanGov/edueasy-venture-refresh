@@ -3,6 +3,7 @@
     "fix-records": "ts-node scripts/fix-records.ts",
     "check:records": "rg -n \"\\bRecord\\b(?!<)\" src && (echo '❌ bare Record found' && exit 1) || echo '✅ Records ok'",
     "check:catch": "rg -n \"catch\\s*\\((error|e)\\)\" src | rg -v \"parseError|: unknown\" && (echo '❌ unsafe catch found' && exit 1) || echo '✅ catches ok'",
-    "check:icons": "rg -n \"from 'lucide-react'\" src | rg -v 'src/ui/icons.ts' && (echo '❌ direct lucide imports' && exit 1) || echo '✅ icons centralized'"
+    "check:icons": "rg -n \"from 'lucide-react'\" src | rg -v 'src/ui/icons.ts' && (echo '❌ direct lucide imports' && exit 1) || echo '✅ icons centralized'",
+    "check:errors-compat": "rg -n \"from '@/utils/errorHandler'\" src && (echo '❌ legacy errorHandler import found' && exit 1) || echo '✅ no legacy imports'"
   }
 }

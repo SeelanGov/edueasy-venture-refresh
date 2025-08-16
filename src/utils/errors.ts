@@ -18,10 +18,18 @@ export type CanonicalError = {
 export const toMessage = (e: unknown): string =>
   e instanceof Error ? e.message : typeof e === 'string' ? e : 'Unknown error';
 
-export const parseError = (e: unknown): CanonicalError => ({
-  message: toMessage(e),
-  category: 'UNKNOWN', // you can enrich later, but keep stable for now
-});
+export const parseError = (e: unknown): CanonicalError => {
+  const msg = toMessage(e);
+  // PGRST/PG codes we care about:
+  if (typeof e === 'object' && e && 'code' in e) {
+    const code = (e as any).code as string | undefined;
+    if (code === '42501') return { message: 'Not authorized for this action.', category: 'PERMISSION' };
+  }
+  if (msg.toLowerCase().includes('permission denied')) {
+    return { message: 'Not authorized for this action.', category: 'PERMISSION' };
+  }
+  return { message: msg, category: 'UNKNOWN' };
+};
 
 export type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
