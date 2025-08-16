@@ -41,11 +41,11 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
   } = useDocumentUploadManager();
 
   // Mock upload steps and state for now
-  const uploadSteps = [
-    { id: 1, label: 'Select', status: 'active' },
-    { id: 2, label: 'Upload', status: 'pending' },
-    { id: 3, label: 'Verify', status: 'pending' },
-    { id: 4, label: 'Complete', status: 'pending' },
+  const uploadSteps: Step[] = [
+    { id: '1', label: 'Select', status: 'active' },
+    { id: '2', label: 'Upload', status: 'pending' },
+    { id: '3', label: 'Verify', status: 'pending' },
+    { id: '4', label: 'Complete', status: 'pending' },
   ];
   const currentStep = 1;
 
@@ -130,7 +130,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
         <DocumentStepperCard
           currentDocumentType={currentDocumentType}
           documentName={documentName}
-          uploadSteps={uploadSteps as Step[]}
+          uploadSteps={uploadSteps}
           currentStep={currentStep}
         />
 
@@ -147,7 +147,7 @@ export const DocumentsUploadStep: React.FC<DocumentsUploadStepProps> = ({
           isVerifying={isVerifying}
           setCurrentDocumentType={(_type: string) => {}}
           currentDocumentType={currentDocumentType}
-          uploadSteps={uploadSteps as Step[]}
+          uploadSteps={uploadSteps}
           currentStep={currentStep}
         />
 

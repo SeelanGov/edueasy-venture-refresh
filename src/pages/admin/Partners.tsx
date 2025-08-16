@@ -1,4 +1,4 @@
-import { PartnerCard } from '@/components/admin/partners/PartnerCard';
+import PartnerCard from '@/components/admin/partners/PartnerCard';
 import { Button } from '@/components/ui/button';
 import { usePartners, type PartnerType } from '@/hooks/usePartners';
 import { useCallback   } from 'react';
@@ -73,7 +73,7 @@ useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         </select>
       </div>
       {/* Partner List */}
-      {isLoading ? (
+      {!partners ? (
         <div className="py-32 text-center text-gray-400 flex flex-col items-center">
           <span>Loading…</span>
           <div className="mt-3 animate-spin h-6 w-6 border-4 border-gray-300 border-t-cap-teal rounded-full" />

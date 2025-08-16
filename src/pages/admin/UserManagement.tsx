@@ -6,7 +6,7 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Building2, Heart, Shield, UserCheck, Users } from 'lucide-react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Select,
@@ -44,9 +44,9 @@ const UserTypeBadgeColors = {
 export default function UserManagement() {
   const { user } = useAuth();
   const { isAdmin } = useAdminRole();
-  const [users, setUsers] = useState<UserWithRole[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState<string | null>(null);
+  const [users, setUsers] = React.useState<UserWithRole[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [updating, setUpdating] = React.useState<string | null>(null);
 
   useEffect(() => {
     if (!isAdmin) return;

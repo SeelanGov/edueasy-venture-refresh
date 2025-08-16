@@ -1,5 +1,5 @@
 import { type VerificationResult  } from '@/hooks/useDocumentVerification';
-
+import { type Step } from '@/types/ui';
 
 export type DocumentType = 'idDocument' | 'proofOfResidence' | 'grade11Results' | 'grade12Results';
 
@@ -30,13 +30,8 @@ export interface DocumentUploadState {
 // Re-export centralized Step type
 export type { Step } from '@/types/ui';
 
-// Create a local step interface for numeric IDs used in profile completion
-export interface ProfileStep {
-  id: number;
-  label: string;
-  description?: string;
-  status: 'pending' | 'active' | 'complete' | 'error';
-}
+// Use the centralized Step type
+export type ProfileStep = Step;
 
 export interface DocumentUploadInputProps {
   documentType: DocumentType;

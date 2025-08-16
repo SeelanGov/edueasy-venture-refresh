@@ -1,7 +1,7 @@
-import { NotesTimeline } from '@/components/admin/partners/NotesTimeline';
-import { PartnerIntegrationChecklist } from '@/components/admin/partners/PartnerIntegrationChecklist';
-import { PartnerPaymentHistory } from '@/components/admin/partners/PartnerPaymentHistory';
-import { PartnerStatusBadge } from '@/components/admin/partners/PartnerStatusBadge';
+import NotesTimeline from '@/components/admin/partners/NotesTimeline';
+import PartnerIntegrationChecklist from '@/components/admin/partners/PartnerIntegrationChecklist';
+import PartnerPaymentHistory from '@/components/admin/partners/PartnerPaymentHistory';
+import PartnerStatusBadge from '@/components/admin/partners/PartnerStatusBadge';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
@@ -39,7 +39,7 @@ const PartnerProfilePage: React.FC = () => {
   const { notes } = usePartnerNotes(id);
 
   // Display basic errors (if fetching fails and id not found)
-  if (isLoading) {
+  if (partner === undefined) {
     return (
       <div className="flex items-center justify-center py-24">
         <Spinner size="md" />
@@ -82,7 +82,7 @@ const PartnerProfilePage: React.FC = () => {
                 <strong>Email:</strong> {partner.email}
               </div>
               <div>
-                <strong>Phone:</strong> {partner.phone || '-'}
+                <strong>Contact:</strong> {partner.email}
               </div>
               <div>
                 <strong>Type:</strong> {partner.type}

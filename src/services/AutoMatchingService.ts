@@ -311,7 +311,7 @@ class AutoMatchingService {
         query = query.eq('status', filters.status);
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
       if (error) throw error;
       return data || [];
     } catch (error) {
@@ -369,7 +369,7 @@ class AutoMatchingService {
     expired: number;
   }> {
     try {
-      const { data } = await supabase.from('sponsor_allocations').select('status');
+      const { data, error } = await supabase.from('sponsor_allocations').select('status');
 
       if (error) throw error;
 

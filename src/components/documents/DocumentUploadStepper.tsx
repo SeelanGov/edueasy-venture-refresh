@@ -1,15 +1,8 @@
 import { ArrowRight, CheckCircle, CircleDashed } from 'lucide-react';
-
-// Local step interface for document upload (has description and different id type)
-export type DocumentStep = {
-  id: number;
-  label: string;
-  description?: string;
-  status: 'pending' | 'active' | 'complete' | 'error';
-};
+import { type Step } from '@/types/ui';
 
 interface DocumentUploadStepperProps {
-  steps: DocumentStep[];
+  steps: Step[];
 }
 
 /**
@@ -42,7 +35,7 @@ export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JS
                   {isComplete ? (
                     <CheckCircle className="w-5 h-5" />
                   ) : isCurrent ? (
-                    <span className="text-sm font-medium">{step.id}</span>
+                    <span className="text-sm font-medium">{index + 1}</span>
                   ) : (
                     <CircleDashed className="w-5 h-5" />
                   )}

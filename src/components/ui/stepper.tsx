@@ -3,13 +3,10 @@ import { AlertTriangle, Check, Circle } from 'lucide-react';
 
 
 
+import { type Step } from '@/types/ui';
+
 export interface StepperProps {
-  steps: {
-    id: number;
-    label: string;
-    description?: string;
-    status: 'pending' | 'active' | 'complete' | 'error';
-  }[];
+  steps: Step[];
   currentStep: number;
   className?: string;
 }
@@ -22,8 +19,8 @@ export function Stepper({ steps, currentStep, className }: StepperProps): JSX.El
   return (
     <div className={cn('w-full space-y-4', className)}>
       <ol className="flex flex-col gap-2">
-        {steps.map((step: { id: number; label: string; description?: string; status: 'pending' | 'active' | 'complete' | 'error' }) => {
-          const isActive = step.id === currentStep;
+        {steps.map((step: Step, index: number) => {
+          const isActive = index + 1 === currentStep;
 
           return (
             <li
