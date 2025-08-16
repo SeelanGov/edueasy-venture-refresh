@@ -1,4 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
+import type { Json, UserAnalytics, ApplicationAnalytics, RevenueAnalytics } from '@/types/supabase';
 
 // Analytics event types
 export type AnalyticsEventType =
@@ -24,52 +26,6 @@ export interface AnalyticsEvent {
   user_agent: string;
   ip_address?: string;
   referrer?: string;
-}
-
-// User analytics interface
-export interface UserAnalytics {
-  user_id: string;
-  total_sessions: number;
-  total_page_views: number;
-  last_active: Date;
-  first_seen: Date;
-  applications_submitted: number;
-  payments_completed: number;
-  features_used: string[];
-  conversion_rate: number;
-}
-
-// Application analytics interface
-export interface ApplicationAnalytics {
-  total_applications: number;
-  applications_by_status: Record<string, number>;
-  applications_by_program: Record<string, number>;
-  average_completion_time: number;
-  conversion_funnel: {
-    started: number;
-    in_progress: number;
-    completed: number;
-    submitted: number;
-  };
-  top_programs: Array<{
-    program_name: string;
-    applications: number;
-    success_rate: number;
-  }>;
-}
-
-// Revenue analytics interface
-export interface RevenueAnalytics {
-  total_revenue: number;
-  revenue_by_month: Record<string, number>;
-  revenue_by_tier: Record<string, number>;
-  average_order_value: number;
-  conversion_rate: number;
-  top_revenue_sources: Array<{
-    source: string;
-    revenue: number;
-    transactions: number;
-  }>;
 }
 
 class AnalyticsService {
@@ -135,76 +91,6 @@ class AnalyticsService {
   }
 
   /**
-   * Track application submission
-   */
-  public trackApplicationSubmitted(applicationData: {
-    program_name: string;
-    application_id: string;
-    completion_time: number;
-    documents_uploaded: number;
-  }): void {
-    const event: AnalyticsEvent = {
-      event_type: 'application_submitted',
-      event_name: 'application_submitted',
-      user_id: this.userId,
-      session_id: this.sessionId,
-      properties: applicationData,
-      timestamp: new Date(),
-      page_url: window.location.href,
-      user_agent: navigator.userAgent,
-    };
-
-    this.sendEvent(event);
-  }
-
-  /**
-   * Track payment completion
-   */
-  public trackPaymentCompleted(paymentData: {
-    amount: number;
-    currency: string;
-    payment_method: string;
-    tier_name: string;
-    transaction_id: string;
-  }): void {
-    const event: AnalyticsEvent = {
-      event_type: 'payment_completed',
-      event_name: 'payment_completed',
-      user_id: this.userId,
-      session_id: this.sessionId,
-      properties: paymentData,
-      timestamp: new Date(),
-      page_url: window.location.href,
-      user_agent: navigator.userAgent,
-    };
-
-    this.sendEvent(event);
-  }
-
-  /**
-   * Track errors
-   */
-  public trackError(errorData: {
-    error_message: string;
-    error_stack?: string;
-    component_name?: string;
-    user_action?: string;
-  }): void {
-    const event: AnalyticsEvent = {
-      event_type: 'error_occurred',
-      event_name: 'error_occurred',
-      user_id: this.userId,
-      session_id: this.sessionId,
-      properties: errorData,
-      timestamp: new Date(),
-      page_url: window.location.href,
-      user_agent: navigator.userAgent,
-    };
-
-    this.sendEvent(event);
-  }
-
-  /**
    * Track feature usage
    */
   public trackFeatureUsed(featureName: string, properties: Record<string, unknown> = {}): void {
@@ -214,52 +100,6 @@ class AnalyticsService {
       user_id: this.userId,
       session_id: this.sessionId,
       properties,
-      timestamp: new Date(),
-      page_url: window.location.href,
-      user_agent: navigator.userAgent,
-    };
-
-    this.sendEvent(event);
-  }
-
-  /**
-   * Track conversions
-   */
-  public trackConversion(conversionData: {
-    conversion_type: string;
-    value?: number;
-    currency?: string;
-    properties?: Record<string, unknown>;
-  }): void {
-    const event: AnalyticsEvent = {
-      event_type: 'conversion',
-      event_name: conversionData.conversion_type,
-      user_id: this.userId,
-      session_id: this.sessionId,
-      properties: conversionData,
-      timestamp: new Date(),
-      page_url: window.location.href,
-      user_agent: navigator.userAgent,
-    };
-
-    this.sendEvent(event);
-  }
-
-  /**
-   * Track engagement metrics
-   */
-  public trackEngagement(engagementData: {
-    engagement_type: string;
-    duration?: number;
-    interactions?: number;
-    properties?: Record<string, unknown>;
-  }): void {
-    const event: AnalyticsEvent = {
-      event_type: 'engagement',
-      event_name: engagementData.engagement_type,
-      user_id: this.userId,
-      session_id: this.sessionId,
-      properties: engagementData,
       timestamp: new Date(),
       page_url: window.location.href,
       user_agent: navigator.userAgent,
@@ -296,7 +136,7 @@ class AnalyticsService {
         event_name: event.event_name,
         user_id: event.user_id,
         session_id: event.session_id,
-        properties: event.properties,
+        properties: event.properties as Json,
         timestamp: event.timestamp.toISOString(),
         page_url: event.page_url,
         user_agent: event.user_agent,
@@ -316,7 +156,7 @@ class AnalyticsService {
    */
   public async getUserAnalytics(userId: string): Promise<UserAnalytics | null> {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('user_analytics')
         .select('*')
         .eq('user_id', userId)
@@ -327,7 +167,17 @@ class AnalyticsService {
         return null;
       }
 
-      return data;
+      return data ? {
+        ...data,
+        total_sessions: data.total_sessions ?? 0,
+        total_page_views: data.total_page_views ?? 0,
+        payments_completed: data.payments_completed ?? 0,
+        applications_submitted: data.applications_submitted ?? 0,
+        conversion_rate: data.conversion_rate ?? 0,
+        features_used: data.features_used ?? [],
+        first_seen: data.first_seen ?? '',
+        last_active: data.last_active ?? ''
+      } : null;
     } catch (error) {
       console.error('Error fetching user analytics:', error);
       return null;
@@ -339,14 +189,18 @@ class AnalyticsService {
    */
   public async getApplicationAnalytics(): Promise<ApplicationAnalytics | null> {
     try {
-      const { data } = await supabase.from('application_analytics').select('*').single();
+      const { data, error } = await supabase.from('application_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get application analytics:', error);
         return null;
       }
 
-      return data;
+      return data ? {
+        ...data,
+        total_applications: data.total_applications ?? 0,
+        average_completion_time: data.average_completion_time ?? 0
+      } : null;
     } catch (error) {
       console.error('Error fetching application analytics:', error);
       return null;
@@ -358,52 +212,27 @@ class AnalyticsService {
    */
   public async getRevenueAnalytics(): Promise<RevenueAnalytics | null> {
     try {
-      const { data } = await supabase.from('revenue_analytics').select('*').single();
+      const { data, error } = await supabase.from('revenue_analytics').select('*').single();
 
       if (error) {
         console.error('Failed to get revenue analytics:', error);
         return null;
       }
 
-      return data;
+      return data ? {
+        ...data,
+        total_revenue: data.total_revenue ?? 0,
+        average_order_value: data.average_order_value ?? 0,
+        conversion_rate: data.conversion_rate ?? 0
+      } : null;
     } catch (error) {
       console.error('Error fetching revenue analytics:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Generate analytics report
-   */
-  public async generateReport(
-    reportType: 'user' | 'application' | 'revenue',
-    filters?: Record<string, unknown>,
-  ): Promise<unknown> {
-    try {
-      const { data } = await supabase.rpc('generate_analytics_report', {
-        report_type: reportType,
-        filters: filters || {},
-      });
-
-      if (error) {
-        console.error('Failed to generate analytics report:', error);
-        return null;
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Error generating analytics report:', error);
       return null;
     }
   }
 }
 
 // Create singleton instance
-
-/**
- * analyticsService
- * @description Function
- */
 export const analyticsService = new AnalyticsService();
 
 // Export for use in components

@@ -1,10 +1,6 @@
-export interface FlowStep {
-  id: string;
-  title: string;
-  completed: boolean;
-}
+import { Step } from '@/types/ui';
 
-export const createAuthFlowSteps = (currentStep: string): FlowStep[] => {
+export const createAuthFlowSteps = (currentStep: string): Step[] => {
   const steps = [
     { id: 'register', title: 'Create Account' },
     { id: 'payment', title: 'Choose Plan' },
@@ -14,7 +10,8 @@ export const createAuthFlowSteps = (currentStep: string): FlowStep[] => {
   const currentIndex = steps.findIndex(step => step.id === currentStep);
   
   return steps.map((step, index) => ({
-    ...step,
-    completed: index < currentIndex,
+    id: step.id,
+    label: step.title,
+    status: index < currentIndex ? 'completed' as const : (index === currentIndex ? 'current' as const : 'upcoming' as const),
   }));
 };
