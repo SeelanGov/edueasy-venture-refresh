@@ -5,7 +5,7 @@ export interface Partner {
   status: 'active' | 'inactive' | 'pending' | 'suspended';
   tier: 'bronze' | 'silver' | 'gold' | 'platinum' | 'basic' | 'standard' | 'premium';
   type: 'individual' | 'corporate' | 'institutional' | 'university' | 'tvet' | 'funder' | 'seta' | 'other' | 'sponsor';
-  integration_status?: string;
+  integration_status?: string | null;
   created_at?: string;
   updated_at?: string;
   mou_uploaded_at?: string;

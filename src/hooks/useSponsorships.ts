@@ -1,14 +1,14 @@
-import { toast } from '@/hooks/use-toast';
+import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { SponsorshipLevel, SponsorshipStatus, type Sponsorship } from '@/types/RevenueTypes';
-import { useEffect } from 'react';
 
 /**
  * useSponsorships
  * @description Function
  */
-export const useSponsorships = (): void => {
+export const useSponsorships = () => {
   const [sponsorships, setSponsorships] = useState<Sponsorship[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +36,7 @@ export const useSponsorships = (): void => {
     setError(null);
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsorships')
         .select('*')
         .eq('is_active', true)
@@ -82,7 +82,7 @@ export const useSponsorships = (): void => {
     }
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsorships')
         .insert(sponsorshipData)
         .select()
@@ -154,7 +154,7 @@ export const useSponsorships = (): void => {
 
   const updateSponsorship = async (id: string, updates: Partial<Sponsorship>) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsorships')
         .update(updates)
         .eq('id', id)
@@ -205,7 +205,7 @@ export const useSponsorships = (): void => {
 
   const activateSponsorship = async (id: string) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsorships')
         .update({ is_active: true, status: SponsorshipStatus.ACTIVE })
         .eq('id', id)
@@ -233,7 +233,7 @@ export const useSponsorships = (): void => {
 
   const deactivateSponsorship = async (id: string) => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('sponsorships')
         .update({ is_active: false, status: SponsorshipStatus.INACTIVE })
         .eq('id', id)

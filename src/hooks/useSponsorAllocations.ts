@@ -1,7 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { type SponsorAllocation  } from '@/types/SponsorTypes';
 import { useCallback, useEffect, useState } from 'react';
-import { useState } from 'react';
 
 
 
