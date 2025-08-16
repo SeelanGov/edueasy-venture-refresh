@@ -276,7 +276,7 @@ export const clearSession = (): void => {
  * getSessionStatus
  * @description Function
  */
-export const getSessionStatus = (): void => {
+export const getSessionStatus = () => {
   const isExpired = isSessionExpired();
   const sessionStart = secureGetItem('session_start');
   const rememberMe = secureGetItem('rememberMe');

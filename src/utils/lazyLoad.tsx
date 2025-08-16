@@ -1,5 +1,5 @@
+import React, { Suspense } from 'react';
 import { Spinner } from '@/components/Spinner';
-import { Suspense   } from 'react';
 
 
 

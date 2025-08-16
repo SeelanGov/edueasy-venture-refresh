@@ -1,12 +1,4 @@
 // Testing utilities index
-export {
-  validateComponentProps,
-  validateDesignSystemUsage,
-  validateColorContrast,
-  generateDesignSystemReport,
-  type ValidationResult,
-  type ComponentValidationOptions,
-} from './design-system-validator';
 
 export {
   DesignSystemTester,
@@ -25,8 +17,17 @@ export {
   type AccessibilityIssue,
 } from './accessibility-helpers';
 
-// Re-export existing testing utilities
-export { VISUAL_DIFF_CONFIG } from './visual-diff-config';
+// Basic visual diff configuration (simplified)
+export const VISUAL_DIFF_CONFIG = {
+  thresholds: {
+    pixel: 0.1,
+    layout: 0.05,
+  },
+  settings: {
+    antialiasing: true,
+    fullPage: true,
+  },
+};
 export {
   CRITICAL_USER_FLOWS,
   validateDesignSystemCompliance,

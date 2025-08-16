@@ -17,7 +17,6 @@ export function logError(error: StandardError, notifyUser = false): void {
       title: 'An error occurred',
       description: error.message,
       variant: 'destructive',
-      duration: 5000,
       className: 'bg-white border-red-200 text-red-800',
     });
   }

@@ -363,7 +363,7 @@ export const privacy = {
       if (matches) {
         results.push({
           type,
-          matches: matches.map((match) => privacy.maskSensitiveData(match, type)),
+          matches: matches.map((match) => inputValidation.maskSensitiveData(match, type)),
         });
       }
     });
@@ -383,7 +383,7 @@ export const privacy = {
       if (anonymized[field]) {
         const fieldValue = anonymized[field];
         if (typeof fieldValue === 'string') {
-          anonymized[field] = privacy.maskSensitiveData(fieldValue, field);
+          anonymized[field] = inputValidation.maskSensitiveData(fieldValue, field);
         }
       }
     });

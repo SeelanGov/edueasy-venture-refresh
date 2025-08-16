@@ -97,7 +97,7 @@ export const monitorWebVitals = (): void => {
   if (typeof window !== 'undefined') {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        console.warn(`Web Vital: ${entry.name} = ${entry.value}`);
+        console.warn(`Web Vital: ${entry.name} = ${(entry as any).value || 0}`);
       }
     });
 

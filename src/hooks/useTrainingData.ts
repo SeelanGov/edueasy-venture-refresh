@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTrainingMessages } from './training/useTrainingMessages';
 import { useTrainingEntries } from './training/useTrainingEntries';
-import { type TrainingFilters, type TrainingEntry as TrainingEntryType } from '@/types/TrainingTypes';
+import { type TrainingFilters } from '@/types/TrainingTypes';
 
 
 
@@ -15,7 +15,7 @@ export { type ChatMessage } from '@/types/TrainingTypes';
  * useTrainingData
  * @description Function
  */
-export const useTrainingData = () => {
+export const useTrainingData = (): any => {
   const [lowConfidenceOnly, setLowConfidenceOnly] = useState(true);
   const [page, setPage] = useState(0);
   const limit = 20;
