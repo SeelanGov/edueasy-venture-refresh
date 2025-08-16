@@ -5,9 +5,9 @@ import { IntentList } from '@/components/thandi/IntentList';
 import { MessageTraining } from '@/components/thandi/MessageTraining';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState } from 'react';
 import { useIntentManagement, type IntentWithStats } from '@/hooks/useIntentManagement';
 import { useTrainingData } from '@/hooks/useTrainingData';
-import { useState } from 'react';
 
 const AdminAiTraining = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState('messages');
