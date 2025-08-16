@@ -12,3 +12,9 @@ export const toNumber = (value: unknown, fallback = 0): number => {
   }
   return fallback;
 };
+
+// Error parsing utility
+export const parseError = (e: unknown): { message: string; category: string } => ({
+  message: toMessage(e),
+  category: 'UNKNOWN'
+});

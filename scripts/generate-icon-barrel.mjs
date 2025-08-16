@@ -40,7 +40,9 @@ for (const f of files) {
 
 const sorted = Array.from(icons).sort();
 const header = `// AUTO-GENERATED. Do not edit manually. Run: node scripts/generate-icon-barrel.mjs
-export { ${sorted.join(', ')} } from 'lucide-react';
+export { 
+  ${sorted.join(', ')}
+} from 'lucide-react';
 `;
 writeFileSync('src/ui/icons.ts', header);
 console.log(`Exported ${sorted.length} icons to src/ui/icons.ts`);

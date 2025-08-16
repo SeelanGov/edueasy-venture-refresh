@@ -2,6 +2,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { type SubscriptionTier  } from '@/types/SubscriptionTypes';
 import { handleError } from '@/utils/errorHandler';
 import { secureStorage } from '@/utils/secureStorage';
+import { toMessage, parseError } from '@/lib/errors';
 
 
 
@@ -93,7 +94,7 @@ class PaymentService {
       const payfastTier = tier.name.toLowerCase().includes('essential') ? 'basic' : 'premium';
 
       // Create payment session using existing edge function
-      const { data } = await supabase.functions.invoke('create-payment-session', {
+      const { data, error } = await supabase.functions.invoke('create-payment-session', {
         body: {
           tier: payfastTier,
           user_id: request.userId,
@@ -133,14 +134,14 @@ class PaymentService {
    */
   async checkPaymentStatus(merchantReference: string): Promise<PaymentStatus | null> {
     try {
-      const { data } = await supabase.functions.invoke('verify-payment-status', {
+      const { data, error } = await supabase.functions.invoke('verify-payment-status', {
         body: { merchant_reference: merchantReference },
       });
 
       if (error) throw error;
       return data?.status || null;
-    } catch (error) {
-      const appError = parseError(error);
+    } catch (e: unknown) {
+      const appError = parseError(e);
       console.error('Error checking payment status:', appError);
       return null;
     }
@@ -215,13 +216,13 @@ class PaymentService {
     eventData: Record<string, unknown>,
   ): Promise<void> {
     try {
-      await supabase.from('payment_audit_logs').insert({
-        payment_id: paymentId,
-        event_type: eventType,
-        event_data: eventData,
+      await supabase.from('audit_logs').insert({
+        user_id: paymentId,
+        action: eventType,
+        details: eventData as any,
       });
-    } catch (error) {
-      const appError = parseError(error);
+    } catch (e: unknown) {
+      const appError = parseError(e);
       console.error('Payment logging failed:', appError);
       // Don't throw - audit logging failure shouldn't break main operation
     }

@@ -204,30 +204,4 @@ export interface PaginatedResponse<T> {
   };
 }
 
-// Export all types
-export type {
-  AnalyticsEvent,
-  AnalyticsResponse,
-  ApiError,
-  ApiResponse,
-  ApplicationFormData,
-  ApplicationSubmissionRequest,
-  ApplicationSubmissionResponse,
-  AuditLogEntry,
-  DocumentUploadRequest,
-  DocumentUploadResponse,
-  NotificationPreferences,
-  NotificationRequest,
-  PaginatedResponse,
-  PaymentRequest,
-  PaymentResponse,
-  RateLimitInfo,
-  SearchFilters,
-  SponsorApplication,
-  SponsorApplicationRequest,
-  UpdateUserRequest,
-  UserConsent,
-  UserProfile,
-  VerifyIdRequest,
-  VerifyIdResponse,
-};
+// Note: Types are already exported individually above
