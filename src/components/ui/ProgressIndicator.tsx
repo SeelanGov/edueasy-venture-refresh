@@ -1,12 +1,7 @@
 import React from 'react';
 import { CheckCircle, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-interface Step {
-  id: string;
-  label: string;
-  status: 'completed' | 'current' | 'upcoming';
-}
+import type { Step } from '@/types/ui';
 
 interface ProgressIndicatorProps {
   steps: Step[];
@@ -29,11 +24,11 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
             <li key={step.id} className="flex items-center">
               <div className="flex flex-col items-center">
                 <div className="flex items-center">
-                  {step.status === 'completed' ? (
+                  {step.status === 'complete' ? (
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
                       <CheckCircle className="h-5 w-5 text-primary-foreground" />
                     </div>
-                  ) : step.status === 'current' ? (
+                  ) : step.status === 'active' ? (
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
                       <Circle className="h-5 w-5 text-primary-foreground" />
                     </div>
@@ -47,7 +42,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                   <span
                     className={cn(
                       "text-sm font-medium",
-                      step.status === 'completed' || step.status === 'current'
+                      step.status === 'complete' || step.status === 'active'
                         ? "text-primary"
                         : "text-muted-foreground"
                     )}
@@ -60,7 +55,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                 <div
                   className={cn(
                     "ml-4 h-px w-16 flex-1",
-                    step.status === 'completed'
+                    step.status === 'complete'
                       ? "bg-primary"
                       : "bg-muted-foreground"
                   )}

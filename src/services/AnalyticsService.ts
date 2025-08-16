@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { Json, UserAnalytics, ApplicationAnalytics, RevenueAnalytics } from '@/types/supabase';
+import type { Json } from '@/types/supabase';
+import type { UserAnalytics, ApplicationAnalytics, RevenueAnalytics } from '@/types/analytics';
 
 // Analytics event types
 export type AnalyticsEventType =
@@ -199,7 +200,9 @@ class AnalyticsService {
       return data ? {
         ...data,
         total_applications: data.total_applications ?? 0,
-        average_completion_time: data.average_completion_time ?? 0
+        average_completion_time: data.average_completion_time ?? 0,
+        created_at: data.created_at ?? '',
+        updated_at: data.updated_at ?? ''
       } : null;
     } catch (error) {
       console.error('Error fetching application analytics:', error);
@@ -223,17 +226,68 @@ class AnalyticsService {
         ...data,
         total_revenue: data.total_revenue ?? 0,
         average_order_value: data.average_order_value ?? 0,
-        conversion_rate: data.conversion_rate ?? 0
+        conversion_rate: data.conversion_rate ?? 0,
+        created_at: data.created_at ?? '',
+        updated_at: data.updated_at ?? ''
       } : null;
     } catch (error) {
       console.error('Error fetching revenue analytics:', error);
       return null;
     }
   }
+
+  /**
+   * Generate analytics report (stub)
+   */
+  public async generateReport(
+    reportType: 'user' | 'application' | 'revenue',
+    filters?: Record<string, unknown>,
+  ): Promise<null> {
+    console.log('generateReport not implemented', reportType, filters);
+    return null;
+  }
+
+  /**
+   * Track application submission (stub)
+   */
+  public trackApplicationSubmitted(applicationData: string | Record<string, unknown>): void {
+    console.log('trackApplicationSubmitted not implemented', applicationData);
+  }
+
+  /**
+   * Track payment completion (stub)
+   */
+  public trackPaymentCompleted(paymentData: string | Record<string, unknown>): void {
+    console.log('trackPaymentCompleted not implemented', paymentData);
+  }
+
+  /**
+   * Track error occurrence (stub)
+   */
+  public trackError(errorData: string | Record<string, unknown>): void {
+    console.log('trackError not implemented', errorData);
+  }
+
+  /**
+   * Track conversion (stub)
+   */
+  public trackConversion(conversionData: string | Record<string, unknown>): void {
+    console.log('trackConversion not implemented', conversionData);
+  }
+
+  /**
+   * Track engagement (stub)
+   */
+  public trackEngagement(engagementData: string | Record<string, unknown>): void {
+    console.log('trackEngagement not implemented', engagementData);
+  }
 }
 
 // Create singleton instance
 export const analyticsService = new AnalyticsService();
+
+// Export types for external use
+export type { UserAnalytics, ApplicationAnalytics, RevenueAnalytics } from '@/types/analytics';
 
 // Export for use in components
 export default analyticsService;

@@ -70,7 +70,7 @@ const PaymentPlanSetup = (): JSX.Element => {
 
   if (!plan) {
     navigate('/pricing');
-    return null;
+    return <div>Redirecting...</div>;
   }
 
   return (

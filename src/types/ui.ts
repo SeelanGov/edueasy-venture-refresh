@@ -1,15 +1,9 @@
-export type Step = { 
-  id: string; 
-  label: string; 
-  status: 'completed' | 'current' | 'upcoming' 
-};
+export type StepStatus = 'pending' | 'active' | 'complete';
+export type Step = { id: string; label: string; status: StepStatus };
 
-// Temporary alias for compatibility
-export type FlowStep = Step;
-
-// Adapter function for legacy FlowStep interface
-export const toStep = (flowStep: { id: string; title: string; completed: boolean }): Step => ({
+// Adapter function for legacy interfaces
+export const toStep = (flowStep: { id: string; title: string; completed?: boolean; state?: string }): Step => ({
   id: flowStep.id,
   label: flowStep.title,
-  status: flowStep.completed ? 'completed' : 'upcoming'
+  status: flowStep.completed ? 'complete' : (flowStep.state === 'active' ? 'active' : 'pending'),
 });
