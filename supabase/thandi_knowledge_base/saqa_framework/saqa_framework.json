@@ -1,0 +1,76 @@
+{
+  "id": "edu_saqa_framework",
+  "title": "SAQA National Qualifications Framework (NQF)",
+  "language": "en",
+  "summary": "The National Qualifications Framework (NQF) organizes South African qualifications into 10 levels, from high school to university degrees, helping you plan your education and career.",
+  "tags": [
+    "SAQA",
+    "NQF",
+    "Qualifications",
+    "Education",
+    "Career Planning",
+    "Matric",
+    "TVET",
+    "University",
+    "RPL"
+  ],
+  "source_links": [
+    "https://www.saqa.org.za/national-qualifications-framework",
+    "https://www.dhet.gov.za/SitePages/NQF.aspx",
+    "https://www.umalusi.org.za"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.saqa.org.za/national-qualifications-framework",
+      "title": "SAQA NQF Overview",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.dhet.gov.za/SitePages/NQF.aspx",
+      "title": "DHET NQF Information",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.umalusi.org.za",
+      "title": "Umalusi Matric Certification",
+      "date": "2024-10"
+    }
+  ],
+  "localized_terms": {
+    "Qualification": {
+      "Zulu": "Iziqu",
+      "Xhosa": "Iziqinisekiso"
+    },
+    "Education": {
+      "Zulu": "Imfundo",
+      "Xhosa": "Imfundo"
+    },
+    "NQF Level": {
+      "Zulu": "Izinga le-NQF",
+      "Xhosa": "Inqanaba le-NQF"
+    },
+    "Matric": {
+      "Zulu": "Umatriki",
+      "Xhosa": "Imatriki"
+    }
+  },
+  "file_name": "saqa_framework.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": [
+      "NQF",
+      "qualification",
+      "level",
+      "SAQA",
+      "education",
+      "matric",
+      "TVET",
+      "university"
+    ],
+    "priority_response": "The NQF organizes qualifications into 10 levels. For example, Matric is NQF Level 4, qualifying you for TVET or some university programs. Learn more at https://www.saqa.org.za."
+  }
+}

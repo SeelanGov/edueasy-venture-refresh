@@ -1,0 +1,78 @@
+{
+  "id": "edu_bursaries_scholarships",
+  "title": "Bursaries and Scholarships",
+  "language": "en",
+  "summary": "Find bursaries and scholarships for South African students with EduEasy. Learn about government and university funding, eligibility, and applications, guided by Thandi.",
+  "tags": [
+    "Bursary",
+    "Scholarship",
+    "Funding",
+    "NSFAS",
+    "Funza Lushaka",
+    "University",
+    "TVET",
+    "EduEasy"
+  ],
+  "source_links": [
+    "https://www.nsfas.org.za/content/eligibility.html",
+    "https://www.education.gov.za/Programmes/FunzaLushaka.aspx",
+    "https://www.dhet.gov.za/SitePages/StudentFunding.aspx",
+    "https://www.uct.ac.za/students/funding/undergraduate-funding",
+    "https://www.wits.ac.za/undergraduate/fees-and-funding"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.nsfas.org.za/content/eligibility.html",
+      "title": "NSFAS Eligibility Criteria",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.education.gov.za/Programmes/FunzaLushaka.aspx",
+      "title": "Funza Lushaka Bursary Programme",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.dhet.gov.za/SitePages/StudentFunding.aspx",
+      "title": "DHET Student Funding",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.uct.ac.za/students/funding/undergraduate-funding",
+      "title": "UCT Undergraduate Funding",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.wits.ac.za/undergraduate/fees-and-funding",
+      "title": "Wits Fees and Funding",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "Bursary": {
+      "Zulu": "Umfundaze",
+      "Xhosa": "Ibhasari"
+    },
+    "Scholarship": {
+      "Zulu": "Umfundaze Wokufunda",
+      "Xhosa": "Isifundaze"
+    },
+    "Funding": {
+      "Zulu": "Uxhaso Lwezimali",
+      "Xhosa": "Inkxaso-mali"
+    },
+    "Application": {
+      "Zulu": "Isicelo",
+      "Xhosa": "Isicelo"
+    }
+  },
+  "file_name": "bursaries_scholarships.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["bursary", "scholarship", "funding", "NSFAS", "Funza Lushaka", "EduEasy"],
+    "priority_response": "EduEasy helps you find bursaries like NSFAS or Funza Lushaka. Apply and track for free at https://edueasy.co.za."
+  }
+}

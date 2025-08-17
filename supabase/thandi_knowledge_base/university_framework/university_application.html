@@ -1,0 +1,131 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Application Guide</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Apply to University with EduEasy</h1>
+  <p>Ready to study at a South African university? <strong>EduEasy</strong> and Thandi make applying easy, whether through the Central Applications Office (CAO) or directly to universities. Calculate your APS, track applications, and get funding tips—all in one place!</p>
+
+  <h2>CAO vs. Direct Applications</h2>
+  <p>EduEasy guides you through both options:</p>
+  <ul>
+    <li><strong>CAO</strong>: Apply to multiple KwaZulu-Natal universities (e.g., UKZN, DUT) with one form for ~R250.</li>
+    <li><strong>Direct</strong>: Apply to universities like UCT or Wits via their portals. EduEasy tracks all your applications for free.</li>
+  </ul>
+
+  <h2>Admission Point Score (APS)</h2>
+  <p>Your <strong>APS</strong> uses Matric results to check eligibility. Each subject mark gives points:</p>
+  <table>
+    <tr>
+      <th>Mark Range</th>
+      <th>APS Points</th>
+    </tr>
+    <tr>
+      <td>80–100%</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>70–79%</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>60–69%</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>50–59%</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>40–49%</td>
+      <td>3</td>
+    </tr>
+  </table>
+  <p><strong>Example</strong>: Medicine at UCT needs an APS of 38+ with Maths and Science at 70%+. <strong>Use Thandi</strong> to calculate your APS for free!</p>
+
+  <h2>How to Apply with EduEasy</h2>
+  <p>Follow these steps with Thandi’s help:</p>
+  <ol>
+    <li><strong>Choose Programs</strong>: Pick up to 6 programs via CAO or university portals. Thandi can suggest programs based on your Matric subjects.</li>
+    <li><strong>Gather Documents</strong>: Upload certified ID, Matric results, and proof of payment to EduEasy’s secure platform.</li>
+    <li><strong>Apply Online</strong>: Use <a href="https://www.cao.ac.za">CAO</a> or university sites (e.g., <a href="https://www.uct.ac.za">UCT</a>). EduEasy syncs your applications.</li>
+    <li><strong>Pay Fees</strong>: CAO (~R250) or university-specific fees. Check waivers with Thandi.</li>
+    <li><strong>Track with EduEasy</strong>: Monitor all applications in one place. Upgrade to <strong>EduEasy Premium</strong> for priority tracking and reminders.</li>
+  </ol>
+
+  <h2>Key Deadlines</h2>
+  <ul>
+    <li><strong>CAO</strong>: Opens May 2025, closes September 2025 (check <a href="https://www.cao.ac.za">CAO</a>).</li>
+    <li><strong>Direct</strong>: Varies (e.g., UCT: July 31, 2025; Wits: September 30, 2025).</li>
+  </ul>
+
+  <h2>Tips for Success</h2>
+  <ul>
+    <li><strong>Start Early</strong>: Apply with Grade 11 results to beat deadlines.</li>
+    <li><strong>Check APS</strong>: Use EduEasy’s free APS calculator to match programs.</li>
+    <li><strong>Secure Funding</strong>: Apply for <a href="https://www.nsfas.org.za">NSFAS</a> via Thandi’s guidance after submitting applications.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Calculate your APS and track applications at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your Matric subjects to programs or find funding!</li>
+    <li>Check <a href="https://www.cao.ac.za">CAO</a> or university sites for specific requirements.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.cao.ac.za">CAO</a>, <a href="https://www.dhet.gov.za">DHET</a>, <a href="https://www.uct.ac.za">UCT</a>, or <a href="https://www.wits.ac.za">Wits</a>.</p>
+</body>
+</html>

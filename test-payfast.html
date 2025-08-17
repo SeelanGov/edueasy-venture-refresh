@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test PayFast Integration</title>
+</head>
+<body>
+    <h1>PayFast Test</h1>
+    <button onclick="testPayFast()">Test PayFast Function</button>
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://pensvamtfjtpsaoeflbx.supabase.co'
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbnN2YW10Zmp0cHNhb2VmbGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MzcyOTcsImV4cCI6MjA1OTQxMzI5N30.ZGFT9bcxwFuDVRF7ZYtLTQDPP3LKmt5Yo8BsJAFQyPM'
+        
+        const supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey)
+        
+        async function testPayFast() {
+            const resultDiv = document.getElementById('result')
+            
+            try {
+                // First check if user is authenticated
+                const { data: { user }, error: authError } = await supabase.auth.getUser()
+                
+                if (authError || !user) {
+                    resultDiv.innerHTML = `<p style="color: red;">Error: User not authenticated. Please log in first.</p><p>Auth Error: ${authError?.message || 'No user found'}</p>`
+                    return
+                }
+                
+                resultDiv.innerHTML = `<p>User authenticated: ${user.email}</p><p>Testing PayFast function...</p>`
+                
+                // Call the edge function
+                const { data, error } = await supabase.functions.invoke('create-payment-session', {
+                    body: {
+                        tier: 'basic',
+                        user_id: user.id
+                    }
+                })
+                
+                if (error) {
+                    resultDiv.innerHTML += `<p style="color: red;">Function Error: ${JSON.stringify(error)}</p>`
+                } else {
+                    resultDiv.innerHTML += `<p style="color: green;">Success: ${JSON.stringify(data)}</p>`
+                }
+                
+            } catch (err) {
+                resultDiv.innerHTML = `<p style="color: red;">JavaScript Error: ${err.message}</p>`
+            }
+        }
+    </script>
+</body>
+</html>

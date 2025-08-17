@@ -1,0 +1,12 @@
+{
+  "name": "edueasy-scripts",
+  "version": "1.0.0",
+  "description": "Helper scripts for EduEasy",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "deploy:payment-recovery": "node deploy-payment-recovery.js",
+    "verify:payment-recovery": "node verify-payment-recovery.js",
+    "test:phase3": "node test-phase3-complete.js"
+  }
+}

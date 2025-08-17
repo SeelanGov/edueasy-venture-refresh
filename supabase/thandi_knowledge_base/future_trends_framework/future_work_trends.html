@@ -1,0 +1,116 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Work Trends</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2c3e50; }
+    ul, table { margin: 10px 0; }
+    strong { color: #e74c3c; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Future Work Trends with EduEasy</h1>
+  <p>South Africa’s job market is evolving with opportunities in AI, green energy, and healthcare. <strong>EduEasy</strong> and Thandi help you explore <strong>future trends</strong>, match skills to your Matric, and plan your career!</p>
+
+  <h2>What Are Future Work Trends?</h2>
+  <p>These are growing industries and skills shaping South Africa’s economy. Preparing now ensures you’re job-ready for 2030 and beyond.</p>
+
+  <h2>Top Future Industries</h2>
+  <p>Here are key industries and skills:</p>
+  <table>
+    <tr>
+      <th>Industry</th>
+      <th>Skills Needed</th>
+      <th>Qualification</th>
+      <th>Source</th>
+    </tr>
+    <tr>
+      <td>Green Economy</td>
+      <td>Renewable energy, sustainability</td>
+      <td>NCV/Diploma (NQF 4–6)</td>
+      <td><a href="https://www.ewseta.org.za">EWSETA</a></td>
+    </tr>
+    <tr>
+      <td>Artificial Intelligence</td>
+      <td>Data analysis, coding</td>
+      <td>Bachelor’s in IT (NQF 7)</td>
+      <td><a href="https://www.mict.org.za">MICT SETA</a></td>
+    </tr>
+    <tr>
+      <td>Healthcare</td>
+      <td>Nursing, community health</td>
+      <td>Bachelor’s/Diploma (NQF 5–7)</td>
+      <td><a href="https://www.hwseta.org.za">HWSETA</a></td>
+    </tr>
+    <tr>
+      <td>Digital Economy</td>
+      <td>Cybersecurity, cloud computing</td>
+      <td>Bachelor’s in IT (NQF 7)</td>
+      <td><a href="https://www.mict.org.za">MICT SETA</a></td>
+    </tr>
+  </table>
+
+  <h2>How to Prepare</h2>
+  <ul>
+    <li><strong>Match Your Matric</strong>: AI needs Maths (50%+). Take Thandi’s career quiz to check your subjects.</li>
+    <li><strong>Choose a Path</strong>: Study at a university (NQF 7) or TVET college (NQF 4–6) via EduEasy.</li>
+    <li><strong>Get Funded</strong>: Apply for <a href="https://www.nsfas.org.za">NSFAS</a> with Thandi’s guidance.</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><strong>Use EduEasy</strong>: Take Thandi’s career quiz or join job alerts at <a href="https://edueasy.co.za">edueasy.co.za</a>.</li>
+    <li><strong>Ask Thandi</strong> to match your Matric to future careers or funding options!</li>
+    <li>Check trends at <a href="https://www.dhet.gov.za">DHET</a> or <a href="https://www.labour.gov.za">DEL</a>.</li>
+  </ul>
+
+  <p>Learn more at <a href="https://www.dhet.gov.za/SitePages/FutureSkills.aspx">DHET</a>, <a href="https://www.labour.gov.za/labour-market-information">DEL</a>, or <a href="https://www.mict.org.za">MICT SETA</a>.</p>
+</body>
+</html>

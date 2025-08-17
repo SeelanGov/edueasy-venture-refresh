@@ -1,0 +1,149 @@
+import { useState, useCallback } from 'react';
+import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { parseError } from '@/utils/errorHandler';
+import { paymentService, type PaymentMethod, type PaymentStatus } from '@/services/paymentService';
+import { secureStorage } from '@/utils/secureStorage';
+
+export type PaymentState = 'idle' | 'processing' | 'success' | 'failed' | 'redirected';
+
+interface UsePaymentReturn {
+  paymentState: PaymentState;
+  error: string | null;
+  initiatePayment: (tierId: string, paymentMethod: PaymentMethod) => Promise<boolean>;
+  checkPaymentStatus: (merchantReference: string) => Promise<PaymentStatus | null>;
+  resetPayment: () => void;
+  getAvailablePaymentMethods: (tierId: string) => PaymentMethod[];
+  isPaymentMethodValid: (tierId: string, paymentMethod: PaymentMethod) => boolean;
+  getPaymentPlan: (tierId: string) => any;
+}
+
+/**
+ * usePayment
+ * @description Function
+ */
+export function usePayment(): UsePaymentReturn {
+  const [paymentState, setPaymentState] = useState<PaymentState>('idle');
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  const initiatePayment = useCallback(
+    async (tierId: string, paymentMethod: PaymentMethod): Promise<boolean> => {
+      if (!user) {
+        const appError = parseError(new Error('User not authenticated'));
+        console.error('[PAYMENT]', appError.message);
+        toast({
+          title: 'Authentication required for payment',
+          description: appError.message,
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      setPaymentState('processing');
+      setError(null);
+
+      try {
+        // Validate payment method for this tier
+        if (!paymentService.isPaymentMethodValid(tierId, paymentMethod)) {
+          throw new Error('Invalid payment method for this tier');
+        }
+
+        // Create payment session using centralized service
+        const session = await paymentService.createPaymentSession({
+          tierId,
+          userId: user.id,
+          paymentMethod,
+        });
+
+        // Store session for verification (existing pattern)
+        try {
+          secureStorage.setItem('pending_payment', session.merchantReference);
+        } catch (storageError) {
+          console.error('Failed to store payment reference:', storageError);
+          // Don't throw - payment can still proceed
+        }
+
+        // Redirect to payment (existing pattern)
+        window.location.href = session.paymentUrl;
+
+        setPaymentState('redirected');
+        return true;
+      } catch (err) {
+        const appError = parseError(err);
+        setError(appError.message);
+        setPaymentState('failed');
+
+        // Show user-friendly error message
+        toast({
+          title: 'Payment Error',
+          description: appError.message,
+          variant: 'destructive',
+        });
+
+        return false;
+      }
+    },
+    [user],
+  );
+
+  const checkPaymentStatus = useCallback(
+    async (merchantReference: string): Promise<PaymentStatus | null> => {
+      try {
+        const status = await paymentService.checkPaymentStatus(merchantReference);
+
+        if (status === 'paid') {
+          setPaymentState('success');
+          // Clear pending payment from storage
+          try {
+            secureStorage.removeItem('pending_payment');
+          } catch (storageError) {
+            console.error('Failed to clear payment reference:', storageError);
+          }
+        } else if (status === 'failed') {
+          setPaymentState('failed');
+        }
+
+        return status;
+      } catch (err) {
+        const appError = parseError(err);
+        setError(appError.message);
+        return null;
+      }
+    },
+    [],
+  );
+
+  const resetPayment = // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      setPaymentState('idle');
+      setError(null);
+    }, []);
+
+  const getAvailablePaymentMethods = useCallback((tierId: string): PaymentMethod[] => {
+    return paymentService.getAvailablePaymentMethods(tierId);
+  }, []);
+
+  const isPaymentMethodValid = useCallback(
+    (tierId: string, paymentMethod: PaymentMethod): boolean => {
+      return paymentService.isPaymentMethodValid(tierId, paymentMethod);
+    },
+    [],
+  );
+
+  const getPaymentPlan = // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback((tierId: string) => {
+      return paymentService.getPaymentPlan(tierId);
+    }, []);
+
+  return {
+    paymentState,
+    error,
+    initiatePayment,
+    checkPaymentStatus,
+    resetPayment,
+    getAvailablePaymentMethods,
+    isPaymentMethodValid,
+    getPaymentPlan,
+  };
+}

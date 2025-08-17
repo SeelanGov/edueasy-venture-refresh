@@ -1,0 +1,66 @@
+{
+  "id": "edu_tvet_pathways",
+  "title": "TV ETL College Pathways",
+  "language": "en",
+  "summary": "Explore Technical and Vocational Education and Training (TVET) colleges with EduEasy. Learn about programs, entry requirements, applications, and career paths, all guided by Thandi.",
+  "tags": [
+    "TVET",
+    "Vocational",
+    "Programs",
+    "Matric",
+    "Application",
+    "Careers",
+    "EduEasy",
+    "NSFAS"
+  ],
+  "source_links": [
+    "https://www.dhet.gov.za/SitePages/TVETColleges.aspx",
+    "https://www.tvetcolleges.co.za",
+    "https://www.nsfas.org.za/content/eligibility.html"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.dhet.gov.za/SitePages/TVETColleges.aspx",
+      "title": "DHET TVET Colleges",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.tvetcolleges.co.za",
+      "title": "TVET Colleges South Africa",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.nsfas.org.za/content/eligibility.html",
+      "title": "NSFAS Eligibility Criteria",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "TVET": {
+      "Zulu": "Imfundo Yezobuchwepheshe",
+      "Xhosa": "Imfundo Yobugcisa"
+    },
+    "Program": {
+      "Zulu": "Uhlelo",
+      "Xhosa": "Inkqubo"
+    },
+    "Application": {
+      "Zulu": "Isicelo",
+      "Xhosa": "Isicelo"
+    },
+    "Matric": {
+      "Zulu": "Umatriki",
+      "Xhosa": "Imatriki"
+    }
+  },
+  "file_name": "tvet_pathways.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["TVET", "vocational", "program", "application", "matric", "careers", "EduEasy"],
+    "priority_response": "EduEasy helps you explore TVET college programs like NCV and NATED. Apply and track your application for free at https://edueasy.co.za."
+  }
+}

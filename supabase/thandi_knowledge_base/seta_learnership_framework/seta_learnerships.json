@@ -1,0 +1,73 @@
+{
+  "id": "edu_seta_learnerships",
+  "title": "SETA Learnerships",
+  "language": "en",
+  "summary": "Explore SETA learnerships with EduEasy. Learn about practical training programs, eligibility, applications, and career outcomes, guided by Thandi.",
+  "tags": ["SETA", "Learnership", "Training", "Careers", "Jobs", "Matric", "EduEasy", "DEL"],
+  "source_links": [
+    "https://www.serviceseta.org.za/learnerships",
+    "https://www.ceta.org.za/learnerships",
+    "https://www.agriseta.co.za/learnerships",
+    "https://www.ewseta.org.za/learnerships",
+    "https://www.labour.gov.za/labour-market-information"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.serviceseta.org.za/learnerships",
+      "title": "Services SETA Learnerships",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.ceta.org.za/learnerships",
+      "title": "CETA Learnerships",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.agriseta.co.za/learnerships",
+      "title": "AGRISETA Learnerships",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.ewseta.org.za/learnerships",
+      "title": "EWSETA Learnerships",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.labour.gov.za/labour-market-information",
+      "title": "DEL Labour Market Information",
+      "date": "2025-01"
+    }
+  ],
+  "localized_terms": {
+    "Learnership": {
+      "Zulu": "Ukuqeqeshelwa Umsebenzi",
+      "Xhosa": "Uqeqesho Lomsebenzi"
+    },
+    "Training": {
+      "Zulu": "Ukuqeqesha",
+      "Xhosa": "Uqeqesho"
+    },
+    "Career": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    },
+    "Job": {
+      "Zulu": "Umsebenzi",
+      "Xhosa": "Umsebenzi"
+    },
+    "Qualification": {
+      "Zulu": "Iziqu",
+      "Xhosa": "Iziqinisekiso"
+    }
+  },
+  "file_name": "seta_learnerships.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["SETA", "learnership", "training", "careers", "jobs", "EduEasy"],
+    "priority_response": "EduEasy helps you find SETA learnerships like call centre or construction training. Apply and track for free at https://edueasy.co.za."
+  }
+}

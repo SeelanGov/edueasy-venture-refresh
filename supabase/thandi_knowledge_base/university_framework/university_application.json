@@ -1,0 +1,72 @@
+{
+  "id": "edu_university_application",
+  "title": "University Application Guide",
+  "language": "en",
+  "summary": "Apply to South African universities with EduEasy’s help. Learn about CAO, direct applications, APS calculations, and deadlines, all in one place with Thandi’s guidance.",
+  "tags": [
+    "University",
+    "Application",
+    "CAO",
+    "APS",
+    "Matric",
+    "Higher Education",
+    "Admissions",
+    "EduEasy"
+  ],
+  "source_links": [
+    "https://www.cao.ac.za",
+    "https://www.dhet.gov.za/SitePages/UniversityEducation.aspx",
+    "https://www.uct.ac.za/students/applications-admission-requirements",
+    "https://www.wits.ac.za/undergraduate/apply-to-wits"
+  ],
+  "source_details": [
+    {
+      "url": "https://www.cao.ac.za",
+      "title": "Central Applications Office",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.dhet.gov.za/SitePages/UniversityEducation.aspx",
+      "title": "DHET University Education",
+      "date": "2024-10"
+    },
+    {
+      "url": "https://www.uct.ac.za/students/applications-admission-requirements",
+      "title": "UCT Admissions",
+      "date": "2024-11"
+    },
+    {
+      "url": "https://www.wits.ac.za/undergraduate/apply-to-wits",
+      "title": "Wits University Applications",
+      "date": "2024-11"
+    }
+  ],
+  "localized_terms": {
+    "University": {
+      "Zulu": "Inyuvesi",
+      "Xhosa": "Iyuni"
+    },
+    "Application": {
+      "Zulu": "Isicelo",
+      "Xhosa": "Isicelo"
+    },
+    "Matric": {
+      "Zulu": "Umatriki",
+      "Xhosa": "Imatriki"
+    },
+    "APS": {
+      "Zulu": "AmaPhuzu Okwamukelwa",
+      "Xhosa": "Amanqaku Okwamukelwa"
+    }
+  },
+  "file_name": "university_application.html",
+  "feedback_config": {
+    "method": "chatbot_prompt",
+    "prompt": "Was this helpful? Reply 'Yes' or 'No' or share feedback.",
+    "collection_point": "Thandi Chatbot"
+  },
+  "chatbot_priorities": {
+    "keywords": ["university", "application", "CAO", "APS", "admissions", "matric", "EduEasy"],
+    "priority_response": "EduEasy helps you apply to South African universities via CAO or directly. Use Thandi to calculate your APS and track applications at no cost. Visit https://edueasy.co.za for more."
+  }
+}
