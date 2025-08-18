@@ -1,0 +1,49 @@
+name: Verify branch naming
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+      - 'release/**'
+
+jobs:
+  verify-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch naming convention
+        run: |
+          # Branch naming policy: feature/*, fix/*, chore/*, docs/*, refactor/*, test/*
+          # Must be lowercase, no spaces, valid characters: [a-z0-9._-]
+          # Block: cursor/*, backup/*, emergency-*, Feature/*, Fix/* (uppercase)
+          
+          BRANCH_NAME="${{ github.head_ref }}"
+          
+          echo "Checking branch: $BRANCH_NAME"
+          
+          # Check if branch follows allowed patterns
+          if [[ "$BRANCH_NAME" =~ ^(feature|fix|chore|docs|refactor|test|hotfix|release)/[a-z0-9._-]+$ ]]; then
+            echo "✅ Branch name '$BRANCH_NAME' follows naming convention"
+            exit 0
+          else
+            echo "❌ Branch name '$BRANCH_NAME' does not follow naming convention"
+            echo ""
+            echo "Branch naming policy:"
+            echo "- Must start with: feature/, fix/, chore/, docs/, refactor/, test/, hotfix/, release/"
+            echo "- Must be lowercase only"
+            echo "- Valid characters: letters, numbers, dots, underscores, hyphens"
+            echo "- No spaces allowed"
+            echo ""
+            echo "Examples of valid names:"
+            echo "- feature/add-ussd-metrics"
+            echo "- fix/race-condition-sms"
+            echo "- chore/update-ci-cache"
+            echo ""
+            echo "Examples of invalid names:"
+            echo "- cursor/tmp-proof (blocked prefix)"
+            echo "- Feature/Add-USSD-Metrics (uppercase not allowed)"
+            echo "- fix/ (no suffix)"
+            echo "- hotfix/add spaces (spaces not allowed)"
+            exit 1
+          fi
