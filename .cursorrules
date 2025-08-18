@@ -1,0 +1,50 @@
+meta:
+  project: "EduEasy"
+  owner: "Founding Team"
+  allow_multi_file_edits: false
+  require_plan: true
+  require_commands: true
+
+ignore:
+  - ".env*"
+  - "node_modules/"
+  - "build/"
+  - "dist/"
+  - ".next/"
+  - "coverage/"
+  - "scripts/"
+  - "supabase/.temp/"
+  - "**/*.lock"
+  - "**/*.min.*"
+  - "public/uploads/"
+  - "public/lovable-uploads/"
+  - ".husky/"
+  - ".git/"
+  - ".github/"
+  - "docs/"
+  - "*.log"
+  - ".nyc_output"
+  - "package-lock.json"
+  - "bun.lock"
+
+supabase:
+  migrations_dir: "supabase/migrations"
+  forbid_edit_existing_migrations: true
+  require_header: false
+
+typescript:
+  enforce_no_new_errors: true
+  safe_imports_only: true
+  forbid_project_wide_rename: true
+
+ui:
+  forbid_hardcoded_colors: false
+  enforce_shadcn: true
+
+output_contract:
+  - "DIAGNOSIS"
+  - "PLAN"
+  - "PATCH"
+  - "TESTS"
+  - "ROLLBACK"
+
