@@ -1,16 +1,23 @@
-# These owners will be the default owners for everything in the repo.
-# Unless a later match takes precedence, they will be requested for
-# review when someone opens a pull request.
-* @SeelanGov
+# Code owners for EduEasy repository
+# This file defines who is responsible for different parts of the codebase
 
-# CI/CD workflow files require approval from DevOps team
-.github/workflows/* @SeelanGov
-scripts/fix-rollup-deps.js @SeelanGov
-scripts/check-env-vars.js @SeelanGov
-scripts/deploy-*.ps1 @SeelanGov
-scripts/check-ci-status.ps1 @SeelanGov
-scripts/verify-ci-cd-setup.js @SeelanGov
-vite.config.ci.ts @SeelanGov
+# Workflow files require code owner review
+.github/workflows/*  @SeelanGov
 
-# Documentation files
-docs/* @SeelanGov
+# Core application files
+src/ @SeelanGov
+components/ @SeelanGov
+pages/ @SeelanGov
+
+# Configuration files
+*.config.* @SeelanGov
+package.json @SeelanGov
+tsconfig.* @SeelanGov
+
+# Documentation
+docs/ @SeelanGov
+README.md @SeelanGov
+CONTRIBUTING.md @SeelanGov
+
+# Supabase configuration
+supabase/ @SeelanGov
