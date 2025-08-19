@@ -1,5 +1,5 @@
 import React from 'react';
-import { hasSupabaseEnv } from '@/utils/env';
+import { hasSupabaseEnv } from '@/lib/env';
 
 export const EnvGate = ({ children }: { children: React.ReactNode }) => {
   if (!hasSupabaseEnv()) {
