@@ -13,9 +13,8 @@ interface AuthGuardProps {
  * @description Function
  */
 export const AuthGuard = ({ children, requiresAuth = true }: AuthGuardProps) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
-  const [loading, _setLoading] = useState(true);
 
   // If authentication is still loading, show spinner
   if (loading) {
