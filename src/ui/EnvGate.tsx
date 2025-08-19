@@ -7,6 +7,13 @@ export default function EnvGate({ children }: Props) {
   const [status, setStatus] = useState<'checking' | 'ready' | 'missing'>('checking');
   const [source, setSource] = useState<string>('checking');
 
+  // Allow bypass for Preview diagnostics
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('skipEnvGate') === '1') {
+    console.warn('[EnvGate] bypass via skipEnvGate=1');
+    return <>{children}</>;
+  }
+
   useEffect(() => {
     // Try immediately…
     if (hasSupabaseEnv()) {
