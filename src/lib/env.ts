@@ -14,6 +14,12 @@ const getUrlParam = (k: string): string | null => {
 
 const resolve = (): { url?: string; key?: string; source: Source } => {
   if (cache) return cache;
+  
+  console.log('[env-resolver] resolving config...', { 
+    hasWindow: typeof window !== 'undefined',
+    hasRuntimeConfig: typeof window !== 'undefined' && !!(window as any).__RUNTIME_CONFIG__,
+    runtimeConfigKeys: typeof window !== 'undefined' ? Object.keys((window as any).__RUNTIME_CONFIG__ || {}) : []
+  });
 
   // 1) URL params (highest priority)
   const pUrl = getUrlParam('sbUrl') || getUrlParam('supabase_url');
