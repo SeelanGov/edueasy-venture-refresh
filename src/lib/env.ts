@@ -1,69 +1,81 @@
-// Centralized environment configuration with priority order:
-// 1. URL parameters (for testing/overrides)
-// 2. Runtime config (window.__RUNTIME_CONFIG__ for Lovable preview)
-// 3. Vite environment variables (import.meta.env)
+// Centralized, LAZY environment resolution for Supabase client
 
-declare global {
-  interface Window {
-    __RUNTIME_CONFIG__?: {
-      VITE_SUPABASE_URL?: string;
-      VITE_SUPABASE_ANON_KEY?: string;
-    };
-  }
-}
+type Maybe<T> = T | undefined | null;
 
-// Get URL parameter value
+// URL param helper
 const getUrlParam = (key: string): string | null => {
-  if (typeof window === 'undefined') return null;
-  const params = new URLSearchParams(window.location.search);
-  return params.get(key);
+  try {
+    if (typeof window === 'undefined') return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key);
+  } catch {
+    return null;
+  }
 };
 
-// Get environment variable with priority order
+// Read a value from URL params, runtime config, then import.meta.env
 const getEnvVar = (key: string): string | undefined => {
-  // 1. URL parameters (highest priority)
+  // 1) URL params
   const urlParam = getUrlParam(key.replace('VITE_', '').toLowerCase());
   if (urlParam) return urlParam;
-  
-  // Handle specific URL param mappings
+
   if (key === 'VITE_SUPABASE_URL') {
     const sbUrl = getUrlParam('sbUrl');
     if (sbUrl) return sbUrl;
   }
-  
   if (key === 'VITE_SUPABASE_ANON_KEY') {
     const sbAnon = getUrlParam('sbAnon');
     if (sbAnon) return sbAnon;
   }
-  
-  // 2. Runtime config (window.__RUNTIME_CONFIG__)
-  if (typeof window !== 'undefined' && window.__RUNTIME_CONFIG__) {
-    const runtimeValue = window.__RUNTIME_CONFIG__[key as keyof typeof window.__RUNTIME_CONFIG__];
-    if (runtimeValue) return runtimeValue;
+
+  // 2) Runtime config
+  if (typeof window !== 'undefined' && (window as any).__RUNTIME_CONFIG__) {
+    const val = (window as any).__RUNTIME_CONFIG__[key as keyof any] as Maybe<string>;
+    if (val) return val;
   }
-  
-  // 3. Vite environment variables (lowest priority)
-  return import.meta.env[key as keyof ImportMetaEnv] as string | undefined;
+
+  // 3) Vite env
+  return (import.meta as any).env?.[key] as string | undefined;
 };
 
-// Export centralized environment access
-export const SUPABASE_URL = getEnvVar('VITE_SUPABASE_URL');
-export const SUPABASE_ANON_KEY = getEnvVar('VITE_SUPABASE_ANON_KEY');
+// Lazy cache
+let cached: { url?: string; key?: string } | null = null;
 
-// Diagnostic function to determine active source
-export const getEnvSource = (): string => {
+export const getSupabaseEnv = (): { url: string; key: string } => {
+  if (cached?.url && cached?.key) return cached as { url: string; key: string };
+
+  const url = getEnvVar('VITE_SUPABASE_URL');
+  const key = getEnvVar('VITE_SUPABASE_ANON_KEY');
+
+  if (!url || !key) {
+    // Do NOT throw at import time. Throw only when the client is actually requested.
+    throw new Error('Missing Supabase client env (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).');
+  }
+
+  cached = { url, key };
+  return { url, key };
+};
+
+// Optional helpers
+export const getEnv = (k: string, fallback = ''): string => getEnvVar(k) ?? fallback;
+export const getEnvSource = (): 'url-params' | 'runtime-config.js' | 'import.meta.env' => {
   if (getUrlParam('sbUrl') || getUrlParam('sbAnon')) return 'url-params';
-  if (typeof window !== 'undefined' && window.__RUNTIME_CONFIG__ && 
-      (window.__RUNTIME_CONFIG__.VITE_SUPABASE_URL || window.__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY)) {
+  if (typeof window !== 'undefined' && (window as any).__RUNTIME_CONFIG__ &&
+      ((window as any).__RUNTIME_CONFIG__.VITE_SUPABASE_URL ||
+       (window as any).__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY)) {
     return 'runtime-config.js';
   }
   return 'import.meta.env';
 };
 
 // Legacy compatibility
-export const getEnv = (key: keyof ImportMetaEnv, fallback = ''): string => 
-  getEnvVar(String(key)) || fallback;
-
-export const hasSupabaseEnv = () => Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+export const hasSupabaseEnv = () => {
+  try {
+    const { url, key } = getSupabaseEnv();
+    return Boolean(url && key);
+  } catch {
+    return false;
+  }
+};
 export const isProduction = () => import.meta.env.PROD;
 export const isDevelopment = () => import.meta.env.DEV;
