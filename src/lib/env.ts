@@ -18,8 +18,8 @@ const resolve = (): { url?: string; key?: string; source: Source } => {
   // 1) URL params (highest priority)
   const pUrl = getUrlParam('sbUrl') || getUrlParam('supabase_url');
   const pKey = getUrlParam('sbAnon') || getUrlParam('supabase_anon');
-  if (pUrl || pKey) {
-    cache = { url: pUrl ?? undefined, key: pKey ?? undefined, source: 'url-params' };
+  if (pUrl && pKey) {
+    cache = { url: pUrl, key: pKey, source: 'url-params' };
     return cache;
   }
 
@@ -28,7 +28,7 @@ const resolve = (): { url?: string; key?: string; source: Source } => {
     const rc = (window as any).__RUNTIME_CONFIG__;
     const rUrl: string | undefined = rc.VITE_SUPABASE_URL;
     const rKey: string | undefined = rc.VITE_SUPABASE_ANON_KEY;
-    if (rUrl || rKey) {
+    if (rUrl && rKey) {
       cache = { url: rUrl, key: rKey, source: 'runtime-config.js' };
       return cache;
     }

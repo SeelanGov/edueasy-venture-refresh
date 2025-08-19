@@ -3,7 +3,7 @@ import { hasSupabaseEnv, getEnvSource, getSupabaseEnv } from '@/lib/env';
 
 type Props = { children: React.ReactNode };
 
-export const EnvGate = ({ children }: Props) => {
+export default function EnvGate({ children }: Props) {
   const [status, setStatus] = useState<'checking' | 'ready' | 'missing'>('checking');
   const [source, setSource] = useState<string>('checking');
 
