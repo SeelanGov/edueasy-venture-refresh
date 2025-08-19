@@ -7,7 +7,11 @@ let _supabase: SupabaseClient<Database> | null = null;
 export const getSupabase = (): SupabaseClient<Database> => {
   if (_supabase) return _supabase;
 
-  const { url, key } = getSupabaseEnv(); // resolves at call-time
+  const { url, key } = getSupabaseEnv();
+  if (!url || !key) {
+    // Do NOT silently proceed; EnvGate should have caught this already.
+    throw new Error('SUPABASE_ENV_MISSING');
+  }
 
   _supabase = createClient<Database>(url, key, {
     auth: { persistSession: true, autoRefreshToken: true },

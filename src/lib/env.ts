@@ -1,81 +1,54 @@
-// Centralized, LAZY environment resolution for Supabase client
+// Central, lazy, cached env resolution with explicit source reporting.
 
-type Maybe<T> = T | undefined | null;
+type Source = 'url-params' | 'runtime-config.js' | 'import.meta.env';
 
-// URL param helper
-const getUrlParam = (key: string): string | null => {
-  try {
-    if (typeof window === 'undefined') return null;
-    const params = new URLSearchParams(window.location.search);
-    return params.get(key);
-  } catch {
-    return null;
-  }
+let cache:
+  | { url?: string; key?: string; source: Source }
+  | null = null;
+
+const getUrlParam = (k: string): string | null => {
+  if (typeof window === 'undefined') return null;
+  const p = new URLSearchParams(window.location.search);
+  return p.get(k);
 };
 
-// Read a value from URL params, runtime config, then import.meta.env
-const getEnvVar = (key: string): string | undefined => {
-  // 1) URL params
-  const urlParam = getUrlParam(key.replace('VITE_', '').toLowerCase());
-  if (urlParam) return urlParam;
+const resolve = (): { url?: string; key?: string; source: Source } => {
+  if (cache) return cache;
 
-  if (key === 'VITE_SUPABASE_URL') {
-    const sbUrl = getUrlParam('sbUrl');
-    if (sbUrl) return sbUrl;
-  }
-  if (key === 'VITE_SUPABASE_ANON_KEY') {
-    const sbAnon = getUrlParam('sbAnon');
-    if (sbAnon) return sbAnon;
+  // 1) URL params (highest priority)
+  const pUrl = getUrlParam('sbUrl') || getUrlParam('supabase_url');
+  const pKey = getUrlParam('sbAnon') || getUrlParam('supabase_anon');
+  if (pUrl || pKey) {
+    cache = { url: pUrl ?? undefined, key: pKey ?? undefined, source: 'url-params' };
+    return cache;
   }
 
-  // 2) Runtime config
+  // 2) Runtime config object
   if (typeof window !== 'undefined' && (window as any).__RUNTIME_CONFIG__) {
-    const val = (window as any).__RUNTIME_CONFIG__[key as keyof any] as Maybe<string>;
-    if (val) return val;
+    const rc = (window as any).__RUNTIME_CONFIG__;
+    const rUrl: string | undefined = rc.VITE_SUPABASE_URL;
+    const rKey: string | undefined = rc.VITE_SUPABASE_ANON_KEY;
+    if (rUrl || rKey) {
+      cache = { url: rUrl, key: rKey, source: 'runtime-config.js' };
+      return cache;
+    }
   }
 
   // 3) Vite env
-  return (import.meta as any).env?.[key] as string | undefined;
+  const vUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
+  const vKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string | undefined;
+  cache = { url: vUrl, key: vKey, source: 'import.meta.env' };
+  return cache;
 };
 
-// Lazy cache
-let cached: { url?: string; key?: string } | null = null;
-
-export const getSupabaseEnv = (): { url: string; key: string } => {
-  if (cached?.url && cached?.key) return cached as { url: string; key: string };
-
-  const url = getEnvVar('VITE_SUPABASE_URL');
-  const key = getEnvVar('VITE_SUPABASE_ANON_KEY');
-
-  if (!url || !key) {
-    // Do NOT throw at import time. Throw only when the client is actually requested.
-    throw new Error('Missing Supabase client env (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).');
-  }
-
-  cached = { url, key };
-  return { url, key };
+export const getSupabaseEnv = () => {
+  const { url, key, source } = resolve();
+  return { url, key, source };
 };
 
-// Optional helpers
-export const getEnv = (k: string, fallback = ''): string => getEnvVar(k) ?? fallback;
-export const getEnvSource = (): 'url-params' | 'runtime-config.js' | 'import.meta.env' => {
-  if (getUrlParam('sbUrl') || getUrlParam('sbAnon')) return 'url-params';
-  if (typeof window !== 'undefined' && (window as any).__RUNTIME_CONFIG__ &&
-      ((window as any).__RUNTIME_CONFIG__.VITE_SUPABASE_URL ||
-       (window as any).__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY)) {
-    return 'runtime-config.js';
-  }
-  return 'import.meta.env';
-};
-
-// Legacy compatibility
 export const hasSupabaseEnv = () => {
-  try {
-    const { url, key } = getSupabaseEnv();
-    return Boolean(url && key);
-  } catch {
-    return false;
-  }
+  const { url, key } = resolve();
+  return Boolean(url && key);
 };
-export const isProduction = () => import.meta.env.PROD;
-export const isDevelopment = () => import.meta.env.DEV;
+
+export const getEnvSource = () => resolve().source;
