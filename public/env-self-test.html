@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environment Self-Test - EduEasy</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f8fafc;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 16px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .status.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .status.error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+    .checkmark {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .key {
+      font-family: 'Monaco', 'Menlo', monospace;
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .note {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 24px;
+      color: #92400e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Environment Self-Test</h1>
+    <p>Quick check for required Supabase environment variables</p>
+    
+    <div id="results">Loading...</div>
+    
+    <div class="note">
+      <strong>Note:</strong> This page checks client-side VITE_* variables from multiple sources:
+      <br>• URL parameters (?sbUrl=&sbAnon=)
+      <br>• Runtime config (window.__RUNTIME_CONFIG__)
+      <br>• Vite environment (import.meta.env)
+      <br><br>Server-side secrets (SUPABASE_SERVICE_ROLE_KEY, etc.) are managed separately in Supabase Edge Function secrets.
+    </div>
+  </div>
+
+  <script type="module">
+    const resultsDiv = document.getElementById('results');
+    
+    try {
+      // Check if Vite environment variables are available
+      const envVars = import.meta.env;
+      
+      let html = '<h2>Environment Variables Status</h2>';
+      
+      // Check Supabase variables
+      const supabaseUrl = envVars.VITE_SUPABASE_URL;
+      const supabaseKey = envVars.VITE_SUPABASE_ANON_KEY;
+      
+      if (supabaseUrl) {
+        // Only show part of the URL for security
+        const maskedUrl = supabaseUrl.substring(0, 12) + '...';
+        html += `<div class="status success">
+          <span class="checkmark">✅</span>
+          <span><span class="key">VITE_SUPABASE_URL</span> is set: ${maskedUrl}</span>
+        </div>`;
+      } else {
+        html += `<div class="status error">
+          <span class="checkmark">❌</span>
+          <span><span class="key">VITE_SUPABASE_URL</span> is NOT set</span>
+        </div>`;
+      }
+      
+      if (supabaseKey) {
+        // Only show part of the key for security
+        const maskedKey = supabaseKey.substring(0, 8) + '...' + supabaseKey.substring(supabaseKey.length - 4);
+        html += `<div class="status success">
+          <span class="checkmark">✅</span>
+          <span><span class="key">VITE_SUPABASE_ANON_KEY</span> is set: ${maskedKey}</span>
+        </div>`;
+      } else {
+        html += `<div class="status error">
+          <span class="checkmark">❌</span>
+          <span><span class="key">VITE_SUPABASE_ANON_KEY</span> is NOT set</span>
+        </div>`;
+      }
+      
+      // Overall status
+      if (supabaseUrl && supabaseKey) {
+        html += `<div class="status success" style="margin-top: 24px; font-size: 18px;">
+          <span class="checkmark">🎉</span>
+          <span>All required environment variables are set! App should work correctly.</span>
+        </div>`;
+      } else {
+        html += `<div class="status error" style="margin-top: 24px; font-size: 18px;">
+          <span class="checkmark">⚠️</span>
+          <span>Missing required environment variables. Set them in Lovable project settings.</span>
+        </div>`;
+      }
+      
+      resultsDiv.innerHTML = html;
+      
+    } catch (error) {
+      resultsDiv.innerHTML = `<div class="status error">
+        <span class="checkmark">💥</span>
+        <span>Error checking environment: ${error.message}</span>
+      </div>`;
+    }
+  </script>
+</body>
+</html>

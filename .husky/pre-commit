@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 # Keep minimal for now; we'll re-enable lint after deps confirm green.
-npm run typecheck || exit 1
+npm run type-check || exit 1
+
 
