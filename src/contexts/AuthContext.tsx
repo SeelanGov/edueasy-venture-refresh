@@ -66,23 +66,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      } else {
-        setUserType(null);
-        setIsVerified(null);
-        setProfileStatus(null);
-        setLoading(false);
-      }
-    });
+    console.log('[auth] boot… env source =', import('@/lib/env').then(m => m.getEnvSource()));
+    
+    // Bounded boot to prevent infinite loading
+    Promise.race([
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        console.log('[auth] getSession ->', !!session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchUserProfile(session.user.id);
+        } else {
+          setUserType(null);
+          setIsVerified(null);
+          setProfileStatus(null);
+          setLoading(false);
+        }
+      }),
+      new Promise(resolve => setTimeout(resolve, 1500))
+    ]).finally(() => setLoading(false));
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[auth] event:', event, 'hasSession?', !!session);
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchUserProfile(session.user.id);

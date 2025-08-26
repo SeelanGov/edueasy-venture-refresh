@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 import App from './App.tsx';
 import { ErrorBoundary } from './ui/ErrorBoundary';
-import { EnvGate } from './ui/EnvGate';
+import EnvGate from './ui/EnvGate';
 
 import './index.css';
 
