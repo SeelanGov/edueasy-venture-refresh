@@ -13,7 +13,33 @@
 
   <body>
     <div id="root"></div>
+    <!-- 1) Pre-init guard (keep) -->
+    <script>
+      window.__RUNTIME_CONFIG__ = window.__RUNTIME_CONFIG__ || {};
+    </script>
+    
+    <!-- 2) INLINE FALLBACK (new): only fills if missing -->
+    <script>
+      (function () {
+        const hasUrl  = !!(window.__RUNTIME_CONFIG__ && window.__RUNTIME_CONFIG__.VITE_SUPABASE_URL);
+        const hasAnon = !!(window.__RUNTIME_CONFIG__ && window.__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY);
+        if (!hasUrl || !hasAnon) {
+          console.warn('[runtime-config] inline fallback inject (external file not detected)');
+          window.__RUNTIME_CONFIG__ = {
+            ...window.__RUNTIME_CONFIG__,
+            VITE_SUPABASE_URL: 'https://pensvamtfjtpsaoeflbx.supabase.co',
+            VITE_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbnN2YW10Zmp0cHNhb2VmbGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MzcyOTcsImV4cCI6MjA1OTQxMzI5N30.ZGFT9bcxwFuDVRF7ZYtLTQDPP3LKmt5Yo8BsJAFQyPM'
+          };
+          console.log('[runtime-config] ready (inline):', !!window.__RUNTIME_CONFIG__.VITE_SUPABASE_URL);
+        }
+      })();
+    </script>
+    
+    <!-- 3) External runtime-config (keep, bump cache) -->
+    <script src="./runtime-config.js?v=5" crossorigin="anonymous"></script>
+    
+    <!-- Your app entry follows -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
