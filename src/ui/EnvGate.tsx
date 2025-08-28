@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { hasSupabaseEnv, getEnvSource, getSupabaseEnv } from '@/lib/env';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/env';
 
 type Props = { children: React.ReactNode };
 
 export default function EnvGate({ children }: Props) {
   const [status, setStatus] = useState<'checking' | 'ready' | 'missing'>('checking');
-  const [source, setSource] = useState<string>('checking');
 
   // Allow bypass for Preview diagnostics
   const params = new URLSearchParams(window.location.search);
@@ -15,28 +14,22 @@ export default function EnvGate({ children }: Props) {
   }
 
   useEffect(() => {
-    // Try immediately…
-    if (hasSupabaseEnv()) {
-      setSource(getEnvSource());
+    // Check if env vars are available
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
       setStatus('ready');
       return;
     }
-    // …otherwise poll briefly in case runtime-config loads late
-    const started = performance.now();
-    const timer = setInterval(() => {
-      if (hasSupabaseEnv()) {
-        setSource(getEnvSource());
+    
+    // If not immediately available, wait briefly for runtime-config
+    const timer = setTimeout(() => {
+      if (SUPABASE_URL && SUPABASE_ANON_KEY) {
         setStatus('ready');
-        clearInterval(timer);
-      } else if (performance.now() - started > 1500) {
-        // after 1.5s, give a friendly config screen
-        setSource(getEnvSource());
+      } else {
         setStatus('missing');
-        clearInterval(timer);
       }
-    }, 100);
+    }, 1500);
 
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, []);
 
   if (status === 'checking') {
@@ -48,19 +41,17 @@ export default function EnvGate({ children }: Props) {
   }
 
   if (status === 'missing') {
-    const { url, key } = getSupabaseEnv();
     const mask = (s?: string) => (s ? `${s.slice(0, 16)}…${s.slice(-6)}` : '—');
 
     return (
       <div className="max-w-xl mx-auto p-6 space-y-4">
         <h1 className="text-xl font-semibold">Configuration required</h1>
         <p className="text-sm opacity-80">
-          Supabase env not detected. Active source:&nbsp;
-          <code className="px-1 py-0.5 bg-gray-100 rounded">{source}</code>
+          Supabase env not detected.
         </p>
         <ul className="text-sm space-y-1">
-          <li>• Expected URL (masked): {mask(url)}</li>
-          <li>• Expected anon key (masked): {mask(key)}</li>
+          <li>• Expected URL (masked): {mask(SUPABASE_URL)}</li>
+          <li>• Expected anon key (masked): {mask(SUPABASE_ANON_KEY)}</li>
         </ul>
         <div className="text-sm">
           <p className="mt-3 font-medium">Quick fixes:</p>

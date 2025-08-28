@@ -1,6 +1,7 @@
 # never let Cursor touch these by default
 .env
 *.env
+!.env.example
 supabase/.env
 scripts/*
 src/types/*

@@ -1,6 +1,6 @@
 import { Spinner } from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 interface AuthGuardProps {

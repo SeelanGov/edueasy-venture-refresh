@@ -3,212 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduEasy Environment Self-Test</title>
+  <title>Environment Self-Test - EduEasy</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-      line-height: 1.6;
+      background: #f8fafc;
     }
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 16px;
       border-radius: 8px;
-      margin-bottom: 20px;
+      font-weight: 500;
     }
-    .test-section {
-      border: 1px solid #e1e5e9;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background: #f8f9fa;
+    .status.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
     }
-    .success { color: #28a745; font-weight: bold; }
-    .error { color: #dc3545; font-weight: bold; }
-    .warning { color: #ffc107; font-weight: bold; }
-    .info { color: #17a2b8; font-weight: bold; }
-    pre {
-      background-color: #f1f3f4;
-      padding: 15px;
-      border-radius: 6px;
-      overflow-x: auto;
-      border-left: 4px solid #667eea;
+    .status.error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
     }
-    .badge {
-      display: inline-block;
+    .checkmark {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .key {
+      font-family: 'Monaco', 'Menlo', monospace;
+      background: #f1f5f9;
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 0.85em;
-      font-weight: bold;
-      margin-left: 8px;
+      font-size: 14px;
     }
-    .badge-success { background: #d4edda; color: #155724; }
-    .badge-error { background: #f8d7da; color: #721c24; }
-    .badge-warning { background: #fff3cd; color: #856404; }
+    .note {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 24px;
+      color: #92400e;
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🧪 EduEasy Environment Self-Test</h1>
-    <p>Diagnostic tool for Supabase configuration priority and runtime setup</p>
+  <div class="container">
+    <h1>🔧 Environment Self-Test</h1>
+    <p>Quick check for required Supabase environment variables</p>
+    
+    <div id="results">Loading...</div>
+    
+    <div class="note">
+      <strong>Note:</strong> This page checks client-side VITE_* variables from multiple sources:
+      <br>• URL parameters (?sbUrl=&sbAnon=)
+      <br>• Runtime config (window.__RUNTIME_CONFIG__)
+      <br>• Vite environment (import.meta.env)
+      <br><br>Server-side secrets (SUPABASE_SERVICE_ROLE_KEY, etc.) are managed separately in Supabase Edge Function secrets.
+    </div>
   </div>
-  
-  <div id="results">Loading tests...</div>
 
-  <script>window.__RUNTIME_CONFIG__ = window.__RUNTIME_CONFIG__ || {};</script>
-  <script src="./runtime-config.js?v=3" crossorigin="anonymous"></script>
   <script type="module">
     const resultsDiv = document.getElementById('results');
     
-    // URL parameter helpers
-    const getUrlParam = (key) => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(key);
-    };
-    
-    // Environment resolution logic (matches src/lib/env.ts)
-    const getEnvVar = (key) => {
-      // 1. URL parameters
-      const urlParam = getUrlParam(key.replace('VITE_', '').toLowerCase());
-      if (urlParam) return urlParam;
-      
-      // Handle specific mappings
-      if (key === 'VITE_SUPABASE_URL') {
-        const sbUrl = getUrlParam('sbUrl');
-        if (sbUrl) return sbUrl;
-      }
-      
-      if (key === 'VITE_SUPABASE_ANON_KEY') {
-        const sbAnon = getUrlParam('sbAnon');
-        if (sbAnon) return sbAnon;
-      }
-      
-      // 2. Runtime config
-      if (window.__RUNTIME_CONFIG__ && window.__RUNTIME_CONFIG__[key]) {
-        return window.__RUNTIME_CONFIG__[key];
-      }
-      
-      // 3. Import.meta.env (not available in this context)
-      return undefined;
-    };
-    
-    const getEnvSource = () => {
-      if (getUrlParam('sbUrl') || getUrlParam('sbAnon')) return 'url-params';
-      if (window.__RUNTIME_CONFIG__ && 
-          (window.__RUNTIME_CONFIG__.VITE_SUPABASE_URL || window.__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY)) {
-        return 'runtime-config.js';
-      }
-      return 'import.meta.env';
-    };
-    
     try {
-      const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
-      const supabaseKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
-      const activeSource = getEnvSource();
+      // Check if Vite environment variables are available
+      const envVars = import.meta.env;
       
-      let html = '';
+      let html = '<h2>Environment Variables Status</h2>';
       
-      // Environment Source Test
-      html += `
-        <div class="test-section">
-          <h2>🎯 Environment Source Priority</h2>
-          <p><strong>Active Source:</strong> <span class="info">${activeSource}</span>
-          <span class="badge ${activeSource === 'runtime-config.js' ? 'badge-success' : 'badge-warning'}">${activeSource}</span></p>
-          <p><strong>Priority Order:</strong> URL params → runtime-config.js → import.meta.env</p>
-        </div>
-      `;
-      
-      // Configuration Values Test
-      html += `
-        <div class="test-section">
-          <h2>🔧 Configuration Values</h2>
-      `;
+      // Check Supabase variables
+      const supabaseUrl = envVars.VITE_SUPABASE_URL;
+      const supabaseKey = envVars.VITE_SUPABASE_ANON_KEY;
       
       if (supabaseUrl) {
-        const maskedUrl = supabaseUrl.substring(0, 20) + '...';
-        html += `<p class="success">✓ VITE_SUPABASE_URL: ${maskedUrl}</p>`;
+        // Only show part of the URL for security
+        const maskedUrl = supabaseUrl.substring(0, 12) + '...';
+        html += `<div class="status success">
+          <span class="checkmark">✅</span>
+          <span><span class="key">VITE_SUPABASE_URL</span> is set: ${maskedUrl}</span>
+        </div>`;
       } else {
-        html += `<p class="error">✗ VITE_SUPABASE_URL: Not found</p>`;
+        html += `<div class="status error">
+          <span class="checkmark">❌</span>
+          <span><span class="key">VITE_SUPABASE_URL</span> is NOT set</span>
+        </div>`;
       }
       
       if (supabaseKey) {
-        const maskedKey = supabaseKey.substring(0, 12) + '...' + supabaseKey.substring(supabaseKey.length - 8);
-        html += `<p class="success">✓ VITE_SUPABASE_ANON_KEY: ${maskedKey}</p>`;
+        // Only show part of the key for security
+        const maskedKey = supabaseKey.substring(0, 8) + '...' + supabaseKey.substring(supabaseKey.length - 4);
+        html += `<div class="status success">
+          <span class="checkmark">✅</span>
+          <span><span class="key">VITE_SUPABASE_ANON_KEY</span> is set: ${maskedKey}</span>
+        </div>`;
       } else {
-        html += `<p class="error">✗ VITE_SUPABASE_ANON_KEY: Not found</p>`;
+        html += `<div class="status error">
+          <span class="checkmark">❌</span>
+          <span><span class="key">VITE_SUPABASE_ANON_KEY</span> is NOT set</span>
+        </div>`;
       }
       
-      html += `</div>`;
-      
-      // Runtime Config Test
-      html += `
-        <div class="test-section">
-          <h2>🚀 Runtime Configuration</h2>
-      `;
-      
-      if (window.__RUNTIME_CONFIG__) {
-        html += `<p class="success">✓ Runtime config object loaded</p>`;
-        html += `<pre>${JSON.stringify(window.__RUNTIME_CONFIG__, null, 2)}</pre>`;
+      // Overall status
+      if (supabaseUrl && supabaseKey) {
+        html += `<div class="status success" style="margin-top: 24px; font-size: 18px;">
+          <span class="checkmark">🎉</span>
+          <span>All required environment variables are set! App should work correctly.</span>
+        </div>`;
       } else {
-        html += `<p class="error">✗ Runtime config object not found</p>`;
+        html += `<div class="status error" style="margin-top: 24px; font-size: 18px;">
+          <span class="checkmark">⚠️</span>
+          <span>Missing required environment variables. Set them in Lovable project settings.</span>
+        </div>`;
       }
-      
-      html += `</div>`;
-      
-      // URL Override Test
-      html += `
-        <div class="test-section">
-          <h2>🔀 URL Parameter Override Test</h2>
-          <p>Current URL parameters:</p>
-          <ul>
-      `;
-      
-      const params = new URLSearchParams(window.location.search);
-      if (params.toString()) {
-        for (const [key, value] of params) {
-          html += `<li><strong>${key}:</strong> ${key.includes('sb') ? value.substring(0, 20) + '...' : value}</li>`;
-        }
-      } else {
-        html += `<li><em>No URL parameters detected</em></li>`;
-      }
-      
-      html += `
-          </ul>
-          <p><strong>Test URLs:</strong></p>
-          <ul>
-            <li><a href="/env-self-test.html">Default (runtime-config.js)</a></li>
-            <li><a href="/env-self-test.html?sbUrl=https://example.supabase.co&sbAnon=test-key">URL Override Test</a></li>
-          </ul>
-        </div>
-      `;
-      
-      // Summary
-      const allGood = supabaseUrl && supabaseKey && window.__RUNTIME_CONFIG__;
-      html += `
-        <div class="test-section">
-          <h2>📋 Summary</h2>
-          <p class="${allGood ? 'success' : 'error'}">
-            ${allGood ? '✅ All systems operational' : '❌ Configuration issues detected'}
-          </p>
-          <p><strong>Source:</strong> ${activeSource}</p>
-          <p><strong>Supabase URL:</strong> ${supabaseUrl ? '✓ Set' : '✗ Missing'}</p>
-          <p><strong>Supabase Key:</strong> ${supabaseKey ? '✓ Set' : '✗ Missing'}</p>
-        </div>
-      `;
       
       resultsDiv.innerHTML = html;
       
     } catch (error) {
-      resultsDiv.innerHTML = `
-        <div class="test-section">
-          <h2>❌ Test Error</h2>
-          <p class="error">Error: ${error.message}</p>
-          <pre>${error.stack || 'No stack trace available'}</pre>
-        </div>
-      `;
+      resultsDiv.innerHTML = `<div class="status error">
+        <span class="checkmark">💥</span>
+        <span>Error checking environment: ${error.message}</span>
+      </div>`;
     }
   </script>
 </body>
