@@ -1,9 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { type SponsorAllocation  } from '@/types/SponsorTypes';
+import { type SponsorAllocation } from '@/types/SponsorTypes';
 import React from 'react';
-
-
-
 
 interface SponsorStudentTableProps {
   allocations: SponsorAllocation[];
@@ -20,23 +17,23 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
   onEdit,
   onDelete,
 }) => (
-  <div className="overflow-x-auto border rounded-md bg-white shadow-sm">
+  <div className="overflow-x-auto border rounded-md bg-background shadow-sm">
     <table className="min-w-full table-auto">
-      <thead className="bg-cap-teal/5">
+      <thead className="bg-muted/50">
         <tr>
-          <th className="px-3 py-2 text-left text-xs uppercase">Student ID</th>
-          <th className="px-3 py-2 text-left text-xs uppercase">Allocated On</th>
-          <th className="px-3 py-2 text-left text-xs uppercase">Expires</th>
-          <th className="px-3 py-2 text-left text-xs uppercase">Status</th>
-          <th className="px-3 py-2 text-left text-xs uppercase">Plan</th>
-          <th className="px-3 py-2 text-left text-xs uppercase">Notes</th>
+          <th className="px-3 py-2">Student ID</th>
+          <th className="px-3 py-2">Allocated On</th>
+          <th className="px-3 py-2">Expires On</th>
+          <th className="px-3 py-2">Status</th>
+          <th className="px-3 py-2">Plan</th>
+          <th className="px-3 py-2">Notes</th>
           {onEdit && <th className="px-3 py-2" />}
         </tr>
       </thead>
       <tbody>
         {allocations.length === 0 ? (
           <tr>
-            <td colSpan={onEdit ? 7 : 6} className="py-6 text-center text-[#BDBDBD]">
+            <td colSpan={onEdit ? 7 : 6} className="py-6 text-center text-muted-foreground">
               No student allocations.
             </td>
           </tr>
@@ -52,7 +49,7 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
               </td>
               <td className="px-3 py-2">
                 <span
-                  className={`px-2 py-1 rounded text-xs ${alloc.status === 'active' ? 'bg-[#F0F9F0] text-green-700' : 'bg-gray-200 text-[#424242]'}`}
+                  className={`px-2 py-1 rounded text-xs ${alloc.status === 'active' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-muted-foreground'}`}
                 >
                   {alloc.status}
                 </span>
@@ -64,7 +61,7 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-blue-700 underline text-xs p-0 h-auto font-normal"
+                    className="text-info underline text-xs p-0 h-auto font-normal"
                     onClick={() => onEdit(alloc)}
                   >
                     Edit
@@ -73,7 +70,7 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#D32F2F] underline text-xs p-0 h-auto font-normal"
+                      className="text-destructive underline text-xs p-0 h-auto font-normal"
                       onClick={() => onDelete(alloc.id)}
                     >
                       Delete

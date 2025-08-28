@@ -1,68 +1,55 @@
-import { AlertDescription, Alert } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, ArrowUpRight, CreditCard } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { AlertTriangle } from 'lucide-react';
+import React from 'react';
 
 interface PlanLimitWarningProps {
-  limitType: 'applications' | 'documents';
-  currentCount: number;
-  maxAllowed: number;
+  currentUsage: number;
+  limit: number;
   planName: string;
 }
 
-/**
- * PlanLimitWarning
- * @description Function
- */
-export const PlanLimitWarning = ({
-  limitType,
-  currentCount,
-  maxAllowed,
+export const PlanLimitWarning: React.FC<PlanLimitWarningProps> = ({
+  currentUsage,
+  limit,
   planName,
-}: PlanLimitWarningProps): JSX.Element | null => {
-  const isAtLimit = currentCount >= maxAllowed;
-  const isNearLimit = currentCount >= maxAllowed - 1;
-
-  if (!isNearLimit) return null;
+}) => {
+  const isAtLimit = currentUsage >= limit;
+  const usagePercentage = Math.round((currentUsage / limit) * 100);
 
   return (
-    <Alert
-      variant={isAtLimit ? 'destructive' : 'default'}
-      className={`mb-4 border-l-4 bg-white shadow-sm ${
-        isAtLimit ? 'border-l-red-500 border-[#FFCDD2]' : 'border-l-cap-teal border-[#BBDEFB]'
+    <div
+      className={`border-l-4 p-4 rounded-r-lg ${
+        isAtLimit ? 'border-l-destructive bg-destructive/5' : 'border-l-primary bg-primary/5'
       }`}
     >
-      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-[#D32F2F]' : 'text-cap-teal'}`} />
-      <AlertDescription className="flex items-center justify-between">
+      <div className="flex items-start gap-3">
+        <AlertTriangle 
+          className={`h-4 w-4 ${isAtLimit ? 'text-destructive' : 'text-primary'}`} 
+        />
         <div className="flex-1">
-          <div className={`font-medium ${isAtLimit ? 'text-[#B71C1C]' : 'text-[#424242]'} mb-1`}>
-            {isAtLimit ? 'Limit Reached' : 'Approaching Limit'}
+          <div 
+            className={`font-medium ${isAtLimit ? 'text-destructive' : 'text-foreground'} mb-1`}
+          >
+            {isAtLimit ? 'Plan Limit Reached' : 'Approaching Plan Limit'}
           </div>
-          <div className={`text-sm ${isAtLimit ? 'text-red-700' : 'text-gray-600'}`}>
-            {isAtLimit ? (
-              <>
-                You've reached your {limitType} limit ({currentCount}/{maxAllowed}) on the{' '}
-                <span className="font-medium">{planName}</span> plan.
-              </>
-            ) : (
-              <>
-                You're nearly at your {limitType} limit ({currentCount}/{maxAllowed}) on the{' '}
-                <span className="font-medium">{planName}</span> plan.
-              </>
-            )}
+          <p className="text-sm text-muted-foreground">
+            You've used {currentUsage} of {limit} applications on your {planName} plan.
+            {!isAtLimit && ` You have ${limit - currentUsage} applications remaining.`}
+          </p>
+          <div className="mt-2">
+            <div className="w-full bg-muted rounded-full h-2">
+              <div
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  isAtLimit ? 'bg-destructive' : 'bg-primary'
+                }`}
+                style={{ width: `${Math.min(usagePercentage, 100)}%` }}
+              />
+            </div>
+            <span className="text-xs text-muted-foreground mt-1">
+              {usagePercentage}% used
+            </span>
           </div>
         </div>
-        <Button
-          asChild
-          size="sm"
-          className="bg-cap-teal hover:bg-cap-teal/90 text-white ml-4 shadow-sm">
-          <Link to="/subscription" className="flex items-center gap-2">
-            <CreditCard className="h-3 w-3" />
-            Upgrade Plan
-            <ArrowUpRight className="h-3 w-3" />
-          </Link>
-        </Button>
-      </AlertDescription>
-    </Alert>
+      </div>
+    </div>
   );
 };

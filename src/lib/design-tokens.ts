@@ -4,55 +4,55 @@
 export const designTokens = {
   colors: {
     // Primary brand colors (South African theme)
-    primary: '#1A3C34', // South African green
-    secondary: '#F5A623', // SA flag yellow
-    accent: '#E74C3C', // SA flag red
+    primary: 'hsl(var(--cap-teal-hue) var(--cap-teal-saturation) var(--cap-teal-lightness))',
+    secondary: 'hsl(var(--cap-coral-hue) var(--cap-coral-saturation) var(--cap-coral-lightness))',
+    accent: 'hsl(var(--cap-coral-hue) var(--cap-coral-saturation) var(--cap-coral-lightness)',
 
     // Semantic colors
-    success: '#388E3C', // Green for success states
-    error: '#D32F2F', // Red for error states
-    warning: '#F57C00', // Orange for warnings
-    info: '#1976D2', // Blue for informational states
+    success: 'hsl(var(--success-hue) var(--success-saturation) var(--success-lightness))',
+    error: 'hsl(var(--error-hue) var(--error-saturation) var(--error-lightness))',
+    warning: 'hsl(var(--warning-hue) var(--warning-saturation) var(--warning-lightness))',
+    info: 'hsl(var(--info-hue) var(--info-saturation) var(--info-lightness))',
 
     // Neutral colors
-    white: '#FFFFFF',
-    black: '#000000',
+    white: 'hsl(var(--cap-light-hue) var(--cap-light-saturation) var(--cap-light-lightness))',
+    black: 'hsl(var(--cap-dark-hue) var(--cap-dark-saturation) var(--cap-dark-lightness))',
     gray: {
-      50: '#FAFAFA',
-      100: '#F5F5F5',
-      200: '#EEEEEE',
-      300: '#E0E0E0',
-      400: '#BDBDBD',
-      500: '#9E9E9E',
-      600: '#757575',
-      700: '#616161',
-      800: '#424242',
-      900: '#212121',
+      50: 'hsl(var(--gray-50))',
+      100: 'hsl(var(--gray-100))',
+      200: 'hsl(var(--gray-200))',
+      300: 'hsl(var(--gray-300))',
+      400: 'hsl(var(--gray-400))',
+      500: 'hsl(var(--gray-500))',
+      600: 'hsl(var(--gray-600))',
+      700: 'hsl(var(--gray-700))',
+      800: 'hsl(var(--gray-800))',
+      900: 'hsl(var(--gray-900))',
     },
 
     // Status colors
     status: {
-      pending: '#FFA000', // Amber
-      approved: '#388E3C', // Green
-      rejected: '#D32F2F', // Red
-      draft: '#757575', // Gray
-      submitted: '#1976D2', // Blue
+      pending: 'hsl(var(--warning-hue) var(--warning-saturation) var(--warning-lightness))',
+      approved: 'hsl(var(--success-hue) var(--success-saturation) var(--success-lightness))',
+      rejected: 'hsl(var(--error-hue) var(--error-saturation) var(--error-lightness))',
+      draft: 'hsl(var(--gray-500))',
+      submitted: 'hsl(var(--info-hue) var(--info-saturation) var(--info-lightness))',
     },
 
     // Background colors
     background: {
-      primary: '#FFFFFF',
-      secondary: '#F5F5F5',
-      tertiary: '#EEEEEE',
-      dark: '#212121',
+      primary: 'hsl(var(--background))',
+      secondary: 'hsl(var(--muted))',
+      tertiary: 'hsl(var(--muted))',
+      dark: 'hsl(var(--cap-dark-hue) var(--cap-dark-saturation) var(--cap-dark-lightness))',
     },
 
     // Text colors
     text: {
-      primary: '#212121',
-      secondary: '#757575',
-      disabled: '#BDBDBD',
-      inverse: '#FFFFFF',
+      primary: 'hsl(var(--foreground))',
+      secondary: 'hsl(var(--muted-foreground))',
+      disabled: 'hsl(var(--muted-foreground))',
+      inverse: 'hsl(var(--background))',
     },
   },
 
@@ -136,24 +136,24 @@ export type ExtendedStatusType =
 // Status color mappings
 export const statusColors = {
   success: {
-    bg: `bg-[${designTokens.colors.success}]`,
+    bg: 'bg-success',
     text: `text-white`,
-    border: `border-[${designTokens.colors.success}]`,
+    border: 'border-success',
   },
   error: {
-    bg: `bg-[${designTokens.colors.error}]`,
+    bg: 'bg-error',
     text: `text-white`,
-    border: `border-[${designTokens.colors.error}]`,
+    border: 'border-error',
   },
   warning: {
-    bg: `bg-[${designTokens.colors.warning}]`,
+    bg: 'bg-warning',
     text: `text-white`,
-    border: `border-[${designTokens.colors.warning}]`,
+    border: 'border-warning',
   },
   info: {
-    bg: `bg-[${designTokens.colors.info}]`,
+    bg: 'bg-info',
     text: `text-white`,
-    border: `border-[${designTokens.colors.info}]`,
+    border: 'border-info',
   },
 };
 
@@ -163,75 +163,75 @@ export const extendedStatusColors: Record<
 > = {
   ...statusColors,
   pending: {
-    bg: `bg-[${designTokens.colors.status.pending}]`,
+    bg: 'bg-warning',
     text: `text-white`,
-    border: `border-[${designTokens.colors.status.pending}]`,
+    border: 'border-warning',
   },
   approved: {
-    bg: `bg-[${designTokens.colors.status.approved}]`,
+    bg: 'bg-success',
     text: `text-white`,
-    border: `border-[${designTokens.colors.status.approved}]`,
+    border: 'border-success',
   },
   rejected: {
-    bg: `bg-[${designTokens.colors.status.rejected}]`,
+    bg: 'bg-error',
     text: `text-white`,
-    border: `border-[${designTokens.colors.status.rejected}]`,
+    border: 'border-error',
   },
   submitted: {
-    bg: `bg-[${designTokens.colors.status.submitted}]`,
+    bg: 'bg-info',
     text: `text-white`,
-    border: `border-[${designTokens.colors.status.submitted}]`,
+    border: 'border-info',
   },
   'under-review': {
-    bg: `bg-[${designTokens.colors.info}]`,
+    bg: 'bg-info',
     text: `text-white`,
-    border: `border-[${designTokens.colors.info}]`,
+    border: 'border-info',
   },
   'resubmission-required': {
-    bg: `bg-[${designTokens.colors.warning}]`,
+    bg: 'bg-warning',
     text: `text-white`,
-    border: `border-[${designTokens.colors.warning}]`,
+    border: 'border-warning',
   },
 };
 
 // Tailwind CSS class helpers
 export const tailwindClasses = {
   // Background colors
-  bgPrimary: `bg-[${designTokens.colors.primary}]`,
-  bgSecondary: `bg-[${designTokens.colors.secondary}]`,
-  bgSuccess: `bg-[${designTokens.colors.success}]`,
-  bgError: `bg-[${designTokens.colors.error}]`,
-  bgWarning: `bg-[${designTokens.colors.warning}]`,
-  bgInfo: `bg-[${designTokens.colors.info}]`,
+  bgPrimary: 'bg-primary',
+  bgSecondary: 'bg-secondary',
+  bgSuccess: 'bg-success',
+  bgError: 'bg-error',
+  bgWarning: 'bg-warning',
+  bgInfo: 'bg-info',
 
   // Text colors
-  textPrimary: `text-[${designTokens.colors.primary}]`,
-  textSecondary: `text-[${designTokens.colors.secondary}]`,
-  textSuccess: `text-[${designTokens.colors.success}]`,
-  textError: `text-[${designTokens.colors.error}]`,
-  textWarning: `text-[${designTokens.colors.warning}]`,
-  textInfo: `text-[${designTokens.colors.info}]`,
+  textPrimary: 'text-primary',
+  textSecondary: 'text-secondary',
+  textSuccess: 'text-success',
+  textError: 'text-error',
+  textWarning: 'text-warning',
+  textInfo: 'text-info',
 
   // Border colors
-  borderPrimary: `border-[${designTokens.colors.primary}]`,
-  borderSecondary: `border-[${designTokens.colors.secondary}]`,
-  borderSuccess: `border-[${designTokens.colors.success}]`,
-  borderError: `border-[${designTokens.colors.error}]`,
-  borderWarning: `border-[${designTokens.colors.warning}]`,
-  borderInfo: `border-[${designTokens.colors.info}]`,
+  borderPrimary: 'border-primary',
+  borderSecondary: 'border-secondary',
+  borderSuccess: 'border-success',
+  borderError: 'border-error',
+  borderWarning: 'border-warning',
+  borderInfo: 'border-info',
 
   // Status colors
-  bgStatusPending: `bg-[${designTokens.colors.status.pending}]`,
-  bgStatusApproved: `bg-[${designTokens.colors.status.approved}]`,
-  bgStatusRejected: `bg-[${designTokens.colors.status.rejected}]`,
-  bgStatusDraft: `bg-[${designTokens.colors.status.draft}]`,
-  bgStatusSubmitted: `bg-[${designTokens.colors.status.submitted}]`,
+  bgStatusPending: 'bg-warning',
+  bgStatusApproved: 'bg-success',
+  bgStatusRejected: 'bg-error',
+  bgStatusDraft: 'bg-muted',
+  bgStatusSubmitted: 'bg-info',
 
-  textStatusPending: `text-[${designTokens.colors.status.pending}]`,
-  textStatusApproved: `text-[${designTokens.colors.status.approved}]`,
-  textStatusRejected: `text-[${designTokens.colors.status.rejected}]`,
-  textStatusDraft: `text-[${designTokens.colors.status.draft}]`,
-  textStatusSubmitted: `text-[${designTokens.colors.status.submitted}]`,
+  textStatusPending: 'text-warning',
+  textStatusApproved: 'text-success',
+  textStatusRejected: 'text-error',
+  textStatusDraft: 'text-muted-foreground',
+  textStatusSubmitted: 'text-info',
 };
 
 export default designTokens;

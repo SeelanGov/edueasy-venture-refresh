@@ -1,111 +1,66 @@
-import { Badge } from '@/components/ui/badge';
-import { type Partner  } from '@/types/partner';
-import { CheckCircle2 } from 'lucide-react';
+import { type Partner } from '@/types/PartnerTypes';
+import { CheckCircle2, Circle } from 'lucide-react';
 import React from 'react';
-import { Circle } from 'lucide-react';
 
+interface PartnerIntegrationChecklistProps {
+  partner: Partner;
+  onUpdate: (partner: Partner) => void;
+}
 
+export const PartnerIntegrationChecklist: React.FC<PartnerIntegrationChecklistProps> = ({
+  partner,
+  onUpdate,
+}) => {
+  const steps = [
+    {
+      title: 'API Integration',
+      description: 'Connect to partner API endpoints',
+      completed: partner.api_integration_status === 'completed',
+      help: 'Configure API keys and endpoints',
+    },
+    {
+      title: 'Data Mapping',
+      description: 'Map data fields between systems',
+      completed: partner.data_mapping_status === 'completed',
+      help: 'Define field mappings and transformations',
+    },
+    {
+      title: 'Testing',
+      description: 'Test integration functionality',
+      completed: partner.testing_status === 'completed',
+      help: 'Run integration tests and validate data flow',
+    },
+    {
+      title: 'Production Deployment',
+      description: 'Deploy to production environment',
+      completed: partner.production_status === 'completed',
+      help: 'Monitor production performance and errors',
+    },
+  ];
 
-
-
-// Demo: define milestones - in a real app, this would be backend-driven/configurable
-const INTEGRATION_STEPS = [
-  {
-    key: 'signed_mou',
-    label: 'Signed MoU Uploaded',
-    help: 'Upload the signed memorandum of understanding (MoU) to start integration.',
-  },
-  {
-    key: 'integration_details',
-    label: 'API Integration Details Provided',
-    help: 'Partner provided technical details needed for API setup.',
-  },
-  {
-    key: 'test_api',
-    label: 'API Test Successful',
-    help: 'API connection tested between partner and EduEasy.',
-  },
-  {
-    key: 'onboarded',
-    label: 'Onboarding Session Complete',
-    help: 'Partner has completed the onboarding session.',
-  },
-];
-
-const getStepStatus = (partner: Partner, key: string): string => {
-  // Simulated logic: in production, fields like `mou_uploaded_at`, `api_connected`, etc. would exist
-  switch (key) {
-    case 'signed_mou':
-      return partner.mou_uploaded_at ? 'done' : 'pending';
-    case 'integration_details':
-      return partner.integration_status === 'integration_details' ||
-        partner.integration_status === 'test_api' ||
-        partner.integration_status === 'completed'
-        ? 'done'
-        : 'pending';
-    case 'test_api':
-      return partner.integration_status === 'test_api' || partner.integration_status === 'completed'
-        ? 'done'
-        : 'pending';
-    case 'onboarded':
-      return partner.integration_status === 'completed' ? 'done' : 'pending';
-    default:
-      return 'pending';
-  }
-};
-
-const statusToIcon = (status: string): JSX.Element =>
-  status === 'done' ? (
-    <CheckCircle2 className="text-[#388E3C] mr-2 h-5 w-5" />
-  ) : (
-    <Circle className="text-gray-300 mr-2 h-5 w-5" />
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Integration Checklist</h3>
+      
+      {steps.map((step, index) => (
+        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+          <div className="flex items-center gap-3">
+            {step.completed ? (
+              <CheckCircle2 className="text-success mr-2 h-5 w-5" />
+            ) : (
+              <Circle className="text-muted-foreground mr-2 h-5 w-5" />
+            )}
+            <div>
+              <h4 className="font-medium">{step.title}</h4>
+              <p className="text-sm text-muted-foreground">{step.description}</p>
+              <div className="text-xs text-muted-foreground ml-1">{step.help}</div>
+            </div>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {step.completed ? 'Completed' : 'Pending'}
+          </div>
+        </div>
+      ))}
+    </div>
   );
-
-const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) => (
-  <div className="rounded border p-4 bg-white shadow text-gray-700 space-y-4">
-    <div className="font-semibold mb-2">Integration Progress</div>
-    <div>
-      Integration Status:{' '}
-      <span className="font-mono bg-gray-100 px-2 rounded">
-        {partner.integration_status || '-'}
-      </span>
-      {partner.integration_status === 'completed' && (
-        <Badge variant="default" className="ml-2 bg-green-50 text-green-800 border-green-200">
-          Integration Complete
-        </Badge>
-      )}
-      {partner.integration_status === 'pending' && (
-        <Badge variant="destructive" className="ml-2">
-          Pending
-        </Badge>
-      )}
-      {partner.integration_status === 'in_progress' && (
-        <Badge variant="secondary" className="ml-2">
-          In Progress
-        </Badge>
-      )}
-    </div>
-    <div>
-      <ul className="space-y-3">
-        {INTEGRATION_STEPS.map((step) => {
-          const status = getStepStatus(partner, step.key);
-          return (
-            <li className="flex items-start" key={step.key}>
-              {statusToIcon(status)}
-              <div>
-                <span
-                  className={`font-medium ${status === 'done' ? 'text-green-700' : 'text-gray-700'}`}
-                >
-                  {step.label}
-                </span>
-                <div className="text-xs text-[#BDBDBD] ml-1">{step.help}</div>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  </div>
-);
-
-export default PartnerIntegrationChecklist;
+};

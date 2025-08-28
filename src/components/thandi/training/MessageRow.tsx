@@ -1,6 +1,11 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { type Intent } from '@/hooks/useIntentManagement';
+import { type ChatMessage } from '@/hooks/useTrainingData';
+import { AlertCircle, CheckCircle, Clock, Tag, XCircle } from 'lucide-react';
 import { useState } from 'react';
-import { type Intent  } from '@/hooks/useIntentManagement';
-import { type ChatMessage  } from '@/hooks/useTrainingData';
 
 interface TrainingEntry {
   id: string;
@@ -9,11 +14,6 @@ interface TrainingEntry {
   created_at?: string;
   updated_at?: string;
 }
-import { TableRow, TableCell } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AlertCircle, CheckCircle, Clock, XCircle, Tag } from 'lucide-react';
 
 
 
@@ -21,11 +21,11 @@ import { AlertCircle, CheckCircle, Clock, XCircle, Tag } from 'lucide-react';
 
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select';
 
 
