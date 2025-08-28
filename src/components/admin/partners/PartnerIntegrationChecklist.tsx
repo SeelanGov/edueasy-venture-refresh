@@ -50,7 +50,7 @@ export const PartnerIntegrationChecklist: React.FC<PartnerIntegrationChecklistPr
             ) : (
               <Circle className="text-muted-foreground mr-2 h-5 w-5" />
             )}
-            <div>
+    <div>
               <h4 className="font-medium">{step.title}</h4>
               <p className="text-sm text-muted-foreground">{step.description}</p>
               <div className="text-xs text-muted-foreground ml-1">{step.help}</div>
@@ -58,9 +58,9 @@ export const PartnerIntegrationChecklist: React.FC<PartnerIntegrationChecklistPr
           </div>
           <div className="text-sm text-muted-foreground">
             {step.completed ? 'Completed' : 'Pending'}
-          </div>
-        </div>
-      ))}
     </div>
-  );
+              </div>
+      ))}
+  </div>
+);
 };

@@ -19,63 +19,63 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
           <label className="text-sm font-medium text-muted-foreground">Name</label>
-          <p className="text-sm">{partner.name}</p>
-        </div>
+                  <p className="text-sm">{partner.name}</p>
+                </div>
         
-        <div>
+                <div>
           <label className="text-sm font-medium text-muted-foreground">Type</label>
           <p className="text-sm">{partner.type}</p>
-        </div>
+                </div>
         
-        <div>
+                <div>
           <label className="text-sm font-medium text-muted-foreground">Email</label>
-          <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
             <Mail className="h-4 w-4 text-muted-foreground" />
             <a
               href={`mailto:${partner.email}`}
               className="text-sm text-info hover:underline">
               {partner.email}
-            </a>
-          </div>
-        </div>
+                    </a>
+                  </div>
+                </div>
         
-        <div>
+                <div>
           <label className="text-sm font-medium text-muted-foreground">Phone</label>
-          <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
             <Phone className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm">{partner.phone || '-'}</span>
-          </div>
-        </div>
+                  </div>
+                </div>
         
-        <div>
+                  <div>
           <label className="text-sm font-medium text-muted-foreground">Website</label>
-          <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
             <Globe className="h-4 w-4 text-muted-foreground" />
             {partner.website ? (
-              <a
-                href={partner.website}
-                target="_blank"
-                rel="noopener noreferrer"
+                      <a
+                        href={partner.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
                 className="text-sm text-info hover:underline">
-                {partner.website}
-              </a>
+                        {partner.website}
+                      </a>
             ) : (
               <span className="text-sm">-</span>
             )}
-          </div>
-        </div>
-        
+                    </div>
+              </div>
+
         <div>
           <label className="text-sm font-medium text-muted-foreground">Tier</label>
           <p className="text-sm">{partner.tier}</p>
-        </div>
-      </div>
+                </div>
+              </div>
       
       {/* Payment Records */}
-      <div>
+                      <div>
         <h3 className="text-lg font-semibold mb-3">Payment Records</h3>
         {partner.payments?.length ? (
           partner.payments.map((payment, index) => (
@@ -96,8 +96,8 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
           ))
         ) : (
           <p className="text-muted-foreground text-center py-8">No payment records found</p>
-        )}
-      </div>
+                        )}
+                      </div>
       
       {/* Integration Status */}
       <div>
@@ -112,7 +112,7 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
             }`}>
               {partner.api_integration_status || 'pending'}
             </span>
-          </div>
+                      </div>
           <div className="flex items-center justify-between">
             <span className="text-sm">Data Mapping</span>
             <span className={`px-2 py-1 rounded text-xs ${
@@ -122,7 +122,7 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
             }`}>
               {partner.data_mapping_status || 'pending'}
             </span>
-          </div>
+                    </div>
           <div className="flex items-center justify-between">
             <span className="text-sm">Testing</span>
             <span className={`px-2 py-1 rounded text-xs ${
@@ -132,7 +132,7 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
             }`}>
               {partner.testing_status || 'pending'}
             </span>
-          </div>
+                </div>
           <div className="flex items-center justify-between">
             <span className="text-sm">Production</span>
             <span className={`px-2 py-1 rounded text-xs ${
@@ -142,9 +142,9 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
             }`}>
               {partner.production_status || 'pending'}
             </span>
-          </div>
-        </div>
-      </div>
+                </div>
+                </div>
+              </div>
       
       {/* Notes */}
       <div>
@@ -153,12 +153,12 @@ export const PartnerProfile: React.FC<PartnerProfileProps> = ({ partner }) => {
           partner.notes.map((note, index) => (
             <div key={index} className="border rounded-lg p-4 mb-3">
               <p className="text-sm">{note.content}</p>
-            </div>
+                  </div>
           ))
-        ) : (
+                ) : (
           <p className="text-muted-foreground text-center py-8">No notes available</p>
-        )}
-      </div>
+                )}
+              </div>
     </div>
   );
 };
