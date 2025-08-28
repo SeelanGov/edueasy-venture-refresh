@@ -1,0 +1,15 @@
+branch_name,last_commit,last_commit_date,author,open_prs,stale_days,cleanup_candidate
+main,20184f9,2025-08-18,SeelanGov,0,0,false
+develop,9c8a5a7,2025-08-18,SeelanGov,0,0,false
+backup/pre-cleanup-,a8cb93b,2025-08-18,SeelanGov,0,0,true
+ci-cd-implementation,a8cb93b,2025-08-18,SeelanGov,0,0,false
+codex/configure-setup-script,a8cb93b,2025-08-18,SeelanGov,0,0,false
+cursor/analyze-and-fix-codebase-issues-e158,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/analyze-codebase-and-report-issues-eef2,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/check-remote-repo-status-and-access-f1b6,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/fix-critical-typescript-errors-for-deployment-a22d,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/handle-unauthorized-request-error-2938,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/help-main-agent-complete-task-8762,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/retrieve-supabase-schema-information-9061,a8cb93b,2025-08-18,SeelanGov,0,0,true
+cursor/troubleshoot-configuration-file-parsing-error-027f,a8cb93b,2025-08-18,SeelanGov,0,0,true
+emergency-backup-20250815-132050,a8cb93b,2025-08-18,SeelanGov,0,0,true
