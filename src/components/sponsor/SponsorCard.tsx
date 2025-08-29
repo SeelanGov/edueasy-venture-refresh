@@ -9,11 +9,11 @@ interface SponsorCardProps {
 }
 
 const tierColor: Record<string, string> = {
-  platinum: 'bg-[#E3F2FD] text-blue-900',
-  gold: 'bg-[#FFF8E1] text-yellow-900',
-  silver: 'bg-[#F5F5F5] text-gray-700',
-  bronze: 'bg-orange-100 text-orange-900',
-  basic: 'bg-slate-100 text-slate-600',
+  platinum: 'bg-blue-50 text-blue-900',
+  gold: 'bg-yellow-50 text-yellow-900',
+  silver: 'bg-gray-50 text-gray-700',
+  bronze: 'bg-orange-50 text-orange-900',
+  basic: 'bg-slate-50 text-slate-600',
 };
 
 /**
@@ -31,19 +31,19 @@ export const SponsorCard: React.FC<SponsorCardProps> = ({ sponsor, onClick }) =>
     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
       <div className="flex-1">
         <div className="font-semibold text-lg">{sponsor.name}</div>
-        <div className="text-sm text-[#757575] truncate">{sponsor.email}</div>
-        <div className="text-xs text-[#BDBDBD]">{sponsor.contact_person || '-'}</div>
+        <div className="text-sm text-muted-foreground truncate">{sponsor.email}</div>
+        <div className="text-xs text-muted-foreground">{sponsor.contact_person || '-'}</div>
       </div>
       <div>
         <span
-          className={`inline-block px-2 py-1 rounded ${tierColor[sponsor.tier] || 'bg-[#F5F5F5] text-gray-700'} text-xs`}
+          className={`inline-block px-2 py-1 rounded ${tierColor[sponsor.tier] || 'bg-muted text-muted-foreground'} text-xs`}
         >
           {sponsor.tier}
         </span>
       </div>
       <div>
         <span
-          className={`px-2 py-1 rounded text-xs ${sponsor.status === 'active' ? 'bg-green-200 text-[#1B5E20]' : 'bg-gray-200 text-gray-700'}`}
+          className={`px-2 py-1 rounded text-xs ${sponsor.status === 'active' ? 'bg-success/20 text-success' : 'bg-muted text-muted-foreground'}`}
         >
           {sponsor.status}
         </span>

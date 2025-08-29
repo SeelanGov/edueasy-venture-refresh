@@ -1,5 +1,5 @@
+import { type SponsorPayment } from '@/hooks/useSponsorPayments';
 import React from 'react';
-import { type SponsorPayment  } from '@/hooks/useSponsorPayments';
 
 
 
@@ -27,8 +27,8 @@ export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ pa
       <tbody>
         {payments.length === 0 ? (
           <tr>
-            <td colSpan={6} className="py-6 text-center text-[#BDBDBD]">
-              No payment records found.
+            <td colSpan={6} className="py-6 text-center text-muted-foreground">
+              No payment records found
             </td>
           </tr>
         ) : (
@@ -38,7 +38,7 @@ export const SponsorPaymentHistory: React.FC<SponsorPaymentHistoryProps> = ({ pa
               <td className="px-3 py-2">{payment.payment_method || '-'}</td>
               <td className="px-3 py-2">
                 <span
-                  className={`px-2 py-1 rounded text-xs ${payment.status === 'paid' ? 'bg-[#F0F9F0] text-green-700' : 'bg-gray-200 text-[#424242]'}`}
+                  className={`px-2 py-1 rounded text-xs ${payment.status === 'paid' ? 'bg-success/20 text-success' : 'bg-muted text-muted-foreground'}`}
                 >
                   {payment.status}
                 </span>

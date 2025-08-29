@@ -7,11 +7,11 @@ type Props = {
 };
 const color = (type: string) =>
   ({
-    university: 'bg-blue-200 text-blue-700',
-    tvet: 'bg-amber-100 text-amber-800',
-    funder: 'bg-green-100 text-green-700',
-    seta: 'bg-pink-100 text-pink-700',
-  })[type] || 'bg-gray-100 text-gray-600';
+    university: 'bg-blue-50 text-blue-700',
+    tvet: 'bg-amber-50 text-amber-800',
+    funder: 'bg-green-50 text-green-700',
+    seta: 'bg-pink-50 text-pink-700',
+  })[type] || 'bg-muted text-muted-foreground';
 const PartnerStatusBadge: React.FC<Props> = ({ status, tier, type }) => (
   <span
     className={`inline-block rounded px-2 py-0.5 text-xs font-semibold ${color(type)} border`}

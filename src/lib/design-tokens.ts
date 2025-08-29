@@ -4,55 +4,55 @@
 export const designTokens = {
   colors: {
     // Primary brand colors (South African theme)
-    primary: '#1A3C34', // South African green
-    secondary: '#F5A623', // SA flag yellow
-    accent: '#E74C3C', // SA flag red
+    primary: 'hsl(var(--primary))',
+    secondary: 'hsl(var(--secondary))',
+    accent: 'hsl(var(--accent))',
 
     // Semantic colors
-    success: '#388E3C', // Green for success states
-    error: '#D32F2F', // Red for error states
-    warning: '#F57C00', // Orange for warnings
-    info: '#1976D2', // Blue for informational states
+    success: 'hsl(var(--success))',
+    error: 'hsl(var(--destructive))',
+    warning: 'hsl(var(--warning))',
+    info: 'hsl(var(--info))',
 
     // Neutral colors
-    white: '#FFFFFF',
-    black: '#000000',
+    white: 'hsl(var(--background))',
+    black: 'hsl(var(--foreground))',
     gray: {
-      50: '#FAFAFA',
-      100: '#F5F5F5',
-      200: '#EEEEEE',
-      300: '#E0E0E0',
-      400: '#BDBDBD',
-      500: '#9E9E9E',
-      600: '#757575',
-      700: '#616161',
-      800: '#424242',
-      900: '#212121',
+      50: 'hsl(var(--gray-50))',
+      100: 'hsl(var(--gray-100))',
+      200: 'hsl(var(--gray-200))',
+      300: 'hsl(var(--gray-300))',
+      400: 'hsl(var(--gray-400))',
+      500: 'hsl(var(--gray-500))',
+      600: 'hsl(var(--gray-600))',
+      700: 'hsl(var(--gray-700))',
+      800: 'hsl(var(--gray-800))',
+      900: 'hsl(var(--gray-900))',
     },
 
     // Status colors
     status: {
-      pending: '#FFA000', // Amber
-      approved: '#388E3C', // Green
-      rejected: '#D32F2F', // Red
-      draft: '#757575', // Gray
-      submitted: '#1976D2', // Blue
+      pending: 'hsl(var(--warning))',
+      approved: 'hsl(var(--success))',
+      rejected: 'hsl(var(--destructive))',
+      draft: 'hsl(var(--muted-foreground))',
+      submitted: 'hsl(var(--info))',
     },
 
     // Background colors
     background: {
-      primary: '#FFFFFF',
-      secondary: '#F5F5F5',
-      tertiary: '#EEEEEE',
-      dark: '#212121',
+      primary: 'hsl(var(--background))',
+      secondary: 'hsl(var(--muted))',
+      tertiary: 'hsl(var(--muted))',
+      dark: 'hsl(var(--foreground))',
     },
 
     // Text colors
     text: {
-      primary: '#212121',
-      secondary: '#757575',
-      disabled: '#BDBDBD',
-      inverse: '#FFFFFF',
+      primary: 'hsl(var(--foreground))',
+      secondary: 'hsl(var(--muted-foreground))',
+      disabled: 'hsl(var(--muted-foreground))',
+      inverse: 'hsl(var(--background))',
     },
   },
 

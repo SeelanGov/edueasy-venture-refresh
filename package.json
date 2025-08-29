@@ -36,6 +36,8 @@
     "fix": "bun run format && bun run lint:fix && bun run type-check",
     "verify-env": "bun scripts/verify-env.js",
     "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+
     "clean": "bun scripts/clean.js",
     "deploy:staging": "bun scripts/deploy.js staging",
     "deploy:production": "bun scripts/deploy.js production",
