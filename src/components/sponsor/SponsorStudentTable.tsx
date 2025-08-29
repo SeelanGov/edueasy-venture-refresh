@@ -36,9 +36,9 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
       <tbody>
         {allocations.length === 0 ? (
           <tr>
-            <td colSpan={onEdit ? 7 : 6} className="py-6 text-center text-[#BDBDBD]">
-              No student allocations.
-            </td>
+                          <td colSpan={onEdit ? 7 : 6} className="py-6 text-center text-muted-foreground">
+                No student allocations found
+              </td>
           </tr>
         ) : (
           allocations.map((alloc) => (
@@ -52,7 +52,7 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
               </td>
               <td className="px-3 py-2">
                 <span
-                  className={`px-2 py-1 rounded text-xs ${alloc.status === 'active' ? 'bg-[#F0F9F0] text-green-700' : 'bg-gray-200 text-[#424242]'}`}
+                  className={`px-2 py-1 rounded text-xs ${alloc.status === 'active' ? 'bg-success/20 text-success' : 'bg-muted text-muted-foreground'}`}
                 >
                   {alloc.status}
                 </span>
@@ -73,7 +73,7 @@ export const SponsorStudentTable: React.FC<SponsorStudentTableProps> = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#D32F2F] underline text-xs p-0 h-auto font-normal"
+                      className="text-destructive underline text-xs p-0 h-auto font-normal"
                       onClick={() => onDelete(alloc.id)}
                     >
                       Delete

@@ -29,16 +29,16 @@ export const PlanLimitWarning = ({
     <Alert
       variant={isAtLimit ? 'destructive' : 'default'}
       className={`mb-4 border-l-4 bg-white shadow-sm ${
-        isAtLimit ? 'border-l-red-500 border-[#FFCDD2]' : 'border-l-cap-teal border-[#BBDEFB]'
+        isAtLimit ? 'border-l-destructive border-destructive/20' : 'border-l-primary border-primary/20'
       }`}
     >
-      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-[#D32F2F]' : 'text-cap-teal'}`} />
+      <AlertTriangle className={`h-4 w-4 ${isAtLimit ? 'text-destructive' : 'text-primary'}`} />
       <AlertDescription className="flex items-center justify-between">
         <div className="flex-1">
-          <div className={`font-medium ${isAtLimit ? 'text-[#B71C1C]' : 'text-[#424242]'} mb-1`}>
+          <div className={`font-medium ${isAtLimit ? 'text-destructive' : 'text-foreground'} mb-1`}>
             {isAtLimit ? 'Limit Reached' : 'Approaching Limit'}
           </div>
-          <div className={`text-sm ${isAtLimit ? 'text-red-700' : 'text-gray-600'}`}>
+          <div className={`text-sm ${isAtLimit ? 'text-destructive' : 'text-muted-foreground'}`}>
             {isAtLimit ? (
               <>
                 You've reached your {limitType} limit ({currentCount}/{maxAllowed}) on the{' '}
@@ -55,7 +55,7 @@ export const PlanLimitWarning = ({
         <Button
           asChild
           size="sm"
-          className="bg-cap-teal hover:bg-cap-teal/90 text-white ml-4 shadow-sm">
+          className="bg-primary hover:bg-primary/90 text-primary-foreground ml-4 shadow-sm">
           <Link to="/subscription" className="flex items-center gap-2">
             <CreditCard className="h-3 w-3" />
             Upgrade Plan
