@@ -26,10 +26,10 @@ export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JS
                 <div
                   className={`
                   flex items-center justify-center w-8 h-8 rounded-full border-2
-                  ${isCurrent ? 'border-[#1976D2] bg-blue-50 text-[#1976D2]' : ''}
-                  ${isComplete ? 'border-[#388E3C] bg-green-50 text-[#388E3C]' : ''}
-                  ${isError ? 'border-[#D32F2F] bg-red-50 text-[#D32F2F]' : ''}
-                  ${isPending ? 'border-gray-300 bg-white text-[#BDBDBD]' : ''}
+                  ${isCurrent ? 'border-primary bg-primary/10 text-primary' : ''}
+                  ${isComplete ? 'border-success bg-success/10 text-success' : ''}
+                  ${isError ? 'border-destructive bg-destructive/10 text-destructive' : ''}
+                  ${isPending ? 'border-border bg-background text-muted-foreground' : ''}
                 `}
                 >
                   {isComplete ? (
@@ -40,19 +40,11 @@ export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JS
                     <CircleDashed className="w-5 h-5" />
                   )}
                 </div>
-                <span
-                  className={`
-                  absolute top-10 text-xs font-medium whitespace-nowrap
-                  ${isCurrent ? 'text-[#1976D2]' : ''}
-                  ${isComplete ? 'text-[#388E3C]' : ''}
-                  ${isError ? 'text-[#D32F2F]' : ''}
-                  ${isPending ? 'text-[#757575]' : ''}
-                `}
-                >
+                <span className="text-xs font-medium whitespace-nowrap mt-2">
                   {step.label}
                 </span>
                 {step.description && (
-                  <span className="absolute top-14 text-[10px] text-[#BDBDBD] whitespace-nowrap">
+                  <span className="absolute top-14 text-[10px] text-muted-foreground whitespace-nowrap">
                     {step.description}
                   </span>
                 )}
@@ -61,12 +53,12 @@ export const DocumentUploadStepper = ({ steps }: DocumentUploadStepperProps): JS
               {!isLast && (
                 <div
                   className={`flex-1 h-0.5 mx-2
-                  ${isComplete ? 'bg-[#388E3C]' : 'bg-gray-200'}
+                  ${isComplete ? 'bg-success' : 'bg-border'}
                 `}
                 >
                   {isComplete && (
                     <div className="flex justify-center items-center h-full">
-                      <ArrowRight className="w-4 h-4 text-[#388E3C]" />
+                      <ArrowRight className="w-4 h-4 text-success" />
                     </div>
                   )}
                 </div>
