@@ -1,6 +1,7 @@
 import { useEffect   } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Clock, User, Shield, AlertCircle } from 'lucide-react';
 import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
 import { Spinner } from '@/components/Spinner';
@@ -38,18 +39,18 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
     }
   }, [targetId, targetType, limit]);
 
-  const getSeverityColor = (severity: string): string => {
+  const getSeverityVariant = (severity: string): VariantProps<typeof badgeVariants>['variant'] => {
     switch (severity.toLowerCase()) {
       case 'critical':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       case 'error':
-        return 'bg-orange-100 text-orange-800';
+        return 'destructive';
       case 'warning':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'info':
-        return 'bg-blue-100 text-blue-800';
+        return 'info';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
     }
   };
 
@@ -98,7 +99,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({
                   <div className="flex items-center gap-2">
                     {getActionIcon(log.action)}
                     <span className="font-medium text-sm">{log.message}</span>
-                    <Badge variant="secondary" className={getSeverityColor(log.severity)}>
+                    <Badge variant={getSeverityVariant(log.severity)}>
                       {log.severity}
                     </Badge>
                   </div>

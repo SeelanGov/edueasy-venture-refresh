@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -209,28 +210,28 @@ export const PaymentFlowTests = (): JSX.Element => {
   const getStatusIcon = (status: string): JSX.Element => {
     switch (status) {
       case 'passed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-success" />;
       case 'failed':
-        return <XCircle className="h-4 w-4 text-red-600" />;
+        return <XCircle className="h-4 w-4 text-destructive" />;
       case 'timeout':
-        return <Clock className="h-4 w-4 text-yellow-600" />;
+        return <Clock className="h-4 w-4 text-warning" />;
       default:
-        return <AlertTriangle className="h-4 w-4 text-gray-600" />;
+        return <AlertTriangle className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
-  const getPriorityColor = (priority: string): string => {
+  const getPriorityVariant = (priority: string): VariantProps<typeof badgeVariants>['variant'] => {
     switch (priority) {
       case 'critical':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       case 'high':
-        return 'bg-orange-100 text-orange-800';
+        return 'destructive';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'low':
-        return 'bg-green-100 text-green-800';
+        return 'success';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
     }
   };
 
@@ -290,10 +291,10 @@ export const PaymentFlowTests = (): JSX.Element => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{stats.successRate.toFixed(1)}%</div>
+            <div className="text-2xl font-bold text-success">{stats.successRate.toFixed(1)}%</div>
             <p className="text-xs text-muted-foreground">
               {stats.passed} passed, {stats.failed} failed
             </p>
@@ -319,9 +320,9 @@ export const PaymentFlowTests = (): JSX.Element => {
           <CardContent>
             <div className="text-2xl font-bold">
               {isRunning ? (
-                <span className="text-blue-600">Running</span>
+                <span className="text-info">Running</span>
               ) : (
-                <span className="text-gray-600">Idle</span>
+                <span className="text-muted-foreground">Idle</span>
               )}
             </div>
             <p className="text-xs text-muted-foreground">{currentTest || 'Ready to test'}</p>
@@ -391,7 +392,7 @@ export const PaymentFlowTests = (): JSX.Element => {
                     {getCategoryIcon(scenario.category)}
                     <h3 className="font-medium">{scenario.name}</h3>
                   </div>
-                  <Badge className={getPriorityColor(scenario.priority)}>{scenario.priority}</Badge>
+                  <Badge variant={getPriorityVariant(scenario.priority)}>{scenario.priority}</Badge>
                 </div>
 
                 <p className="text-sm text-gray-600">{scenario.description}</p>
@@ -451,11 +452,11 @@ export const PaymentFlowTests = (): JSX.Element => {
                     {new Date(result.timestamp).toLocaleString()}
                   </div>
 
-                  {result.error && (
-                    <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
-                      Error: {result.error}
-                    </div>
-                  )}
+                   {result.error && (
+                     <div className="text-sm text-destructive bg-destructive/10 p-2 rounded">
+                       Error: {result.error}
+                     </div>
+                   )}
 
                   <div className="flex items-center space-x-2">
                     <Button

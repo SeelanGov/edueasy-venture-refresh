@@ -92,7 +92,7 @@ const VerifyId = ({ userId }: VerifyIdProps): JSX.Element => {
       <h3 className="text-lg font-semibold mb-4">Verify Your South African ID</h3>
 
       {state === 'consent' && (
-        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-4 bg-info/10 border border-info/20 rounded-lg">
           <p className="text-sm text-gray-700 mb-3">
             By proceeding, you consent to verify your South African ID number. This information will
             be used for identity verification purposes only.
@@ -172,14 +172,14 @@ const VerifyId = ({ userId }: VerifyIdProps): JSX.Element => {
           </Button>
 
           {state === 'success' && (
-            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-800 text-sm">✅ Your ID has been successfully verified!</p>
+            <div className="p-3 bg-success/10 border border-success/20 rounded-lg">
+              <p className="text-success text-sm">✅ Your ID has been successfully verified!</p>
             </div>
           )}
 
           {state === 'error' && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-800 text-sm">
+            <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <p className="text-destructive text-sm">
                 ❌ ID verification failed. Please check your ID number and try again.
               </p>
             </div>
