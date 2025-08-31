@@ -412,6 +412,45 @@
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
   }
 
+  /* Enhanced accessibility utilities */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .skip-to-content {
+    @apply absolute -top-10 left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md transform translate-y-0 transition-transform focus:translate-y-12;
+  }
+
+  /* Touch target minimum size (WCAG AA) */
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .focus-visible-ring {
+      @apply ring-4 ring-offset-4;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-scale-in,
+    .hover-scale,
+    .hover-lift,
+    .card-interactive {
+      @apply transition-none;
+      animation: none;
+      transform: none;
+    }
+
+    .link-underline::after {
+      transition: none;
+    }
+  }
+
   /* Animation utilities */
   .animate-fade-in {
     @apply opacity-0 animate-[fadeIn_0.3s_ease-out_forwards];

@@ -1,0 +1,19 @@
+<script>
+  // Apply theme class to html element for proper CSS variable resolution
+  const applyTheme = (theme) => {
+    const html = document.documentElement;
+    html.classList.remove('light', 'dark');
+    html.classList.add(theme);
+  };
+
+  // Listen for theme changes
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'SET_CURRENT_STORY') {
+      const theme = event.data?.args?.[0]?.globals?.theme || 'light';
+      applyTheme(theme);
+    }
+  });
+
+  // Set initial theme
+  applyTheme('light');
+</script>

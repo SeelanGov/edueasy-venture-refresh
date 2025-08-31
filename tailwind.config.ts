@@ -8,8 +8,11 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './.storybook/**/*.{js,ts,jsx,tsx}',
   ],
   prefix: '',
+  // Import safelist for dynamic classes
+  ...require('./tailwind.config.safelist.js'),
   theme: {
     container: {
       center: true,
