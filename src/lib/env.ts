@@ -43,5 +43,13 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   );
 }
 
+export function getEnvSource() {
+  const hasQuery = qp.sbUrl || qp.sbAnon;
+  const hasRuntime = rc.VITE_SUPABASE_URL || rc.VITE_SUPABASE_ANON_KEY;
+  if (hasQuery) return 'query-params';
+  if (hasRuntime) return 'runtime-config';
+  return 'vite-env';
+}
+
 export { SUPABASE_ANON_KEY, SUPABASE_URL };
 
