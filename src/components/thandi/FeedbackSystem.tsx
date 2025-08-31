@@ -46,11 +46,11 @@ export const FeedbackSystem = ({
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <span className="text-xs text-[#757575]">Was this response helpful?</span>
+              <span className="text-xs text-muted-foreground">Was this response helpful?</span>
       <Button
         variant="outline"
         size="sm"
-        className={`p-1 h-8 w-8 ${feedback === 'helpful' ? 'bg-[#F0F9F0] text-green-600 border-[#C8E6C9]' : ''}`}
+        className={`p-1 h-8 w-8 ${feedback === 'helpful' ? 'bg-success/20 text-success border-success/30' : ''}`}
         disabled={feedback !== null || isSubmitting}
         onClick={() => handleFeedback('helpful')}
       >
@@ -59,7 +59,7 @@ export const FeedbackSystem = ({
       <Button
         variant="outline"
         size="sm"
-        className={`p-1 h-8 w-8 ${feedback === 'unhelpful' ? 'bg-[#FFEBEE] text-red-600 border-[#FFCDD2]' : ''}`}
+                  className={`p-1 h-8 w-8 ${feedback === 'unhelpful' ? 'bg-destructive/20 text-destructive border-destructive/30' : ''}`}
         disabled={feedback !== null || isSubmitting}
         onClick={() => handleFeedback('unhelpful')}
       >

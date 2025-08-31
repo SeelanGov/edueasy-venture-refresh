@@ -56,9 +56,9 @@ const getStepStatus = (partner: Partner, key: string): string => {
 
 const statusToIcon = (status: string): JSX.Element =>
   status === 'done' ? (
-    <CheckCircle2 className="text-[#388E3C] mr-2 h-5 w-5" />
+    <CheckCircle2 className="text-success mr-2 h-5 w-5" />
   ) : (
-    <Circle className="text-gray-300 mr-2 h-5 w-5" />
+    <Circle className="text-muted-foreground mr-2 h-5 w-5" />
   );
 
 const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) => (
@@ -98,7 +98,7 @@ const PartnerIntegrationChecklist: React.FC<{ partner: any }> = ({ partner }) =>
                 >
                   {step.label}
                 </span>
-                <div className="text-xs text-[#BDBDBD] ml-1">{step.help}</div>
+                <div className="text-xs text-muted-foreground ml-1">{step.help}</div>
               </div>
             </li>
           );

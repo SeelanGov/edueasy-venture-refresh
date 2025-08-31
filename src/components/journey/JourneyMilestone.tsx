@@ -61,28 +61,28 @@ export const JourneyMilestone: React.FC<JourneyMilestoneProps> = ({
         return {
           bg: 'bg-primary',
           border: 'border-primary',
-          text: 'text-white',
+          text: 'text-primary-foreground',
           animation: 'animate-pulse',
         };
       case 'completed':
         return {
-          bg: 'bg-green-600',
-          border: 'border-green-600',
-          text: 'text-white',
+          bg: 'bg-success',
+          border: 'border-success',
+          text: 'text-success-foreground',
           animation: '',
         };
       case 'error':
         return {
-          bg: 'bg-red-50',
-          border: 'border-red-600',
-          text: 'text-red-600',
+          bg: 'bg-destructive/10',
+          border: 'border-destructive',
+          text: 'text-destructive',
           animation: '',
         };
       default: // pending
         return {
-          bg: 'bg-gray-100',
-          border: 'border-gray-300',
-          text: 'text-gray-400',
+          bg: 'bg-muted',
+          border: 'border-border',
+          text: 'text-muted-foreground',
           animation: '',
         };
     }
