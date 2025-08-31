@@ -48,10 +48,10 @@ export const RejectedDocument = ({
             onClick={onResubmit}
             size="sm"
             variant="outline"
-            className="border-red-200 bg-red-50 hover:bg-red-100 text-red-900 font-medium">
+            className="border-destructive/20 bg-destructive/10 hover:bg-destructive/20 text-destructive font-medium">
             Resubmit Document
           </Button>
-          <p className="text-xs mt-2 text-red-600">
+          <p className="text-xs mt-2 text-destructive">
             Please address the issues above before resubmitting your {documentType}.
           </p>
         </div>

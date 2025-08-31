@@ -232,7 +232,7 @@ export const ConsentAuditPanel = (): JSX.Element => {
               <CardTitle className="text-sm font-medium">ID Verification Consent</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">
+              <div className="text-2xl font-bold text-info">
                 {statistics.idVerificationConsent}
               </div>
             </CardContent>

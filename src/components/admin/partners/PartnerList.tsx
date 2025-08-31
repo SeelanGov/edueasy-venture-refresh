@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Search, Plus, Building2, Mail, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -79,29 +80,29 @@ useEffect(() => {
     return matchesSearch && matchesType && matchesTier;
   });
 
-  const getTierColor = (tier: string): string => {
+  const getTierVariant = (tier: string): VariantProps<typeof badgeVariants>['variant'] => {
     switch (tier) {
       case 'basic':
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
       case 'standard':
-        return 'bg-blue-100 text-blue-800';
+        return 'info';
       case 'premium':
-        return 'bg-purple-100 text-purple-800';
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
     }
   };
 
-  const getStatusColor = (status: string): string => {
+  const getStatusVariant = (status: string): VariantProps<typeof badgeVariants>['variant'] => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return 'success';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'inactive':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
     }
   };
 
@@ -167,10 +168,10 @@ useEffect(() => {
                   <Building2 className="h-5 w-5 text-gray-500" />
                   <CardTitle className="text-lg">{partner.name}</CardTitle>
                 </div>
-                <Badge className={getTierColor(partner.tier)}>{partner.tier}</Badge>
+                <Badge variant={getTierVariant(partner.tier)}>{partner.tier}</Badge>
               </div>
               <CardDescription>
-                <Badge className={getStatusColor(partner.status)}>{partner.status}</Badge>
+                <Badge variant={getStatusVariant(partner.status)}>{partner.status}</Badge>
                 <span className="ml-2 capitalize">{partner.type}</span>
               </CardDescription>
             </CardHeader>

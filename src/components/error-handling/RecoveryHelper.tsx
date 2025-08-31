@@ -55,9 +55,9 @@ export const RecoveryHelper = ({
       <CardHeader>
         <CardTitle className="flex items-center">
           {isRecovered ? (
-            <RotateCw className="h-5 w-5 mr-2 text-green-500" />
+            <RotateCw className="h-5 w-5 mr-2 text-success" />
           ) : (
-            <RefreshCw className="h-5 w-5 mr-2 text-amber-500" />
+            <RefreshCw className="h-5 w-5 mr-2 text-warning" />
           )}
           {title}
         </CardTitle>
@@ -68,7 +68,7 @@ export const RecoveryHelper = ({
         </p>
 
         {error && (
-          <div className="mt-4 p-2 bg-red-50 text-red-700 text-sm border border-red-200 rounded">
+          <div className="mt-4 p-2 bg-destructive/10 text-destructive text-sm border border-destructive/20 rounded">
             {error}
           </div>
         )}
@@ -86,7 +86,7 @@ export const RecoveryHelper = ({
             size="sm"
             onClick={handleRecover}
             disabled={isRecovering}
-            className="bg-amber-600 hover:bg-amber-700">
+            className="bg-warning hover:bg-warning/90">
             {isRecovering ? (
               <>
                 <RefreshCw className="h-3 w-3 mr-2 animate-spin" />
@@ -101,7 +101,7 @@ export const RecoveryHelper = ({
             variant="default"
             size="sm"
             onClick={onCancel}
-            className="bg-green-600 hover:bg-green-700">
+            className="bg-success hover:bg-success/90">
             Continue
           </Button>
         )}

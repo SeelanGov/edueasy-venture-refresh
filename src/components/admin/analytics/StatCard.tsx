@@ -41,7 +41,7 @@ export const StatCard = ({ title, value, icon, description, trend, className }: 
               <span
                 className={cn(
                   'ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium',
-                  trend.positive ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800',
+                  trend.positive ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive',
                 )}
               >
                 {trend.positive ? '+' : '-'}

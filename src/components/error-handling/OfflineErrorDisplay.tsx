@@ -32,9 +32,9 @@ export const OfflineErrorDisplay = ({
 
   return (
     <Alert
-      className={`border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 ${className}`}
+      className={`border-warning/20 bg-warning/10 text-warning dark:border-warning/20 dark:bg-warning/10 dark:text-warning ${className}`}
     >
-      <WifiOff className="h-4 w-4 text-amber-500" />
+      <WifiOff className="h-4 w-4 text-warning" />
       <AlertTitle>Connection Lost</AlertTitle>
       <AlertDescription>
         <p>{message}</p>
@@ -53,7 +53,7 @@ export const OfflineErrorDisplay = ({
               size="sm"
               onClick={onRetryConnection}
               disabled={isRetrying}
-              className="flex items-center border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900">
+              className="border-warning/20 bg-warning/10 hover:bg-warning/20 text-warning">
               {isRetrying ? (
                 <>
                   <RefreshCw className="h-3 w-3 mr-2 animate-spin" />

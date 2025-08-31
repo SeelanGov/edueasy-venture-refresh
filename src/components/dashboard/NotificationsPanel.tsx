@@ -131,7 +131,7 @@ export const NotificationsPanel = (): JSX.Element => {
       case 'application_status':
         return <Clock className="h-4 w-4 text-green-600" />;
       case 'admin_feedback':
-        return <MessageSquare className="h-4 w-4 text-purple-500" />;
+        return <MessageSquare className="h-4 w-4 text-info" />;
       default:
         return <Bell className="h-4 w-4 text-gray-500" />;
     }

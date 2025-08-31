@@ -29,7 +29,7 @@ export const NotificationBell: React.FC = () => {
       >
         <Bell className="h-6 w-6" />
         {notifications.length > 0 && (
-          <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+          <span className="absolute top-0 right-0 bg-destructive text-destructive-foreground rounded-full text-xs px-1">
             {notifications.length}
           </span>
         )}

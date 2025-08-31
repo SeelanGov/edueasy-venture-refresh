@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -90,16 +91,16 @@ useEffect(() => {
     }
   };
 
-  const getTierColor = (tier: string): string => {
+  const getTierVariant = (tier: string): VariantProps<typeof badgeVariants>['variant'] => {
     switch (tier) {
       case 'basic':
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+        return 'muted';
       case 'standard':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'info';
       case 'premium':
-        return 'bg-purple-100 text-purple-800 border-purple-300';
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+        return 'muted';
     }
   };
 
@@ -126,7 +127,7 @@ useEffect(() => {
               <div className="flex justify-between items-start">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Badge className={getTierColor(tier.tier)}>{tier.tier}</Badge>
+                    <Badge variant={getTierVariant(tier.tier)}>{tier.tier}</Badge>
                     {tier.name}
                   </CardTitle>
                   <CardDescription>{tier.support_level || 'Standard'} Support</CardDescription>
@@ -203,7 +204,7 @@ useEffect(() => {
                   <th className="text-left p-2">Feature</th>
                   {tiers.map((tier) => (
                     <th key={tier.id} className="text-center p-2">
-                      <Badge className={getTierColor(tier.tier)}>{tier.tier}</Badge>
+                      <Badge variant={getTierVariant(tier.tier)}>{tier.tier}</Badge>
                     </th>
                   ))}
                 </tr>

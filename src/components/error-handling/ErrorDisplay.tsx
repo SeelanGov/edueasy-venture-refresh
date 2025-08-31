@@ -39,13 +39,13 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   const getSeverityColor = (severity: string = 'medium'): string => {
     switch (severity) {
       case 'low':
-        return 'border-yellow-200 bg-yellow-50';
+        return 'border-warning/20 bg-warning/10';
       case 'high':
-        return 'border-orange-200 bg-orange-50';
+        return 'border-destructive/20 bg-destructive/10';
       case 'critical':
-        return 'border-red-200 bg-red-50';
+        return 'border-destructive/20 bg-destructive/10';
       default:
-        return 'border-blue-200 bg-blue-50';
+        return 'border-info/20 bg-info/10';
     }
   };
 

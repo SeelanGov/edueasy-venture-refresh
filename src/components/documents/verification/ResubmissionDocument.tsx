@@ -29,8 +29,8 @@ export const ResubmissionDocument = ({
   const { failureReason, validationResults, extractedFields } = result;
 
   return (
-    <Alert className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300 mt-4">
-      <FileWarning className="h-5 w-5 text-amber-500" />
+    <Alert className="border-warning/20 bg-warning/10 text-warning dark:border-warning/20 dark:bg-warning/10 dark:text-warning mt-4">
+      <FileWarning className="h-5 w-5 text-warning" />
       <AlertTitle className="text-base">Document Resubmission Required</AlertTitle>
       <AlertDescription>
         <p className="mb-2">Your {documentType} requires resubmission.</p>
@@ -48,10 +48,10 @@ export const ResubmissionDocument = ({
             onClick={onResubmit}
             size="sm"
             variant="outline"
-            className="border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 font-medium">
+            className="border-warning/20 bg-warning/10 hover:bg-warning/20 text-warning font-medium">
             Resubmit Document
           </Button>
-          <p className="text-xs mt-2 text-amber-700">
+          <p className="text-xs mt-2 text-warning">
             Please follow the guidance above to ensure successful verification.
           </p>
         </div>

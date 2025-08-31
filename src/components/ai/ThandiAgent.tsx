@@ -203,13 +203,13 @@ export const ThandiAgent = (): JSX.Element => {
   const getTierColor = (): string => {
     switch (subscriptionData?.currentSubscription?.tier?.name || 'basic') {
       case 'basic':
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-muted-foreground';
       case 'guidance':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-info/10 text-info';
       case 'advanced':
-        return 'bg-purple-100 text-purple-700';
+        return 'bg-destructive/10 text-destructive';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-muted-foreground';
     }
   };
 

@@ -63,11 +63,11 @@ export const UserProfileModal: React.FC<UserModalProps> = ({ user, open, onClose
               <User className="h-5 w-5 text-primary" />
               {user.full_name || 'Unnamed User'}
               {user.id_verified ? (
-                <Badge className="bg-green-100 text-green-800 ml-2">
+                <Badge variant="success">
                   <ShieldCheck className="h-4 w-4 mr-1" /> Verified
                 </Badge>
               ) : (
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 ml-2">
+                <Badge variant="warning">
                   <X className="h-4 w-4 mr-1" /> Not verified
                 </Badge>
               )}

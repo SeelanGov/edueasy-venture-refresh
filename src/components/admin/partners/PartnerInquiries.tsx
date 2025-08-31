@@ -1,4 +1,5 @@
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -81,19 +82,19 @@ export const PartnerInquiries = (): JSX.Element => {
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusColor = (status: string | null): string => {
+  const getStatusVariant = (status: string | null): VariantProps<typeof badgeVariants>['variant'] => {
     const actualStatus = status || 'pending';
     switch (actualStatus) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'contacted':
-        return 'bg-blue-100 text-blue-800';
+        return 'info';
       case 'converted':
-        return 'bg-green-100 text-green-800';
+        return 'success';
       case 'rejected':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'muted';
     }
   };
 
@@ -146,7 +147,7 @@ export const PartnerInquiries = (): JSX.Element => {
                     {inquiry.institution_type} • Contact: {inquiry.contact_name}
                   </CardDescription>
                 </div>
-                <Badge className={getStatusColor(inquiry.status)}>
+                <Badge variant={getStatusVariant(inquiry.status)}>
                   {inquiry.status || 'pending'}
                 </Badge>
               </div>

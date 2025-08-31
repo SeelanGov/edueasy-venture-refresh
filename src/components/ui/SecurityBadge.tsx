@@ -1,5 +1,6 @@
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { ShieldCheck, Lock, KeyRound, FileCheck2 } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
@@ -11,32 +12,32 @@ const badgeConfig: Record<
     icon: React.ReactNode;
     label: string;
     tooltip: string;
-    color: string;
+    variant: VariantProps<typeof badgeVariants>['variant'];
   }
 > = {
   encryption: {
     icon: <Lock className="h-4 w-4" />,
     label: 'Encrypted',
     tooltip: 'Your data is encrypted in transit.',
-    color: 'bg-teal-500 text-white',
+    variant: 'info',
   },
   'data-protection': {
     icon: <ShieldCheck className="h-4 w-4" />,
     label: 'Protected',
     tooltip: 'Your data is securely stored.',
-    color: 'bg-coral-500 text-white',
+    variant: 'secondary',
   },
   privacy: {
     icon: <KeyRound className="h-4 w-4" />,
     label: 'Private',
     tooltip: 'We respect your privacy and never share your data.',
-    color: 'bg-gray-700 text-white',
+    variant: 'muted',
   },
   verification: {
     icon: <FileCheck2 className="h-4 w-4" />,
     label: 'Verified',
     tooltip: 'This document has been verified.',
-    color: 'bg-green-600 text-white',
+    variant: 'success',
   },
 };
 
@@ -57,7 +58,7 @@ export const SecurityBadge: React.FC<SecurityBadgeProps> = ({
   showLabel = true,
   className,
 }) => {
-  const { icon, label, tooltip, color } = badgeConfig[type];
+  const { icon, label, tooltip, variant } = badgeConfig[type];
   const sizeClass =
     size === 'sm'
       ? 'px-2 py-0.5 text-xs'
@@ -69,7 +70,8 @@ export const SecurityBadge: React.FC<SecurityBadgeProps> = ({
       <TooltipTrigger asChild>
         <span data-testid={`security-badge-${type}`}>
           <Badge
-            className={`inline-flex items-center gap-1 ${color} ${sizeClass} ${className || ''} transition-transform duration-150 hover:scale-105`}
+            variant={variant}
+            className={`inline-flex items-center gap-1 ${sizeClass} ${className || ''} transition-transform duration-150 hover:scale-105`}
             aria-label={label}
             tabIndex={0}
           >

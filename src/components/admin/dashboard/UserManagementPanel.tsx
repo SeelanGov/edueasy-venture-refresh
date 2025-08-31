@@ -203,11 +203,11 @@ export function UserManagementPanel({
                   <p className="font-medium flex items-center gap-2">
                     <span className="text-blue-700 font-mono">{userData.tracking_id || 'N/A'}</span>
                     {userData.id_verified ? (
-                      <Badge variant="default" className="bg-green-100 text-green-800 px-2">
+                      <Badge variant="success">
                         Verified
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 px-2">
+                      <Badge variant="warning">
                         Unverified
                       </Badge>
                     )}
