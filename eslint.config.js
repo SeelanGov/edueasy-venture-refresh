@@ -3,6 +3,7 @@ import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import regexPlugin from 'eslint-plugin-regex';
 import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -39,6 +40,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
       prettier: prettier,
       'unused-imports': unusedImports,
+      regex: regexPlugin,
     },
     settings: {
       react: {
@@ -77,6 +79,18 @@ export default tseslint.config(
       'no-var': 'error',
       'prefer-const': 'error',
       eqeqeq: ['error', 'smart'],
+
+      // Color validation rules (regex-based)
+      'regex/invalid': ['error', [
+        { 
+          regex: '#[0-9a-fA-F]{3,6}\\b', 
+          message: 'Use semantic tokens (CSS vars). See docs/design-system.md' 
+        },
+        { 
+          regex: '\\b(bg|text|border)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\\b',
+          message: 'Use semantic tokens, not fixed Tailwind palettes.' 
+        }
+      ]],
 
       // Design System Rules - Prevent violations
       'no-restricted-syntax': [

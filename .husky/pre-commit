@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
-# Keep minimal for now; we'll re-enable lint after deps confirm green.
-npm run type-check || exit 1
+. "$(dirname -- "$0")/_/husky.sh"
+npm run lint
+npm run type-check
+bash scripts/check-colors.sh
 
 

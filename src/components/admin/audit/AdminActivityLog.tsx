@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Badge, mapStatusToBadgeVariant } from '@/components/ui/badge';
 import { useAuditLogging } from '@/hooks/admin/useAuditLogging';
 import { Spinner } from '@/components/Spinner';
 import { exportToCsv } from '@/utils/exportToCsv';
@@ -69,20 +69,7 @@ useEffect(() => {
     exportToCsv(exportData, 'admin-activity-log.csv');
   };
 
-  const getSeverityColor = (severity: string): string => {
-    switch (severity.toLowerCase()) {
-      case 'critical':
-        return 'bg-red-100 text-red-800';
-      case 'error':
-        return 'bg-orange-100 text-orange-800';
-      case 'warning':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'info':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+  // Now using semantic Badge variants instead of hardcoded colors
 
   return (
     <Card>
@@ -154,7 +141,7 @@ useEffect(() => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className={getSeverityColor(log.severity)}>
+                        <Badge variant={mapStatusToBadgeVariant(log.severity)}>
                           {log.severity}
                         </Badge>
                       </TableCell>

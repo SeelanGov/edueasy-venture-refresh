@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge, mapStatusToBadgeVariant } from '@/components/ui/badge';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { type UserSummary  } from '@/utils/admin/userLookup';
 
@@ -26,15 +26,12 @@ type Props = {
 };
 
 function getStatusBadge(status: string | null) {
-  switch (status) {
-    case 'approved':
-      return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
-    case 'rejected':
-      return <Badge className="bg-red-100 text-red-800">Rejected</Badge>;
-    case 'pending':
-    default:
-      return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
-  }
+  const badgeStatus = status || 'pending';
+  return (
+    <Badge variant={mapStatusToBadgeVariant(badgeStatus)}>
+      {badgeStatus.charAt(0).toUpperCase() + badgeStatus.slice(1)}
+    </Badge>
+  );
 }
 
 /**
