@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Spinner } from '@/components/Spinner';
-import { Badge } from '@/components/ui/badge';
+import { Badge, mapStatusToBadgeVariant, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { type Application } from '@/types/ApplicationTypes';
@@ -113,10 +114,12 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
   const getVerificationBadge = (status: string | null) => {
     if (!status) return null;
 
-    switch (status.toLowerCase()) {
+    const lowerStatus = status.toLowerCase();
+    
+    switch (lowerStatus) {
       case 'approved':
         return (
-          <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+          <Badge variant="success">
             <CheckCircle className="h-3 w-3 mr-1" />
             Verified
           </Badge>
@@ -130,14 +133,14 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
         );
       case 'pending':
         return (
-          <Badge variant="outline" className="border-amber-500 text-amber-500">
+          <Badge variant="warning">
             <AlertCircle className="h-3 w-3 mr-1" />
             Pending
           </Badge>
         );
       case 'request_resubmission':
         return (
-          <Badge variant="outline" className="border-orange-500 text-orange-500">
+          <Badge variant="warning">
             <RefreshCw className="h-3 w-3 mr-1" />
             Resubmit
           </Badge>
@@ -207,11 +210,9 @@ export const ApplicationTable = ({ applications, loading }: ApplicationTableProp
             </TableCell>
             <TableCell>{app.program_detail?.name || app.program || 'Not specified'}</TableCell>
             <TableCell>
-              <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(app.status)}`}
-              >
+              <Badge variant={mapStatusToBadgeVariant(app.status || 'draft')}>
                 {app.status || 'draft'}
-              </span>
+              </Badge>
             </TableCell>
             <TableCell>
               {app.documents && app.documents.length > 0 ? (

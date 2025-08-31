@@ -70,7 +70,7 @@ export const DocumentGuidance = ({
   const specificTip = getDocumentSpecificTips();
 
   return (
-    <div className="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded mt-2 text-sm">
+    <div className="bg-warning/10 border border-warning/20 text-warning p-3 rounded mt-2 text-sm">
       <div className="flex items-start">
         <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
         <div>

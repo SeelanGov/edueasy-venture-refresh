@@ -75,7 +75,7 @@ export function AdminDashboardStats({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Verified Users</CardTitle>
-          <Check className="h-4 w-4 text-green-500" />
+          <Check className="h-4 w-4 text-success" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{verifiedUsers}</div>
@@ -84,7 +84,7 @@ export function AdminDashboardStats({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Unverified Users</CardTitle>
-          <X className="h-4 w-4 text-yellow-700" />
+          <X className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{unverifiedUsers}</div>
@@ -111,10 +111,10 @@ export function AdminDashboardStats({
       <Card className="col-span-1 md:col-span-2 lg:col-span-1">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Payment Recovery</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-amber-500" />
+          <AlertTriangle className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-amber-600">
+          <div className="text-2xl font-bold text-warning">
             {paymentRecoveryStats.orphaned + paymentRecoveryStats.failed}
           </div>
           <p className="text-xs text-muted-foreground">

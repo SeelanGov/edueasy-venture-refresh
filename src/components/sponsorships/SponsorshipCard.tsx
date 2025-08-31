@@ -1,4 +1,5 @@
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { type VariantProps } from 'class-variance-authority';
 import { Button } from '@/components/ui/button';
 import { SponsorshipLevel, formatSponsorshipLevel, type Sponsorship } from '@/types/RevenueTypes';
 import { formatCurrency } from '@/types/SubscriptionTypes';
@@ -43,19 +44,19 @@ export function SponsorshipCard({
     });
   };
 
-  // Get sponsorship level color
-  const getLevelColor = (level: SponsorshipLevel): string => {
+  // Get sponsorship level variant for Badge
+  const getLevelVariant = (level: SponsorshipLevel): VariantProps<typeof badgeVariants>['variant'] => {
     switch (level) {
       case SponsorshipLevel.PLATINUM:
-        return 'bg-purple-100 text-purple-800';
+        return 'destructive'; // Purple-like for premium
       case SponsorshipLevel.GOLD:
-        return 'bg-amber-100 text-amber-800';
+        return 'warning';     // Gold/amber
       case SponsorshipLevel.SILVER:
-        return 'bg-gray-200 text-gray-800';
+        return 'muted';       // Gray for silver
       case SponsorshipLevel.BRONZE:
-        return 'bg-orange-100 text-orange-800';
+        return 'secondary';   // Bronze-like
       default:
-        return 'bg-blue-100 text-blue-800';
+        return 'info';        // Blue for default
     }
   };
 
@@ -70,7 +71,7 @@ export function SponsorshipCard({
               {sponsorship.contact_name}
             </CardDescription>
           </div>
-          <Badge className={getLevelColor(sponsorship.sponsorship_level)}>
+          <Badge variant={getLevelVariant(sponsorship.sponsorship_level)}>
             {formatSponsorshipLevel(sponsorship.sponsorship_level)}
           </Badge>
         </div>
