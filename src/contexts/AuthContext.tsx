@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    console.log('[auth] boot… env source =', import('@/lib/env').then(m => m.getEnvSource()));
+    console.log('[auth] boot… initializing auth context');
     
     // Bounded boot to prevent infinite loading
     Promise.race([
