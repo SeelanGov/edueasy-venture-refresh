@@ -193,17 +193,20 @@ class PaymentService {
       throw new Error('Missing required payment fields');
     }
 
-    if (!this.isPaymentMethodValid(request.tierId, request.paymentMethod)) {
-      throw new Error('Invalid payment method for this tier');
-    }
-
+    // Validate tier first for clear error semantics expected by tests
     const tier = PAYMENT_PLANS[request.tierId];
     if (!tier) {
       throw new Error('Invalid tier selected');
     }
 
+    // Free tier cannot create payments
     if (tier.price_once_off <= 0) {
       throw new Error('Cannot create payment for free tier');
+    }
+
+    // Validate payment method once tier is known to be eligible
+    if (!this.isPaymentMethodValid(request.tierId, request.paymentMethod)) {
+      throw new Error('Invalid payment method for this tier');
     }
   }
 
