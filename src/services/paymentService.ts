@@ -1,8 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
-import { type SubscriptionTier  } from '@/types/SubscriptionTypes';
-import { handleError } from '@/utils/errorHandler';
+import { parseError } from '@/lib/errors';
+import { type SubscriptionTier } from '@/types/SubscriptionTypes';
 import { secureStorage } from '@/utils/secureStorage';
-import { toMessage, parseError } from '@/lib/errors';
 
 
 
@@ -242,3 +241,4 @@ export const paymentService = PaymentService.getInstance();
 
 // Export types for use in components
 export type { PaymentRequest };
+
