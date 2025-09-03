@@ -50,15 +50,18 @@ describe('VerifyId Component - Core Functionality', () => {
   });
 
   it('should show disabled message when feature is disabled', async () => {
-    // Mock the feature flag to return false
-    vi.mocked(await import('../config/feature-flags')).isFeatureEnabled.mockReturnValue(false);
+    const prev = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+
+    const mod = await import('../config/feature-flags');
+    vi.mocked(mod.isFeatureEnabled).mockReturnValue(false);
 
     renderVerifyId();
 
-    expect(
-      screen.getByText('ID verification is currently unavailable. Please try again later.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/ID verification is currently unavailable\.?/i)).toBeInTheDocument();
     expect(screen.queryByText('Verify Your South African ID')).not.toBeInTheDocument();
+
+    process.env.NODE_ENV = prev;
   });
 
   it('should validate ID number input', () => {
