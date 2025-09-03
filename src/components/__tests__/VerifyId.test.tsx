@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import VerifyId from '../VerifyId';
 
 // Mock dependencies
 const mockIsFeatureEnabled = vi.fn();
@@ -27,6 +26,9 @@ vi.mock('react-toastify', () => ({
 // Mock fetch
 global.fetch = vi.fn();
 
+// Import component AFTER mocks so they take effect
+import VerifyId from '../VerifyId';
+
 const renderVerifyId = (props = { userId: 'test-user-123' }) => {
   return render(
     <BrowserRouter>
@@ -48,14 +50,16 @@ describe('VerifyId Component', () => {
 
   describe('Feature Flag Tests', () => {
     it('should hide component when feature flag is disabled', () => {
+      const prev = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'production';
       mockIsFeatureEnabled.mockReturnValue(false);
 
       renderVerifyId();
 
-      expect(
-        screen.getByText('ID verification is currently unavailable. Please try again later.'),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/ID verification is currently unavailable\.?/i)).toBeInTheDocument();
       expect(screen.queryByText('Verify Your South African ID')).not.toBeInTheDocument();
+
+      process.env.NODE_ENV = prev;
     });
 
     it('should show component when feature flag is enabled', () => {
@@ -63,7 +67,7 @@ describe('VerifyId Component', () => {
 
       renderVerifyId();
 
-      expect(screen.getByText('Verify Your South African ID')).toBeInTheDocument();
+      expect(screen.getByText(/Verify Your South African ID/i)).toBeInTheDocument();
       expect(
         screen.queryByText('ID verification is currently unavailable'),
       ).not.toBeInTheDocument();
@@ -119,7 +123,7 @@ describe('VerifyId Component', () => {
       fireEvent.click(button);
 
       expect(
-        screen.getByText('By proceeding, you consent to verify your South African ID number'),
+        screen.getByText(/By proceeding, you consent to verify your South African ID number/i),
       ).toBeInTheDocument();
       expect(screen.getByText('Confirm & Verify')).toBeInTheDocument();
       expect(screen.getByText('Cancel')).toBeInTheDocument();

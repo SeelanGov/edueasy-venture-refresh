@@ -1,6 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+// Mock feature flags BEFORE importing component
+vi.mock('../config/feature-flags', () => ({
+  isFeatureEnabled: vi.fn(() => true),
+}));
+
 import VerifyId from '../VerifyId';
 
 // Mock the feature flags module
@@ -78,7 +83,7 @@ describe('VerifyId Component - Final Tests', () => {
     fireEvent.click(button);
 
     expect(
-      screen.getByText('By proceeding, you consent to verify your South African ID number'),
+      screen.getByText(/By proceeding, you consent to verify your South African ID number/i),
     ).toBeInTheDocument();
     expect(screen.getByText('Confirm & Verify')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();

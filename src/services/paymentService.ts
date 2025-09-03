@@ -1,8 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
-import { type SubscriptionTier  } from '@/types/SubscriptionTypes';
-import { handleError } from '@/utils/errorHandler';
+import { parseError } from '@/lib/errors';
+import { type SubscriptionTier } from '@/types/SubscriptionTypes';
 import { secureStorage } from '@/utils/secureStorage';
-import { toMessage, parseError } from '@/lib/errors';
 
 
 
@@ -193,17 +192,20 @@ class PaymentService {
       throw new Error('Missing required payment fields');
     }
 
-    if (!this.isPaymentMethodValid(request.tierId, request.paymentMethod)) {
-      throw new Error('Invalid payment method for this tier');
-    }
-
+    // Validate tier first for clear error semantics expected by tests
     const tier = PAYMENT_PLANS[request.tierId];
     if (!tier) {
       throw new Error('Invalid tier selected');
     }
 
+    // Free tier cannot create payments
     if (tier.price_once_off <= 0) {
       throw new Error('Cannot create payment for free tier');
+    }
+
+    // Validate payment method once tier is known to be eligible
+    if (!this.isPaymentMethodValid(request.tierId, request.paymentMethod)) {
+      throw new Error('Invalid payment method for this tier');
     }
   }
 
@@ -239,3 +241,4 @@ export const paymentService = PaymentService.getInstance();
 
 // Export types for use in components
 export type { PaymentRequest };
+

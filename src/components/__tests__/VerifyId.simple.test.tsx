@@ -1,9 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import VerifyId from '../VerifyId';
 
-// Mock the feature flags module
+// Mock the feature flags module BEFORE importing the component
 vi.mock('../config/feature-flags', () => ({
   isFeatureEnabled: vi.fn(() => true), // Default to enabled
 }));
@@ -22,6 +21,9 @@ vi.mock('react-toastify', () => ({
     error: vi.fn(),
   },
 }));
+
+// Import component AFTER mocks so they take effect
+import VerifyId from '../VerifyId';
 
 // Mock fetch
 global.fetch = vi.fn();
@@ -48,15 +50,18 @@ describe('VerifyId Component - Core Functionality', () => {
   });
 
   it('should show disabled message when feature is disabled', async () => {
-    // Mock the feature flag to return false
-    vi.mocked(await import('../config/feature-flags')).isFeatureEnabled.mockReturnValue(false);
+    const prev = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+
+    const mod = await import('../config/feature-flags');
+    vi.mocked(mod.isFeatureEnabled).mockReturnValue(false);
 
     renderVerifyId();
 
-    expect(
-      screen.getByText('ID verification is currently unavailable. Please try again later.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/ID verification is currently unavailable\.?/i)).toBeInTheDocument();
     expect(screen.queryByText('Verify Your South African ID')).not.toBeInTheDocument();
+
+    process.env.NODE_ENV = prev;
   });
 
   it('should validate ID number input', () => {

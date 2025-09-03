@@ -1,4 +1,25 @@
 name: ui-guardrails
+on:
+  pull_request:
+    branches: [ main, develop ]
+jobs:
+  guardrails:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Type-check
+        run: npm run type-check
+      - name: Color audit (hex)
+        run: |
+          ! git grep -nE "#[0-9a-fA-F]{3,6}\b" -- "src/**/*" | grep -vE "\.svg$" || (echo "Hex colors found in src/"; exit 1)
+      - name: Color audit (forbidden tailwind palettes)
+        run: |
+          ! git grep -nE "\b(bg|text|border)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\b" -- "src/**/*" || (echo "Forbidden Tailwind palettes found"; exit 1)
+name: ui-guardrails
 on: [pull_request]
 
 jobs:
