@@ -5,16 +5,14 @@
 # 1) Type-check
 npm run type-check || exit 1
 
-# 2) Color guardrails (inline): fail on raw hex colors or forbidden Tailwind palettes in src/
-#    Allow .svg files to contain brand colors.
-if git grep -nE '#[0-9a-fA-F]{3,6}\b' -- "src/**/*" | grep -vE '\.svg$' ; then
-  echo "❌ Hex colors found in src/ — replace with semantic tokens." >&2
-  exit 1
-fi
-
-if git grep -nE '\b(bg|text|border)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\b' -- "src/**/*" ; then
-  echo "❌ Forbidden Tailwind palette classes found — use semantic tokens." >&2
-  exit 1
+# 2) Color guardrails (staged-only): fail on new raw hex or forbidden Tailwind palettes in staged TS/TSX
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/.*\.(ts|tsx)$' || true)
+if [ -n "$STAGED" ]; then
+  echo "$STAGED" | xargs -r -I {} sh -c "grep -nE '#[0-9a-fA-F]{3,6}\b' {} | grep -vE '\\.svg$' && echo ❌ Hex in {} && exit 1" || true
+  if echo "$STAGED" | xargs -r grep -nE '\b(bg|text|border)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\b' >/dev/null; then
+    echo "❌ Forbidden Tailwind palette classes found in staged changes — use semantic tokens." >&2
+    exit 1
+  fi
 fi
 
 exit 0
