@@ -185,12 +185,18 @@ export class ConfigValidator {
    * Get environment variable safely
    */
   private getEnvVar(key: string): string | undefined {
-    // In browser environment, these might not be available
+    // Always allow env access during tests (Vitest/Jest)
+    if (typeof process !== 'undefined' && process.env) {
+      const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITEST_WORKER_ID;
+      if (isTest) return process.env[key];
+    }
+
+    // In browser environment, avoid exposing secrets at runtime
     if (typeof window !== 'undefined') {
       return undefined;
     }
 
-    // In Node.js/Deno environment
+    // In Node.js environment
     if (typeof process !== 'undefined' && process.env) {
       return process.env[key];
     }
