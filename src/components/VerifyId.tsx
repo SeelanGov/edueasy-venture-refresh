@@ -28,9 +28,9 @@ const VerifyId = ({ userId }: VerifyIdProps): JSX.Element => {
     'idle',
   );
 
-  // Ensure feature is enabled in test environment to allow tests to exercise the UI
+  // Detect test environment for API mocking while still honoring feature flags mocked in tests
   const isTestEnv = typeof process !== 'undefined' && process.env?.NODE_ENV === 'test';
-  const featureEnabled = isTestEnv ? true : isFeatureEnabled('VERIFYID_ENABLED');
+  const featureEnabled = isFeatureEnabled('VERIFYID_ENABLED');
 
   // Check if VerifyID feature is enabled
   if (!featureEnabled) {
@@ -104,9 +104,11 @@ const VerifyId = ({ userId }: VerifyIdProps): JSX.Element => {
 
       {state === 'consent' && (
         <div className="mb-4 p-4 bg-info/10 border border-info/20 rounded-lg">
-          <p className="text-sm text-gray-700 mb-3">
-            By proceeding, you consent to verify your South African ID number. This information will
-            be used for identity verification purposes only.
+          <p className="text-sm text-gray-700 mb-2">
+            By proceeding, you consent to verify your South African ID number
+          </p>
+          <p className="text-xs text-gray-600 mb-3">
+            This information will be used for identity verification purposes only.
           </p>
           <div className="flex gap-2">
             <Button
