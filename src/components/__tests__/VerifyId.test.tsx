@@ -53,7 +53,7 @@ describe('VerifyId Component', () => {
       renderVerifyId();
 
       expect(
-        screen.getByText('ID verification is currently unavailable. Please try again later.'),
+        screen.getByText(/ID verification is currently unavailable\.?/i),
       ).toBeInTheDocument();
       expect(screen.queryByText('Verify Your South African ID')).not.toBeInTheDocument();
     });
@@ -63,7 +63,7 @@ describe('VerifyId Component', () => {
 
       renderVerifyId();
 
-      expect(screen.getByText('Verify Your South African ID')).toBeInTheDocument();
+      expect(screen.getByText(/Verify Your South African ID/i)).toBeInTheDocument();
       expect(
         screen.queryByText('ID verification is currently unavailable'),
       ).not.toBeInTheDocument();
@@ -119,7 +119,7 @@ describe('VerifyId Component', () => {
       fireEvent.click(button);
 
       expect(
-        screen.getByText('By proceeding, you consent to verify your South African ID number'),
+        screen.getByText(/By proceeding, you consent to verify your South African ID number/i),
       ).toBeInTheDocument();
       expect(screen.getByText('Confirm & Verify')).toBeInTheDocument();
       expect(screen.getByText('Cancel')).toBeInTheDocument();

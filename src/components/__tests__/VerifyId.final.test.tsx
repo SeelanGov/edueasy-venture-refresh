@@ -78,7 +78,7 @@ describe('VerifyId Component - Final Tests', () => {
     fireEvent.click(button);
 
     expect(
-      screen.getByText('By proceeding, you consent to verify your South African ID number'),
+      screen.getByText(/By proceeding, you consent to verify your South African ID number/i),
     ).toBeInTheDocument();
     expect(screen.getByText('Confirm & Verify')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();

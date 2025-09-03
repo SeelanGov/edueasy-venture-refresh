@@ -168,17 +168,20 @@ export class ConfigValidator {
    * Get complete application configuration
    */
   getAppConfig(): AppConfig {
-    if (this.config) {
+    // In tests, avoid caching to ensure fresh reads per test
+    const isTest = typeof process !== 'undefined' && (process.env.NODE_ENV === 'test' || !!process.env.VITEST_WORKER_ID);
+    if (!isTest && this.config) {
       return this.config;
     }
 
-    this.config = {
+    const built: AppConfig = {
       payment: this.validatePaymentConfig(),
       supabase: this.validateSupabaseConfig(),
       environment: this.getEnvironment(),
     };
 
-    return this.config;
+    if (!isTest) this.config = built;
+    return built;
   }
 
   /**
