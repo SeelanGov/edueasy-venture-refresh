@@ -1,6 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+// Mock feature flags BEFORE importing component
+vi.mock('../config/feature-flags', () => ({
+  isFeatureEnabled: vi.fn(() => true),
+}));
+
 import VerifyId from '../VerifyId';
 
 // Mock the feature flags module

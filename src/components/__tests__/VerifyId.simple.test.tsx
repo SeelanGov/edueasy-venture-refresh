@@ -1,9 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import VerifyId from '../VerifyId';
 
-// Mock the feature flags module
+// Mock the feature flags module BEFORE importing the component
 vi.mock('../config/feature-flags', () => ({
   isFeatureEnabled: vi.fn(() => true), // Default to enabled
 }));
@@ -22,6 +21,9 @@ vi.mock('react-toastify', () => ({
     error: vi.fn(),
   },
 }));
+
+// Import component AFTER mocks so they take effect
+import VerifyId from '../VerifyId';
 
 // Mock fetch
 global.fetch = vi.fn();
