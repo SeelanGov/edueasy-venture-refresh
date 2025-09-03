@@ -262,12 +262,12 @@ export class ConfigValidator {
     try {
       const config = this.getAppConfig();
 
-      // In production, sandbox should be false
-      if (config.environment === 'production' && config.payment.payfast.sandbox) {
+      // Not production-ready whenever sandbox is enabled, regardless of environment
+      if (config.payment.payfast.sandbox) {
         return false;
       }
 
-      // All required configurations should be present
+      // All required configurations present and not sandboxed
       return true;
     } catch {
       return false;
