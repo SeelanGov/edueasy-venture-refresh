@@ -1,0 +1,25 @@
+name: ui-guardrails
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'scripts/check-colors.sh'
+      - '.github/workflows/ui-guardrails.yml'
+jobs:
+  guardrails:
+    runs-on: ubuntu-latest
+    env:
+      BASE_REF: ${{ github.event.pull_request.base.sha }}
+      TARGET_REF: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci || npm install
+      - run: npm run typecheck
+      - name: Diff-only color audit
+        run: bash scripts/check-colors.sh
+        shell: bash
