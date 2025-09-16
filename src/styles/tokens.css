@@ -1,0 +1,31 @@
+:root {
+  /* Brand Colors */
+  --brand-600: 158 100% 35%; /* Teal primary */
+  --brand-700: 158 100% 25%;
+  --accent-600: 24 95% 53%; /* Coral */
+  
+  /* Neutral Colors */
+  --neutral-900: 222 84% 5%; /* Slate-900 */
+  --neutral-600: 215 25% 27%;
+  --neutral-100: 210 40% 96%;
+  
+  /* Background & Foreground */
+  --background: 0 0% 100%;
+  --foreground: 222 84% 5%;
+  --border: 214 32% 91%;
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  
+  /* Layout */
+  --radius-xl: 1rem;
+  --shadow-soft: 0 10px 20px rgba(0,0,0,.06);
+}
+
+:root[data-theme="dark"] {
+  --neutral-100: 222 47% 7%;
+  --neutral-900: 210 40% 95%;
+  --background: 222 84% 5%;
+  --foreground: 210 40% 95%;
+  --border: 217 33% 17%;
+}
