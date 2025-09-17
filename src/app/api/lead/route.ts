@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     // Add request metadata
     const enrichedData = {
       ...validatedData,
-      ip: request.ip || request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
+      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null,
       user_agent: request.headers.get('user-agent'),
       source: 'landing',
     };

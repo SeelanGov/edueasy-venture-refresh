@@ -38,7 +38,7 @@ export const trackLeadSubmission = (data: {
   });
 };
 
-export const trackWhatsAppClick = (utm: Record<string, string>) => {
+export const trackWhatsAppClick = (utm: Record<string, any>) => {
   trackEvent('whatsapp_click', {
     event_category: 'engagement',
     event_label: 'whatsapp_cta',

@@ -6,6 +6,7 @@ export interface UTMParams {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  [key: string]: string | undefined;
 }
 
 export function waDeepLink(
@@ -16,10 +17,15 @@ export function waDeepLink(
   const phone = phoneE164 || siteConfig.whatsappPhone;
   const base = `https://wa.me/${phone}`;
   
-  const params = new URLSearchParams({
-    text: message,
-    ...utmParams
+  // Filter out undefined values for URLSearchParams
+  const filteredParams: Record<string, string> = { text: message };
+  Object.entries(utmParams).forEach(([key, value]) => {
+    if (value !== undefined) {
+      filteredParams[key] = value;
+    }
   });
+  
+  const params = new URLSearchParams(filteredParams);
   
   return `${base}?${params.toString()}`;
 }

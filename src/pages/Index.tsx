@@ -4,7 +4,7 @@ import { AISupportSection } from '@/components/home/AISupportSection';
 import { AboutSection } from '@/components/home/AboutSection';
 import { CTASection } from '@/components/home/CTASection';
 import { CommunitySection } from '@/components/home/CommunitySection';
-import { Footer } from '@/components/footer';
+import Footer from '@/components/home/Footer';
 import { Hero } from '@/components/home/Hero';
 import { HowItWorks } from '@/components/home/HowItWorks';
 import { PartnersSection } from '@/components/home/PartnersSection';

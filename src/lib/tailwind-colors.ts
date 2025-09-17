@@ -1,24 +1,54 @@
-import { designTokens } from './design-tokens';
-
-// Export colors in format expected by Tailwind CSS
-
-/**
- * tailwindColors
- * @description Function
- */
 export const tailwindColors = {
-  // Brand colors with full scale
-  'cap-teal': designTokens.colors.primary,
-  'cap-coral': designTokens.colors.secondary,
-  primary: designTokens.colors.primary,
-  secondary: designTokens.colors.secondary,
-
-  // Status colors
-  success: designTokens.colors.success,
-  warning: designTokens.colors.warning,
-  error: designTokens.colors.error,
-  info: designTokens.colors.info,
-
-  // Gray scale
-  gray: designTokens.colors.gray,
+  // Brand colors with CSS variable support
+  brand: {
+    50: 'hsl(var(--brand-50) / <alpha-value>)',
+    100: 'hsl(var(--brand-100) / <alpha-value>)',
+    200: 'hsl(var(--brand-200) / <alpha-value>)',
+    300: 'hsl(var(--brand-300) / <alpha-value>)',
+    400: 'hsl(var(--brand-400) / <alpha-value>)',
+    500: 'hsl(var(--brand-500) / <alpha-value>)',
+    600: 'hsl(var(--brand-600) / <alpha-value>)',
+    700: 'hsl(var(--brand-700) / <alpha-value>)',
+    800: 'hsl(var(--brand-800) / <alpha-value>)',
+    900: 'hsl(var(--brand-900) / <alpha-value>)',
+    DEFAULT: 'hsl(var(--brand-600) / <alpha-value>)',
+  },
+  accent: {
+    50: 'hsl(var(--accent-50) / <alpha-value>)',
+    100: 'hsl(var(--accent-100) / <alpha-value>)',
+    200: 'hsl(var(--accent-200) / <alpha-value>)',
+    300: 'hsl(var(--accent-300) / <alpha-value>)',
+    400: 'hsl(var(--accent-400) / <alpha-value>)',
+    500: 'hsl(var(--accent-500) / <alpha-value>)',
+    600: 'hsl(var(--accent-600) / <alpha-value>)',
+    700: 'hsl(var(--accent-700) / <alpha-value>)',
+    800: 'hsl(var(--accent-800) / <alpha-value>)',
+    900: 'hsl(var(--accent-900) / <alpha-value>)',
+    DEFAULT: 'hsl(var(--accent-500) / <alpha-value>)',
+  },
+  neutral: {
+    50: 'hsl(var(--neutral-50) / <alpha-value>)',
+    100: 'hsl(var(--neutral-100) / <alpha-value>)',
+    200: 'hsl(var(--neutral-200) / <alpha-value>)',
+    300: 'hsl(var(--neutral-300) / <alpha-value>)',
+    400: 'hsl(var(--neutral-400) / <alpha-value>)',
+    500: 'hsl(var(--neutral-500) / <alpha-value>)',
+    600: 'hsl(var(--neutral-600) / <alpha-value>)',
+    700: 'hsl(var(--neutral-700) / <alpha-value>)',
+    800: 'hsl(var(--neutral-800) / <alpha-value>)',
+    900: 'hsl(var(--neutral-900) / <alpha-value>)',
+    DEFAULT: 'hsl(var(--neutral-500) / <alpha-value>)',
+  },
+  primary: {
+    DEFAULT: 'hsl(var(--primary))',
+    foreground: 'hsl(var(--primary-foreground))',
+  },
+  secondary: {
+    DEFAULT: 'hsl(var(--secondary))',
+    foreground: 'hsl(var(--secondary-foreground))',
+  },
+  destructive: {
+    DEFAULT: 'hsl(var(--destructive))',
+    foreground: 'hsl(var(--destructive-foreground))',
+  },
 };
