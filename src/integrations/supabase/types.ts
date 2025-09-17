@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -703,6 +703,51 @@ export type Database = {
           source?: string | null
           status?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      marketing_leads: {
+        Row: {
+          consent: boolean
+          consent_timestamp: string
+          created_at: string
+          full_name: string
+          grade: string | null
+          id: string
+          ip: unknown | null
+          phone: string
+          source: string
+          updated_at: string
+          user_agent: string | null
+          utm: Json
+        }
+        Insert: {
+          consent: boolean
+          consent_timestamp?: string
+          created_at?: string
+          full_name: string
+          grade?: string | null
+          id?: string
+          ip?: unknown | null
+          phone: string
+          source?: string
+          updated_at?: string
+          user_agent?: string | null
+          utm?: Json
+        }
+        Update: {
+          consent?: boolean
+          consent_timestamp?: string
+          created_at?: string
+          full_name?: string
+          grade?: string | null
+          id?: string
+          ip?: unknown | null
+          phone?: string
+          source?: string
+          updated_at?: string
+          user_agent?: string | null
+          utm?: Json
         }
         Relationships: []
       }
