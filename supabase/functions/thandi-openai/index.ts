@@ -7,7 +7,16 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
 );
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
     const { user_id, message } = await req.json();
 
@@ -32,9 +41,10 @@ serve(async (req) => {
     }
     if ((recentQueries?.length || 0) >= 5) {
       console.log('Rate limit enforced for user:', user_id);
-      return new Response(JSON.stringify({ error: 'Daily limit reached (5 queries/24h)' }), {
-        status: 429,
-      });
+      return new Response(
+        JSON.stringify({ error: 'Daily limit reached (5 queries/24h)' }), 
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // 3. Query thandi_knowledge_index for matching modules
@@ -45,20 +55,21 @@ serve(async (req) => {
 
     if (modErr) {
       console.error('Knowledge index query error:', modErr);
-      return new Response(JSON.stringify({ error: 'Knowledge index query failed' }), {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({ error: 'Knowledge index query failed' }), 
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     if (!modules || modules.length === 0) {
       console.log('No matching modules found for keywords:', queryKeywords);
-      // 8. Log the query even if no match
+      // Log the query even if no match
       await supabase.from('thandi_interactions').insert({ user_id, message, is_user: true });
       return new Response(
         JSON.stringify({
-          reply:
-            "I couldn't find anything useful. Visit https://edueasy.co.za/resources for more help.",
+          reply: "I couldn't find anything useful. Visit https://edueasy.co.za/resources for more help.",
         }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -105,35 +116,100 @@ serve(async (req) => {
       }
     }
 
-    // 6. Build system prompt
-    const systemPrompt = `You are Thandi, EduEasy’s AI assistant. Use the following educational module content to answer the user's question.\n\n${contentSnippets.join('\n\n')}`;
-    console.log('System prompt constructed:\n', systemPrompt);
+    // 6. Build enhanced system prompt with PRD personality
+    const systemPrompt = `You are Thandi, EduEasy's AI assistant, guiding South African students through education, funding, and career pathways.
 
-    // 7. Log the query
+**Your personality:**
+- Warm, empathetic, and supportive
+- Clear and direct communication
+- Culturally aware of South African education system
+
+**Your knowledge base:**
+${contentSnippets.join('\n\n')}
+
+**Response guidelines:**
+1. Pull answers from the verified modules above
+2. Always include CTAs to https://edueasy.co.za when relevant
+3. Support multilingual responses (English, Zulu, Xhosa)
+4. If you can't find info, say: "Please visit https://edueasy.co.za/resources for more help."
+5. Keep responses concise and actionable (under 200 words)
+
+**Important:** Prioritize EduEasy services like quizzes, alerts, and tracking tools.`;
+
+    console.log('System prompt constructed with', contentSnippets.length, 'knowledge modules');
+
+    // 7. Log the user query
     await supabase.from('thandi_interactions').insert({ user_id, message, is_user: true });
 
-    // 6. Return a hardcoded GPT-style mock response
-    const mockResponse = {
-      data: {
-        choices: [
-          {
-            message: {
-              content: 'This is a mocked Thandi response based on retrieved knowledge.',
-            },
-          },
-        ],
+    // 8. Call Lovable AI Gateway
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      console.error('LOVABLE_API_KEY not configured');
+      return new Response(
+        JSON.stringify({ error: 'AI service not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
       },
-    };
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: message }
+        ],
+        max_tokens: 500,
+      }),
+    });
+
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error('Lovable AI error:', aiResponse.status, errorText);
+
+      if (aiResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ error: 'Rate limit reached. Please try again in a few moments.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ error: 'AI service temporarily unavailable' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const aiData = await aiResponse.json();
+    const reply = aiData.choices[0].message.content;
+
+    // 9. Log the AI response
+    await supabase.from('thandi_interactions').insert({
+      user_id,
+      message: reply,
+      is_user: false,
+    });
+
+    const queriesRemaining = 5 - (recentQueries?.length || 0) - 1;
 
     return new Response(
       JSON.stringify({
-        reply: mockResponse.data.choices[0].message.content,
+        reply,
         context: contentSnippets,
+        model: 'google/gemini-2.5-flash',
+        queries_remaining: queriesRemaining
       }),
-      { status: 200 },
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err) {
     console.error('Unhandled error in edge function:', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 });

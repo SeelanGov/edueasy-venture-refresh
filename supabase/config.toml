@@ -107,6 +107,10 @@ verify_jwt = false
 verify_jwt = true
 timeout_seconds = 60
 
+[functions.thandi-openai]
+verify_jwt = true
+timeout_seconds = 30
+
 [analytics]
 enabled = false
 port = 54327

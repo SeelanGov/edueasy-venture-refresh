@@ -73,14 +73,17 @@ export const ThandiAgent = (): JSX.Element => {
 
       // Try calling the edge function first
       const edgeResponse = await fetch(
-        `https://pensvamtfjtpsaoeflex.supabase.co/functions/v1/thandi-openai`,
+        `https://pensvamtfjtpsaoeflbx.supabase.co/functions/v1/thandi-openai`,
         {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${session.access_token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ message: currentInput }),
+          body: JSON.stringify({ 
+            user_id: user.id,
+            message: currentInput 
+          }),
         },
       );
 
@@ -141,10 +144,10 @@ export const ThandiAgent = (): JSX.Element => {
       } else if (edgeResponse.ok) {
         // Success from edge function
         const data = await edgeResponse.json();
-        responseText = data.content;
+        responseText = data.reply || 'I received your message but had trouble generating a response.';
 
           const { toast } = useToast();
-          if (data.queries_remaining <= 1) {
+          if (data.queries_remaining !== undefined && data.queries_remaining <= 1) {
             toast({
               title: 'Almost at daily limit',
               description: `Only ${data.queries_remaining} queries remaining today.`,
