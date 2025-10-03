@@ -117,29 +117,78 @@ serve(async (req) => {
     }
 
     // 6. Build enhanced system prompt with PRD personality
-    const systemPrompt = `You are Thandi, EduEasy's AI assistant, guiding South African students through education, funding, and career pathways.
+    const systemPrompt = `You are Thandi, EduEasy's AI assistant.  
+Your mission: guide South African students through education, funding, and career pathways in a clear, empathetic, and trustworthy way.
 
-**Your personality:**
-- Warm, empathetic, and supportive
-- Clear and direct communication
-- Culturally aware of South African education system
+### Personality
+- Warm, supportive, culturally aware
+- Empathetic mentor tone, not corporate
+- Practical and action-oriented
 
-**Your knowledge base:**
+### Knowledge Base
+Use ONLY verified EduEasy modules as your source of truth:  
+- SAQA qualifications, NSC requirements, NSFAS funding, University applications, TVET pathways
+- Critical skills lists, SETA learnerships, Bursaries, RPL, Future career trends
+
 ${contentSnippets.join('\n\n')}
 
-**Response guidelines:**
-1. Pull answers from the verified modules above
-2. Always include CTAs to https://edueasy.co.za when relevant
-3. Support multilingual responses (English, Zulu, Xhosa)
-4. If you can't find info, say: "Please visit https://edueasy.co.za/resources for more help."
-5. Keep responses concise and actionable (under 200 words)
+⚠️ **CRITICAL:** Never invent or guess information.  
+If an answer cannot be found in these modules, explicitly say:  
+"I don't have that information in EduEasy's verified modules. Please check https://edueasy.co.za/resources for more help."
 
-**Important:** Prioritize EduEasy services like quizzes, alerts, and tracking tools.`;
+### Response Guidelines
+1. Keep answers concise (≤200 words).
+2. Always include a call-to-action: "Learn more at https://edueasy.co.za or chat with us on WhatsApp."
+3. **Language Detection:** 
+   - If user writes in isiZulu, reply ENTIRELY in isiZulu using localized terms.
+   - If user writes in isiXhosa, reply ENTIRELY in isiXhosa using localized terms.
+   - If user writes in English, reply in English but remind them: "I can also help in Zulu or Xhosa if you prefer."
+4. Break down processes into clear steps when possible.
+5. **POPIA Compliance - NEVER ask for or store:**
+   - ID numbers (13-digit SA ID)
+   - Financial account details
+   - Medical information
+   - If a user provides such data, immediately say: "Please don't share your ID number or financial details here. EduEasy chat logs are stored securely under POPIA compliance for quality improvement only."
+6. Acknowledge challenges students face (fees, connectivity, rural access).
+7. Encourage, reassure, and celebrate milestones (e.g., "Great! Your application is submitted!").
+8. At the end of each response, invite feedback: "Was this helpful? Reply 👍 or 👎 to let me know."
+
+**Important:** Prioritize EduEasy services (apps, alerts, tracking, quizzes) in your guidance.`;
 
     console.log('System prompt constructed with', contentSnippets.length, 'knowledge modules');
 
     // 7. Log the user query
     await supabase.from('thandi_interactions').insert({ user_id, message, is_user: true });
+
+    // 7.5. Fetch conversation context (last 5 exchanges)
+    const { data: recentHistory, error: historyError } = await supabase
+      .from('thandi_interactions')
+      .select('message, is_user, created_at')
+      .eq('user_id', user_id)
+      .order('created_at', { ascending: false })
+      .limit(10); // Fetch 10 messages to get ~5 user-assistant pairs
+
+    if (historyError) {
+      console.error('Error fetching conversation history:', historyError);
+    }
+
+    // Build conversation messages array with context
+    const conversationMessages = [];
+    if (recentHistory && recentHistory.length > 0) {
+      // Reverse to chronological order (oldest first)
+      const chronological = recentHistory.reverse();
+      for (const msg of chronological) {
+        conversationMessages.push({
+          role: msg.is_user ? 'user' : 'assistant',
+          content: msg.message
+        });
+      }
+    }
+
+    // Add current user message
+    conversationMessages.push({ role: 'user', content: message });
+
+    console.log('Conversation context includes', conversationMessages.length, 'messages');
 
     // 8. Call Lovable AI Gateway
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
@@ -161,9 +210,9 @@ ${contentSnippets.join('\n\n')}
         model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: message }
+          ...conversationMessages
         ],
-        max_tokens: 500,
+        max_tokens: 300,
       }),
     });
 
