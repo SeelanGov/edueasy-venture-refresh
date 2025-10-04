@@ -1,5 +1,4 @@
 import { MobileFriendlyDashboardLayout } from '@/components/MobileFriendlyDashboardLayout';
-import { ThandiAgent } from '@/components/ai/ThandiAgent';
 import { Toaster } from '@/components/ui/toaster';
 import type { ReactNode } from 'react';
 import { Toaster as SonnerToaster } from 'sonner';
@@ -18,7 +17,6 @@ export const DashboardLayoutWithThandi = ({ children }: DashboardLayoutWithThand
       <MobileFriendlyDashboardLayout>{children}</MobileFriendlyDashboardLayout>
       <Toaster />
       <SonnerToaster />
-      <ThandiAgent />
     </>
   );
 };

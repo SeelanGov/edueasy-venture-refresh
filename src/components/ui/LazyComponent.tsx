@@ -30,12 +30,6 @@ export const LazyComponent: React.FC<LazyComponentProps> = ({
 
 // Predefined lazy components for common use cases
 
-/**
- * LazyThandiAgent
- * @description Function
- */
-export const LazyThandiAgent = () => import('@/components/ai/ThandiAgent');
-
 // Removed LazyNotificationPreferences - component no longer exists
 
 /**

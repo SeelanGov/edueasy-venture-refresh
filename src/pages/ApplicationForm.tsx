@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import { ThandiAgent } from '@/components/ai/ThandiAgent';
 import { ApplicationFormFields } from '@/components/application/ApplicationFormFields';
 import { FormActions } from '@/components/application/FormActions';
 import { OfflineNotice } from '@/components/application/OfflineNotice';
@@ -90,7 +89,6 @@ const ApplicationForm = () => {
         </main>
       </PageLayout>
       <Toaster />
-      <ThandiAgent />
     </div>
   );
 };
