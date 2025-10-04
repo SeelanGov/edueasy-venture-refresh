@@ -54,7 +54,7 @@ import Index from './pages/Index';
 import InstitutionDetail from './pages/InstitutionDetail';
 import Institutions from './pages/Institutions';
 import Login from './pages/Login';
-import MeetThandi from './pages/MeetThandi';
+
 import NotFound from './pages/NotFound';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerInquiry from './pages/PartnerInquiry';
@@ -101,7 +101,6 @@ const App = (): JSX.Element => (
                 }
               />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/meet-thandi" element={<MeetThandi />} />
               <Route path="/institutions" element={<Institutions />} />
               <Route path="/institutions/:id" element={<InstitutionDetail />} />
               <Route path="/partner-inquiry" element={<PartnerInquiry />} />
