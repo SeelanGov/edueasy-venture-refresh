@@ -310,8 +310,23 @@ export const cleanupExpiredSessions = (): void => {
   }
 };
 
-// Auto-cleanup on page load
+// Auto-cleanup on page load (only on authenticated routes)
 if (typeof window !== 'undefined') {
-  window.addEventListener('load', cleanupExpiredSessions);
+  window.addEventListener('load', () => {
+    // Only check session on protected routes
+    const publicRoutes = ['/', '/home', '/pricing', '/institutions', '/login', '/register', '/faqs', '/sponsorships', '/career-guidance', '/consultations', '/partner-inquiry', '/privacy-policy', '/terms-of-service', '/refund-policy'];
+    const currentPath = window.location.pathname;
+    
+    const isPublicRoute = publicRoutes.includes(currentPath) || 
+                         currentPath.startsWith('/institutions/') ||
+                         currentPath.startsWith('/sponsors/') ||
+                         currentPath.startsWith('/nsfas/') ||
+                         currentPath.startsWith('/counselors/') ||
+                         currentPath.startsWith('/students/');
+    
+    if (!isPublicRoute) {
+      cleanupExpiredSessions();
+    }
+  });
   window.addEventListener('focus', extendSession);
 }

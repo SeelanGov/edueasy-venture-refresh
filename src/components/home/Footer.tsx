@@ -64,13 +64,6 @@ const Footer = (): JSX.Element => {
               </li>
               <li>
                 <Link
-                  to="/meet-thandi"
-                  className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
-                  Meet Thandi
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/pricing"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
                   Pricing
@@ -135,9 +128,9 @@ const Footer = (): JSX.Element => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/partner-dashboard"
+                  to="/partner/login"
                   className="text-gray-300 hover:text-cap-teal transition-colors duration-200">
-                  EduEasy Admin
+                  Partner Login
                 </Link>
               </li>
               <li>

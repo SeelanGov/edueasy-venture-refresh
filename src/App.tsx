@@ -104,6 +104,8 @@ const App = (): JSX.Element => (
               <Route path="/institutions" element={<Institutions />} />
               <Route path="/institutions/:id" element={<InstitutionDetail />} />
               <Route path="/partner-inquiry" element={<PartnerInquiry />} />
+              <Route path="/partner/login" element={<Login />} />
+              <Route path="/partner/register" element={<Register />} />
               <Route path="/faqs" element={<FAQPage />} />
               <Route path="/sponsorships" element={<SponsorshipsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

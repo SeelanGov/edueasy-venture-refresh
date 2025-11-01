@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -38,41 +37,8 @@ export const HeroContent = (): JSX.Element => {
     navigate('/auth-redirect');
   };
 
-  const handleStartWithThandi = async () => {
-    if (!user) {
-      toast({
-        title: 'Registration Required',
-        description: 'Please create an account to chat with Thandi.',
-        variant: 'destructive',
-      });
-      navigate('/register');
-      return;
-    }
-
-    // Check user's tier to determine Thandi access level
-    try {
-      const { data: userSubscription } = await supabase
-        .from('user_subscriptions')
-        .select(
-          `
-          tier_id,
-          subscription_tiers!inner(
-            name,
-            thandi_tier
-          )
-        `,
-        )
-        .eq('user_id', user.id)
-        .eq('is_active', true)
-        .single();
-
-      const thandiTier = userSubscription?.subscription_tiers?.thandi_tier || 'basic';
-
-      // Allow access but show tier limitations in Meet Thandi page
-      navigate('/meet-thandi', { state: { thandiTier } });
-    } catch {
-      console.error('Error fetching statistics');
-    }
+  const handleGetSupport = (): void => {
+    navigate('/faqs');
   };
 
   return (
@@ -96,9 +62,9 @@ export const HeroContent = (): JSX.Element => {
             size="lg"
             rounded="full"
             className="px-8"
-            onClick={handleStartWithThandi}
+            onClick={handleGetSupport}
           >
-            Start with Thandi
+            Get Support
           </Button>
           <Button
             variant="outline"

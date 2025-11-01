@@ -38,8 +38,8 @@ export const EDUEASY_STATISTICS = {
   ai247Support: {
     value: '24/7',
     label: 'AI Support',
-    description: 'Thandi is always available to help',
-    linkTo: '/meet-thandi',
+    description: 'AI-powered 24/7 support available',
+    linkTo: '/faqs',
     icon: 'Bot',
     isTarget: false,
   },

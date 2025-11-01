@@ -46,7 +46,7 @@ export const StatisticsGrid = ({
           icon={stat.icon}
           variant={variant}
           animateCount={animateOnScroll}
-          delay={animateOnScroll ? index * 100 : 0}
+          delay={animateOnScroll ? index * 50 : 0}
         />
       ))}
     </div>

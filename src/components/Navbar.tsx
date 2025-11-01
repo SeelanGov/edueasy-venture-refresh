@@ -59,11 +59,6 @@ export const Navbar = () => {
               How It Works
             </Button>
             <Link
-              to="/meet-thandi"
-              className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
-              Meet Thandi
-            </Link>
-            <Link
               to="/pricing"
               className="text-gray-700 hover:text-cap-teal transition-colors font-medium">
               Pricing
@@ -132,13 +127,6 @@ export const Navbar = () => {
                 className="text-gray-800 hover:text-cap-teal text-lg font-medium text-left py-3 border-b border-gray-100 justify-start">
                 How It Works
               </Button>
-              <Link
-                to="/meet-thandi"
-                className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
-                onClick={() => setIsOpen(false)}
-              >
-                Meet Thandi
-              </Link>
               <Link
                 to="/pricing"
                 className="text-gray-800 hover:text-cap-teal transition-colors text-lg font-medium py-3 border-b border-gray-100"
