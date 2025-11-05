@@ -54,7 +54,8 @@ import Index from './pages/Index';
 import InstitutionDetail from './pages/InstitutionDetail';
 import Institutions from './pages/Institutions';
 import Login from './pages/Login';
-
+import PartnerLogin from './pages/PartnerLogin';
+import PartnerRegister from './pages/PartnerRegister';
 import NotFound from './pages/NotFound';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerInquiry from './pages/PartnerInquiry';
@@ -104,8 +105,8 @@ const App = (): JSX.Element => (
               <Route path="/institutions" element={<Institutions />} />
               <Route path="/institutions/:id" element={<InstitutionDetail />} />
               <Route path="/partner-inquiry" element={<PartnerInquiry />} />
-              <Route path="/partner/login" element={<Login />} />
-              <Route path="/partner/register" element={<Register />} />
+              <Route path="/partner/login" element={<PartnerLogin />} />
+              <Route path="/partner/register" element={<PartnerRegister />} />
               <Route path="/faqs" element={<FAQPage />} />
               <Route path="/sponsorships" element={<SponsorshipsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

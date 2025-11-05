@@ -314,7 +314,7 @@ export const cleanupExpiredSessions = (): void => {
 if (typeof window !== 'undefined') {
   window.addEventListener('load', () => {
     // Only check session on protected routes
-    const publicRoutes = ['/', '/home', '/pricing', '/institutions', '/login', '/register', '/faqs', '/sponsorships', '/career-guidance', '/consultations', '/partner-inquiry', '/privacy-policy', '/terms-of-service', '/refund-policy'];
+    const publicRoutes = ['/', '/home', '/pricing', '/institutions', '/login', '/register', '/faqs', '/sponsorships', '/career-guidance', '/consultations', '/partner-inquiry', '/partner/login', '/partner/register', '/privacy-policy', '/terms-of-service', '/refund-policy'];
     const currentPath = window.location.pathname;
     
     const isPublicRoute = publicRoutes.includes(currentPath) || 

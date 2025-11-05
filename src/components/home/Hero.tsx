@@ -99,7 +99,7 @@ export const Hero = (): JSX.Element => {
                 selectedStats={['applicationSuccessRate', 'partnerInstitutions', 'ai247Support']}
                 variant="compact"
                 columns={3}
-                animateOnScroll={true}
+                animateOnScroll={false}
               />
             </div>
           </div>
