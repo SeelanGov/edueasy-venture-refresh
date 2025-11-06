@@ -1,6 +1,7 @@
 import { AdminAuthGuard } from '@/components/AdminAuthGuard';
 import { AuthGuard } from '@/components/AuthGuard';
 import { InstitutionGuard } from '@/components/InstitutionGuard';
+import { PartnerGuard } from '@/components/PartnerGuard';
 import { PrivacyPolicyRedirect } from '@/components/PrivacyPolicyRedirect';
 import { RefundPolicyRedirect } from '@/components/RefundPolicyRedirect';
 import { RoleBasedRedirect } from '@/components/RoleBasedRedirect';
@@ -176,15 +177,19 @@ const App = (): JSX.Element => (
                 }
               />
 
-              {/* Admin routes */}
+              {/* Partner routes */}
               <Route
                 path="/partner-dashboard"
                 element={
-                  <AdminAuthGuard>
-                    <PartnerDashboard />
-                  </AdminAuthGuard>
+                  <AuthGuard>
+                    <PartnerGuard>
+                      <PartnerDashboard />
+                    </PartnerGuard>
+                  </AuthGuard>
                 }
               />
+
+              {/* Admin routes */}
               <Route
                 path="/admin/ui-lock"
                 element={

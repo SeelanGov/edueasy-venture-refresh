@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 
 
@@ -9,22 +10,49 @@ import { useNavigate } from 'react-router-dom';
 
 const PartnerLogin: React.FC = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setError('');
-    if (!form.username || !form.password) {
-      setError('Both fields are required.');
+    if (!form.email || !form.password) {
+      setError('Both email and password are required');
       return;
     }
-    // Simulate login success
-    navigate('/partner/dashboard');
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password,
+      });
+      if (error) throw error;
+
+      // Fetch users table to validate role
+      const { data: u, error: ue } = await supabase
+        .from('users')
+        .select('id, user_type')
+        .eq('id', data.user?.id)
+        .single();
+
+      if (ue || !u) {
+        setError('Account not properly provisioned. Contact support.');
+        return;
+      }
+
+      if (u.user_type !== 'institution') {
+        setError('Invalid partner credentials');
+        await supabase.auth.signOut();
+        return;
+      }
+
+      navigate('/partner/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
+    }
   };
 
   return (
@@ -46,10 +74,10 @@ const PartnerLogin: React.FC = () => {
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">Partner Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={form.username}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
             onChange={handleChange}
             className="border border-border rounded px-3 py-2 bg-background text-foreground"
             required

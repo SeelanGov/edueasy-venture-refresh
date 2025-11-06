@@ -111,6 +111,24 @@ const PartnerRegister: React.FC = () => {
         return;
       }
 
+      // 3. Insert into users table with user_type
+      const { error: userProfileError } = await supabase
+        .from('users')
+        .insert({
+          id: data.user.id,
+          email: form.email,
+          full_name: form.instituteName,
+          user_type: 'institution',
+          tracking_id: `EDU-INST-${Date.now().toString(36).toUpperCase()}`,
+          id_verified: false,
+          profile_status: 'pending_verification',
+        });
+
+      if (userProfileError) {
+        console.error('User profile creation failed:', userProfileError);
+        // Don't block registration, but log error
+      }
+
       setSuccess('Account created! Please check your email to verify.');
       setTimeout(() => navigate('/partner/dashboard'), 1500);
     }
