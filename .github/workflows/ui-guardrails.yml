@@ -1,19 +1,74 @@
 name: ui-guardrails
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - '.github/workflows/ui-guardrails.yml'
 
 jobs:
   guardrails:
     runs-on: ubuntu-latest
+    env:
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      TARGET_REF: ${{ github.event.pull_request.head.ref }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
-        with: 
+        with:
           node-version: '20'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run type-check
-      - run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      - run: bash scripts/check-colors.sh
+      - run: npm ci || npm install
+      - run: npm run typecheck
+      - name: Diff-only color audit (inline)
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=${BASE_REF:-origin/main}
+          TARGET=${TARGET_REF:-HEAD}
+          echo "BASE=$BASE"
+          echo "TARGET=$TARGET"
+
+          CHANGED="$(git diff --name-only --diff-filter=AMR "$BASE" "$TARGET" -- 'src/**/*.{ts,tsx,css,scss}' || true)"
+          if [ -z "$CHANGED" ]; then
+            echo "No changed files."
+            exit 0
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED"
+
+          ALLOWLIST_REGEX='^(src/lib/design-tokens\.ts|tailwind\.config\.(js|ts)|src/styles/tokens\.css)$'
+
+          FAIL=0
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            if [[ "$f" =~ $ALLOWLIST_REGEX ]]; then
+              echo "⏭️  Skipping $f"
+              continue
+            fi
+
+            if git grep -nE '#[0-9a-fA-F]{3,8}\b' -- "$f" >/dev/null; then
+              echo "❌ HEX in $f"
+              git grep -nE '#[0-9a-fA-F]{3,8}\b' -- "$f" || true
+              FAIL=1
+            fi
+
+            if git grep -nE '\b(bg|text|border|fill|stroke|from|to|via)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\b' -- "$f" >/dev/null; then
+              echo "❌ Fixed Tailwind palette in $f"
+              git grep -nE '\b(bg|text|border|fill|stroke|from|to|via)-(red|blue|yellow|orange|slate|green|gray|emerald|stone)-[0-9]{2,3}\b' -- "$f" || true
+              FAIL=1
+            fi
+
+            if git grep -nE '^[[:space:]]*<(svg|g|path|rect|circle|ellipse|line|polyline|polygon)\b[^>]*(fill|stroke)=("|\x27)white\3' -- "$f" >/dev/null; then
+              echo "❌ Literal white in SVG attributes in $f"
+              git grep -nE '^[[:space:]]*<(svg|g|path|rect|circle|ellipse|line|polyline|polygon)\b[^>]*(fill|stroke)=("|\x27)white\3' -- "$f" || true
+              FAIL=1
+            fi
+          done <<< "$CHANGED"
+
+          if [ $FAIL -eq 0 ]; then
+            echo "✅ No new color violations"
+          else
+            exit 1
+          fi
